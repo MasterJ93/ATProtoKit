@@ -7,7 +7,7 @@
 
 import Foundation
 
-internal struct AuthenticationResponse: Codable {
+public struct AuthenticationResponse: Codable {
     var handle: String
     var accessJwt: String
     var refreshJwt: String
