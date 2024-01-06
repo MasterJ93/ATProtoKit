@@ -8,7 +8,7 @@
 import Foundation
 
 extension ATProtoKit {
-    public func createPost(text: String, completion: @escaping (Result<[String: Any], Error>) -> Void) {
+    public func createPost(text: String, locales: [Locale] = [], completion: @escaping (Result<[String: Any], Error>) -> Void) {
         let now = ISO8601DateFormatter().string(from: Date())
         
         let post: [String: Any] = [
@@ -27,11 +27,17 @@ extension ATProtoKit {
         request.addValue("Bearer \(session.accessJwt)", forHTTPHeaderField: "Authorization")
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         
-        let requestBody: [String: Any] = [
+        var requestBody: [String: Any] = [
             "repo": session.did,
             "collection": "app.bsky.feed.post",
             "record": post
         ]
+        
+        // Set the languages, if needed.
+        if !locales.isEmpty {
+            let localeIdentifiers = locales.map { $0.identifier }
+            requestBody["langs"] = localeIdentifiers
+        }
         
         guard let httpBody = try? JSONSerialization.data(withJSONObject: requestBody) else {
             completion(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey : "Error encoding request body"])))
