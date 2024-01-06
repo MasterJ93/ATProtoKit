@@ -8,19 +8,21 @@
 import Foundation
 
 public class UserSession: SessionProtocol {
-    public let handle: String
-    public var did: String?
-    public var email: String?
-    public var accessJwt: String?
-    public var refreshJwt: String?
+    public private(set) var handle: String
+    public private(set) var did: String
+    public private(set) var email: String
+    public private(set) var accessJwt: String
+    public private(set) var refreshJwt: String
+    public private(set) var pdsURL: String
     
     
-    init(handle: String, did: String?, email: String?, accessJwt: String?, refreshJwt: String?) {
+    init(handle: String, did: String, email: String, accessJwt: String, refreshJwt: String, pdsURL: String = "https://bsky.social") {
         self.handle = handle
         self.did = did
         self.email = email
         self.accessJwt = accessJwt
         self.refreshJwt = refreshJwt
+        self.pdsURL = pdsURL
     }
     
     public func isAccessTokenExpired() -> Bool {

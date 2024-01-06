@@ -9,10 +9,11 @@ import Foundation
 
 public protocol SessionProtocol {
     var handle: String { get }
-    var did: String? { get set }
-    var email: String? { get set }
-    var accessJwt: String? { get set }
-    var refreshJwt: String? { get set }
+    var did: String { get }
+    var email: String { get }
+    var accessJwt: String { get }
+    var refreshJwt: String { get }
+    var pdsURL: String { get }
     
     func isAccessTokenExpired() -> Bool
 }
