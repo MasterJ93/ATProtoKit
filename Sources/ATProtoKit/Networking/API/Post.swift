@@ -35,6 +35,8 @@ extension ATProtoKit {
         
         // Set the languages, if needed.
         if !locales.isEmpty {
+            // Put the locale identifiers as a string, then add them as separate items in
+            // the `langs` key (which the key-value pair will be added after.
             let localeIdentifiers = locales.map { $0.identifier }
             requestBody["langs"] = localeIdentifiers
         }
