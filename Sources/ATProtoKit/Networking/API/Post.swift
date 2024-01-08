@@ -11,7 +11,7 @@ extension ATProtoKit {
     public func createPost(text: String, locales: [Locale] = [], completion: @escaping (Result<[String: Any], Error>) -> Void) {
         let now = ISO8601DateFormatter().string(from: Date())
         
-        let post: [String: Any] = [
+        var post: [String: Any] = [
             "$type": "app.bsky.feed.post",
             "text": text,
             "createdAt": now
@@ -38,7 +38,7 @@ extension ATProtoKit {
             // Put the locale identifiers as a string, then add them as separate items in
             // the `langs` key (which the key-value pair will be added after.
             let localeIdentifiers = locales.map { $0.identifier }
-            requestBody["langs"] = localeIdentifiers
+            post["langs"] = localeIdentifiers
         }
         
         guard let httpBody = try? JSONSerialization.data(withJSONObject: requestBody) else {
