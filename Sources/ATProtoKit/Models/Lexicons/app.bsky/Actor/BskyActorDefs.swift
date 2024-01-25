@@ -5,8 +5,6 @@
 //  Created by Christopher Jr Riley on 2024-01-25.
 //
 
-import Foundation
-
 public struct ProfileViewBasic: Codable {
     public let atDID: String
     public let actorHandle: String
@@ -87,7 +85,7 @@ public struct ProfileView: Codable {
         self.displayName = try container.decodeIfPresent(String.self, forKey: .displayName)
         self.description = try container.decodeIfPresent(String.self, forKey: .description)
         self.avatar = try container.decodeIfPresent(String.self, forKey: .avatar)
-        self._indexedAt = try container.decodeIfPresent(DateFormattingOptional.self, forKey: .indexedAt)!
+        self.indexedAt = try container.decodeIfPresent(DateFormattingOptional.self, forKey: .indexedAt)?.wrappedValue
         self.viewer = try container.decodeIfPresent(ActorViewerState.self, forKey: .viewer)
         self.labels = try container.decodeIfPresent([Label].self, forKey: .labels)
     }
