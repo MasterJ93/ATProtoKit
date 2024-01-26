@@ -12,14 +12,14 @@ public struct PostView: Codable {
     public let cidHash: String
     public let author: ProfileViewBasic
     public let record: UnknownType
-    public let embed: EmbedViewUnion?
-    public let replyCount: Int?
-    public let repostCount: Int?
-    public let likeCount: Int?
+    public let embed: EmbedViewUnion? = nil
+    public let replyCount: Int? = nil
+    public let repostCount: Int? = nil
+    public let likeCount: Int? = nil
     @DateFormatting public var indexedAt: Date
-    public let viewer: FeedViewerState?
-    public let labels: [Label]?
-    public let threadgate: ThreadgateView?
+    public let viewer: FeedViewerState? = nil
+    public let labels: [Label]? = nil
+    public let threadgate: ThreadgateView? = nil
 
     public init(atURI: String, cidHash: String, author: ProfileViewBasic, record: UnknownType, embed: EmbedViewUnion?, replyCount: Int?, repostCount: Int?, likeCount: Int?, indexedAt: Date, viewer: FeedViewerState?, labels: [Label]?, threadgate: ThreadgateView?) {
         self.atURI = atURI
@@ -88,9 +88,9 @@ public struct PostView: Codable {
 }
 
 public struct FeedViewerState: Codable {
-    public let repost: String?
-    public let like: String?
-    public let areReplyDisabled: Bool?
+    public let repost: String? = nil
+    public let like: String? = nil
+    public let areReplyDisabled: Bool? = nil
 
     enum CodingKeys: String, CodingKey {
         case repost
@@ -101,8 +101,8 @@ public struct FeedViewerState: Codable {
 
 public struct FeedViewPost: Codable {
     public let post: PostView
-    public let reply: FeedReplyReference?
-    public let reason: ReasonRepost?
+    public var reply: FeedReplyReference? = nil
+    public var reason: ReasonRepost? = nil
 }
 
 public struct FeedReplyReference: Codable {
@@ -117,8 +117,8 @@ public struct ReasonRepost: Codable {
 
 public struct ThreadViewPost: Codable {
     public let post: PostView
-    public let parent: PostUnion?
-    public let replies: [PostUnion]?
+    public var parent: PostUnion? = nil
+    public var replies: [PostUnion]? = nil
 }
 
 public struct NotFoundPost: Codable {
@@ -170,7 +170,7 @@ public struct BlockedPost: Codable {
 
 public struct BlockedAuthor: Codable {
     public let atDID: String
-    public let viewer: ActorViewerState?
+    public var viewer: ActorViewerState? = nil
 }
 
 public struct GeneratorView: Codable {
@@ -179,11 +179,11 @@ public struct GeneratorView: Codable {
     public let atDID: String
     public let creator: ProfileView
     public let displayName: String
-    public let description: String?
+    public let description: String? = nil
     public let descriptionFacets: [Facet]
-    public let avatar: String?
-    public let likeCount: Int?
-    public let viewer: GeneratorViewerState?
+    public let avatar: String? = nil
+    public let likeCount: Int? = nil
+    public var viewer: GeneratorViewerState? = nil
     @DateFormatting public var indexedAt: Date
 
     public func encode(to encoder: Encoder) throws {
@@ -226,12 +226,12 @@ public struct GeneratorView: Codable {
 }
 
 public struct GeneratorViewerState: Codable {
-    public let like: String?
+    public var like: String? = nil
 }
 
 public struct SkeletonFeedPost: Codable {
     public let post: String
-    public let reason: SkeletonReasonRepost?
+    public var reason: SkeletonReasonRepost? = nil
 }
 
 public struct SkeletonReasonRepost: Codable {

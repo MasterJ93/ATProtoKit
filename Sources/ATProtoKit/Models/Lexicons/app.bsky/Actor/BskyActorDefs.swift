@@ -8,10 +8,10 @@
 public struct ProfileViewBasic: Codable {
     public let atDID: String
     public let actorHandle: String
-    public let displayName: String?
-    public let avatar: String?
-    public let viewer: ActorViewerState?
-    public let labels: [Label]?
+    public let displayName: String? = nil
+    public let avatar: String? = nil
+    public let viewer: ActorViewerState? = nil
+    public let labels: [Label]? = nil
 
     public init(atDID: String, actorHandle: String, displayName: String?, avatar: String?, viewer: ActorViewerState?, labels: [Label]?) {
         self.atDID = atDID
@@ -60,12 +60,12 @@ public struct ProfileViewBasic: Codable {
 public struct ProfileView: Codable {
     public let atDID: String
     public let actorHandle: String
-    public let displayName: String?
-    public let description: String?
+    public let displayName: String? = nil
+    public let description: String? = nil
     public let avatar: String?
-    @DateFormattingOptional public var indexedAt: Date?
-    public let viewer: ActorViewerState?
-    public let labels: [Label]?
+    @DateFormattingOptional public var indexedAt: Date? = nil
+    public let viewer: ActorViewerState? = nil
+    public let labels: [Label]? = nil
 
     public init(atDID: String, actorHandle: String, displayName: String?, description: String?, avatar: String?, indexedAt: Date?, viewer: ActorViewerState?, labels: [Label]?) {
         self.atDID = atDID
@@ -123,16 +123,16 @@ public struct ProfileView: Codable {
 public struct ProfileViewDetailed: Codable {
     public let atDID: String
     public let actorHandle: String
-    public let displayName: String?
-    public let description: String?
-    public let avatar: String?
-    public let banner: String?
-    public let followerCount: Int?
-    public let followCount: Int?
-    public let postCount: Int?
-    @DateFormattingOptional public var indexedAt: Date?
-    public let viewer: ActorViewerState?
-    public let labels: [Label]?
+    public let displayName: String? = nil
+    public let description: String? = nil
+    public let avatar: String? = nil
+    public let banner: String? = nil
+    public let followerCount: Int? = nil
+    public let followCount: Int? = nil
+    public let postCount: Int? = nil
+    @DateFormattingOptional public var indexedAt: Date? = nil
+    public let viewer: ActorViewerState? = nil
+    public let labels: [Label]? = nil
 
     public init(atDID: String, actorHandle: String, displayName: String?, description: String?, avatar: String?, banner: String?, followerCount: Int?, followCount: Int?, postCount: Int?, indexedAt: Date?, viewer: ActorViewerState?, labels: [Label]?) {
         self.atDID = atDID
@@ -206,13 +206,13 @@ public struct ProfileViewDetailed: Codable {
 }
 
 public struct ActorViewerState: Codable {
-    public let isMuted: Bool?
-    public let mutedByList: ListViewBasic?
-    public let blockedBy: Bool?
-    public let blocking: String?
-    public let blockingByList: ListViewBasic?
-    public let following: String?
-    public let followedBy: String?
+    public let isMuted: Bool? = nil
+    public let mutedByList: ListViewBasic? = nil
+    public let blockedBy: Bool? = nil
+    public let blocking: String? = nil
+    public let blockingByList: ListViewBasic? = nil
+    public let following: String? = nil
+    public let followedBy: String? = nil
 
     enum CodingKeys: String, CodingKey {
         case isMuted = "muted"
@@ -255,7 +255,7 @@ public struct SavedFeedsPreferences: Codable {
 }
 
 public struct PersonalDetailsPreferences: Codable {
-    @DateFormattingOptional var birthDate: Date?
+    @DateFormattingOptional var birthDate: Date? = nil
 
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
@@ -276,11 +276,11 @@ public struct PersonalDetailsPreferences: Codable {
 
 public struct FeedViewPreferences: Codable {
     let feed: String
-    let areRepliesHidden: Bool?
-    let areUnfollowedRepliesHidden: Bool?
-    let hideRepliesByLikeCount: Int?
-    let areRepostsHidden: Bool?
-    let areQuotePostsHidden: Bool?
+    let areRepliesHidden: Bool? = nil
+    let areUnfollowedRepliesHidden: Bool? = nil
+    let hideRepliesByLikeCount: Int? = nil
+    let areRepostsHidden: Bool? = nil
+    let areQuotePostsHidden: Bool? = nil
 
     enum CodingKeys: String, CodingKey {
         case feed
@@ -293,8 +293,8 @@ public struct FeedViewPreferences: Codable {
 }
 
 public struct ThreadViewPreferences: Codable {
-    let sort: SortingMode?
-    let areFollowedUsersPrioritized: Bool?
+    let sort: SortingMode? = nil
+    let areFollowedUsersPrioritized: Bool? = nil
 
     enum SortingMode: String, Codable {
         case oldest = "oldest"

@@ -13,8 +13,8 @@ public struct ListViewBasic: Codable {
     public let name: String
     public let purpose: ListPurpose
     public let avatar: String?
-    public let viewer: ListViewerState?
-    @DateFormattingOptional public var indexedAt: Date?
+    public var viewer: ListViewerState? = nil
+    @DateFormattingOptional public var indexedAt: Date? = nil
 
     public init(atURI: String, cidHash: String, name: String, purpose: ListPurpose, avatar: String?, viewer: ListViewerState?, indexedAt: Date?) {
         self.atURI = atURI
@@ -34,7 +34,7 @@ public struct ListViewBasic: Codable {
         self.purpose = try container.decode(ListPurpose.self, forKey: .purpose)
         self.avatar = try container.decodeIfPresent(String.self, forKey: .avatar)
         self.viewer = try container.decodeIfPresent(ListViewerState.self, forKey: .viewer)
-        self._indexedAt = try container.decode(DateFormattingOptional.self, forKey: .indexedAt)
+        self.indexedAt = try container.decodeIfPresent(DateFormattingOptional.self, forKey: .indexedAt)?.wrappedValue
     }
 
     public func encode(to encoder: Encoder) throws {
@@ -65,10 +65,10 @@ public struct ListView: Codable {
     public let creator: ProfileView
     public let name: String
     public let purpose: ListPurpose
-    public let description: String?
-    public let descriptionFacets: [Facet]?
-    public let avatar: String?
-    public let viewer: ListViewerState?
+    public let description: String? = nil
+    public let descriptionFacets: [Facet]? = nil
+    public let avatar: String? = nil
+    public let viewer: ListViewerState? = nil
     @DateFormatting public var indexedAt: Date
 
     public init(atURI: String, cidHash: String, creator: ProfileView, name: String, purpose: ListPurpose, description: String?, descriptionFacets: [Facet]?, avatar: String?, viewer: ListViewerState?, indexedAt: Date) {
@@ -161,8 +161,8 @@ public enum ListPurpose: String, Codable {
 
 
 public struct ListViewerState: Codable {
-    public let isMuted: Bool?
-    public let blocked: String?
+    public var isMuted: Bool? = nil
+    public var blocked: String? = nil
 
     enum CodingKeys: String, CodingKey {
         case isMuted = "muted"
