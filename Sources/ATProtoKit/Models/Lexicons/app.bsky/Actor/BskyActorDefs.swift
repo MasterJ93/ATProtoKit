@@ -4,6 +4,7 @@
 //
 //  Created by Christopher Jr Riley on 2024-01-25.
 //
+import Foundation
 
 public struct ProfileViewBasic: Codable {
     public let atDID: String
