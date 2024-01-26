@@ -65,10 +65,10 @@ public struct ListView: Codable {
     public let creator: ProfileView
     public let name: String
     public let purpose: ListPurpose
-    public let description: String? = nil
-    public let descriptionFacets: [Facet]? = nil
-    public let avatar: String? = nil
-    public let viewer: ListViewerState? = nil
+    public var description: String? = nil
+    public var descriptionFacets: [Facet]? = nil
+    public var avatar: String? = nil
+    public var viewer: ListViewerState? = nil
     @DateFormatting public var indexedAt: Date
 
     public init(atURI: String, cidHash: String, creator: ProfileView, name: String, purpose: ListPurpose, description: String?, descriptionFacets: [Facet]?, avatar: String?, viewer: ListViewerState?, indexedAt: Date) {

@@ -9,10 +9,10 @@ import Foundation
 public struct ProfileViewBasic: Codable {
     public let atDID: String
     public let actorHandle: String
-    public let displayName: String? = nil
-    public let avatar: String? = nil
-    public let viewer: ActorViewerState? = nil
-    public let labels: [Label]? = nil
+    public var displayName: String? = nil
+    public var avatar: String? = nil
+    public var viewer: ActorViewerState? = nil
+    public var labels: [Label]? = nil
 
     public init(atDID: String, actorHandle: String, displayName: String?, avatar: String?, viewer: ActorViewerState?, labels: [Label]?) {
         self.atDID = atDID
@@ -61,12 +61,12 @@ public struct ProfileViewBasic: Codable {
 public struct ProfileView: Codable {
     public let atDID: String
     public let actorHandle: String
-    public let displayName: String? = nil
-    public let description: String? = nil
+    public var displayName: String? = nil
+    public var description: String? = nil
     public let avatar: String?
     @DateFormattingOptional public var indexedAt: Date? = nil
-    public let viewer: ActorViewerState? = nil
-    public let labels: [Label]? = nil
+    public var viewer: ActorViewerState? = nil
+    public var labels: [Label]? = nil
 
     public init(atDID: String, actorHandle: String, displayName: String?, description: String?, avatar: String?, indexedAt: Date?, viewer: ActorViewerState?, labels: [Label]?) {
         self.atDID = atDID
@@ -124,16 +124,16 @@ public struct ProfileView: Codable {
 public struct ProfileViewDetailed: Codable {
     public let atDID: String
     public let actorHandle: String
-    public let displayName: String? = nil
-    public let description: String? = nil
-    public let avatar: String? = nil
-    public let banner: String? = nil
-    public let followerCount: Int? = nil
-    public let followCount: Int? = nil
-    public let postCount: Int? = nil
+    public var displayName: String? = nil
+    public var description: String? = nil
+    public var avatar: String? = nil
+    public var banner: String? = nil
+    public var followerCount: Int? = nil
+    public var followCount: Int? = nil
+    public var postCount: Int? = nil
     @DateFormattingOptional public var indexedAt: Date? = nil
-    public let viewer: ActorViewerState? = nil
-    public let labels: [Label]? = nil
+    public var viewer: ActorViewerState? = nil
+    public var labels: [Label]? = nil
 
     public init(atDID: String, actorHandle: String, displayName: String?, description: String?, avatar: String?, banner: String?, followerCount: Int?, followCount: Int?, postCount: Int?, indexedAt: Date?, viewer: ActorViewerState?, labels: [Label]?) {
         self.atDID = atDID
