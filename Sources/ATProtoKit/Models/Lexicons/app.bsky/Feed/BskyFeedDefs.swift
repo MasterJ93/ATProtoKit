@@ -12,14 +12,14 @@ public struct PostView: Codable {
     public let cidHash: String
     public let author: ProfileViewBasic
     public let record: UnknownType
-    public let embed: EmbedViewUnion? = nil
-    public let replyCount: Int? = nil
-    public let repostCount: Int? = nil
-    public let likeCount: Int? = nil
+    public var embed: EmbedViewUnion? = nil
+    public var replyCount: Int? = nil
+    public var repostCount: Int? = nil
+    public var likeCount: Int? = nil
     @DateFormatting public var indexedAt: Date
-    public let viewer: FeedViewerState? = nil
-    public let labels: [Label]? = nil
-    public let threadgate: ThreadgateView? = nil
+    public var viewer: FeedViewerState? = nil
+    public var labels: [Label]? = nil
+    public var threadgate: ThreadgateView? = nil
 
     public init(atURI: String, cidHash: String, author: ProfileViewBasic, record: UnknownType, embed: EmbedViewUnion?, replyCount: Int?, repostCount: Int?, likeCount: Int?, indexedAt: Date, viewer: FeedViewerState?, labels: [Label]?, threadgate: ThreadgateView?) {
         self.atURI = atURI
