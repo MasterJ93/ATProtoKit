@@ -11,5 +11,5 @@ public protocol ProtocolConfiguration {
     var handle: String { get }
     var appPassword: String { get }
     var pdsURL: String { get }
-    func authenticate(completion: @escaping (Result<UserSession, Error>) -> Void)
+    func authenticate() async throws -> Result<UserSession, Error>
 }
