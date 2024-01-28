@@ -214,14 +214,14 @@ public struct GeneratorView: Codable {
         case atURI = "uri"
         case cidHash = "cid"
         case atDID = "did"
-        case creator = "creator"
-        case displayName = "displayName"
-        case description = "description"
+        case creator
+        case displayName
+        case description
         case descriptionFacets = "descriptionFacets"
-        case avatar = "avatar"
+        case avatar
         case likeCount = "likeCount"
-        case viewer = "viewer"
-        case indexedAt = "indexedAt"
+        case viewer
+        case indexedAt
     }
 }
 
