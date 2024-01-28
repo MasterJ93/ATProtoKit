@@ -25,7 +25,7 @@ public struct ViewRecord: Codable {
     public let author: ProfileViewBasic
     public let value: UnknownType
     public let labels: [Label]?
-    public let embeds: [EmbedUnion]?
+    public let embeds: [RecordViewUnion]?
     @DateFormatting public var indexedAt: Date
 
     enum CodingKeys: String, CodingKey {
