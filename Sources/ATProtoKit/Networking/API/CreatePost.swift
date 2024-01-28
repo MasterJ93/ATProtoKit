@@ -13,13 +13,6 @@ extension ATProtoKit {
         // Locales
         let localeIdentifiers = locales.isEmpty ? nil : locales.map { $0.identifier }
 
-        // Languages for the post
-
-        // Facets
-
-        // Embeds
-
-
         // Compiling all parts of the post into one.
         let post = Post(
             text: text,
