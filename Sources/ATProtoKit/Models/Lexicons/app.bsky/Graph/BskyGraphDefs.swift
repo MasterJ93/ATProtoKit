@@ -168,3 +168,25 @@ public struct ListViewerState: Codable {
         case blocked = "blocked"
     }
 }
+
+public struct NotFoundActor: Codable {
+    public let actor: String
+    public let isNotFound: Bool
+
+    enum CodingKeys: String, CodingKey {
+        case actor
+        case isNotFound = "notFound"
+    }
+}
+
+public struct GraphRelationship: Codable {
+    public let atDID: String
+    public let following: String?
+    public let followedBy: String?
+
+    enum CodingKeys: String, CodingKey {
+        case atDID = "did"
+        case following
+        case followedBy
+    }
+}
