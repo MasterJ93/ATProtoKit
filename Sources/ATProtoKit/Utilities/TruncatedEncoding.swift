@@ -7,26 +7,30 @@
 
 import Foundation
 
-func truncatedEncode<T: CodingKey>(_ string: String, withContainer container: inout KeyedEncodingContainer<T>, forKey key: T, upToLength length: Int) throws {
-    let truncatedString = String(string.prefix(length))
-    try container.encode(truncatedString, forKey: key)
+internal protocol Truncatable {
+    func truncated(toLength length: Int) -> Self
 }
 
-func truncatedEncodeIfPresent<T: CodingKey>(_ string: String?, withContainer container: inout KeyedEncodingContainer<T>, forKey key: T, upToLength length: Int) throws {
-    if let string = string {
-        let truncatedString = String(string.prefix(length))
-        try container.encode(truncatedString, forKey: key)
+extension String: Truncatable {
+    func truncated(toLength length: Int) -> String {
+        return String(self.prefix(length))
     }
 }
 
-func truncatedEncode<T: CodingKey, Element: Encodable>(_ array: [Element], withContainer container: inout KeyedEncodingContainer<T>, forKey key: T, upToLength length: Int) throws {
-    let truncatedArray = Array(array.prefix(length))
-    try container.encode(truncatedArray, forKey: key)
+extension Array: Truncatable {
+    func truncated(toLength length: Int) -> Array<Element> {
+        return Array(self.prefix(length))
+    }
 }
 
-func truncatedEncodeIfPresent<T: CodingKey, Element: Encodable>(_ array: [Element]?, withContainer container: inout KeyedEncodingContainer<T>, forKey key: T, upToLength length: Int) throws {
-    if let array = array {
-        let truncatedArray = Array(array.prefix(length))
-        try container.encode(truncatedArray, forKey: key)
+internal func truncatedEncode<T: CodingKey, Element: Truncatable & Encodable>(_ value: Element, withContainer container: inout KeyedEncodingContainer<T>, forKey key: T, upToLength length: Int) throws {
+    let truncatedValue = value.truncated(toLength: length)
+    try container.encode(truncatedValue, forKey: key)
+}
+
+internal func truncatedEncodeIfPresent<T: CodingKey, Element: Truncatable & Encodable>(_ value: Element?, withContainer container: inout KeyedEncodingContainer<T>, forKey key: T, upToLength length: Int) throws {
+    if let value = value {
+        let truncatedValue = value.truncated(toLength: length)
+        try container.encode(truncatedValue, forKey: key)
     }
 }
