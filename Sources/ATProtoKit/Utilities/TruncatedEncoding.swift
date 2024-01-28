@@ -18,3 +18,15 @@ func truncatedEncodeIfPresent<T: CodingKey>(_ string: String?, withContainer con
         try container.encode(truncatedString, forKey: key)
     }
 }
+
+func truncatedEncode<T: CodingKey, Element: Encodable>(_ array: [Element], withContainer container: inout KeyedEncodingContainer<T>, forKey key: T, upToLength length: Int) throws {
+    let truncatedArray = Array(array.prefix(length))
+    try container.encode(truncatedArray, forKey: key)
+}
+
+func truncatedEncodeIfPresent<T: CodingKey, Element: Encodable>(_ array: [Element]?, withContainer container: inout KeyedEncodingContainer<T>, forKey key: T, upToLength length: Int) throws {
+    if let array = array {
+        let truncatedArray = Array(array.prefix(length))
+        try container.encode(truncatedArray, forKey: key)
+    }
+}

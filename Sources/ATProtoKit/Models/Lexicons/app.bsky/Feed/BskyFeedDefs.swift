@@ -197,8 +197,8 @@ public struct GeneratorView: Codable {
 
         // Truncate `description` to 3000 characters before encoding
         // `maxGraphemes`'s limit is 300, but `String.count` should respect that limit
-        let truncatedDescription = String(describing: description?.prefix(3000))
-        try container.encodeIfPresent(truncatedDescription, forKey: .description)
+        try truncatedEncodeIfPresent(self.description, withContainer: &container, forKey: .displayName, upToLength: 3000)
+
         try container.encode(self.descriptionFacets, forKey: .descriptionFacets)
         try container.encodeIfPresent(self.avatar, forKey: .avatar)
 

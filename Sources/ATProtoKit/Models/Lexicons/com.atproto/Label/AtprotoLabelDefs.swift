@@ -43,8 +43,7 @@ public struct Label: Codable {
         try container.encodeIfPresent(self.cidHash, forKey: .cidHash)
 
         // Truncate `name` to 128 characters before encoding
-        let truncatedName = String(name.prefix(128))
-        try container.encode(truncatedName, forKey: .name)
+        try truncatedEncode(self.name, withContainer: &container, forKey: .name, upToLength: 128)
 
         try container.encodeIfPresent(self.isNegated, forKey: .isNegated)
         try container.encode(self._timestamp, forKey: .timestamp)
@@ -77,8 +76,7 @@ public struct SelfLabels: Codable {
         var container = encoder.container(keyedBy: CodingKeys.self)
 
         // Truncate `values` to 10 items before encoding
-        let truncatedValues = Array(self.values.prefix(10))
-        try container.encode(truncatedValues, forKey: .values)
+        try truncatedEncode(self.values, withContainer: &container, forKey: .values, upToLength: 10)
     }
 
     enum CodingKeys: CodingKey {
@@ -93,8 +91,7 @@ public struct SelfLabel: Codable {
         var container = encoder.container(keyedBy: CodingKeys.self)
 
         // Truncate `value` to 128 characters before encoding
-        let truncatedValue = String(self.value.prefix(128))
-        try container.encode(truncatedValue, forKey: .value)
+        try truncatedEncode(self.value, withContainer: &container, forKey: .value, upToLength: 128)
     }
 
     enum CodingKeys: String, CodingKey {
