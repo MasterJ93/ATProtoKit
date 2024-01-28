@@ -54,14 +54,14 @@ public struct FeedPost: Codable {
         try container.encodeIfPresent(self.facets, forKey: .facets)
         try container.encodeIfPresent(self.reply, forKey: .reply)
         try container.encodeIfPresent(self.embed, forKey: .embed)
-        try container.encodeIfPresent(self.langs, forKey: .langs)
+        try truncatedEncodeIfPresent(self.langs, withContainer: &container, forKey: .langs, upToLength: 3)
         try container.encodeIfPresent(self.labels, forKey: .labels)
 
         // Truncate `tags` to 640 characters before encoding
         // `maxGraphemes`'s limit is 64, but `String.count` should respect that limit implictly
         // Then, truncate `tags` to 3 items before encoding
-        let truncatedTags = tags.map { $0.truncated(toLength: 640) }
-        try truncatedEncodeIfPresent(truncatedTags, withContainer: &container, forKey: .tags, upToLength: 3)
+        let truncatedTags = self.tags.map { $0.truncated(toLength: 640) }
+        try truncatedEncodeIfPresent(truncatedTags, withContainer: &container, forKey: .tags, upToLength: 8)
 
         try container.encode(self.createdAt, forKey: .createdAt)
     }
