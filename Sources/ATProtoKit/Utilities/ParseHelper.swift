@@ -133,16 +133,31 @@ public class ParseHelper {
                         // Remove the `@` from the handle.
                         let notATHandle = String(handle.dropFirst())
 
-                        if let did = try await self.retrieveDID(from: notATHandle, pdsURL: pdsURL),
-                           let start = mention["start"] as? Int,
-                           let end = mention["end"] as? Int {
+//                        if let did = try await self.retrieveDID(from: notATHandle, pdsURL: pdsURL),
+//                           let start = mention["start"] as? Int,
+//                           let end = mention["end"] as? Int {
+//
+//                            let mentionFacet = Facet(
+//                                index: ByteSlice(byteStart: start, byteEnd: end),
+//                                features: [.mention(Mention(did: did))]
+//                            )
+//
+//                            await facets.append(mentionFacet)
+//                        }
 
-                            let mentionFacet = Facet(
-                                index: ByteSlice(byteStart: start, byteEnd: end),
-                                features: [.mention(Mention(did: did))]
-                            )
+                        let mentionResult = try await ATProtoKit.retrieveDID(from: notATHandle, pdsURL: pdsURL)
 
-                            await facets.append(mentionFacet)
+                        switch mentionResult {
+                            case .success(let resolveHandleOutput):
+                                guard let start = mention["start"] as? Int, let end = mention["end"] as? Int else { return }
+
+                                let mentionFacet = Facet(
+                                    index: ByteSlice(byteStart: start, byteEnd: end),
+                                    features: [.mention(Mention(did: resolveHandleOutput.did))])
+
+                                await facets.append(mentionFacet)
+                            case .failure(let error):
+                                print("Error: \(error)")
                         }
                     } catch {
 
