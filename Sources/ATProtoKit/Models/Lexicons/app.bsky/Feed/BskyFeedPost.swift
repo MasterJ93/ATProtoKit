@@ -7,19 +7,19 @@
 
 import Foundation
 
-public struct Post: Codable {
+public struct FeedPost: Codable {
     internal let type: String = "app.bsky.feed.post"
     public let text: String
-    public let entities: [Entity]? // Deprecated
-    public let facets: [Facet]?
-    public let reply: ReplyReference?
-    public let embed: EmbedUnion?
-    public let langs: [String]?
-    public let labels: FeedLabelUnion?
-    public let tags: [String]?
-    public let createdAt: String // Can be converted to Date if needed
+    public var entities: [Entity]? = nil // Deprecated
+    public var facets: [Facet]? = nil
+    public var reply: ReplyReference? = nil
+    public var embed: EmbedUnion? = nil
+    public var langs: [String]? = nil
+    public var labels: FeedLabelUnion? = nil
+    public var tags: [String]? = nil
+    @DateFormatting public var createdAt: Date
 
-    public init(text: String, entities: [Entity]? = nil, facets: [Facet]? = nil, reply: ReplyReference? = nil, embed: EmbedUnion? = nil, langs: [String]? = nil, labels: FeedLabelUnion? = nil, tags: [String]? = nil, createdAt: String) {
+    public init(text: String, entities: [Entity]? = nil, facets: [Facet]? = nil, reply: ReplyReference? = nil, embed: EmbedUnion? = nil, langs: [String]? = nil, labels: FeedLabelUnion? = nil, tags: [String]? = nil, createdAt: Date) {
         self.text = text
         self.entities = entities
         self.facets = facets
@@ -28,7 +28,7 @@ public struct Post: Codable {
         self.langs = langs
         self.labels = labels
         self.tags = tags
-        self.createdAt = createdAt
+        self._createdAt = DateFormatting(wrappedValue: createdAt)
     }
 
     public init(from decoder: Decoder) throws {
@@ -42,7 +42,7 @@ public struct Post: Codable {
         self.langs = try container.decodeIfPresent([String].self, forKey: .langs)
         self.labels = try container.decodeIfPresent(FeedLabelUnion.self, forKey: .labels)
         self.tags = try container.decodeIfPresent([String].self, forKey: .tags)
-        self.createdAt = try container.decode(String.self, forKey: .createdAt)
+        self._createdAt = try container.decode(DateFormatting.self, forKey: .createdAt)
     }
 
     public func encode(to encoder: Encoder) throws {

@@ -14,7 +14,7 @@ extension ATProtoKit {
         let localeIdentifiers = locales.isEmpty ? nil : locales.map { $0.identifier }
 
         // Compiling all parts of the post into one.
-        let post = Post(
+        let post = FeedPost(
             text: text,
             facets: await ParseHelper.parseFacets(from: text, pdsURL: session.accessJwt),
             reply: replyTo,
