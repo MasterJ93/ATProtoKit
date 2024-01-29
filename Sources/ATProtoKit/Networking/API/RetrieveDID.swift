@@ -28,23 +28,6 @@ extension ATProtoKit {
         do {
             let response = try await APIClientService.sendRequest(request, decodeTo: ResolveHandleOutput.self)
 
-//            let (data, response) = try await URLSession.shared.data(for: request)
-//
-//            guard let httpResponse = response as? HTTPURLResponse else {
-//                throw URLError(.badServerResponse)
-//            }
-//
-//            print("Status Code: \(httpResponse.statusCode)")  // Debugging line
-//            print("Response Headers: \(httpResponse.allHeaderFields)")  // Debugging line
-//
-//            if httpResponse.statusCode == 400 {
-//                print("Request failed. Error code 400.")
-//                return .failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey : "Request failed."]))
-//            }
-//
-//            let decodedResponse = try JSONDecoder().decode(ResolveHandleOutput.self, from: data)
-//            print("Decoded Response.did: \(decodedResponse)")
-//            return .success(decodedResponse)
             return .success(response)
         } catch (let error) {
             return .failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey : "Error: \(error)"]))
