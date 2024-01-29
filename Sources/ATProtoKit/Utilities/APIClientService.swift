@@ -9,12 +9,12 @@ import Foundation
 
 class APIClientService {
 
-    static func createRequest(forRequest requestURL: URL, andMethod httpMethod: HTTPMethod, contentTypeValue: String = "application/json", authValue: String? = nil) -> URLRequest {
+    static func createRequest(forRequest requestURL: URL, andMethod httpMethod: HTTPMethod, contentTypeValue: String = "application/json", authorizationValue: String? = nil) -> URLRequest {
         var request = URLRequest(url: requestURL)
         request.httpMethod = httpMethod.rawValue
 
-        if let authValue {
-            request.addValue(authValue, forHTTPHeaderField: "Authorization")
+        if let authorizationValue {
+            request.addValue(authorizationValue, forHTTPHeaderField: "Authorization")
         }
         request.addValue(contentTypeValue, forHTTPHeaderField: "Content-Type")
 

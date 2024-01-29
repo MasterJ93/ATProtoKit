@@ -34,7 +34,7 @@ extension ATProtoKit {
             "record": post
         ]
 
-        let request = APIClientService.createRequest(forRequest: url, andMethod: .post, authValue: "Bearer \(session.accessJwt)")
+        let request = APIClientService.createRequest(forRequest: url, andMethod: .post, authorizationValue: "Bearer \(session.accessJwt)")
 
         do {
             let result = try await APIClientService.sendRequest(request, jsonData: requestBody, decodeTo: StrongReference.self)
