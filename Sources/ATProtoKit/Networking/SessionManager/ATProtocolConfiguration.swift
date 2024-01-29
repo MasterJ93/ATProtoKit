@@ -15,14 +15,10 @@ public class ATProtocolConfiguration: ProtocolConfiguration {
     public init(handle: String, appPassword: String, pdsURL: String = "https://bsky.social") {
         self.handle = handle
         self.appPassword = appPassword
-        self.pdsURL = pdsURL
+        self.pdsURL = !pdsURL.isEmpty ? pdsURL : "https://bsky.social"
     }
 
     public func authenticate() async throws -> Result<UserSession, Error> {
-        // Check if `pdsURL` is empty.
-        if self.pdsURL == "" {
-            self.pdsURL = "https://bsky.social"
-        }
         
         guard let url = URL(string: "\(self.pdsURL)/xrpc/com.atproto.server.createSession") else {
             return .failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"]))
