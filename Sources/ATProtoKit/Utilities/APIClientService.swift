@@ -27,7 +27,7 @@ class APIClientService {
         return httpBody
     }
 
-    static func sendRequest<T: Decodable>(_ request: URLRequest, jsonData: [String: Any] = [:], decodeTo: T.Type, isHTTPBodyActive: Bool = true) async throws -> T {
+    static func sendRequest<T: Decodable>(_ request: URLRequest, jsonData: [String: Any] = [:], decodeTo: T.Type) async throws -> T {
         var urlRequest = request
 
         if !jsonData.isEmpty {
