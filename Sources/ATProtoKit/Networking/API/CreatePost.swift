@@ -28,12 +28,6 @@ extension ATProtoKit {
             tags: tags,
             createdAt: Date())
 
-//        var request = URLRequest(url: url)
-//        request.httpMethod = "POST"
-//
-//        request.addValue("Bearer \(session.accessJwt)", forHTTPHeaderField: "Authorization")
-//        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-
         let requestBody: [String: Any] = [
             "repo": session.did,
             "collection": "app.bsky.feed.post",
@@ -45,26 +39,6 @@ extension ATProtoKit {
         do {
             let result = try await APIClientService.sendRequest(request, jsonData: requestBody, decodeTo: StrongReference.self)
 
-//            guard let httpBody = try? JSONSerialization.data(withJSONObject: requestBody) else {
-//                return .failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey : "Error encoding request body"]))
-//            }
-//
-//            request.httpBody = httpBody
-//
-//            let (data, response) = try await URLSession.shared.data(for: request)
-//
-//            guard let httpResponse = response as? HTTPURLResponse else {
-//                throw URLError(.badServerResponse)
-//            }
-//
-//            if httpResponse.statusCode != 200 {
-//                throw URLError(.badServerResponse)
-//            }
-//
-//            let decoder = JSONDecoder()
-//            let postResponse = try decoder.decode(StrongReference.self, from: data)
-//
-//            return .success(postResponse)
             return .success(result)
         } catch {
             return .failure(error)
