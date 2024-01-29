@@ -28,36 +28,45 @@ public class ATProtocolConfiguration: ProtocolConfiguration {
             return .failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"]))
         }
         
-        var request = URLRequest(url: url)
-        request.httpMethod = "POST"
-        
+        let request = APIClientService.createRequest(forRequest: url, andMethod: .post)
+
+//        var request = URLRequest(url: url)
+//        request.httpMethod = "POST"
+//        
+//        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+//        print("Request: \(request.httpMethod)\n\n\(request.allHTTPHeaderFields)\n\n\n")
         let credentials = ["identifier": handle, "password": appPassword]
-        guard let httpBody = try? JSONSerialization.data(withJSONObject: credentials) else {
-            return .failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Error encoding credentials"]))
-        }
-        
-        request.httpBody = httpBody
-        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         
         do {
-            let (data, response) = try await URLSession.shared.data(for: request)
-            
-            guard let httpResponse = response as? HTTPURLResponse else {
-                throw URLError(.badServerResponse)
-            }
-            
-            if httpResponse.statusCode != 200 {
-                throw URLError(.badServerResponse)
-            }
-            
-            // Extract tokens and other data from the response.
-            let decoder = JSONDecoder()
-            let authResponse = try decoder.decode(AuthenticationResponse.self, from: data)
-            let userSession = UserSession(handle: authResponse.handle,
-                                          did: authResponse.did,
-                                          email: authResponse.email,
-                                          accessJwt: authResponse.accessJwt,
-                                          refreshJwt: authResponse.refreshJwt)
+
+            let authResponse = try await APIClientService.sendRequest(request, jsonData: credentials, decodeTo: AuthenticationResponse.self)
+//            guard let httpBody = try? JSONSerialization.data(withJSONObject: credentials) else {
+//                return .failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Error encoding credentials"]))
+//            }
+
+//            request.httpBody = httpBody
+//
+//            let (data, response) = try await URLSession.shared.data(for: request)
+//            
+//            guard let httpResponse = response as? HTTPURLResponse else {
+//                throw URLError(.badServerResponse)
+//            }
+//            
+//            if httpResponse.statusCode != 200 {
+//                throw URLError(.badServerResponse)
+//            }
+//            
+//            // Extract tokens and other data from the response.
+//            let decoder = JSONDecoder()
+//            let authResponse = try decoder.decode(AuthenticationResponse.self, from: data)
+//            let userSession = UserSession(handle: authResponse.handle,
+//                                          did: authResponse.did,
+//                                          email: authResponse.email,
+//                                          accessJwt: authResponse.accessJwt,
+//                                          refreshJwt: authResponse.refreshJwt)
+//            return .success(userSession)
+            let userSession = UserSession(handle: authResponse.handle, did: authResponse.did, email: authResponse.email, accessJwt: authResponse.accessJwt,
+                                          refreshJwt: authResponse.refreshJwt, pdsURL: self.pdsURL)
             return .success(userSession)
         } catch {
             print("Error: \(error)")
