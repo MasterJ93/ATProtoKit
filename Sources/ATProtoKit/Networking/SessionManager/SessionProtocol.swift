@@ -7,13 +7,14 @@
 
 import Foundation
 
-public protocol SessionProtocol {
+public protocol SessionProtocol: Codable {
     var handle: String { get }
     var did: String { get }
     var email: String { get }
     var accessJwt: String { get }
     var refreshJwt: String { get }
-    var pdsURL: String { get }
+    
+    var pdsURL: String? { get }
     
     func isAccessTokenExpired() -> Bool
 }

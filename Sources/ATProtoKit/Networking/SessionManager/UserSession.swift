@@ -13,7 +13,7 @@ public class UserSession: SessionProtocol {
     public private(set) var email: String
     public private(set) var accessJwt: String
     public private(set) var refreshJwt: String
-    public private(set) var pdsURL: String
+    public private(set) var pdsURL: String?
     
     
     init(handle: String, did: String, email: String, accessJwt: String, refreshJwt: String, pdsURL: String = "https://bsky.social") {
