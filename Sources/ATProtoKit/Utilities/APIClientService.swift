@@ -9,6 +9,8 @@ import Foundation
 
 class APIClientService {
 
+    private init() {}
+
     static func createRequest(forRequest requestURL: URL, andMethod httpMethod: HTTPMethod, contentTypeValue: String = "application/json", authorizationValue: String? = nil) -> URLRequest {
         var request = URLRequest(url: requestURL)
         request.httpMethod = httpMethod.rawValue
