@@ -8,32 +8,31 @@
 import Foundation
 
 extension ATProtoKit {
+    public static func resolveReplyReferences(parentURI: String) async throws -> ReplyReference {
+        let parentRecord = try await fetchRecordForURI(parentURI)
 
-    public func resolveReplyReferences(parentURI: String) async throws -> ReplyReference {
-        // Parse the parent URI and fetch the parent record
-        let parentQuery = try ATProtoKit.parseURI(parentURI)
-
-        // Fetch the parent record using the RecordQuery object
-        let parentRecord = try await ATProtoKit.fetchRecord(fromRecordQuery: parentQuery)
-
-        // Access the reply property from the RecordValueReply within RecordOutput
-        if let replyReference = parentRecord.value?.reply {
-            // Parse the root URI to get a RecordQuery object
-            let rootQuery = try ATProtoKit.parseURI(replyReference.root.recordURI)
-
-            // Fetch the root record using the RecordQuery object
-            let rootRecord = try await ATProtoKit.fetchRecord(fromRecordQuery: rootQuery)
-
-            // Use the StrongReference directly since they match the required structure
-            return ReplyReference(root: rootRecord.value?.reply?.root ?? replyReference.root, parent: replyReference.parent)
-        } else {
+        guard let replyReference = parentRecord.value?.reply else {
             // The parent record is a top-level post, so it is also the root
-            let ref = StrongReference(recordURI: parentRecord.atURI, cidHash: parentRecord.recordCID)
-            return ReplyReference(root: ref, parent: ref)
+            return createReplyReference(from: parentRecord)
         }
+
+        let rootRecord = try await fetchRecordForURI(replyReference.root.recordURI)
+        let rootRef = rootRecord.value?.reply?.root ?? replyReference.root
+
+        return ReplyReference(root: rootRef, parent: replyReference.parent)
     }
 
-    public static func fetchRecord(fromRecordQuery recordQuery: RecordQuery, pdsURL: String = "https://bsky.social") async throws -> RecordOutput {
+    private static func fetchRecordForURI(_ uri: String) async throws -> RecordOutput {
+        let query = try parseURI(uri)
+        return try await fetchRecord(fromRecordQuery: query)
+    }
+
+    private static func createReplyReference(from record: RecordOutput) -> ReplyReference {
+        let ref = StrongReference(recordURI: record.atURI, cidHash: record.recordCID)
+        return ReplyReference(root: ref, parent: ref)
+    }
+
+    private static func fetchRecord(fromRecordQuery recordQuery: RecordQuery, pdsURL: String = "https://bsky.social") async throws -> RecordOutput {
 
         guard let url = URL(string: "\(pdsURL)/xrpc/com.atproto.repo.getRecord") else {
             throw URIError.invalidFormat
