@@ -68,8 +68,6 @@ extension ATProtoKit {
             return RecordQuery(repo: components[1], collection: components[2], recordKey: components[4], recordCID: nil)
         } else if uri.hasPrefix("https://bsky.app/") {
             let components = uri.split(separator: "/").map(String.init)
-            print("Components: \(components[3]), \(components[4]), \(components[5])")
-            print("Components: \(components)")
             guard components.count >= 6 else {
                 print("Components aren't less than 8.")
                 throw URIError.invalidFormat }
