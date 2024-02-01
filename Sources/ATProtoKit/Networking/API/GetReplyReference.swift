@@ -60,12 +60,12 @@ extension ATProtoKit {
         return response
     }
 
-    public static func parseURI(_ uri: String) throws -> RecordQuery {
+    private static func parseURI(_ uri: String) throws -> RecordQuery {
         if uri.hasPrefix("at://") {
             let components = uri.split(separator: "/").map(String.init)
             guard components.count >= 4 else { throw URIError.invalidFormat }
 
-            return RecordQuery(repo: components[1], collection: components[2], recordKey: components[4], recordCID: nil)
+            return RecordQuery(repo: components[1], collection: components[2], recordKey: components[3], recordCID: nil)
         } else if uri.hasPrefix("https://bsky.app/") {
             let components = uri.split(separator: "/").map(String.init)
             guard components.count >= 6 else {
