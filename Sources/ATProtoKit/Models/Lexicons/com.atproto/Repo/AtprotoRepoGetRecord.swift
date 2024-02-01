@@ -34,5 +34,5 @@ public struct RecordOutput: Codable {
 }
 
 public struct RecordValueReply: Codable {
-    public let reply: ReplyReference
+    public let reply: ReplyReference?
 }

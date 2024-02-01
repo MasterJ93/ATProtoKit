@@ -25,8 +25,7 @@ extension ATProtoKit {
             let rootRecord = try await ATProtoKit.fetchRecord(fromRecordQuery: rootQuery)
 
             // Use the StrongReference directly since they match the required structure
-            return ReplyReference(root: rootRecord.value?.reply.root ?? replyReference.root,
-                                  parent: replyReference.parent)
+            return ReplyReference(root: rootRecord.value?.reply?.root ?? replyReference.root, parent: replyReference.parent)
         } else {
             // The parent record is a top-level post, so it is also the root
             let ref = StrongReference(recordURI: parentRecord.atURI, cidHash: parentRecord.recordCID)
