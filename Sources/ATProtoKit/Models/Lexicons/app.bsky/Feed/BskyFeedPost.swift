@@ -14,18 +14,18 @@ public struct FeedPost: Codable {
     public var facets: [Facet]? = nil
     public var reply: ReplyReference? = nil
     public var embed: EmbedUnion? = nil
-    public var langs: [String]? = nil
+    public var languages: [String]? = nil
     public var labels: FeedLabelUnion? = nil
     public var tags: [String]? = nil
     @DateFormatting public var createdAt: Date
 
-    public init(text: String, entities: [Entity]? = nil, facets: [Facet]? = nil, reply: ReplyReference? = nil, embed: EmbedUnion? = nil, langs: [String]? = nil, labels: FeedLabelUnion? = nil, tags: [String]? = nil, createdAt: Date) {
+    public init(text: String, entities: [Entity]? = nil, facets: [Facet]? = nil, reply: ReplyReference? = nil, embed: EmbedUnion? = nil, languages: [String]? = nil, labels: FeedLabelUnion? = nil, tags: [String]? = nil, createdAt: Date) {
         self.text = text
         self.entities = entities
         self.facets = facets
         self.reply = reply
         self.embed = embed
-        self.langs = langs
+        self.languages = languages
         self.labels = labels
         self.tags = tags
         self._createdAt = DateFormatting(wrappedValue: createdAt)
@@ -39,7 +39,7 @@ public struct FeedPost: Codable {
         self.facets = try container.decodeIfPresent([Facet].self, forKey: .facets)
         self.reply = try container.decodeIfPresent(ReplyReference.self, forKey: .reply)
         self.embed = try container.decodeIfPresent(EmbedUnion.self, forKey: .embed)
-        self.langs = try container.decodeIfPresent([String].self, forKey: .langs)
+        self.languages = try container.decodeIfPresent([String].self, forKey: .languages)
         self.labels = try container.decodeIfPresent(FeedLabelUnion.self, forKey: .labels)
         self.tags = try container.decodeIfPresent([String].self, forKey: .tags)
         self._createdAt = try container.decode(DateFormatting.self, forKey: .createdAt)
@@ -54,7 +54,7 @@ public struct FeedPost: Codable {
         try container.encodeIfPresent(self.facets, forKey: .facets)
         try container.encodeIfPresent(self.reply, forKey: .reply)
         try container.encodeIfPresent(self.embed, forKey: .embed)
-        try truncatedEncodeIfPresent(self.langs, withContainer: &container, forKey: .langs, upToLength: 3)
+        try truncatedEncodeIfPresent(self.languages, withContainer: &container, forKey: .languages, upToLength: 3)
         try container.encodeIfPresent(self.labels, forKey: .labels)
 
         // Truncate `tags` to 640 characters before encoding
@@ -73,7 +73,7 @@ public struct FeedPost: Codable {
         case facets
         case reply
         case embed
-        case langs
+        case languages = "langs"
         case labels
         case tags
         case createdAt
