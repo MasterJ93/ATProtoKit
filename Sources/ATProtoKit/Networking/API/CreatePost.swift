@@ -26,7 +26,7 @@ extension ATProtoKit {
             languages: localeIdentifiers,
             labels: labels,
             tags: tags,
-            createdAt: Date())
+            createdAt: Date.now)
 
         let requestBody = FeedPostRequestBody(
             repo: session.did,
