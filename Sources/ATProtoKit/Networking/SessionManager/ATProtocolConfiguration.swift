@@ -26,10 +26,10 @@ public class ATProtocolConfiguration: ProtocolConfiguration {
         
         let request = APIClientService.createRequest(forRequest: url, andMethod: .post)
 
-        let credentials = ["identifier": handle, "password": appPassword]
-        
+        let credentials = Credentials(identifier: handle, password: appPassword)
+
         do {
-            let authResponse = try await APIClientService.sendRequest(request, jsonData: credentials, decodeTo: AuthenticationResponse.self)
+            let authResponse = try await APIClientService.sendRequest(request, withEncodingBody: credentials, decodeTo: AuthenticationResponse.self)
 
             let userSession = UserSession(handle: authResponse.handle, did: authResponse.did, email: authResponse.email, accessJwt: authResponse.accessJwt,
                                           refreshJwt: authResponse.refreshJwt, pdsURL: self.pdsURL)
@@ -39,7 +39,12 @@ public class ATProtocolConfiguration: ProtocolConfiguration {
             return .failure(error)
         }
     }
-    
+
+    private struct Credentials: Encodable {
+        let identifier: String
+        let password: String
+    }
+
 //    func ensureValidSession(completion: @escaping (Result<Void, Error>) -> Void) {
 //        if let session = currentSession, !session.isAccessTokenExpired() {
 //            completion(.success(()))

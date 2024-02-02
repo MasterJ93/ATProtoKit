@@ -23,25 +23,32 @@ extension ATProtoKit {
             facets: await ParseHelper.parseFacets(from: text, pdsURL: session.accessJwt),
             reply: replyTo,
             embed: embed,
-            langs: localeIdentifiers,
+            languages: localeIdentifiers,
             labels: labels,
             tags: tags,
             createdAt: Date())
 
-        let requestBody: [String: Any] = [
-            "repo": session.did,
-            "collection": "app.bsky.feed.post",
-            "record": post
-        ]
+        let requestBody = FeedPostRequestBody(
+            repo: session.did,
+            record: post)
 
         let request = APIClientService.createRequest(forRequest: url, andMethod: .post, authorizationValue: "Bearer \(session.accessJwt)")
 
         do {
-            let result = try await APIClientService.sendRequest(request, jsonData: requestBody, decodeTo: StrongReference.self)
+            var printRequest = requestBody
+            print("\(try printRequest.toJsonData())")
+
+            let result = try await APIClientService.sendRequest(request, withEncodingBody: requestBody, decodeTo: StrongReference.self)
 
             return .success(result)
         } catch {
             return .failure(error)
         }
+    }
+
+    struct FeedPostRequestBody: Encodable {
+        let repo: String
+        let collection: String = "app.bsky.feed.post"
+        let record: FeedPost
     }
 }
