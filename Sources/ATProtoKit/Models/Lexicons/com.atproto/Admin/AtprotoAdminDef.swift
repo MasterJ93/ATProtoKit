@@ -24,8 +24,45 @@ public struct ModEventView: Codable {
     public let subjectBlobCIDHashes: [String]
     public let createdBy: String
     @DateFormatting public var createdAt: Date
-    public let creatorHandle: String? = nil
-    public let subjectHandle: String? = nil
+    public var creatorHandle: String? = nil
+    public var subjectHandle: String? = nil
+
+    public init(id: Int, event: EventViewUnion, subject: RepoReferencesUnion, subjectBlobCIDHashes: [String], createdBy: String, createdAt: Date, creatorHandle: String?, subjectHandle: String?) {
+        self.id = id
+        self.event = event
+        self.subject = subject
+        self.subjectBlobCIDHashes = subjectBlobCIDHashes
+        self.createdBy = createdBy
+        self._createdAt = DateFormatting(wrappedValue: createdAt)
+        self.creatorHandle = creatorHandle
+        self.subjectHandle = subjectHandle
+    }
+
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+
+        self.id = try container.decode(Int.self, forKey: .id)
+        self.event = try container.decode(EventViewUnion.self, forKey: .event)
+        self.subject = try container.decode(RepoReferencesUnion.self, forKey: .subject)
+        self.subjectBlobCIDHashes = try container.decode([String].self, forKey: .subjectBlobCIDHashes)
+        self.createdBy = try container.decode(String.self, forKey: .createdBy)
+        self.createdAt = try container.decode(DateFormatting.self, forKey: .createdAt).wrappedValue
+        self.creatorHandle = try container.decodeIfPresent(String.self, forKey: .creatorHandle)
+        self.subjectHandle = try container.decodeIfPresent(String.self, forKey: .subjectHandle)
+    }
+
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+
+        try container.encode(self.id, forKey: .id)
+        try container.encode(self.event, forKey: .event)
+        try container.encode(self.subject, forKey: .subject)
+        try container.encode(self.subjectBlobCIDHashes, forKey: .subjectBlobCIDHashes)
+        try container.encode(self.createdBy, forKey: .createdBy)
+        try container.encode(self._createdAt, forKey: .createdAt)
+        try container.encodeIfPresent(self.creatorHandle, forKey: .creatorHandle)
+        try container.encodeIfPresent(self.subjectHandle, forKey: .subjectHandle)
+    }
 
     enum CodingKeys: String, CodingKey {
         case id
@@ -46,6 +83,46 @@ public struct ModEventViewDetail: Codable {
     public let subjectBlobs: [BlobView]
     public let createdBy: String
     @DateFormatting public var createdAt: Date
+
+    public init(id: Int, event: EventViewDetailUnion, subject: RepoViewUnion, subjectBlobs: [BlobView], createdBy: String, createdAt: Date) {
+        self.id = id
+        self.event = event
+        self.subject = subject
+        self.subjectBlobs = subjectBlobs
+        self.createdBy = createdBy
+        self._createdAt = DateFormatting(wrappedValue: createdAt)
+    }
+
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+
+        self.id = try container.decode(Int.self, forKey: .id)
+        self.event = try container.decode(EventViewDetailUnion.self, forKey: .event)
+        self.subject = try container.decode(RepoViewUnion.self, forKey: .subject)
+        self.subjectBlobs = try container.decode([BlobView].self, forKey: .subjectBlobs)
+        self.createdBy = try container.decode(String.self, forKey: .createdBy)
+        self.createdAt = try container.decode(DateFormatting.self, forKey: .createdAt).wrappedValue
+    }
+
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+
+        try container.encode(self.id, forKey: .id)
+        try container.encode(self.event, forKey: .event)
+        try container.encode(self.subject, forKey: .subject)
+        try container.encode(self.subjectBlobs, forKey: .subjectBlobs)
+        try container.encode(self.createdBy, forKey: .createdBy)
+        try container.encode(self._createdAt, forKey: .createdAt)
+    }
+
+    enum CodingKeys: CodingKey {
+        case id
+        case event
+        case subject
+        case subjectBlobs
+        case createdBy
+        case createdAt
+    }
 }
 
 public struct ReportView: Codable {
@@ -57,6 +134,39 @@ public struct ReportView: Codable {
     public let reportedBy: String
     @DateFormatting public var createdAt: Date
     public let resolvedByActionIDs: [Int]
+
+    public init(id: Int, reasonType: ModerationReasonType, subject: RepoReferencesUnion, reportedBy: String, createdAt: Date, resolvedByActionIDs: [Int]) {
+        self.id = id
+        self.reasonType = reasonType
+        self.subject = subject
+        self.reportedBy = reportedBy
+        self._createdAt = DateFormatting(wrappedValue: createdAt)
+        self.resolvedByActionIDs = resolvedByActionIDs
+    }
+
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+
+        self.id = try container.decode(Int.self, forKey: .id)
+        self.reasonType = try container.decode(ModerationReasonType.self, forKey: .reasonType)
+        self.subject = try container.decode(RepoReferencesUnion.self, forKey: .subject)
+        self.reportedBy = try container.decode(String.self, forKey: .reportedBy)
+        self.createdAt = try container.decode(DateFormatting.self, forKey: .createdAt).wrappedValue
+        self.resolvedByActionIDs = try container.decode([Int].self, forKey: .resolvedByActionIDs)
+    }
+
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+
+        try container.encode(self.id, forKey: .id)
+        try container.encode(self.reasonType, forKey: .reasonType)
+        try container.encodeIfPresent(self.comment, forKey: .comment)
+        try container.encodeIfPresent(self.subjectRepoHandle, forKey: .subjectRepoHandle)
+        try container.encode(self.subject, forKey: .subject)
+        try container.encode(self.reportedBy, forKey: .reportedBy)
+        try container.encode(self._createdAt, forKey: .createdAt)
+        try container.encode(self.resolvedByActionIDs, forKey: .resolvedByActionIDs)
+    }
 
     enum CodingKeys: String, CodingKey {
         case id
@@ -109,15 +219,16 @@ public struct SubjectStatusView: Codable {
 
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
+
         self.id = try container.decode(Int.self, forKey: .id)
         self.subject = try container.decode(RepoReferencesUnion.self, forKey: .subject)
         self.subjectBlobCIDHashes = try container.decodeIfPresent([String].self, forKey: .subjectBlobCIDHashes)
         self.subjectRepoHandle = try container.decodeIfPresent(String.self, forKey: .subjectRepoHandle)
-        self._updatedAt = try container.decode(DateFormatting.self, forKey: .updatedAt)
-        self._createdAt = try container.decode(DateFormatting.self, forKey: .createdAt)
+        self.updatedAt = try container.decode(DateFormatting.self, forKey: .updatedAt).wrappedValue
+        self.createdAt = try container.decode(DateFormatting.self, forKey: .createdAt).wrappedValue
         self.reviewState = try container.decode(SubjectReviewState.self, forKey: .reviewState)
         self.comment = try container.decodeIfPresent(String.self, forKey: .comment)
-        self._muteUntil = try container.decode(DateFormattingOptional.self, forKey: .muteUntil)
+        self.muteUntil = try container.decodeIfPresent(DateFormattingOptional.self, forKey: .muteUntil)?.wrappedValue
         self.lastReviewedBy = try container.decodeIfPresent(String.self, forKey: .lastReviewedBy)
         self.lastReviewedAt = try container.decodeIfPresent(DateFormattingOptional.self, forKey: .lastReviewedAt)?.wrappedValue
         self.lastReportedAt = try container.decodeIfPresent(DateFormattingOptional.self, forKey: .lastReportedAt)?.wrappedValue
@@ -129,6 +240,7 @@ public struct SubjectStatusView: Codable {
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
+
         try container.encode(self.id, forKey: .id)
         try container.encode(self.subject, forKey: .subject)
         try container.encodeIfPresent(self.subjectBlobCIDHashes, forKey: .subjectBlobCIDHashes)
@@ -177,6 +289,53 @@ public struct ReportViewDetail: Codable {
     @DateFormatting public var createdAt: Date
     public let resolvedByActions: [ModEventView]
 
+    public init(id: Int, reasonType: ModerationReasonType, comment: String? = nil, subject: RepoViewUnion, subjectStatus: SubjectStatusView? = nil, reportedBy: String, createdAt: Date, resolvedByActions: [ModEventView]) {
+        self.id = id
+        self.reasonType = reasonType
+        self.comment = comment
+        self.subject = subject
+        self.subjectStatus = subjectStatus
+        self.reportedBy = reportedBy
+        self._createdAt = DateFormatting(wrappedValue: createdAt)
+        self.resolvedByActions = resolvedByActions
+    }
+
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+
+        self.id = try container.decode(Int.self, forKey: .id)
+        self.reasonType = try container.decode(ModerationReasonType.self, forKey: .reasonType)
+        self.comment = try container.decodeIfPresent(String.self, forKey: .comment)
+        self.subject = try container.decode(RepoViewUnion.self, forKey: .subject)
+        self.subjectStatus = try container.decodeIfPresent(SubjectStatusView.self, forKey: .subjectStatus)
+        self.reportedBy = try container.decode(String.self, forKey: .reportedBy)
+        self.createdAt = try container.decode(DateFormatting.self, forKey: .createdAt).wrappedValue
+        self.resolvedByActions = try container.decode([ModEventView].self, forKey: .resolvedByActions)
+    }
+
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+
+        try container.encode(self.id, forKey: .id)
+        try container.encode(self.reasonType, forKey: .reasonType)
+        try container.encodeIfPresent(self.comment, forKey: .comment)
+        try container.encode(self.subject, forKey: .subject)
+        try container.encodeIfPresent(self.subjectStatus, forKey: .subjectStatus)
+        try container.encode(self.reportedBy, forKey: .reportedBy)
+        try container.encode(self._createdAt, forKey: .createdAt)
+        try container.encode(self.resolvedByActions, forKey: .resolvedByActions)
+    }
+
+    enum CodingKeys: CodingKey {
+        case id
+        case reasonType
+        case comment
+        case subject
+        case subjectStatus
+        case reportedBy
+        case createdAt
+        case resolvedByActions
+    }
 }
 
 public struct AdminRepoView: Codable {
@@ -189,6 +348,46 @@ public struct AdminRepoView: Codable {
     public var invitedBy: ServerInviteCode? = nil
     public var areInvitesDisabled: Bool? = nil
     public var inviteNote: String? = nil
+
+    public init(atDID: String, handle: String, email: String? = nil, relatedRecords: UnknownType, indexedAt: Date, moderation: AdminModeration, invitedBy: ServerInviteCode? = nil, areInvitesDisabled: Bool? = nil, inviteNote: String? = nil) {
+        self.atDID = atDID
+        self.handle = handle
+        self.email = email
+        self.relatedRecords = relatedRecords
+        self._indexedAt = DateFormatting(wrappedValue: indexedAt)
+        self.moderation = moderation
+        self.invitedBy = invitedBy
+        self.areInvitesDisabled = areInvitesDisabled
+        self.inviteNote = inviteNote
+    }
+
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+
+        self.atDID = try container.decode(String.self, forKey: .atDID)
+        self.handle = try container.decode(String.self, forKey: .handle)
+        self.email = try container.decodeIfPresent(String.self, forKey: .email)
+        self.relatedRecords = try container.decode(UnknownType.self, forKey: .relatedRecords)
+        self.indexedAt = try container.decode(DateFormatting.self, forKey: .indexedAt).wrappedValue
+        self.moderation = try container.decode(AdminModeration.self, forKey: .moderation)
+        self.invitedBy = try container.decodeIfPresent(ServerInviteCode.self, forKey: .invitedBy)
+        self.areInvitesDisabled = try container.decodeIfPresent(Bool.self, forKey: .areInvitesDisabled)
+        self.inviteNote = try container.decodeIfPresent(String.self, forKey: .inviteNote)
+    }
+
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+
+        try container.encode(self.atDID, forKey: .atDID)
+        try container.encode(self.handle, forKey: .handle)
+        try container.encodeIfPresent(self.email, forKey: .email)
+        try container.encode(self.relatedRecords, forKey: .relatedRecords)
+        try container.encode(self._indexedAt, forKey: .indexedAt)
+        try container.encode(self.moderation, forKey: .moderation)
+        try container.encodeIfPresent(self.invitedBy, forKey: .invitedBy)
+        try container.encodeIfPresent(self.areInvitesDisabled, forKey: .areInvitesDisabled)
+        try container.encodeIfPresent(self.inviteNote, forKey: .inviteNote)
+    }
 
     enum CodingKeys: String, CodingKey {
         case atDID = "did"
@@ -234,11 +433,12 @@ public struct RepoViewDetail: Codable {
 
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
+
         self.atDID = try container.decode(String.self, forKey: .atDID)
         self.handle = try container.decode(String.self, forKey: .handle)
         self.email = try container.decodeIfPresent(String.self, forKey: .email)
         self.relatedRecords = try container.decode(UnknownType.self, forKey: .relatedRecords)
-        self._indexedAt = try container.decode(DateFormatting.self, forKey: .indexedAt)
+        self.indexedAt = try container.decode(DateFormatting.self, forKey: .indexedAt).wrappedValue
         self.moderation = try container.decode(AdminModeration.self, forKey: .moderation)
         self.labels = try container.decodeIfPresent([Label].self, forKey: .labels)
         self.invitedBy = try container.decodeIfPresent(ServerInviteCode.self, forKey: .invitedBy)
@@ -246,6 +446,23 @@ public struct RepoViewDetail: Codable {
         self.areInvitesDisabled = try container.decodeIfPresent(Bool.self, forKey: .areInvitesDisabled)
         self.inviteNote = try container.decodeIfPresent(String.self, forKey: .inviteNote)
         self.emailConfirmedAt = try container.decodeIfPresent(DateFormattingOptional.self, forKey: .emailConfirmedAt)?.wrappedValue
+    }
+
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+
+        try container.encode(self.atDID, forKey: .atDID)
+        try container.encode(self.handle, forKey: .handle)
+        try container.encodeIfPresent(self.email, forKey: .email)
+        try container.encode(self.relatedRecords, forKey: .relatedRecords)
+        try container.encode(self._indexedAt, forKey: .indexedAt)
+        try container.encode(self.moderation, forKey: .moderation)
+        try container.encodeIfPresent(self.labels, forKey: .labels)
+        try container.encodeIfPresent(self.invitedBy, forKey: .invitedBy)
+        try container.encodeIfPresent(self.invites, forKey: .invites)
+        try container.encodeIfPresent(self.areInvitesDisabled, forKey: .areInvitesDisabled)
+        try container.encodeIfPresent(self.inviteNote, forKey: .inviteNote)
+        try container.encode(self._emailConfirmedAt, forKey: .emailConfirmedAt)
     }
 
     enum CodingKeys: String, CodingKey {
@@ -291,16 +508,32 @@ public struct AdminAccountView: Codable {
 
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
+
         self.atDID = try container.decode(String.self, forKey: .atDID)
         self.handle = try container.decode(String.self, forKey: .handle)
         self.email = try container.decodeIfPresent(String.self, forKey: .email)
         self.relatedRecords = try container.decodeIfPresent([UnknownType].self, forKey: .relatedRecords)
-        self._indexedAt = try container.decode(DateFormatting.self, forKey: .indexedAt)
+        self.indexedAt = try container.decode(DateFormatting.self, forKey: .indexedAt).wrappedValue
         self.invitedBy = try container.decodeIfPresent(ServerInviteCode.self, forKey: .invitedBy)
         self.invites = try container.decodeIfPresent([ServerInviteCode].self, forKey: .invites)
         self.areInvitesDisabled = try container.decodeIfPresent(Bool.self, forKey: .areInvitesDisabled)
         self.emailConfirmedAt = try container.decodeIfPresent(DateFormattingOptional.self, forKey: .emailConfirmedAt)?.wrappedValue
         self.inviteNote = try container.decodeIfPresent(String.self, forKey: .inviteNote)
+    }
+
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+
+        try container.encode(self.atDID, forKey: .atDID)
+        try container.encode(self.handle, forKey: .handle)
+        try container.encodeIfPresent(self.email, forKey: .email)
+        try container.encodeIfPresent(self.relatedRecords, forKey: .relatedRecords)
+        try container.encode(self._indexedAt, forKey: .indexedAt)
+        try container.encodeIfPresent(self.invitedBy, forKey: .invitedBy)
+        try container.encodeIfPresent(self.invites, forKey: .invites)
+        try container.encodeIfPresent(self.areInvitesDisabled, forKey: .areInvitesDisabled)
+        try container.encode(self._emailConfirmedAt, forKey: .emailConfirmedAt)
+        try container.encodeIfPresent(self.inviteNote, forKey: .inviteNote)
     }
 
     enum CodingKeys: String, CodingKey {
@@ -354,6 +587,40 @@ public struct AdminRecordView: Codable {
     public let moderation: AdminModeration
     public let repo: AdminRepoView
 
+    public init(atURI: String, cidHash: String, value: UnknownType, blobCIDHashes: [String], indexedAt: Date, moderation: AdminModeration, repo: AdminRepoView) {
+        self.atURI = atURI
+        self.cidHash = cidHash
+        self.value = value
+        self.blobCIDHashes = blobCIDHashes
+        self._indexedAt = DateFormatting(wrappedValue: indexedAt)
+        self.moderation = moderation
+        self.repo = repo
+    }
+
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+
+        self.atURI = try container.decode(String.self, forKey: .atURI)
+        self.cidHash = try container.decode(String.self, forKey: .cidHash)
+        self.value = try container.decode(UnknownType.self, forKey: .value)
+        self.blobCIDHashes = try container.decode([String].self, forKey: .blobCIDHashes)
+        self.indexedAt = try container.decode(DateFormatting.self, forKey: .indexedAt).wrappedValue
+        self.moderation = try container.decode(AdminModeration.self, forKey: .moderation)
+        self.repo = try container.decode(AdminRepoView.self, forKey: .repo)
+    }
+
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+
+        try container.encode(self.atURI, forKey: .atURI)
+        try container.encode(self.cidHash, forKey: .cidHash)
+        try container.encode(self.value, forKey: .value)
+        try container.encode(self.blobCIDHashes, forKey: .blobCIDHashes)
+        try container.encode(self._indexedAt, forKey: .indexedAt)
+        try container.encode(self.moderation, forKey: .moderation)
+        try container.encode(self.repo, forKey: .repo)
+    }
+
     enum CodingKeys: String, CodingKey {
         case atURI = "uri"
         case cidHash = "cid"
@@ -374,6 +641,43 @@ public struct AdminRecordViewDetail: Codable {
     @DateFormatting public var indexedAt: Date
     public let moderation: AdminModerationDetail
     public let repo: AdminRepoView
+
+    public init(atURI: String, cidHash: String, value: String, blobs: [BlobView], labels: [Label]? = nil, indexedAt: Date, moderation: AdminModerationDetail, repo: AdminRepoView) {
+        self.atURI = atURI
+        self.cidHash = cidHash
+        self.value = value
+        self.blobs = blobs
+        self.labels = labels
+        self._indexedAt = DateFormatting(wrappedValue: indexedAt)
+        self.moderation = moderation
+        self.repo = repo
+    }
+
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+
+        self.atURI = try container.decode(String.self, forKey: .atURI)
+        self.cidHash = try container.decode(String.self, forKey: .cidHash)
+        self.value = try container.decode(String.self, forKey: .value)
+        self.blobs = try container.decode([BlobView].self, forKey: .blobs)
+        self.labels = try container.decodeIfPresent([Label].self, forKey: .labels)
+        self.indexedAt = try container.decode(DateFormatting.self, forKey: .indexedAt).wrappedValue
+        self.moderation = try container.decode(AdminModerationDetail.self, forKey: .moderation)
+        self.repo = try container.decode(AdminRepoView.self, forKey: .repo)
+    }
+
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+
+        try container.encode(self.atURI, forKey: .atURI)
+        try container.encode(self.cidHash, forKey: .cidHash)
+        try container.encode(self.value, forKey: .value)
+        try container.encode(self.blobs, forKey: .blobs)
+        try container.encodeIfPresent(self.labels, forKey: .labels)
+        try container.encode(self._indexedAt, forKey: .indexedAt)
+        try container.encode(self.moderation, forKey: .moderation)
+        try container.encode(self.repo, forKey: .repo)
+    }
 
     enum CodingKeys: String, CodingKey {
         case atURI = "uri"
@@ -410,6 +714,37 @@ public struct BlobView: Codable {
     @DateFormatting public var createdAt: Date
     public let details: MediaDetailUnion
     public let moderation: AdminModeration
+
+    public init(cidHash: String, mimeType: String, size: Int, createdAt: Date, details: MediaDetailUnion, moderation: AdminModeration) {
+        self.cidHash = cidHash
+        self.mimeType = mimeType
+        self.size = size
+        self._createdAt = DateFormatting(wrappedValue: createdAt)
+        self.details = details
+        self.moderation = moderation
+    }
+
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+
+        self.cidHash = try container.decode(String.self, forKey: .cidHash)
+        self.mimeType = try container.decode(String.self, forKey: .mimeType)
+        self.size = try container.decode(Int.self, forKey: .size)
+        self.createdAt = try container.decode(DateFormatting.self, forKey: .createdAt).wrappedValue
+        self.details = try container.decode(MediaDetailUnion.self, forKey: .details)
+        self.moderation = try container.decode(AdminModeration.self, forKey: .moderation)
+    }
+
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+
+        try container.encode(self.cidHash, forKey: .cidHash)
+        try container.encode(self.mimeType, forKey: .mimeType)
+        try container.encode(self.size, forKey: .size)
+        try container.encode(self._createdAt, forKey: .createdAt)
+        try container.encode(self.details, forKey: .details)
+        try container.encode(self.moderation, forKey: .moderation)
+    }
 
     enum CodingKeys: String, CodingKey {
         case cidHash = "cid"
@@ -514,6 +849,43 @@ public struct CommunicationTemplateView: Codable {
     public let lastUpdatedBy: String
     @DateFormatting public var createdAt: Date
     @DateFormatting public var updatedAt: Date
+
+    public init(id: Int, name: String, subject: String? = nil, contentMarkdown: String, isDisabled: Bool, lastUpdatedBy: String, createdAt: Date, updatedAt: Date) {
+        self.id = id
+        self.name = name
+        self.subject = subject
+        self.contentMarkdown = contentMarkdown
+        self.isDisabled = isDisabled
+        self.lastUpdatedBy = lastUpdatedBy
+        self._createdAt = DateFormatting(wrappedValue: createdAt)
+        self._updatedAt = DateFormatting(wrappedValue: updatedAt)
+    }
+
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+
+        self.id = try container.decode(Int.self, forKey: .id)
+        self.name = try container.decode(String.self, forKey: .name)
+        self.subject = try container.decodeIfPresent(String.self, forKey: .subject)
+        self.contentMarkdown = try container.decode(String.self, forKey: .contentMarkdown)
+        self.isDisabled = try container.decode(Bool.self, forKey: .isDisabled)
+        self.lastUpdatedBy = try container.decode(String.self, forKey: .lastUpdatedBy)
+        self.createdAt = try container.decode(DateFormatting.self, forKey: .createdAt).wrappedValue
+        self.updatedAt = try container.decode(DateFormatting.self, forKey: .updatedAt).wrappedValue
+    }
+
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+
+        try container.encode(self.id, forKey: .id)
+        try container.encode(self.name, forKey: .name)
+        try container.encodeIfPresent(self.subject, forKey: .subject)
+        try container.encode(self.contentMarkdown, forKey: .contentMarkdown)
+        try container.encode(self.isDisabled, forKey: .isDisabled)
+        try container.encode(self.lastUpdatedBy, forKey: .lastUpdatedBy)
+        try container.encode(self._createdAt, forKey: .createdAt)
+        try container.encode(self._updatedAt, forKey: .updatedAt)
+    }
 
     enum CodingKeys: String, CodingKey {
         case id

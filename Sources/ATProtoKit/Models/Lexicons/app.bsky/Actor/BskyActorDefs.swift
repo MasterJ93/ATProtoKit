@@ -81,6 +81,7 @@ public struct ProfileView: Codable {
 
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
+
         self.atDID = try container.decode(String.self, forKey: .atDID)
         self.actorHandle = try container.decode(String.self, forKey: .actorHandle)
         self.displayName = try container.decodeIfPresent(String.self, forKey: .displayName)
@@ -93,6 +94,7 @@ public struct ProfileView: Codable {
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
+
         try container.encode(self.atDID, forKey: .atDID)
         try container.encode(self.actorHandle, forKey: .actorHandle)
 
@@ -257,6 +259,10 @@ public struct SavedFeedsPreferences: Codable {
 
 public struct PersonalDetailsPreferences: Codable {
     @DateFormattingOptional var birthDate: Date? = nil
+
+    public init(birthDate: Date) {
+        self._birthDate = DateFormattingOptional(wrappedValue: birthDate)
+    }
 
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)

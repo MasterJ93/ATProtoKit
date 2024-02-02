@@ -39,7 +39,6 @@ public struct PostView: Codable {
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
 
-        // Decode the properties correctly
         self.atURI = try container.decode(String.self, forKey: .atURI)
         self.cidHash = try container.decode(String.self, forKey: .cidHash)
         self.author = try container.decode(ProfileViewBasic.self, forKey: .author)
@@ -48,7 +47,7 @@ public struct PostView: Codable {
         self.replyCount = try container.decodeIfPresent(Int.self, forKey: .replyCount)
         self.repostCount = try container.decodeIfPresent(Int.self, forKey: .repostCount)
         self.likeCount = try container.decodeIfPresent(Int.self, forKey: .likeCount)
-        self._indexedAt = try container.decode(DateFormatting.self, forKey: .indexedAt)
+        self.indexedAt = try container.decode(DateFormatting.self, forKey: .indexedAt).wrappedValue
         self.viewer = try container.decodeIfPresent(FeedViewerState.self, forKey: .viewer)
         self.labels = try container.decodeIfPresent([Label].self, forKey: .labels)
         self.threadgate = try container.decodeIfPresent(ThreadgateView.self, forKey: .threadgate)
@@ -113,6 +112,30 @@ public struct FeedReplyReference: Codable {
 public struct ReasonRepost: Codable {
     public let by: ProfileViewBasic
     @DateFormatting public var indexedAt: Date
+
+    public init(by: ProfileViewBasic, indexedAt: Date) {
+        self.by = by
+        self._indexedAt = DateFormatting(wrappedValue: indexedAt)
+    }
+
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+
+        self.by = try container.decode(ProfileViewBasic.self, forKey: .by)
+        self.indexedAt = try container.decode(DateFormatting.self, forKey: .indexedAt).wrappedValue
+    }
+
+    enum CodingKeys: CodingKey {
+        case by
+        case indexedAt
+    }
+
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+
+        try container.encode(self.by, forKey: .by)
+        try container.encode(self._indexedAt, forKey: .indexedAt)
+    }
 }
 
 public struct ThreadViewPost: Codable {
@@ -156,6 +179,7 @@ public struct BlockedPost: Codable {
 
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
+
         self.atURI = try container.decode(String.self, forKey: .atURI)
         self.isBlocked = (try? container.decode(Bool.self, forKey: .isBlocked)) ?? true
         self.author = try container.decode(BlockedAuthor.self, forKey: .author)
@@ -185,6 +209,19 @@ public struct GeneratorView: Codable {
     public let likeCount: Int? = nil
     public var viewer: GeneratorViewerState? = nil
     @DateFormatting public var indexedAt: Date
+
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+
+        self.atURI = try container.decode(String.self, forKey: .atURI)
+        self.cidHash = try container.decode(String.self, forKey: .cidHash)
+        self.atDID = try container.decode(String.self, forKey: .atDID)
+        self.creator = try container.decode(ProfileView.self, forKey: .creator)
+        self.displayName = try container.decode(String.self, forKey: .displayName)
+        self.descriptionFacets = try container.decode([Facet].self, forKey: .descriptionFacets)
+        self.viewer = try container.decodeIfPresent(GeneratorViewerState.self, forKey: .viewer)
+        self.indexedAt = try container.decode(DateFormatting.self, forKey: .indexedAt).wrappedValue
+    }
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)

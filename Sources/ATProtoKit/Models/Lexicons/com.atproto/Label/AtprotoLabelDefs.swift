@@ -32,7 +32,7 @@ public struct Label: Codable {
         self.cidHash = try container.decodeIfPresent(String.self, forKey: .cidHash)
         self.name = try container.decode(String.self, forKey: .name)
         self.isNegated = try container.decodeIfPresent(Bool.self, forKey: .isNegated)
-        self._timestamp = try container.decode(DateFormatting.self, forKey: .timestamp)
+        self.timestamp = try container.decode(DateFormatting.self, forKey: .timestamp).wrappedValue
     }
 
     public func encode(to encoder: Encoder) throws {

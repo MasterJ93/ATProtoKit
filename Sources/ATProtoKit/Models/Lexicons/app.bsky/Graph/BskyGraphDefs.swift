@@ -28,6 +28,7 @@ public struct ListViewBasic: Codable {
 
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
+
         self.atURI = try container.decode(String.self, forKey: .atURI)
         self.cidHash = try container.decode(String.self, forKey: .cidHash)
         self.name = try container.decode(String.self, forKey: .name)
@@ -39,6 +40,7 @@ public struct ListViewBasic: Codable {
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
+
         try container.encode(self.atURI, forKey: .atURI)
         try container.encode(self.cidHash, forKey: .cidHash)
         try container.encode(self.name, forKey: .name)
@@ -96,7 +98,7 @@ public struct ListView: Codable {
         self.descriptionFacets = try container.decodeIfPresent([Facet].self, forKey: .descriptionFacets)
         self.avatar = try container.decodeIfPresent(String.self, forKey: .avatar)
         self.viewer = try container.decodeIfPresent(ListViewerState.self, forKey: .viewer)
-        self._indexedAt = try container.decode(DateFormatting.self, forKey: .indexedAt)
+        self.indexedAt = try container.decode(DateFormatting.self, forKey: .indexedAt).wrappedValue
     }
 
     public func encode(to encoder: Encoder) throws {

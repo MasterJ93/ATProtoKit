@@ -42,7 +42,7 @@ public struct FeedPost: Codable {
         self.languages = try container.decodeIfPresent([String].self, forKey: .languages)
         self.labels = try container.decodeIfPresent(FeedLabelUnion.self, forKey: .labels)
         self.tags = try container.decodeIfPresent([String].self, forKey: .tags)
-        self._createdAt = try container.decode(DateFormatting.self, forKey: .createdAt)
+        self.createdAt = try container.decode(DateFormatting.self, forKey: .createdAt).wrappedValue
     }
 
     public func encode(to encoder: Encoder) throws {
@@ -63,7 +63,7 @@ public struct FeedPost: Codable {
         let truncatedTags = self.tags.map { $0.truncated(toLength: 640) }
         try truncatedEncodeIfPresent(truncatedTags, withContainer: &container, forKey: .tags, upToLength: 8)
 
-        try container.encode(self.createdAt, forKey: .createdAt)
+        try container.encode(self._createdAt, forKey: .createdAt)
     }
 
     enum CodingKeys: String, CodingKey {
