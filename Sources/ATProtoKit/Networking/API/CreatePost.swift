@@ -8,7 +8,7 @@
 import Foundation
 
 extension ATProtoKit {
-    public func createPost(text: String, locales: [Locale] = [], replyTo: String? = nil, embed: EmbedUnion? = nil, labels: FeedLabelUnion? = nil, tags: [String]? = nil) async -> Result<StrongReference, Error> {
+    public func createPost(text: String, locales: [Locale] = [], replyTo: String? = nil, embed: EmbedUnion? = nil, labels: FeedLabelUnion? = nil, tags: [String]? = nil, creationDate: Date = Date.now) async -> Result<StrongReference, Error> {
 
         guard let pdsURL = session.pdsURL,
               let url = URL(string: "\(pdsURL)/xrpc/com.atproto.repo.createRecord") else {
@@ -24,6 +24,7 @@ extension ATProtoKit {
                 return .failure(error)
             }
         }
+
         // Locales
         let localeIdentifiers = locales.isEmpty ? nil : locales.map { $0.identifier }
 
@@ -36,7 +37,7 @@ extension ATProtoKit {
             languages: localeIdentifiers,
             labels: labels,
             tags: tags,
-            createdAt: Date.now)
+            createdAt: creationDate)
 
         let requestBody = FeedPostRequestBody(
             repo: session.did,
