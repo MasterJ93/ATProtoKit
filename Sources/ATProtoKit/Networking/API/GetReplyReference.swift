@@ -69,7 +69,6 @@ extension ATProtoKit {
         } else if uri.hasPrefix("https://bsky.app/") {
             let components = uri.split(separator: "/").map(String.init)
             guard components.count >= 6 else {
-                print("Components aren't less than 8.")
                 throw URIError.invalidFormat }
 
             let record = components[3]
