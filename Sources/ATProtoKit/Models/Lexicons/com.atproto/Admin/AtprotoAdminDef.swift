@@ -551,28 +551,28 @@ public struct AdminAccountView: Codable {
 }
 
 public struct RepoViewNotFound: Codable {
-    public let atDid: String
+    public let atDID: String
 
     enum CodingKeys: String, CodingKey {
-        case atDid = "did"
+        case atDID = "did"
     }
 }
 
 public struct RepoReference: Codable {
-    public let atDid: String
+    public let atDID: String
 
     enum CodingKeys: String, CodingKey {
-        case atDid = "did"
+        case atDID = "did"
     }
 }
 
 public struct RepoBlobReference: Codable {
-    public let atDid: String
+    public let atDID: String
     public let cidHash: String
     public let recordURI: String?
 
     enum CodingKeys: String, CodingKey {
-        case atDid = "did"
+        case atDID = "did"
         case cidHash = "cid"
         case recordURI = "recordUri"
     }
