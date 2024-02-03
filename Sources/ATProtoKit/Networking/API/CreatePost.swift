@@ -10,7 +10,8 @@ import Foundation
 extension ATProtoKit {
     public func createPost(text: String, locales: [Locale] = [], replyTo: String? = nil, embed: EmbedUnion? = nil, labels: FeedLabelUnion? = nil, tags: [String]? = nil) async -> Result<StrongReference, Error> {
 
-        guard let pdsURL = session.pdsURL, let url = URL(string: "\(pdsURL)/xrpc/com.atproto.repo.createRecord") else {
+        guard let pdsURL = session.pdsURL,
+              let url = URL(string: "\(pdsURL)/xrpc/com.atproto.repo.createRecord") else {
             return .failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"]))
         }
 
