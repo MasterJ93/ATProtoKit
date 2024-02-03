@@ -8,12 +8,21 @@
 import Foundation
 
 extension ATProtoKit {
-    public func createPost(text: String, locales: [Locale] = [], replyTo: ReplyReference? = nil, embed: EmbedUnion? = nil, labels: FeedLabelUnion? = nil, tags: [String]? = nil) async -> Result<StrongReference, Error> {
+    public func createPost(text: String, locales: [Locale] = [], replyTo: String? = nil, embed: EmbedUnion? = nil, labels: FeedLabelUnion? = nil, tags: [String]? = nil) async -> Result<StrongReference, Error> {
 
         guard let pdsURL = session.pdsURL, let url = URL(string: "\(pdsURL)/xrpc/com.atproto.repo.createRecord") else {
             return .failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"]))
         }
 
+        // Replies
+        var resolvedReplyTo: ReplyReference? = nil
+        if let replyURI = replyTo {
+            do {
+                resolvedReplyTo = try await ATProtoKit.resolveReplyReferences(parentURI: replyURI)
+            } catch {
+                return .failure(error)
+            }
+        }
         // Locales
         let localeIdentifiers = locales.isEmpty ? nil : locales.map { $0.identifier }
 
@@ -21,7 +30,7 @@ extension ATProtoKit {
         let post = FeedPost(
             text: text,
             facets: await ParseHelper.parseFacets(from: text, pdsURL: session.accessJwt),
-            reply: replyTo,
+            reply: resolvedReplyTo,
             embed: embed,
             languages: localeIdentifiers,
             labels: labels,
@@ -35,9 +44,6 @@ extension ATProtoKit {
         let request = APIClientService.createRequest(forRequest: url, andMethod: .post, authorizationValue: "Bearer \(session.accessJwt)")
 
         do {
-            var printRequest = requestBody
-            print("\(try printRequest.toJsonData())")
-
             let result = try await APIClientService.sendRequest(request, withEncodingBody: requestBody, decodeTo: StrongReference.self)
 
             return .success(result)
