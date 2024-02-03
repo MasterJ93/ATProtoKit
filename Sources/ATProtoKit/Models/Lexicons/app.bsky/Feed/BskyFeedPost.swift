@@ -167,8 +167,6 @@ public enum EmbedUnion: Codable {
     }
 }
 
-
-
 public enum FeedLabelUnion: Codable {
     case selfLabels(SelfLabels)
 
