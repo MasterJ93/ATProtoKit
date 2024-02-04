@@ -8,7 +8,13 @@
 import Foundation
 
 public struct EmbedExternal: Codable {
+    public let type: String = "app.bsky.embed.external"
     public let external: External
+
+    enum CodingKeys: String, CodingKey {
+        case type = "$type"
+        case external
+    }
 }
 
 public struct External: Codable {

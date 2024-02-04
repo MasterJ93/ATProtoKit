@@ -8,7 +8,13 @@
 import Foundation
 
 public struct EmbedImages: Codable {
+    public let type: String = "app.bsky.embed.images"
     public let images: [EmbedImage]
+
+    enum CodingKeys: String, CodingKey {
+        case type = "$type"
+        case images
+    }
 }
 
 public struct EmbedImage: Codable {

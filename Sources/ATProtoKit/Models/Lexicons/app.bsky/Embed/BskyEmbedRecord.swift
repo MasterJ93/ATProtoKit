@@ -8,7 +8,13 @@
 import Foundation
 
 public struct EmbedRecord: Codable {
+    public let type: String = "app.bsky.embed.record"
     public let record: StrongReference
+
+    enum CodingKeys: String, CodingKey {
+        case type = "$type"
+        case record
+    }
 }
 
 public struct EmbedRecordView: Codable {

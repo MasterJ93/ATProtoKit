@@ -8,8 +8,15 @@
 import Foundation
 
 public struct EmbedRecordWithMedia: Codable {
+    public let type: String = "app.bsky.embed.recordWithMedia"
     public let record: EmbedRecord
     public let media: MediaUnion
+
+    enum CodingKeys: String, CodingKey {
+        case type = "$type"
+        case record
+        case media
+    }
 }
 
 public struct EmbedRecordWithMediaView: Codable {
