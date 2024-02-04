@@ -17,9 +17,9 @@ extension ATProtoKit {
         }
 
         let rootRecord = try await fetchRecordForURI(replyReference.root.recordURI)
-        let rootRef = rootRecord.value?.reply?.root ?? replyReference.root
+        let rootReference = rootRecord.value?.reply?.root ?? replyReference.root
 
-        return ReplyReference(root: rootRef, parent: replyReference.parent)
+        return ReplyReference(root: rootReference, parent: replyReference.parent)
     }
 
     private static func fetchRecordForURI(_ uri: String) async throws -> RecordOutput {
@@ -28,8 +28,8 @@ extension ATProtoKit {
     }
 
     private static func createReplyReference(from record: RecordOutput) -> ReplyReference {
-        let ref = StrongReference(recordURI: record.atURI, cidHash: record.recordCID)
-        return ReplyReference(root: ref, parent: ref)
+        let reference = StrongReference(recordURI: record.atURI, cidHash: record.recordCID)
+        return ReplyReference(root: reference, parent: reference)
     }
 
     private static func fetchRecord(fromRecordQuery recordQuery: RecordQuery, pdsURL: String = "https://bsky.social") async throws -> RecordOutput {
