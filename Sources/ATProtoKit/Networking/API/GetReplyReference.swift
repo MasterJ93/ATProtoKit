@@ -22,7 +22,7 @@ extension ATProtoKit {
         return ReplyReference(root: rootReference, parent: replyReference.parent)
     }
 
-    private static func fetchRecordForURI(_ uri: String) async throws -> RecordOutput {
+    public static func fetchRecordForURI(_ uri: String) async throws -> RecordOutput {
         let query = try parseURI(uri)
         return try await fetchRecord(fromRecordQuery: query)
     }
