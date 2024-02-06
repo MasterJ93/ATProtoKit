@@ -18,7 +18,7 @@ public struct EmbedImages: Codable {
 }
 
 public struct EmbedImage: Codable {
-    public let image: Data // Assuming binary data for 'blob' type
+    public let image: UploadBlobOutput
     public let altText: String
     public let aspectRatio: AspectRatio?
 }
