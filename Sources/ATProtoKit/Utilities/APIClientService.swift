@@ -65,6 +65,29 @@ class APIClientService {
         return decodedData
     }
 
+    static func sendBinaryRequest<T: Decodable>(_ request: URLRequest, binaryData: Data, decodeTo: T.Type) async throws -> T {
+        var urlRequest = request
+        urlRequest.httpBody = binaryData // Directly setting binary data as the HTTP body
+
+        let (data, response) = try await URLSession.shared.data(for: urlRequest)
+
+        // Similar response handling as in sendRequest
+        guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 else {
+            throw URLError(.badServerResponse)
+        }
+
+        return try JSONDecoder().decode(T.self, from: data)
+    }
+
+    static func uploadBlob(pdsURL: URL, accessToken: String, filename: String, imageData: Data) async throws -> UploadBlobOutput {
+        let mimeType = mimeType(for: filename)
+        let requestURL = pdsURL.appendingPathComponent("/xrpc/com.atproto.repo.uploadBlob")
+        var request = createRequest(forRequest: requestURL, andMethod: .post, contentTypeValue: mimeType, authorizationValue: "Bearer \(accessToken)")
+        request.httpBody = imageData
+
+        return try await sendRequest(request, decodeTo: UploadBlobOutput.self)
+    }
+
     // Same method as above, but sending raw JSON instead.
     static func sendRequestWithRawJSONOutput<T: Decodable>(_ request: URLRequest, withEncodingBody body: Encodable? = nil, decodeTo: T.Type) async throws -> [String: Any] {
         var urlRequest = request
@@ -99,5 +122,15 @@ class APIClientService {
         case post = "POST"
         case put = "PUT"
         case delete = "DELETE"
+    }
+
+    private static func mimeType(for filename: String) -> String {
+        let suffix = filename.split(separator: ".").last?.lowercased() ?? ""
+        switch suffix {
+            case "png": return "image/png"
+            case "jpeg", "jpg": return "image/jpeg"
+            case "webp": return "image/webp"
+            default: return "application/octet-stream"
+        }
     }
 }
