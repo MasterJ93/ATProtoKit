@@ -26,7 +26,7 @@ public class ATProtocolConfiguration: ProtocolConfiguration {
         
         let request = APIClientService.createRequest(forRequest: url, andMethod: .post)
 
-        let credentials = Credentials(identifier: handle, password: appPassword)
+        let credentials = SessionCredentials(identifier: handle, password: appPassword)
 
         do {
             let authResponse = try await APIClientService.sendRequest(request, withEncodingBody: credentials, decodeTo: AuthenticationResponse.self)
@@ -38,11 +38,6 @@ public class ATProtocolConfiguration: ProtocolConfiguration {
             print("Error: \(error)")
             return .failure(error)
         }
-    }
-
-    private struct Credentials: Encodable {
-        let identifier: String
-        let password: String
     }
 
 //    func ensureValidSession(completion: @escaping (Result<Void, Error>) -> Void) {
