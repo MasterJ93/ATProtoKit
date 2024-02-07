@@ -67,7 +67,7 @@ extension ATProtoKit {
             createdAt: creationDate)
 
         let requestBody = FeedPostRequestBody(
-            repo: session.did,
+            repo: session.atDID,
             record: post)
 
         let request = APIClientService.createRequest(forRequest: url, andMethod: .post, authorizationValue: "Bearer \(session.accessJwt)")
