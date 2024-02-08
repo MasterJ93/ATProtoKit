@@ -94,7 +94,7 @@ extension ATProtoKit {
             // Upload the image, then get the server response.
             let blobReference = try await APIClientService.uploadBlob(pdsURL: pdsURL, accessToken: accessToken, filename: image.fileName, imageData: image.imageData)
 
-            let embedImage = EmbedImage(image: blobReference, altText: image.altText ?? "", aspectRatio: nil)
+            let embedImage = EmbedImage(image: blobReference.blob, altText: image.altText ?? "", aspectRatio: nil)
             embedImages.append(embedImage)
         }
 

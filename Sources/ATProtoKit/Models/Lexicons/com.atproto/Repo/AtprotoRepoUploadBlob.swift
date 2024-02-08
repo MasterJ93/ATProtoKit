@@ -19,6 +19,12 @@ public struct ImageQuery: Encodable {
     }
 }
 
+// This will be here until a way to remove this without the issues of
+// the JSON encoding are solved.
+public struct BlobContainer: Codable {
+    public let blob: UploadBlobOutput
+}
+
 public struct UploadBlobOutput: Codable {
     public let type: String?
     public let reference: BlobReference

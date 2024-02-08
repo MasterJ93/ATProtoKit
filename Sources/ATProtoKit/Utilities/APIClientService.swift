@@ -130,7 +130,7 @@ class APIClientService {
 //        return try JSONDecoder().decode(T.self, from: data)
 //    }
 
-    static func uploadBlob(pdsURL: String = "https://bsky.social", accessToken: String, filename: String, imageData: Data) async throws -> UploadBlobOutput {
+    static func uploadBlob(pdsURL: String = "https://bsky.social", accessToken: String, filename: String, imageData: Data) async throws -> BlobContainer {
          guard let requestURL = URL(string: "\(pdsURL)/xrpc/com.atproto.repo.uploadBlob") else {
              throw NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"])
          }
@@ -140,7 +140,7 @@ class APIClientService {
             var request = createRequest(forRequest: requestURL, andMethod: .post, contentTypeValue: mimeType, authorizationValue: "Bearer \(accessToken)")
             request.httpBody = imageData
 
-            return try await sendRequest(request, decodeTo: UploadBlobOutput.self)
+            return try await sendRequest(request, decodeTo: BlobContainer.self)
         } catch {
             throw NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid Response"])
         }
