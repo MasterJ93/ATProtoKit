@@ -11,6 +11,12 @@ public struct ImageQuery: Encodable {
     public let imageData: Data
     public let fileName: String
     public let altText: String?
+
+    public init(imageData: Data, fileName: String, altText: String?) {
+        self.imageData = imageData
+        self.fileName = fileName
+        self.altText = altText
+    }
 }
 
 public struct UploadBlobOutput: Codable {
