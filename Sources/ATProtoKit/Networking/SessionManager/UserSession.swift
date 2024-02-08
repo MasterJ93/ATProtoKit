@@ -12,19 +12,19 @@ public class UserSession: SessionProtocol {
     public private(set) var atDID: String
     public private(set) var email: String?
     public private(set) var emailConfirmed: Bool?
-    public private(set) var accessJwt: String
-    public private(set) var refreshJwt: String
+    public private(set) var accessToken: String
+    public private(set) var refreshToken: String
     public private(set) var didDocument: DIDDocument?
 
     public var pdsURL: String?
 
-    public init(handle: String, atDID: String, email: String? = nil, emailConfirmed: Bool? = nil, accessJwt: String, refreshJwt: String, didDocument: DIDDocument? = nil, pdsURL: String? = nil) {
+    public init(handle: String, atDID: String, email: String? = nil, emailConfirmed: Bool? = nil, accessToken: String, refreshToken: String, didDocument: DIDDocument? = nil, pdsURL: String? = nil) {
         self.handle = handle
         self.atDID = atDID
         self.email = email
         self.emailConfirmed = emailConfirmed
-        self.accessJwt = accessJwt
-        self.refreshJwt = refreshJwt
+        self.accessToken = accessToken
+        self.refreshToken = refreshToken
         self.didDocument = didDocument
         self.pdsURL = pdsURL
     }
@@ -34,14 +34,14 @@ public class UserSession: SessionProtocol {
         case atDID = "did"
         case email
         case emailConfirmed
-        case accessJwt
-        case refreshJwt
+        case accessToken = "accessJwt"
+        case refreshToken = "refreshJwt"
         case didDocument = "didDoc"
         case pdsURL
     }
 
     public func isAccessTokenExpired() -> Bool {
-        // Implement logic to check if the accessJwt is expired
+        // Implement logic to check if the accessToken is expired
         // This could involve decoding the JWT and checking its expiry timestamp
         return false
     }

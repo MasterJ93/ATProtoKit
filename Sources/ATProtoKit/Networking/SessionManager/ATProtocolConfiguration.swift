@@ -38,12 +38,12 @@ public class ATProtocolConfiguration: ProtocolConfiguration {
         }
     }
 
-    public static func getSession(byAccessToken accessJWT: String, pdsURL: String = "https://bsky.social") async throws -> Result<SessionResponse, Error> {
+    public static func getSession(byAccessToken accessToken: String, pdsURL: String = "https://bsky.social") async throws -> Result<SessionResponse, Error> {
         guard let requestURL = URL(string: "\(pdsURL)/xrpc/com.atproto.server.getSession") else {
             return .failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"]))
         }
 
-        let request = APIClientService.createRequest(forRequest: requestURL, andMethod: .get, authorizationValue: "Bearer \(accessJWT)")
+        let request = APIClientService.createRequest(forRequest: requestURL, andMethod: .get, authorizationValue: "Bearer \(accessToken)")
 
         do {
             let response = try await APIClientService.sendRequest(request, decodeTo: SessionResponse.self)

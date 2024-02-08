@@ -58,7 +58,7 @@ extension ATProtoKit {
         // Compiling all parts of the post into one.
         let post = FeedPost(
             text: text,
-            facets: await ParseHelper.parseFacets(from: text, pdsURL: session.accessJwt),
+            facets: await ParseHelper.parseFacets(from: text, pdsURL: session.accessToken),
             reply: resolvedReplyTo,
             embed: resolvedEmbed,
             languages: localeIdentifiers,
@@ -70,7 +70,7 @@ extension ATProtoKit {
             repo: session.atDID,
             record: post)
 
-        let request = APIClientService.createRequest(forRequest: requestURL, andMethod: .post, authorizationValue: "Bearer \(session.accessJwt)")
+        let request = APIClientService.createRequest(forRequest: requestURL, andMethod: .post, authorizationValue: "Bearer \(session.accessToken)")
 
         do {
             let result = try await APIClientService.sendRequest(request, withEncodingBody: requestBody, decodeTo: StrongReference.self)
