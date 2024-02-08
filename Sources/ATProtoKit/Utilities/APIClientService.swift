@@ -174,11 +174,16 @@ class APIClientService {
         guard let response = try JSONSerialization.jsonObject(with: data, options: .mutableLeaves) as? [String: Any] else { return ["Response": "No response"] }
         return response
     }
-
+    
+    /// Represents the HTTP methods used to interact with the AT Protocol.
     enum HTTPMethod: String {
+        /// Retrieve information from the AT Protocol using a given URI.
         case get = "GET"
+        /// Sends data to the AT Protocol to create or update a resource.
         case post = "POST"
+        /// Replaces all current representations of the target resource with the request payload.
         case put = "PUT"
+        /// Removes the specified resource(s) from the AT Protocol server.
         case delete = "DELETE"
     }
 
