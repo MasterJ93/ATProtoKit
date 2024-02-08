@@ -14,7 +14,7 @@ extension ATProtoKit {
             return .failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"]))
         }
 
-        let request = APIClientService.createRequest(forRequest: requestURL, andMethod: .get)
+        let request = APIClientService.createRequest(forRequest: requestURL, andMethod: .get, authorizationValue: "Bearer \(accessJWT)")
 
         do {
             let response = try await APIClientService.sendRequest(request, decodeTo: SessionResponse.self)
