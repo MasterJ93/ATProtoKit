@@ -87,6 +87,35 @@ class APIClientService {
         return decodedData
     }
 
+    // It appears that optional generic types can't really work in methods. Until a better solution arrives, it's probably best to overload the above method.
+    static func sendRequest(_ request: URLRequest, withEncodingBody body: Encodable? = nil) async throws {
+        var urlRequest = request
+
+        // Encode the body to JSON data if it's not nil
+        if let body = body {
+            do {
+                urlRequest.httpBody = try body.toJsonData()
+            } catch {
+                throw NSError(domain: "APIClientService", code: -1, userInfo: [NSLocalizedDescriptionKey: "Error encoding request body"])
+            }
+        }
+
+        let (data, response) = try await URLSession.shared.data(for: urlRequest)
+
+        guard let httpResponse = response as? HTTPURLResponse else {
+            throw NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Error getting response"])
+        }
+
+//        print("Status Code: \(httpResponse.statusCode)")  // Debugging line
+//        print("Response Headers: \(httpResponse.allHeaderFields)")  // Debugging line
+
+        guard httpResponse.statusCode == 200 else {
+            let responseBody = String(data: data, encoding: .utf8) ?? "No response body"
+            print("HTTP Status Code: \(httpResponse.statusCode) - Response Body: \(responseBody)")
+            throw URLError(.badServerResponse)
+        }
+    }
+
     static func sendBinaryRequest<T: Decodable>(_ request: URLRequest, binaryData: Data, decodeTo: T.Type) async throws -> T {
         var urlRequest = request
         urlRequest.httpBody = binaryData // Directly setting binary data as the HTTP body
