@@ -8,7 +8,7 @@
 import Foundation
 
 extension ATProtoKit {
-    public func createPost(text: String, locales: [Locale] = [], replyTo: String? = nil, embed: EmbedUnion? = nil, labels: FeedLabelUnion? = nil, tags: [String]? = nil, creationDate: Date = Date.now) async -> Result<StrongReference, Error> {
+    public func createPost(text: String, locales: [Locale] = [], replyTo: String? = nil, embed: EmbedConfiguration? = nil, labels: FeedLabelUnion? = nil, tags: [String]? = nil, creationDate: Date = Date.now) async -> Result<StrongReference, Error> {
         // This is required, or else the guard statement will fail
         guard let sessionURL = session.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.repo.createRecord") else {
@@ -34,13 +34,14 @@ extension ATProtoKit {
             do {
                 switch embedUnion {
                     case .images(let images):
-                        resolvedEmbed = .images(images)
+                        resolvedEmbed = try await uploadImages(images, pdsURL: sessionURL, accessToken: session.accessToken)
                     case .external(let external):
-                        resolvedEmbed = .external(external)
+                        resolvedEmbed = try await buildExternalEmbed(from: external)
                     case .record(let record):
-                        resolvedEmbed = .record(record)
+                        resolvedEmbed = try await addQuotePostToEmbed(record)
                     case .recordWithMedia(let recordWithMedia):
-                        resolvedEmbed = .recordWithMedia(recordWithMedia)
+//                        resolvedEmbed = .recordWithMedia(recordWithMedia)
+                        break
                 }
             } catch {
                 return .failure(error)
@@ -106,8 +107,8 @@ extension ATProtoKit {
         return .external(external)
     }
 
-    public func addQuotePostToEmbed(_ uri: String) async throws -> EmbedUnion {
-        let record = try await ATProtoKit.fetchRecordForURI(uri)
+    public func addQuotePostToEmbed(_ strongReference: StrongReference) async throws -> EmbedUnion {
+        let record = try await ATProtoKit.fetchRecordForURI(strongReference.recordURI)
         let reference = StrongReference(recordURI: record.atURI, cidHash: record.recordCID)
         let embedRecord = EmbedRecord(record: reference)
 
@@ -123,5 +124,12 @@ extension ATProtoKit {
     enum UploadError: Error {
         case badServerResponse
         case cannotParseResponse
+    }
+
+    public enum EmbedConfiguration {
+        case images(images: [ImageQuery])
+        case external(url: URL)
+        case record(strongReference: StrongReference)
+        case recordWithMedia(record: EmbedRecord, media: MediaUnion)
     }
 }
