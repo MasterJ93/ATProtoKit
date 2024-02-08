@@ -145,17 +145,17 @@ public enum EmbedUnion: Codable {
     }
 
     public func encode(to encoder: Encoder) throws {
-        var container = encoder.container(keyedBy: CodingKeys.self)
+        var container = encoder.singleValueContainer()
 
         switch self {
             case .images(let imagesValue):
-                try container.encode(imagesValue, forKey: .images)
+                try container.encode(imagesValue)
             case .external(let externalValue):
-                try container.encode(externalValue, forKey: .external)
+                try container.encode(externalValue)
             case .record(let recordValue):
-                try container.encode(recordValue, forKey: .record)
+                try container.encode(recordValue)
             case .recordWithMedia(let recordWithMediaValue):
-                try container.encode(recordWithMediaValue, forKey: .recordWithMedia)
+                try container.encode(recordWithMediaValue)
         }
     }
 
@@ -178,10 +178,11 @@ public enum FeedLabelUnion: Codable {
     }
 
     public func encode(to encoder: Encoder) throws {
-        var container = encoder.container(keyedBy: CodingKeys.self)
+        var container = encoder.singleValueContainer()
 
-        if case .selfLabels(let selfLabelsValue) = self {
-            try container.encode(selfLabelsValue, forKey: .selfLabels)
+        switch self {
+            case .selfLabels(let selfLabelsValue):
+                try container.encode(selfLabelsValue)
         }
     }
 

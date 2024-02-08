@@ -31,6 +31,12 @@ public struct EmbedImage: Codable {
         self.altText = altText
         self.aspectRatio = aspectRatio
     }
+
+    enum CodingKeys: String, CodingKey {
+        case image
+        case altText = "alt"
+        case aspectRatio
+    }
 }
 
 public struct AspectRatio: Codable {
