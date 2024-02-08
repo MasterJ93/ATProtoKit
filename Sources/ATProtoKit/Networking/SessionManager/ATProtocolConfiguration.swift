@@ -20,11 +20,11 @@ public class ATProtocolConfiguration: ProtocolConfiguration {
 
     public func authenticate() async throws -> Result<UserSession, Error> {
         
-        guard let url = URL(string: "\(self.pdsURL)/xrpc/com.atproto.server.createSession") else {
+        guard let requestURL = URL(string: "\(self.pdsURL)/xrpc/com.atproto.server.createSession") else {
             return .failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"]))
         }
         
-        let request = APIClientService.createRequest(forRequest: url, andMethod: .post)
+        let request = APIClientService.createRequest(forRequest: requestURL, andMethod: .post)
 
         let credentials = SessionCredentials(identifier: handle, password: appPassword)
 

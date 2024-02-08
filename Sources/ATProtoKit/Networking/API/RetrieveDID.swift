@@ -8,13 +8,13 @@
 import Foundation
 
 extension ATProtoKit {
-    public static func retrieveDID(from handle: String, pdsURL: String) async throws -> Result<ResolveHandleOutput, Error> {
+    public static func retrieveDID(from handle: String, pdsURL: String = "https://bsky.social") async throws -> Result<ResolveHandleOutput, Error> {
         // Go to AT Protocol to find the handle in order to see if it exists.
-        guard let url = URL(string: "\(pdsURL)/xrpc/com.atproto.identity.resolveHandle") else {
+        guard let requestURL = URL(string: "\(pdsURL)/xrpc/com.atproto.identity.resolveHandle") else {
             return .failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey : "Invalid URL"]))
         }
 
-        var components = URLComponents(url: url, resolvingAgainstBaseURL: true)
+        var components = URLComponents(url: requestURL, resolvingAgainstBaseURL: true)
         components?.queryItems = [URLQueryItem(name: "handle", value: handle)]
 
         guard let queryURL = components?.url else {

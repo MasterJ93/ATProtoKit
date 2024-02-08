@@ -68,7 +68,7 @@ extension ATProtoKit {
             repo: session.atDID,
             record: post)
 
-        let request = APIClientService.createRequest(forRequest: url, andMethod: .post, authorizationValue: "Bearer \(session.accessJwt)")
+        let request = APIClientService.createRequest(forRequest: requestURL, andMethod: .post, authorizationValue: "Bearer \(session.accessJwt)")
 
         do {
             let result = try await APIClientService.sendRequest(request, withEncodingBody: requestBody, decodeTo: StrongReference.self)
@@ -80,9 +80,6 @@ extension ATProtoKit {
     }
 
     public func uploadImages(_ images: [ImageQuery], pdsURL: String = "https://bsky.social", accessToken: String) async throws -> EmbedUnion {
-        guard let atProtoURL = URL(string: pdsURL) else {
-            throw NSError(domain: "ATProtoKit", code: -2, userInfo: [NSLocalizedDescriptionKey: "Invalid URL."])
-        }
         var embedImages = [EmbedImage]()
 
         for image in images {
@@ -92,7 +89,7 @@ extension ATProtoKit {
             }
 
             // Upload the image, then get the server response.
-            let blobReference = try await APIClientService.uploadBlob(pdsURL: atProtoURL, accessToken: accessToken, filename: image.fileName, imageData: image.imageData)
+            let blobReference = try await APIClientService.uploadBlob(pdsURL: pdsURL, accessToken: accessToken, filename: image.fileName, imageData: image.imageData)
 
             let embedImage = EmbedImage(image: blobReference, altText: image.altText ?? "", aspectRatio: nil)
             embedImages.append(embedImage)

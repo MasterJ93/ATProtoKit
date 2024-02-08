@@ -9,12 +9,12 @@ import Foundation
 
 extension ATProtoKit {
     // This doesn't work at the moment.
-    public func getSession() async throws -> Result<UserSession, Error> {
-        guard let pdsURL = session.pdsURL, let url = URL(string: "\(pdsURL)/xrpc/com.atproto.server.getSession") else {
+    public static func getSession(byAccessToken accessJWT: String, pdsURL: String = "https://bsky.social") async throws -> Result<UserSession, Error> {
+        guard let requestURL = URL(string: "\(pdsURL)/xrpc/com.atproto.server.getSession") else {
             return .failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"]))
         }
 
-        let request = APIClientService.createRequest(forRequest: url, andMethod: .get)
+        let request = APIClientService.createRequest(forRequest: requestURL, andMethod: .get)
 
         do {
             let response = try await APIClientService.sendRequest(request, decodeTo: UserSession.self)
