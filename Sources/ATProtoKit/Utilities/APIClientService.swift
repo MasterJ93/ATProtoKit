@@ -84,11 +84,15 @@ class APIClientService {
              throw NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"])
          }
         let mimeType = mimeType(for: filename)
-        let requestURL = pdsURL.appendingPathComponent("/xrpc/com.atproto.repo.uploadBlob")
-        var request = createRequest(forRequest: requestURL, andMethod: .post, contentTypeValue: mimeType, authorizationValue: "Bearer \(accessToken)")
-        request.httpBody = imageData
 
-        return try await sendRequest(request, decodeTo: UploadBlobOutput.self)
+        do {
+            var request = createRequest(forRequest: requestURL, andMethod: .post, contentTypeValue: mimeType, authorizationValue: "Bearer \(accessToken)")
+            request.httpBody = imageData
+
+            return try await sendRequest(request, decodeTo: UploadBlobOutput.self)
+        } catch {
+            throw NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid Response"])
+        }
     }
 
     // Same method as above, but sending raw JSON instead.
