@@ -37,7 +37,7 @@ class APIClientService {
         return httpBody
     }
 
-    static func setQueryItems(for requestURL: URL, with queryItems: [String: String]) async throws -> URL {
+    static func setQueryItems(for requestURL: URL, with queryItems: [String: String?]) async throws -> URL {
         var components = URLComponents(url: requestURL, resolvingAgainstBaseURL: true)
 
         for queryItem in queryItems {
