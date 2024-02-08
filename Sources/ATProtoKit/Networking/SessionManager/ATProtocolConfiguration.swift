@@ -39,30 +39,6 @@ public class ATProtocolConfiguration: ProtocolConfiguration {
         }
     }
 
-//    func ensureValidSession(completion: @escaping (Result<Void, Error>) -> Void) {
-//        if let session = currentSession, !session.isAccessTokenExpired() {
-//            completion(.success(()))
-//            return
-//        }
-//        
-//        if let refreshJwt = currentSession?.refreshJwt {
-//            refreshSession(with: refreshJwt) { [weak self] result in
-//                switch result {
-//                    case .success(let sessionData):
-//                        // Update the current session.
-//                        guard let session = self?.createSession(withAuthenticationData: sessionData) else { return }
-//                        self?.currentSession = session
-//                        completion(.success(()))
-//                    case .failure(_):
-//                        self?.reAuthenticateUser(completion: completion)
-//                }
-//            }
-//        } else {
-//            reAuthenticateUser(completion: completion)
-//        }
-//        
-//    }
-//    
 //    private func reAuthenticateUser(completion: @escaping (Result<Void, Error>) -> Void) {
 //        // Use stored credentials or prompt the user for credentials to re-authenticate.
 //        self.loginToBluesky(with: <#T##String#>, appPassword: <#T##String#>, pdsURL: <#T##String#>) { result in
