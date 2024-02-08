@@ -9,9 +9,7 @@ import Foundation
 
 extension ATProtoKit {
     public func createPost(text: String, locales: [Locale] = [], replyTo: String? = nil, embed: EmbedUnion? = nil, labels: FeedLabelUnion? = nil, tags: [String]? = nil, creationDate: Date = Date.now) async -> Result<StrongReference, Error> {
-
-        guard let pdsURL = session.pdsURL,
-              let url = URL(string: "\(pdsURL)/xrpc/com.atproto.repo.createRecord") else {
+        guard let requestURL = URL(string: "\(session.pdsURL)/xrpc/com.atproto.repo.createRecord") else {
             return .failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"]))
         }
 
@@ -81,38 +79,10 @@ extension ATProtoKit {
         }
     }
 
-    public func uploadFile(_ filename: String, writtenInBytes imageData: Data) async throws -> UploadBlobOutput {
-        guard let pdsURL = session.pdsURL,
-              let url = URL(string: "\(pdsURL)/xrpc/com.atproto.repo.uploadBlob") else {
-            throw NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"])
+    public func uploadImages(_ images: [ImageQuery], pdsURL: String = "https://bsky.social", accessToken: String) async throws -> EmbedUnion {
+        guard let atProtoURL = URL(string: pdsURL) else {
+            throw NSError(domain: "ATProtoKit", code: -2, userInfo: [NSLocalizedDescriptionKey: "Invalid URL."])
         }
-
-        // Determine MIME type
-        let mimeType: String
-        switch filename.split(separator: ".").last?.lowercased() {
-            case "png":
-                mimeType = "image/png"
-            case "jpeg", "jpg":
-                mimeType = "image/jpeg"
-            case "webp":
-                mimeType = "image/webp"
-            default:
-                mimeType = "application/octet-stream"
-        }
-
-        do {
-            var request = APIClientService.createRequest(forRequest: url, andMethod: .post, contentTypeValue: mimeType, authorizationValue: "Bearer \(mimeType)")
-
-            let response = try await APIClientService.sendBinaryRequest(request, binaryData: imageData, decodeTo: UploadBlobOutput.self)
-
-            return response
-        } catch {
-            throw NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid Response"])
-        }
-    }
-
-    static func uploadImages(_ images: [ImageQuery], pdsURL: URL, accessToken: String) async throws -> EmbedUnion {
-
         var embedImages = [EmbedImage]()
 
         for image in images {
@@ -122,7 +92,7 @@ extension ATProtoKit {
             }
 
             // Upload the image, then get the server response.
-            let blobReference = try await APIClientService.uploadBlob(pdsURL: pdsURL, accessToken: accessToken, filename: image.fileName, imageData: image.imageData)
+            let blobReference = try await APIClientService.uploadBlob(pdsURL: atProtoURL, accessToken: accessToken, filename: image.fileName, imageData: image.imageData)
 
             let embedImage = EmbedImage(image: blobReference, altText: image.altText ?? "", aspectRatio: nil)
             embedImages.append(embedImage)
@@ -132,7 +102,7 @@ extension ATProtoKit {
     }
 
     public func buildExternalEmbed(from url: URL) async throws -> EmbedUnion {
-
+        
         let external = EmbedExternal(external: External(embedURI: "", title: "", description: "", thumbnail: Data(count: 1)))
         return .external(external)
     }
