@@ -29,16 +29,8 @@ public class ATProtocolConfiguration: ProtocolConfiguration {
         let credentials = SessionCredentials(identifier: handle, password: appPassword)
 
         do {
-            let authResponse = try await APIClientService.sendRequest(request, withEncodingBody: credentials, decodeTo: AuthenticationResponse.self)
+            let userSession = try await APIClientService.sendRequest(request, withEncodingBody: credentials, decodeTo: UserSession.self)
 
-            let userSession = UserSession(handle: authResponse.handle,
-                                          atDID: authResponse.atDID,
-                                          email: authResponse.email,
-                                          emailConfirmed: authResponse.emailConfirmed,
-                                          accessJwt: authResponse.accessJwt,
-                                          refreshJwt: authResponse.refreshJwt,
-                                          didDocument: authResponse.didDocument,
-                                          pdsURL: self.pdsURL)
             return .success(userSession)
         } catch {
             print("Error: \(error)")

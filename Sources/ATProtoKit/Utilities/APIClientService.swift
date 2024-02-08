@@ -17,14 +17,18 @@ class APIClientService {
 
     private init() {}
 
-    static func createRequest(forRequest requestURL: URL, andMethod httpMethod: HTTPMethod, contentTypeValue: String = "application/json", authorizationValue: String? = nil) -> URLRequest {
+    static func createRequest(forRequest requestURL: URL, andMethod httpMethod: HTTPMethod, acceptValue: String? = "application/json", contentTypeValue: String = "application/json", authorizationValue: String? = nil) -> URLRequest {
         var request = URLRequest(url: requestURL)
         request.httpMethod = httpMethod.rawValue
 
+        if let acceptValue {
+            request.addValue(acceptValue, forHTTPHeaderField: "Accept")
+        }
         if let authorizationValue {
             request.addValue(authorizationValue, forHTTPHeaderField: "Authorization")
         }
         request.addValue(contentTypeValue, forHTTPHeaderField: "Content-Type")
+
         return request
     }
 

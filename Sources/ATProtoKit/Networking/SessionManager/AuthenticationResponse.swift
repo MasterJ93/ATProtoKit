@@ -7,22 +7,18 @@
 
 import Foundation
 
-public struct AuthenticationResponse: Codable {
-    var handle: String
-    var atDID: String
-    var email: String?
-    var emailConfirmed: Bool?
-    var accessJwt: String
-    var refreshJwt: String
-    var didDocument: DIDDocument?
+public struct SessionResponse: SessionProtocol {
+    public var handle: String
+    public var atDID: String
+    public var email: String?
+    public var emailConfirmed: Bool?
+    public var didDocument: DIDDocument?
 
     enum CodingKeys: String, CodingKey {
         case handle
         case atDID = "did"
         case email
         case emailConfirmed
-        case accessJwt
-        case refreshJwt
         case didDocument = "didDoc"
     }
 }
