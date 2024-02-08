@@ -65,7 +65,7 @@ extension ATProtoKit {
             let components = uri.split(separator: "/").map(String.init)
             guard components.count >= 4 else { throw URIError.invalidFormat }
 
-            return RecordQuery(repo: components[1], collection: components[2], recordKey: components[3], recordCID: nil)
+            return RecordQuery(repo: components[1], collection: components[2], recordKey: components[3])
         } else if uri.hasPrefix("https://bsky.app/") {
             let components = uri.split(separator: "/").map(String.init)
             guard components.count >= 6 else {
@@ -86,7 +86,7 @@ extension ATProtoKit {
                     throw URIError.invalidFormat
             }
 
-            return RecordQuery(repo: record, collection: collection, recordKey: recordKey, recordCID: nil)
+            return RecordQuery(repo: record, collection: collection, recordKey: recordKey)
         } else {
             throw URIError.invalidFormat
         }
