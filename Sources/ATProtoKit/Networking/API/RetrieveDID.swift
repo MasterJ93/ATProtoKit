@@ -17,15 +17,17 @@ extension ATProtoKit {
         var components = URLComponents(url: requestURL, resolvingAgainstBaseURL: true)
         components?.queryItems = [URLQueryItem(name: "handle", value: handle)]
 
-        guard let queryURL = components?.url else {
-            return .failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey : "Invalid queryURL"]))
-        }
-
-        print("Request URL: \(queryURL.absoluteString)")  // Debugging line
-
-        let request = APIClientService.createRequest(forRequest: queryURL, andMethod: .get)
-
         do {
+            let queryURL = try await APIClientService.setQueryItems(
+                for: requestURL,
+                with: [
+                    "handle" : handle
+                ])
+
+            print("Request URL: \(queryURL.absoluteString)")  // Debugging line
+
+            let request = APIClientService.createRequest(forRequest: queryURL, andMethod: .get)
+
             let response = try await APIClientService.sendRequest(request, decodeTo: ResolveHandleOutput.self)
 
             return .success(response)

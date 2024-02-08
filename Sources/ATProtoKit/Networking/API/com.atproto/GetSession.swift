@@ -14,25 +14,17 @@ extension ATProtoKit {
         }
 
         var components = URLComponents(url: requestURL, resolvingAgainstBaseURL: true)
-        components?.queryItems = [
-            URLQueryItem(name: "repo", value: recordQuery.repo),
-            URLQueryItem(name: "collection", value: recordQuery.collection),
-            URLQueryItem(name: "rkey", value: recordQuery.recordKey)
-        ]
-
-        if ((recordQuery.recordCID?.isEmpty) != nil) {
-            components?.queryItems?.append(URLQueryItem(
-                name: "cid", value: recordQuery.recordCID)
-            )
-        }
-
-        guard let queryURL = components?.url else {
-            return .failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey : "Invalid queryURL"]))
-        }
-
-        let request = APIClientService.createRequest(forRequest: requestURL, andMethod: .get)
 
         do {
+            let queryURL = try await APIClientService.setQueryItems(
+                for: requestURL,
+                with:[
+                    "repo" : recordQuery.repo,
+                    "collection" : recordQuery.collection,
+                    "rkey" : recordQuery.recordKey
+                ])
+            let request = APIClientService.createRequest(forRequest: requestURL, andMethod: .get)
+
             let response = try await APIClientService.sendRequest(request, decodeTo: RecordOutput.self)
             return .success(response)
         } catch {

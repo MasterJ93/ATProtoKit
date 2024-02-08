@@ -37,6 +37,24 @@ class APIClientService {
         return httpBody
     }
 
+    static func setQueryItems(for requestURL: URL, with queryItems: [String: String]) async throws -> URL {
+        var components = URLComponents(url: requestURL, resolvingAgainstBaseURL: true)
+
+        for queryItem in queryItems {
+            guard queryItem.value != nil else { continue }
+
+            components?.queryItems?.append(
+                URLQueryItem(name: queryItem.key, value: queryItem.value)
+            )
+        }
+
+        guard let queryURL = components?.url else {
+            throw NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey : "Invalid queryURL"])
+        }
+
+        return queryURL
+    }
+
     static func sendRequest<T: Decodable>(_ request: URLRequest, withEncodingBody body: Encodable? = nil, decodeTo: T.Type) async throws -> T {
         var urlRequest = request
         
