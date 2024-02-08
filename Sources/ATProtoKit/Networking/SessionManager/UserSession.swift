@@ -16,7 +16,7 @@ public class UserSession: SessionProtocol {
     public private(set) var refreshJwt: String
     public private(set) var didDocument: DIDDocument?
 
-    public private(set) var pdsURL: String?
+    public var pdsURL: String?
 
     public init(handle: String, atDID: String, email: String? = nil, emailConfirmed: Bool? = nil, accessJwt: String, refreshJwt: String, didDocument: DIDDocument? = nil, pdsURL: String? = nil) {
         self.handle = handle
