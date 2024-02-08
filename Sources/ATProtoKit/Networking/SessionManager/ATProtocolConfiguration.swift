@@ -23,13 +23,14 @@ public class ATProtocolConfiguration: ProtocolConfiguration {
         guard let requestURL = URL(string: "\(self.pdsURL)/xrpc/com.atproto.server.createSession") else {
             return .failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"]))
         }
-        
+
         let request = APIClientService.createRequest(forRequest: requestURL, andMethod: .post)
 
         let credentials = SessionCredentials(identifier: handle, password: appPassword)
 
         do {
             let userSession = try await APIClientService.sendRequest(request, withEncodingBody: credentials, decodeTo: UserSession.self)
+            userSession.pdsURL = self.pdsURL
 
             return .success(userSession)
         } catch {
