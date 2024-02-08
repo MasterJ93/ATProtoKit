@@ -11,7 +11,7 @@ public struct RecordQuery: Codable {
     public let repo: String
     public let collection: String
     public let recordKey: String
-    public let recordCID: String?
+    public let recordCID: String? = nil
 
     enum CodingKeys: String, CodingKey {
         case repo = "repo"
