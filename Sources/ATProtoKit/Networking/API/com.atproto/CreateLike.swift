@@ -24,15 +24,7 @@ extension ATProtoKit {
             record: likeRecord
         )
 
-        let request = APIClientService.createRequest(forRequest: requestURL, andMethod: .post, authorizationValue: "Bearer \(session.accessToken)")
-
-        do {
-            let result = try await APIClientService.sendRequest(request, withEncodingBody: requestBody, decodeTo: StrongReference.self)
-
-            return .success(result)
-        } catch {
-            return .failure(error)
-        }
+        return await createRecord(collection: "app.bsky.feed.like", requestBody: requestBody)
     }
 
     struct LikeRecordRequestBody: Encodable {

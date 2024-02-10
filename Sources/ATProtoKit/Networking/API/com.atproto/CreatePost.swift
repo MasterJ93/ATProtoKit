@@ -9,12 +9,10 @@ import Foundation
 
 extension ATProtoKit {
     public func createPostRecord(text: String, locales: [Locale] = [], replyTo: String? = nil, embed: EmbedConfiguration? = nil, labels: FeedLabelUnion? = nil, tags: [String]? = nil, creationDate: Date = Date.now) async -> Result<StrongReference, Error> {
-        // This is required, or else the guard statement will fail
-        guard let sessionURL = session.pdsURL,
-              let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.repo.createRecord") else {
-            return .failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"]))
-        }
 
+        guard let sessionURL = session.pdsURL else {
+            return .failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid pdsURL"]))
+        }
         // Replies
         var resolvedReplyTo: ReplyReference? = nil
         if let replyURI = replyTo {
@@ -69,17 +67,10 @@ extension ATProtoKit {
 
         let requestBody = FeedPostRequestBody(
             repo: session.atDID,
-            record: post)
+            record: post
+        )
 
-        let request = APIClientService.createRequest(forRequest: requestURL, andMethod: .post, authorizationValue: "Bearer \(session.accessToken)")
-
-        do {
-            let result = try await APIClientService.sendRequest(request, withEncodingBody: requestBody, decodeTo: StrongReference.self)
-
-            return .success(result)
-        } catch {
-            return .failure(error)
-        }
+        return await createRecord(collection: "app.bsky.feed.post", requestBody: requestBody)
     }
 
     public func uploadImages(_ images: [ImageQuery], pdsURL: String = "https://bsky.social", accessToken: String) async throws -> EmbedUnion {
