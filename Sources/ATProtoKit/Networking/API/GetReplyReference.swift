@@ -32,7 +32,7 @@ extension ATProtoKit {
         return ReplyReference(root: reference, parent: reference)
     }
 
-    private static func fetchRecord(fromRecordQuery recordQuery: RecordQuery, pdsURL: String = "https://bsky.social") async throws -> RecordOutput {
+    public static func fetchRecord(fromRecordQuery recordQuery: RecordQuery, pdsURL: String = "https://bsky.social") async throws -> RecordOutput {
 
         guard let url = URL(string: "\(pdsURL)/xrpc/com.atproto.repo.getRecord") else {
             throw URIError.invalidFormat
@@ -60,7 +60,7 @@ extension ATProtoKit {
         return response
     }
 
-    private static func parseURI(_ uri: String) throws -> RecordQuery {
+    internal static func parseURI(_ uri: String) throws -> RecordQuery {
         if uri.hasPrefix("at://") {
             let components = uri.split(separator: "/").map(String.init)
             guard components.count >= 4 else { throw URIError.invalidFormat }
