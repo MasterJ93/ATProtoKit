@@ -15,6 +15,14 @@ extension ATProtoKit {
         }
 
         var likeRecord: RecordQuery? = nil
+        try await resolveRecordIdentifierToQuery(record, sessionURL, &likeRecord)
+
+        let requestBody = likeRecord
+
+        try await deleteRecord(requestBody: requestBody)
+    }
+
+    fileprivate func resolveRecordIdentifierToQuery(_ record: ATProtoKit.RecordIdentifier, _ sessionURL: String, _ likeRecord: inout RecordQuery?) async throws {
         switch record {
             case .recordQuery(let recordQuery):
                 let output = try await ATProtoKit.getRepoRecord(from: recordQuery, pdsURL: sessionURL)
@@ -47,16 +55,6 @@ extension ATProtoKit {
                     case .failure(let error):
                         throw error
                 }
-        }
-
-        let requestBody = likeRecord
-
-        let request = APIClientService.createRequest(forRequest: requestURL, andMethod: .post, authorizationValue: "Bearer \(session.accessToken)")
-
-        do {
-            try await APIClientService.sendRequest(request, withEncodingBody: requestBody)
-        } catch {
-            throw NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "\(error)"])
         }
     }
 
