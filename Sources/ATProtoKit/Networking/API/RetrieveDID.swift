@@ -21,8 +21,9 @@ extension ATProtoKit {
             let queryURL = try await APIClientService.setQueryItems(
                 for: requestURL,
                 with: [
-                    "handle" : handle
-                ])
+                    ("handle", handle)
+                ]
+            )
 
             print("Request URL: \(queryURL.absoluteString)")  // Debugging line
 
