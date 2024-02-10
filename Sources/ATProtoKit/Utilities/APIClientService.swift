@@ -147,7 +147,7 @@ class APIClientService {
     }
 
     // Same method as above, but sending raw JSON instead.
-    static func sendRequestWithRawJSONOutput<T: Decodable>(_ request: URLRequest, withEncodingBody body: Encodable? = nil, decodeTo: T.Type) async throws -> [String: Any] {
+    static func sendRequestWithRawJSONOutput(_ request: URLRequest, withEncodingBody body: Encodable? = nil) async throws -> [String: Any] {
         var urlRequest = request
 
         // Encode the body to JSON data if it's not nil
