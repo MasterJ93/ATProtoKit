@@ -24,7 +24,15 @@ extension ATProtoKit {
 
     public static func fetchRecordForURI(_ uri: String) async throws -> RecordOutput {
         let query = try parseURI(uri)
-        return try await fetchRecord(fromRecordQuery: query)
+
+        let record = try await getRepoRecord(from: query)
+
+        switch record {
+            case .success(let result):
+                return result
+            case .failure(let failure):
+                throw failure
+        }
     }
 
     private static func createReplyReference(from record: RecordOutput) -> ReplyReference {

@@ -8,18 +8,25 @@
 import Foundation
 
 extension ATProtoKit {
-    public static func getRecord(from recordQuery: RecordQuery, pdsURL: String = "https://bsky.social") async throws -> Result<RecordOutput, Error> {
+    public static func getRepoRecord(from recordQuery: RecordQuery, pdsURL: String = "https://bsky.social") async throws -> Result<RecordOutput, Error> {
         guard let requestURL = URL(string: "\(pdsURL)/xrpc/com.atproto.repo.getRecord") else {
-            return .failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"]))
+            return .failure(URIError.invalidFormat)
         }
 
         do {
+            var queryItems = [
+                ("repo", recordQuery.repo),
+                ("collection", recordQuery.collection),
+                ("rkey", recordQuery.recordKey)
+            ]
+
+            if let cid = recordQuery.recordCID {
+                queryItems.append(("cid", cid))
+            }
+
             let queryURL = try await APIClientService.setQueryItems(
                 for: requestURL,
-                with:[("repo", recordQuery.repo),
-                      ("collection", recordQuery.collection),
-                      ("rkey", recordQuery.recordKey)
-                ]
+                with: queryItems
             )
 
             print("\n===\nqueryURL: \(queryURL)")

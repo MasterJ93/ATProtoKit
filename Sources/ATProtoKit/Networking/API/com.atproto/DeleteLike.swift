@@ -17,32 +17,35 @@ extension ATProtoKit {
         var likeRecord: RecordQuery? = nil
         switch record {
             case .recordQuery(let recordQuery):
-                do {
-                    let output = try await ATProtoKit.fetchRecord(fromRecordQuery: recordQuery)
+                let output = try await ATProtoKit.getRepoRecord(from: recordQuery, pdsURL: sessionURL)
 
-                    // Perform the fetch and validation based on recordQuery.
-                    let recordURI = "at://\(recordQuery.repo)/\(recordQuery.collection)/\(recordQuery.recordKey)"
-                    guard output.atURI == recordURI else {
-                        throw NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid Record"])
-                    }
+                switch output {
+                    case .success(let result):
+                        // Perform the fetch and validation based on recordQuery.
+                        let recordURI = "at://\(recordQuery.repo)/\(recordQuery.collection)/\(recordQuery.recordKey)"
+                        guard result.atURI == recordURI else {
+                            throw NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid Record"])
+                        }
 
-                    likeRecord = recordQuery
-                } catch {
-                    throw NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid Record"])
+                        likeRecord = recordQuery
+                    case .failure(let error):
+                        throw error
                 }
+
             case .atURI(let atURI):
-                do {
-                    // Perform the fetch and validation based on the parsed URI.
-                    let parsedURI = try ATProtoKit.parseURI(atURI)
-                    let output = try await ATProtoKit.fetchRecord(fromRecordQuery: parsedURI)
+                // Perform the fetch and validation based on the parsed URI.
+                let parsedURI = try ATProtoKit.parseURI(atURI)
+                let output = try await ATProtoKit.getRepoRecord(from: parsedURI, pdsURL: sessionURL)
 
-                    guard atURI == output.atURI else {
-                        throw NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid Record"])
-                    }
+                switch output {
+                    case .success(let result):
+                        guard atURI == result.atURI else {
+                            throw NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid Record"])
+                        }
 
-                    likeRecord = parsedURI
-                } catch {
-                    throw NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid Record"])
+                        likeRecord = parsedURI
+                    case .failure(let error):
+                        throw error
                 }
         }
 
