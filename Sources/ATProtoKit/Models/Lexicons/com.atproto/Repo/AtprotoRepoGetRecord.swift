@@ -13,6 +13,12 @@ public struct RecordQuery: Codable {
     public let recordKey: String
     public let recordCID: String? = nil
 
+    public init(repo: String, collection: String, recordKey: String) {
+        self.repo = repo
+        self.collection = collection
+        self.recordKey = recordKey
+    }
+
     enum CodingKeys: String, CodingKey {
         case repo = "repo"
         case collection = "collection"
