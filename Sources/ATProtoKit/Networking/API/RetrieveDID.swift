@@ -18,7 +18,7 @@ extension ATProtoKit {
         components?.queryItems = [URLQueryItem(name: "handle", value: handle)]
 
         do {
-            let queryURL = try await APIClientService.setQueryItems(
+            let queryURL = try APIClientService.setQueryItems(
                 for: requestURL,
                 with: [
                     ("handle", handle)

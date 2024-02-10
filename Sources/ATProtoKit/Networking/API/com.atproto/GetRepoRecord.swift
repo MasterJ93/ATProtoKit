@@ -24,7 +24,7 @@ extension ATProtoKit {
                 queryItems.append(("cid", cid))
             }
 
-            let queryURL = try await APIClientService.setQueryItems(
+            let queryURL = try APIClientService.setQueryItems(
                 for: requestURL,
                 with: queryItems
             )
