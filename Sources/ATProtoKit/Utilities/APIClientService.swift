@@ -116,20 +116,6 @@ class APIClientService {
         }
     }
 
-//    static func sendBinaryRequest<T: Decodable>(_ request: URLRequest, binaryData: Data, decodeTo: T.Type) async throws -> T {
-//        var urlRequest = request
-//        urlRequest.httpBody = binaryData // Directly setting binary data as the HTTP body
-//
-//        let (data, response) = try await URLSession.shared.data(for: urlRequest)
-//
-//        // Similar response handling as in sendRequest
-//        guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 else {
-//            throw URLError(.badServerResponse)
-//        }
-//
-//        return try JSONDecoder().decode(T.self, from: data)
-//    }
-
     static func uploadBlob(pdsURL: String = "https://bsky.social", accessToken: String, filename: String, imageData: Data) async throws -> BlobContainer {
          guard let requestURL = URL(string: "\(pdsURL)/xrpc/com.atproto.repo.uploadBlob") else {
              throw NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"])
