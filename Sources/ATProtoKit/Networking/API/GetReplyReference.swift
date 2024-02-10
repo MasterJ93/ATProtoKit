@@ -60,13 +60,13 @@ extension ATProtoKit {
         return response
     }
 
-    internal static func parseURI(_ uri: String) throws -> RecordQuery {
+    internal static func parseURI(_ uri: String, pdsURL: String = "https://bsky.app") throws -> RecordQuery {
         if uri.hasPrefix("at://") {
             let components = uri.split(separator: "/").map(String.init)
             guard components.count >= 4 else { throw URIError.invalidFormat }
 
             return RecordQuery(repo: components[1], collection: components[2], recordKey: components[3])
-        } else if uri.hasPrefix("https://bsky.app/") {
+        } else if uri.hasPrefix("\(pdsURL)/") {
             let components = uri.split(separator: "/").map(String.init)
             guard components.count >= 6 else {
                 throw URIError.invalidFormat }
