@@ -13,8 +13,6 @@ extension ATProtoKit {
             return .failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"]))
         }
 
-        var components = URLComponents(url: requestURL, resolvingAgainstBaseURL: true)
-
         do {
             let queryURL = try await APIClientService.setQueryItems(
                 for: requestURL,
@@ -23,7 +21,7 @@ extension ATProtoKit {
                     "collection" : recordQuery.collection,
                     "rkey" : recordQuery.recordKey
                 ])
-            let request = APIClientService.createRequest(forRequest: requestURL, andMethod: .get)
+            let request = APIClientService.createRequest(forRequest: queryURL, andMethod: .get)
 
             let response = try await APIClientService.sendRequest(request, decodeTo: RecordOutput.self)
             return .success(response)
