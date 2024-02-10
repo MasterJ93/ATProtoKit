@@ -24,7 +24,6 @@ extension ATProtoKit {
             record: likeRecord
         )
 
-        // let request = APIClientService.createRequest(forRequest: requestURL, andMethod: .post, authorizationValue: "Bearer \(session.accessToken)")
         let request = APIClientService.createRequest(forRequest: requestURL, andMethod: .post, authorizationValue: "Bearer \(session.accessToken)")
 
         do {
