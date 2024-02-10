@@ -8,7 +8,7 @@
 import Foundation
 
 extension ATProtoKit {
-    public func createPost(text: String, locales: [Locale] = [], replyTo: String? = nil, embed: EmbedConfiguration? = nil, labels: FeedLabelUnion? = nil, tags: [String]? = nil, creationDate: Date = Date.now) async -> Result<StrongReference, Error> {
+    public func createPostRecord(text: String, locales: [Locale] = [], replyTo: String? = nil, embed: EmbedConfiguration? = nil, labels: FeedLabelUnion? = nil, tags: [String]? = nil, creationDate: Date = Date.now) async -> Result<StrongReference, Error> {
         // This is required, or else the guard statement will fail
         guard let sessionURL = session.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.repo.createRecord") else {
