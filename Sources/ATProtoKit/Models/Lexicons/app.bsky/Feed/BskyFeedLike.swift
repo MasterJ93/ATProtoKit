@@ -9,21 +9,18 @@ import Foundation
 
 public struct FeedLike: Codable {
     public let type: String = "app.bsky.feed.like"
-    public let recordURI: String
-    public let cidHash: String
+    public let subject: StrongReference
     @DateFormatting public var createdAt: Date
 
-    public init(recordURI: String, cidHash: String, createdAt: Date) {
-        self.recordURI = recordURI
-        self.cidHash = cidHash
+    public init(subject: StrongReference, createdAt: Date) {
+        self.subject = subject
         self._createdAt = DateFormatting(wrappedValue: createdAt)
     }
 
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
 
-        self.recordURI = try container.decode(String.self, forKey: .recordURI)
-        self.cidHash = try container.decode(String.self, forKey: .cidHash)
+        self.subject = try container.decode(StrongReference.self, forKey: .subject)
         self.createdAt = try container.decode(DateFormatting.self, forKey: .createdAt).wrappedValue
     }
 
@@ -31,8 +28,7 @@ public struct FeedLike: Codable {
         var container = encoder.container(keyedBy: CodingKeys.self)
 
         try container.encode(self.type, forKey: .type)
-        try container.encode(self.recordURI, forKey: .recordURI)
-        try container.encode(self.cidHash, forKey: .cidHash)
+        try container.encode(self.subject, forKey: .subject)
         try container.encode(self._createdAt, forKey: .createdAt)
     }
 
@@ -40,6 +36,7 @@ public struct FeedLike: Codable {
         case type = "$type"
         case recordURI = "uri"
         case cidHash = "cid"
+        case subject
         case createdAt
     }
 }
