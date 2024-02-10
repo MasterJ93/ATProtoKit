@@ -27,7 +27,13 @@ class APIClientService {
         if let authorizationValue {
             request.addValue(authorizationValue, forHTTPHeaderField: "Authorization")
         }
-        request.addValue(contentTypeValue, forHTTPHeaderField: "Content-Type")
+
+        // Send the data if it matches a POST or PUT request.
+        if httpMethod == .post || httpMethod == .put {
+            if let contentTypeValue {
+                request.addValue(contentTypeValue, forHTTPHeaderField: "Content-Type")
+            }
+        }
 
         return request
     }
