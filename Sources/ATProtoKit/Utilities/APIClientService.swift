@@ -17,7 +17,7 @@ class APIClientService {
 
     private init() {}
 
-    static func createRequest(forRequest requestURL: URL, andMethod httpMethod: HTTPMethod, acceptValue: String? = "application/json", contentTypeValue: String = "application/json", authorizationValue: String? = nil) -> URLRequest {
+    static func createRequest(forRequest requestURL: URL, andMethod httpMethod: HTTPMethod, acceptValue: String? = "application/json", contentTypeValue: String? = "application/json", authorizationValue: String? = nil) -> URLRequest {
         var request = URLRequest(url: requestURL)
         request.httpMethod = httpMethod.rawValue
 
@@ -37,22 +37,16 @@ class APIClientService {
         return httpBody
     }
 
-    static func setQueryItems(for requestURL: URL, with queryItems: [String: String?]) async throws -> URL {
+    static func setQueryItems(for requestURL: URL, with queryItems: [(String, String)]) throws -> URL {
         var components = URLComponents(url: requestURL, resolvingAgainstBaseURL: true)
 
-        for queryItem in queryItems {
-            guard queryItem.value != nil else { continue }
+        // Map out each URLQueryItem with the key ($0.0) and value ($0.1) of the item.
+        components?.queryItems = queryItems.map { URLQueryItem(name: $0.0, value: $0.1) }
 
-            components?.queryItems?.append(
-                URLQueryItem(name: queryItem.key, value: queryItem.value)
-            )
+        guard let finalURL = components?.url else {
+            throw NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Failed to construct URL with parameters"])
         }
-
-        guard let queryURL = components?.url else {
-            throw NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey : "Invalid queryURL"])
-        }
-
-        return queryURL
+        return finalURL
     }
 
     static func sendRequest<T: Decodable>(_ request: URLRequest, withEncodingBody body: Encodable? = nil, decodeTo: T.Type) async throws -> T {
