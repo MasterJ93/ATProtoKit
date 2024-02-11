@@ -8,6 +8,9 @@
 import Foundation
 
 extension ATProtoKit {
+    /// Retrieves a blob from a given record.
+    /// - Parameter blobQuery: An object containing the `atDID` and `cidHash` of the blob.
+    /// - Returns: A `Result` containing ``UploadBlobOutput`` on success or `Error` on failure.
     public func getBlob(from blobQuery: BlobQuery) async -> Result<UploadBlobOutput, Error> {
         guard let sessionURL = session.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.sync.getBlob") else {
