@@ -7,17 +7,28 @@
 
 import Foundation
 
+/// Manages authentication and session operations for the a user account in the ATProtocol.
 public class ATProtocolConfiguration: ProtocolConfiguration {
+    /// The user's handle identifier in their account.
     public private(set) var handle: String
+    /// The app password of the user's account.
     public private(set) var appPassword: String
+    /// The URL of the Public Distribution Service (PDS).
     public private(set) var pdsURL: String
     
+    /// Initializes a new instance of `ATProtocolConfiguration`.
+    /// - Parameters:
+    ///   - handle: The user's handle identifier in their account.
+    ///   - appPassword: The app password of the user's account.
+    ///   - pdsURL: The URL of the Public Distribution Service (PDS). Defaults to `https://bsky.social`.
     public init(handle: String, appPassword: String, pdsURL: String = "https://bsky.social") {
         self.handle = handle
         self.appPassword = appPassword
         self.pdsURL = !pdsURL.isEmpty ? pdsURL : "https://bsky.social"
     }
-
+    
+    /// Attempts to authenticate the user into the server.
+    /// - Returns: A `Result` containing ``UserSession`` on success or an `Error` on failure.
     public func authenticate() async throws -> Result<UserSession, Error> {
         guard let requestURL = URL(string: "\(self.pdsURL)/xrpc/com.atproto.server.createSession") else {
             return .failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"]))
@@ -37,7 +48,12 @@ public class ATProtocolConfiguration: ProtocolConfiguration {
             return .failure(error)
         }
     }
-
+    
+    /// Fetches an existing session using an access token.
+    /// - Parameters:
+    ///   - accessToken: The access token for the session.
+    ///   - pdsURL: The URL of the Public Distribution Service (PDS). Defaults to `https://bsky.social`.
+    /// - Returns: Returns: A `Result` containing ``SessionResponse`` on success or an `Error` on failure.
     public static func getSession(byAccessToken accessToken: String, pdsURL: String = "https://bsky.social") async throws -> Result<SessionResponse, Error> {
         guard let requestURL = URL(string: "\(pdsURL)/xrpc/com.atproto.server.getSession") else {
             return .failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"]))
@@ -68,7 +84,11 @@ public class ATProtocolConfiguration: ProtocolConfiguration {
             return .failure(error)
         }
     }
-
+    
+    /// Refreshes the user's session using a refresh token.
+    /// - Parameters:
+    ///   - refreshToken: The refresh token for the session.
+    ///   - pdsURL: The URL of the Public Distribution Service (PDS). Defaults to `https://bsky.social`.
     public static func deleteSession(_ refreshToken: String, pdsURL: String = "https://bsky.social") async throws {
         guard let requestURL = URL(string: "\(pdsURL)/xrpc/com.atproto.server.deleteSession") else {
             throw NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"])
