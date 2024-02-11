@@ -14,7 +14,7 @@ extension ATProtoKit {
             return .failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"]))
         }
 
-        let request = await APIClientService.createRequest(forRequest: requestURL, andMethod: .post, acceptValue: "'*/*'")
+        let request = APIClientService.createRequest(forRequest: requestURL, andMethod: .post, acceptValue: "'*/*'")
 
         do {
             let response = try await APIClientService.sendRequest(request, withEncodingBody: blobQuery, decodeTo: UploadBlobOutput.self)
