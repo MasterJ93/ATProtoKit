@@ -7,19 +7,30 @@
 
 import Foundation
 
+/// The base exception class for ATProtoKit.
 public enum ATProtoError: Error, Decodable {
+    /// Represents a bad request error (HTTP 400) with an associated message.
     case badRequest(message: String) // Error 400
-    case unauthorized(mesage: String) // Error 401
-    case forbidden(message: String) // Error 403
-    case notFound(message: String) // Error 404
-    case payloadTooLarge(message: String) // Error 413
-    case tooManyRequests(message: String) // Error 429
-    case internalServerError(message: String) // Error 500
-    case notImplemented(message: String) // Error 501
-    case badGateway(message: String) // Error 502
-    case serviceUnavailable(message: String) // Error 503
-    case gatewayTimeout(message: String) // Error 504
-    case unknown(message: String) // Unknown Error
+    /// Represents an unauthorized error (HTTP 401) with an associated message.
+    case unauthorized(message: String)
+    /// Represents a forbidden error (HTTP 403) with an associated message.
+    case forbidden(message: String)
+    /// Represents a payload too large error (HTTP 413) with an associated message.
+    case payloadTooLarge(message: String)
+    /// Represents a too many requests error (HTTP 429) with an associated message.
+    case tooManyRequests(message: String)
+    /// Represents an internal server error (HTTP 500) with an associated message.
+    case internalServerError(message: String)
+    /// Represents a not implemented error (HTTP 501) with an associated message.
+    case notImplemented(message: String)
+    /// Represents a bad gateway error (HTTP 502) with an associated message.
+    case badGateway(message: String)
+    /// Represents a service unavailable error (HTTP 503) with an associated message.
+    case serviceUnavailable(message: String)
+    /// Represents a gateway timeout error (HTTP 504) with an associated message.
+    case gatewayTimeout(message: String)
+    /// Represents an unknown error with an associated message.
+    case unknown(message: String)
 
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
@@ -55,8 +66,24 @@ public enum ATProtoError: Error, Decodable {
                 "DuplicateCreate",
                 "TokenRequired":
                 self = .badRequest(message: message)
+            case "Unauthorized":
+                self = .unknown(message: message)
+            case "Forbidden":
+                self = .forbidden(message: message)
+            case "PayloadTooLarge":
+                self = .payloadTooLarge(message: message)
+            case "TooManyRequests":
+                self = .tooManyRequests(message: message)
             case "InternalServerError":
                 self = .internalServerError(message: message)
+            case "NotImplemented":
+                self = .notImplemented(message: message)
+            case "BadGateway":
+                self = .badGateway(message: message)
+            case "ServiceUnavailable":
+                self = .serviceUnavailable(message: message)
+            case "GatewayTimeout":
+                self = .gatewayTimeout(message: message)
             default:
                 self = .unknown(message: message)
         }
