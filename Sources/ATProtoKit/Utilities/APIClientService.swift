@@ -166,7 +166,6 @@ public class APIClientService {
         }
     }
 
-    // Same method as above, but sending raw JSON instead.
     /// Sends a `URLRequest` and returns the raw JSON output as a `Dictionary`.
     /// - Parameters:
     ///   - request: The `URLRequest` to send.
@@ -199,7 +198,31 @@ public class APIClientService {
         guard let response = try JSONSerialization.jsonObject(with: data, options: .mutableLeaves) as? [String: Any] else { return ["Response": "No response"] }
         return response
     }
-    
+
+    /// Sends a `URLRequest` and returns the raw HTML output as a `String`.
+    /// - Parameters:
+    ///   - request: The `URLRequest` to send.
+    /// - Returns: A `String` representation of the HTML response.
+    public static func sendRequestWithRawHTMLOutput(_ request: URLRequest) async throws -> String {
+        let (data, response) = try await URLSession.shared.data(for: request)
+
+        guard let httpResponse = response as? HTTPURLResponse else {
+            throw NSError(domain: "APIClientService", code: -1, userInfo: [NSLocalizedDescriptionKey: "Error getting response"])
+        }
+
+        guard httpResponse.statusCode == 200 else {
+            let responseBody = String(data: data, encoding: .utf8) ?? "No response body"
+            print("HTTP Status Code: \(httpResponse.statusCode) - Response Body: \(responseBody)")
+            throw URLError(.badServerResponse)
+        }
+
+        guard let htmlString = String(data: data, encoding: .utf8) else {
+            throw NSError(domain: "APIClientService", code: -1, userInfo: [NSLocalizedDescriptionKey: "Failed to decode HTML"])
+        }
+
+        return htmlString
+    }
+
     /// Represents the HTTP methods used to interact with the AT Protocol.
     public enum HTTPMethod: String {
         /// Retrieve information from the AT Protocol using a given URI.
