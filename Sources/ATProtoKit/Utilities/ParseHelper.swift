@@ -7,20 +7,31 @@
 
 import Foundation
 
+/// A utility class designed for parsing various elements like mentions, URLs, and hashtags from text. It also supports parsing and constructing facets from mentions within a given text
 public class ParseHelper {
 
+    /// Represents the response structure for identity lookups, containing a decentralized identifier (DID).
     public struct IdentityResponse: Codable {
+        /// The decentralized identifier (DID) associated with an identity.
         let did: String
     }
-
+    
+    /// Manages a collection of ``Facet`` objects, providing thread-safe append operations.
     actor FacetsActor {
+        /// The collection of ``Facet`` objects.
         var facets = [Facet]()
-
+        
+        /// Appends a new ``Facet`` to the collection in a thread-safe manner.
+        /// - Parameter facet: Parameter facet: The ``Facet`` to append.
         func append(_ facet: Facet) {
             facets.append(facet)
         }
     }
 
+    
+    /// Parses mentions from a given text and returns them along with their positions.
+    /// - Parameter text: The text to parse for mentions.
+    /// - Returns: An array of `Dictionary`s containing the start and end positions of each mention and the mention text.
     public static func parseMentions(from text: String) -> [[String: Any]] {
         var spans = [[String: Any]]()
 
@@ -56,6 +67,9 @@ public class ParseHelper {
         return spans
     }
 
+    /// Parses URLs from a given text and returns them along with their positions.
+    /// - Parameter text: The text to parse for URLs.
+    /// - Returns: An array of `Dictionary`s containing the start and end positions of each URL and the URL text.
     public static func parseURLs(from text: String) -> [[String: Any]] {
         var spans = [[String: Any]]()
 
@@ -89,6 +103,9 @@ public class ParseHelper {
         return spans
     }
 
+    /// Parses hashtags from a given text and returns them along with their positions.
+    /// - Parameter text: The text to parse for hashtags.
+    /// - Returns: An array of `Dictionary`s containing the start and end positions of each hashtag and the hashtag text.
     public static func parseHashtags(from text: String) -> [[String: Any]] {
         var spans = [[String: Any]]()
 
@@ -119,6 +136,11 @@ public class ParseHelper {
         return spans
     }
 
+    /// Processes text to find mentions, URLs, and hashtags, converting these elements into ``Facet`` objects.
+    /// - Parameters:
+    ///   - text: The text to be processed.
+    ///   - pdsURL: The URL of the Public Distribution Service, defaulting to "https://bsky.social".
+    /// - Returns: An array of ``Facet`` objects representing the structured data elements found in the text.
     public static func parseFacets(from text: String, pdsURL: String = "https://bsky.social") async -> [Facet] {
         let facets = FacetsActor()
 
@@ -205,43 +227,5 @@ public class ParseHelper {
         }
 
         return await facets.facets
-    }
-
-    static func retrieveDID(from handle: String, pdsURL: String) async throws -> String? {
-        // Go to AT Protocol to find the handle in order to see if it exists.
-        guard let url = URL(string: "\(pdsURL)/xrpc/com.atproto.identity.resolveHandle") else {
-            return nil
-        }
-
-        var components = URLComponents(url: url, resolvingAgainstBaseURL: true)
-        components?.queryItems = [URLQueryItem(name: "handle", value: handle)]
-
-        guard let queryURL = components?.url else {
-            return nil
-        }
-
-        print("Request URL: \(queryURL.absoluteString)")  // Debugging line
-
-        var request = URLRequest(url: queryURL)
-        request.httpMethod = "GET"
-        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-
-        let (data, response) = try await URLSession.shared.data(for: request)
-
-        guard let httpResponse = response as? HTTPURLResponse else {
-            throw URLError(.badServerResponse)
-        }
-
-        print("Status Code: \(httpResponse.statusCode)")  // Debugging line
-        print("Response Headers: \(httpResponse.allHeaderFields)")  // Debugging line
-
-        if httpResponse.statusCode == 400 {
-            print("Request failed. Error code 400.")
-            return nil
-        }
-
-        let decodedResponse = try JSONDecoder().decode(ResolveHandleOutput.self, from: data)
-        print("Decoded Response.did: \(decodedResponse.did)")
-        return decodedResponse.did
     }
 }
