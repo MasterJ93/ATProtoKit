@@ -139,7 +139,7 @@ public class ParseHelper {
     /// Processes text to find mentions, URLs, and hashtags, converting these elements into ``Facet`` objects.
     /// - Parameters:
     ///   - text: The text to be processed.
-    ///   - pdsURL: The URL of the Public Distribution Service, defaulting to "https://bsky.social".
+    ///   - pdsURL: The URL of the Personal Data Server, defaulting to "https://bsky.social".
     /// - Returns: An array of ``Facet`` objects representing the structured data elements found in the text.
     public static func parseFacets(from text: String, pdsURL: String = "https://bsky.social") async -> [Facet] {
         let facets = FacetsActor()

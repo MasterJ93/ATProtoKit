@@ -13,14 +13,14 @@ public class ATProtocolConfiguration: ProtocolConfiguration {
     public private(set) var handle: String
     /// The app password of the user's account.
     public private(set) var appPassword: String
-    /// The URL of the Public Distribution Service (PDS).
+    /// The URL of the Personal Data Server (PDS).
     public private(set) var pdsURL: String
     
     /// Initializes a new instance of `ATProtocolConfiguration`.
     /// - Parameters:
     ///   - handle: The user's handle identifier in their account.
     ///   - appPassword: The app password of the user's account.
-    ///   - pdsURL: The URL of the Public Distribution Service (PDS). Defaults to `https://bsky.social`.
+    ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `https://bsky.social`.
     public init(handle: String, appPassword: String, pdsURL: String = "https://bsky.social") {
         self.handle = handle
         self.appPassword = appPassword
@@ -52,7 +52,7 @@ public class ATProtocolConfiguration: ProtocolConfiguration {
     /// Fetches an existing session using an access token.
     /// - Parameters:
     ///   - accessToken: The access token for the session.
-    ///   - pdsURL: The URL of the Public Distribution Service (PDS). Defaults to `https://bsky.social`.
+    ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `https://bsky.social`.
     /// - Returns: Returns: A `Result` containing ``SessionResponse`` on success or an `Error` on failure.
     public static func getSession(byAccessToken accessToken: String, pdsURL: String = "https://bsky.social") async throws -> Result<SessionResponse, Error> {
         guard let requestURL = URL(string: "\(pdsURL)/xrpc/com.atproto.server.getSession") else {
@@ -88,7 +88,7 @@ public class ATProtocolConfiguration: ProtocolConfiguration {
     /// Refreshes the user's session using a refresh token.
     /// - Parameters:
     ///   - refreshToken: The refresh token for the session.
-    ///   - pdsURL: The URL of the Public Distribution Service (PDS). Defaults to `https://bsky.social`.
+    ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `https://bsky.social`.
     public static func deleteSession(_ refreshToken: String, pdsURL: String = "https://bsky.social") async throws {
         guard let requestURL = URL(string: "\(pdsURL)/xrpc/com.atproto.server.deleteSession") else {
             throw NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"])

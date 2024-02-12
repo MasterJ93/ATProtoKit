@@ -13,7 +13,7 @@ public protocol ProtocolConfiguration {
     var handle: String { get }
     /// The app password associated with the user's account, used for authentication.
     var appPassword: String { get }
-    /// The base URL of the Public Distribution Service (PDS) with which the AT Protocol interacts.
+    /// The base URL of the Personal Data Server (PDS) with which the AT Protocol interacts.
     /// This URL is used to make network requests to the PDS for various operations, such as
     /// session creation, refresh, and deletion.
     var pdsURL: String { get }

@@ -11,7 +11,7 @@ extension ATProtoKit {
     /// Retrieves a decentralized identifier (DID) based on a given handle from a specified PDS URL.
     /// - Parameters:
     ///   - handle: The handle to resolve into a DID.
-    ///   - pdsURL: The URL of the Public Distribution Service (PDS) to query.
+    ///   - pdsURL: The URL of the Personal Data Server (PDS) to query.
     /// - Returns: An optional `String` representing the DID if found; otherwise, `nil`.
     public static func retrieveDID(from handle: String, pdsURL: String = "https://bsky.social") async throws -> Result<ResolveHandleOutput, Error> {
         // Go to AT Protocol to find the handle in order to see if it exists.

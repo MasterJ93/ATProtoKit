@@ -28,7 +28,7 @@ public class UserSession: SessionProtocol {
     /// The DID document associated with the user, containing AT Protocol-specific information.
     public private(set) var didDocument: DIDDocument?
     
-    /// The URL of the Public Distribution Service (PDS) associated with the user. Optional.
+    /// The URL of the Personal Data Server (PDS) associated with the user. Optional.
     /// - Note: This is not included when initalizing `UserSession`. Instead, it's added after the successful initalizing.
     public var pdsURL: String?
     
@@ -106,7 +106,7 @@ public struct VerificationMethod: Codable {
 public struct Service: Codable {
     /// The unique identifier of the service.
     var id: String
-    /// The type of service (matching `AtprotoPersonalDataServer`) for use in identifying the Public Distribution Service (PDS).
+    /// The type of service (matching `AtprotoPersonalDataServer`) for use in identifying the Personal Data Server (PDS).
     var type: String
     /// The endpoint URL for the service, specifying the location of the service.
     var serviceEndpoint: URL

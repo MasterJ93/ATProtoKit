@@ -86,7 +86,7 @@ extension ATProtoKit {
     /// Uploads images to the AT Protocol for attaching to a record at a later request.
     /// - Parameters:
     ///   - images: The ``ImageQuery`` that contains the image data. Current limit is 4 images.
-    ///   - pdsURL: The URL of the public distribution service. Defaults to `https://bsky.social`.
+    ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `https://bsky.social`.
     ///   - accessToken: The access token used to authenticate to the user.
     /// - Returns: An ``EmbedUnion``, which contains a list of ``EmbedImage``s for use in a record.
     ///
