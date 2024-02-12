@@ -4,7 +4,7 @@ A straightforward solution for using the AT Protocol and Bluesky, written in Swi
 ***This API library is highly unstable. Things will change. Things will break. Until the project reaches version 1.0.0, stability will not be guaranteed.***
 ---
 
-ATProtoKit is an easy-to-understand API library that leverages the AT Protocol with the type-safety and ease-of-use you’ve come to expect with the Swift programming language. Whether you’re building a bot, a server app, or just another Bluesky client, this project should hopefully get you up to speed.
+ATProtoKit is an easy-to-understand API library that leverages the AT Protocol with the type-safety and ease-of-use you’ve come to expect with the Swift programming language. Whether you’re building a bot, a server app, or just another user-facing Bluesky client, this project should hopefully get you up to speed.
 
 ## Example Usage
 ```swift
@@ -28,7 +28,6 @@ I believe Bluesky and its accompanying protocol gives the perfect balance betwee
 - Full compatibility with Apple’s APIs for each of the platforms.
 - Written with adherence to the Swift API Design Guidelines and up-to-date best practices.
 - Uses Swift’s powerful type inference and pattern matching for cleaner, more readable code.
-- Created in a way that’s type-safe, reliable, and min.
 - Well-written documentation for all of the AT Protocol and Bluesky APIs.
 - A RichText helper to parse text into the applicable facet.
 -  Extend the capabilities of generic structures within the AT Protocol in case your instance requires it.
@@ -82,18 +81,18 @@ Task {
 
 ## Requirements
 To use ATProtoKit in your apps, your app should target the specific version numbers:
-- iOS and iPadOS 13 or later.
-- macOS 12 or later.
-- tvOS 13 or later.
-- watchOS 6 or later.
-(Given now new it is, there are no version requirements for visionOS.)
+- **iOS** and **iPadOS** 13 or later.
+- **macOS** 12 or later.
+- **tvOS** 13 or later.
+- **watchOS** 6 or later.
+(Given now new it is, there are no version requirements for **visionOS**.)
 
 As of right now, Linux support is theoretically possible, but not guaranteed to be tested. The plan is to make it fully compatible with Linux by version 1.0, though this is not a required goal to get there. For other platforms (such as Android), this is also not tested, but should be theoretically possible. While it’s not a goal to make it fully compatible, contributions and feedback on the matter are welcomed.
 
 ## Contributions and Feedback
-While this project will change signifcantly, early feedback, issues, and contributions is highly welcomed and encouragd. At a later date, I'll post some contributor guidelines and templates, but since this project is in its early days, I have yet to have a significant amount of time in terms of thinking of this. However, some of the things to keep in mind are:
+While this project will change significantly, early feedback, issues, and contributions is highly welcomed and encouraged. At a later date, I'll post some contributor guidelines and templates, but since this project is in its early days, I have yet to have a significant amount of time in terms of thinking of this. However, some of the things to keep in mind are:
 - Be sure to adhere to the [Swift API Design Guidelines](https://www.swift.org/documentation/api-design-guidelines/) when contributing code.
 - 
 
-## Licence
-This Swift Package is using the MIT Licence. Please view LICENCE.md for more details.
+## License
+This Swift Package is using the MIT License. Please view LICENSE.md for more details.
