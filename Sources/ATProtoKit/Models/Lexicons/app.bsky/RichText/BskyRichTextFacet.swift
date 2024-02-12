@@ -65,7 +65,7 @@ public struct ByteSlice: Codable {
     }
 }
 
-public protocol FeatureCodable: Codable {
+internal protocol FeatureCodable: Codable {
     static var type: String { get }
 }
 
