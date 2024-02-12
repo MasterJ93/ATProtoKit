@@ -8,7 +8,7 @@ import Foundation
 /// ```swift
 /// let config = ATProtocolConfiguration(handle: "example.bsky.social", appPassword: "hunter2")
 /// ```
-/// We then use ``ATProtocolConfiguration/authenticate()`` to grab the session information. The result is handed over to the `ATProtoKit`'s instance:
+/// ``ATProtocolConfiguration/authenticate()`` should then be used to get information about the session. The result is handed over to the `ATProtoKit`'s instance:
 ///
 /// ```swift
 /// Task {
