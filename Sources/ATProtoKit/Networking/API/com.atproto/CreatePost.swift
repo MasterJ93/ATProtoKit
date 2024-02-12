@@ -120,7 +120,7 @@ extension ATProtoKit {
     }
 
     /// Grabs and validates a post record to attach to a record's embed at a later request.
-    /// - Parameter strongReference: An object that contains the record's
+    /// - Parameter strongReference: An object that contains the record's `recordURI` (URI) and the `cidHash` (CID) .
     /// - Returns: A strong reference, which contains a record's `recordURI` (URI) and the `cidHash` (CID) .
     public func addQuotePostToEmbed(_ strongReference: StrongReference) async throws -> EmbedUnion {
         let record = try await ATProtoKit.fetchRecordForURI(strongReference.recordURI)
@@ -142,10 +142,25 @@ extension ATProtoKit {
     }
     
     /// Represents the different types of content that can be embedded in a post record.
+    ///
+    /// `EmbedIdentifier` provides a unified interface for specifying embeddable content, simplifying the process of attaching
+    /// images, external links, other post records, or media to a post. By abstracting the details of each embed type, it allows methods
+    /// like ``createPostRecord(text:locales:replyTo:embed:labels:tags:creationDate:)`` to handle the
+    /// necessary operations (e.g., uploading, grabbing metadata, validation, etc.) behind the scenes, streamlining the embedding process.
     public enum EmbedIdentifier {
+        /// Represents a set of images to be embedded in the post.
+        /// - Parameter images: An array of `ImageQuery` objects, each containing the image data, metadata, and filenames of the image.
         case images(images: [ImageQuery])
+        /// Represents an external link to be embedded in the post.
+        /// - Parameter url: A `URL` pointing to the external content.
         case external(url: URL)
+        /// Represents another post record that is to be embedded within the current post.
+        /// - Parameter strongReference: A `StrongReference` to the post record to be embedded, which contains a record's `recordURI` (URI) and the `cidHash` (CID) .
         case record(strongReference: StrongReference)
+        /// Represents a post record accompanied by media, to be embedded within the current post.
+        /// - Parameters:
+        ///   - record: An `EmbedRecord`, representing the post to be embedded.
+        ///   - media: A `MediaUnion`, representing the media content associated with the post.
         case recordWithMedia(record: EmbedRecord, media: MediaUnion)
     }
 }
