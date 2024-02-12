@@ -13,34 +13,34 @@ public enum ATProtoError: Error, Decodable {
     /// - Parameter message: The message received along side the error.
     case badRequest(message: String) // Error 400
     /// Represents an unauthorized error (HTTP 401) with an associated message.
-    /// /// - Parameter message: The message received along side the error.
+    /// - Parameter message: The message received along side the error.
     case unauthorized(message: String)
     /// Represents a forbidden error (HTTP 403) with an associated message.
-    /// /// - Parameter message: The message received along side the error.
+    /// - Parameter message: The message received along side the error.
     case forbidden(message: String)
     /// Represents a payload too large error (HTTP 413) with an associated message.
-    /// /// - Parameter message: The message received along side the error.
+    /// - Parameter message: The message received along side the error.
     case payloadTooLarge(message: String)
     /// Represents a too many requests error (HTTP 429) with an associated message.
-    /// /// - Parameter message: The message received along side the error.
+    /// - Parameter message: The message received along side the error.
     case tooManyRequests(message: String)
     /// Represents an internal server error (HTTP 500) with an associated message.
-    /// /// - Parameter message: The message received along side the error.
+    /// - Parameter message: The message received along side the error.
     case internalServerError(message: String)
     /// Represents a not implemented error (HTTP 501) with an associated message.
-    /// /// - Parameter message: The message received along side the error.
+    /// - Parameter message: The message received along side the error.
     case notImplemented(message: String)
     /// Represents a bad gateway error (HTTP 502) with an associated message.
-    /// /// - Parameter message: The message received along side the error.
+    /// - Parameter message: The message received along side the error.
     case badGateway(message: String)
     /// Represents a service unavailable error (HTTP 503) with an associated message.
-    /// /// - Parameter message: The message received along side the error.
+    /// - Parameter message: The message received along side the error.
     case serviceUnavailable(message: String)
     /// Represents a gateway timeout error (HTTP 504) with an associated message.
-    /// /// - Parameter message: The message received along side the error.
+    /// - Parameter message: The message received along side the error.
     case gatewayTimeout(message: String)
     /// Represents an unknown error with an associated message.
-    /// /// - Parameter message: The message received along side the error.
+    /// - Parameter message: The message received along side the error.
     case unknown(message: String)
 
     public init(from decoder: Decoder) throws {
