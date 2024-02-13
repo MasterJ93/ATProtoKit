@@ -316,6 +316,37 @@ public struct ThreadViewPreferences: Codable {
     }
 }
 
+/// A preference object for the user's preferences for interests.
+public struct InterestViewPreferences: Codable {
+    /// An array of interest tags. Current maximum limit is 100 tags.
+    /// - Note: According to AT Protocol's specifications: "A list of tags which describe the account owner's interests gathered during onboarding."
+    public let tags: [String]
+
+    init(tags: [String]) {
+        self.tags = tags
+    }
+
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+
+        self.tags = try container.decode([String].self, forKey: .tags)
+    }
+
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+
+        // Truncate `tags` to 640 characters before encoding
+        // `maxGraphemes`'s limit is 64, but `String.count` should respect that limit implictly
+        // Then, truncate `tags` to 100 items before encoding
+        let truncatedTags = self.tags.map { $0.truncated(toLength: 640) }
+        try truncatedEncode(truncatedTags, withContainer: &container, forKey: .tags, upToLength: 100)
+    }
+
+    enum CodingKeys: CodingKey {
+        case tags
+    }
+}
+
 // Define an enum to represent the possible preference types
 public enum ActorPreferenceUnion: Codable {
     case adultContent(AdultContentPreferences)
@@ -341,6 +372,8 @@ public enum ActorPreferenceUnion: Codable {
             self = .feedView(value)
         } else if let value = try? container.decode(ThreadViewPreferences.self) {
             self = .threadView(value)
+        } else if let value = try? container.decode(InterestViewPreferences.self) {
+            self = .interestViewPreferences(value)
         } else {
             throw DecodingError.typeMismatch(ActorPreferenceUnion.self, DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Unknown ActorPreference type"))
         }
@@ -362,6 +395,8 @@ public enum ActorPreferenceUnion: Codable {
             case .feedView(let preference):
                 try container.encode(preference)
             case .threadView(let preference):
+                try container.encode(preference)
+            case .interestViewPreferences(let preference):
                 try container.encode(preference)
         }
     }
