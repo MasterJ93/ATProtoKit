@@ -28,7 +28,6 @@ public class ParseHelper {
         }
     }
 
-    
     /// Parses mentions from a given text and returns them along with their positions.
     /// - Parameter text: The text to parse for mentions.
     /// - Returns: An array of `Dictionary`s containing the start and end positions of each mention and the mention text.
