@@ -7,13 +7,6 @@
 
 import Foundation
 
-extension Encodable {
-    func toJsonData() throws -> Data? {
-        return try JSONEncoder().encode(self)
-    }
-}
-
-
 /// A helper class to handle the most common HTTP Requests for the AT Protocol.
 public class APIClientService {
 
