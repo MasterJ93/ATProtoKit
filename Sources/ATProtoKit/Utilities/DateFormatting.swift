@@ -34,6 +34,7 @@ struct CustomDateFormatter {
     }
 }
 
+// TODO: Find a way to merge `DateFormatting` with `DateFormattingOptional` in order to remove duplicated code.
 /// A property wrapper for encoding and decoding `Date` objects with the ISO8601 format.
 ///
 /// When using `@DateFormatting`, you first need to add it to a `Date` property. It must be of type `var` and can't be an optional `Date`:
@@ -67,7 +68,6 @@ struct CustomDateFormatter {
 ///     try container.encode(self._indexedAt, forKey: .indexedAt)
 /// }
 /// ```
-/// - ToDo: Find a way to merge `DateFormatting` with ``DateFormattingOptional`` in order to remove duplicated code.
 @propertyWrapper
 public struct DateFormatting: Codable {
     /// The actual `Date` value being wrapped.
@@ -97,6 +97,7 @@ public struct DateFormatting: Codable {
     }
 }
 
+// TODO: Find a way to merge `DateFormattingOptional` with `DateFormatting` in order to remove duplicated code.
 /// A property wrapper for optionally encoding and decoding `Date?` objects with the ISO8601 format.
 ///
 /// When using `@DateFormattingOptional`, you first need to add it to a `Date?` property:
@@ -130,7 +131,6 @@ public struct DateFormatting: Codable {
 ///     try container.encodeIfPresent(self._indexedAt, forKey: .indexedAt)
 /// }
 /// ```
-/// - ToDo: Find a way to merge `DateFormattingOptional` with ``DateFormatting`` in order to remove duplicated code.
 @propertyWrapper
 public struct DateFormattingOptional: Codable {
     /// The optional `Date?` value being wrapped.

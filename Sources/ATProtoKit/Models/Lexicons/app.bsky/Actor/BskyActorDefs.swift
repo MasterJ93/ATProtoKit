@@ -24,9 +24,8 @@ public struct ProfileViewBasic: Codable {
     public var avatar: String? = nil
     /// The viewer state of the user. Optional.
     public var viewer: ActorViewerState? = nil
+    // TODO:  Figure out what this is about.
     /// An array of self-defined [...]. Optional.
-    ///
-    /// - ToDo: Figure out what this is about.
     public var labels: [Label]? = nil
 
     public init(atDID: String, actorHandle: String, displayName: String?, avatar: String?, viewer: ActorViewerState?, labels: [Label]?) {
@@ -183,9 +182,8 @@ public struct ProfileViewDetailed: Codable {
     @DateFormattingOptional public var indexedAt: Date? = nil
     /// The viewer state of the user. Optional.
     public var viewer: ActorViewerState? = nil
+    // TODO:  Figure out what this is about.
     /// An array of self-defined [...]. Optional.
-    ///
-    /// - ToDo: Figure out what this is about.
     public var labels: [Label]? = nil
 
     public init(atDID: String, actorHandle: String, displayName: String?, description: String?, avatar: String?, banner: String?, followerCount: Int?, followCount: Int?, postCount: Int?, indexedAt: Date?, viewer: ActorViewerState?, labels: [Label]?) {
@@ -275,19 +273,16 @@ public struct ActorViewerState: Codable {
     public let mutedByArray: ListViewBasic? = nil
     /// Indicates whether the requesting account has been blocked by the subject account. Optional.
     public let isBlocked: Bool? = nil
+    // TODO: Figure out what this is about.
     /// A URI.
-    ///
-    /// - ToDo: Figure out what this is about.
     public let blocking: String? = nil
     /// An array of the subject account's lists.
     public let blockingByArray: ListViewBasic? = nil
+    // TODO: Figure out what this is about.
     /// A URI.
-    ///
-    /// - ToDo: Figure out what this is about.
     public let following: String? = nil
+    // TODO: Figure out what this is about.
     /// A URI.
-    ///
-    /// - ToDo: Figure out what this is about.
     public let followedBy: String? = nil
 
     enum CodingKeys: String, CodingKey {
