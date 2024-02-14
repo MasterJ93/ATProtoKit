@@ -10,9 +10,7 @@ import Foundation
 // MARK: - Main definition
 /// The main data model definition for external embeds.
 ///
-/// - Note: This is based on the `app.bsky.embed.external` lexicon.
-///
-/// The lexicon can be viewed in their [GitHub repo][github].
+/// - SeeAlso: This is based on the [`app.bsky.embed.external`][github] lexicon.
 ///
 /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/embed/external.json
 public struct EmbedExternal: Codable {
@@ -33,9 +31,7 @@ public struct EmbedExternal: Codable {
 // MARK: -
 /// A data model for an external definition.
 ///
-/// - Note: This is based on the `app.bsky.embed.external` lexicon.
-///
-/// The lexicon can be viewed in their [GitHub repo][github].
+/// - SeeAlso: This is based on the [`app.bsky.embed.external`][github] lexicon.
 ///
 /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/embed/external.json
 public struct External: Codable {
@@ -53,9 +49,7 @@ public struct External: Codable {
 
 /// A data model for an external view definition.
 ///
-/// - Note: This is based on the `app.bsky.embed.external` lexicon.
-///
-/// The lexicon can be viewed in their [GitHub repo][github].
+/// - SeeAlso: This is based on the [`app.bsky.embed.external`][github] lexicon.
 ///
 /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/embed/external.json
 public struct EmbedExternalView: Codable {

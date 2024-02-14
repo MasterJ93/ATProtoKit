@@ -8,9 +8,7 @@ import Foundation
 
 /// A data model for a basic profile view definition.
 ///
-/// - Note: This is based on the `app.bsky.actor.defs` lexicon.
-///
-/// The lexicon can be viewed in their [GitHub repo][github].
+/// - SeeAlso: This is based on the [`app.bsky.actor.defs`][github] lexicon.
 ///
 /// [github]: https://github.com/bluesky-social/atproto/blob/9579bec720d30e40c995d09772040212c261d6fb/lexicons/app/bsky/actor/defs.json
 public struct ProfileViewBasic: Codable {
@@ -18,7 +16,9 @@ public struct ProfileViewBasic: Codable {
     public let atDID: String
     /// The unique handle of the user.
     public let actorHandle: String
-    /// The display name of the user. Optional. Current maximum length is 64 characters.
+    /// The display name of the user. Optional.
+    ///
+    /// - Note: Current maximum length is 64 characters.
     public var displayName: String? = nil
     /// The avatar image of the user's profile. Optional.
     public var avatar: String? = nil
@@ -74,9 +74,7 @@ public struct ProfileViewBasic: Codable {
 
 /// A data model for a profile view definition.
 ///
-/// - Note: This is based on the `app.bsky.actor.defs` lexicon.
-///
-/// The lexicon can be viewed in the AT Protocol's [GitHub repo][github].
+/// - SeeAlso: This is based on the [`app.bsky.actor.defs`][github] lexicon.
 ///
 /// [github]: https://github.com/bluesky-social/atproto/blob/9579bec720d30e40c995d09772040212c261d6fb/lexicons/app/bsky/actor/defs.json
 public struct ProfileView: Codable {
@@ -84,9 +82,13 @@ public struct ProfileView: Codable {
     public let atDID: String
     /// The unique handle of the user.
     public let actorHandle: String
-    /// The display name of the user's profile. Optional. Current maximum length is 64 characters.
+    /// The display name of the user's profile. Optional.
+    ///
+    /// - Note: Current maximum length is 64 characters.
     public var displayName: String? = nil
-    /// The description of the user's profile. Optional. Current maximum length is 256 characters.
+    /// The description of the user's profile. Optional.
+    ///
+    /// - Note: Current maximum length is 256 characters.
     public var description: String? = nil
     /// The avatar image of a user's profile. Optional.
     public let avatar: String?
@@ -154,9 +156,7 @@ public struct ProfileView: Codable {
 
 /// A data model for a detailed profile view definition.
 ///
-/// - Note: This is based on the `app.bsky.actor.defs` lexicon.
-///
-/// The lexicon can be viewed in the AT Protocol's [GitHub repo][github].
+/// - SeeAlso: This is based on the [`app.bsky.actor.defs`][github] lexicon.
 ///
 /// [github]: https://github.com/bluesky-social/atproto/blob/9579bec720d30e40c995d09772040212c261d6fb/lexicons/app/bsky/actor/defs.json
 public struct ProfileViewDetailed: Codable {
@@ -164,9 +164,13 @@ public struct ProfileViewDetailed: Codable {
     public let atDID: String
     /// The unique handle of the user.
     public let actorHandle: String
-    /// The display name of the user's profile. Optional. Current maximum length is 64 characters.
+    /// The display name of the user's profile. Optional.
+    ///
+    /// - Note: Current maximum length is 64 characters.
     public var displayName: String? = nil
-    /// The description of the user's profile. Optional. Current maximum length is 256 characters.
+    /// The description of the user's profile. Optional.
+    ///
+    /// - Note: Current maximum length is 256 characters.
     public var description: String? = nil
     /// The avatar image of a user's profile. Optional.
     public var avatar: String? = nil
@@ -261,9 +265,7 @@ public struct ProfileViewDetailed: Codable {
 ///
 /// - Note: From the AT Protocol specification: "Metadata about the requesting account's relationship with the subject account.
 /// Only has meaningful content for authed requests."
-/// - Note: This is based on the `app.bsky.actor.defs` lexicon.
-///
-/// The lexicon can be viewed in the AT Protocol's [GitHub repo][github].
+/// - SeeAlso: This is based on the [`app.bsky.actor.defs`][github] lexicon.
 ///
 /// [github]: https://github.com/bluesky-social/atproto/blob/9579bec720d30e40c995d09772040212c261d6fb/lexicons/app/bsky/actor/defs.json
 public struct ActorViewerState: Codable {
@@ -298,9 +300,7 @@ public struct ActorViewerState: Codable {
 
 /// A data model for a preferences definition.
 ///
-///- Note: This is based on the `app.bsky.actor.defs` lexicon.
-///
-/// The lexicon can be viewed in the AT Protocol's [GitHub repo][github].
+/// - SeeAlso: This is based on the [`app.bsky.actor.defs`][github] lexicon.
 ///
 /// [github]: https://github.com/bluesky-social/atproto/blob/9579bec720d30e40c995d09772040212c261d6fb/lexicons/app/bsky/actor/defs.json
 public struct ActorPreferences: Codable {
@@ -310,9 +310,7 @@ public struct ActorPreferences: Codable {
 
 /// A data model for an "Adult Content" preference definition.
 ///
-/// - Note: This is based on the `app.bsky.actor.defs` lexicon.
-///
-/// The lexicon can be viewed in the AT Protocol's [GitHub repo][github].
+/// - SeeAlso: This is based on the [`app.bsky.actor.defs`][github] lexicon.
 ///
 /// [github]: https://github.com/bluesky-social/atproto/blob/9579bec720d30e40c995d09772040212c261d6fb/lexicons/app/bsky/actor/defs.json
 public struct AdultContentPreferences: Codable {
@@ -326,9 +324,7 @@ public struct AdultContentPreferences: Codable {
 
 /// A data model for a "Content Label" preference definition.
 ///
-/// - Note: This is based on the `app.bsky.actor.defs` lexicon.
-///
-/// The lexicon can be viewed in the AT Protocol's [GitHub repo][github].
+/// - SeeAlso: This is based on the [`app.bsky.actor.defs`][github] lexicon.
 ///
 /// [github]: https://github.com/bluesky-social/atproto/blob/9579bec720d30e40c995d09772040212c261d6fb/lexicons/app/bsky/actor/defs.json
 public struct ContentLabelPreferences: Codable {
@@ -350,9 +346,7 @@ public struct ContentLabelPreferences: Codable {
 
 /// A data model for a "Saved Feeds" preference definition.
 ///
-/// - Note: This is based on the `app.bsky.actor.defs` lexicon.
-///
-/// The lexicon can be viewed in the AT Protocol's [GitHub repo][github].
+/// - SeeAlso: This is based on the [`app.bsky.actor.defs`][github] lexicon.
 ///
 /// [github]: https://github.com/bluesky-social/atproto/blob/9579bec720d30e40c995d09772040212c261d6fb/lexicons/app/bsky/actor/defs.json
 public struct SavedFeedsPreferences: Codable {
@@ -364,9 +358,7 @@ public struct SavedFeedsPreferences: Codable {
 
 /// A data model for a "Personal Details" preference definition.
 ///
-/// - Note: This is based on the `app.bsky.actor.defs` lexicon.
-///
-/// The lexicon can be viewed in the AT Protocol's [GitHub repo][github].
+/// - SeeAlso: This is based on the [`app.bsky.actor.defs`][github] lexicon.
 ///
 /// [github]: https://github.com/bluesky-social/atproto/blob/9579bec720d30e40c995d09772040212c261d6fb/lexicons/app/bsky/actor/defs.json
 public struct PersonalDetailsPreferences: Codable {
@@ -398,9 +390,7 @@ public struct PersonalDetailsPreferences: Codable {
 
 /// A data model for a "Feed View" preference definition.
 ///
-/// - Note: This is based on the `app.bsky.actor.defs` lexicon.
-///
-/// The lexicon can be viewed in the AT Protocol's [GitHub repo][github].
+/// - SeeAlso: This is based on the [`app.bsky.actor.defs`][github] lexicon.
 ///
 /// [github]: https://github.com/bluesky-social/atproto/blob/9579bec720d30e40c995d09772040212c261d6fb/lexicons/app/bsky/actor/defs.json
 public struct FeedViewPreferences: Codable {
@@ -441,9 +431,7 @@ public struct FeedViewPreferences: Codable {
 
 /// A data model for a "Thread View" preference definition.
 ///
-/// - Note: This is based on the `app.bsky.actor.defs` lexicon.
-///
-/// The lexicon can be viewed in the AT Protocol's [GitHub repo][github].
+/// - SeeAlso: This is based on the [`app.bsky.actor.defs`][github] lexicon.
 ///
 /// [github]: https://github.com/bluesky-social/atproto/blob/9579bec720d30e40c995d09772040212c261d6fb/lexicons/app/bsky/actor/defs.json
 public struct ThreadViewPreferences: Codable {
@@ -476,15 +464,14 @@ public struct ThreadViewPreferences: Codable {
 
 /// A data model for an "Interest View" preference definition.
 ///
-/// - Note: This is based on the `app.bsky.actor.defs` lexicon.
-///
-/// The lexicon can be viewed in the AT Protocol's [GitHub repo][github].
+/// - SeeAlso: This is based on the [`app.bsky.actor.defs`][github] lexicon.
 ///
 /// [github]: https://github.com/bluesky-social/atproto/blob/9579bec720d30e40c995d09772040212c261d6fb/lexicons/app/bsky/actor/defs.json
 public struct InterestViewPreferences: Codable {
-    /// An array of interest tags. Current maximum limit is 100 tags.
+    /// An array of interest tags.
     ///
     /// - Note: According to AT Protocol's specifications: "A list of tags which describe the account owner's interests gathered during onboarding."
+    /// - Note: Current maximum limit is 100 tags. Current maximum length for each tag name is 64 characters.
     public let tags: [String]
 
     init(tags: [String]) {
@@ -514,6 +501,10 @@ public struct InterestViewPreferences: Codable {
 
 // MARK: - Union types
 /// A reference containing the list of preferences.
+///
+/// - SeeAlso: This is based on the [`app.bsky.actor.defs`][github] lexicon.
+///
+/// [github]: https://github.com/bluesky-social/atproto/blob/9579bec720d30e40c995d09772040212c261d6fb/lexicons/app/bsky/actor/defs.json
 public enum ActorPreferenceUnion: Codable {
     /// The "Adult Content" preference.
     case adultContent(AdultContentPreferences)

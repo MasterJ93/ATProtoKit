@@ -10,9 +10,7 @@ import Foundation
 // MARK: - Main definition
 /// The main data model definition for image embeds.
 ///
-/// - Note: This is based on the `app.bsky.embed.images` lexicon.
-///
-/// The lexicon can be viewed in their [GitHub repo][github].
+/// - SeeAlso: This is based on the [`app.bsky.embed.images`][github] lexicon.
 ///
 /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/embed/images.json
 public struct EmbedImages: Codable {
@@ -36,9 +34,7 @@ public struct EmbedImages: Codable {
 // MARK: -
 /// A data model for an external definition.
 ///
-/// - Note: This is based on the `app.bsky.embed.images` lexicon.
-///
-/// The lexicon can be viewed in their [GitHub repo][github].
+/// - SeeAlso: This is based on the [`app.bsky.embed.images`][github] lexicon.
 ///
 /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/embed/images.json
 public struct EmbedImage: Codable {
@@ -70,9 +66,7 @@ public struct EmbedImage: Codable {
 ///
 /// - Note: From the AT Protocol specification: "width:height represents an aspect ratio. It may be approximate, and may not
 /// correspond to absolute dimensions in any given unit."
-/// - Note: This is based on the `app.bsky.embed.images` lexicon.
-///
-/// The lexicon can be viewed in their [GitHub repo][github].
+/// - SeeAlso: This is based on the [`app.bsky.embed.images`][github] lexicon.
 ///
 /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/embed/images.json
 public struct AspectRatio: Codable {
@@ -89,9 +83,7 @@ public struct AspectRatio: Codable {
 
 /// A data model for the embed images definition.
 ///
-/// - Note: This is based on the `app.bsky.embed.images` lexicon.
-///
-/// The lexicon can be viewed in their [GitHub repo][github].
+/// - SeeAlso: This is based on the [`app.bsky.embed.images`][github] lexicon.
 ///
 /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/embed/images.json
 public struct EmbedImagesView: Codable {
@@ -105,9 +97,7 @@ public struct EmbedImagesView: Codable {
 
 /// A data model for a definition related to viewing an image.
 ///
-/// - Note: This is based on the `app.bsky.embed.images` lexicon.
-///
-/// The lexicon can be viewed in their [GitHub repo][github].
+/// - SeeAlso: This is based on the [`app.bsky.embed.images`][github] lexicon.
 ///
 /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/embed/images.json
 public struct ViewImage: Codable {

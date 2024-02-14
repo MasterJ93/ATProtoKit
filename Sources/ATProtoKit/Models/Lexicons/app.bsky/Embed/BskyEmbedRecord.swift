@@ -11,9 +11,7 @@ import Foundation
 /// The main data model definition for record embeds.
 ///
 /// - Note: According to the AT Protocol specifications: "A representation of a record embedded in a Bluesky record (eg, a post). For example, a quote-post, or sharing a feed generator record."
-/// - Note: This is based on the `app.bsky.embed.record` lexicon.
-///
-/// The lexicon can be viewed in their [GitHub repo][github].
+/// - SeeAlso: This is based on the [`app.bsky.embed.record`][github] lexicon.
 ///
 /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/embed/record.json
 public struct EmbedRecord: Codable {
@@ -33,9 +31,7 @@ public struct EmbedRecord: Codable {
 // MARK: -
 /// A data model for a view definition.
 ///
-/// - Note: This is based on the `app.bsky.embed.record` lexicon.
-///
-/// The lexicon can be viewed in their [GitHub repo][github].
+/// - SeeAlso: This is based on the [`app.bsky.embed.record`][github] lexicon.
 ///
 /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/embed/record.json
 public struct EmbedRecordView: Codable {
@@ -49,9 +45,7 @@ public struct EmbedRecordView: Codable {
 
 /// A data model for a record definition in an embed.
 ///
-/// - Note: This is based on the `app.bsky.embed.record` lexicon.
-///
-/// The lexicon can be viewed in their [GitHub repo][github].
+/// - SeeAlso: This is based on the [`app.bsky.embed.record`][github] lexicon.
 ///
 /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/embed/record.json
 public struct ViewRecord: Codable {
@@ -86,9 +80,7 @@ public struct ViewRecord: Codable {
 
 /// A data model for a definition of a record that was unable to be found.
 ///
-/// - Note: This is based on the `app.bsky.embed.record` lexicon.
-///
-/// The lexicon can be viewed in their [GitHub repo][github].
+/// - SeeAlso: This is based on the [`app.bsky.embed.record`][github] lexicon.
 ///
 /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/embed/record.json
 public struct ViewNotFound: Codable {
@@ -105,9 +97,7 @@ public struct ViewNotFound: Codable {
 
 /// A data model for a definition of a record that has been blocked.
 ///
-/// - Note: This is based on the `app.bsky.embed.record` lexicon.
-///
-/// The lexicon can be viewed in their [GitHub repo][github].
+/// - SeeAlso: This is based on the [`app.bsky.embed.record`][github] lexicon.
 ///
 /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/embed/record.json
 public struct ViewBlocked: Codable {
@@ -128,9 +118,7 @@ public struct ViewBlocked: Codable {
 // MARK: - Union types
 /// A reference containing the list of the status of a record.
 ///
-/// - Note: This is based on the `app.bsky.embed.record` lexicon.
-///
-/// The lexicon can be viewed in their [GitHub repo][github].
+/// - SeeAlso: This is based on the [`app.bsky.embed.record`][github] lexicon.
 ///
 /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/embed/record.json
 public enum RecordViewUnion: Codable {
