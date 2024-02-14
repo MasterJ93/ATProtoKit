@@ -11,7 +11,7 @@ import Foundation
 /// - SeeAlso: This is based on the [`app.bsky.actor.defs`][github] lexicon.
 ///
 /// [github]: https://github.com/bluesky-social/atproto/blob/9579bec720d30e40c995d09772040212c261d6fb/lexicons/app/bsky/actor/defs.json
-public struct ProfileViewBasic: Codable {
+public struct ActorProfileViewBasic: Codable {
     /// The decentralized identifier (DID) of the user.
     public let atDID: String
     /// The unique handle of the user.
@@ -77,7 +77,7 @@ public struct ProfileViewBasic: Codable {
 /// - SeeAlso: This is based on the [`app.bsky.actor.defs`][github] lexicon.
 ///
 /// [github]: https://github.com/bluesky-social/atproto/blob/9579bec720d30e40c995d09772040212c261d6fb/lexicons/app/bsky/actor/defs.json
-public struct ProfileView: Codable {
+public struct ActorProfileView: Codable {
     /// The decentralized identifier (DID) of the user.
     public let atDID: String
     /// The unique handle of the user.
@@ -159,7 +159,7 @@ public struct ProfileView: Codable {
 /// - SeeAlso: This is based on the [`app.bsky.actor.defs`][github] lexicon.
 ///
 /// [github]: https://github.com/bluesky-social/atproto/blob/9579bec720d30e40c995d09772040212c261d6fb/lexicons/app/bsky/actor/defs.json
-public struct ProfileViewDetailed: Codable {
+public struct ActorProfileViewDetailed: Codable {
     /// The decentralized identifier (DID) of the user.
     public let atDID: String
     /// The unique handle of the user.

@@ -54,7 +54,7 @@ public struct ViewRecord: Codable {
     /// The CID of the record.
     public let cidHash: String
     /// The creator of the record.
-    public let author: ProfileViewBasic
+    public let author: ActorProfileViewBasic
     // TODO: Find out what specific type falls under this variable.
     /// The value of the record.
     ///
