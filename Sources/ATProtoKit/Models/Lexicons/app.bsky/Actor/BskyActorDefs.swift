@@ -261,7 +261,8 @@ public struct ProfileViewDetailed: Codable {
 
 /// A data model for an actor viewer state definition.
 ///
-/// - Note: From the AT Protocol specification: "Metadata about the requesting account's relationship with the subject account. Only has meaningful content for authed requests."
+/// - Note: From the AT Protocol specification: "Metadata about the requesting account's relationship with the subject account.
+/// Only has meaningful content for authed requests."
 /// - Note: This is based on the `app.bsky.actor.defs` lexicon.
 ///
 /// The lexicon can be viewed in the AT Protocol's [GitHub repo][github].
@@ -516,7 +517,6 @@ public struct InterestViewPreferences: Codable {
     }
 }
 
-// Define an enum to represent the possible preference types
 /// A reference containing the list of preferences.
 public enum ActorPreferenceUnion: Codable {
     /// The "Adult Content" preference.

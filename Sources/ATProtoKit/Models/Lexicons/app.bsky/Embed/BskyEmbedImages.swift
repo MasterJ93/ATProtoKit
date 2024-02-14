@@ -67,7 +67,8 @@ public struct EmbedImage: Codable {
 /// A data model for the aspect ratio definition.
 ///
 /// - Note: This is based on the `app.bsky.embed.images` lexicon.
-/// - Note: From the AT Protocol specification: "width:height represents an aspect ratio. It may be approximate, and may not correspond to absolute dimensions in any given unit."
+/// - Note: From the AT Protocol specification: "width:height represents an aspect ratio. It may be approximate, and may not
+/// correspond to absolute dimensions in any given unit."
 ///
 /// The lexicon can be viewed in their [GitHub repo][github].
 ///
@@ -110,11 +111,13 @@ public struct EmbedImagesView: Codable {
 public struct ViewImage: Codable {
     /// The URI of the image's thumbnail.
     ///
-    /// - Note: From the AT Protocol specification: "Fully-qualified URL where a thumbnail of the image can be fetched. For example, CDN location provided by the App View."
+    /// - Note: From the AT Protocol specification: "Fully-qualified URL where a thumbnail of the image can be fetched.
+    /// For example, CDN location provided by the App View."
     public let thumbnail: String
     /// The URI of the fully-sized image.
     ///
-    /// - Note: From the AT Protocol specification: "Fully-qualified URL where a large version of the image can be fetched. May or may not be the exact original blob. For example, CDN location provided by the App View."
+    /// - Note: From the AT Protocol specification: "Fully-qualified URL where a large version of the image can be fetched.
+    /// May or may not be the exact original blob. For example, CDN location provided by the App View."
     public let fullSize: String
     /// /// The alternative text for the image.
     ///
