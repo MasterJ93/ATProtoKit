@@ -329,7 +329,7 @@ public struct AdultContentPreferences: Codable {
     }
 }
 
-/// A data model for a "Content Label" preference defintion.
+/// A data model for a "Content Label" preference definition.
 ///
 /// - Note: This is based on the `app.bsky.actor.defs` lexicon.
 ///

@@ -7,7 +7,7 @@
 
 import Foundation
 
-/// The main data model defintion for external embeds.
+/// The main data model definition for external embeds.
 ///
 /// - Note: This is based on the `app.bsky.embed.external` lexicon.
 ///

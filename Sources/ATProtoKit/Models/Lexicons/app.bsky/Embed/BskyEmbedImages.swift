@@ -7,7 +7,7 @@
 
 import Foundation
 
-/// The main data model defintion for image embeds.
+/// The main data model definition for image embeds.
 ///
 /// - Note: This is based on the `app.bsky.embed.images` lexicon.
 ///
