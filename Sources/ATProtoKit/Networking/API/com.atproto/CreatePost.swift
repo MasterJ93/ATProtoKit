@@ -14,8 +14,8 @@ extension ATProtoKit {
     ///   - locales: The languages the text is written in. Current limit is 3 lanagues.
     ///   - replyTo: The post record that this record is replying to.
     ///   - embed: The embed container attached to the post record. Current items include images, external links, other posts, lists, and post records with media.
-    ///   - labels: A list of labels made by the user.
-    ///   - tags: A list of tags for the post record.
+    ///   - labels: An array of labels made by the user.
+    ///   - tags: An array of tags for the post record.
     ///   - creationDate: The date of the post record. Defaults to the current time of the post record's creation.
     /// - Returns: A strong reference, which contains the newly-created record's `recordURI` (URI) and the `cidHash` (CID) .
     public func createPostRecord(text: String, locales: [Locale] = [], replyTo: String? = nil, embed: EmbedIdentifier? = nil, labels: FeedLabelUnion? = nil, tags: [String]? = nil, creationDate: Date = Date.now) async -> Result<StrongReference, Error> {
@@ -88,7 +88,7 @@ extension ATProtoKit {
     ///   - images: The ``ImageQuery`` that contains the image data. Current limit is 4 images.
     ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `https://bsky.social`.
     ///   - accessToken: The access token used to authenticate to the user.
-    /// - Returns: An ``EmbedUnion``, which contains a list of ``EmbedImage``s for use in a record.
+    /// - Returns: An ``EmbedUnion``, which contains an array of ``EmbedImage``s for use in a record.
     ///
     /// - Important: Each image can only be 1 MB in size.
     public func uploadImages(_ images: [ImageQuery], pdsURL: String = "https://bsky.social", accessToken: String) async throws -> EmbedUnion {

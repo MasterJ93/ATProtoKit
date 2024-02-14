@@ -153,10 +153,10 @@ public struct ListItemView: Codable {
 }
 
 public enum ListPurpose: String, Codable {
-    /// A list of actors to apply an aggregate moderation action (mute/block) on.
+    /// An array of actors to apply an aggregate moderation action (mute/block) on.
     case modlist = "app.bsky.graph.defs#modlist"
 
-    /// A list of actors used for curation purposes such as list feeds or interaction gating.
+    /// An array of actors used for curation purposes such as list feeds or interaction gating.
     case curatelist = "app.bsky.graph.defs#curatelist"
 }
 

@@ -62,7 +62,7 @@ public struct ViewRecord: Codable {
     public let value: UnknownType
     /// An array of labels attached to the record.
     public let labels: [Label]?
-    /// An array of embed views of various types..
+    /// An array of embed views of various types.
     public let embeds: [EmbedViewUnion]?
     /// The date the record was last indexed.
     @DateFormatting public var indexedAt: Date

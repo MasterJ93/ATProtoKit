@@ -51,7 +51,7 @@ public class APIClientService {
     /// Sets query items for a given URL.
     /// - Parameters:
     ///   - requestURL: The base URL to append query items to.
-    ///   - queryItems: A list of key-value pairs to be set as query items.
+    ///   - queryItems: An array of key-value pairs to be set as query items.
     /// - Returns: A new URL with the query items appended.
     public static func setQueryItems(for requestURL: URL, with queryItems: [(String, String)]) throws -> URL {
         var components = URLComponents(url: requestURL, resolvingAgainstBaseURL: true)
