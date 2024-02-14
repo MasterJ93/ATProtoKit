@@ -66,9 +66,9 @@ public struct EmbedImage: Codable {
 
 /// A data model for the aspect ratio definition.
 ///
-/// - Note: This is based on the `app.bsky.embed.images` lexicon.
 /// - Note: From the AT Protocol specification: "width:height represents an aspect ratio. It may be approximate, and may not
 /// correspond to absolute dimensions in any given unit."
+/// - Note: This is based on the `app.bsky.embed.images` lexicon.
 ///
 /// The lexicon can be viewed in their [GitHub repo][github].
 ///
