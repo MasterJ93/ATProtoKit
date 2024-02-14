@@ -7,6 +7,7 @@
 
 import Foundation
 
+// MARK: - Main definition
 /// The main data model definition for external embeds.
 ///
 /// - Note: This is based on the `app.bsky.embed.external` lexicon.
@@ -29,7 +30,7 @@ public struct EmbedExternal: Codable {
         case external
     }
 }
-
+// MARK: -
 /// A data model for an external definition.
 ///
 /// - Note: This is based on the `app.bsky.embed.external` lexicon.

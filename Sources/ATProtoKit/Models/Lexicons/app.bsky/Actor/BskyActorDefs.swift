@@ -512,6 +512,7 @@ public struct InterestViewPreferences: Codable {
     }
 }
 
+// MARK: - Union types
 /// A reference containing the list of preferences.
 public enum ActorPreferenceUnion: Codable {
     /// The "Adult Content" preference.

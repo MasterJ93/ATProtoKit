@@ -7,6 +7,7 @@
 
 import Foundation
 
+// MARK: - Main definition
 /// The main data model definition for image embeds.
 ///
 /// - Note: This is based on the `app.bsky.embed.images` lexicon.
@@ -32,6 +33,7 @@ public struct EmbedImages: Codable {
     }
 }
 
+// MARK: -
 /// A data model for an external definition.
 ///
 /// - Note: This is based on the `app.bsky.embed.images` lexicon.
