@@ -7,21 +7,38 @@
 
 import Foundation
 
-public struct PostView: Codable {
+/// A data model for a post view definition.
+///
+/// - SeeAlso: This is based on the [`app.bsky.feed.defs`][github] lexicon.
+///
+/// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/feed/defs.json
+public struct FeedPostView: Codable {
+    /// The URI of the post.
     public let atURI: String
+    /// The CID of the post.
     public let cidHash: String
-    public let author: ProfileViewBasic
+    /// The author of the post. This will give the basic details of the post author.
+    public let author: ActorProfileViewBasic
+    /// The record data itself.
     public let record: UnknownType
+    /// An embed view of a specific type. Optional.
     public var embed: EmbedViewUnion? = nil
+    /// The number of replies in the post. Optional.
     public var replyCount: Int? = nil
+    /// The number of reposts in the post. Optional.
     public var repostCount: Int? = nil
+    /// The number of likes in the post. Optional.
     public var likeCount: Int? = nil
+    /// The last time the post has been indexed.
     @DateFormatting public var indexedAt: Date
+    /// The viewer's interaction with the post. Optional.
     public var viewer: FeedViewerState? = nil
+    /// An array of labels attached to the post. Optional.
     public var labels: [Label]? = nil
-    public var threadgate: ThreadgateView? = nil
+    /// The ruleset of who can reply to the post. Optional.
+    public var threadgate: FeedThreadgateView? = nil
 
-    public init(atURI: String, cidHash: String, author: ProfileViewBasic, record: UnknownType, embed: EmbedViewUnion?, replyCount: Int?, repostCount: Int?, likeCount: Int?, indexedAt: Date, viewer: FeedViewerState?, labels: [Label]?, threadgate: ThreadgateView?) {
+    public init(atURI: String, cidHash: String, author: ActorProfileViewBasic, record: UnknownType, embed: EmbedViewUnion?, replyCount: Int?, repostCount: Int?, likeCount: Int?, indexedAt: Date, viewer: FeedViewerState?, labels: [Label]?, threadgate: FeedThreadgateView?) {
         self.atURI = atURI
         self.cidHash = cidHash
         self.author = author
@@ -41,7 +58,7 @@ public struct PostView: Codable {
 
         self.atURI = try container.decode(String.self, forKey: .atURI)
         self.cidHash = try container.decode(String.self, forKey: .cidHash)
-        self.author = try container.decode(ProfileViewBasic.self, forKey: .author)
+        self.author = try container.decode(ActorProfileViewBasic.self, forKey: .author)
         self.record = try container.decode(UnknownType.self, forKey: .record)
         self.embed = try container.decodeIfPresent(EmbedViewUnion.self, forKey: .embed)
         self.replyCount = try container.decodeIfPresent(Int.self, forKey: .replyCount)
@@ -50,7 +67,7 @@ public struct PostView: Codable {
         self.indexedAt = try container.decode(DateFormatting.self, forKey: .indexedAt).wrappedValue
         self.viewer = try container.decodeIfPresent(FeedViewerState.self, forKey: .viewer)
         self.labels = try container.decodeIfPresent([Label].self, forKey: .labels)
-        self.threadgate = try container.decodeIfPresent(ThreadgateView.self, forKey: .threadgate)
+        self.threadgate = try container.decodeIfPresent(FeedThreadgateView.self, forKey: .threadgate)
     }
 
     public func encode(to encoder: Encoder) throws {
@@ -86,34 +103,70 @@ public struct PostView: Codable {
     }
 }
 
+/// A data model for a viewer state definition.
+///
+/// - Note: According to the AT Protocol specifications: "Metadata about the requesting account's relationship with the subject content. Only has meaningful content for authed requests."
+///
+/// - SeeAlso: This is based on the [`app.bsky.feed.defs`][github] lexicon.
+///
+/// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/feed/defs.json
 public struct FeedViewerState: Codable {
+    /// The URI of the requesting account's repost of the subject account's post. Optional.
     public let repost: String? = nil
+    /// The URI of the requesting account's like of the subject account's post. Optional.
     public let like: String? = nil
-    public let areReplyDisabled: Bool? = nil
+    /// Indicates whether the requesting account can reply to the account's post. Optional.
+    public let areRepliesDisabled: Bool? = nil
 
     enum CodingKeys: String, CodingKey {
         case repost
         case like
-        case areReplyDisabled = "replyDisabled"
+        case areRepliesDisabled = "replyDisabled"
     }
 }
 
+/// A data model for a definition of a feed's view.
+///
+/// - SeeAlso: This is based on the [`app.bsky.feed.defs`][github] lexicon.
+///
+/// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/feed/defs.json
 public struct FeedViewPost: Codable {
-    public let post: PostView
+    /// The post contained in a feed.
+    public let post: FeedPostView
+    /// The reply reference for the post, if it's a reply. Optional.
     public var reply: FeedReplyReference? = nil
-    public var reason: ReasonRepost? = nil
+    // TODO: Check to see if this is correct.
+    /// The user who reposted the post. Optional.
+    public var reason: FeedReasonRepost? = nil
 }
 
+/// A data model for a reply reference definition.
+///
+/// - SeeAlso: This is based on the [`app.bsky.feed.defs`][github] lexicon.
+///
+/// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/feed/defs.json
 public struct FeedReplyReference: Codable {
+    /// The original post of the thread.
     public let root: PostUnion
+    // TODO: Fix up the note's message.
+    /// The direct post that the user's post is replying to.
+    ///
+    /// - Note: If `parent` and `root` are identical, the post is a direct reply to the original post of the thread.
     public let parent: PostUnion
 }
 
-public struct ReasonRepost: Codable {
-    public let by: ProfileViewBasic
+/// A data model for a definition for a very stripped down version of a repost.
+///
+/// - SeeAlso: This is based on the [`app.bsky.feed.defs`][github] lexicon.
+///
+/// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/feed/defs.json
+public struct FeedReasonRepost: Codable {
+    /// The basic details of the user who reposted the post.
+    public let by: ActorProfileViewBasic
+    /// The last time the repost was indexed.
     @DateFormatting public var indexedAt: Date
 
-    public init(by: ProfileViewBasic, indexedAt: Date) {
+    public init(by: ActorProfileViewBasic, indexedAt: Date) {
         self.by = by
         self._indexedAt = DateFormatting(wrappedValue: indexedAt)
     }
@@ -121,7 +174,7 @@ public struct ReasonRepost: Codable {
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
 
-        self.by = try container.decode(ProfileViewBasic.self, forKey: .by)
+        self.by = try container.decode(ActorProfileViewBasic.self, forKey: .by)
         self.indexedAt = try container.decode(DateFormatting.self, forKey: .indexedAt).wrappedValue
     }
 
@@ -138,14 +191,29 @@ public struct ReasonRepost: Codable {
     }
 }
 
-public struct ThreadViewPost: Codable {
-    public let post: PostView
+/// A data model for a definition of a hydrated version of a repost.
+///
+/// - SeeAlso: This is based on the [`app.bsky.feed.defs`][github] lexicon.
+///
+/// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/feed/defs.json
+public struct FeedThreadViewPost: Codable {
+    /// The post contained in a thread.
+    public let post: FeedPostView
+    /// The direct post that the user's post is replying to. Optional.
     public var parent: PostUnion? = nil
+    /// An array of posts of various types. Optional.
     public var replies: [PostUnion]? = nil
 }
 
-public struct NotFoundPost: Codable {
+/// A data model for a definition of a post that may not have been found.
+///
+/// - SeeAlso: This is based on the [`app.bsky.feed.defs`][github] lexicon.
+///
+/// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/feed/defs.json
+public struct FeedNotFoundPost: Codable {
+    /// The URI of the post.
     public let atURI: String
+    /// Indicates whether the post wasn't found. Defaults to `true`.
     public private(set) var isNotFound: Bool = true
 
     public init(atURI: String, isNotFound: Bool = true) {
@@ -166,12 +234,20 @@ public struct NotFoundPost: Codable {
     }
 }
 
-public struct BlockedPost: Codable {
+/// A data model for a definition of a post that may have been blocked.
+///
+/// - SeeAlso: This is based on the [`app.bsky.feed.defs`][github] lexicon.
+///
+/// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/feed/defs.json
+public struct FeedBlockedPost: Codable {
+    /// The URI of the post.
     public let atURI: String
+    /// Indicates whether this post has been blocked from the user. Defaults to `true`.
     public private(set) var isBlocked: Bool = true
-    public let author: BlockedAuthor
+    /// The author of the post.
+    public let author: FeedBlockedAuthor
 
-    public init(atURI: String, isBlocked: Bool = true, author: BlockedAuthor) {
+    public init(atURI: String, isBlocked: Bool = true, author: FeedBlockedAuthor) {
         self.atURI = atURI
         self.isBlocked = isBlocked
         self.author = author
@@ -182,7 +258,7 @@ public struct BlockedPost: Codable {
 
         self.atURI = try container.decode(String.self, forKey: .atURI)
         self.isBlocked = (try? container.decode(Bool.self, forKey: .isBlocked)) ?? true
-        self.author = try container.decode(BlockedAuthor.self, forKey: .author)
+        self.author = try container.decode(FeedBlockedAuthor.self, forKey: .author)
     }
 
     enum CodingKeys: String, CodingKey {
@@ -192,22 +268,45 @@ public struct BlockedPost: Codable {
     }
 }
 
-public struct BlockedAuthor: Codable {
+/// The data model of a blocked author definition.
+///
+/// - SeeAlso: This is based on the [`app.bsky.feed.defs`][github] lexicon.
+///
+/// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/feed/defs.json
+public struct FeedBlockedAuthor: Codable {
+    /// The URI of the author.
     public let atDID: String
+    /// The viewer state of the user. Optional.
     public var viewer: ActorViewerState? = nil
 }
 
-public struct GeneratorView: Codable {
+/// The data model of a feed generator definition.
+///
+/// - SeeAlso: This is based on the [`app.bsky.feed.defs`][github] lexicon.
+///
+/// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/feed/defs.json
+public struct FeedGeneratorView: Codable {
+    /// The URI of the feed generator.
     public let atURI: String
+    /// The CID of the feed generator.
     public let cidHash: String
+    /// The decentralized identifier (DID) of the feed generator.
     public let atDID: String
-    public let creator: ProfileView
+    /// The author of the feed generator.
+    public let creator: ActorProfileView
+    /// The display name of the feed generator.
     public let displayName: String
-    public let description: String? = nil
+    /// The description of the feed generator. Optional.
+    public var description: String? = nil
+    /// An array of the facets within the feed generator's description.
     public let descriptionFacets: [Facet]
-    public let avatar: String? = nil
+    /// The avatar image URL of the feed generator.
+    public var avatarImageURL: URL? = nil
+    /// The number of likes for the feed generator.
     public let likeCount: Int? = nil
-    public var viewer: GeneratorViewerState? = nil
+    /// The viewer's state for the feed generator.
+    public var viewer: FeedGeneratorViewerState? = nil
+    /// The last time the feed generator was indexed.
     @DateFormatting public var indexedAt: Date
 
     public init(from decoder: Decoder) throws {
@@ -216,10 +315,12 @@ public struct GeneratorView: Codable {
         self.atURI = try container.decode(String.self, forKey: .atURI)
         self.cidHash = try container.decode(String.self, forKey: .cidHash)
         self.atDID = try container.decode(String.self, forKey: .atDID)
-        self.creator = try container.decode(ProfileView.self, forKey: .creator)
+        self.creator = try container.decode(ActorProfileView.self, forKey: .creator)
         self.displayName = try container.decode(String.self, forKey: .displayName)
+        self.description = try container.decodeIfPresent(String.self, forKey: .description)
         self.descriptionFacets = try container.decode([Facet].self, forKey: .descriptionFacets)
-        self.viewer = try container.decodeIfPresent(GeneratorViewerState.self, forKey: .viewer)
+        self.avatarImageURL = try container.decodeIfPresent(URL.self, forKey: .avatarImageURL)
+        self.viewer = try container.decodeIfPresent(FeedGeneratorViewerState.self, forKey: .viewer)
         self.indexedAt = try container.decode(DateFormatting.self, forKey: .indexedAt).wrappedValue
     }
 
@@ -237,7 +338,7 @@ public struct GeneratorView: Codable {
         try truncatedEncodeIfPresent(self.description, withContainer: &container, forKey: .displayName, upToLength: 3000)
 
         try container.encode(self.descriptionFacets, forKey: .descriptionFacets)
-        try container.encodeIfPresent(self.avatar, forKey: .avatar)
+        try container.encodeIfPresent(self.avatarImageURL, forKey: .avatarImageURL)
 
         // Assuming `likeCount` is not nil, only encode it if it's 0 or higher
         if let likeCount = self.likeCount, likeCount >= 0 {
@@ -255,30 +356,63 @@ public struct GeneratorView: Codable {
         case displayName
         case description
         case descriptionFacets = "descriptionFacets"
-        case avatar
+        case avatarImageURL = "avatar"
         case likeCount = "likeCount"
         case viewer
         case indexedAt
     }
 }
 
-public struct GeneratorViewerState: Codable {
+/// The data model of a definition for the viewer's state of the feed generator.
+///
+/// - SeeAlso: This is based on the [`app.bsky.feed.defs`][github] lexicon.
+///
+/// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/feed/defs.json
+public struct FeedGeneratorViewerState: Codable {
+    /// The URI of the viewer's like, if they liked the feed generator. Optional.
     public var like: String? = nil
 }
 
-public struct SkeletonFeedPost: Codable {
+/// The data model of a feed's skeleton
+public struct FeedSkeletonFeedPost: Codable {
+    /// The URI of the post in the feed generator.
+    ///
+    /// - Note: This refers to the original post's URI. If the post is a repost, then `reason` will contain a value.
     public let post: String
-    public var reason: SkeletonReasonRepost? = nil
+    /// The indication that the post was a repost. Optional.
+    public var reason: FeedSkeletonReasonRepost? = nil
 }
 
-public struct SkeletonReasonRepost: Codable {
-    public let repost: String
+/// The data model of a definition for a respost in a feed generator.
+///
+/// - SeeAlso: This is based on the [`app.bsky.feed.defs`][github] lexicon.
+///
+/// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/feed/defs.json
+public struct FeedSkeletonReasonRepost: Codable {
+    /// The URI of the repost.
+    ///
+    /// This property uniquely identifies the repost itself, separate from the original post's URI.
+    public let repostURI: String
+
+    enum CodingKeys: String, CodingKey {
+        case repostURI = "repost"
+    }
 }
 
-public struct ThreadgateView: Codable {
+/// The data model of a feed threadgate view definition.
+///
+/// - SeeAlso: This is based on the [`app.bsky.feed.defs`][github] lexicon.
+///
+/// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/feed/defs.json
+public struct FeedThreadgateView: Codable {
+    /// The URI of the feed's threadgate.
     public let atURI: String
+    /// The CID of the feed's threadgate.
     public let cidHash: String
+    /// The record of the feed's threadgate
     public let record: UnknownType
+    // TODO: Make sure this is correct.
+    /// An array of user lists.
     public let lists: [ListViewBasic]
 
     enum CodingKeys: String, CodingKey {
@@ -289,10 +423,27 @@ public struct ThreadgateView: Codable {
     }
 }
 
+// MARK: - Union Types
+/// A reference containing the list of the types of embeds.
+///
+/// - Note: This is based on the following lexicons:
+///   - `app.bsky.embed.record`
+///     - `app.bsky.feed.defs`
+///
+/// - SeeAlso: The lexicons can be viewed in their GitHub repo pages:\
+/// \- [`app.bsky.embed.record`][embed_record]\
+/// \- [`app.bsky.feed.defs`][feed_def]
+///
+/// [embed_record]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/embed/record.json
+/// [feed_def]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/feed/defs.json
 public enum EmbedViewUnion: Codable {
+    /// The view of an external embed.
     case embedExternalView(EmbedExternalView)
+    /// The view of an image embed.
     case embedImagesView(EmbedImagesView)
+    /// The view of a record embed.
     case embedRecordView(EmbedRecordView)
+    /// The view of a record embed alongside an embed of some compatible media.
     case embedRecordWithMediaView(EmbedRecordWithMediaView)
 
     public init(from decoder: Decoder) throws {
@@ -327,20 +478,28 @@ public enum EmbedViewUnion: Codable {
     }
 }
 
+/// A reference containing the list of the states of a post.
+///
+/// - SeeAlso: This is based on the [`app.bsky.feed.defs`][github] lexicon.
+///
+/// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/feed/defs.json
 public enum PostUnion: Codable {
-    case postView(PostView)
-    case notFoundPost(NotFoundPost)
-    case blockedPost(BlockedPost)
+    /// The view of a post.
+    case postView(FeedPostView)
+    /// The view of a post that may not have been found.
+    case notFoundPost(FeedNotFoundPost)
+    /// The view of a post that's been blocked by the post author.
+    case blockedPost(FeedBlockedPost)
 
     // Custom coding keys and init(from:) / encode(to:) will be needed here for Codable conformance.
     public init(from decoder: Decoder) throws {
         let container = try decoder.singleValueContainer()
 
-        if let value = try? container.decode(PostView.self) {
+        if let value = try? container.decode(FeedPostView.self) {
             self = .postView(value)
-        } else if let value = try? container.decode(NotFoundPost.self) {
+        } else if let value = try? container.decode(FeedNotFoundPost.self) {
             self = .notFoundPost(value)
-        } else if let value = try? container.decode(BlockedPost.self) {
+        } else if let value = try? container.decode(FeedBlockedPost.self) {
             self = .blockedPost(value)
         } else {
             throw DecodingError.typeMismatch(PostUnion.self, DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Unknown PostUnion type"))

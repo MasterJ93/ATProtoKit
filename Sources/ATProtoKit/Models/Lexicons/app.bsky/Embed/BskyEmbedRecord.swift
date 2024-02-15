@@ -106,7 +106,7 @@ public struct ViewBlocked: Codable {
     /// Indicates whether the record has been blocked.
     public let isRecordBlocked: Bool
     /// The author of the record.
-    public let recordAuthor: BlockedAuthor
+    public let recordAuthor: FeedBlockedAuthor
 
     enum CodingKeys: String, CodingKey {
         case recordURI = "uri"
@@ -129,7 +129,7 @@ public enum RecordViewUnion: Codable {
     /// A record that may have been blocked.
     case viewBlocked(ViewBlocked)
     /// A record that contains a generator view.
-    case generatorView(GeneratorView)
+    case generatorView(FeedGeneratorView)
     /// A record that contains a list view.
     case listView(ListView)
 
@@ -142,7 +142,7 @@ public enum RecordViewUnion: Codable {
             self = .viewNotFound(value)
         } else if let value = try? container.decode(ViewBlocked.self) {
             self = .viewBlocked(value)
-        } else if let value = try? container.decode(GeneratorView.self) {
+        } else if let value = try? container.decode(FeedGeneratorView.self) {
             self = .generatorView(value)
         } else if let value = try? container.decode(ListView.self) {
             self = .listView(value)
