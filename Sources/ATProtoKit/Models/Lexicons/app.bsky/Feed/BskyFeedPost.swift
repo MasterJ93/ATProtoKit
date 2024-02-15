@@ -50,7 +50,9 @@ public struct FeedPost: Codable {
 
         try container.encode(self.type, forKey: .type)
         try container.encode(self.text, forKey: .text)
-        try container.encodeIfPresent(self.entities, forKey: .entities)
+        // Truncate `tags` to 3000 characters before encoding
+        // `maxGraphemes`'s limit is 300, but `String.count` should respect that limit implictly
+        try truncatedEncode(self.text, withContainer: &container, forKey: .text, upToLength: 300)
         try container.encodeIfPresent(self.facets, forKey: .facets)
         try container.encodeIfPresent(self.reply, forKey: .reply)
         try container.encodeIfPresent(self.embed, forKey: .embed)
