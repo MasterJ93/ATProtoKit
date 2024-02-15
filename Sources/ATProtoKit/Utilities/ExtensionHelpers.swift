@@ -34,7 +34,7 @@ extension Array: Truncatable {
     }
 }
 
-// MARK: Encodable Extension
+// MARK: - Encodable Extension
 extension Encodable {
     /// Converts an object into a JSON object.
     ///

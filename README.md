@@ -22,14 +22,14 @@ Task {
 ```
 
 ## Motivation
-I believe Bluesky and its accompanying protocol gives the perfect balance between embracing decentralization and simplifying the user experience. Because of this, I wanted a way for Swift developers to use the AT Protocol in a way that feels right at home, both client-side with Apple's platform's, and server-side with Linux. For this reason, I decided to open source this project.
+I believe Bluesky and its accompanying AT Protocol gives the perfect balance between embracing decentralization and simplifying the user experience. Because of this, I wanted a way for Swift developers to use the AT Protocol in a way that feels right at home, both client-side with Apple's platforms, and server-side with Linux. For this reason, I decided to open source this project.
 
 ## Features
 - Full compatibility with Apple’s APIs for each of the platforms.
 - Written with adherence to the Swift API Design Guidelines and up-to-date best practices.
 - Uses Swift’s powerful type inference and pattern matching for cleaner, more readable code.
 - Well-written documentation for all of the AT Protocol and Bluesky APIs.
-- A RichText helper to parse text into the applicable facet.
+- A RichText helper to parse text into the applicable facets.
 -  Extend the capabilities of generic structures within the AT Protocol in case your instance requires it.
 - A powerful Firehose API that retrieves and filters events and records in real-time.
 - An HTML-parsing system to grab search engine-friendly elements for embeds.
@@ -54,12 +54,12 @@ As shown in the Example Usage, it all starts with `ATProtocolConfiguration`, whi
 ```swift
 import ATProtoKit
 
-let config = ATProtocolConfiguration(handle: "example.bsky.social", appPassword: "app-password")
+let config = ATProtocolConfiguration(handle: "lucy.bsky.social", appPassword: "app-password")
 ```
 
 By default, `ATProtocolConfiguration` conforms to `https://bsky.social`. However, if you’re using a different distributed service, you can specify the URL:
 ```swift
-let result2 = ATProtocolConfiguration(handle: "example.example.social", appPassword: "app-password", pdsURL: "https://example.social")
+let result = ATProtocolConfiguration(handle: "lucy.example.social", appPassword: "app-password", pdsURL: "https://example.social")
 ```
 
 This session contains all of the elements you need, such as the access and refresh tokens:
