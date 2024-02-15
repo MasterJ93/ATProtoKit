@@ -114,7 +114,7 @@ public struct DateFormatting: Codable {
 /// self._indexedAt = DateFormattingOptional(wrappedValue: indexedAt)
 /// ```
 ///
-/// In `init(from decoder: Decoder) throws`, attempt to to decode each `Date` property using `@DateFormatting`'s `wrappedValue`:
+/// In `init(from decoder: Decoder) throws`, attempt to to decode each `Date` property using `@DateFormattingOptional`'s `wrappedValue`:
 /// ```swift
 /// public init(from decoder: Decoder) throws {
 ///     let container = try decoder.container(keyedBy: CodingKeys.self)
@@ -123,7 +123,7 @@ public struct DateFormatting: Codable {
 /// }
 /// ```
 ///
-/// Finally, for `encode(to encoder: Encoder)`, ensure that each `Date` property wrapped with `@DateFormatting` is encoded using the custom encoding logic defined in the `DateFormattingOptional` wrapper, using the underscored (`_`) version of the name of the property.:
+/// Finally, for `encode(to encoder: Encoder)`, ensure that each `Date` property wrapped with `@DateFormattingOptional` is encoded using the custom encoding logic defined in the `DateFormattingOptional` wrapper, using the underscored (`_`) version of the name of the property.:
 /// ```swift
 /// public func encode(to encoder: Encoder) throws {
 ///     var container = encoder.container(keyedBy: CodingKeys.self)
