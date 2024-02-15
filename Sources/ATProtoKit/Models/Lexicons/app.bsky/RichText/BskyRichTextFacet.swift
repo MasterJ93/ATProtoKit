@@ -7,8 +7,18 @@
 
 import Foundation
 
+// MARK: - Main definition
+/// The main data model definition for a facet.
+///
+/// - Note: According to the AT Protocol specifications: "Annotation of a sub-string within rich text."
+///
+/// - SeeAlso: This is based on the [`app.bsky.richtext.facet`][github] lexicon.
+///
+/// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/richtext/facet.json
 public struct Facet: Codable {
+    /// The range of characters related to the facet.
     public let index: ByteSlice
+    /// The facet's feature type..
     public let features: [FeatureUnion]
 
     public init(index: ByteSlice, features: [FeatureUnion]) {
@@ -38,8 +48,17 @@ public struct Facet: Codable {
 }
 
 // Represents the ByteSlice
+/// The data model definition for the byte slice.
+///
+/// - Note: According to the AT Protocol specifications: "Specifies the sub-string range a facet feature applies to. Start index is inclusive, end index is exclusive. Indices are zero-indexed, counting bytes of the UTF-8 encoded text. NOTE: some languages, like Javascript, use UTF-16 or Unicode codepoints for string slice indexing; in these languages, convert to byte arrays before working with facets."
+///
+/// - SeeAlso: This is based on the [`app.bsky.richtext.facet`][github] lexicon.
+///
+/// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/richtext/facet.json
 public struct ByteSlice: Codable {
+    /// The start index of the byte slice.
     public let byteStart: Int
+    /// The end index of the byte slice.
     public let byteEnd: Int
 
     public init(byteStart: Int, byteEnd: Int) {
@@ -65,13 +84,32 @@ public struct ByteSlice: Codable {
     }
 }
 
+/// A data model protocol for Features.
+///
+/// - SeeAlso: This is based on the [`app.bsky.richtext.facet`][github] lexicon.
+///
+/// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/richtext/facet.json
 internal protocol FeatureCodable: Codable {
+    /// The identifier of the lexicon.
+    ///
+    /// - Warning: The value must not change.
     static var type: String { get }
 }
 
-// Mention feature
+
+/// A data model for the Mention feature definition.
+///
+/// - Note: According to the AT Protocol specifications: "Facet feature for mention of another account. The text is usually a handle, including a '@' prefix, but the facet reference is a DID."
+///
+/// - SeeAlso: This is based on the [`app.bsky.richtext.facet`][github] lexicon.
+///
+/// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/richtext/facet.json
 public struct Mention: FeatureCodable {
+    /// The decentralized identifier (DID) of the feature.
     public let did: String
+    /// The identifier of the lexicon.
+    ///
+    /// - Warning: The value must not change.
     static public var type: String = "app.bsky.richtext.facet#mention"
 
     public init(did: String) {
@@ -98,9 +136,20 @@ public struct Mention: FeatureCodable {
     }
 }
 
-// Link feature
+
+/// A data model for the Link feature definition.
+///
+/// - Note: According to the AT Protocol specifications: "Facet feature for a URL. The text URL may have been simplified or truncated, but the facet reference should be a complete URL."
+///
+/// - SeeAlso: This is based on the [`app.bsky.richtext.facet`][github] lexicon.
+///
+/// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/richtext/facet.json
 public struct Link: FeatureCodable {
+    /// The URI of the feature..
     public let uri: String
+    /// The identifier of the lexicon.
+    ///
+    /// - Warning: The value must not change.
     static public var type: String = "app.bsky.richtext.facet#link"
 
     public init(uri: String) {
@@ -127,9 +176,19 @@ public struct Link: FeatureCodable {
     }
 }
 
-// Hashtag feature
+/// A data model for the Tag feature definition.
+///
+/// - Note: According to the AT Protocol specifications: "Facet feature for a hashtag. The text usually includes a '#' prefix, but the facet reference should not (except in the case of 'double hash tags')."
+///
+/// - SeeAlso: This is based on the [`app.bsky.richtext.facet`][github] lexicon.
+///
+/// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/richtext/facet.json
 public struct Tag: FeatureCodable {
+    /// The
     public let tag: String
+    /// The identifier of the lexicon.
+    ///
+    /// - Warning: The value must not change.
     static public var type: String = "app.bsky.richtext.facet#tag"
 
     public init(tag: String) {
@@ -156,9 +215,18 @@ public struct Tag: FeatureCodable {
     }
 }
 
+// MARK: - Union types
+/// A reference containing the list of feature types.
+///
+/// - SeeAlso: This is based on the [`app.bsky.richtext.facet`][github] lexicon.
+///
+/// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/richtext/facet.json
 public enum FeatureUnion: Codable {
+    /// The Mention feature.
     case mention(Mention)
+    /// The Link feature.
     case link(Link)
+    /// The Tag feature.
     case tag(Tag)
 
     public init(from decoder: Decoder) throws {
