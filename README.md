@@ -6,6 +6,7 @@ A straightforward solution for using the AT Protocol and Bluesky, written in Swi
 
 ATProtoKit is an easy-to-understand API library that leverages the AT Protocol with the type-safety and ease-of-use you’ve come to expect with the Swift programming language. Whether you’re building a bot, a server app, or just another user-facing Bluesky client, this project should hopefully get you up to speed.
 
+
 ## Example Usage
 ```swift
 let config = ATProtocolConfiguration(handle: "example.bsky.social", appPassword: "app-password")
@@ -24,6 +25,7 @@ Task {
 ## Motivation
 I believe Bluesky and its accompanying AT Protocol gives the perfect balance between embracing decentralization and simplifying the user experience. Because of this, I wanted a way for Swift developers to use the AT Protocol in a way that feels right at home, both client-side with Apple's platforms, and server-side with Linux. For this reason, I decided to open source this project.
 
+
 ## Features
 - Full compatibility with Apple’s APIs for each of the platforms.
 - Written with adherence to the Swift API Design Guidelines and up-to-date best practices.
@@ -35,6 +37,9 @@ I believe Bluesky and its accompanying AT Protocol gives the perfect balance bet
 - An HTML-parsing system to grab search engine-friendly elements for embeds.
 - A logging tool for easy debugging.
 
+\* _Not all features above have been implemented; however, they will be, soon._
+
+
 ## Installation
 You can use the Swift Package Manager to download and import the library into your project:
 ```swift
@@ -42,6 +47,7 @@ dependencies: [
     .package(url: "https://github.com/mountainpaw/ATProtoKit.git", from: "0.1.0")
 ]
 ```
+
 
 ## Roadmap
 The Projects page isn't set up yet, so it'll be a while before you can see the progress for this project. However, some of the goals include:
@@ -85,14 +91,16 @@ To use ATProtoKit in your apps, your app should target the specific version numb
 - **macOS** 12 or later.
 - **tvOS** 13 or later.
 - **watchOS** 6 or later.
-(Given now new it is, there are no version requirements for **visionOS**.)
+(Given how new it is, there are no version requirements for **visionOS**.)
 
 As of right now, Linux support is theoretically possible, but not guaranteed to be tested. The plan is to make it fully compatible with Linux by version 1.0, though this is not a required goal to get there. For other platforms (such as Android), this is also not tested, but should be theoretically possible. While it’s not a goal to make it fully compatible, contributions and feedback on the matter are welcomed.
+
 
 ## Contributions and Feedback
 While this project will change significantly, early feedback, issues, and contributions is highly welcomed and encouraged. At a later date, I'll post some contributor guidelines and templates, but since this project is in its early days, I have yet to have a significant amount of time in terms of thinking of this. However, some of the things to keep in mind are:
 - Be sure to adhere to the [Swift API Design Guidelines](https://www.swift.org/documentation/api-design-guidelines/) when contributing code.
-- 
+- When writing documentation, make sure it's clear, understandable, and comprehensible enough for users (both experienced and new) to understand it.
+- Try to follow the (Git commit best practices)[https://cbea.ms/git-commit/].
 
 ## License
 This Swift Package is using the MIT License. Please view LICENSE.md for more details.
