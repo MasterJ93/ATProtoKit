@@ -7,21 +7,54 @@
 
 import Foundation
 
+// MARK: - Main definition
+/// The main data model definition for a post record.
+///
+/// - Note: According to the AT Protocol specifications: "Record containing a Bluesky post."
+///
+/// - SeeAlso: This is based on the [`app.bsky.feed.post`][github] lexicon.
+///
+/// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/feed/post.json
 public struct FeedPost: Codable {
+    /// The identifier of the lexicon.
+    ///
+    /// - Warning: The value must not change.
     internal let type: String = "app.bsky.feed.post"
+    /// The text contained in the post.
+    ///
+    /// - Note: According to the AT Protocol specifications: "The primary post content. May be an empty string, if there are embeds."
+    ///
+    /// - Attention: Current maximum length is 300 characters. This library will automatically truncate the `String` to the maximum length if it does go over the limit.
     public let text: String
-    public var entities: [Entity]? = nil // Deprecated
+    /// An array of facets contained in the post's text. Optional.
+    ///
+    /// - Note: According to the AT Protocol specifications: "Annotations of text (mentions, URLs, hashtags, etc)"
     public var facets: [Facet]? = nil
+    /// The references to posts when replying. Optional.
     public var reply: ReplyReference? = nil
+    /// The embed of the post. Optional.
     public var embed: EmbedUnion? = nil
+    /// An array of languages the post text contains. Optional.
+    ///
+    /// - Note: According to the AT Protocol specifications: "Indicates human language of post primary text content."
+    ///
+    /// - Attention: Current maximum length is 3 languages. This library will automatically truncate the `Array` to the maximum number of items if it does go over the limit.
     public var languages: [String]? = nil
+    /// An array of user-defined labels. Optional.
+    ///
+    /// - Note: According to the AT Protocol specifications: "Self-label values for this post. Effectively content warnings."
     public var labels: FeedLabelUnion? = nil
+    /// An array of user-defined tags. Optional.
+    ///
+    /// - Note: According to the AT Protocol specifications: "Additional hashtags, in addition to any included in post text and facets."
     public var tags: [String]? = nil
+    /// The date the post was created.
+    ///
+    /// - Note: According to the AT Protocol specifications: "Client-declared timestamp when this post was originally created."
     @DateFormatting public var createdAt: Date
 
-    public init(text: String, entities: [Entity]? = nil, facets: [Facet]? = nil, reply: ReplyReference? = nil, embed: EmbedUnion? = nil, languages: [String]? = nil, labels: FeedLabelUnion? = nil, tags: [String]? = nil, createdAt: Date) {
+    public init(text: String, facets: [Facet]? = nil, reply: ReplyReference? = nil, embed: EmbedUnion? = nil, languages: [String]? = nil, labels: FeedLabelUnion? = nil, tags: [String]? = nil, createdAt: Date) {
         self.text = text
-        self.entities = entities
         self.facets = facets
         self.reply = reply
         self.embed = embed
@@ -35,7 +68,6 @@ public struct FeedPost: Codable {
         let container = try decoder.container(keyedBy: CodingKeys.self)
 
         self.text = try container.decode(String.self, forKey: .text)
-        self.entities = try container.decodeIfPresent([Entity].self, forKey: .entities)
         self.facets = try container.decodeIfPresent([Facet].self, forKey: .facets)
         self.reply = try container.decodeIfPresent(ReplyReference.self, forKey: .reply)
         self.embed = try container.decodeIfPresent(EmbedUnion.self, forKey: .embed)
@@ -56,6 +88,7 @@ public struct FeedPost: Codable {
         try container.encodeIfPresent(self.facets, forKey: .facets)
         try container.encodeIfPresent(self.reply, forKey: .reply)
         try container.encodeIfPresent(self.embed, forKey: .embed)
+        // Truncate `langs` to 3 items before encoding.
         try truncatedEncodeIfPresent(self.languages, withContainer: &container, forKey: .languages, upToLength: 3)
         try container.encodeIfPresent(self.labels, forKey: .labels)
 
@@ -82,8 +115,18 @@ public struct FeedPost: Codable {
     }
 }
 
+// MARK: -
+/// A data model for a reply reference definition.
+///
+/// - SeeAlso: This is based on the [`app.bsky.feed.post`][github] lexicon.
+///
+/// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/feed/post.json
 public struct ReplyReference: Codable {
+    /// The original post of the thread.
     public let root: StrongReference
+    /// The direct post that the user's post is replying to.
+    ///
+    /// - Note: If `parent` and `root` are identical, the post is a direct reply to the original post of the thread.
     public let parent: StrongReference
 
     public init(root: StrongReference, parent: StrongReference) {
@@ -111,23 +154,20 @@ public struct ReplyReference: Codable {
     }
 }
 
-// Deprecated
-public struct Entity: Codable {
-    public let index: TextSlice
-    public let type: String
-    public let value: String
-}
-
-// Deprecated
-public struct TextSlice: Codable {
-    public let start: Int
-    public let end: Int
-}
-
+// MARK: - Union type
+/// A reference containing the list of types of embeds.
+///
+/// - SeeAlso: This is based on the [`app.bsky.feed.post`][github] lexicon.
+///
+/// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/feed/post.json
 public enum EmbedUnion: Codable {
+    /// An image embed.
     case images(EmbedImages)
+    /// An external embed.
     case external(EmbedExternal)
+    /// A record embed.
     case record(EmbedRecord)
+    /// A embed with both a record and some compatible media.
     case recordWithMedia(EmbedRecordWithMedia)
 
     public init(from decoder: Decoder) throws {
@@ -169,7 +209,13 @@ public enum EmbedUnion: Codable {
     }
 }
 
+/// A reference containing the list of user-defined labels.
+///
+/// - SeeAlso: This is based on the [`app.bsky.feed.post`][github] lexicon.
+///
+/// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/feed/post.json
 public enum FeedLabelUnion: Codable {
+    /// An array of user-defined labels.
     case selfLabels(SelfLabels)
 
     public init(from decoder: Decoder) throws {
