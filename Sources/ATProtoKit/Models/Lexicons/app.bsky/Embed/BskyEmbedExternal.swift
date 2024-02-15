@@ -44,7 +44,14 @@ public struct External: Codable {
     /// The thumbnail image of the external content.
     ///
     /// - Warning: The image size can't be higher than 1 MB. Failure to do so will result in the image failing to upload.
-    public let thumbnail: Data
+    public let thumbnailImage: Data
+
+    enum CodingKeys: String, CodingKey {
+        case embedURI = "uri"
+        case title
+        case description
+        case thumbnailImage = "thumb"
+    }
 }
 
 /// A data model for an external view definition.
@@ -65,6 +72,13 @@ public struct ViewExternal: Codable {
     public let title: String
     /// The description of the external content.
     public let description: String
-    /// The thumbnail image of the external content.
-    public let thumbnail: String?
+    /// The thumbnail image URL of the external content.
+    public let thumbnailImageURL: URL?
+
+    enum CodingKeys: String, CodingKey {
+        case embedURI = "uri"
+        case title
+        case description
+        case thumbnailImageURL = "thumb"
+    }
 }

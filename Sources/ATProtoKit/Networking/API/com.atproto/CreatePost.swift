@@ -115,7 +115,7 @@ extension ATProtoKit {
     /// - Returns: An ``EmbedUnion`` which contains an ``EmbedExternal`` for use in a record.
     public func buildExternalEmbed(from url: URL) async throws -> EmbedUnion {
         
-        let external = EmbedExternal(external: External(embedURI: "", title: "", description: "", thumbnail: Data(count: 1)))
+        let external = EmbedExternal(external: External(embedURI: "", title: "", description: "", thumbnailImage: Data(count: 1)))
         return .external(external)
     }
 

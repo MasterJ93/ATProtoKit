@@ -19,6 +19,8 @@ public struct EmbedImages: Codable {
     /// - Warning: The value must not change.
     public let type: String = "app.bsky.embed.images"
     /// An array of images to embed.
+    ///
+    ///- Note: Current maximum upload count is 4 images.
     public let images: [EmbedImage]
 
     public init(images: [EmbedImage]) {
@@ -105,12 +107,12 @@ public struct ViewImage: Codable {
     ///
     /// - Note: From the AT Protocol specification: "Fully-qualified URL where a thumbnail of the image can be fetched.
     /// For example, CDN location provided by the App View."
-    public let thumbnail: String
+    public let thumbnailImageURL: URL
     /// The URI of the fully-sized image.
     ///
     /// - Note: From the AT Protocol specification: "Fully-qualified URL where a large version of the image can be fetched.
     /// May or may not be the exact original blob. For example, CDN location provided by the App View."
-    public let fullSize: String
+    public let fullSizeImageURL: URL
     /// /// The alternative text for the image.
     ///
     /// - Note: From the AT Protocol specification: "Alt text description of the image, for accessibility."
@@ -118,10 +120,17 @@ public struct ViewImage: Codable {
     /// The aspect ratio of the image. Optional.
     public let aspectRatio: AspectRatio?
 
-    public init(thumbnail: String, fullSize: String, altText: String, aspectRatio: AspectRatio?) {
-        self.thumbnail = thumbnail
-        self.fullSize = fullSize
+    public init(thumbnailImageURL: URL, fullSizeImageURL: URL, altText: String, aspectRatio: AspectRatio?) {
+        self.thumbnailImageURL = thumbnailImageURL
+        self.fullSizeImageURL = fullSizeImageURL
         self.altText = altText
         self.aspectRatio = aspectRatio
+    }
+
+    enum CodingKeys: String, CodingKey {
+        case thumbnailImageURL = "thumb"
+        case fullSizeImageURL = "fullsize"
+        case altText = "alt"
+        case aspectRatio
     }
 }

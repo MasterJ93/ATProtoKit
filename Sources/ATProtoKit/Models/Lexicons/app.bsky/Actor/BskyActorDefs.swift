@@ -20,19 +20,19 @@ public struct ActorProfileViewBasic: Codable {
     ///
     /// - Note: Current maximum length is 64 characters.
     public var displayName: String? = nil
-    /// The avatar image of the user's profile. Optional.
-    public var avatar: String? = nil
+    /// The avatar image URL of the user's profile. Optional.
+    public var avatarImageURL: URL? = nil
     /// The viewer state of the user. Optional.
     public var viewer: ActorViewerState? = nil
     // TODO:  Figure out what this is about.
     /// An array of self-defined [...]. Optional.
     public var labels: [Label]? = nil
 
-    public init(atDID: String, actorHandle: String, displayName: String?, avatar: String?, viewer: ActorViewerState?, labels: [Label]?) {
+    public init(atDID: String, actorHandle: String, displayName: String?, avatarImageURL: URL?, viewer: ActorViewerState?, labels: [Label]?) {
         self.atDID = atDID
         self.actorHandle = actorHandle
         self.displayName = displayName
-        self.avatar = avatar
+        self.avatarImageURL = avatarImageURL
         self.viewer = viewer
         self.labels = labels
     }
@@ -43,7 +43,7 @@ public struct ActorProfileViewBasic: Codable {
         self.atDID = try container.decode(String.self, forKey: .atDID)
         self.actorHandle = try container.decode(String.self, forKey: .actorHandle)
         self.displayName = try container.decodeIfPresent(String.self, forKey: .displayName)
-        self.avatar = try container.decodeIfPresent(String.self, forKey: .avatar)
+        self.avatarImageURL = try container.decodeIfPresent(URL.self, forKey: .avatarImageURL)
         self.viewer = try container.decodeIfPresent(ActorViewerState.self, forKey: .viewer)
         self.labels = try container.decodeIfPresent([Label].self, forKey: .labels)
     }
@@ -57,7 +57,7 @@ public struct ActorProfileViewBasic: Codable {
         // Truncate `displayName` to 640 characters before encoding
         // `maxGraphemes`'s limit is 64, but `String.count` should respect that limit implictly
         try truncatedEncodeIfPresent(self.displayName, withContainer: &container, forKey: .displayName, upToLength: 640)
-        try container.encodeIfPresent(self.avatar, forKey: .avatar)
+        try container.encodeIfPresent(self.avatarImageURL, forKey: .avatarImageURL)
         try container.encodeIfPresent(self.viewer, forKey: .viewer)
         try container.encodeIfPresent(self.labels, forKey: .labels)
     }
@@ -66,7 +66,7 @@ public struct ActorProfileViewBasic: Codable {
         case atDID = "did"
         case actorHandle = "handle"
         case displayName
-        case avatar
+        case avatarImageURL = "avatar"
         case viewer
         case labels
     }
@@ -90,8 +90,8 @@ public struct ActorProfileView: Codable {
     ///
     /// - Note: Current maximum length is 256 characters.
     public var description: String? = nil
-    /// The avatar image of a user's profile. Optional.
-    public let avatar: String?
+    /// The avatar image URL of a user's profile. Optional.
+    public let avatarImageURL: URL?
     /// The date the profile was last indexed. Optional.
     @DateFormattingOptional public var indexedAt: Date? = nil
     /// <#Description#>
@@ -99,12 +99,12 @@ public struct ActorProfileView: Codable {
     /// <#Description#>
     public var labels: [Label]? = nil
 
-    public init(atDID: String, actorHandle: String, displayName: String?, description: String?, avatar: String?, indexedAt: Date?, viewer: ActorViewerState?, labels: [Label]?) {
+    public init(atDID: String, actorHandle: String, displayName: String?, description: String?, avatarImageURL: URL?, indexedAt: Date?, viewer: ActorViewerState?, labels: [Label]?) {
         self.atDID = atDID
         self.actorHandle = actorHandle
         self.displayName = displayName
         self.description = description
-        self.avatar = avatar
+        self.avatarImageURL = avatarImageURL
         self._indexedAt = DateFormattingOptional(wrappedValue: indexedAt)
         self.viewer = viewer
         self.labels = labels
@@ -117,7 +117,7 @@ public struct ActorProfileView: Codable {
         self.actorHandle = try container.decode(String.self, forKey: .actorHandle)
         self.displayName = try container.decodeIfPresent(String.self, forKey: .displayName)
         self.description = try container.decodeIfPresent(String.self, forKey: .description)
-        self.avatar = try container.decodeIfPresent(String.self, forKey: .avatar)
+        self.avatarImageURL = try container.decodeIfPresent(URL.self, forKey: .avatarImageURL)
         self.indexedAt = try container.decodeIfPresent(DateFormattingOptional.self, forKey: .indexedAt)?.wrappedValue
         self.viewer = try container.decodeIfPresent(ActorViewerState.self, forKey: .viewer)
         self.labels = try container.decodeIfPresent([Label].self, forKey: .labels)
@@ -136,7 +136,7 @@ public struct ActorProfileView: Codable {
         // Truncate `description` to 2560 characters before encoding
         // `maxGraphemes`'s limit is 256, but `String.count` should respect that limit
         try truncatedEncodeIfPresent(self.description, withContainer: &container, forKey: .description, upToLength: 2560)
-        try container.encodeIfPresent(self.avatar, forKey: .avatar)
+        try container.encodeIfPresent(self.avatarImageURL, forKey: .avatarImageURL)
         try container.encodeIfPresent(self._indexedAt, forKey: .indexedAt)
         try container.encodeIfPresent(self.viewer, forKey: .viewer)
         try container.encodeIfPresent(self.labels, forKey: .labels)
@@ -147,7 +147,7 @@ public struct ActorProfileView: Codable {
         case actorHandle = "handle"
         case displayName
         case description
-        case avatar
+        case avatarImageURL = "avatar"
         case indexedAt
         case viewer
         case labels
@@ -172,10 +172,10 @@ public struct ActorProfileViewDetailed: Codable {
     ///
     /// - Note: Current maximum length is 256 characters.
     public var description: String? = nil
-    /// The avatar image of a user's profile. Optional.
-    public var avatar: String? = nil
-    /// The banner image of a user's profile. Optional.
-    public var banner: String? = nil
+    /// The avatar image URL of a user's profile. Optional.
+    public var avatarImageURL: URL? = nil
+    /// The banner image URL of a user's profile. Optional.
+    public var bannerImageURL: URL? = nil
     /// The number of followers a user has. Optional.
     public var followerCount: Int? = nil
     /// The number of accounts the user follows. Optional.
@@ -190,13 +190,13 @@ public struct ActorProfileViewDetailed: Codable {
     /// An array of self-defined [...]. Optional.
     public var labels: [Label]? = nil
 
-    public init(atDID: String, actorHandle: String, displayName: String?, description: String?, avatar: String?, banner: String?, followerCount: Int?, followCount: Int?, postCount: Int?, indexedAt: Date?, viewer: ActorViewerState?, labels: [Label]?) {
+    public init(atDID: String, actorHandle: String, displayName: String?, description: String?, avatarImageURL: URL?, bannerImageURL: URL?, followerCount: Int?, followCount: Int?, postCount: Int?, indexedAt: Date?, viewer: ActorViewerState?, labels: [Label]?) {
         self.atDID = atDID
         self.actorHandle = actorHandle
         self.displayName = displayName
         self.description = description
-        self.avatar = avatar
-        self.banner = banner
+        self.avatarImageURL = avatarImageURL
+        self.bannerImageURL = bannerImageURL
         self.followerCount = followerCount
         self.followCount = followCount
         self.postCount = postCount
@@ -212,8 +212,8 @@ public struct ActorProfileViewDetailed: Codable {
         self.actorHandle = try container.decode(String.self, forKey: .actorHandle)
         self.displayName = try container.decodeIfPresent(String.self, forKey: .displayName)
         self.description = try container.decodeIfPresent(String.self, forKey: .description)
-        self.avatar = try container.decodeIfPresent(String.self, forKey: .avatar)
-        self.banner = try container.decodeIfPresent(String.self, forKey: .banner)
+        self.avatarImageURL = try container.decodeIfPresent(URL.self, forKey: .avatarImageURL)
+        self.bannerImageURL = try container.decodeIfPresent(URL.self, forKey: .bannerImageURL)
         self.followerCount = try container.decodeIfPresent(Int.self, forKey: .followerCount)
         self.followCount = try container.decodeIfPresent(Int.self, forKey: .followCount)
         self.postCount = try container.decodeIfPresent(Int.self, forKey: .postCount)
@@ -235,8 +235,8 @@ public struct ActorProfileViewDetailed: Codable {
         // Truncate `description` to 2560 characters before decoding
         // `maxGraphemes`'s limit is 256, but `String.count` should respect that limit
         try truncatedEncodeIfPresent(self.description, withContainer: &container, forKey: .description, upToLength: 2560)
-        try container.encodeIfPresent(self.avatar, forKey: .avatar)
-        try container.encodeIfPresent(self.banner, forKey: .banner)
+        try container.encodeIfPresent(self.avatarImageURL, forKey: .avatarImageURL)
+        try container.encodeIfPresent(self.bannerImageURL, forKey: .bannerImageURL)
         try container.encodeIfPresent(self.followerCount, forKey: .followerCount)
         try container.encodeIfPresent(self.followCount, forKey: .followCount)
         try container.encodeIfPresent(self.postCount, forKey: .postCount)
@@ -250,8 +250,8 @@ public struct ActorProfileViewDetailed: Codable {
         case actorHandle = "handle"
         case displayName
         case description
-        case avatar
-        case banner
+        case avatarImageURL = "avatar"
+        case bannerImageURL = "banner"
         case followerCount = "followersCount"
         case followCount = "followsCount"
         case postCount = "postsCount"
