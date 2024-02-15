@@ -67,7 +67,7 @@ extension ATProtoKit {
         // Compiling all parts of the post into one.
         let post = FeedPost(
             text: text,
-            facets: await ParseHelper.parseFacets(from: text, pdsURL: session.accessToken),
+            facets: await ATFacetParser.parseFacets(from: text, pdsURL: session.accessToken),
             reply: resolvedReplyTo,
             embed: resolvedEmbed,
             languages: localeIdentifiers,

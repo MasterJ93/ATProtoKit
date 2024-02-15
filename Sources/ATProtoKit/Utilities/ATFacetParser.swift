@@ -1,5 +1,5 @@
 //
-//  ParseHelper.swift
+//  ATFacetParser.swift
 //
 //
 //  Created by Christopher Jr Riley on 2024-01-27.
@@ -8,7 +8,7 @@
 import Foundation
 
 /// A utility class designed for parsing various elements like mentions, URLs, and hashtags from text. It also supports parsing and constructing facets from mentions within a given text
-public class ParseHelper {
+public class ATFacetParser {
 
     /// Represents the response structure for identity lookups, containing a decentralized identifier (DID).
     public struct IdentityResponse: Codable {
