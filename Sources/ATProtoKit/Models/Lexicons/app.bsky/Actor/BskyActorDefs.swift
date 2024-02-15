@@ -272,14 +272,14 @@ public struct ActorViewerState: Codable {
     /// Indicates whether the requesting account has been muted by the subject account. Optional.
     public let isMuted: Bool? = nil
     /// An array of
-    public let mutedByArray: ListViewBasic? = nil
+    public let mutedByArray: GraphListViewBasic? = nil
     /// Indicates whether the requesting account has been blocked by the subject account. Optional.
     public let isBlocked: Bool? = nil
     // TODO: Figure out what this is about.
     /// A URI.
     public let blocking: String? = nil
     /// An array of the subject account's lists.
-    public let blockingByArray: ListViewBasic? = nil
+    public let blockingByArray: GraphListViewBasic? = nil
     // TODO: Figure out what this is about.
     /// A URI.
     public let following: String? = nil

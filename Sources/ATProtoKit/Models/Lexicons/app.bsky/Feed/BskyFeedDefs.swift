@@ -413,7 +413,7 @@ public struct FeedThreadgateView: Codable {
     public let record: UnknownType
     // TODO: Make sure this is correct.
     /// An array of user lists.
-    public let lists: [ListViewBasic]
+    public let lists: [GraphListViewBasic]
 
     enum CodingKeys: String, CodingKey {
         case atURI = "uri"

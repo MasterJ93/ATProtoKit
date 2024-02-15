@@ -131,7 +131,7 @@ public enum RecordViewUnion: Codable {
     /// A record that contains a generator view.
     case generatorView(FeedGeneratorView)
     /// A record that contains a list view.
-    case listView(ListView)
+    case listView(GraphListView)
 
     public init(from decoder: Decoder) throws {
         let container = try decoder.singleValueContainer()
@@ -144,7 +144,7 @@ public enum RecordViewUnion: Codable {
             self = .viewBlocked(value)
         } else if let value = try? container.decode(FeedGeneratorView.self) {
             self = .generatorView(value)
-        } else if let value = try? container.decode(ListView.self) {
+        } else if let value = try? container.decode(GraphListView.self) {
             self = .listView(value)
         } else {
             throw DecodingError.typeMismatch(RecordViewUnion.self, DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Unknown RecordViewUnion type"))
