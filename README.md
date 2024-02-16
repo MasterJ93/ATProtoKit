@@ -1,6 +1,10 @@
-#  ATProtoKit
+<p align="center">
+  <img src="https://github.com/MasterJ93/ATProtoKit/blob/ed45edcd717e7341ae688d294504e0019550b3f0/atprotokit_logo.png" height="128" alt="A logo for ATProtoKit, which contains three stacks of rounded rectangles in an isometric top view. At the top stack, the at symbol is in a thick weight, with clouds as the symbol’s colour. The three stacks are darker shades of blue.">
+</p>
 
-A straightforward solution for using the AT Protocol and Bluesky, written in Swift.
+<h1 align="center">ATProtoKit</h1>
+
+<p align="center">A straightforward solution for using the AT Protocol and Bluesky, written in Swift.</p>
 
 ---
 
@@ -99,10 +103,10 @@ As of right now, Linux support is theoretically possible, but not guaranteed to 
 
 
 ## Contributions and Feedback
-While this project will change significantly, early feedback, issues, and contributions is highly welcomed and encouraged. At a later date, I'll post some contributor guidelines and templates, but since this project is in its early days, I have yet to have a significant amount of time in terms of thinking of this. However, some of the things to keep in mind are:
+While this project will change significantly, early feedback, issues, and contributions are highly welcomed and encouraged. At a later date, I'll post some contributor guidelines and templates, but since this project is in its early days, I have yet to have a significant amount of time in terms of thinking of this. However, some of the things to keep in mind are:
 - Be sure to adhere to the [Swift API Design Guidelines](https://www.swift.org/documentation/api-design-guidelines/) when contributing code.
 - When writing documentation, make sure it's clear, understandable, and comprehensible enough for users (both experienced and new) to understand it.
 - Try to follow the [Git commit best practices](https://cbea.ms/git-commit/).
 
 ## License
-This Swift Package is using the MIT License. Please view LICENSE.md for more details.
+This Swift Package is using the MIT License. Please view [LICENSE.md](https://github.com/MasterJ93/ATProtoKit/blob/ed45edcd717e7341ae688d294504e0019550b3f0/LICENSE.md) for more details.
