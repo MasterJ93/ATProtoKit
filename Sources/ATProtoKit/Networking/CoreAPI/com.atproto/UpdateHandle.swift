@@ -8,6 +8,8 @@
 import Foundation
 
 extension ATProtoKit {
+    /// <#Description#>
+    /// - Parameter handle: <#handle description#>
     public func updateHandle(_ handle: UpdateHandleQuery) async throws {
         guard let sessionURL = session.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.identity.updateHandle") else {

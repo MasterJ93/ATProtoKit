@@ -8,6 +8,10 @@
 import Foundation
 
 extension ATProtoKit {
+    /// <#Description#>
+    /// - Parameters:
+    ///   - requestBody: <#requestBody description#>
+    ///   - createdAt: <#createdAt description#>
     public func deleteRecord<T: Encodable>(requestBody: T, createdAt: Date = Date.now) async throws {
         guard let sessionURL = session.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.repo.createRecord") else {

@@ -18,8 +18,8 @@ ATProtoKit is an easy-to-understand API library that leverages the AT Protocol w
 let config = ATProtocolConfiguration(handle: "example.bsky.social", appPassword: "app-password")
 
 Task {
-    let result = try await config.authenticate()
-    switch result {
+    let session = try await config.authenticate()
+    switch session {
         case .success(let result):
             let atProto = ATProtoKit(session: result)
             let postResult = await atProto.createPostRecord(text: "Hello Bluesky!")
@@ -78,13 +78,12 @@ This session contains all of the elements you need, such as the access and refre
 ```swift
 Task {
     print("Starting application...")
-    let result = try await config.authenticate()
+    let session = try await config.authenticate()
 
-    switch result {
+    switch session {
         case .success(let result):
-            print("This works!")
-            print("Result (Access Token): \(result.accessToken)")
-            print("Result (Refresh Token): \(result.refreshToken)")
+            print("Result (Access Token): \(session.accessToken)")
+            print("Result (Refresh Token): \(session.refreshToken)")
         case .failure(let error):
             print("Error: \(error)")
     }
@@ -97,6 +96,7 @@ To use ATProtoKit in your apps, your app should target the specific version numb
 - **macOS** 12 or later.
 - **tvOS** 13 or later.
 - **watchOS** 6 or later.
+
 (Given how new it is, there are no version requirements for **visionOS**.)
 
 As of right now, Linux support is theoretically possible, but not guaranteed to be tested. The plan is to make it fully compatible with Linux by version 1.0, though this is not a required goal to get there. For other platforms (such as Android), this is also not tested, but should be theoretically possible. While it’s not a goal to make it fully compatible, contributions and feedback on the matter are welcomed.

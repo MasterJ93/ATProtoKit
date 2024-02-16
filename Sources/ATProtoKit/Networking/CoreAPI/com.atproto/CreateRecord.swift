@@ -8,6 +8,12 @@
 import Foundation
 
 extension ATProtoKit {
+    /// <#Description#>
+    /// - Parameters:
+    ///   - collection: <#collection description#>
+    ///   - requestBody: <#requestBody description#>
+    ///   - createdAt: <#createdAt description#>
+    /// - Returns: <#description#>
     public func createRecord<T: Encodable>(collection: String, requestBody: T, createdAt: Date = Date.now) async -> Result<StrongReference, Error> {
         guard let sessionURL = session.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.repo.createRecord") else {
