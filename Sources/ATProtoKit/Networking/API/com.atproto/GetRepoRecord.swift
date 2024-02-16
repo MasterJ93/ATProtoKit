@@ -8,6 +8,11 @@
 import Foundation
 
 extension ATProtoKit {
+    /// Searches for and validates a record from the repository.
+    /// - Parameters:
+    ///   - recordQuery: The record object.
+    ///   - pdsURL: The URL of the Personal Data Server (PDS).
+    /// - Returns: A `Result`, which either contains a `RecordOutput` if successful, and an `Error` if not.
     public static func getRepoRecord(from recordQuery: RecordQuery, pdsURL: String = "https://bsky.social") async throws -> Result<RecordOutput, Error> {
         guard let requestURL = URL(string: "\(pdsURL)/xrpc/com.atproto.repo.getRecord") else {
             return .failure(URIError.invalidFormat)
