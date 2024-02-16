@@ -8,8 +8,10 @@
 import Foundation
 
 extension ATProtoKit {
-    /// <#Description#>
-    /// - Parameter handle: <#handle description#>
+    /// Replaces the user's current handle with a new one.
+    ///
+    /// - Note: According to the AT Protocol specifications: "Updates the current account's handle. Verifies handle validity, and updates did:plc document if necessary. Implemented by PDS, and requires auth."
+    /// - Parameter handle: The object which conains the user's new handle.
     public func updateHandle(_ handle: UpdateHandleQuery) async throws {
         guard let sessionURL = session.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.identity.updateHandle") else {
