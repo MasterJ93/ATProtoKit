@@ -16,16 +16,16 @@ public class UserSession: SessionProtocol {
     /// The user's handle within the AT Protocol.
     public private(set) var handle: String
     /// The decentralized identifier (DID), serving as a persistent and long-term account identifier according to the W3C standard.
-    public private(set) var atDID: String
+    public private(set) var sessionDID: String
     /// The user's email address. Optional.
     public private(set) var email: String?
-    /// Indicates whether the user's email address has been confirmed.
-    public private(set) var emailConfirmed: Bool?
+    /// Indicates whether the user's email address has been confirmed. Optional.
+    public private(set) var isEmailConfirmed: Bool?
     /// The access token used for API requests that requests authentication.
     public private(set) var accessToken: String
     /// The refresh token used to generate a new access token.
     public private(set) var refreshToken: String
-    /// The DID document associated with the user, containing AT Protocol-specific information.
+    /// The DID document associated with the user, which contains AT Protocol-specific information. Optional.
     public private(set) var didDocument: DIDDocument?
     
     /// The URL of the Personal Data Server (PDS) associated with the user. Optional.
@@ -33,11 +33,11 @@ public class UserSession: SessionProtocol {
     public var pdsURL: String?
     
     /// Initializes a new user session with the specified details.
-    public init(handle: String, atDID: String, email: String? = nil, emailConfirmed: Bool? = nil, accessToken: String, refreshToken: String, didDocument: DIDDocument? = nil, pdsURL: String? = nil) {
+    public init(handle: String, sessionDID: String, email: String? = nil, isEmailConfirmed: Bool? = nil, accessToken: String, refreshToken: String, didDocument: DIDDocument? = nil, pdsURL: String? = nil) {
         self.handle = handle
-        self.atDID = atDID
+        self.sessionDID = sessionDID
         self.email = email
-        self.emailConfirmed = emailConfirmed
+        self.isEmailConfirmed = isEmailConfirmed
         self.accessToken = accessToken
         self.refreshToken = refreshToken
         self.didDocument = didDocument
@@ -46,9 +46,9 @@ public class UserSession: SessionProtocol {
 
     enum CodingKeys: String, CodingKey {
         case handle
-        case atDID = "did"
+        case sessionDID = "did"
         case email
-        case emailConfirmed
+        case isEmailConfirmed = "emailConfirmed"
         case accessToken = "accessJwt"
         case refreshToken = "refreshJwt"
         case didDocument = "didDoc"
@@ -70,11 +70,11 @@ public class UserSession: SessionProtocol {
 /// The DID document includes the decentralized identifier (DID), verification methods, and service endpoints necessary for interacting
 /// with the AT Protocol ecosystem, such as authentication and data storage locations.
 public struct DIDDocument: Codable {
-    /// An array of context URLs for the DID document, providing additional semantics for the properties
+    /// An array of context URLs for the DID document, providing additional semantics for the properties.
     var context: [String]
     /// The unique identifier of the DID document.
     var id: String
-    /// An array of URIs under which this DID is also known, including the primary handle URI.
+    /// An array of URIs under which this DID is also known, including the primary handle URI. Optional.
     var alsoKnownAs: [String]?
     /// An array of methods for verifying digital signatures, including the public signing key for the account.
     var verificationMethod: [VerificationMethod]
@@ -94,11 +94,11 @@ public struct DIDDocument: Codable {
 public struct VerificationMethod: Codable {
     /// The unique identifier of the verification method.
     var id: String
-    /// The type of the verification method, indicating the cryptographic curve used.
+    /// The type of verification method that indicates the cryptographic curve used.
     var type: String
-    /// The controller of the verification method, matching the DID.
+    /// The controller of the verification method, which matches the DID.
     var controller: String
-    /// The public key, in multibase encoding, used for verifying digital signatures.
+    /// The public key, in multibase encoding; used for verifying digital signatures.
     var publicKeyMultibase: String
 }
 

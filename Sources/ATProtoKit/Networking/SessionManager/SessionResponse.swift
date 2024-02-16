@@ -7,18 +7,26 @@
 
 import Foundation
 
+/// Represents a concrete implementation of `SessionProtocol`, which contains all session-related data returned from a successful
+/// session response within the AT Protocol.
 public struct SessionResponse: SessionProtocol {
+    /// The handle of the user's account.
     public var handle: String
-    public var atDID: String
+    /// The decentralized identifier (DID) of the user's account, serving as a persistent and long-term account identifier according to
+    /// the W3C standard.
+    public var sessionDID: String
+    /// The email of the user's account. Optional.
     public var email: String?
-    public var emailConfirmed: Bool?
+    /// Indicates whether the user confirmed their email. Optional.
+    public var isEmailConfirmed: Bool?
+    /// The DID document associated with the user, which contains AT Protocol-specific information. Optional.
     public var didDocument: DIDDocument?
 
     enum CodingKeys: String, CodingKey {
         case handle
-        case atDID = "did"
+        case sessionDID = "did"
         case email
-        case emailConfirmed
+        case isEmailConfirmed = "emailConfirmed"
         case didDocument = "didDoc"
     }
 }

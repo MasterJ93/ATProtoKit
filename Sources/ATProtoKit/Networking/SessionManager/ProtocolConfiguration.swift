@@ -7,7 +7,7 @@
 
 import Foundation
 
-/// Defines the requirements for protocol configurations within ATProtoKit.
+/// Defines the requirements for protocol configurations within the ATProtoKit.
 public protocol ProtocolConfiguration {
     /// The user's unique handle used for authentication purposes.
     var handle: String { get }

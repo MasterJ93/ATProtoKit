@@ -20,7 +20,7 @@ extension ATProtoKit {
         )
 
         let requestBody = LikeRecordRequestBody(
-            repo: session.atDID,
+            repo: session.sessionDID,
             record: likeRecord
         )
 

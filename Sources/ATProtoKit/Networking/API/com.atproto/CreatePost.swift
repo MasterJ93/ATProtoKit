@@ -76,7 +76,7 @@ extension ATProtoKit {
             createdAt: creationDate)
 
         let requestBody = FeedPostRequestBody(
-            repo: session.atDID,
+            repo: session.sessionDID,
             record: post
         )
 
