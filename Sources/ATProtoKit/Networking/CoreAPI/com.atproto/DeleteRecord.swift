@@ -8,13 +8,14 @@
 import Foundation
 
 extension ATProtoKit {
-    /// <#Description#>
+    /// Deletes a record.
+    ///
+    /// - Note: According to the AT Protocol specifications: "Delete a repository record, or ensure it doesn't exist. Requires auth, implemented by PDS."
     /// - Parameters:
-    ///   - requestBody: <#requestBody description#>
-    ///   - createdAt: <#createdAt description#>
-    public func deleteRecord<T: Encodable>(requestBody: T, createdAt: Date = Date.now) async throws {
+    ///   - requestBody: The request body that contains the specific record that needs to be deleted.
+    public func deleteRecord<T: Encodable>(requestBody: T) async throws {
         guard let sessionURL = session.pdsURL,
-              let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.repo.createRecord") else {
+              let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.repo.deleteRecord") else {
             throw NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"])
         }
 
