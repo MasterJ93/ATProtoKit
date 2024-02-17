@@ -9,7 +9,6 @@ import Foundation
 
 /// A helper class to handle the most common HTTP Requests for the AT Protocol.
 public class APIClientService {
-
     private init() {}
 
     
@@ -20,7 +19,7 @@ public class APIClientService {
     ///   - acceptValue: The Accept header value, defaults to "application/json".
     ///   - contentTypeValue: The Content-Type header value, defaults to "application/json".
     ///   - authorizationValue: The Authorization header value, optional.
-    /// - Returns: A configured URLRequest instance.
+    /// - Returns: A configured `URLRequest` instance.
     public static func createRequest(forRequest requestURL: URL, andMethod httpMethod: HTTPMethod, acceptValue: String? = "application/json", contentTypeValue: String? = "application/json", authorizationValue: String? = nil) -> URLRequest {
         var request = URLRequest(url: requestURL)
         request.httpMethod = httpMethod.rawValue
