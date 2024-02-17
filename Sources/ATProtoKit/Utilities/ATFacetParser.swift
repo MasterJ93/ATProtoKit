@@ -7,15 +7,8 @@
 
 import Foundation
 
-/// A utility class designed for parsing various elements like mentions, URLs, and hashtags from text. It also supports parsing and constructing facets from mentions within a given text
+/// A utility class designed for parsing various elements like mentions, URLs, and hashtags from text.
 public class ATFacetParser {
-
-    /// Represents the response structure for identity lookups, containing a decentralized identifier (DID).
-    public struct IdentityResponse: Codable {
-        /// The decentralized identifier (DID) associated with an identity.
-        let did: String
-    }
-    
     /// Manages a collection of ``Facet`` objects, providing thread-safe append operations.
     actor FacetsActor {
         /// The collection of ``Facet`` objects.
@@ -174,7 +167,7 @@ public class ATFacetParser {
 
                                 let mentionFacet = Facet(
                                     index: ByteSlice(byteStart: start, byteEnd: end),
-                                    features: [.mention(Mention(did: resolveHandleOutput.did))])
+                                    features: [.mention(Mention(did: resolveHandleOutput.handleDID))])
 
                                 await facets.append(mentionFacet)
                             case .failure(let error):

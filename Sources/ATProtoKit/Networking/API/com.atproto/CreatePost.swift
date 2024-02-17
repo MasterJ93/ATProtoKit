@@ -16,7 +16,7 @@ extension ATProtoKit {
     ///   - embed: The embed container attached to the post record. Current items include images, external links, other posts, lists, and post records with media.
     ///   - labels: An array of labels made by the user.
     ///   - tags: An array of tags for the post record.
-    ///   - creationDate: The date of the post record. Defaults to the current time of the post record's creation.
+    ///   - creationDate: The date of the post record. Defaults to `Date.now`.
     /// - Returns: A strong reference, which contains the newly-created record's `recordURI` (URI) and the `cidHash` (CID) .
     public func createPostRecord(text: String, locales: [Locale] = [], replyTo: String? = nil, embed: EmbedIdentifier? = nil, labels: FeedLabelUnion? = nil, tags: [String]? = nil, creationDate: Date = Date.now) async -> Result<StrongReference, Error> {
 

@@ -12,7 +12,7 @@ extension ATProtoKit {
     /// - Parameters:
     ///   - handle: The handle to resolve into a DID.
     ///   - pdsURL: The URL of the Personal Data Server (PDS) to query.
-    /// - Returns: An optional `String` representing the DID if found; otherwise, `nil`.
+    /// - Returns: A `Result`, which contains ``ResolveHandleOutput`` if it's successful, and an `Error` if it's not.
     public static func retrieveDID(from handle: String, pdsURL: String = "https://bsky.social") async throws -> Result<ResolveHandleOutput, Error> {
         // Go to AT Protocol to find the handle in order to see if it exists.
         guard let requestURL = URL(string: "\(pdsURL)/xrpc/com.atproto.identity.resolveHandle") else {

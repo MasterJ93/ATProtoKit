@@ -7,12 +7,26 @@
 
 import Foundation
 
-// Represents the query parameters for `resolveHandle`
+// MARK: - Main definition
+/// The main data model definition for resolving handles.
+///
+/// - SeeAlso: This is based on the [`com.atproto.identity.resolveHandle`][github] lexicon.
+///
+/// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/identity/resolveHandle.json
 public struct ResolveHandleQuery: Encodable {
+    /// The handle to be resolved.
+    ///
+    /// - Important: Be sure to remove the "@" before entering the value.
     public let handle: String
 }
 
-// Represents the output of the `resolveHandle` query
+// MARK: -
+/// A data model that represents the output of resolving handles.
+///
+/// - SeeAlso: This is based on the [`com.atproto.identity.resolveHandle`][github] lexicon.
+///
+/// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/identity/resolveHandle.json
 public struct ResolveHandleOutput: Decodable {
-    public let did: String
+    /// The resolved handle's decentralized identifier (DID).
+    public let handleDID: String
 }
