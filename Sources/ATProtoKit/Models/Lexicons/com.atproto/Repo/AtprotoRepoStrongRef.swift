@@ -7,8 +7,18 @@
 
 import Foundation
 
+// MARK: - Main definition
+/// The main data model definition for a strong reference.
+///
+/// - Note: According to the AT Protocol specifications: "A URI with a content-hash fingerprint."
+///
+/// - SeeAlso: This is based on the [`com.atproto.repo.strongRef`][github] lexicon.
+///
+/// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/repo/strongRef.json
 public struct StrongReference: Codable {
+    /// The URI for the record.
     public let recordURI: String
+    /// The CID hash for the record.
     public let cidHash: String
 
     public init(recordURI: String, cidHash: String) {
