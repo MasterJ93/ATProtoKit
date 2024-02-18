@@ -354,6 +354,9 @@ public struct SavedFeedsPreferences: Codable {
     let pinned: [String]
     /// An array of feeds that have been saved.
     let saved: [String]
+    // TODO: Find out more about what this does.
+    /// The index number of the timeline for the list of feeds.
+    let timelineIndex: Int
 }
 
 /// A data model for a "Personal Details" preference definition.
