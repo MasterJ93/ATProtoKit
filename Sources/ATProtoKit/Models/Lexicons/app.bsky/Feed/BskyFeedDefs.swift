@@ -275,9 +275,14 @@ public struct FeedBlockedPost: Codable {
 /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/feed/defs.json
 public struct FeedBlockedAuthor: Codable {
     /// The URI of the author.
-    public let atDID: String
+    public let authorDID: String
     /// The viewer state of the user. Optional.
     public var viewer: ActorViewerState? = nil
+
+    enum CodingKeys: String, CodingKey {
+        case authorDID = "did"
+        case viewer
+    }
 }
 
 /// The data model of a feed generator definition.
@@ -291,7 +296,7 @@ public struct FeedGeneratorView: Codable {
     /// The CID of the feed generator.
     public let cidHash: String
     /// The decentralized identifier (DID) of the feed generator.
-    public let atDID: String
+    public let feedDID: String
     /// The author of the feed generator.
     public let creator: ActorProfileView
     /// The display name of the feed generator.
@@ -314,7 +319,7 @@ public struct FeedGeneratorView: Codable {
 
         self.atURI = try container.decode(String.self, forKey: .atURI)
         self.cidHash = try container.decode(String.self, forKey: .cidHash)
-        self.atDID = try container.decode(String.self, forKey: .atDID)
+        self.feedDID = try container.decode(String.self, forKey: .feedDID)
         self.creator = try container.decode(ActorProfileView.self, forKey: .creator)
         self.displayName = try container.decode(String.self, forKey: .displayName)
         self.description = try container.decodeIfPresent(String.self, forKey: .description)
@@ -329,7 +334,7 @@ public struct FeedGeneratorView: Codable {
 
         try container.encode(self.atURI, forKey: .atURI)
         try container.encode(self.cidHash, forKey: .cidHash)
-        try container.encode(self.atDID, forKey: .atDID)
+        try container.encode(self.feedDID, forKey: .feedDID)
         try container.encode(self.creator, forKey: .creator)
         try container.encode(self.displayName, forKey: .displayName)
 
@@ -351,7 +356,7 @@ public struct FeedGeneratorView: Codable {
     enum CodingKeys: String, CodingKey {
         case atURI = "uri"
         case cidHash = "cid"
-        case atDID = "did"
+        case feedDID = "did"
         case creator
         case displayName
         case description

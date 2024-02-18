@@ -245,7 +245,7 @@ public struct GraphNotFoundActor: Codable {
 /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/graph/defs.json
 public struct GraphRelationship: Codable {
     /// The decentralized identifier (DID) of the target user.
-    public let atDID: String
+    public let actorDID: String
     /// The URI of the follow record, if the first user is following the target user. Optional.
     ///
     /// - Note: According to the AT Protocol specifications: "if the actor follows this DID, this is the AT-URI of the follow record"
@@ -256,7 +256,7 @@ public struct GraphRelationship: Codable {
     public let followedByURI: String?
 
     enum CodingKeys: String, CodingKey {
-        case atDID = "did"
+        case actorDID = "did"
         case followingURI = "following"
         case followedByURI = "followedBy"
     }

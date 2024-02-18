@@ -13,7 +13,7 @@ import Foundation
 /// [github]: https://github.com/bluesky-social/atproto/blob/9579bec720d30e40c995d09772040212c261d6fb/lexicons/app/bsky/actor/defs.json
 public struct ActorProfileViewBasic: Codable {
     /// The decentralized identifier (DID) of the user.
-    public let atDID: String
+    public let actorDID: String
     /// The unique handle of the user.
     public let actorHandle: String
     /// The display name of the user. Optional.
@@ -28,8 +28,8 @@ public struct ActorProfileViewBasic: Codable {
     /// An array of self-defined [...]. Optional.
     public var labels: [Label]? = nil
 
-    public init(atDID: String, actorHandle: String, displayName: String?, avatarImageURL: URL?, viewer: ActorViewerState?, labels: [Label]?) {
-        self.atDID = atDID
+    public init(actorDID: String, actorHandle: String, displayName: String?, avatarImageURL: URL?, viewer: ActorViewerState?, labels: [Label]?) {
+        self.actorDID = actorDID
         self.actorHandle = actorHandle
         self.displayName = displayName
         self.avatarImageURL = avatarImageURL
@@ -40,7 +40,7 @@ public struct ActorProfileViewBasic: Codable {
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
 
-        self.atDID = try container.decode(String.self, forKey: .atDID)
+        self.actorDID = try container.decode(String.self, forKey: .actorDID)
         self.actorHandle = try container.decode(String.self, forKey: .actorHandle)
         self.displayName = try container.decodeIfPresent(String.self, forKey: .displayName)
         self.avatarImageURL = try container.decodeIfPresent(URL.self, forKey: .avatarImageURL)
@@ -51,7 +51,7 @@ public struct ActorProfileViewBasic: Codable {
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
 
-        try container.encode(self.atDID, forKey: .atDID)
+        try container.encode(self.actorDID, forKey: .actorDID)
         try container.encode(self.actorHandle, forKey: .actorHandle)
 
         // Truncate `displayName` to 640 characters before encoding
@@ -63,7 +63,7 @@ public struct ActorProfileViewBasic: Codable {
     }
 
     enum CodingKeys: String, CodingKey {
-        case atDID = "did"
+        case actorDID = "did"
         case actorHandle = "handle"
         case displayName
         case avatarImageURL = "avatar"
@@ -79,7 +79,7 @@ public struct ActorProfileViewBasic: Codable {
 /// [github]: https://github.com/bluesky-social/atproto/blob/9579bec720d30e40c995d09772040212c261d6fb/lexicons/app/bsky/actor/defs.json
 public struct ActorProfileView: Codable {
     /// The decentralized identifier (DID) of the user.
-    public let atDID: String
+    public let actorDID: String
     /// The unique handle of the user.
     public let actorHandle: String
     /// The display name of the user's profile. Optional.
@@ -99,8 +99,8 @@ public struct ActorProfileView: Codable {
     /// <#Description#>
     public var labels: [Label]? = nil
 
-    public init(atDID: String, actorHandle: String, displayName: String?, description: String?, avatarImageURL: URL?, indexedAt: Date?, viewer: ActorViewerState?, labels: [Label]?) {
-        self.atDID = atDID
+    public init(actorDID: String, actorHandle: String, displayName: String?, description: String?, avatarImageURL: URL?, indexedAt: Date?, viewer: ActorViewerState?, labels: [Label]?) {
+        self.actorDID = actorDID
         self.actorHandle = actorHandle
         self.displayName = displayName
         self.description = description
@@ -113,7 +113,7 @@ public struct ActorProfileView: Codable {
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
 
-        self.atDID = try container.decode(String.self, forKey: .atDID)
+        self.actorDID = try container.decode(String.self, forKey: .actorDID)
         self.actorHandle = try container.decode(String.self, forKey: .actorHandle)
         self.displayName = try container.decodeIfPresent(String.self, forKey: .displayName)
         self.description = try container.decodeIfPresent(String.self, forKey: .description)
@@ -126,7 +126,7 @@ public struct ActorProfileView: Codable {
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
 
-        try container.encode(self.atDID, forKey: .atDID)
+        try container.encode(self.actorDID, forKey: .actorDID)
         try container.encode(self.actorHandle, forKey: .actorHandle)
 
         // Truncate `displayName` to 640 characters before encoding
@@ -143,7 +143,7 @@ public struct ActorProfileView: Codable {
     }
 
     enum CodingKeys: String, CodingKey {
-        case atDID = "did"
+        case actorDID = "did"
         case actorHandle = "handle"
         case displayName
         case description
@@ -161,7 +161,7 @@ public struct ActorProfileView: Codable {
 /// [github]: https://github.com/bluesky-social/atproto/blob/9579bec720d30e40c995d09772040212c261d6fb/lexicons/app/bsky/actor/defs.json
 public struct ActorProfileViewDetailed: Codable {
     /// The decentralized identifier (DID) of the user.
-    public let atDID: String
+    public let actorDID: String
     /// The unique handle of the user.
     public let actorHandle: String
     /// The display name of the user's profile. Optional.
@@ -190,8 +190,8 @@ public struct ActorProfileViewDetailed: Codable {
     /// An array of self-defined [...]. Optional.
     public var labels: [Label]? = nil
 
-    public init(atDID: String, actorHandle: String, displayName: String?, description: String?, avatarImageURL: URL?, bannerImageURL: URL?, followerCount: Int?, followCount: Int?, postCount: Int?, indexedAt: Date?, viewer: ActorViewerState?, labels: [Label]?) {
-        self.atDID = atDID
+    public init(actorDID: String, actorHandle: String, displayName: String?, description: String?, avatarImageURL: URL?, bannerImageURL: URL?, followerCount: Int?, followCount: Int?, postCount: Int?, indexedAt: Date?, viewer: ActorViewerState?, labels: [Label]?) {
+        self.actorDID = actorDID
         self.actorHandle = actorHandle
         self.displayName = displayName
         self.description = description
@@ -208,7 +208,7 @@ public struct ActorProfileViewDetailed: Codable {
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
 
-        self.atDID = try container.decode(String.self, forKey: .atDID)
+        self.actorDID = try container.decode(String.self, forKey: .actorDID)
         self.actorHandle = try container.decode(String.self, forKey: .actorHandle)
         self.displayName = try container.decodeIfPresent(String.self, forKey: .displayName)
         self.description = try container.decodeIfPresent(String.self, forKey: .description)
@@ -225,7 +225,7 @@ public struct ActorProfileViewDetailed: Codable {
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
 
-        try container.encode(self.atDID, forKey: .atDID)
+        try container.encode(self.actorDID, forKey: .actorDID)
         try container.encode(self.actorHandle, forKey: .actorHandle)
 
         // Truncate `displayName` to 640 characters before encoding
@@ -246,7 +246,7 @@ public struct ActorProfileViewDetailed: Codable {
     }
 
     enum CodingKeys: String, CodingKey {
-        case atDID = "did"
+        case actorDID = "did"
         case actorHandle = "handle"
         case displayName
         case description

@@ -339,7 +339,7 @@ public struct ReportViewDetail: Codable {
 }
 
 public struct AdminRepoView: Codable {
-    public let atDID: String
+    public let actorDID: String
     public let handle: String
     public var email: String? = nil
     public let relatedRecords: UnknownType
@@ -349,8 +349,8 @@ public struct AdminRepoView: Codable {
     public var areInvitesDisabled: Bool? = nil
     public var inviteNote: String? = nil
 
-    public init(atDID: String, handle: String, email: String? = nil, relatedRecords: UnknownType, indexedAt: Date, moderation: AdminModeration, invitedBy: ServerInviteCode? = nil, areInvitesDisabled: Bool? = nil, inviteNote: String? = nil) {
-        self.atDID = atDID
+    public init(actorDID: String, handle: String, email: String? = nil, relatedRecords: UnknownType, indexedAt: Date, moderation: AdminModeration, invitedBy: ServerInviteCode? = nil, areInvitesDisabled: Bool? = nil, inviteNote: String? = nil) {
+        self.actorDID = actorDID
         self.handle = handle
         self.email = email
         self.relatedRecords = relatedRecords
@@ -364,7 +364,7 @@ public struct AdminRepoView: Codable {
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
 
-        self.atDID = try container.decode(String.self, forKey: .atDID)
+        self.actorDID = try container.decode(String.self, forKey: .actorDID)
         self.handle = try container.decode(String.self, forKey: .handle)
         self.email = try container.decodeIfPresent(String.self, forKey: .email)
         self.relatedRecords = try container.decode(UnknownType.self, forKey: .relatedRecords)
@@ -378,7 +378,7 @@ public struct AdminRepoView: Codable {
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
 
-        try container.encode(self.atDID, forKey: .atDID)
+        try container.encode(self.actorDID, forKey: .actorDID)
         try container.encode(self.handle, forKey: .handle)
         try container.encodeIfPresent(self.email, forKey: .email)
         try container.encode(self.relatedRecords, forKey: .relatedRecords)
@@ -390,7 +390,7 @@ public struct AdminRepoView: Codable {
     }
 
     enum CodingKeys: String, CodingKey {
-        case atDID = "did"
+        case actorDID = "did"
         case handle
         case email
         case relatedRecords
@@ -403,7 +403,7 @@ public struct AdminRepoView: Codable {
 }
 
 public struct RepoViewDetail: Codable {
-    public let atDID: String
+    public let actorDID: String
     public let handle: String
     public var email: String? = nil
     public let relatedRecords: UnknownType
@@ -416,8 +416,8 @@ public struct RepoViewDetail: Codable {
     public var inviteNote: String? = nil
     @DateFormattingOptional public var emailConfirmedAt: Date? = nil
 
-    public init(atDID: String, handle: String, email: String?, relatedRecords: UnknownType, indexedAt: Date, moderation: AdminModeration, labels: [Label]?, invitedBy: ServerInviteCode?, invites: [ServerInviteCode]?, areInvitesDisabled: Bool?, inviteNote: String?, emailConfirmedAt: Date? = nil) {
-        self.atDID = atDID
+    public init(actorDID: String, handle: String, email: String?, relatedRecords: UnknownType, indexedAt: Date, moderation: AdminModeration, labels: [Label]?, invitedBy: ServerInviteCode?, invites: [ServerInviteCode]?, areInvitesDisabled: Bool?, inviteNote: String?, emailConfirmedAt: Date? = nil) {
+        self.actorDID = actorDID
         self.handle = handle
         self.email = email
         self.relatedRecords = relatedRecords
@@ -434,7 +434,7 @@ public struct RepoViewDetail: Codable {
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
 
-        self.atDID = try container.decode(String.self, forKey: .atDID)
+        self.actorDID = try container.decode(String.self, forKey: .actorDID)
         self.handle = try container.decode(String.self, forKey: .handle)
         self.email = try container.decodeIfPresent(String.self, forKey: .email)
         self.relatedRecords = try container.decode(UnknownType.self, forKey: .relatedRecords)
@@ -451,7 +451,7 @@ public struct RepoViewDetail: Codable {
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
 
-        try container.encode(self.atDID, forKey: .atDID)
+        try container.encode(self.actorDID, forKey: .actorDID)
         try container.encode(self.handle, forKey: .handle)
         try container.encodeIfPresent(self.email, forKey: .email)
         try container.encode(self.relatedRecords, forKey: .relatedRecords)
@@ -466,7 +466,7 @@ public struct RepoViewDetail: Codable {
     }
 
     enum CodingKeys: String, CodingKey {
-        case atDID = "did"
+        case actorDID = "did"
         case handle
         case email
         case relatedRecords
@@ -482,7 +482,7 @@ public struct RepoViewDetail: Codable {
 }
 
 public struct AdminAccountView: Codable {
-    public let atDID: String
+    public let actorDID: String
     public let handle: String
     public var email: String? = nil
     public var relatedRecords: [UnknownType]? = nil
@@ -493,8 +493,8 @@ public struct AdminAccountView: Codable {
     @DateFormattingOptional public var emailConfirmedAt: Date? = nil
     public var inviteNote: String? = nil
 
-    public init(atDID: String, handle: String, email: String?, relatedRecords: [UnknownType]?, indexedAt: Date, invitedBy: ServerInviteCode?, invites: [ServerInviteCode]?, areInvitesDisabled: Bool?, emailConfirmedAt: Date? = nil, inviteNote: String?) {
-        self.atDID = atDID
+    public init(actorDID: String, handle: String, email: String?, relatedRecords: [UnknownType]?, indexedAt: Date, invitedBy: ServerInviteCode?, invites: [ServerInviteCode]?, areInvitesDisabled: Bool?, emailConfirmedAt: Date? = nil, inviteNote: String?) {
+        self.actorDID = actorDID
         self.handle = handle
         self.email = email
         self.relatedRecords = relatedRecords
@@ -509,7 +509,7 @@ public struct AdminAccountView: Codable {
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
 
-        self.atDID = try container.decode(String.self, forKey: .atDID)
+        self.actorDID = try container.decode(String.self, forKey: .actorDID)
         self.handle = try container.decode(String.self, forKey: .handle)
         self.email = try container.decodeIfPresent(String.self, forKey: .email)
         self.relatedRecords = try container.decodeIfPresent([UnknownType].self, forKey: .relatedRecords)
@@ -524,7 +524,7 @@ public struct AdminAccountView: Codable {
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
 
-        try container.encode(self.atDID, forKey: .atDID)
+        try container.encode(self.actorDID, forKey: .actorDID)
         try container.encode(self.handle, forKey: .handle)
         try container.encodeIfPresent(self.email, forKey: .email)
         try container.encodeIfPresent(self.relatedRecords, forKey: .relatedRecords)
@@ -537,7 +537,7 @@ public struct AdminAccountView: Codable {
     }
 
     enum CodingKeys: String, CodingKey {
-        case atDID = "did"
+        case actorDID = "did"
         case handle
         case email
         case relatedRecords
