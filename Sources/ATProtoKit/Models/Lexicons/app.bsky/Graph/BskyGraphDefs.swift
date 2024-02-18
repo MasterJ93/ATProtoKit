@@ -14,7 +14,7 @@ import Foundation
 /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/graph/defs.json
 public struct GraphListViewBasic: Codable {
     /// The URI of a user list.
-    public let atURI: String
+    public let actorURI: String
     /// The CID of a user list.
     public let cidHash: String
     /// The name of the list.
@@ -30,8 +30,8 @@ public struct GraphListViewBasic: Codable {
     /// The late time the user list was indexed.
     @DateFormattingOptional public var indexedAt: Date? = nil
 
-    public init(atURI: String, cidHash: String, name: String, purpose: GraphListPurpose, avatarImageURL: URL?, viewer: GraphListViewerState?, indexedAt: Date?) {
-        self.atURI = atURI
+    public init(actorURI: String, cidHash: String, name: String, purpose: GraphListPurpose, avatarImageURL: URL?, viewer: GraphListViewerState?, indexedAt: Date?) {
+        self.actorURI = actorURI
         self.cidHash = cidHash
         self.name = name
         self.purpose = purpose
@@ -43,7 +43,7 @@ public struct GraphListViewBasic: Codable {
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
 
-        self.atURI = try container.decode(String.self, forKey: .atURI)
+        self.actorURI = try container.decode(String.self, forKey: .actorURI)
         self.cidHash = try container.decode(String.self, forKey: .cidHash)
         self.name = try container.decode(String.self, forKey: .name)
         self.purpose = try container.decode(GraphListPurpose.self, forKey: .purpose)
@@ -55,7 +55,7 @@ public struct GraphListViewBasic: Codable {
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
 
-        try container.encode(self.atURI, forKey: .atURI)
+        try container.encode(self.actorURI, forKey: .actorURI)
         try container.encode(self.cidHash, forKey: .cidHash)
         try container.encode(self.name, forKey: .name)
         //
@@ -67,7 +67,7 @@ public struct GraphListViewBasic: Codable {
     }
 
     enum CodingKeys: String, CodingKey {
-        case atURI = "uri"
+        case actorURI = "uri"
         case cidHash = "cid"
         case name = "name"
         case purpose = "purpose"
@@ -84,7 +84,7 @@ public struct GraphListViewBasic: Codable {
 /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/graph/defs.json
 public struct GraphListView: Codable {
     /// The URI of the user list.
-    public let atURI: String
+    public let listURI: String
     /// The CID of the user list.
     public let cidHash: String
     /// The creator of the user list.
@@ -108,8 +108,8 @@ public struct GraphListView: Codable {
     /// The late time the user list was indexed.
     @DateFormatting public var indexedAt: Date
 
-    public init(atURI: String, cidHash: String, creator: ActorProfileView, name: String, purpose: GraphListPurpose, description: String?, descriptionFacets: [Facet]?, avatarImageURL: URL?, viewer: GraphListViewerState?, indexedAt: Date) {
-        self.atURI = atURI
+    public init(listURI: String, cidHash: String, creator: ActorProfileView, name: String, purpose: GraphListPurpose, description: String?, descriptionFacets: [Facet]?, avatarImageURL: URL?, viewer: GraphListViewerState?, indexedAt: Date) {
+        self.listURI = listURI
         self.cidHash = cidHash
         self.creator = creator
         self.name = name
@@ -124,7 +124,7 @@ public struct GraphListView: Codable {
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
 
-        self.atURI = try container.decode(String.self, forKey: .atURI)
+        self.listURI = try container.decode(String.self, forKey: .listURI)
         self.cidHash = try container.decode(String.self, forKey: .cidHash)
         self.creator = try container.decode(ActorProfileView.self, forKey: .creator)
         self.name = try container.decode(String.self, forKey: .name)
@@ -139,7 +139,7 @@ public struct GraphListView: Codable {
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
 
-        try container.encode(self.atURI, forKey: .atURI)
+        try container.encode(self.listURI, forKey: .listURI)
         try container.encode(self.cidHash, forKey: .cidHash)
         try container.encode(self.creator, forKey: .creator)
         // Truncate `name` to 64 characters before encoding.
@@ -156,7 +156,7 @@ public struct GraphListView: Codable {
     }
 
     enum CodingKeys: String, CodingKey {
-        case atURI = "uri"
+        case listURI = "uri"
         case cidHash = "cid"
         case creator = "creator"
         case name = "name"
@@ -176,12 +176,12 @@ public struct GraphListView: Codable {
 /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/graph/defs.json
 public struct GraphListItemView: Codable {
     /// The URI of the user list item.
-    public let atURI: String
+    public let listItemURI: String
     /// A user in the user list item.
     public let subject: ActorProfileView
 
     enum CodingKeys: String, CodingKey {
-        case atURI = "uri"
+        case listItemURI = "uri"
         case subject
     }
 }
@@ -209,11 +209,11 @@ public struct GraphListViewerState: Codable {
     /// Indicates whether the user is muted. Optional.
     public var isMuted: Bool? = nil
     /// The URI of the block record if the user has blocked the user list. Optional
-    public var blocked: String? = nil
+    public var blockedURI: String? = nil
 
     enum CodingKeys: String, CodingKey {
         case isMuted = "muted"
-        case blocked = "blocked"
+        case blockedURI = "blocked"
     }
 }
 
@@ -226,12 +226,12 @@ public struct GraphNotFoundActor: Codable {
     /// The URI of the user.
     ///
     /// - Note: According to the AT Protocol specifications: "indicates that a handle or DID could not be resolved",
-    public let actor: String
+    public let actorURI: String
     /// Indicates whether the user is not found.
     public let isNotFound: Bool
 
     enum CodingKeys: String, CodingKey {
-        case actor
+        case actorURI = "actor"
         case isNotFound = "notFound"
     }
 }
