@@ -7,25 +7,38 @@
 
 import Foundation
 
+/// A data model for a basic profile view definition.
+///
+/// - SeeAlso: This is based on the [`com.atproto.moderation.defs`][github] lexicon.
+///
+/// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/moderation/defs.json
 public enum ModerationReasonType: String, Codable {
-    /// Spam: frequent unwanted promotion, replies, mentions
+    /// Indicates spam as the reason.
+    ///
+    /// - Note: According to the AT Protocol specifications: "Spam: frequent unwanted promotion, replies, mentions."
     case reasonSpam
-
-    /// Direct violation of server rules, laws, terms of service
+    /// Indicates a rule violation as the reason.
+    ///
+    /// - Note: According to the AT Protocol specifications: "Direct violation of server rules, laws, terms of service."
     case reasonViolation
-
-    /// Misleading identity, affiliation, or content
+    /// Indicates misleading content as the reason.
+    ///
+    /// - Note: According to the AT Protocol specifications: "Misleading identity, affiliation, or content."
     case reasonMisleading
-
-    /// Unwanted or mislabeled sexual content
+    /// Indicates mislabeled/unwanted sexual content as the reason.
+    ///
+    /// - Note: According to the AT Protocol specifications: "Unwanted or mislabeled sexual content."
     case reasonSexual
-
-    /// Rude, harassing, explicit, or otherwise unwelcoming behavior
+    /// Indicates rude behavior as the reason.
+    ///
+    /// - Note: According to the AT Protocol specifications: "Rude, harassing, explicit, or otherwise unwelcoming behavior."
     case reasonRude
-
-    /// Other: reports not falling under another report category
+    /// Indicates a reason not otherwise specified.
+    ///
+    /// - Note: According to the AT Protocol specifications: "Other: reports not falling under another report category."
     case reasonOther
-
-    /// Appeal: appeal a previously taken moderation action
+    /// Indicates an appeal to a previous moderation ruling as the reason.
+    ///
+    /// - Note: According to the AT Protocol specifications: "Appeal: appeal a previously taken moderation action."
     case reasonAppeal
 }
