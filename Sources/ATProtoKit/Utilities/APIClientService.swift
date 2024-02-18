@@ -106,7 +106,7 @@ public class APIClientService {
     /// - Parameters:
     ///   - request: The `URLRequest` to send.
     ///   - body: An optional `Encodable` body to be encoded and attached to the request.
-    ///   - Note: Since there doesn't seem to be a way to have optional generic types, this method can't be combined with  `sendRequest(_:withEncodingBody:decodeTo:)` and will have to be overloaded until a better solution arrives.
+    ///   - Note: Since there doesn't seem to be a way to have optional generic types, this method can't be combined with  ``sendRequest(_:withEncodingBody:decodeTo:)`` or ``sendRequestForBlob(_:)``  and will have to be overloaded until a better solution arrives.
     public static func sendRequest(_ request: URLRequest, withEncodingBody body: Encodable? = nil) async throws {
         var urlRequest = request
 
@@ -135,6 +135,23 @@ public class APIClientService {
         }
     }
     
+    /// Sends a `URLRequest` in order to grab access to a blob.
+    /// - Parameter request: The `URLRequest` to send.
+    /// - Returns: A `Data` object that contains the blob.
+    public static func sendRequest(_ request: URLRequest) async throws -> Data {
+        let (data, response) = try await URLSession.shared.data(for: request)
+
+        guard let httpResponse = response as? HTTPURLResponse else {
+            throw NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Error getting response"])
+        }
+
+        guard httpResponse.statusCode == 200 else {
+            throw NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Error fetching blob"])
+        }
+
+        return data
+    }
+
     /// Uploads a blob to a specified URL with multipart/form-data encoding.
     /// - Parameters:
     ///   - pdsURL: The base URL for the blob upload.
