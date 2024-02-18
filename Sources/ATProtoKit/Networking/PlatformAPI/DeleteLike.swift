@@ -36,7 +36,7 @@ extension ATProtoKit {
                 switch output {
                     case .success(let result):
                         let recordURI = "at://\(recordQuery.repo)/\(recordQuery.collection)/\(recordQuery.recordKey)"
-                        guard result.atURI == recordURI else {
+                        guard result.recordURI == recordURI else {
                             throw NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid Record"])
                         }
 
@@ -52,7 +52,7 @@ extension ATProtoKit {
 
                 switch output {
                     case .success(let result):
-                        guard recordURI == result.atURI else {
+                        guard recordURI == result.recordURI else {
                             throw NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid Record"])
                         }
 

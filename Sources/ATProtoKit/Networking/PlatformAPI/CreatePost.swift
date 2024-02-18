@@ -124,7 +124,7 @@ extension ATProtoKit {
     /// - Returns: A strong reference, which contains a record's `recordURI` (URI) and the `cidHash` (CID) .
     public func addQuotePostToEmbed(_ strongReference: StrongReference) async throws -> EmbedUnion {
         let record = try await ATProtoKit.fetchRecordForURI(strongReference.recordURI)
-        let reference = StrongReference(recordURI: record.atURI, cidHash: record.recordCID)
+        let reference = StrongReference(recordURI: record.recordURI, cidHash: record.recordCID)
         let embedRecord = EmbedRecord(record: reference)
 
         return .record(embedRecord)

@@ -8,6 +8,9 @@
 import Foundation
 
 extension ATProtoKit {
+    /// <#Description#>
+    /// - Parameter parentURI: <#parentURI description#>
+    /// - Returns: <#description#>
     public static func resolveReplyReferences(parentURI: String) async throws -> ReplyReference {
         let parentRecord = try await fetchRecordForURI(parentURI)
 
@@ -21,7 +24,10 @@ extension ATProtoKit {
 
         return ReplyReference(root: rootReference, parent: replyReference.parent)
     }
-
+    
+    /// <#Description#>
+    /// - Parameter uri: <#uri description#>
+    /// - Returns: <#description#>
     public static func fetchRecordForURI(_ uri: String) async throws -> RecordOutput {
         let query = try parseURI(uri)
 
@@ -34,12 +40,20 @@ extension ATProtoKit {
                 throw failure
         }
     }
-
+    
+    /// <#Description#>
+    /// - Parameter record: <#record description#>
+    /// - Returns: <#description#>
     private static func createReplyReference(from record: RecordOutput) -> ReplyReference {
-        let reference = StrongReference(recordURI: record.atURI, cidHash: record.recordCID)
+        let reference = StrongReference(recordURI: record.recordURI, cidHash: record.recordCID)
         return ReplyReference(root: reference, parent: reference)
     }
-
+    
+    /// <#Description#>
+    /// - Parameters:
+    ///   - recordQuery: <#recordQuery description#>
+    ///   - pdsURL: <#pdsURL description#>
+    /// - Returns: <#description#>
     public static func fetchRecord(fromRecordQuery recordQuery: RecordQuery, pdsURL: String = "https://bsky.social") async throws -> RecordOutput {
 
         guard let url = URL(string: "\(pdsURL)/xrpc/com.atproto.repo.getRecord") else {
@@ -67,7 +81,12 @@ extension ATProtoKit {
         let response = try await APIClientService.sendRequest(request, decodeTo: RecordOutput.self)
         return response
     }
-
+    
+    /// <#Description#>
+    /// - Parameters:
+    ///   - uri: <#uri description#>
+    ///   - pdsURL: <#pdsURL description#>
+    /// - Returns: <#description#>
     internal static func parseURI(_ uri: String, pdsURL: String = "https://bsky.app") throws -> RecordQuery {
         if uri.hasPrefix("at://") {
             let components = uri.split(separator: "/").map(String.init)

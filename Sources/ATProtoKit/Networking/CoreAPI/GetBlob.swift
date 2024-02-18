@@ -20,7 +20,7 @@ extension ATProtoKit {
         }
 
         do {
-            var queryItems = [
+            let queryItems = [
                 ("did", blobQuery.accountDID),
                 ("cid", blobQuery.cidHash)
             ]
