@@ -277,24 +277,24 @@ public struct ActorViewerState: Codable {
     public let isBlocked: Bool? = nil
     // TODO: Figure out what this is about.
     /// A URI.
-    public let blocking: String? = nil
+    public let blockingURI: String? = nil
     /// An array of the subject account's lists.
     public let blockingByArray: GraphListViewBasic? = nil
     // TODO: Figure out what this is about.
     /// A URI.
-    public let following: String? = nil
+    public let followingURI: String? = nil
     // TODO: Figure out what this is about.
     /// A URI.
-    public let followedBy: String? = nil
+    public let followedByURI: String? = nil
 
     enum CodingKeys: String, CodingKey {
         case isMuted = "muted"
         case mutedByArray = "mutedByList"
         case isBlocked = "blockedBy"
-        case blocking
+        case blockingURI = "blocking"
         case blockingByArray = "blockingByList"
-        case following = "following"
-        case followedBy = "followedBy"
+        case followingURI = "following"
+        case followedByURI = "followedBy"
     }
 }
 
@@ -397,7 +397,7 @@ public struct FeedViewPreferences: Codable {
     /// The feed's identifier (typically the URI).
     ///
     /// - Note:From the AT Protocol specification: "The URI of the feed, or an identifier which describes the feed."
-    let feed: String
+    let feedURI: String
     /// Indicates whether the replies are hidden from the user. Optional.
     ///
     /// - Note: From the AT Protocol specification: "Hide replies in the feed."
@@ -420,7 +420,7 @@ public struct FeedViewPreferences: Codable {
     let areQuotePostsHidden: Bool? = nil
 
     enum CodingKeys: String, CodingKey {
-        case feed
+        case feedURI = "feed"
         case areRepliesHidden = "hideReplies"
         case areUnfollowedRepliesHidden = "hideRepliesByUnfollowed"
         case hideRepliesByLikeCount

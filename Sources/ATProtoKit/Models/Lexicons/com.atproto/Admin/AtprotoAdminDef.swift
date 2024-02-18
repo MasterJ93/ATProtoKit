@@ -579,7 +579,7 @@ public struct RepoBlobReference: Codable {
 }
 
 public struct AdminRecordView: Codable {
-    public let atURI: String
+    public let recordURI: String
     public let cidHash: String
     public let value: UnknownType
     public let blobCIDHashes: [String]
@@ -587,8 +587,8 @@ public struct AdminRecordView: Codable {
     public let moderation: AdminModeration
     public let repo: AdminRepoView
 
-    public init(atURI: String, cidHash: String, value: UnknownType, blobCIDHashes: [String], indexedAt: Date, moderation: AdminModeration, repo: AdminRepoView) {
-        self.atURI = atURI
+    public init(recordURI: String, cidHash: String, value: UnknownType, blobCIDHashes: [String], indexedAt: Date, moderation: AdminModeration, repo: AdminRepoView) {
+        self.recordURI = recordURI
         self.cidHash = cidHash
         self.value = value
         self.blobCIDHashes = blobCIDHashes
@@ -600,7 +600,7 @@ public struct AdminRecordView: Codable {
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
 
-        self.atURI = try container.decode(String.self, forKey: .atURI)
+        self.recordURI = try container.decode(String.self, forKey: .recordURI)
         self.cidHash = try container.decode(String.self, forKey: .cidHash)
         self.value = try container.decode(UnknownType.self, forKey: .value)
         self.blobCIDHashes = try container.decode([String].self, forKey: .blobCIDHashes)
@@ -612,7 +612,7 @@ public struct AdminRecordView: Codable {
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
 
-        try container.encode(self.atURI, forKey: .atURI)
+        try container.encode(self.recordURI, forKey: .recordURI)
         try container.encode(self.cidHash, forKey: .cidHash)
         try container.encode(self.value, forKey: .value)
         try container.encode(self.blobCIDHashes, forKey: .blobCIDHashes)
@@ -622,7 +622,7 @@ public struct AdminRecordView: Codable {
     }
 
     enum CodingKeys: String, CodingKey {
-        case atURI = "uri"
+        case recordURI = "uri"
         case cidHash = "cid"
         case value
         case blobCIDHashes = "blobCids"
@@ -633,7 +633,7 @@ public struct AdminRecordView: Codable {
 }
 
 public struct AdminRecordViewDetail: Codable {
-    public let atURI: String
+    public let recordURI: String
     public let cidHash: String
     public let value: String
     public let blobs: [BlobView]
@@ -642,8 +642,8 @@ public struct AdminRecordViewDetail: Codable {
     public let moderation: AdminModerationDetail
     public let repo: AdminRepoView
 
-    public init(atURI: String, cidHash: String, value: String, blobs: [BlobView], labels: [Label]? = nil, indexedAt: Date, moderation: AdminModerationDetail, repo: AdminRepoView) {
-        self.atURI = atURI
+    public init(recordURI: String, cidHash: String, value: String, blobs: [BlobView], labels: [Label]? = nil, indexedAt: Date, moderation: AdminModerationDetail, repo: AdminRepoView) {
+        self.recordURI = recordURI
         self.cidHash = cidHash
         self.value = value
         self.blobs = blobs
@@ -656,7 +656,7 @@ public struct AdminRecordViewDetail: Codable {
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
 
-        self.atURI = try container.decode(String.self, forKey: .atURI)
+        self.recordURI = try container.decode(String.self, forKey: .recordURI)
         self.cidHash = try container.decode(String.self, forKey: .cidHash)
         self.value = try container.decode(String.self, forKey: .value)
         self.blobs = try container.decode([BlobView].self, forKey: .blobs)
@@ -669,7 +669,7 @@ public struct AdminRecordViewDetail: Codable {
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
 
-        try container.encode(self.atURI, forKey: .atURI)
+        try container.encode(self.recordURI, forKey: .recordURI)
         try container.encode(self.cidHash, forKey: .cidHash)
         try container.encode(self.value, forKey: .value)
         try container.encode(self.blobs, forKey: .blobs)
@@ -680,7 +680,7 @@ public struct AdminRecordViewDetail: Codable {
     }
 
     enum CodingKeys: String, CodingKey {
-        case atURI = "uri"
+        case recordURI = "uri"
         case cidHash = "cid"
         case value
         case blobs
@@ -692,10 +692,10 @@ public struct AdminRecordViewDetail: Codable {
 }
 
 public struct RecordViewNotFound: Codable {
-    public let atURI: String
+    public let recordURI: String
 
     enum CodingKeys: String, CodingKey {
-        case atURI = "uri"
+        case recordURI = "uri"
     }
 }
 
