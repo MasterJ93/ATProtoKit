@@ -69,6 +69,10 @@ public class ATProtocolConfiguration: ProtocolConfiguration {
         }
     }
 
+    /// Refreshes the user's session using a refresh token.
+    /// - Parameters:
+    ///   - refreshToken: The refresh token for the session.
+    ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `https://bsky.social`.
     public func refreshSession(_ refreshToken: String, pdsURL: String = "https://bsky.social") async throws -> Result<UserSession, Error> {
         guard let requestURL = URL(string: "\(self.pdsURL)/xrpc/com.atproto.server.refreshSession") else {
             return .failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"]))
@@ -87,14 +91,14 @@ public class ATProtocolConfiguration: ProtocolConfiguration {
     
     /// Refreshes the user's session using a refresh token.
     /// - Parameters:
-    ///   - refreshToken: The refresh token for the session.
+    ///   - accessToken: The access token for the session.
     ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `https://bsky.social`.
-    public static func deleteSession(_ refreshToken: String, pdsURL: String = "https://bsky.social") async throws {
+    public static func deleteSession(_ accessToken: String, pdsURL: String = "https://bsky.social") async throws {
         guard let requestURL = URL(string: "\(pdsURL)/xrpc/com.atproto.server.deleteSession") else {
             throw NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"])
         }
 
-        let request = APIClientService.createRequest(forRequest: requestURL, andMethod: .post, authorizationValue: "Bearer \(refreshToken)")
+        let request = APIClientService.createRequest(forRequest: requestURL, andMethod: .post, authorizationValue: "Bearer \(accessToken)")
 
         do {
             try await APIClientService.sendRequest(request)
