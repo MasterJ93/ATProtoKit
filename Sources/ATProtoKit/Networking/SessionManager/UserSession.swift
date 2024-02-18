@@ -71,15 +71,15 @@ public class UserSession: SessionProtocol {
 /// with the AT Protocol ecosystem, such as authentication and data storage locations.
 public struct DIDDocument: Codable {
     /// An array of context URLs for the DID document, providing additional semantics for the properties.
-    var context: [String]
+    public var context: [String]
     /// The unique identifier of the DID document.
-    var id: String
+    public var id: String
     /// An array of URIs under which this DID is also known, including the primary handle URI. Optional.
-    var alsoKnownAs: [String]?
+    public var alsoKnownAs: [String]?
     /// An array of methods for verifying digital signatures, including the public signing key for the account.
-    var verificationMethod: [VerificationMethod]
+    public var verificationMethod: [VerificationMethod]
     /// An array of service endpoints related to the DID, including the PDS location.
-    var service: [Service]
+    public var service: [Service]
 
     enum CodingKeys: String, CodingKey {
         case context = "@context"
@@ -93,21 +93,21 @@ public struct DIDDocument: Codable {
 /// Describes a method for verifying digital signatures in the AT Protocol, including the public signing key.
 public struct VerificationMethod: Codable {
     /// The unique identifier of the verification method.
-    var id: String
+    public var id: String
     /// The type of verification method that indicates the cryptographic curve used.
-    var type: String
+    public var type: String
     /// The controller of the verification method, which matches the DID.
-    var controller: String
+    public var controller: String
     /// The public key, in multibase encoding; used for verifying digital signatures.
-    var publicKeyMultibase: String
+    public var publicKeyMultibase: String
 }
 
 /// Represents a service endpoint in a DID document, such as the PDS location for the AT Protocol.
 public struct Service: Codable {
     /// The unique identifier of the service.
-    var id: String
+    public var id: String
     /// The type of service (matching `AtprotoPersonalDataServer`) for use in identifying the Personal Data Server (PDS).
-    var type: String
+    public var type: String
     /// The endpoint URL for the service, specifying the location of the service.
-    var serviceEndpoint: URL
+    public var serviceEndpoint: URL
 }
