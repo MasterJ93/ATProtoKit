@@ -135,7 +135,7 @@ public class APIClientService {
         }
     }
     
-    /// Sends a `URLRequest` in order to grab access to a blob.
+    /// Sends a `URLRequest` in order to receive a blob.
     /// - Parameter request: The `URLRequest` to send.
     /// - Returns: A `Data` object that contains the blob.
     public static func sendRequest(_ request: URLRequest) async throws -> Data {

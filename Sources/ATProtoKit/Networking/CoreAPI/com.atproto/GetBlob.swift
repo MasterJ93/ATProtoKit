@@ -9,18 +9,30 @@ import Foundation
 
 extension ATProtoKit {
     /// Retrieves a blob from a given record.
+    ///
     /// - Parameter blobQuery: An object containing the `atDID` and `cidHash` of the blob.
-    /// - Returns: A `Result` containing ``UploadBlobOutput`` on success or `Error` on failure.
-    public func getBlob(from blobQuery: BlobQuery) async -> Result<UploadBlobOutput, Error> {
-        guard let sessionURL = session.pdsURL,
+    /// - Returns: A `Result` containing `Data` on success or `Error` on failure.
+    public static func getBlob(from blobQuery: BlobQuery, pdsURL: String? = "https://bsky.social") async -> Result<Data, Error> {
+        guard let sessionURL = pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.sync.getBlob") else {
-            return .failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"]))
+            print("Failure")
+            return .failure(URIError.invalidFormat)
         }
 
-        let request = APIClientService.createRequest(forRequest: requestURL, andMethod: .post, acceptValue: "'*/*'")
-
         do {
-            let response = try await APIClientService.sendRequest(request, withEncodingBody: blobQuery, decodeTo: UploadBlobOutput.self)
+            var queryItems = [
+                ("did", blobQuery.accountDID),
+                ("cid", blobQuery.cidHash)
+            ]
+
+            let queryURL = try APIClientService.setQueryItems(
+                for: requestURL,
+                with: queryItems
+            )
+
+            let request = APIClientService.createRequest(forRequest: queryURL, andMethod: .get, acceptValue: "'*/*'")
+
+            let response = try await APIClientService.sendRequest(request)
             return .success(response)
         } catch {
             return .failure(error)
