@@ -18,7 +18,11 @@ public struct ActorGetProfileQuery: Codable {
     /// The handle or decentralized identifier (DID) of the user.
     ///
     /// - Note: According to the AT Protocol specifications: "Handle or DID of account to fetch profile of."
-    public let actorDID: String
+    public let actor: String
+
+    public init(actor: String) {
+        self.actor = actor
+    }
 }
 
 /// A data model definition for the output for a detailed profile view for the user.
