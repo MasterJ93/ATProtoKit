@@ -11,7 +11,6 @@ import Foundation
 public class APIClientService {
     private init() {}
 
-    
     /// Creates a `URLRequest` with specified parameters.
     /// - Parameters:
     ///   - requestURL: The URL for the request.
@@ -71,31 +70,7 @@ public class APIClientService {
     ///   - decodeTo: The type to decode the response into.
     /// - Returns: An instance of the specified `Decodable` type.
     public static func sendRequest<T: Decodable>(_ request: URLRequest, withEncodingBody body: Encodable? = nil, decodeTo: T.Type) async throws -> T {
-        var urlRequest = request
-        
-        // Encode the body to JSON data if it's not nil
-        if let body = body {
-            do {
-                urlRequest.httpBody = try body.toJsonData()
-            } catch {
-                throw NSError(domain: "APIClientService", code: -1, userInfo: [NSLocalizedDescriptionKey: "Error encoding request body"])
-            }
-        }
-
-        let (data, response) = try await URLSession.shared.data(for: urlRequest)
-
-        guard let httpResponse = response as? HTTPURLResponse else {
-            throw NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Error getting response"])
-        }
-
-//        print("Status Code: \(httpResponse.statusCode)")  // Debugging line
-//        print("Response Headers: \(httpResponse.allHeaderFields)")  // Debugging line
-
-        guard httpResponse.statusCode == 200 else {
-            let responseBody = String(data: data, encoding: .utf8) ?? "No response body"
-            print("HTTP Status Code: \(httpResponse.statusCode) - Response Body: \(responseBody)")
-            throw URLError(.badServerResponse)
-        }
+        let (data, _) = try await performRequest(request, withEncodingBody: body)
 
         let decodedData = try JSONDecoder().decode(T.self, from: data)
         print("Decoded data: \(decodedData)")
@@ -108,47 +83,14 @@ public class APIClientService {
     ///   - body: An optional `Encodable` body to be encoded and attached to the request.
     ///   - Note: Since there doesn't seem to be a way to have optional generic types, this method can't be combined with  ``sendRequest(_:withEncodingBody:decodeTo:)`` or ``sendRequestForBlob(_:)``  and will have to be overloaded until a better solution arrives.
     public static func sendRequest(_ request: URLRequest, withEncodingBody body: Encodable? = nil) async throws {
-        var urlRequest = request
-
-        // Encode the body to JSON data if it's not nil
-        if let body = body {
-            do {
-                urlRequest.httpBody = try body.toJsonData()
-            } catch {
-                throw NSError(domain: "APIClientService", code: -1, userInfo: [NSLocalizedDescriptionKey: "Error encoding request body"])
-            }
-        }
-
-        let (data, response) = try await URLSession.shared.data(for: urlRequest)
-
-        guard let httpResponse = response as? HTTPURLResponse else {
-            throw NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Error getting response"])
-        }
-
-//        print("Status Code: \(httpResponse.statusCode)")  // Debugging line
-//        print("Response Headers: \(httpResponse.allHeaderFields)")  // Debugging line
-
-        guard httpResponse.statusCode == 200 else {
-            let responseBody = String(data: data, encoding: .utf8) ?? "No response body"
-            print("HTTP Status Code: \(httpResponse.statusCode) - Response Body: \(responseBody)")
-            throw URLError(.badServerResponse)
-        }
+        try await performRequest(request, withEncodingBody: body)
     }
-    
+
     /// Sends a `URLRequest` in order to receive a blob.
     /// - Parameter request: The `URLRequest` to send.
     /// - Returns: A `Data` object that contains the blob.
     public static func sendRequest(_ request: URLRequest) async throws -> Data {
-        let (data, response) = try await URLSession.shared.data(for: request)
-
-        guard let httpResponse = response as? HTTPURLResponse else {
-            throw NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Error getting response"])
-        }
-
-        guard httpResponse.statusCode == 200 else {
-            throw NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Error fetching blob"])
-        }
-
+        let (data, _) = try await performRequest(request)
         return data
     }
 
@@ -230,6 +172,40 @@ public class APIClientService {
         }
 
         return htmlString
+    }
+
+    /// Private method to handle the common request sending logic.
+    /// - Parameters:
+    ///   - request: The `URLRequest` to send.
+    ///   - body: An optional `Encodable` body to be encoded and attached to the request.
+    /// - Returns: A tuple containing the data and the HTTPURLResponse.
+    private static func performRequest(_ request: URLRequest, withEncodingBody body: Encodable? = nil) async throws -> (Data, HTTPURLResponse) {
+        var urlRequest = request
+
+        if let body = body {
+            do {
+                urlRequest.httpBody = try body.toJsonData()
+            } catch {
+                throw NSError(domain: "APIClientService", code: -1, userInfo: [NSLocalizedDescriptionKey: "Error encoding request body"])
+            }
+        }
+
+        let (data, response) = try await URLSession.shared.data(for: urlRequest)
+
+        guard let httpResponse = response as? HTTPURLResponse else {
+            throw NSError(domain: "APIClientService", code: -1, userInfo: [NSLocalizedDescriptionKey: "Error getting response"])
+        }
+
+//        print("Status Code: \(httpResponse.statusCode)")  // Debugging line
+//        print("Response Headers: \(httpResponse.allHeaderFields)")  // Debugging line
+
+        guard httpResponse.statusCode == 200 else {
+            let responseBody = String(data: data, encoding: .utf8) ?? "No response body"
+            print("HTTP Status Code: \(httpResponse.statusCode) - Response Body: \(responseBody)")
+            throw URLError(.badServerResponse)
+        }
+
+        return (data, httpResponse)
     }
 
     /// Represents the HTTP methods used to interact with the AT Protocol.
