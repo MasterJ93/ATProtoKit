@@ -22,10 +22,9 @@ public struct ActorProfileViewBasic: Codable {
     public var displayName: String? = nil
     /// The avatar image URL of the user's profile. Optional.
     public var avatarImageURL: URL? = nil
-    /// The viewer state of the user. Optional.
+    /// The list of metadata relating to the requesting account's relationship with the subject account. Optional.
     public var viewer: ActorViewerState? = nil
-    // TODO:  Figure out what this is about.
-    /// An array of self-defined [...]. Optional.
+    /// An array of labels created by the user. Optional.
     public var labels: [Label]? = nil
 
     public init(actorDID: String, actorHandle: String, displayName: String?, avatarImageURL: URL?, viewer: ActorViewerState?, labels: [Label]?) {
@@ -94,9 +93,9 @@ public struct ActorProfileView: Codable {
     public let avatarImageURL: URL?
     /// The date the profile was last indexed. Optional.
     @DateFormattingOptional public var indexedAt: Date? = nil
-    /// <#Description#>
+    /// The list of metadata relating to the requesting account's relationship with the subject account. Optional.
     public var viewer: ActorViewerState? = nil
-    /// <#Description#>
+    /// An array of labels created by the user. Optional.
     public var labels: [Label]? = nil
 
     public init(actorDID: String, actorHandle: String, displayName: String?, description: String?, avatarImageURL: URL?, indexedAt: Date?, viewer: ActorViewerState?, labels: [Label]?) {
@@ -184,10 +183,9 @@ public struct ActorProfileViewDetailed: Codable {
     public var postCount: Int? = nil
     /// The date the profile was last indexed. Optional.
     @DateFormattingOptional public var indexedAt: Date? = nil
-    /// The viewer state of the user. Optional.
+    /// The list of metadata relating to the requesting account's relationship with the subject account. Optional.
     public var viewer: ActorViewerState? = nil
-    // TODO:  Figure out what this is about.
-    /// An array of self-defined [...]. Optional.
+    /// An array of labels created by the user. Optional.
     public var labels: [Label]? = nil
 
     public init(actorDID: String, actorHandle: String, displayName: String?, description: String?, avatarImageURL: URL?, bannerImageURL: URL?, followerCount: Int?, followCount: Int?, postCount: Int?, indexedAt: Date?, viewer: ActorViewerState?, labels: [Label]?) {
