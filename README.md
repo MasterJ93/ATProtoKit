@@ -107,6 +107,7 @@ While this project will change significantly, early feedback, issues, and contri
 - Be sure to adhere to the [Swift API Design Guidelines](https://www.swift.org/documentation/api-design-guidelines/) when contributing code.
 - When writing documentation, make sure it's clear, understandable, and comprehensible enough for users (both experienced and new) to understand it.
 - Try to follow the [Git commit best practices](https://cbea.ms/git-commit/).
+- If you're creating a method in `ATProtoKit`'s class and authentication is either not required or optional, it must be a `static` method. Otherwise, it must be an instance method.
 
 ## License
 This Swift Package is using the MIT License. Please view [LICENSE.md](https://github.com/MasterJ93/ATProtoKit/blob/ed45edcd717e7341ae688d294504e0019550b3f0/LICENSE.md) for more details.

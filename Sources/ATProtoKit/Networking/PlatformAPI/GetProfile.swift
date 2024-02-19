@@ -8,27 +8,27 @@
 import Foundation
 
 extension ATProtoKit {
-    // TODO: Clarify with Bluesky if this is still valid.
-//    /// If you need detailed information, make sure to pass in an `accessTokem`. If an `accessToken` is not given the details will be more limited.
     /// Gets a detailed profile of the user.
     ///
+    /// If you need detailed information, make sure to pass in an `accessToken`. If an `accessToken` is not given the details will be more limited.
+    /// - Note: If your Personal Data Server's (PDS) URL is something other than `https://bsky.social` and you're not using authentication, be sure to change it if the normal URL isn't used for unauthenticated API calls.
     /// - Parameters:
     ///   - actor: The handle or decentralized identifier (DID) of the user's account.
+    ///   - accessToken: The access token of the user.
+    ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `https://bsky.social`.
     /// - Returns: A `Result`, containing `ActorGetProfileOutput` if successful, or an `Error` if not.
-    public func getProfile(_ actor: ActorGetProfileQuery) async throws -> Result<ActorGetProfileOutput, Error> {
-        guard let sessionURL = session.pdsURL,
-              let requestURL = URL(string: "\(sessionURL)/xrpc/app.bsky.actor.getProfile") else {
+    public static func getProfile(_ actor: ActorGetProfileQuery, accessToken: String? = nil, pdsURL: String? = "https://bsky.social") async throws -> Result<ActorGetProfileOutput, Error> {
+        let finalPDSURL = determinePDSURL(accessToken: accessToken, customPDSURL: pdsURL)
+
+        guard let requestURL = URL(string: "\(finalPDSURL)/xrpc/app.bsky.actor.getProfile") else {
             return .failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"]))
         }
 
-        // If it turns out auth isn't required, remove this line of code.
-        let authorizationValue = "Bearer \(session.accessToken)"
-
         // Use guard to check if accessToken is non-nil and non-empty, otherwise set authorizationValue to nil.
-//        let authorizationValue: String? = {
-//            guard let token = accessToken, !token.isEmpty else { return nil }
-//            return "Bearer \(token)"
-//        }()
+        let authorizationValue: String? = {
+            guard let token = accessToken, !token.isEmpty else { return nil }
+            return "Bearer \(token)"
+        }()
 
         var queryItems = [("actor", actor.actor)]
 
