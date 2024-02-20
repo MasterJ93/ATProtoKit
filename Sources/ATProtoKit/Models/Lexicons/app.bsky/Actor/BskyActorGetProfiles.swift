@@ -17,7 +17,7 @@ import Foundation
 public struct ActorGetProfilesQuery: Codable {
     /// The handles or decentralized identifiers (DID) of the users.
     ///
-    /// - Warning: Current maximum length is 25 handles and/or DIDs. This library will automatically truncate the `Array` to the maximum length if it does go over the limit.
+    /// - Important: Current maximum length is 25 handles and/or DIDs. This library will automatically truncate the `Array` to the maximum length if it does go over the limit.
     public let actors: [String]
 
     public init(actors: [String]) {

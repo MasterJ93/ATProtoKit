@@ -21,7 +21,7 @@ public struct GraphListViewBasic: Codable {
     public let name: String
     /// The purpose of the user list.
     ///
-    /// - Attention: Current maximum length is 64 characters. This library will truncate the `String` to the maximum number of characters if it does go over.
+    /// - Important: Current maximum length is 64 characters. This library will truncate the `String` to the maximum number of characters if it does go over.
     public let purpose: GraphListPurpose
     /// The avatar image URL of the user list. Optional.
     public let avatarImageURL: URL?
@@ -91,13 +91,13 @@ public struct GraphListView: Codable {
     public let creator: ActorProfileView
     /// The name of the user list.
     ///
-    /// - Attention: Current maximum length is 64 characters. This library will truncate the `String` to the maximum number of characters if it does go over.
+    /// - Important: Current maximum length is 64 characters. This library will truncate the `String` to the maximum number of characters if it does go over.
     public let name: String
     /// The purpose of the user list.
     public let purpose: GraphListPurpose
     /// The description of the user list. Optional.
     ///
-    /// - Attention: Current maximum length is 300 characters. This library will truncate the `String` to the maximum number of characters if it does go over.
+    /// - Important: Current maximum length is 300 characters. This library will truncate the `String` to the maximum number of characters if it does go over.
     public var description: String? = nil
     /// An array of facets contained in the post's text. Optional.
     public var descriptionFacets: [Facet]? = nil

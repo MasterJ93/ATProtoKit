@@ -18,7 +18,7 @@ public struct ActorProfileViewBasic: Codable {
     public let actorHandle: String
     /// The display name of the user. Optional.
     ///
-    /// - Note: Current maximum length is 64 characters.
+    /// - Important: Current maximum length is 64 characters.
     public var displayName: String? = nil
     /// The avatar image URL of the user's profile. Optional.
     public var avatarImageURL: URL? = nil
@@ -83,11 +83,11 @@ public struct ActorProfileView: Codable {
     public let actorHandle: String
     /// The display name of the user's profile. Optional.
     ///
-    /// - Note: Current maximum length is 64 characters.
+    /// - Important: Current maximum length is 64 characters.
     public var displayName: String? = nil
     /// The description of the user's profile. Optional.
     ///
-    /// - Note: Current maximum length is 256 characters.
+    /// - Important: Current maximum length is 256 characters.
     public var description: String? = nil
     /// The avatar image URL of a user's profile. Optional.
     public let avatarImageURL: URL?
@@ -165,11 +165,11 @@ public struct ActorProfileViewDetailed: Codable {
     public let actorHandle: String
     /// The display name of the user's profile. Optional.
     ///
-    /// - Note: Current maximum length is 64 characters.
+    /// - Important: Current maximum length is 64 characters.
     public var displayName: String? = nil
     /// The description of the user's profile. Optional.
     ///
-    /// - Note: Current maximum length is 256 characters.
+    /// - Important: Current maximum length is 256 characters.
     public var description: String? = nil
     /// The avatar image URL of a user's profile. Optional.
     public var avatarImageURL: URL? = nil
@@ -472,7 +472,7 @@ public struct InterestViewPreferences: Codable {
     /// An array of interest tags.
     ///
     /// - Note: According to AT Protocol's specifications: "A list of tags which describe the account owner's interests gathered during onboarding."
-    /// - Note: Current maximum limit is 100 tags. Current maximum length for each tag name is 64 characters.
+    /// - Important: Current maximum limit is 100 tags. Current maximum length for each tag name is 64 characters.
     public let tags: [String]
 
     init(tags: [String]) {

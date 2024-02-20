@@ -24,7 +24,7 @@ public struct FeedPost: Codable {
     ///
     /// - Note: According to the AT Protocol specifications: "The primary post content. May be an empty string, if there are embeds."
     ///
-    /// - Attention: Current maximum length is 300 characters. This library will automatically truncate the `String` to the maximum length if it does go over the limit.
+    /// - Important: Current maximum length is 300 characters. This library will automatically truncate the `String` to the maximum length if it does go over the limit.
     public let text: String
     /// An array of facets contained in the post's text. Optional.
     ///
@@ -38,7 +38,7 @@ public struct FeedPost: Codable {
     ///
     /// - Note: According to the AT Protocol specifications: "Indicates human language of post primary text content."
     ///
-    /// - Attention: Current maximum length is 3 languages. This library will automatically truncate the `Array` to the maximum number of items if it does go over the limit.
+    /// - Important: Current maximum length is 3 languages. This library will automatically truncate the `Array` to the maximum number of items if it does go over the limit.
     public var languages: [String]? = nil
     /// An array of user-defined labels. Optional.
     ///
