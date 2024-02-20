@@ -17,6 +17,8 @@ struct CustomDateFormatter {
     /// A private initializer to enforce singleton usage.
     private init() {
         dateFormatter = ISO8601DateFormatter()
+        // Ensure the dateFormatter can parse dates with fractional seconds.
+        dateFormatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
     }
 
     /// Converts a `Date` object to a `String` representation.
