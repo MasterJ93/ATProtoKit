@@ -1,28 +1,29 @@
 //
-//  GetProfile.swift
+//  GetProfiles.swift
 //  
 //
-//  Created by Christopher Jr Riley on 2024-02-18.
+//  Created by Christopher Jr Riley on 2024-02-19.
 //
 
 import Foundation
 
 extension ATProtoKit {
-    /// Gets a detailed profile of a user.
+    // TODO: Finish this method to make it work with the parameters that's stated in the Bluesky docs.
+    /// Gets detailed profiles of several users.
     ///
     /// If you need detailed information, make sure to pass in an `accessToken`. If an `accessToken` is not given the details will be more limited.
     /// - Note: If your Personal Data Server's (PDS) URL is something other than `https://bsky.social` and you're not using authentication, be sure to change it if the normal URL isn't used for unauthenticated API calls.
-    ///
-    /// If you need profiles of several users, it's best to use ``getProfiles(_:accessToken:pdsURL:)``
+    /// 
+    /// If you need a profile of just one user, it's best to use ``getProfile(_:accessToken:pdsURL:)``
     /// - Parameters:
-    ///   - actor: The handle or decentralized identifier (DID) of the user's account.
+    ///   - actors: An array of user account handles or decentralized identifiers (DID). Current maximum length is 25 handles and/or DIDs.
     ///   - accessToken: The access token of the user.
     ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `https://bsky.social`.
     /// - Returns: A `Result`, containing `ActorGetProfileOutput` if successful, or an `Error` if not.
-    public static func getProfile(_ actor: ActorGetProfileQuery, accessToken: String? = nil, pdsURL: String? = "https://bsky.social") async throws -> Result<ActorGetProfileOutput, Error> {
+    public static func getProfiles(_ actors: ActorGetProfilesQuery, accessToken: String? = nil, pdsURL: String? = "https://bsky.social") async throws -> Result<ActorGetProfilesOutput, Error> {
         let finalPDSURL = determinePDSURL(accessToken: accessToken, customPDSURL: pdsURL)
 
-        guard let requestURL = URL(string: "\(finalPDSURL)/xrpc/app.bsky.actor.getProfile") else {
+        guard let requestURL = URL(string: "\(finalPDSURL)/xrpc/app.bsky.actor.getProfiles") else {
             return .failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"]))
         }
 
@@ -32,7 +33,8 @@ extension ATProtoKit {
             return "Bearer \(token)"
         }()
 
-        var queryItems = [("actor", actor.actor)]
+        // Add each handle/DID ($0) into their own "actors" parameter.
+        var queryItems = actors.actors.map { ("actors", $0) }
 
         do {
             let queryURL = try APIClientService.setQueryItems(
@@ -40,11 +42,11 @@ extension ATProtoKit {
                 with: queryItems
             )
 
-            let request = APIClientService.createRequest(forRequest: queryURL, andMethod: .get, contentTypeValue: nil, authorizationValue: authorizationValue)
-            let actorProfileViewDetailedResult = try await APIClientService.sendRequest(request, decodeTo: ActorProfileViewDetailed.self)
+            print("===Query URL: \(queryURL)")
 
-            let result = ActorGetProfileOutput(actorProfileView: actorProfileViewDetailedResult)
-            return .success(result)
+            let request = APIClientService.createRequest(forRequest: queryURL, andMethod: .get, contentTypeValue: nil, authorizationValue: authorizationValue)
+            let actorProfileViewsDetailedResult = try await APIClientService.sendRequest(request, decodeTo: ActorGetProfilesOutput.self)
+            return .success(actorProfileViewsDetailedResult)
         } catch {
             return .failure(error)
         }
