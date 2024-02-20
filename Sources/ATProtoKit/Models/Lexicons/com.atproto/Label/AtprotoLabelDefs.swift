@@ -7,12 +7,39 @@
 
 import Foundation
 
+/// The main data model definition for a label.
+///
+/// - Note: According to the AT Protocol specifications: "Metadata tag on an atproto resource (eg, repo or record)."
+///
+/// - SeeAlso: This is based on the [`com.atproto.label.defs`][github] lexicon.
+///
+/// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/label/defs.json
 public struct Label: Codable {
+    /// The decentralized identifier (DID) of the label creator.
+    ///
+    /// - Note: According to the AT Protocol specifications: "DID of the actor who created this label."
     public let actorDID: String
+    /// The URI of the resource the label applies to.
+    ///
+    /// - Note: According to the AT Protocol specifications: "AT URI of the record, repository (account), or other resource that this label applies to."
     public let atURI: String
+    /// The CID hash of the resource the label applies to. Optional.
+    ///
+    /// - Note: According to the AT Protocol specifications: "Optionally, CID specifying the specific version of 'uri' resource this label applies to."
     public let cidHash: String?
+    /// The name of the label.
+    ///
+    /// - Note: According to the AT Protocol specifications: "The short string name of the value or type of this label."
+    ///
+    /// - Important: Current maximum length is 128 characters. This library will automatically truncate the `String` to the maximum length if it does go over the limit.
     public var name: String
+    /// Indicates whether this label is negating a previously-used label. Optional.
+    ///
+    /// - Note: According to the AT Protocol specifications: "If true, this is a negation label, overwriting a previous label."
     public let isNegated: Bool?
+    /// The date and time the label was created.
+    ///
+    /// - Note: According to the AT Protocol specifications: "Timestamp when this label was created."
     @DateFormatting public var timestamp: Date
 
     public init(actorDID: String, atURI: String, cidHash: String?, name: String, isNegated: Bool?, timestamp: Date) {
@@ -59,7 +86,17 @@ public struct Label: Codable {
     }
 }
 
+/// A data model for a definition for an array of self-defined labels.
 public struct SelfLabels: Codable {
+    /// An array of self-defined tags on a record..
+    ///
+    /// - Note: According to the AT Protocol specifications: "Metadata tags on an atproto record, published by the author within the record."
+    ///
+    /// - Important: Current maximum length is 10 tags. This library will automatically truncate the `Array` to the maximum length if it does go over the limit.
+    ///
+    /// - SeeAlso: This is based on the [`com.atproto.label.defs`][github] lexicon.
+    ///
+    /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/label/defs.json
     public let values: [SelfLabel]
 
     public init(values: [SelfLabel]) {
@@ -84,7 +121,19 @@ public struct SelfLabels: Codable {
     }
 }
 
+/// A data model for a definition for a user-defined label.
+///
+/// - Note: According to the AT Protocol specifications: "Metadata tag on an atproto record, published by the author within the record. Note that schemas should use #selfLabels, not #selfLabel.",
+///
+/// - SeeAlso: This is based on the [`com.atproto.label.defs`][github] lexicon.
+///
+/// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/label/defs.json
 public struct SelfLabel: Codable {
+    /// A user-defined label.
+    ///
+    /// - Note: According to the AT Protocol specifications: "The short string name of the value or type of this label."
+    ///
+    /// - Important: Current maximum length is 128 characters. This library will automatically truncate the `String` to the maximum length if it does go over the limit.
     public let value: String
 
     public func encode(to encoder: Encoder) throws {
