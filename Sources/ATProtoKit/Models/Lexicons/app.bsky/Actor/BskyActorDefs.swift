@@ -565,6 +565,117 @@ public struct InterestViewPreferences: Codable {
     }
 }
 
+/// A data model for a definition of the muted word's target.
+///
+/// - SeeAlso: This is based on the [`app.bsky.actor.defs`][github] lexicon.
+///
+/// [github]: https://github.com/bluesky-social/atproto/blob/9579bec720d30e40c995d09772040212c261d6fb/lexicons/app/bsky/actor/defs.json
+public enum MutedWordTarget: Codable {
+    case content
+    case tag
+    case other(String)
+
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.singleValueContainer()
+        let value = try container.decode(String.self)
+
+        switch value {
+            case "content":
+                self = .content
+            case "tag":
+                self = .tag
+                // Handle other known cases
+            default:
+                self = .other(value)
+        }
+    }
+
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.singleValueContainer()
+        switch self {
+            case .content:
+                try container.encode("content")
+            case .tag:
+                try container.encode("tag")
+            case .other(let other):
+                // Truncate `other` to 640 characters before decoding
+                // `maxGraphemes`'s limit is 64, but `String.count` should respect that limit
+                let truncatedOther = other.truncated(toLength: 640)
+                try container.encode(truncatedOther)
+        }
+    }
+}
+
+/// A data model for a muted word definition.
+///
+/// - Note: According to the AT Protocol specifications: "A word that the account owner has muted."
+///
+/// - SeeAlso: This is based on the [`app.bsky.actor.defs`][github] lexicon.
+///
+/// [github]: https://github.com/bluesky-social/atproto/blob/9579bec720d30e40c995d09772040212c261d6fb/lexicons/app/bsky/actor/defs.json
+public struct MutedWord: Codable {
+    public let value: String
+    public let targets: [MutedWordTarget]
+
+    public init(value: String, targets: [MutedWordTarget]) {
+        self.value = value
+        self.targets = targets
+    }
+
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+
+        self.value = try container.decode(String.self, forKey: .value)
+        self.targets = try container.decode([MutedWordTarget].self, forKey: .targets)
+    }
+
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+
+        // Truncate `value` to 1000 characters before decoding
+        // `maxGraphemes`'s limit is 100, but `String.count` should respect that limit
+        try truncatedEncode(self.value, withContainer: &container, forKey: .value, upToLength: 1000)
+        try container.encode(self.targets, forKey: .targets)
+    }
+
+    enum CodingKeys: CodingKey {
+        case value
+        case targets
+    }
+}
+
+/// A data model for a "Muted Words" preference definition.
+///
+/// - SeeAlso: This is based on the [`app.bsky.actor.defs`][github] lexicon.
+///
+/// [github]: https://github.com/bluesky-social/atproto/blob/9579bec720d30e40c995d09772040212c261d6fb/lexicons/app/bsky/actor/defs.json
+public struct MutedWordsPreferences: Codable {
+    /// The identifier of the lexicon.
+    ///
+    /// - Warning: The value must not change.
+    public let type: String = "app.bsky.actor.defs#mutedWordsPref"
+    /// An array of items the user has muted.
+    ///
+    /// - Note: According to the AT Protocol specifications: "A list of words the account owner has muted."
+    public let mutedItems: [MutedWord]
+
+    enum CodingKeys: String, CodingKey {
+        case type = "$type"
+        case mutedItems = "items"
+    }
+}
+
+public struct HiddenPostsPreferences: Codable {
+    /// The identifier of the lexicon.
+    ///
+    /// - Warning: The value must not change.
+    public let type: String = "app.bsky.actor.defs#hiddenPostsPref"
+    /// An array of URIs related to posts that the user wants to hide.
+    ///
+    /// - Note: According to the AT Protocol specifications: "A list of URIs of posts the account owner has hidden."
+    public let items: [String]
+}
+
 // MARK: - Union types
 /// A reference containing the list of preferences.
 ///
@@ -586,6 +697,10 @@ public enum ActorPreferenceUnion: Codable {
     case threadView(ThreadViewPreferences)
     /// The "Interest View" preference.
     case interestViewPreferences(InterestViewPreferences)
+    /// The "Muted Words" preference.
+    case mutedWordsPreferences(MutedWordsPreferences)
+    /// The Hidden Posts" preference.
+    case hiddenPostsPreferences(HiddenPostsPreferences)
 
     // Implement custom decoding
     public init(from decoder: Decoder) throws {
@@ -605,6 +720,10 @@ public enum ActorPreferenceUnion: Codable {
             self = .threadView(value)
         } else if let value = try? container.decode(InterestViewPreferences.self) {
             self = .interestViewPreferences(value)
+        } else if let value = try? container.decode(MutedWordsPreferences.self) {
+            self = .mutedWordsPreferences(value)
+        } else if let value = try? container.decode(HiddenPostsPreferences.self) {
+            self = .hiddenPostsPreferences(value)
         } else {
             throw DecodingError.typeMismatch(ActorPreferenceUnion.self, DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Unknown ActorPreference type"))
         }
@@ -628,6 +747,10 @@ public enum ActorPreferenceUnion: Codable {
             case .threadView(let preference):
                 try container.encode(preference)
             case .interestViewPreferences(let preference):
+                try container.encode(preference)
+            case .mutedWordsPreferences(let preference):
+                try container.encode(preference)
+            case .hiddenPostsPreferences(let preference):
                 try container.encode(preference)
         }
     }
