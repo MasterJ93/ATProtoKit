@@ -16,6 +16,7 @@ import Foundation
 /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/actor/getSuggestions.json
 public struct ActorGetSuggestionsOutput: Codable {
     /// The mark used to indicate the starting point for the next set of results. Optional.
-    public let cursor: String
+    public let cursor: String?
+    /// An array of actors.
     public let actors: [ActorProfileView]
 }
