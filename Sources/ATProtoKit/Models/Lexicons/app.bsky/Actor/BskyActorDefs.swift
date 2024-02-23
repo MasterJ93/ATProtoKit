@@ -269,7 +269,8 @@ public struct ActorProfileViewDetailed: Codable {
 public struct ActorViewerState: Codable {
     /// Indicates whether the requesting account has been muted by the subject account. Optional.
     public let isMuted: Bool? = nil
-    /// An array of
+    // TODO: Figure out what this is about.
+    /// An array of lists that the subject account is muted by.
     public let mutedByArray: GraphListViewBasic? = nil
     /// Indicates whether the requesting account has been blocked by the subject account. Optional.
     public let isBlocked: Bool? = nil
@@ -302,8 +303,12 @@ public struct ActorViewerState: Codable {
 ///
 /// [github]: https://github.com/bluesky-social/atproto/blob/9579bec720d30e40c995d09772040212c261d6fb/lexicons/app/bsky/actor/defs.json
 public struct ActorPreferences: Codable {
-    /// An array of different preferences the user can view and set.
-    let preferences: [ActorPreferenceUnion]
+    /// An array of different preferences the user can set.
+    public let preferences: [ActorPreferenceUnion]
+
+    public init(preferences: [ActorPreferenceUnion]) {
+        self.preferences = preferences
+    }
 }
 
 /// A data model for an "Adult Content" preference definition.
@@ -312,10 +317,19 @@ public struct ActorPreferences: Codable {
 ///
 /// [github]: https://github.com/bluesky-social/atproto/blob/9579bec720d30e40c995d09772040212c261d6fb/lexicons/app/bsky/actor/defs.json
 public struct AdultContentPreferences: Codable {
+    /// The identifier of the lexicon.
+    ///
+    /// - Warning: The value must not change.
+    public let type: String = "app.bsky.actor.defs#adultContentPref"
     /// Indicates whether the user will be able to see adult content in their feed. Set to `false` by default.
-    var isAdultContentEnabled: Bool = false
+    public var isAdultContentEnabled: Bool = false
+
+    public init(isAdultContentEnabled: Bool) {
+        self.isAdultContentEnabled = isAdultContentEnabled
+    }
 
     enum CodingKeys: String, CodingKey {
+        case type = "$type"
         case isAdultContentEnabled = "enabled"
     }
 }
@@ -326,19 +340,33 @@ public struct AdultContentPreferences: Codable {
 ///
 /// [github]: https://github.com/bluesky-social/atproto/blob/9579bec720d30e40c995d09772040212c261d6fb/lexicons/app/bsky/actor/defs.json
 public struct ContentLabelPreferences: Codable {
+    /// The identifier of the lexicon.
+    ///
+    /// - Warning: The value must not change.
+    public let type: String = "app.bsky.actor.defs#contentLabelPref"
     /// The name of the content label.
-    let label: String
+    public let label: String
     /// Indicates the visibility of the label's content.
-    let visibility: Visibility
+    public let visibility: Visibility
 
+    public init(label: String, visibility: Visibility) {
+        self.label = label
+        self.visibility = visibility
+    }
     /// Determines how visible a label's content is.
-    enum Visibility: String, Codable {
+    public enum Visibility: String, Codable {
         /// Indicates the content can be seen without restriction.
         case show = "show"
         /// Indicates the content can be seen, but will ask if the user wants to view it.
         case warn = "warn"
         /// Indicates the content is fully invisible by the user.
         case hide = "hide"
+    }
+
+    enum CodingKeys: String, CodingKey {
+        case type = "$type"
+        case label
+        case visibility
     }
 }
 
@@ -348,13 +376,30 @@ public struct ContentLabelPreferences: Codable {
 ///
 /// [github]: https://github.com/bluesky-social/atproto/blob/9579bec720d30e40c995d09772040212c261d6fb/lexicons/app/bsky/actor/defs.json
 public struct SavedFeedsPreferences: Codable {
-    /// An array of feeds that have been saved and pinned.
-    let pinned: [String]
-    /// An array of feeds that have been saved.
-    let saved: [String]
+    /// The identifier of the lexicon.
+    ///
+    /// - Warning: The value must not change.
+    public let type: String = "app.bsky.actor.defs#savedFeedsPref"
+    /// An array of feed URIs that have been saved and pinned.
+    public let pinned: [String]
+    /// An array of feed URIs that have been saved.
+    public let saved: [String]
     // TODO: Find out more about what this does.
-    /// The index number of the timeline for the list of feeds.
-    let timelineIndex: Int
+    /// The index number of the timeline for the list of feeds. Optional.
+    public var timelineIndex: Int? = nil
+
+    public init(pinned: [String], saved: [String], timelineIndex: Int?) {
+        self.pinned = pinned
+        self.saved = saved
+        self.timelineIndex = timelineIndex
+    }
+
+    enum CodingKeys: String, CodingKey {
+        case type = "$type"
+        case pinned
+        case saved
+        case timelineIndex
+    }
 }
 
 /// A data model for a "Personal Details" preference definition.
@@ -363,10 +408,14 @@ public struct SavedFeedsPreferences: Codable {
 ///
 /// [github]: https://github.com/bluesky-social/atproto/blob/9579bec720d30e40c995d09772040212c261d6fb/lexicons/app/bsky/actor/defs.json
 public struct PersonalDetailsPreferences: Codable {
+    /// The identifier of the lexicon.
+    ///
+    /// - Warning: The value must not change.
+    public let type: String = "app.bsky.actor.defs#personalDetailsPref"
     /// The birth date of the user. Optional.
     ///
     /// - Note: From the AT Protocol specification: "The birth date of account owner."
-    @DateFormattingOptional var birthDate: Date? = nil
+    @DateFormattingOptional public var birthDate: Date? = nil
 
     public init(birthDate: Date) {
         self._birthDate = DateFormattingOptional(wrappedValue: birthDate)
@@ -384,7 +433,8 @@ public struct PersonalDetailsPreferences: Codable {
         try container.encodeIfPresent(self._birthDate, forKey: .birthDate)
     }
 
-    enum CodingKeys: CodingKey {
+    enum CodingKeys: String, CodingKey {
+        case type = "$type"
         case birthDate
     }
 }
@@ -395,32 +445,37 @@ public struct PersonalDetailsPreferences: Codable {
 ///
 /// [github]: https://github.com/bluesky-social/atproto/blob/9579bec720d30e40c995d09772040212c261d6fb/lexicons/app/bsky/actor/defs.json
 public struct FeedViewPreferences: Codable {
+    /// The identifier of the lexicon.
+    ///
+    /// - Warning: The value must not change.
+    public let type: String = "app.bsky.actor.defs#feedViewPref"
     /// The feed's identifier (typically the URI).
     ///
     /// - Note:From the AT Protocol specification: "The URI of the feed, or an identifier which describes the feed."
-    let feedURI: String
+    public let feedURI: String
     /// Indicates whether the replies are hidden from the user. Optional.
     ///
     /// - Note: From the AT Protocol specification: "Hide replies in the feed."
-    let areRepliesHidden: Bool? = nil
+    public let areRepliesHidden: Bool? = nil
     /// Indicates whether replies from users you don't follow are hidden from the user. Optional.
     ///
     /// - Note: From the AT Protocol specification: "Hide replies in the feed if they are not by followed users."
-    let areUnfollowedRepliesHidden: Bool? = nil
+    public let areUnfollowedRepliesHidden: Bool? = nil
     /// Indicates how many likes a post needs in order for the user to see the reply. Optional.
     ///
     /// - Note: From the AT Protocol specification: "Hide replies in the feed if they do not have this number of likes."
-    let hideRepliesByLikeCount: Int? = nil
+    public let hideRepliesByLikeCount: Int? = nil
     /// Indicates whether reposts are hidden from the user. Optional.
     ///
     /// - Note: From the AT Protocol specification: "Hide reposts in the feed."
-    let areRepostsHidden: Bool? = nil
+    public let areRepostsHidden: Bool? = nil
     /// Indicates whether quote posts are hidden from the user. Optional.
     ///
     /// - Note: From the AT Protocol specification: "Hide quote posts in the feed."
-    let areQuotePostsHidden: Bool? = nil
+    public let areQuotePostsHidden: Bool? = nil
 
     enum CodingKeys: String, CodingKey {
+        case type = "$type"
         case feedURI = "feed"
         case areRepliesHidden = "hideReplies"
         case areUnfollowedRepliesHidden = "hideRepliesByUnfollowed"
@@ -436,17 +491,21 @@ public struct FeedViewPreferences: Codable {
 ///
 /// [github]: https://github.com/bluesky-social/atproto/blob/9579bec720d30e40c995d09772040212c261d6fb/lexicons/app/bsky/actor/defs.json
 public struct ThreadViewPreferences: Codable {
+    /// The identifier of the lexicon.
+    ///
+    /// - Warning: The value must not change.
+    public let type: String = "app.bsky.actor.defs#threadViewPref"
     /// The sorting mode of a thread. Optional.
     ///
     /// - Note: From the AT Protocol specification: "Sorting mode for threads."
-    let sortingMode: SortingMode? = nil
+    public let sortingMode: SortingMode? = nil
     /// Indicates whether users you follow are prioritized over other users. Optional.
     ///
     /// - Note: From the AT Protocol specification: "Show followed users at the top of all replies."
-    let areFollowedUsersPrioritized: Bool? = nil
+    public let areFollowedUsersPrioritized: Bool? = nil
 
     /// The sorting mode for a thread.
-    enum SortingMode: String, Codable {
+    public enum SortingMode: String, Codable {
         /// Indicates the thread will be sorted from the oldest post.
         case oldest = "oldest"
         /// Indicates the thread will be sorted from the newest post.
@@ -458,6 +517,7 @@ public struct ThreadViewPreferences: Codable {
     }
 
     enum CodingKeys: String, CodingKey {
+        case type = "$type"
         case sortingMode = "sort"
         case areFollowedUsersPrioritized = "prioritizeFollowedUsers"
     }
@@ -469,13 +529,17 @@ public struct ThreadViewPreferences: Codable {
 ///
 /// [github]: https://github.com/bluesky-social/atproto/blob/9579bec720d30e40c995d09772040212c261d6fb/lexicons/app/bsky/actor/defs.json
 public struct InterestViewPreferences: Codable {
+    /// The identifier of the lexicon.
+    ///
+    /// - Warning: The value must not change.
+    public let type: String = "app.bsky.actor.defs#interestsPref"
     /// An array of interest tags.
     ///
     /// - Note: According to AT Protocol's specifications: "A list of tags which describe the account owner's interests gathered during onboarding."
     /// - Important: Current maximum limit is 100 tags. Current maximum length for each tag name is 64 characters.
     public let tags: [String]
 
-    init(tags: [String]) {
+    public init(tags: [String]) {
         self.tags = tags
     }
 
@@ -495,7 +559,8 @@ public struct InterestViewPreferences: Codable {
         try truncatedEncode(truncatedTags, withContainer: &container, forKey: .tags, upToLength: 100)
     }
 
-    enum CodingKeys: CodingKey {
+    enum CodingKeys: String, CodingKey {
+        case type = "$type"
         case tags
     }
 }
