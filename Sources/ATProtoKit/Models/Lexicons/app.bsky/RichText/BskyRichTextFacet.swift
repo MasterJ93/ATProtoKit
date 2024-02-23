@@ -18,7 +18,7 @@ import Foundation
 public struct Facet: Codable {
     /// The range of characters related to the facet.
     public let index: ByteSlice
-    /// The facet's feature type..
+    /// The facet's feature type.
     public let features: [FeatureUnion]
 
     public init(index: ByteSlice, features: [FeatureUnion]) {

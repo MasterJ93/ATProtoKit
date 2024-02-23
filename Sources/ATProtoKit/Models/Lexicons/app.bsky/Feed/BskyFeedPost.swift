@@ -47,6 +47,8 @@ public struct FeedPost: Codable {
     /// An array of user-defined tags. Optional.
     ///
     /// - Note: According to the AT Protocol specifications: "Additional hashtags, in addition to any included in post text and facets."
+    ///
+    /// - Important: Current maximum length is 8 tags. Current maximum length of the tag name is 64 characters. This library will automatically truncate the `Array`and `String` respectively to the maximum length if it does go over the limit.
     public var tags: [String]? = nil
     /// The date the post was created.
     ///

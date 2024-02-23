@@ -10,6 +10,8 @@ import Foundation
 // MARK: - Main definition
 /// The main data model definition for external embeds.
 ///
+/// - Note: According to the AT Protocol specifications: "A representation of some externally linked content (eg, a URL and 'card'), embedded in a Bluesky record (eg, a post)."
+///
 /// - SeeAlso: This is based on the [`app.bsky.embed.external`][github] lexicon.
 ///
 /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/embed/external.json
@@ -19,8 +21,6 @@ public struct EmbedExternal: Codable {
     /// - Warning: The value must not change.
     public let type: String = "app.bsky.embed.external"
     /// The external content needed to be embeeded.
-    ///
-    /// - Note: From the AT Protocol specifications: "A representation of some externally linked content (eg, a URL and 'card'), embedded in a Bluesky record (eg, a post)."
     public let external: External
 
     enum CodingKeys: String, CodingKey {

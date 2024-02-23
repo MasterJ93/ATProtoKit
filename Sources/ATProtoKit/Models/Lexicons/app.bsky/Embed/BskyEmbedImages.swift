@@ -10,6 +10,8 @@ import Foundation
 // MARK: - Main definition
 /// The main data model definition for image embeds.
 ///
+/// - Note: According to the AT Protocol specifications: "A set of images embedded in a Bluesky record (eg, a post)."
+///
 /// - SeeAlso: This is based on the [`app.bsky.embed.images`][github] lexicon.
 ///
 /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/embed/images.json
@@ -105,13 +107,11 @@ public struct EmbedImagesView: Codable {
 public struct ViewImage: Codable {
     /// The URI of the image's thumbnail.
     ///
-    /// - Note: From the AT Protocol specification: "Fully-qualified URL where a thumbnail of the image can be fetched.
-    /// For example, CDN location provided by the App View."
+    /// - Note: From the AT Protocol specification: "Fully-qualified URL where a thumbnail of the image can be fetched. For example, CDN location provided by the App View."
     public let thumbnailImageURL: URL
     /// The URI of the fully-sized image.
     ///
-    /// - Note: From the AT Protocol specification: "Fully-qualified URL where a large version of the image can be fetched.
-    /// May or may not be the exact original blob. For example, CDN location provided by the App View."
+    /// - Note: From the AT Protocol specification: "Fully-qualified URL where a large version of the image can be fetched. May or may not be the exact original blob. For example, CDN location provided by the App View."
     public let fullSizeImageURL: URL
     /// /// The alternative text for the image.
     ///

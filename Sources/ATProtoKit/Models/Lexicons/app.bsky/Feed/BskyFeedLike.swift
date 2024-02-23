@@ -19,6 +19,8 @@ public struct FeedLike: Codable {
     /// - Warning: The value must not change.
     public let type: String = "app.bsky.feed.like"
     /// The strong reference of the like.
+    ///
+    /// - Note: According to the AT Protocol specifications: "Record declaring a 'like' of a piece of subject content."
     public let subject: StrongReference
     /// The date the like record was created.
     ///

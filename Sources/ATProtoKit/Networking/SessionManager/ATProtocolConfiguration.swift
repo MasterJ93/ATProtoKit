@@ -54,6 +54,8 @@ public class ATProtocolConfiguration: ProtocolConfiguration {
     ///   - accessToken: The access token for the session.
     ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `https://bsky.social`.
     /// - Returns: Returns: A `Result` containing ``SessionResponse`` on success or an `Error` on failure.
+    ///
+    /// - Note: According to the AT Protocol specifications: "Get information about the current auth session. Requires auth."
     public static func getSession(byAccessToken accessToken: String, pdsURL: String = "https://bsky.social") async throws -> Result<SessionResponse, Error> {
         guard let requestURL = URL(string: "\(pdsURL)/xrpc/com.atproto.server.getSession") else {
             return .failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"]))
@@ -73,6 +75,8 @@ public class ATProtocolConfiguration: ProtocolConfiguration {
     /// - Parameters:
     ///   - refreshToken: The refresh token for the session.
     ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `https://bsky.social`.
+    ///
+    /// - Note: According to the AT Protocol specifications: "Refresh an authentication session. Requires auth using the 'refreshJwt' (not the 'accessJwt')."
     public func refreshSession(_ refreshToken: String, pdsURL: String = "https://bsky.social") async throws -> Result<UserSession, Error> {
         guard let requestURL = URL(string: "\(self.pdsURL)/xrpc/com.atproto.server.refreshSession") else {
             return .failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"]))
