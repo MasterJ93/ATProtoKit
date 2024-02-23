@@ -9,7 +9,6 @@ import Foundation
 
 /// The main data model definition for an actor search query.
 ///
-/// The query seaches the display name, description, and handle. However, this API call can only return results of a matching handle. If you want search suggestions, a different method is needed.
 /// - Note: According to the AT Protocol specifications: "Find actors (profiles) matching search criteria. Does not require auth."
 ///
 /// - SeeAlso: This is based on the [`app.bsky.actor.searchActors`][github] lexicon.
