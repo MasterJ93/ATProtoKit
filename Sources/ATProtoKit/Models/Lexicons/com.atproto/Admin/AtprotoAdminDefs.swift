@@ -1283,6 +1283,11 @@ public struct AdminModEventTag: Codable {
     public let comment: String?
 }
 
+/// A data model definition for a communication template.
+///
+/// - SeeAlso: This is based on the [`com.atproto.admin.defs`][github] lexicon.
+///
+/// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/admin/defs.json
 public struct AdminCommunicationTemplateView: Codable {
     /// The ID of the communication template.
     public let id: Int

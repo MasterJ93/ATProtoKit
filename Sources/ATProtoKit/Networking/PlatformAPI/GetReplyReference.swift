@@ -8,9 +8,9 @@
 import Foundation
 
 extension ATProtoKit {
-    /// <#Description#>
-    /// - Parameter parentURI: <#parentURI description#>
-    /// - Returns: <#description#>
+    /// Resolves the reply references to prepare them for a later post record request.
+    /// - Parameter parentURI: The URI of the post record the current one is directly replying to.
+    /// - Returns: A ``ReplyReference``.
     public static func resolveReplyReferences(parentURI: String) async throws -> ReplyReference {
         let parentRecord = try await fetchRecordForURI(parentURI)
 
@@ -25,9 +25,9 @@ extension ATProtoKit {
         return ReplyReference(root: rootReference, parent: replyReference.parent)
     }
     
-    /// <#Description#>
-    /// - Parameter uri: <#uri description#>
-    /// - Returns: <#description#>
+    /// Gets a record from the user's repository.
+    /// - Parameter uri: The URI of the record.
+    /// - Returns: A ``RecordOutput``
     public static func fetchRecordForURI(_ uri: String) async throws -> RecordOutput {
         let query = try parseURI(uri)
 
@@ -41,52 +41,22 @@ extension ATProtoKit {
         }
     }
     
-    /// <#Description#>
-    /// - Parameter record: <#record description#>
-    /// - Returns: <#description#>
+    /// A utility method for converting a ``RecordOutput`` into a ``ReplyReference``.
+    /// - Parameter record: The record to convert.
+    /// - Returns: A ``ReplyReference``.
     private static func createReplyReference(from record: RecordOutput) -> ReplyReference {
         let reference = StrongReference(recordURI: record.recordURI, cidHash: record.recordCID)
         return ReplyReference(root: reference, parent: reference)
     }
     
-    /// <#Description#>
+    /// Parses the URI in order to get a ``RecordQuery``.
+    ///
+    /// There are two formats of URIs: the ones that have the `at://` protocol, and the ones that start off with the URL of the Personal Data Server (PDS). Regardless of option, this method should be able to parse
+    /// them and return a proper ``RecordQuery``. However, it's still important to validate the record by using ``getRepoRecord(from:pdsURL:)``.
     /// - Parameters:
-    ///   - recordQuery: <#recordQuery description#>
-    ///   - pdsURL: <#pdsURL description#>
-    /// - Returns: <#description#>
-    public static func fetchRecord(fromRecordQuery recordQuery: RecordQuery, pdsURL: String = "https://bsky.social") async throws -> RecordOutput {
-
-        guard let url = URL(string: "\(pdsURL)/xrpc/com.atproto.repo.getRecord") else {
-            throw URIError.invalidFormat
-        }
-
-        // Prepare query parameters
-        var urlComponents = URLComponents(url: url, resolvingAgainstBaseURL: true)
-        urlComponents?.queryItems = [
-            URLQueryItem(name: "repo", value: recordQuery.repo),
-            URLQueryItem(name: "collection", value: recordQuery.collection),
-            URLQueryItem(name: "rkey", value: recordQuery.recordKey)
-        ]
-
-        if let cid = recordQuery.recordCID {
-            urlComponents?.queryItems?.append(URLQueryItem(name: "cid", value: cid))
-        }
-
-        guard let finalURL = urlComponents?.url else {
-            throw URIError.invalidFormat
-        }
-
-        // Create and send the request using APIClientService
-        let request = APIClientService.createRequest(forRequest: finalURL, andMethod: .get)
-        let response = try await APIClientService.sendRequest(request, decodeTo: RecordOutput.self)
-        return response
-    }
-    
-    /// <#Description#>
-    /// - Parameters:
-    ///   - uri: <#uri description#>
-    ///   - pdsURL: <#pdsURL description#>
-    /// - Returns: <#description#>
+    ///   - uri: The URI to parse.
+    ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `https://bsky.social`.
+    /// - Returns: A ``RecordQuery``.
     internal static func parseURI(_ uri: String, pdsURL: String = "https://bsky.app") throws -> RecordQuery {
         if uri.hasPrefix("at://") {
             let components = uri.split(separator: "/").map(String.init)

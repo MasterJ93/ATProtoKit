@@ -665,6 +665,11 @@ public struct MutedWordsPreferences: Codable {
     }
 }
 
+/// A data model for a "Hidden Posts" preference definition.
+///
+/// - SeeAlso: This is based on the [`app.bsky.actor.defs`][github] lexicon.
+///
+/// [github]: https://github.com/bluesky-social/atproto/blob/9579bec720d30e40c995d09772040212c261d6fb/lexicons/app/bsky/actor/defs.json
 public struct HiddenPostsPreferences: Codable {
     /// The identifier of the lexicon.
     ///
