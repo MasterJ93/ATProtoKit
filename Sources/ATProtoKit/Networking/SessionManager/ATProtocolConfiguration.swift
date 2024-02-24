@@ -49,6 +49,48 @@ public class ATProtocolConfiguration: ProtocolConfiguration {
         }
     }
     
+    /// Creates an a new account for the user.
+    ///
+    /// - Note: According to the AT Protocol specifications: "Create an account. Implemented by PDS."
+    /// - Important: `plcOp` is currently broken: there's nothing that can be used for this at the moment while Bluesky continues to work on account migration. Until everything settles and they have a concrete example of what to do, don't use it. In the meantime, leave it at `nil`.
+    /// - Parameters:
+    ///   - email: The email of the user. Optional
+    ///   - handle: The handle the user wishes to use.
+    ///   - existingDID: A decentralized identifier (DID) that has existed before and will be used to be imported to the new account. Optional.
+    ///   - inviteCode: The invite code for the user. Optional.
+    ///   - verificationCode: A verification code.
+    ///   - verificationPhone: A code that has come from a text message in the user's phone. Optional.
+    ///   - password: The password the user will use for the account. Optional.
+    ///   - recoveryKey: DID PLC rotation key (aka, recovery key) to be included in PLC creation operation. Optional.
+    ///   - plcOp: A signed DID PLC operation to be submitted as part of importing an existing account to this instance. NOTE: this optional field may be updated when full account migration is implemented. Optional.
+    /// - Returns: A `Result`, containing either a ``UserSession`` if successful, or an `Error` if not.
+    public func createAccount(_ email: String? = nil, handle: String, existingDID: String? = nil, inviteCode: String? = nil, verificationCode: String? = nil, verificationPhone: String? = nil, password: String? = nil, recoveryKey: String? = nil, plcOp: UnknownType? = nil) async throws -> Result<UserSession, Error> {
+        guard let requestURL = URL(string: "\(self.pdsURL)/xrpc/com.atproto.server.createAccount") else {
+            return .failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"]))
+        }
+
+        let requestBody = ServerCreateAccount(
+            email: email,
+            handle: handle,
+            existingDID: existingDID,
+            inviteCode: inviteCode,
+            verificationCode: verificationCode,
+            verificationPhone: verificationPhone,
+            password: password,
+            recoveryKey: recoveryKey,
+            plcOp: plcOp)
+
+        do {
+            let request = APIClientService.createRequest(forRequest: requestURL, andMethod: .post)
+            let userSession = try await APIClientService.sendRequest(request, withEncodingBody: requestBody, decodeTo: UserSession.self)
+            userSession.pdsURL = self.pdsURL
+
+            return .success(userSession)
+        } catch {
+            return .failure(error)
+        }
+    }
+
     /// Fetches an existing session using an access token.
     /// - Parameters:
     ///   - accessToken: The access token for the session.
