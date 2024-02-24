@@ -81,7 +81,6 @@ public class APIClientService {
     /// - Parameters:
     ///   - request: The `URLRequest` to send.
     ///   - body: An optional `Encodable` body to be encoded and attached to the request.
-    ///   - Note: Since there doesn't seem to be a way to have optional generic types, this method can't be combined with  ``sendRequest(_:withEncodingBody:decodeTo:)`` or ``sendRequestForBlob(_:)``  and will have to be overloaded until a better solution arrives.
     public static func sendRequest(_ request: URLRequest, withEncodingBody body: Encodable? = nil) async throws {
         try await performRequest(request, withEncodingBody: body)
     }
