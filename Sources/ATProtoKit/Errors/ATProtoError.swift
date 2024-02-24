@@ -27,9 +27,9 @@ public enum ATProtoError: Error, Decodable {
     /// Represents an internal server error (HTTP 500) with an associated message.
     /// - Parameter message: The message received along side the error.
     case internalServerError(message: String)
-    /// Represents a not implemented error (HTTP 501) with an associated message.
+    /// Represents a method not implemented error (HTTP 501) with an associated message.
     /// - Parameter message: The message received along side the error.
-    case notImplemented(message: String)
+    case methodNotImplemented(message: String)
     /// Represents a bad gateway error (HTTP 502) with an associated message.
     /// - Parameter message: The message received along side the error.
     case badGateway(message: String)
@@ -87,8 +87,8 @@ public enum ATProtoError: Error, Decodable {
                 self = .tooManyRequests(message: message)
             case "InternalServerError":
                 self = .internalServerError(message: message)
-            case "NotImplemented":
-                self = .notImplemented(message: message)
+            case "MethodNotImplemented":
+                self = .methodNotImplemented(message: message)
             case "BadGateway":
                 self = .badGateway(message: message)
             case "ServiceUnavailable":
