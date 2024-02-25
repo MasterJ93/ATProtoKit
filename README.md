@@ -59,7 +59,7 @@ dependencies: [
 The Projects page isn't set up yet, so it'll be a while before you can see the progress for this project. However, some of the goals include:
 - Making the library fully compatible for Linux, for both client-side and server-side applications.
 - Replacing SwiftSoup to a more laser-focused Swift Package dedicated for the AT Protocol and Bluesky.
-- Adding a separate package for auto-generating lexicons best on the Swift API Design Guidelines, Swift best practices, and this project’s own API design guidelines.
+- Adding a separate package for auto-generating lexicons based on the Swift API Design Guidelines, Swift best practices, and this project’s own API design guidelines.
 
 ## Quick Start
 As shown in the Example Usage, it all starts with `ATProtocolConfiguration`, which uses the handle, app password, and pdsURL to access and create a session:
@@ -96,8 +96,7 @@ To use ATProtoKit in your apps, your app should target the specific version numb
 - **macOS** 12 or later.
 - **tvOS** 13 or later.
 - **watchOS** 6 or later.
-
-(Given how new it is, there are no version requirements for **visionOS**.)
+- **visionOS** 1 or later.
 
 As of right now, Linux support is theoretically possible, but not guaranteed to be tested. The plan is to make it fully compatible with Linux by version 1.0, though this is not a required goal to get there. For other platforms (such as Android), this is also not tested, but should be theoretically possible. While it’s not a goal to make it fully compatible, contributions and feedback on the matter are welcomed.
 
