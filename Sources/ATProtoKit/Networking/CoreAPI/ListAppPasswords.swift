@@ -10,6 +10,8 @@ import Foundation
 extension ATProtoKit {
     /// Lists all of the App Passwords in a user's account.
     /// 
+    /// - Important: This won't show the actual App Passwords; it'll only display the names associated with the App Passwords.
+    ///
     /// - Returns: A `Result`, containing either a ``ServerListAppPasswordsOutput`` if successful, or an `Error` if not.
     public func listAppPasswords() async throws -> Result<ServerListAppPasswordsOutput, Error> {
         guard let sessionURL = session.pdsURL,
