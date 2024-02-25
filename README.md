@@ -108,5 +108,7 @@ While this project will change significantly, early feedback, issues, and contri
 - Try to follow the [Git commit best practices](https://cbea.ms/git-commit/).
 - If you're creating a method in `ATProtoKit`'s class and authentication is either not required or optional, it must be a `static` method. Otherwise, it must be an instance method.
 
+If you have any questions, you can ask me on Bluesky ([@cjrriley.com](https://bsky.app/profile/cjrriley.com)). And while you're at it, give me a follow!
+
 ## License
 This Swift Package is using the MIT License. Please view [LICENSE.md](https://github.com/MasterJ93/ATProtoKit/blob/ed45edcd717e7341ae688d294504e0019550b3f0/LICENSE.md) for more details.
