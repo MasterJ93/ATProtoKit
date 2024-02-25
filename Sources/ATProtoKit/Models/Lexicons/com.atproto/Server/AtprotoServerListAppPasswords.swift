@@ -9,7 +9,7 @@ import Foundation
 
 /// A data model definition of the of listing App Passwords.
 ///
-/// - Note: According to the AT Protocol specifications: "List all App Passwords"
+/// - Note: According to the AT Protocol specifications: "List all App Passwords."
 ///
 /// - SeeAlso: This is based on the [`com.atproto.server.listAppPasswords`][github] lexicon.
 ///
@@ -28,7 +28,7 @@ public struct ServerAppPassword: Codable {
     /// The name associated with the App Password.
     public let name: String
     /// The date and date the App Password was created.
-    @DateFormatting public let createdAt: Date
+    @DateFormatting public var createdAt: Date
 
     public init(name: String, createdAt: Date) {
         self.name = name
