@@ -370,17 +370,17 @@ public struct AdminReportViewDetail: Codable {
     public var comment: String? = nil
     /// The subject of the report.
     ///
-    /// - Important: The item associated with this property is undocumented in the AT Protocol specifications. Our documentation here is based on:\
+    /// - Important: The item associated with this property is undocumented in the AT Protocol specifications. The documentation here is based on:\
     ///   \* **For items with some inferable context from property names or references**: its best interpretation, though not with full certainty.\
     ///   \* **For items without enough context for even an educated guess**: a direct acknowledgment of their undocumented status.\
-    ///   Clarifications from Bluesky are essential for definitive understanding and usage.
+    ///   Clarifications from Bluesky are needed in order to fully understand the this item.
     public let subject: RepoViewUnion
     /// The status for the subject of the report. Optional.
     ///
-    /// - Important: The item associated with this property is undocumented in the AT Protocol specifications. Our documentation here is based on:\
+    /// - Important: The item associated with this property is undocumented in the AT Protocol specifications. The documentation here is based on:\
     ///   \* **For items with some inferable context from property names or references**: its best interpretation, though not with full certainty.\
     ///   \* **For items without enough context for even an educated guess**: a direct acknowledgment of their undocumented status.\
-    ///   Clarifications from Bluesky are essential for definitive understanding and usage.
+    ///   Clarifications from Bluesky are needed in order to fully understand the this item.
     public var subjectStatus: AdminSubjectStatusView? = nil
     /// The user who created the report.
     public let reportedBy: String
@@ -452,10 +452,10 @@ public struct AdminRepoView: Codable {
     public var email: String? = nil
     /// The related records of the user.
     ///
-    /// - Important: The item associated with this property is undocumented in the AT Protocol specifications. Our documentation here is based on:\
+    /// - Important: The item associated with this property is undocumented in the AT Protocol specifications. The documentation here is based on:\
     ///   \* **For items with some inferable context from property names or references**: its best interpretation, though not with full certainty.\
     ///   \* **For items without enough context for even an educated guess**: a direct acknowledgment of their undocumented status.\
-    ///   Clarifications from Bluesky are essential for definitive understanding and usage.
+    ///   Clarifications from Bluesky are needed in order to fully understand the this item.
     public let relatedRecords: UnknownType
     /// The date and time the user was indexed.
     @DateFormatting public var indexedAt: Date
@@ -535,10 +535,10 @@ public struct AdminRepoViewDetail: Codable {
     public var email: String? = nil
     /// The user's related records.
     ///
-    /// - Important: The item associated with this property is undocumented in the AT Protocol specifications. Our documentation here is based on:\
+    /// - Important: The item associated with this property is undocumented in the AT Protocol specifications. The documentation here is based on:\
     ///   \* **For items with some inferable context from property names or references**: its best interpretation, though not with full certainty.\
     ///   \* **For items without enough context for even an educated guess**: a direct acknowledgment of their undocumented status.\
-    ///   Clarifications from Bluesky are essential for definitive understanding and usage.
+    ///   Clarifications from Bluesky are needed in order to fully understand the this item.
     public let relatedRecords: UnknownType
     /// The date and time the user was last indexed.
     @DateFormatting public var indexedAt: Date
@@ -636,10 +636,10 @@ public struct AdminAccountView: Codable {
     public var email: String? = nil
     /// The user's related records. Optional.
     ///
-    /// - Important: The item associated with this property is undocumented in the AT Protocol specifications. Our documentation here is based on:\
+    /// - Important: The item associated with this property is undocumented in the AT Protocol specifications. The documentation here is based on:\
     ///   \* **For items with some inferable context from property names or references**: its best interpretation, though not with full certainty.\
     ///   \* **For items without enough context for even an educated guess**: a direct acknowledgment of their undocumented status.\
-    ///   Clarifications from Bluesky are essential for definitive understanding and usage.
+    ///   Clarifications from Bluesky are needed in order to fully understand the this item.
     public var relatedRecords: [UnknownType]? = nil
     /// The date and time the user was last indexed.
     @DateFormatting public var indexedAt: Date
@@ -771,10 +771,10 @@ public struct AdminRecordView: Codable {
     public let cidHash: String
     /// The value of the record.
     ///
-    /// - Important: The item associated with this property is undocumented in the AT Protocol specifications. Our documentation here is based on:\
+    /// - Important: The item associated with this property is undocumented in the AT Protocol specifications. The documentation here is based on:\
     ///   \* **For items with some inferable context from property names or references**: its best interpretation, though not with full certainty.\
     ///   \* **For items without enough context for even an educated guess**: a direct acknowledgment of their undocumented status.\
-    ///   Clarifications from Bluesky are essential for definitive understanding and usage.
+    ///   Clarifications from Bluesky are needed in order to fully understand the this item.
     public let value: UnknownType
     /// An array of CID hashes for blobs.
     public let blobCIDHashes: [String]
@@ -782,17 +782,17 @@ public struct AdminRecordView: Codable {
     @DateFormatting public var indexedAt: Date
     /// The status of the subject.
     ///
-    /// - Important: The item associated with this property is undocumented in the AT Protocol specifications. Our documentation here is based on:\
+    /// - Important: The item associated with this property is undocumented in the AT Protocol specifications. The documentation here is based on:\
     ///   \* **For items with some inferable context from property names or references**: its best interpretation, though not with full certainty.\
     ///   \* **For items without enough context for even an educated guess**: a direct acknowledgment of their undocumented status.\
-    ///   Clarifications from Bluesky are essential for definitive understanding and usage.
+    ///   Clarifications from Bluesky are needed in order to fully understand the this item.
     public let moderation: AdminModeration
     /// The repository view of the record.
     ///
-    /// - Important: The item associated with this property is undocumented in the AT Protocol specifications. Our documentation here is based on:\
+    /// - Important: The item associated with this property is undocumented in the AT Protocol specifications. The documentation here is based on:\
     ///   \* **For items with some inferable context from property names or references**: its best interpretation, though not with full certainty.\
     ///   \* **For items without enough context for even an educated guess**: a direct acknowledgment of their undocumented status.\
-    ///   Clarifications from Bluesky are essential for definitive understanding and usage.
+    ///   Clarifications from Bluesky are needed in order to fully understand the this item.
     public let repo: AdminRepoView
 
     public init(recordURI: String, cidHash: String, value: UnknownType, blobCIDHashes: [String], indexedAt: Date, moderation: AdminModeration, repo: AdminRepoView) {
@@ -852,10 +852,10 @@ public struct AdminRecordViewDetail: Codable {
     public let cidHash: String
     /// The value of the record.
     ///
-    /// - Important: The item associated with this property is undocumented in the AT Protocol specifications. Our documentation here is based on:\
+    /// - Important: The item associated with this property is undocumented in the AT Protocol specifications. The documentation here is based on:\
     ///   \* **For items with some inferable context from property names or references**: its best interpretation, though not with full certainty.\
     ///   \* **For items without enough context for even an educated guess**: a direct acknowledgment of their undocumented status.\
-    ///   Clarifications from Bluesky are essential for definitive understanding and usage.
+    ///   Clarifications from Bluesky are needed in order to fully understand the this item.
     public let value: String
     /// An array of CID hashes for blobs.
     public let blobs: [AdminBlobView]
@@ -865,17 +865,17 @@ public struct AdminRecordViewDetail: Codable {
     @DateFormatting public var indexedAt: Date
     /// The repository view of the record.
     ///
-    /// - Important: The item associated with this property is undocumented in the AT Protocol specifications. Our documentation here is based on:\
+    /// - Important: The item associated with this property is undocumented in the AT Protocol specifications. The documentation here is based on:\
     ///   \* **For items with some inferable context from property names or references**: its best interpretation, though not with full certainty.\
     ///   \* **For items without enough context for even an educated guess**: a direct acknowledgment of their undocumented status.\
-    ///   Clarifications from Bluesky are essential for definitive understanding and usage.
+    ///   Clarifications from Bluesky are needed in order to fully understand the this item.
     public let moderation: AdminModerationDetail
     /// The repository view of the record.
     ///
-    /// - Important: The item associated with this property is undocumented in the AT Protocol specifications. Our documentation here is based on:\
+    /// - Important: The item associated with this property is undocumented in the AT Protocol specifications. The documentation here is based on:\
     ///   \* **For items with some inferable context from property names or references**: its best interpretation, though not with full certainty.\
     ///   \* **For items without enough context for even an educated guess**: a direct acknowledgment of their undocumented status.\
-    ///   Clarifications from Bluesky are essential for definitive understanding and usage.
+    ///   Clarifications from Bluesky are needed in order to fully understand the this item.
     public let repo: AdminRepoView
 
     public init(recordURI: String, cidHash: String, value: String, blobs: [AdminBlobView], labels: [Label]? = nil, indexedAt: Date, moderation: AdminModerationDetail, repo: AdminRepoView) {
@@ -943,10 +943,10 @@ public struct AdminRecordViewNotFound: Codable {
 
 /// A data model of a definition for moderation.
 ///
-/// - Important: The item associated with this struct is undocumented in the AT Protocol specifications. Our documentation here is based on:\
+/// - Important: The item associated with this struct is undocumented in the AT Protocol specifications. The documentation here is based on:\
 ///   \* **For items with some inferable context from property names or references**: its best interpretation, though not with full certainty.\
 ///   \* **For items without enough context for even an educated guess**: a direct acknowledgment of their undocumented status.\
-///   Clarifications from Bluesky are essential for definitive understanding and usage.
+///   Clarifications from Bluesky are needed in order to fully understand the this item.
 ///
 /// - SeeAlso: This is based on the [`com.atproto.admin.defs`][github] lexicon.
 ///
@@ -954,19 +954,19 @@ public struct AdminRecordViewNotFound: Codable {
 public struct AdminModeration: Codable {
     /// The status of the subject. Optional.
     ///
-    /// - Important: The item associated with this property is undocumented in the AT Protocol specifications. Our documentation here is based on:\
+    /// - Important: The item associated with this property is undocumented in the AT Protocol specifications. The documentation here is based on:\
     ///   \* **For items with some inferable context from property names or references**: its best interpretation, though not with full certainty.\
     ///   \* **For items without enough context for even an educated guess**: a direct acknowledgment of their undocumented status.\
-    ///   Clarifications from Bluesky are essential for definitive understanding and usage.
+    ///   Clarifications from Bluesky are needed in order to fully understand the this item.
     public var subjectStatus: AdminSubjectStatusView? = nil
 }
 
 /// A data model of a definition for a detailed moderation.
 ///
-/// - Important: The item associated with this struct is undocumented in the AT Protocol specifications. Our documentation here is based on:\
+/// - Important: The item associated with this struct is undocumented in the AT Protocol specifications. The documentation here is based on:\
 ///   \* **For items with some inferable context from property names or references**: its best interpretation, though not with full certainty.\
 ///   \* **For items without enough context for even an educated guess**: a direct acknowledgment of their undocumented status.\
-///   Clarifications from Bluesky are essential for definitive understanding and usage.
+///   Clarifications from Bluesky are needed in order to fully understand the this item.
 ///
 /// - SeeAlso: This is based on the [`com.atproto.admin.defs`][github] lexicon.
 ///
@@ -974,10 +974,10 @@ public struct AdminModeration: Codable {
 public struct AdminModerationDetail: Codable {
     /// The status of the subject. Optional.
     ///
-    /// - Important: The item associated with this property is undocumented in the AT Protocol specifications. Our documentation here is based on:\
+    /// - Important: The item associated with this property is undocumented in the AT Protocol specifications. The documentation here is based on:\
     ///   \* **For items with some inferable context from property names or references**: its best interpretation, though not with full certainty.\
     ///   \* **For items without enough context for even an educated guess**: a direct acknowledgment of their undocumented status.\
-    ///   Clarifications from Bluesky are essential for definitive understanding and usage.
+    ///   Clarifications from Bluesky are needed in order to fully understand the this item.
     public var subjectStatus: AdminSubjectStatusView? = nil
 }
 

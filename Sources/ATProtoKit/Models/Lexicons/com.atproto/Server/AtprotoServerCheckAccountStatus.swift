@@ -19,27 +19,27 @@ public struct ServerCheckAccountStatusOutput: Codable {
     public let isActivated: Bool
     /// Indicates whether the user's account has a valid ID.
     public let isValidID: Bool
-    /// - Important: The item associated with this property is undocumented in the AT Protocol specifications. Our documentation here is based on:\
+    /// - Important: The item associated with this property is undocumented in the AT Protocol specifications. The documentation here is based on:\
     ///   \* **For items with some inferable context from property names or references**: its best interpretation, though not with full certainty.\
     ///   \* **For items without enough context for even an educated guess**: a direct acknowledgment of their undocumented status.\
-    ///   Clarifications from Bluesky are essential for definitive understanding and usage.
+    ///   Clarifications from Bluesky are needed in order to fully understand the this item.
     public let repositoryCommit: String
-    /// - Important: The item associated with this property is undocumented in the AT Protocol specifications. Our documentation here is based on:\
+    /// - Important: The item associated with this property is undocumented in the AT Protocol specifications. The documentation here is based on:\
     ///   \* **For items with some inferable context from property names or references**: its best interpretation, though not with full certainty.\
     ///   \* **For items without enough context for even an educated guess**: a direct acknowledgment of their undocumented status.\
-    ///   Clarifications from Bluesky are essential for definitive understanding and usage.
+    ///   Clarifications from Bluesky are needed in order to fully understand the this item.
     public let repositoryRev: String
-    /// - Important: The item associated with this property is undocumented in the AT Protocol specifications. Our documentation here is based on:\
+    /// - Important: The item associated with this property is undocumented in the AT Protocol specifications. The documentation here is based on:\
     ///   \* **For items with some inferable context from property names or references**: its best interpretation, though not with full certainty.\
     ///   \* **For items without enough context for even an educated guess**: a direct acknowledgment of their undocumented status.\
-    ///   Clarifications from Bluesky are essential for definitive understanding and usage.
+    ///   Clarifications from Bluesky are needed in order to fully understand the this item.
     public let repositoryBlocks: Int
     /// The number of indexed records in the user's account.
     public let indexedRecords: Int
-    /// - Important: The item associated with this property is undocumented in the AT Protocol specifications. Our documentation here is based on:\
+    /// - Important: The item associated with this property is undocumented in the AT Protocol specifications. The documentation here is based on:\
     ///   \* **For items with some inferable context from property names or references**: its best interpretation, though not with full certainty.\
     ///   \* **For items without enough context for even an educated guess**: a direct acknowledgment of their undocumented status.\
-    ///   Clarifications from Bluesky are essential for definitive understanding and usage.
+    ///   Clarifications from Bluesky are needed in order to fully understand the this item.
     public let privateStateValues: Int
     /// The expected number of blobs in the user's account.
     public let expectedBlobs: Int
