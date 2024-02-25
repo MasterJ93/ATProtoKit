@@ -14,7 +14,7 @@ import Foundation
 /// - Important: The item associated with this enum is undocumented in the AT Protocol specifications. The documentation here is based on:\
 ///   \* **For items with some inferable context from property names or references**: its best interpretation, though not with full certainty.\
 ///   \* **For items without enough context for even an educated guess**: a direct acknowledgment of their undocumented status.\
-///   Clarifications from Bluesky are needed in order to fully understand the this item.
+///   Clarifications from Bluesky are needed in order to fully understand this item.
 /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/moderation/defs.json
 public enum ModerationReasonType: String, Codable {
     /// Indicates spam as the reason.

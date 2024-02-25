@@ -24,7 +24,7 @@ public struct ServerCreateInviteCodes: Codable {
     /// - Important: The item associated with this property is undocumented in the AT Protocol specifications. The documentation here is based on:\
     ///   \* **For items with some inferable context from property names or references**: its best interpretation, though not with full certainty.\
     ///   \* **For items without enough context for even an educated guess**: a direct acknowledgment of their undocumented status.\
-    ///   Clarifications from Bluesky are needed in order to fully understand the this item.
+    ///   Clarifications from Bluesky are needed in order to fully understand this item.
     public let forAccounts: [String]?
 }
 
@@ -49,7 +49,7 @@ public struct ServerAccountCodes: Codable {
     /// - Important: The item associated with this property is undocumented in the AT Protocol specifications. The documentation here is based on:\
     ///   \* **For items with some inferable context from property names or references**: its best interpretation, though not with full certainty.\
     ///   \* **For items without enough context for even an educated guess**: a direct acknowledgment of their undocumented status.\
-    ///   Clarifications from Bluesky are needed in order to fully understand the this item.
+    ///   Clarifications from Bluesky are needed in order to fully understand this item.
     public let account: String
     /// An array of invite codes.
     public let codes: [String]
