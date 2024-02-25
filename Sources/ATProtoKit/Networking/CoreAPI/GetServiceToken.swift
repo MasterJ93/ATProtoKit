@@ -29,7 +29,7 @@ extension ATProtoKit {
             )
 
             let request = APIClientService.createRequest(forRequest: queryURL, andMethod: .get, acceptValue: "application/json", contentTypeValue: nil, authorizationValue: "Bearer \(session.accessToken)")
-            let response = APIClientService.sendRequest(request, decodeTo: ServerGetServiceAuthOutput.self)
+            let response = try await APIClientService.sendRequest(request, decodeTo: ServerGetServiceAuthOutput.self)
 
             return .success(response)
         } catch {
