@@ -1,0 +1,68 @@
+name: Bug Report
+description: Report a bug within ATProtoKit.
+title: "[Bug]: "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: >
+        Thanks for taking the time to fill out this bug report! Please note that this form is for bugs only!
+  - type: input
+    id: summary
+    attributes:
+      label: Summary
+      description: Summarize the bug in one or two sentences.
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Reproduction Steps
+      description: Describe how you were able to get the bug.
+    validations:
+      required: true
+  - type: textarea
+    id: expected-results
+    attributes:
+      label: Expected Results
+      description: What were you expecting to happen?
+    validations:
+      required: true
+  - type: textarea
+    id: actual-results
+    attributes:
+      label: Actual Results
+      description: What actually happened?
+    validations:
+      required: true
+  - type: dropdown
+    id: operating-system
+    attributes:
+      label: What operating systems did you experience this bug? (We'll count Docker as an operating system.)
+      multiple: true
+      options:
+        - macOS
+        - Linux
+        - Docker
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    id: os-version
+    attributes:
+      label: Operating System Version
+      description: For each operating system, give us the version numbers. For "Linux," state what distro you're using. For "Other," state what operating system you're using. For "Docker," state what version you're using.
+    validations:
+      required: true
+  - type: input
+    id: atprotokit-version
+    attributes:
+      label: ATProtoKit Version
+      description: State what version of ATProtoKit you're using.
+    validations:
+      required: true
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: Additional Context
+      description: Add any other context, screenshots, or videos about the bug here.
