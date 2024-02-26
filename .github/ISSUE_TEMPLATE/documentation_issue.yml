@@ -1,0 +1,59 @@
+name: Documentation Issue
+description: Report an inconsistency within the documentation (design issue, wording issue, spelling/grammar issue, etc.).
+title: "[Documentation]: "
+labels: ["documentation"]
+body:
+  - type: markdown
+    attributes:
+      value: >
+        Thanks for taking the time to fill out this report! Please note that this form is for documentation issues only!
+  - type: input
+    id: summary
+    attributes:
+      label: Summary
+      description: Summarize the issue in one or two sentences.
+    validations:
+      required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: Explain in detail what the issue is.
+    validations:
+      required: true
+  - type: dropdown
+    id: issue-type
+    attributes:
+      label: What type of issue is it?
+      multiple: true
+      options:
+        - Spelling
+        - Grammar
+        - Inconsistency
+        - Suggestion
+        - Error
+        - Contradiction
+        - Too much/Too Little
+        - Outdated
+        - Other
+    validations:
+      required: true
+  - type: input
+    id: atprotokit-version
+    attributes:
+      label: ATProtoKit Version
+      description: State what version of ATProtoKit you're using.
+    validations:
+      required: true
+  - type: input
+    id: doc-location
+    attributes:
+      label: Documentation Location
+      description: State where you see the issue. It can be a URL link, the file path name, and/or the method/struct/property/etc.
+    validations:
+      required: true
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: Additional Context
+      description: Add any other context about the issue here.
