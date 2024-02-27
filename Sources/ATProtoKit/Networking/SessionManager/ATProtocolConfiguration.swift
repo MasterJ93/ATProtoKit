@@ -147,7 +147,7 @@ public class ATProtocolConfiguration: ProtocolConfiguration {
         let request = APIClientService.createRequest(forRequest: requestURL, andMethod: .post, authorizationValue: "Bearer \(accessToken)")
 
         do {
-            try await APIClientService.sendRequest(request)
+            _ = try await APIClientService.sendRequest(request)
         } catch {
             throw NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid Request"])
         }

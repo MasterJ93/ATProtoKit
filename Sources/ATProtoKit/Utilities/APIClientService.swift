@@ -82,7 +82,7 @@ public class APIClientService {
     ///   - request: The `URLRequest` to send.
     ///   - body: An optional `Encodable` body to be encoded and attached to the request.
     public static func sendRequest(_ request: URLRequest, withEncodingBody body: Encodable? = nil) async throws {
-        try await performRequest(request, withEncodingBody: body)
+        _ = try await performRequest(request, withEncodingBody: body)
     }
 
     /// Sends a `URLRequest` in order to receive a blob.
