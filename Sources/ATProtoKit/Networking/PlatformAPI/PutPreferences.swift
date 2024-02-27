@@ -19,9 +19,9 @@ extension ATProtoKit {
 
         let requestBody = ActorPutPreferences(preferences: preferences.preferences)
 
-        let request = APIClientService.createRequest(forRequest: requestURL, andMethod: .post, authorizationValue: "Bearer \(session.accessToken)")
-
         do {
+            let request = APIClientService.createRequest(forRequest: requestURL, andMethod: .post, authorizationValue: "Bearer \(session.accessToken)")
+
             try await APIClientService.sendRequest(request, withEncodingBody: requestBody)
         } catch {
             throw URIError.invalidFormat

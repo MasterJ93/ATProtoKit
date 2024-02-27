@@ -16,6 +16,7 @@ extension ATProtoKit {
               let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.server.revokeAppPassword") else {
             throw NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey : "Invalid URL"])
         }
+
         let requestBody = ServerRevokeAppPassword(appPasswordName: appPasswordName)
 
         do {

@@ -34,11 +34,10 @@ public class ATProtocolConfiguration: ProtocolConfiguration {
             return .failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"]))
         }
 
-        let request = APIClientService.createRequest(forRequest: requestURL, andMethod: .post)
-
         let credentials = SessionCredentials(identifier: handle, password: appPassword)
 
         do {
+            let request = APIClientService.createRequest(forRequest: requestURL, andMethod: .post)
             let userSession = try await APIClientService.sendRequest(request, withEncodingBody: credentials, decodeTo: UserSession.self)
             userSession.pdsURL = self.pdsURL
 
@@ -107,6 +106,7 @@ public class ATProtocolConfiguration: ProtocolConfiguration {
 
         do {
             let response = try await APIClientService.sendRequest(request, decodeTo: SessionResponse.self)
+
             return .success(response)
         } catch {
             return .failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey : "Error: \(error)"]))
@@ -129,6 +129,7 @@ public class ATProtocolConfiguration: ProtocolConfiguration {
         do {
             let response = try await APIClientService.sendRequest(request, decodeTo: UserSession.self)
             response.pdsURL = self.pdsURL
+
             return .success(response)
         } catch {
             return .failure(error)

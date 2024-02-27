@@ -46,6 +46,7 @@ extension ATProtoKit {
 
             let request = APIClientService.createRequest(forRequest: queryURL, andMethod: .get, contentTypeValue: nil, authorizationValue: authorizationValue)
             let actorProfileViewsDetailedResult = try await APIClientService.sendRequest(request, decodeTo: ActorGetProfilesOutput.self)
+
             return .success(actorProfileViewsDetailedResult)
         } catch {
             return .failure(error)

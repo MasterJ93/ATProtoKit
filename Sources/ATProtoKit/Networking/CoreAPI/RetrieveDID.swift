@@ -33,7 +33,6 @@ extension ATProtoKit {
             print("Request URL: \(queryURL.absoluteString)")  // Debugging line
 
             let request = APIClientService.createRequest(forRequest: queryURL, andMethod: .get)
-
             let response = try await APIClientService.sendRequest(request, decodeTo: ResolveHandleOutput.self)
 
             return .success(response)

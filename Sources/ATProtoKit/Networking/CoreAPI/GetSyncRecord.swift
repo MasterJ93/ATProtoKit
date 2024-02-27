@@ -32,8 +32,8 @@ extension ATProtoKit {
             )
 
             let request = APIClientService.createRequest(forRequest: queryURL, andMethod: .get, authorizationValue: nil)
-
             let response = try await APIClientService.sendRequest(request)
+
             return .success(response)
         } catch {
             return .failure(error)
