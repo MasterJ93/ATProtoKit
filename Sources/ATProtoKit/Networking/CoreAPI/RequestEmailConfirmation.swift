@@ -17,7 +17,8 @@ extension ATProtoKit {
 
         do {
             let request = APIClientService.createRequest(forRequest: requestURL, andMethod: .post, acceptValue: nil, contentTypeValue: nil, authorizationValue: "Bearer \(session.accessToken)")
-            let response = try await APIClientService.sendRequest(request)
+
+            _ = try await APIClientService.sendRequest(request)
         } catch {
             throw error
         }
