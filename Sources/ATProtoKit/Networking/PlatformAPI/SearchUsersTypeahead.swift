@@ -35,7 +35,7 @@ extension ATProtoKit {
         // Make sure limit is between 1 and 100. If no value is given, set it to 25.
         let finalLimit = max(1, min(limit ?? 10, 100))
 
-        var queryItems = [
+        let queryItems = [
             ("q", query),
             ("limit", "\(finalLimit)")
         ]

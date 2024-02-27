@@ -32,7 +32,7 @@ extension ATProtoKit {
             return "Bearer \(token)"
         }()
 
-        var queryItems = [("actor", actor.actor)]
+        let queryItems = [("actor", actor.actor)]
 
         do {
             let queryURL = try APIClientService.setQueryItems(

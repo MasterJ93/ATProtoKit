@@ -34,7 +34,7 @@ extension ATProtoKit {
         }()
 
         // Add each handle/DID ($0) into their own "actors" parameter.
-        var queryItems = actors.actors.map { ("actors", $0) }
+        let queryItems = actors.actors.map { ("actors", $0) }
 
         do {
             let queryURL = try APIClientService.setQueryItems(
