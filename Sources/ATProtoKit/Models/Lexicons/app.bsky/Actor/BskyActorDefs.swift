@@ -679,6 +679,11 @@ public struct HiddenPostsPreferences: Codable {
     ///
     /// - Note: According to the AT Protocol specifications: "A list of URIs of posts the account owner has hidden."
     public let items: [String]
+
+    enum CodingKeys: String, CodingKey {
+        case type = "$type"
+        case items
+    }
 }
 
 // MARK: - Union types
