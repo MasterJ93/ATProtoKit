@@ -14,10 +14,10 @@ extension ATProtoKit {
     ///   - createdAt: The date and time the like record was created. Defaults to `Date.now`.
     /// - Returns: A `Result`, containing either a ``StrongReference`` if it's successful, or an `Error` if it's not.
     public func createLikeRecord(_ strongReference: StrongReference, createdAt: Date = Date.now) async throws -> Result<StrongReference, Error> {
-        guard let sessionURL = session.pdsURL,
-              let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.repo.createRecord") else {
-            throw NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"])
-        }
+//        guard let sessionURL = session.pdsURL,
+//              let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.repo.createRecord") else {
+//            throw NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"])
+//        }
 
         let likeRecord = FeedLike(
             subject: strongReference,
