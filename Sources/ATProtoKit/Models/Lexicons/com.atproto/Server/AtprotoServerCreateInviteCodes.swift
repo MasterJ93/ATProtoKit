@@ -16,7 +16,7 @@ import Foundation
 /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/server/createInviteCodes.json
 public struct ServerCreateInviteCodes: Codable {
     /// The number of invite codes to create. Defaults to 1.
-    public let codeCount: Int = 1
+    public var codeCount: Int = 1
     /// The number of times the invite code(s) can be used.
     public let useCount: Int
     /// An array of decentralized identifiers (DIDs) that can use the invite codes. Optional.
