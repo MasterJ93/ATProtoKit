@@ -17,4 +17,8 @@ import Foundation
 public struct ServerRevokeAppPassword: Codable {
     /// The name associated with the App Password.
     public let appPasswordName: String
+
+    enum CodingKeys: String, CodingKey {
+        case appPasswordName = "name"
+    }
 }
