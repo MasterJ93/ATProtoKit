@@ -1,5 +1,5 @@
 //
-//  RequestPasswordReset.swift
+//  ResetPassword.swift
 //
 //
 //  Created by Christopher Jr Riley on 2024-02-26.
@@ -8,19 +8,23 @@
 import Foundation
 
 extension ATProtoKit {
-    /// Sends an email containing a way to reset the user's password.
+    /// Resets the user's account password.
     /// 
-    /// - Note: This is resetting the main password, not the App Password.
+    /// - Note: This doesn't reset the App Password.
     /// 
     /// - Parameters:
-    ///   - email: The email associated with the user's account.
+    ///   - token: The token used to reset the password.
+    ///   - newPassword: The new password for the user's account.
     ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `https://bsky.social`.
-    public static func requestPasswordReset(_ email: String, pdsURL: String = "https://bsky.social") async throws {
-        guard let requestURL = URL(string: "\(pdsURL)/xrpc/com.atproto.server.requestPasswordReset") else {
+    public static func resetPassword(using token: String, newPassword: String, pdsURL: String = "https://bsky.social") async throws {
+        guard let requestURL = URL(string: "\(pdsURL)/xrpc/com.atproto.server.resetPassword") else {
             throw NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey : "Invalid URL"])
         }
 
-        let requestBody = ServerRequestPasswordReset(email: email)
+        let requestBody = ServerResetPassword(
+            token: token,
+            newPassword: newPassword
+        )
 
         do {
             let request = APIClientService.createRequest(forRequest: requestURL, andMethod: .post, acceptValue: nil, contentTypeValue: "application/json", authorizationValue: nil)
