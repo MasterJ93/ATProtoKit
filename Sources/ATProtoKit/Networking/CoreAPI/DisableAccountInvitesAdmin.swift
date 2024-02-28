@@ -9,9 +9,12 @@ import Foundation
 
 extension ATProtoKit {
     /// Disables a user account's ability to receive future invite codes as an administrator.
-    /// 
+    ///  
     /// - Note: According to the AT Protocol specifications: "Disable an account from receiving new invite codes, but does not invalidate existing codes."
-    ///
+    /// 
+    /// - Parameters:
+    ///   - accountDID: The decentralized identifier (DID) of the user account.
+    ///   - note: A note on why the account will lose the ability to get new invite codes.
     public func disableAccountInvitesAsAdmin(_ accountDID: String, note: String?) async throws {
         guard let sessionURL = session.pdsURL,
               let requestURL = URL(string: "\(requestURL)/xrpc/com.atproto.admin.disableAccountInvites") else {
