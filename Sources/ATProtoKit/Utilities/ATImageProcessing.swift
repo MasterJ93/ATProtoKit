@@ -1,5 +1,5 @@
 //
-//  ATImageConverter.swift
+//  ATImageProcessing.swift
 //
 //
 //  Created by Christopher Jr Riley on 2024-02-08.
@@ -27,7 +27,7 @@ protocol ImageProtocol {
 /// This protocol aids in the conversion of images into an ``ImageQuery`` (which is used to give all of the necessary information
 /// about the image for the server), while ensuring that privacy-sensitive EXIF data is stripped from the images before upload.
 ///
-/// Implementing `ATImageProcessable` allows for the customization of image processing tasks, making it especially useful for developers working on platforms where standard image objects like `UIImage` or `NSImage` are not available, such as in Linux environments.
+/// Implementing `ATImageProcessable` allows for the customization of image processing tasks, making it useful for developers working on platforms where standard image objects like `UIImage` or `NSImage` are not available, such as in Linux environments.
 ///
 /// ### Methods
 ///   - `convertToImageQuery(image:, altText:)`: Converts an image object into an `ImageQuery` instance. This instance encapsulates the image data along with metadata such as the file name and alternative text, preparing it for upload.
