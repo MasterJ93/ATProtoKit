@@ -1,5 +1,5 @@
 //
-//  CreateCommunicationTemplate.swift
+//  CreateCommunicationTemplateAsAdmin.swift
 //
 //
 //  Created by Christopher Jr Riley on 2024-02-27.
@@ -18,7 +18,7 @@ extension ATProtoKit {
     ///   - subject: The subject line of the communication template.
     ///   - createdBy: The decentralized identifier (DID) of the creator of the communication template. Optional.
     /// - Returns: A `Result`, containing either ``AdminCommunicationTemplateView`` if successful, or an `Error` if not.
-    public func createCommunicationTemplate(named name: String, contentMarkdown: String, subject: String, createdBy: String?) async throws -> Result<AdminCommunicationTemplateView, Error> {
+    public func createCommunicationTemplateAsAdmin(named name: String, contentMarkdown: String, subject: String, createdBy: String?) async throws -> Result<AdminCommunicationTemplateView, Error> {
         guard let sessionURL = session.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.admin.createCommunicationTemplate") else {
             return .failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"]))
