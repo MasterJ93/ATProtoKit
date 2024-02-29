@@ -9,10 +9,10 @@ import Foundation
 
 #if canImport(UIKit)
 import UIKit
-typealias PlatformImage = UIImage
+typealias ATImage = UIImage
 #elseif canImport(AppKit)
 import AppKit
-typealias PlatformImage = NSImage
+typealias ATImage = NSImage
 #endif
 
 protocol ImageProtocol {
