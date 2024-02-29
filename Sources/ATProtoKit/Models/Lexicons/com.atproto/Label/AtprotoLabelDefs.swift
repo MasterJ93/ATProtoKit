@@ -88,7 +88,7 @@ public struct Label: Codable {
 
 /// A data model for a definition for an array of self-defined labels.
 public struct SelfLabels: Codable {
-    /// An array of self-defined tags on a record..
+    /// An array of self-defined tags on a record.
     ///
     /// - Note: According to the AT Protocol specifications: "Metadata tags on an atproto record, published by the author within the record."
     ///

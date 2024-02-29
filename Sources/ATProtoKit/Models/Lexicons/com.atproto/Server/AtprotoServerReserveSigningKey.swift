@@ -25,7 +25,7 @@ public struct ServerReserveSigningKey: Codable {
     }
 }
 
-/// A data model definition for the output of reversing a signing keys..
+/// A data model definition for the output of reversing a signing keys.
 ///
 /// - SeeAlso: This is based on the [`com.atproto.server.reserveSigningKey`][github] lexicon.
 ///

@@ -145,7 +145,7 @@ public struct Mention: FeatureCodable {
 ///
 /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/richtext/facet.json
 public struct Link: FeatureCodable {
-    /// The URI of the feature..
+    /// The URI of the feature.
     public let uri: String
     /// The identifier of the lexicon.
     ///

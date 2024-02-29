@@ -1366,7 +1366,7 @@ public struct AdminCommunicationTemplateView: Codable {
 }
 
 // MARK: - Union types
-/// A reference containing the list of event views..
+/// A reference containing the list of event views.
 public enum AdminEventViewUnion: Codable {
     /// A takedown event.
     case modEventTakedown(AdminModEventTakedown)
@@ -1384,6 +1384,8 @@ public enum AdminEventViewUnion: Codable {
     case modEventEscalate(AdminModEventEscalate)
     /// A mute event.
     case modEventMute(AdminModEventMute)
+    /// An unmute event.
+    case modEventUnmute(AdminModEventUnmute)
     /// An email event.
     case modEventEmail(AdminModEventEmail)
 
@@ -1406,6 +1408,8 @@ public enum AdminEventViewUnion: Codable {
             self = .modEventEscalate(value)
         } else if let value = try? container.decode(AdminModEventMute.self) {
             self = .modEventMute(value)
+        } else if let value = try? container.decode(AdminModEventUnmute.self) {
+            self = .modEventUnmute(value)
         } else if let value = try? container.decode(AdminModEventEmail.self) {
             self = .modEventEmail(value)
         } else {
@@ -1433,6 +1437,8 @@ public enum AdminEventViewUnion: Codable {
                 try container.encode(modEvent)
             case .modEventMute(let modEvent):
                 try container.encode(modEvent)
+            case .modEventUnmute(let modEvent):
+                try container.encode(modEvent)
             case .modEventEmail(let modEvent):
                 try container.encode(modEvent)
 
@@ -1441,7 +1447,7 @@ public enum AdminEventViewUnion: Codable {
 }
 
 // Create the custom init and encode methods.
-/// A reference containing the list of repository references..
+/// A reference containing the list of repository references.
 public enum RepoReferencesUnion: Codable {
     /// A repository reference.
     case repoReference(AdminRepoReference)
@@ -1590,8 +1596,7 @@ public enum RepoViewUnion: Codable {
     }
 }
 
-// Create the custom init and encode methods.
-/// A reference containing the list of the types of media details..
+/// A reference containing the list of the types of media details.
 public enum MediaDetailUnion: Codable {
     /// The details for an image.
     case mediaImageDetails(AdminMediaImageDetails)

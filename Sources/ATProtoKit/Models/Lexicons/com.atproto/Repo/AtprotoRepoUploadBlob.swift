@@ -8,7 +8,7 @@
 import Foundation
 
 // MARK: - Main definition
-/// The main data model definition for the image's query..
+/// The main data model definition for the image's query.
 public struct ImageQuery: Encodable {
     /// The data of the image.
     public let imageData: Data
@@ -36,7 +36,7 @@ public struct BlobContainer: Codable {
     public let blob: UploadBlobOutput
 }
 
-/// A data model for a definition of an output of uploading a blob..
+/// A data model for a definition of an output of uploading a blob.
 public struct UploadBlobOutput: Codable {
     /// The type of blob.
     public let type: String?

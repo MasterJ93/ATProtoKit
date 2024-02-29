@@ -21,7 +21,7 @@ internal protocol Truncatable {
 ///   - container: The container to encode the value into.
 ///   - key: The key to associate with the encoded value.
 ///   - length: The maximum length to which the value should be truncated before encoding.
-/// - Throws: `EncodingError.invalidValue` if the given value is invalid in the current context for this format..
+/// - Throws: `EncodingError.invalidValue` if the given value is invalid in the current context for this format.
 internal func truncatedEncode<T: CodingKey, Element: Truncatable & Encodable>(_ value: Element, withContainer container: inout KeyedEncodingContainer<T>, forKey key: T, upToLength length: Int) throws {
     let truncatedValue = value.truncated(toLength: length)
     try container.encode(truncatedValue, forKey: key)

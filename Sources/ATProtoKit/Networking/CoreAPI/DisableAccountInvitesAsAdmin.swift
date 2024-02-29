@@ -10,7 +10,7 @@ import Foundation
 extension ATProtoKit {
     /// Disables a user account's ability to receive future invite codes as an administrator.
     ///  
-    /// - Note: According to the AT Protocol specifications: "Disable an account from receiving new invite codes, but does not invalidate existing codes."
+    /// - Important: According to the AT Protocol specifications: "Disable an account from receiving new invite codes, but does not invalidate existing codes."
     /// 
     /// - Parameters:
     ///   - accountDID: The decentralized identifier (DID) of the user account.
