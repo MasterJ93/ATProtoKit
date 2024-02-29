@@ -98,5 +98,33 @@ public protocol ATImageProcessable {
     /// Removes all EXIF and GPS metadata from the image.
     ///
     /// This method should ideally be before ``convertToImageQuery(image:altText:)`` does anything to the image, as it will help with the process of maintaining more of the image quality.
-    func stripMetadata(from data: ATImage) -> ATImage
+    func stripMetadata(from image: ATImage) -> ATImage?
+}
+
+extension ATImageProcessable {
+    internal func stripMetadata(from image: ATImage) -> ATImage? {
+        guard let tiffRepresentation = image.tiffRepresentation,
+              let source = CGImageSourceCreateWithData(tiffRepresentation as CFData, nil) else {
+            return nil
+        }
+
+        let mutableData = NSMutableData()
+        guard let type = CGImageSourceGetType(source),
+              let destination = CGImageDestinationCreateWithData(mutableData, type, 1, nil) else {
+            return nil
+        }
+
+        let removeExifProperties: [String: Any] = [
+            kCGImagePropertyExifDictionary as String: NSNull(),
+            kCGImagePropertyGPSDictionary as String: NSNull()
+        ]
+
+        CGImageDestinationAddImageFromSource(destination, source, 0, removeExifProperties as CFDictionary)
+        if !CGImageDestinationFinalize(destination) {
+            print("CGImageDestinationFinalize failed")
+            return nil
+        }
+
+        return ATImage(data: mutableData as Data)
+    }
 }
