@@ -16,6 +16,7 @@ import UIKit
 public typealias ATImage = UIImage
 #elseif canImport(AppKit)
 import AppKit
+import ImageIO
 /// A type for `NSImage` on platforms where `AppKit` is available (macOS).
 ///
 /// `ATImage` is a type alias that gives a unified way of handling images for preparation for uploading to the AT Protocol. This allows the abstraction of both `UIImage` and `NSImage`, giving
@@ -42,7 +43,7 @@ protocol ImageProtocol {
 ///   - `convertToImageQuery(image:altText:)`: Converts an image object into an `ImageQuery` instance. This instance encapsulates the image data along with metadata such as the file name
 /// and alternative text, preparing it for upload.
 ///   - `stripMetadata(from:)`: Removes EXIF and GPS metadata from the provided image data. This is crucial for protecting privacy and reducing the size of the image data being transmitted.
-/// - Important: `stripMetadata(from data:)` is an important method to create as, according to the AT Protocol documentation, the protocol may be more strict about stripping metadata in the future.\
+/// - Important: `stripMetadata(from:)` is an important method to create as, according to the AT Protocol documentation, the protocol may be more strict about stripping metadata in the future.\
 /// \
 /// Also, this should be an `internal` method, as it will be part of `convertToImageQuery(image:, altText:)`. It's recommended that it's called before ``convertToImageQuery(image:altText:)``
 /// attempts to access the image.
@@ -52,7 +53,8 @@ protocol ImageProtocol {
 /// ```swift
 /// class CustomImageProcessor: ATImageProcessable {
 ///      func convertToImageQuery(image: ATImage, altText: String) -> ImageQuery? {
-///          guard let customImage = image as? CustomImageType else {
+///          let atImage = stripMetadata(from: image)
+///          guard let customImage = atImage as? CustomImageType else {
 ///              return nil
 ///          }
 ///          let imageData = customImage.convertToData() // Your method to convert the image to Data
@@ -64,7 +66,7 @@ protocol ImageProtocol {
 ///          return ImageQuery(imageData: cleanImageData, fileName: fileName, altText: altText)
 ///      }
 /// 
-///      func stripEXIFData(from data: Data) -> Data {
+///      func stripMetadata(from image: ATImage) -> Data {
 ///          // Implementation to remove EXIF data from the image data.
 ///          return data
 ///      }

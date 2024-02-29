@@ -17,8 +17,8 @@ extension ATProtoKit {
     ///   - accountDIDs: The decentralized identifiers (DIDs) of the user accounts.
     public func DisableInviteCodesAsAdmin(_ codes: [String], accountDIDs: [String]) async throws {
         guard let sessionURL = session.pdsURL,
-              let requestURL = URL(string: "\(requestURL)/xrpc/com.atproto.admin.disableAccountInvites") else {
-            throw throw NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"])
+              let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.admin.disableAccountInvites") else {
+            throw NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"])
         }
 
         let requestBody = AdminDisableInviteCodes(codes: codes, accountDIDs: accountDIDs)

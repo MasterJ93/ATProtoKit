@@ -17,8 +17,8 @@ extension ATProtoKit {
     ///   - note: A note on why the account will lose the ability to get new invite codes.
     public func disableAccountInvitesAsAdmin(_ accountDID: String, note: String?) async throws {
         guard let sessionURL = session.pdsURL,
-              let requestURL = URL(string: "\(requestURL)/xrpc/com.atproto.admin.disableAccountInvites") else {
-            throw throw NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"])
+              let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.admin.disableAccountInvites") else {
+            throw NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"])
         }
 
         let requestBody = AdminDisableAccountInvites(accountDID: accountDID, note: note)
@@ -26,7 +26,7 @@ extension ATProtoKit {
         do {
             let request = APIClientService.createRequest(forRequest: requestURL, andMethod: .post, acceptValue: nil, contentTypeValue: "application/json", authorizationValue: "Bearer \(session.accessToken)")
 
-            let response = APIClientService.sendRequest(request, withEncodingBody: requestBody)
+            try await APIClientService.sendRequest(request, withEncodingBody: requestBody)
         } catch {
             throw error
         }
