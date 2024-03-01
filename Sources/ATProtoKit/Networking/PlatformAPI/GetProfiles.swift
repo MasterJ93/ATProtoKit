@@ -13,9 +13,10 @@ extension ATProtoKit {
     ///
     /// If you need detailed information, make sure to pass in an `accessToken`. If an `accessToken` is not given the details will be more limited.
     /// 
-    /// - Note: If your Personal Data Server's (PDS) URL is something other than `https://bsky.social` and you're not using authentication, be sure to change it if the normal URL isn't used for unauthenticated API calls.
-    /// 
+    /// - Note: If your Personal Data Server's (PDS) URL is something other than `https://bsky.social` and you're not using authentication, be sure to change it if the normal URL isn't used for unauthenticated API calls.\
+    /// \
     /// If you need a profile of just one user, it's best to use ``getProfile(_:accessToken:pdsURL:)``
+    ///
     /// - Parameters:
     ///   - actors: An array of user account handles or decentralized identifiers (DID). Current maximum length is 25 handles and/or DIDs.
     ///   - accessToken: The access token of the user.

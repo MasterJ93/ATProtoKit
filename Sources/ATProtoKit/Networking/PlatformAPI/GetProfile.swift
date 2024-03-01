@@ -11,8 +11,8 @@ extension ATProtoKit {
     /// Gets a detailed profile of a user.
     ///
     /// If you need detailed information, make sure to pass in an `accessToken`. If an `accessToken` is not given the details will be more limited.
-    /// - Note: If your Personal Data Server's (PDS) URL is something other than `https://bsky.social` and you're not using authentication, be sure to change it if the normal URL isn't used for unauthenticated API calls.
-    ///
+    /// - Note: If your Personal Data Server's (PDS) URL is something other than `https://bsky.social` and you're not using authentication, be sure to change it if the normal URL isn't used for unauthenticated API calls.\
+    ///\
     /// If you need profiles of several users, it's best to use ``getProfiles(_:accessToken:pdsURL:)``.
     /// 
     /// - Parameters:
