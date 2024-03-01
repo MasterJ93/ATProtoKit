@@ -22,11 +22,6 @@ extension ATProtoKit {
             return .failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"]))
         }
 
-//        let queryItems = [
-//            ("dids", accountDIDs)
-//        ]
-        // Add each handle/DID ($0) into their own "actors" parameter.
-//        let queryItems = actors.actors.map { ("actors", $0) }
         let queryItems = accountDIDs.map { ("dids", $0) }
 
         do {
