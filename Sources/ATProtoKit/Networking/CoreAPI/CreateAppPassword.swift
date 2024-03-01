@@ -13,6 +13,7 @@ extension ATProtoKit {
     /// App Passowrds are highly recommended to be used in your application (as opposed to their actual password) due to the restrictions an App Password has compared to the full account access of the normal password.
     ///
     /// - Important: Ensure a strong password is created.
+    /// 
     /// - Parameter passwordName: The name given to the App Password to help distingush it from others.
     /// - Returns: A `Result`, either containing a ``ServerCreateAppPasswordOutput`` if successful, or an `Error` if not.
     public func createAppPassword(_ passwordName: String) async throws -> Result<ServerCreateAppPasswordOutput, Error> {

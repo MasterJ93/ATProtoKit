@@ -9,10 +9,13 @@ import Foundation
 
 extension ATProtoKit {
     /// Gets details from multiple user accounts.
-    ///
+    /// 
     /// - Important: This is an administrator task and as such, regular users won't be able to access this; if they attempt to do so, an error will occur.
-    ///
+    /// 
     /// - Note: If you need details for just one user account, it's better to simply use ``getAccountInfoAsAdmin(_:)`` instead.
+    /// 
+    /// - Parameter accountDIDs: An array of decentralized identifiers (DIDs) of user accounts.
+    /// - Returns: A `Result`, containing either an ``AdminGetInviteCodesOutput`` if successful, or an `Error` if not.
     public func getAccountInfosAsAdmin(_ accountDIDs: [String]) async throws -> Result<AdminGetAccountInfosOutput, Error> {
         guard let sessionURL = session.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.admin.getAccountInfos") else {
