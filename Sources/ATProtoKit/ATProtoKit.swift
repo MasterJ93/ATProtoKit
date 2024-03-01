@@ -12,7 +12,6 @@ import Foundation
 ///
 /// ```swift
 /// Task {
-///     print("Starting application...")
 ///     let result = try await config.authenticate()
 ///
 ///     switch result {
