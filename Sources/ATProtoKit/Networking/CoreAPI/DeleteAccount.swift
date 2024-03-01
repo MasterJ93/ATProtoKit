@@ -11,6 +11,11 @@ extension ATProtoKit {
     /// Deletes a user account from the server.
     /// 
     /// - Note: A request token is required before deleting the account.
+    /// 
+    /// - Parameters:
+    ///   - account: The decentralized identifier (DID) of the user account to be deleted.
+    ///   - password: The password of the user account.
+    ///   - token: A token to confirm the deletion of the account.
     public func deleteAccount(_ account: String, password: String, token: String) async throws {
         guard let sessionURL = session.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.server.deleteAccount") else {
