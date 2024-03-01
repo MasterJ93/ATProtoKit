@@ -11,7 +11,8 @@ extension ATProtoKit {
     /// Deletes a communication template as an administrator.
     /// 
     /// - Important: This is an administrator task and as such, regular users won't be able to access this; if they attempt to do so, an error will occur.
-    ///
+    /// 
+    /// - Parameter id: The ID of the communication template.
     public func deleteCommunicationTemplateAsAdmin(_ id: String) async throws {
         guard let sessionURL = session.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.admin.deleteCommunicationTemplate") else {
