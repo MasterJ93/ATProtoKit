@@ -20,7 +20,7 @@ extension ATProtoKit {
     /// - Returns: A `Result`, containing either an ``AdminModEventView`` if successful, or an `Error` if not.
     public func emitModerationEventAsAdmin(takingActionOn event: AdminEventViewUnion, subject: RepoReferencesUnion, subjectBlobCIDHashes: [String]?, createdBy: String) async throws -> Result<AdminModEventView, Error> {
         guard let sessionURL = session.pdsURL,
-              let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.admin.disableAccountInvites") else {
+              let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.admin.emitModerationEvent") else {
             return .failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"]))
         }
 
