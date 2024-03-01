@@ -61,10 +61,6 @@ extension ATProtoKit {
         var resolvedLabels: FeedLabelUnion? = nil
 
 
-        // Tags
-        var resolvedTags: [String]? = nil
-
-
         // Compiling all parts of the post into one.
         let post = FeedPost(
             text: text,
