@@ -17,6 +17,7 @@ public class ATProtocolConfiguration: ProtocolConfiguration {
     public private(set) var pdsURL: String
     
     /// Initializes a new instance of `ATProtocolConfiguration`.
+    ///
     /// - Parameters:
     ///   - handle: The user's handle identifier in their account.
     ///   - appPassword: The app password of the user's account.
@@ -28,6 +29,7 @@ public class ATProtocolConfiguration: ProtocolConfiguration {
     }
     
     /// Attempts to authenticate the user into the server.
+    ///
     /// - Returns: A `Result` containing ``UserSession`` on success or an `Error` on failure.
     public func authenticate() async throws -> Result<UserSession, Error> {
         guard let requestURL = URL(string: "\(self.pdsURL)/xrpc/com.atproto.server.createSession") else {
@@ -91,6 +93,7 @@ public class ATProtocolConfiguration: ProtocolConfiguration {
     }
 
     /// Fetches an existing session using an access token.
+    ///
     /// - Parameters:
     ///   - accessToken: The access token for the session.
     ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `https://bsky.social`.
@@ -114,6 +117,7 @@ public class ATProtocolConfiguration: ProtocolConfiguration {
     }
 
     /// Refreshes the user's session using a refresh token.
+    ///
     /// - Parameters:
     ///   - refreshToken: The refresh token for the session.
     ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `https://bsky.social`.
@@ -137,6 +141,7 @@ public class ATProtocolConfiguration: ProtocolConfiguration {
     }
     
     /// Refreshes the user's session using a refresh token.
+    /// 
     /// - Parameters:
     ///   - accessToken: The access token for the session.
     ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `https://bsky.social`.

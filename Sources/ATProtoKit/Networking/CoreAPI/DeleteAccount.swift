@@ -9,7 +9,7 @@ import Foundation
 
 extension ATProtoKit {
     /// Deletes a user account from the server.
-    ///
+    /// 
     /// - Note: A request token is required before deleting the account.
     public func deleteAccount(_ account: String, password: String, token: String) async throws {
         guard let sessionURL = session.pdsURL,

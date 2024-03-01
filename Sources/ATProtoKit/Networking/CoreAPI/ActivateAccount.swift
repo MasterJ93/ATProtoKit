@@ -9,11 +9,11 @@ import Foundation
 
 extension ATProtoKit {
     /// Activates the user's account.
-    ///
+    /// 
     /// - Note: According to the AT Protocol specifications: "Activates a currently deactivated account. Used to finalize account migration after the account's repo is imported and identity is setup."
-    ///
+    /// 
     /// - SeeAlso: This is based on the [`com.atproto.server.activateAccount`][github] lexicon.
-    ///
+    /// 
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/server/activateAccount.json
     public func activateAccount() async throws {
         guard let sessionURL = session.pdsURL,

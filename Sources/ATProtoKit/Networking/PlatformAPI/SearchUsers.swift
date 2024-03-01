@@ -13,6 +13,7 @@ extension ATProtoKit {
     /// This will search for the display names, descriptions, and handles within the user profiles. However, this API call can only return results of a matching handle. If you want search suggestions (where it returns results based on a partial term instead of the exact term), a different method is needed.
     ///
     /// - Bug: According to the AT Protocol specifications, this API call does not require authentication. However, there's an issue where it asks for authentication if there's no `accessToken`. It's unknown whether this is an issue on the AT Protocol's end or `AKProtoKit`'s end. For now, use the `accessToken` parameter when using this method.
+    /// 
     /// - Parameters:
     ///   - query: The string used against a list of actors.
     ///   - limit: The number of suggested users to follow. Optional. Defaults to 50. Can only choose between 1 and 100.

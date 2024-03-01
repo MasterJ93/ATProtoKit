@@ -9,7 +9,7 @@ import Foundation
 
 extension ATProtoKit {
     /// Deletes a communication template as an administrator.
-    ///
+    /// 
     /// - Important: This is an administrator task and as such, regular users won't be able to access this; if they attempt to do so, an error will occur.
     ///
     public func deleteCommunicationTemplateAsAdmin(_ id: String) async throws {

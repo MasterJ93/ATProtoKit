@@ -9,6 +9,7 @@ import Foundation
 
 extension ATProtoKit {
     /// Checks the status of the user's account.
+    /// 
     /// - Returns: A `Result`, containing either ``ServerCheckAccountStatusOutput`` if successful, or an `Error` if not.
     public func checkAccountStatus() async throws -> Result<ServerCheckAccountStatusOutput, Error> {
         guard let sessionURL = session.pdsURL,

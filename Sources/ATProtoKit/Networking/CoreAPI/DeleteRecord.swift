@@ -11,6 +11,7 @@ extension ATProtoKit {
     /// Deletes a record.
     ///
     /// - Note: According to the AT Protocol specifications: "Delete a repository record, or ensure it doesn't exist. Requires auth, implemented by PDS."
+    /// 
     /// - Parameters:
     ///   - requestBody: The request body that contains the specific record that needs to be deleted.
     public func deleteRecord<T: Encodable>(requestBody: T) async throws {

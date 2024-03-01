@@ -9,6 +9,7 @@ import Foundation
 
 extension ATProtoKit {
     /// Creates a post record to the user's account.
+    /// 
     /// - Parameters:
     ///   - text: The text that's directly displayed in the post record. Current limit is 300 characters.
     ///   - locales: The languages the text is written in. Current limit is 3 lanagues.

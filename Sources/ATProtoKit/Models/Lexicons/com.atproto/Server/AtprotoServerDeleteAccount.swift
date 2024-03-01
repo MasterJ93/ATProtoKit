@@ -10,6 +10,7 @@ import Foundation
 /// The main data model definition for deleting an account.
 ///
 /// - Note: According to the AT Protocol specifications: "Delete an actor's account with a token and password. Can only be called after requesting a deletion token. Requires auth."
+/// 
 /// - SeeAlso: This is based on the [`com.atproto.server.deleteAccount`][github] lexicon.
 ///
 /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/server/deleteAccount.json

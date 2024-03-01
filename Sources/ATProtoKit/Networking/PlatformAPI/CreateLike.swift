@@ -9,6 +9,7 @@ import Foundation
 
 extension ATProtoKit {
     /// Create a like record to a user's post.
+    /// 
     /// - Parameters:
     ///   - strongReference: The URI of the record, which contains the `recordURI` and `cidHash`.
     ///   - createdAt: The date and time the like record was created. Defaults to `Date.now`.

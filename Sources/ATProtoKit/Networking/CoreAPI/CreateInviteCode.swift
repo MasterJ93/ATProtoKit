@@ -11,6 +11,7 @@ extension ATProtoKit {
     /// Creates an invite code.
     ///
     /// - Note: If you need to create multiple invite codes at once, please use ``create`` instead.
+    /// 
     /// - Parameters:
     ///   - codeCount: The number of invite codes to be created. Defaults to 1.
     ///   - forAccount: The decentralized identifier (DIDs) of the user that can use the invite code. Optional.

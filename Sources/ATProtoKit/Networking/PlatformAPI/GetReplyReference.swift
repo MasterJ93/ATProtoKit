@@ -9,6 +9,7 @@ import Foundation
 
 extension ATProtoKit {
     /// Resolves the reply references to prepare them for a later post record request.
+    ///
     /// - Parameter parentURI: The URI of the post record the current one is directly replying to.
     /// - Returns: A ``ReplyReference``.
     public static func resolveReplyReferences(parentURI: String) async throws -> ReplyReference {
@@ -26,6 +27,7 @@ extension ATProtoKit {
     }
     
     /// Gets a record from the user's repository.
+    ///
     /// - Parameter uri: The URI of the record.
     /// - Returns: A ``RecordOutput``
     public static func fetchRecordForURI(_ uri: String) async throws -> RecordOutput {
@@ -42,6 +44,7 @@ extension ATProtoKit {
     }
     
     /// A utility method for converting a ``RecordOutput`` into a ``ReplyReference``.
+    /// 
     /// - Parameter record: The record to convert.
     /// - Returns: A ``ReplyReference``.
     private static func createReplyReference(from record: RecordOutput) -> ReplyReference {

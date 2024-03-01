@@ -9,6 +9,7 @@ import Foundation
 
 extension ATProtoKit {
     /// Creates a record attached to a user's account.
+    /// 
     /// - Parameters:
     ///   - collection: The NSID of the record.
     ///   - requestBody: The request body that contains the information needed to create the specific type of record.

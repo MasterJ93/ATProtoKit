@@ -11,6 +11,7 @@ import Foundation
 /// The main data model definition for creating a session.
 ///
 /// - Note: According to the AT Protocol specifications: "Create an authentication session."
+/// 
 /// - SeeAlso: This is based on the [`com.atproto.server.createSession`][github] lexicon.
 ///
 /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/server/createSession.json

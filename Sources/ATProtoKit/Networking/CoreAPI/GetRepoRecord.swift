@@ -9,6 +9,7 @@ import Foundation
 
 extension ATProtoKit {
     /// Searches for and validates a record from the repository.
+    /// 
     /// - Parameters:
     ///   - recordQuery: The record object.
     ///   - pdsURL: The URL of the Personal Data Server (PDS).

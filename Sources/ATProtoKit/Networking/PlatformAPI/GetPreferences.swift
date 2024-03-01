@@ -9,6 +9,7 @@ import Foundation
 
 extension ATProtoKit {
     /// Receive the preferences of a given user.
+    /// 
     /// - Returns: A `Result`, containing either `ActorPreferences` if successful, or `Error` if not.
     public func getPreferences() async throws -> Result<ActorPreferences, Error> {
         guard let sessionURL = session.pdsURL,

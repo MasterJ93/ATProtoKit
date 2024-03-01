@@ -9,9 +9,9 @@ import Foundation
 
 extension ATProtoKit {
     /// Turns on the ability for the user account to receive invite codes again.
-    ///
+    /// 
     /// This only works if the user account had lost access to this ability.
-    ///
+    /// 
     /// - Important: This is an administrator task and as such, regular users won't be able to access this; if they attempt to do so, an error will occur.
     public func enableAccountInvitesAsAdmin(_ accountDID: String, note: String?) async throws {
         guard let sessionURL = session.pdsURL,
