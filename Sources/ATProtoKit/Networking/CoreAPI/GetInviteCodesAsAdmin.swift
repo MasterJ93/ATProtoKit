@@ -24,7 +24,7 @@ extension ATProtoKit {
         }
 
         // Make sure limit is between 1 and 500.
-        let finalLimit = max(1, min(limit ?? 100, 500))
+        let finalLimit = max(1, min(limit, 500))
         var queryItems = [
             ("sort", "\(sort)"),
             ("limit", "\(finalLimit)")

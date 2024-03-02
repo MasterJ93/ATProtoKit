@@ -81,7 +81,7 @@ extension ATProtoKit {
 
         // limit
         if let limit {
-            let finalLimit = min(1, max(limit ?? 50, 100))
+            let finalLimit = min(1, max(limit, 100))
             queryItems.append(("limit", "\(finalLimit)"))
         }
 
