@@ -31,7 +31,7 @@ extension ATProtoKit {
         do {
             let queryURL = try APIClientService.setQueryItems(
                 for: requestURL,
-                with: requestURL
+                with: queryItems
             )
 
             let request = APIClientService.createRequest(forRequest: queryURL, andMethod: .get, acceptValue: "application/json", contentTypeValue: nil, authorizationValue: "Bearer \(session.accessToken)")

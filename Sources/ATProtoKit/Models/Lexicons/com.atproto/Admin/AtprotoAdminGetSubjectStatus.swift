@@ -36,7 +36,7 @@ public enum AdminGetSubjectStatusUnion: Codable {
         } else if let value = try? container.decode(StrongReference.self) {
             self = .strongReference(value)
         } else if let value = try? container.decode(AdminRepoBlobReference.self) {
-            self = .repoReference(value)
+            self = .repoBlobReference(value)
         } else {
             throw DecodingError.typeMismatch(AdminEventViewUnion.self, DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Unknown AdminGetSubjectStatusUnion type"))
         }
@@ -46,11 +46,11 @@ public enum AdminGetSubjectStatusUnion: Codable {
         var container = encoder.singleValueContainer()
         
         switch self {
-            case .repoReference(let repoReference)
+            case .repoReference(let repoReference):
                 try container.encode(repoReference)
-            case .strongReference(let strongReference)
+            case .strongReference(let strongReference):
                 try container.encode(strongReference)
-            case .repoBlobReference(let repoBlobReference)
+            case .repoBlobReference(let repoBlobReference):
                 try container.encode(repoBlobReference)
         }
     }
