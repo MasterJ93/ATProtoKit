@@ -40,19 +40,19 @@ protocol ImageProtocol {
 /// `UIImage` or `NSImage` are not available, such as in Linux environments.
 ///
 /// ### Methods
-///   - `convertToImageQuery(image:altText:)`: Converts an image object into an `ImageQuery` instance. This instance encapsulates the image data along with metadata such as the file name
-/// and alternative text, preparing it for upload.
+///   - `convertToImageQuery(image:altText:targetFileSize)`: Converts an image object into an `ImageQuery` instance. This instance encapsulates the image data along with metadata such as
+/// the file name and alternative text, preparing it for upload. It also attempts to shrink the file size down to an approprate amount.
 ///   - `stripMetadata(from:)`: Removes EXIF and GPS metadata from the provided image data. This is crucial for protecting privacy and reducing the size of the image data being transmitted.
 /// - Important: `stripMetadata(from:)` is an important method to create as, according to the AT Protocol documentation, the protocol may be more strict about stripping metadata in the future.\
 /// \
-/// Also, this should be an `internal` method, as it will be part of `convertToImageQuery(image:, altText:)`. It's recommended that it's called before ``convertToImageQuery(image:altText:)``
-/// attempts to access the image.
+/// Also, this should be an `internal` method, as it will be part of `convertToImageQuery(image:altText:targetFileSize)`. It's recommended that it's called before
+/// ``convertToImageQuery(image:altText:targetFileSize)`` attempts to access the image.
 ///
 /// ### Example
 /// Below is a sample implementation showcasing how to conform to `ATImageProcessable` for a custom image type:
 /// ```swift
 /// class CustomImageProcessor: ATImageProcessable {
-///      func convertToImageQuery(image: ATImage, altText: String) -> ImageQuery? {
+///      func convertToImageQuery(image: ATImage, altText: String, targetFileSize: Int = 1_000_000) -> ImageQuery? {
 ///          let atImage = stripMetadata(from: image)
 ///          guard let customImage = atImage as? CustomImageType else {
 ///              return nil
@@ -93,8 +93,9 @@ public protocol ATImageProcessable {
     /// - Parameters:
     ///   - image: The image that needs to be prepared.
     ///   - altText: The alt text used to help blind and low-vision users know what's contained in the text. Optional.
+    ///   - targetFileSize: The size (in bytes) the file needs to be.
     /// - Returns: An ``ImageQuery``, which combines the image itself in a `Data` format and the alt text.
-    func convertToImageQuery(image: ATImage, altText: String?) -> ImageQuery?
+    func convertToImageQuery(image: ATImage, altText: String?, targetFileSize: Int) -> ImageQuery?
     /// Removes all EXIF and GPS metadata from the image.
     ///
     /// This method should ideally be before ``convertToImageQuery(image:altText:)`` does anything to the image, as it will help with the process of maintaining more of the image quality.
@@ -102,6 +103,46 @@ public protocol ATImageProcessable {
 }
 
 extension ATImageProcessable {
+    public func convertToImageQuery(imagePath: String, altText: String?, targetFileSize: Int = 1_000_000) -> ImageQuery? {
+        guard let image = NSImage(contentsOfFile: imagePath) else {
+            print("Image could not be loaded.")
+            return nil
+        }
+
+        let atImage = stripMetadata(from: image)
+
+        guard let tiffData = image.tiffRepresentation,
+              let bitmapImage = NSBitmapImageRep(data: tiffData) else {
+            return nil
+        }
+
+        // Determine the image format from the file extension.
+        let filename = URL(fileURLWithPath: imagePath).lastPathComponent
+
+        let fileExtension = (imagePath as NSString).pathExtension.lowercased()
+        var imageData: Data? = nil
+
+        switch fileExtension {
+            case "png":
+                imageData = bitmapImage.representation(using: .png, properties: [:])
+            case "jpg", "jpeg":
+                imageData = bitmapImage.representation(using: .jpeg, properties: [:])
+            case "gif":
+                imageData = bitmapImage.representation(using: .gif, properties: [:])
+            case "webp":
+                imageData = bitmapImage.representation(using: .tiff, properties: [:])
+            default:
+                print("Unsupported file format: \(fileExtension).")
+                return nil
+        }
+
+        if let imageData {
+            return ImageQuery(imageData: imageData, fileName: filename, altText: altText)
+        }
+
+        return nil
+    }
+
     internal func stripMetadata(from image: ATImage) -> ATImage? {
         guard let tiffRepresentation = image.tiffRepresentation,
               let source = CGImageSourceCreateWithData(tiffRepresentation as CFData, nil) else {
