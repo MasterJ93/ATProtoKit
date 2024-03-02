@@ -17,7 +17,7 @@ extension ATProtoKit {
     ///   - subjectURI: The URI of the subject.
     ///   - subjectBlobCIDHash: The CID hash of the blob for the subject.
     /// - Returns: A `Result`, containing either an ``AdminGetSubjectStatusOutput`` if successful, or an `Error` if not.
-    public func getSubjectStatusAsAdmin(_ subjectDID: String, subjectURI: String, subjectBlobCIDHash) async throws -> Result<AdminGetSubjectStatusOutput, Error> {
+    public func getSubjectStatusAsAdmin(_ subjectDID: String, subjectURI: String, subjectBlobCIDHash: String) async throws -> Result<AdminGetSubjectStatusOutput, Error> {
         guard let sessionURL = session.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.admin.getSubjectStatus") else {
             return .failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"]))
@@ -32,11 +32,11 @@ extension ATProtoKit {
         do {
             let queryURL = try APIClientService.setQueryItems(
                 for: requestURL,
-                with: queryURL
+                with: queryItems
             )
 
             let request = APIClientService.createRequest(forRequest: queryURL, andMethod: .get, acceptValue: "application/json", contentTypeValue: nil, authorizationValue: "Bearer \(session.accessToken)")
-            let response = APIClientService.sendRequest(request, decodeTo: AdminGetSubjectStatusOutput.self)
+            let response = try await APIClientService.sendRequest(request, decodeTo: AdminGetSubjectStatusOutput.self)
 
             return .success(response)
         } catch {
