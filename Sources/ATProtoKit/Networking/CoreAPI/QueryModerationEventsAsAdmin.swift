@@ -13,6 +13,7 @@ extension ATProtoKit {
     /// - Important: This is an administrator task and as such, regular users won't be able to access this; if they attempt to do so, an error will occur.
     /// 
     /// - Note: Many of the parameter's descriptions are taken directly from the AT Protocol's specification.
+    /// 
     /// - Parameters:
     ///   - eventTypes: An array of event types. Optional.
     ///   - createdBy: The decentralized identifier (DID) of the user who created the events. Optional.

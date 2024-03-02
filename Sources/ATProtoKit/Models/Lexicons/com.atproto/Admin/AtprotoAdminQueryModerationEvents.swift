@@ -21,7 +21,10 @@ public struct AdminQueryModerationEventOutput: Codable {
     public let events: [AdminModEventView]
 }
 
+/// Indicates the sorting direction for the array of moderation events.
 public enum AdminQueryModerationEventSortDirection: String {
+    /// Indicates the moderation events will be sorted in ascending order.
     case ascending = "asc"
+    /// Indicates the moderation events will be sorted in descending order.
     case descending = "desc"
 }
