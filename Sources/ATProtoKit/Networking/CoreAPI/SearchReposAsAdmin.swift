@@ -23,14 +23,15 @@ extension ATProtoKit {
             return .failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"]))
         }
 
-        let queryItems = [(String, String)]()
+        var queryItems = [(String, String)]()
 
         if let query {
             queryItems.append(("q", query))
         }
 
         if let limit {
-            queryItems.append(("limit", limit))
+            let finalLimit = min(1, max(limit, 100))
+            queryItems.append(("limit", "\(finalLimit)"))
         }
 
         if let cursor {
@@ -44,7 +45,7 @@ extension ATProtoKit {
             )
 
             let request = APIClientService.createRequest(forRequest: queryURL, andMethod: .get, acceptValue: "application/json", contentTypeValue: nil, authorizationValue: "Bearer \(session.accessToken)")
-            let response = APIClientService.sendRequest(request, decodeTo: AdminSearchReposOutput.self)
+            let response = try await APIClientService.sendRequest(request, decodeTo: AdminSearchReposOutput.self)
 
             return .success(response)
         } catch {
