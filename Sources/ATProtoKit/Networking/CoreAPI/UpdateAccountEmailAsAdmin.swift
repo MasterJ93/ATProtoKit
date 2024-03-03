@@ -17,7 +17,7 @@ extension ATProtoKit {
     ///   - email: The new email address the user wants to change to.
     public func updateAccountEmailAsAdmin(_ accountDID: String, email: String) async throws {
         guard let sessionURL = session.pdsURL,
-              let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.admin.queryModerationEvents") else {
+              let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.admin.updateAccountEmail") else {
             throw NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"])
         }
 

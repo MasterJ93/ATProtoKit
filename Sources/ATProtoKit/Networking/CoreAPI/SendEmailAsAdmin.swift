@@ -19,7 +19,7 @@ extension ATProtoKit {
     /// - Returns: A `Result`, containing either an ``AdminSendEmailOutput`` if successful, or an `Error` if not.
     public func sendEmailAsAdmin(_ recipientDID: String, content: String, subject: String?, senderDID: String, comment: String?) async throws -> Result<AdminSendEmailOutput, Error> {
         guard let sessionURL = session.pdsURL,
-              let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.admin.queryModerationEvents") else {
+              let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.admin.sendEmail") else {
             return .failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"]))
         }
 

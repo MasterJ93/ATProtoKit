@@ -17,7 +17,7 @@ extension ATProtoKit {
     ///   - newPassword: The new password for the user account.
     public func updateAccountPasswordAsAdmin(_ accountDID: String, newPassword: String) async throws {
         guard let sessionURL = session.pdsURL,
-              let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.admin.queryModerationEvents") else {
+              let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.admin.updateAccountPassword") else {
             throw NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"])
         }
 
