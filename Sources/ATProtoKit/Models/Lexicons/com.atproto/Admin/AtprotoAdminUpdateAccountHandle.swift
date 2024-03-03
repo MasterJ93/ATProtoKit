@@ -15,7 +15,9 @@ import Foundation
 ///
 /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/admin/updateAccountHandle.json
 public struct AdminUpdateAccountHandle: Codable {
+    /// The decentralized identifier (DID) of the account.
     public let accountDID: String
+    /// The new account handle the user wants to change to.
     public let accountHandle: String
 
     enum CodingKeys: String, CodingKey {

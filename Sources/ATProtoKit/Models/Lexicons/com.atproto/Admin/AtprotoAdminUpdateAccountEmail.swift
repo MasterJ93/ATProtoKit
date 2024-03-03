@@ -18,10 +18,10 @@ public struct AdminUpdateAccountEmail: Codable {
     /// The decentralized identifier (DID) of the account.
     public let accountDID: String
     /// The new email account the user wants to change to.
-    public let email: String
+    public let accountEmail: String
 
     enum CodingKeys: String, CodingKey {
         case accountDID = "account"
-        case email = "email"
+        case accountEmail = "email"
     }
 }
