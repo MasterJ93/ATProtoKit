@@ -7,7 +7,7 @@
 
 import Foundation
 
-/// The main data model definition for seeing all of a user account's likes.
+/// The main data model definition for the output of seeing all of a user account's likes.
 ///
 /// - Note: According to the AT Protocol specifications: "Get a list of posts liked by an actor. Does not require auth."
 ///
