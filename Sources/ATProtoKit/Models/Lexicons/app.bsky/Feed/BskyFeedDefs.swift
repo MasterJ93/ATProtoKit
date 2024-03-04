@@ -305,7 +305,7 @@ public struct FeedGeneratorView: Codable {
     /// The description of the feed generator. Optional.
     public var description: String? = nil
     /// An array of the facets within the feed generator's description.
-    public let descriptionFacets: [Facet]
+    public let descriptionFacets: [Facet]?
     /// The avatar image URL of the feed generator.
     public var avatarImageURL: URL? = nil
     /// The number of likes for the feed generator.
@@ -324,7 +324,7 @@ public struct FeedGeneratorView: Codable {
         self.creator = try container.decode(ActorProfileView.self, forKey: .creator)
         self.displayName = try container.decode(String.self, forKey: .displayName)
         self.description = try container.decodeIfPresent(String.self, forKey: .description)
-        self.descriptionFacets = try container.decode([Facet].self, forKey: .descriptionFacets)
+        self.descriptionFacets = try container.decodeIfPresent([Facet].self, forKey: .descriptionFacets)
         self.avatarImageURL = try container.decodeIfPresent(URL.self, forKey: .avatarImageURL)
         self.viewer = try container.decodeIfPresent(FeedGeneratorViewerState.self, forKey: .viewer)
         self.indexedAt = try container.decode(DateFormatting.self, forKey: .indexedAt).wrappedValue
@@ -343,7 +343,7 @@ public struct FeedGeneratorView: Codable {
         // `maxGraphemes`'s limit is 300, but `String.count` should respect that limit
         try truncatedEncodeIfPresent(self.description, withContainer: &container, forKey: .displayName, upToLength: 3000)
 
-        try container.encode(self.descriptionFacets, forKey: .descriptionFacets)
+        try container.encodeIfPresent(self.descriptionFacets, forKey: .descriptionFacets)
         try container.encodeIfPresent(self.avatarImageURL, forKey: .avatarImageURL)
 
         // Assuming `likeCount` is not nil, only encode it if it's 0 or higher
