@@ -109,9 +109,8 @@ extension ATImageProcessable {
             return nil
         }
 
-        let atImage = stripMetadata(from: image)
-
-        guard let tiffData = image.tiffRepresentation,
+        guard let atImage = stripMetadata(from: image),
+              let tiffData = atImage.tiffRepresentation,
               let bitmapImage = NSBitmapImageRep(data: tiffData) else {
             return nil
         }
