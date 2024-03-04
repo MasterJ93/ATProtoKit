@@ -27,8 +27,8 @@ extension ATProtoKit {
             let request = APIClientService.createRequest(forRequest: requestURL,
                                                          andMethod: .get,
                                                          acceptValue: "application/json",
-                                                         contentTypeValue: "Bearer \(session.accessToken)",
-                                                         authorizationValue: "application/json")
+                                                         contentTypeValue: "application/json",
+                                                         authorizationValue: "Bearer \(session.accessToken)")
             let response = try await APIClientService.sendRequest(request, withEncodingBody: requestBody, decodeTo: ServerCreateAppPasswordOutput.self)
 
             return .success(response)
