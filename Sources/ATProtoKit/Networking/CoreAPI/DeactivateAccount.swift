@@ -13,7 +13,7 @@ extension ATProtoKit {
     /// - Note: If you don't add `deleteAfter`, make sure to use `deleteAccount` at some point after. 
     /// 
     /// - Parameter date: The date and time of when the server should delete the account.
-    public func deactivateAccount(deleteAfter date: Date) async throws {
+    public func deactivateAccount(withDeletedDateOf date: Date) async throws {
         guard let sessionURL = session.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.server.deactivateAccount") else {
             throw NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"])

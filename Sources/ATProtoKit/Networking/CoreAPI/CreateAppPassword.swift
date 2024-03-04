@@ -15,7 +15,7 @@ extension ATProtoKit {
     /// 
     /// - Parameter passwordName: The name given to the App Password to help distingush it from others.
     /// - Returns: A `Result`, either containing a ``ServerCreateAppPasswordOutput`` if successful, or an `Error` if not.
-    public func createAppPassword(_ passwordName: String) async throws -> Result<ServerCreateAppPasswordOutput, Error> {
+    public func createAppPassword(named passwordName: String) async throws -> Result<ServerCreateAppPasswordOutput, Error> {
         guard let sessionURL = session.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.server.createAppPassword") else {
             return .failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"]))
