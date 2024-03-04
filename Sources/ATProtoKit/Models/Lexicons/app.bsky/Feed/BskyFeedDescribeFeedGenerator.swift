@@ -8,7 +8,7 @@
 import Foundation
 
 // TODO: Figure out a proper way of doing this.
-/// A data model definition for retrieving information about a feed generator.
+/// A data model definition for the output ofretrieving information about a feed generator.
 ///
 /// - Note: According to the AT Protocol specifications: "Get information about a feed generator, including policies and offered feed URIs. Does not require auth;
 /// implemented by Feed Generator services (not App View)."
@@ -16,7 +16,7 @@ import Foundation
 /// - SeeAlso: This is based on the [`app.bsky.feed.describeFeedGenerator`][github] lexicon.
 ///
 /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/feed/describeFeedGenerator.json
-public struct FeedDescribeFeedGenerator: Codable {
+public struct FeedDescribeFeedGeneratorOutput: Codable {
     /// The decentralized identifier (DID) of the feed generator.
     public let atDID: String
     /// An array of feed generators.
