@@ -76,7 +76,6 @@ public class APIClientService {
         let (data, _) = try await performRequest(request, withEncodingBody: body)
 
         let decodedData = try JSONDecoder().decode(T.self, from: data)
-        print("Decoded data: \(decodedData)")
         return decodedData
     }
 
