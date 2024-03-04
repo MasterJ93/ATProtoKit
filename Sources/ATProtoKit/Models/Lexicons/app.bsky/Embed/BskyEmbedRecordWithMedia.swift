@@ -10,7 +10,8 @@ import Foundation
 // MARK: - Main definition
 /// The main data model definition for a record embedded with some form of compatible media.
 ///
-/// - Note: According to the AT Protocol specifications: "A representation of a record embedded in a Bluesky record (eg, a post), alongside other compatible embeds. For example, a quote post and image, or a quote post and external URL card."
+/// - Note: According to the AT Protocol specifications: "A representation of a record embedded in a Bluesky record (eg, a post), alongside other compatible embeds. For example, a quote post and image,
+/// or a quote post and external URL card."
 /// - SeeAlso: This is based on the [`app.bsky.embed.recordWithMedia][github] lexicon.
 ///
 /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/embed/recordWithMedia.json
@@ -64,7 +65,8 @@ public enum MediaUnion: Codable {
         } else if let value = try? container.decode(EmbedExternal.self) {
             self = .embedExternal(value)
         } else {
-            throw DecodingError.typeMismatch(PostUnion.self, DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Unknown MediaUnion type"))
+            throw DecodingError.typeMismatch(PostUnion.self, DecodingError.Context(
+                codingPath: decoder.codingPath, debugDescription: "Unknown MediaUnion type"))
         }
     }
 
@@ -99,7 +101,8 @@ public enum MediaViewUnion: Codable {
         } else if let value = try? container.decode(EmbedExternalView.self) {
             self = .embedExternalView(value)
         } else {
-            throw DecodingError.typeMismatch(PostUnion.self, DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Unknown MediaViewUnion type"))
+            throw DecodingError.typeMismatch(PostUnion.self, DecodingError.Context(
+                codingPath: decoder.codingPath, debugDescription: "Unknown MediaViewUnion type"))
         }
     }
 

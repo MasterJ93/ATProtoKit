@@ -50,7 +50,8 @@ public struct Facet: Codable {
 // Represents the ByteSlice
 /// The data model definition for the byte slice.
 ///
-/// - Note: According to the AT Protocol specifications: "Specifies the sub-string range a facet feature applies to. Start index is inclusive, end index is exclusive. Indices are zero-indexed, counting bytes of the UTF-8 encoded text. NOTE: some languages, like Javascript, use UTF-16 or Unicode codepoints for string slice indexing; in these languages, convert to byte arrays before working with facets."
+/// - Note: According to the AT Protocol specifications: "Specifies the sub-string range a facet feature applies to. Start index is inclusive, end index is exclusive. Indices are zero-indexed, counting bytes of the
+/// UTF-8 encoded text. NOTE: some languages, like Javascript, use UTF-16 or Unicode codepoints for string slice indexing; in these languages, convert to byte arrays before working with facets."
 ///
 /// - SeeAlso: This is based on the [`app.bsky.richtext.facet`][github] lexicon.
 ///
@@ -239,7 +240,8 @@ public enum FeatureUnion: Codable {
         } else if let value = try? container.decode(Tag.self) {
             self = .tag(value)
         } else {
-            throw DecodingError.typeMismatch(FeatureUnion.self, DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Unknown FeatureUnion type"))
+            throw DecodingError.typeMismatch(FeatureUnion.self,
+                                             DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Unknown FeatureUnion type"))
         }
     }
 

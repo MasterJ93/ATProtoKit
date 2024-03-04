@@ -111,7 +111,8 @@ public struct ViewImage: Codable {
     public let thumbnailImageURL: URL
     /// The URI of the fully-sized image.
     ///
-    /// - Note: From the AT Protocol specification: "Fully-qualified URL where a large version of the image can be fetched. May or may not be the exact original blob. For example, CDN location provided by the App View."
+    /// - Note: From the AT Protocol specification: "Fully-qualified URL where a large version of the image can be fetched. May or may not be the exact original blob. For example, CDN location
+    /// provided by the App View."
     public let fullSizeImageURL: URL
     /// /// The alternative text for the image.
     ///

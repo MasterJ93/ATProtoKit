@@ -19,7 +19,8 @@ extension ATProtoKit {
     ///   - tags: An array of tags for the post record.
     ///   - creationDate: The date of the post record. Defaults to `Date.now`.
     /// - Returns: A strong reference, which contains the newly-created record's `recordURI` (URI) and the `cidHash` (CID) .
-    public func createPostRecord(text: String, locales: [Locale] = [], replyTo: String? = nil, embed: EmbedIdentifier? = nil, labels: FeedLabelUnion? = nil, tags: [String]? = nil, creationDate: Date = Date.now) async -> Result<StrongReference, Error> {
+    public func createPostRecord(text: String, locales: [Locale] = [], replyTo: String? = nil, embed: EmbedIdentifier? = nil,
+                                 labels: FeedLabelUnion? = nil, tags: [String]? = nil, creationDate: Date = Date.now) async -> Result<StrongReference, Error> {
 
         guard let sessionURL = session.pdsURL else {
             return .failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid pdsURL"]))
@@ -98,7 +99,8 @@ extension ATProtoKit {
             }
 
             // Upload the image, then get the server response.
-            let blobReference = try await APIClientService.uploadBlob(pdsURL: pdsURL, accessToken: accessToken, filename: image.fileName, imageData: image.imageData)
+            let blobReference = try await APIClientService.uploadBlob(pdsURL: pdsURL, accessToken: accessToken, filename: image.fileName,
+                                                                      imageData: image.imageData)
 
             let embedImage = EmbedImage(image: blobReference.blob, altText: image.altText ?? "", aspectRatio: nil)
             embedImages.append(embedImage)

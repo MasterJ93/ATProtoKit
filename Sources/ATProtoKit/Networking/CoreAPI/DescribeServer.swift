@@ -18,7 +18,11 @@ extension ATProtoKit {
         }
 
         do {
-            let request = APIClientService.createRequest(forRequest: requestURL, andMethod: .get, acceptValue: "application/json", contentTypeValue: nil, authorizationValue: nil)
+            let request = APIClientService.createRequest(forRequest: requestURL,
+                                                         andMethod: .get,
+                                                         acceptValue: "application/json",
+                                                         contentTypeValue: nil,
+                                                         authorizationValue: nil)
             let response = try await APIClientService.sendRequest(request, decodeTo: ServerDescribeServerOutput.self)
 
             return .success(response)

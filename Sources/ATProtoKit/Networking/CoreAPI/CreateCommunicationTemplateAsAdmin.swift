@@ -18,7 +18,8 @@ extension ATProtoKit {
     ///   - subject: The subject line of the communication template.
     ///   - createdBy: The decentralized identifier (DID) of the creator of the communication template. Optional.
     /// - Returns: A `Result`, containing either ``AdminCommunicationTemplateView`` if successful, or an `Error` if not.
-    public func createCommunicationTemplateAsAdmin(named name: String, contentMarkdown: String, subject: String, createdBy: String?) async throws -> Result<AdminCommunicationTemplateView, Error> {
+    public func createCommunicationTemplateAsAdmin(named name: String, contentMarkdown: String, subject: String,
+                                                   createdBy: String?) async throws -> Result<AdminCommunicationTemplateView, Error> {
         guard let sessionURL = session.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.admin.createCommunicationTemplate") else {
             return .failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"]))
@@ -32,7 +33,11 @@ extension ATProtoKit {
         )
 
         do {
-            let request = APIClientService.createRequest(forRequest: requestURL, andMethod: .post, acceptValue: "application/json", contentTypeValue: "application/json", authorizationValue: "Bearer \(session.accessToken)")
+            let request = APIClientService.createRequest(forRequest: requestURL,
+                                                         andMethod: .post,
+                                                         acceptValue: "application/json",
+                                                         contentTypeValue: "application/json",
+                                                         authorizationValue: "Bearer \(session.accessToken)")
             let response = try await APIClientService.sendRequest(request, withEncodingBody: requestBody, decodeTo: AdminCommunicationTemplateView.self)
 
             return .success(response)

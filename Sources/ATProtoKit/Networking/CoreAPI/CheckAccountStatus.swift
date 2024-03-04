@@ -18,7 +18,9 @@ extension ATProtoKit {
         }
 
         do {
-            let request = APIClientService.createRequest(forRequest: requestURL, andMethod: .get, contentTypeValue: nil)
+            let request = APIClientService.createRequest(forRequest: requestURL,
+                                                         andMethod: .get,
+                                                         contentTypeValue: nil)
             let response = try await APIClientService.sendRequest(request, decodeTo: ServerCheckAccountStatusOutput.self)
 
             return .success(response)

@@ -12,15 +12,18 @@ extension ATProtoKit {
     ///
     /// This will search for the display names, descriptions, and handles within the user profiles.
     ///
-    /// - Bug: According to the AT Protocol specifications, this API call does not require authentication. However, there's an issue where it asks for authentication if there's no `accessToken`. It's unknown whether this is an issue on the AT Protocol's end or `AKProtoKit`'s end. For now, use the `accessToken` parameter when using this method.
-    /// 
+    /// - Bug: According to the AT Protocol specifications, this API call does not require authentication. However, there's an issue where it asks for authentication if there's no `accessToken`.
+    /// It's unknown whether this is an issue on the AT Protocol's end or `AKProtoKit`'s end. For now, use the `accessToken` parameter when using this method.
+    ///
     /// - Parameters:
     ///   - query: The string used against a list of actors.
     ///   - limit: The number of suggested users to follow. Optional. Defaults to 50. Can only choose between 1 and 100.
     ///   - accessToken: The access token
     ///   - pdsURL: The URL of the Personal Data Server. Defaults to `https://bsky.social`.
     /// - Returns: A `Result`, containing either ``ActorSearchActorsOutput`` if successful, and an `Error` if not.
-    public static func searchUsersTypeahead(by query: String, limit: Int? = 10, accessToken: String? = nil, pdsURL: String? = "https://bsky.social") async throws -> Result<ActorSearchActorsTypeaheadOutput, Error> {
+    public static func searchUsersTypeahead(by query: String, limit: Int? = 10,
+                                            accessToken: String? = nil,
+                                            pdsURL: String? = "https://bsky.social") async throws -> Result<ActorSearchActorsTypeaheadOutput, Error> {
         let finalPDSURL = determinePDSURL(accessToken: accessToken, customPDSURL: pdsURL)
 
         guard let requestURL = URL(string: "\(finalPDSURL)/xrpc/app.bsky.actor.searchActors") else {
@@ -44,7 +47,10 @@ extension ATProtoKit {
         do {
             let queryURL = try APIClientService.setQueryItems(for: requestURL, with: queryItems)
 
-            let request = APIClientService.createRequest(forRequest: queryURL, andMethod: .get, acceptValue: "application/json", authorizationValue: authorizationValue)
+            let request = APIClientService.createRequest(forRequest: queryURL,
+                                                         andMethod: .get,
+                                                         acceptValue: "application/json",
+                                                         authorizationValue: authorizationValue)
             let response = try await APIClientService.sendRequest(request, decodeTo: ActorSearchActorsTypeaheadOutput.self)
 
             return .success(response)

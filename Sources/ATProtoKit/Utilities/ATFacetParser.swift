@@ -42,8 +42,10 @@ public class ATFacetParser {
 
                 // Text must be in a UTF-8 encoded bytestring offset.
                 let utf8Text = text.utf8
-                let byteStart = utf8Text.distance(from: utf8Text.startIndex, to: utf8Text.index(utf8Text.startIndex, offsetBy: text.distance(from: text.startIndex, to: range.lowerBound)))
-                let byteEnd = utf8Text.distance(from: utf8Text.startIndex, to: utf8Text.index(utf8Text.startIndex, offsetBy: text.distance(from: text.startIndex, to: range.upperBound)))
+                let byteStart = utf8Text.distance(from: utf8Text.startIndex,
+                                                  to: utf8Text.index(utf8Text.startIndex, offsetBy: text.distance(from: text.startIndex, to: range.lowerBound)))
+                let byteEnd = utf8Text.distance(from: utf8Text.startIndex,
+                                                to: utf8Text.index(utf8Text.startIndex, offsetBy: text.distance(from: text.startIndex, to: range.upperBound)))
                 let mentionText = String(text[range])
 
                 spans.append([

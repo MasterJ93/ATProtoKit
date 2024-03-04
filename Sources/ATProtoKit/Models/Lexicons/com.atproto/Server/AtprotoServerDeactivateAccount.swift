@@ -9,7 +9,8 @@ import Foundation
 
 /// The main data model definition for deactivating an account.
 ///
-/// - Note: According to the AT Protocol specifications: "Deactivates a currently active account. Stops serving of repo, and future writes to repo until reactivated. Used to finalize account migration with the old host after the account has been activated on the new host."
+/// - Note: According to the AT Protocol specifications: "Deactivates a currently active account. Stops serving of repo, and future writes to repo until reactivated. Used to finalize account migration with the old host
+/// after the account has been activated on the new host."
 ///
 /// - SeeAlso: This is based on the [`com.atproto.server.deactivateAccount`][github] lexicon.
 ///

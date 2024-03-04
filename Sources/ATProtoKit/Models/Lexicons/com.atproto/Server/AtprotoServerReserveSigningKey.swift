@@ -9,7 +9,8 @@ import Foundation
 
 /// The main data model definition for reversing signing keys.
 ///
-/// - Note: According to the AT Protocol specifications: "Reserve a repo signing key, for use with account creation. Necessary so that a DID PLC update operation can be constructed during an account migraiton. Public and does not require auth; implemented by PDS. NOTE: this endpoint may change when full account migration is implemented."
+/// - Note: According to the AT Protocol specifications: "Reserve a repo signing key, for use with account creation. Necessary so that a DID PLC update operation can be constructed during an account migraiton.
+/// Public and does not require auth; implemented by PDS. NOTE: this endpoint may change when full account migration is implemented."
 ///
 /// - SeeAlso: This is based on the [`com.atproto.server.reserveSigningKey`][github] lexicon.
 ///

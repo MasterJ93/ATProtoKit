@@ -32,7 +32,11 @@ extension ATProtoKit {
         )
 
         do {
-            let request = APIClientService.createRequest(forRequest: requestURL, andMethod: .post, acceptValue: "application/json", contentTypeValue: "application/json", authorizationValue: "Bearer \(session.accessToken)")
+            let request = APIClientService.createRequest(forRequest: requestURL,
+                                                         andMethod: .post,
+                                                         acceptValue: "application/json",
+                                                         contentTypeValue: "application/json",
+                                                         authorizationValue: "Bearer \(session.accessToken)")
             let response = try await APIClientService.sendRequest(request, withEncodingBody: requestBody, decodeTo: AdminSendEmailOutput.self)
 
             return .success(response)

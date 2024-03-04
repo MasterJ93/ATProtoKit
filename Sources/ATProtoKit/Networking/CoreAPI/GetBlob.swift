@@ -30,7 +30,9 @@ extension ATProtoKit {
                 with: queryItems
             )
 
-            let request = APIClientService.createRequest(forRequest: queryURL, andMethod: .get, acceptValue: "'*/*'")
+            let request = APIClientService.createRequest(forRequest: queryURL,
+                                                         andMethod: .get,
+                                                         acceptValue: "'*/*'")
             let response = try await APIClientService.sendRequest(request)
 
             return .success(response)

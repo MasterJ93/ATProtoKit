@@ -47,7 +47,8 @@ public struct AdminModEventView: Codable {
     /// The subject handle of the event view. Optional.
     public var subjectHandle: String? = nil
 
-    public init(id: Int, event: AdminEventViewUnion, subject: RepoReferencesUnion, subjectBlobCIDHashes: [String], createdBy: String, createdAt: Date, creatorHandle: String?, subjectHandle: String?) {
+    public init(id: Int, event: AdminEventViewUnion, subject: RepoReferencesUnion, subjectBlobCIDHashes: [String], createdBy: String,
+                createdAt: Date, creatorHandle: String?, subjectHandle: String?) {
         self.id = id
         self.event = event
         self.subject = subject
@@ -271,7 +272,9 @@ public struct AdminSubjectStatusView: Codable {
     /// An array of tags. Optional.
     public var tags: [String]? = nil
 
-    public init(id: Int, subject: RepoReferencesUnion, subjectBlobCIDHashes: [String]?, subjectRepoHandle: String?, updatedAt: Date, createdAt: Date, reviewState: AdminSubjectReviewState, comment: String?, muteUntil: Date?, lastReviewedBy: String?, lastReviewedAt: Date?, lastReportedAt: Date?, lastAppealedAt: Date?, isTakenDown: Bool?, wasAppealed: Bool?, suspendUntil: Date?, tags: [String]?) {
+    public init(id: Int, subject: RepoReferencesUnion, subjectBlobCIDHashes: [String]?, subjectRepoHandle: String?, updatedAt: Date, createdAt: Date,
+                reviewState: AdminSubjectReviewState, comment: String?, muteUntil: Date?, lastReviewedBy: String?, lastReviewedAt: Date?,
+                lastReportedAt: Date?, lastAppealedAt: Date?, isTakenDown: Bool?, wasAppealed: Bool?, suspendUntil: Date?, tags: [String]?) {
         self.id = id
         self.subject = subject
         self.subjectBlobCIDHashes = subjectBlobCIDHashes
@@ -389,7 +392,8 @@ public struct AdminReportViewDetail: Codable {
     /// An array of resolved actions made in relation to the report.
     public let resolvedByActions: [AdminModEventView]
 
-    public init(id: Int, reasonType: ModerationReasonType, comment: String? = nil, subject: RepoViewUnion, subjectStatus: AdminSubjectStatusView? = nil, reportedBy: String, createdAt: Date, resolvedByActions: [AdminModEventView]) {
+    public init(id: Int, reasonType: ModerationReasonType, comment: String? = nil, subject: RepoViewUnion, subjectStatus: AdminSubjectStatusView? = nil,
+                reportedBy: String, createdAt: Date, resolvedByActions: [AdminModEventView]) {
         self.id = id
         self.reasonType = reasonType
         self.comment = comment
@@ -468,7 +472,8 @@ public struct AdminRepoView: Codable {
     /// The note of the invite. Optional.
     public var inviteNote: String? = nil
 
-    public init(actorDID: String, handle: String, email: String? = nil, relatedRecords: UnknownType, indexedAt: Date, moderation: AdminModeration, invitedBy: ServerInviteCode? = nil, areInvitesDisabled: Bool? = nil, inviteNote: String? = nil) {
+    public init(actorDID: String, handle: String, email: String? = nil, relatedRecords: UnknownType, indexedAt: Date, moderation: AdminModeration,
+                invitedBy: ServerInviteCode? = nil, areInvitesDisabled: Bool? = nil, inviteNote: String? = nil) {
         self.actorDID = actorDID
         self.handle = handle
         self.email = email
@@ -557,7 +562,9 @@ public struct AdminRepoViewDetail: Codable {
     /// The date and time the email of the user was confirmed. Optional.
     @DateFormattingOptional public var emailConfirmedAt: Date? = nil
 
-    public init(actorDID: String, handle: String, email: String?, relatedRecords: UnknownType, indexedAt: Date, moderation: AdminModerationDetail, labels: [Label]?, invitedBy: ServerInviteCode?, invites: [ServerInviteCode]?, areInvitesDisabled: Bool?, inviteNote: String?, emailConfirmedAt: Date? = nil) {
+    public init(actorDID: String, handle: String, email: String?, relatedRecords: UnknownType, indexedAt: Date, moderation: AdminModerationDetail,
+                labels: [Label]?, invitedBy: ServerInviteCode?, invites: [ServerInviteCode]?, areInvitesDisabled: Bool?, inviteNote: String?,
+                emailConfirmedAt: Date? = nil) {
         self.actorDID = actorDID
         self.handle = handle
         self.email = email
@@ -654,7 +661,8 @@ public struct AdminAccountView: Codable {
     /// Any notes related to inviting the user. Optional.
     public var inviteNote: String? = nil
 
-    public init(actorDID: String, handle: String, email: String?, relatedRecords: [UnknownType]?, indexedAt: Date, invitedBy: ServerInviteCode?, invites: [ServerInviteCode]?, areInvitesDisabled: Bool?, emailConfirmedAt: Date? = nil, inviteNote: String?) {
+    public init(actorDID: String, handle: String, email: String?, relatedRecords: [UnknownType]?, indexedAt: Date, invitedBy: ServerInviteCode?,
+                invites: [ServerInviteCode]?, areInvitesDisabled: Bool?, emailConfirmedAt: Date? = nil, inviteNote: String?) {
         self.actorDID = actorDID
         self.handle = handle
         self.email = email
@@ -795,7 +803,8 @@ public struct AdminRecordView: Codable {
     ///   Clarifications from Bluesky are needed in order to fully understand this item.
     public let repo: AdminRepoView
 
-    public init(recordURI: String, cidHash: String, value: UnknownType, blobCIDHashes: [String], indexedAt: Date, moderation: AdminModeration, repo: AdminRepoView) {
+    public init(recordURI: String, cidHash: String, value: UnknownType, blobCIDHashes: [String], indexedAt: Date,
+                moderation: AdminModeration, repo: AdminRepoView) {
         self.recordURI = recordURI
         self.cidHash = cidHash
         self.value = value
@@ -878,7 +887,8 @@ public struct AdminRecordViewDetail: Codable {
     ///   Clarifications from Bluesky are needed in order to fully understand this item.
     public let repo: AdminRepoView
 
-    public init(recordURI: String, cidHash: String, value: String, blobs: [AdminBlobView], labels: [Label]? = nil, indexedAt: Date, moderation: AdminModerationDetail, repo: AdminRepoView) {
+    public init(recordURI: String, cidHash: String, value: String, blobs: [AdminBlobView], labels: [Label]? = nil, indexedAt: Date,
+                moderation: AdminModerationDetail, repo: AdminRepoView) {
         self.recordURI = recordURI
         self.cidHash = cidHash
         self.value = value
@@ -1316,7 +1326,8 @@ public struct AdminCommunicationTemplateView: Codable {
     /// The date and time the communication template was updated.
     @DateFormatting public var updatedAt: Date
 
-    public init(id: Int, name: String, subject: String? = nil, contentMarkdown: String, isDisabled: Bool, lastUpdatedBy: String, createdAt: Date, updatedAt: Date) {
+    public init(id: Int, name: String, subject: String? = nil, contentMarkdown: String, isDisabled: Bool, lastUpdatedBy: String,
+                createdAt: Date, updatedAt: Date) {
         self.id = id
         self.name = name
         self.subject = subject
@@ -1413,7 +1424,8 @@ public enum AdminEventViewUnion: Codable {
         } else if let value = try? container.decode(AdminModEventEmail.self) {
             self = .modEventEmail(value)
         } else {
-            throw DecodingError.typeMismatch(AdminEventViewUnion.self, DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Unknown EventViewUnion type"))
+            throw DecodingError.typeMismatch(AdminEventViewUnion.self,
+                                             DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Unknown EventViewUnion type"))
         }
     }
 
@@ -1462,7 +1474,8 @@ public enum RepoReferencesUnion: Codable {
         } else if let value = try? container.decode(StrongReference.self) {
             self = .strongReference(value)
         } else {
-            throw DecodingError.typeMismatch(ActorPreferenceUnion.self, DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Unknown RepoReferencesUnion type"))
+            throw DecodingError.typeMismatch(ActorPreferenceUnion.self,
+                                             DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Unknown RepoReferencesUnion type"))
         }
     }
 
@@ -1522,7 +1535,8 @@ public enum EventViewDetailUnion: Codable {
         } else if let value = try? container.decode(AdminModEventResolveAppeal.self) {
             self = .modEventResolveAppeal(value)
         } else {
-            throw DecodingError.typeMismatch(ActorPreferenceUnion.self, DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Unknown EventViewDetailUnion type"))
+            throw DecodingError.typeMismatch(ActorPreferenceUnion.self,
+                                             DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Unknown EventViewDetailUnion type"))
         }
     }
 
@@ -1576,7 +1590,8 @@ public enum RepoViewUnion: Codable {
         } else if let value = try? container.decode(AdminRecordViewNotFound.self) {
             self = .recordViewNotFound(value)
         } else {
-            throw DecodingError.typeMismatch(ActorPreferenceUnion.self, DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Unknown RepoViewUnion type"))
+            throw DecodingError.typeMismatch(ActorPreferenceUnion.self,
+                                             DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Unknown RepoViewUnion type"))
         }
     }
 
@@ -1611,7 +1626,8 @@ public enum MediaDetailUnion: Codable {
         } else if let value = try? container.decode(AdminMediaVideoDetails.self) {
             self = .mediaVideoDetails(value)
         } else {
-            throw DecodingError.typeMismatch(ActorPreferenceUnion.self, DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Unknown ActorPreference type"))
+            throw DecodingError.typeMismatch(ActorPreferenceUnion.self,
+                                             DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Unknown ActorPreference type"))
         }
     }
 

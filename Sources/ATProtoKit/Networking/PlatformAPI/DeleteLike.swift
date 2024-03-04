@@ -27,7 +27,8 @@ extension ATProtoKit {
         try await deleteRecord(requestBody: requestBody)
     }
 
-    fileprivate func resolveRecordIdentifierToQuery(_ record: ATProtoKit.RecordIdentifier, _ sessionURL: String, _ likeRecord: inout RecordQuery?) async throws {
+    fileprivate func resolveRecordIdentifierToQuery(_ record: ATProtoKit.RecordIdentifier, _ sessionURL: String,
+                                                    _ likeRecord: inout RecordQuery?) async throws {
         switch record {
             case .recordQuery(let recordQuery):
                 // Perform the fetch and validation based on recordQuery.
@@ -65,7 +66,8 @@ extension ATProtoKit {
     
     /// Identifies the record based on the specific information provided.
     ///
-    /// `RecordIdentifier` provides a unified interface for specifying how the record is defined. This allows methods like ``deleteLikeRecord(_:)`` to handle the backend of how to grab the details of the record so it can delete it.
+    /// `RecordIdentifier` provides a unified interface for specifying how the record is defined. This allows methods like ``deleteLikeRecord(_:)`` to handle the backend of how to grab the details
+    /// of the record so it can delete it.
     public enum RecordIdentifier {
         /// The record object itself.
         /// - Parameter recordQuery: the record object.

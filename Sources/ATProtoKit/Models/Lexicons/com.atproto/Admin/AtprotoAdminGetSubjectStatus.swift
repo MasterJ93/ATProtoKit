@@ -38,7 +38,9 @@ public enum AdminGetSubjectStatusUnion: Codable {
         } else if let value = try? container.decode(AdminRepoBlobReference.self) {
             self = .repoBlobReference(value)
         } else {
-            throw DecodingError.typeMismatch(AdminEventViewUnion.self, DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Unknown AdminGetSubjectStatusUnion type"))
+            throw DecodingError.typeMismatch(AdminEventViewUnion.self,
+                                             DecodingError.Context(codingPath: decoder.codingPath,
+                                                                   debugDescription: "Unknown AdminGetSubjectStatusUnion type"))
         }
     }
 

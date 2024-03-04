@@ -46,7 +46,8 @@ public struct ServerCreateAccount: Codable {
     /// - Note: The above documentation is taken directly from the AT Protocol apecifications.
     public var plcOp: UnknownType? = nil
 
-    public init(email: String?, handle: String, existingDID: String?, inviteCode: String?, verificationCode: String?, verificationPhone: String?, password: String?, recoveryKey: String?, plcOp: UnknownType?) {
+    public init(email: String?, handle: String, existingDID: String?, inviteCode: String?, verificationCode: String?, verificationPhone: String?,
+                password: String?, recoveryKey: String?, plcOp: UnknownType?) {
         self.email = email
         self.handle = handle
         self.existingDID = existingDID

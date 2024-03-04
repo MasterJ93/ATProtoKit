@@ -30,7 +30,8 @@ public struct GraphListViewBasic: Codable {
     /// The late time the user list was indexed.
     @DateFormattingOptional public var indexedAt: Date? = nil
 
-    public init(actorURI: String, cidHash: String, name: String, purpose: GraphListPurpose, avatarImageURL: URL?, viewer: GraphListViewerState?, indexedAt: Date?) {
+    public init(actorURI: String, cidHash: String, name: String, purpose: GraphListPurpose, avatarImageURL: URL?, viewer: GraphListViewerState?,
+                indexedAt: Date?) {
         self.actorURI = actorURI
         self.cidHash = cidHash
         self.name = name
@@ -108,7 +109,8 @@ public struct GraphListView: Codable {
     /// The late time the user list was indexed.
     @DateFormatting public var indexedAt: Date
 
-    public init(listURI: String, cidHash: String, creator: ActorProfileView, name: String, purpose: GraphListPurpose, description: String?, descriptionFacets: [Facet]?, avatarImageURL: URL?, viewer: GraphListViewerState?, indexedAt: Date) {
+    public init(listURI: String, cidHash: String, creator: ActorProfileView, name: String, purpose: GraphListPurpose, description: String?,
+                descriptionFacets: [Facet]?, avatarImageURL: URL?, viewer: GraphListViewerState?, indexedAt: Date) {
         self.listURI = listURI
         self.cidHash = cidHash
         self.creator = creator

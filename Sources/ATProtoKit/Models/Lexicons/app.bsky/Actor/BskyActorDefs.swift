@@ -98,7 +98,8 @@ public struct ActorProfileView: Codable {
     /// An array of labels created by the user. Optional.
     public var labels: [Label]? = nil
 
-    public init(actorDID: String, actorHandle: String, displayName: String?, description: String?, avatarImageURL: URL?, indexedAt: Date?, viewer: ActorViewerState?, labels: [Label]?) {
+    public init(actorDID: String, actorHandle: String, displayName: String?, description: String?, avatarImageURL: URL?, indexedAt: Date?,
+                viewer: ActorViewerState?, labels: [Label]?) {
         self.actorDID = actorDID
         self.actorHandle = actorHandle
         self.displayName = displayName
@@ -188,7 +189,8 @@ public struct ActorProfileViewDetailed: Codable {
     /// An array of labels created by the user. Optional.
     public var labels: [Label]? = nil
 
-    public init(actorDID: String, actorHandle: String, displayName: String?, description: String?, avatarImageURL: URL?, bannerImageURL: URL?, followerCount: Int?, followCount: Int?, postCount: Int?, indexedAt: Date?, viewer: ActorViewerState?, labels: [Label]?) {
+    public init(actorDID: String, actorHandle: String, displayName: String?, description: String?, avatarImageURL: URL?, bannerImageURL: URL?,
+                followerCount: Int?, followCount: Int?, postCount: Int?, indexedAt: Date?, viewer: ActorViewerState?, labels: [Label]?) {
         self.actorDID = actorDID
         self.actorHandle = actorHandle
         self.displayName = displayName

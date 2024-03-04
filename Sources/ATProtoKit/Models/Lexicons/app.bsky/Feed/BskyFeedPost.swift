@@ -48,14 +48,16 @@ public struct FeedPost: Codable {
     ///
     /// - Note: According to the AT Protocol specifications: "Additional hashtags, in addition to any included in post text and facets."
     ///
-    /// - Important: Current maximum length is 8 tags. Current maximum length of the tag name is 64 characters. This library will automatically truncate the `Array`and `String` respectively to the maximum length if it does go over the limit.
+    /// - Important: Current maximum length is 8 tags. Current maximum length of the tag name is 64 characters. This library will automatically truncate the `Array`and `String` respectively to
+    /// the maximum length if it does go over the limit.
     public var tags: [String]? = nil
     /// The date the post was created.
     ///
     /// - Note: According to the AT Protocol specifications: "Client-declared timestamp when this post was originally created."
     @DateFormatting public var createdAt: Date
 
-    public init(text: String, facets: [Facet]? = nil, reply: ReplyReference? = nil, embed: EmbedUnion? = nil, languages: [String]? = nil, labels: FeedLabelUnion? = nil, tags: [String]? = nil, createdAt: Date) {
+    public init(text: String, facets: [Facet]? = nil, reply: ReplyReference? = nil, embed: EmbedUnion? = nil, languages: [String]? = nil,
+                labels: FeedLabelUnion? = nil, tags: [String]? = nil, createdAt: Date) {
         self.text = text
         self.facets = facets
         self.reply = reply

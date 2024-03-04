@@ -9,7 +9,8 @@ import Foundation
 
 /// A data model definition for the output of checking the user's account status.
 ///
-/// - Note: According to the AT Protocol specifications: "Returns the status of an account, especially as pertaining to import or recovery. Can be called many times over the course of an account migration. Requires auth and can only be called pertaining to oneself."
+/// - Note: According to the AT Protocol specifications: "Returns the status of an account, especially as pertaining to import or recovery. Can be called many times over the course of an account migration.
+/// Requires auth and can only be called pertaining to oneself."
 ///
 /// - SeeAlso: This is based on the [`com.atproto.server.checkAccountStatus`][github] lexicon.
 ///

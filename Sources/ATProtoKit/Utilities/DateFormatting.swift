@@ -62,7 +62,8 @@ struct CustomDateFormatter {
 /// }
 /// ```
 ///
-/// Finally, for `encode(to encoder: Encoder)`, ensure that each `Date` property wrapped with `@DateFormatting` is encoded using the custom encoding logic defined in the `DateFormatting` wrapper, using the underscored (`_`) version of the name of the property.:
+/// Finally, for `encode(to encoder: Encoder)`, ensure that each `Date` property wrapped with `@DateFormatting` is encoded using the custom encoding logic defined in the
+/// `DateFormatting` wrapper, using the underscored (`_`) version of the name of the property.:
 /// ```swift
 /// public func encode(to encoder: Encoder) throws {
 ///     var container = encoder.container(keyedBy: CodingKeys.self)
@@ -125,7 +126,8 @@ public struct DateFormatting: Codable {
 /// }
 /// ```
 ///
-/// Finally, for `encode(to encoder: Encoder)`, ensure that each `Date` property wrapped with `@DateFormattingOptional` is encoded using the custom encoding logic defined in the `DateFormattingOptional` wrapper, using the underscored (`_`) version of the name of the property.:
+/// Finally, for `encode(to encoder: Encoder)`, ensure that each `Date` property wrapped with `@DateFormattingOptional` is encoded using the custom encoding logic defined in the
+/// `DateFormattingOptional` wrapper, using the underscored (`_`) version of the name of the property.:
 /// ```swift
 /// public func encode(to encoder: Encoder) throws {
 ///     var container = encoder.container(keyedBy: CodingKeys.self)

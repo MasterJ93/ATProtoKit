@@ -38,7 +38,8 @@ public struct FeedPostView: Codable {
     /// The ruleset of who can reply to the post. Optional.
     public var threadgate: FeedThreadgateView? = nil
 
-    public init(postURI: String, cidHash: String, author: ActorProfileViewBasic, record: UnknownType, embed: EmbedViewUnion?, replyCount: Int?, repostCount: Int?, likeCount: Int?, indexedAt: Date, viewer: FeedViewerState?, labels: [Label]?, threadgate: FeedThreadgateView?) {
+    public init(postURI: String, cidHash: String, author: ActorProfileViewBasic, record: UnknownType, embed: EmbedViewUnion?, replyCount: Int?,
+                repostCount: Int?, likeCount: Int?, indexedAt: Date, viewer: FeedViewerState?, labels: [Label]?, threadgate: FeedThreadgateView?) {
         self.postURI = postURI
         self.cidHash = cidHash
         self.author = author
@@ -472,7 +473,8 @@ public enum EmbedViewUnion: Codable {
         } else if let value = try? container.decode(EmbedRecordWithMediaView.self) {
             self = .embedRecordWithMediaView(value)
         } else {
-            throw DecodingError.typeMismatch(EmbedViewUnion.self, DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Unknown EmbedView type"))
+            throw DecodingError.typeMismatch(EmbedViewUnion.self,
+                                             DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Unknown EmbedView type"))
         }
     }
 

@@ -33,7 +33,8 @@ public class UserSession: SessionProtocol {
     public var pdsURL: String?
     
     /// Initializes a new user session with the specified details.
-    public init(handle: String, sessionDID: String, email: String? = nil, isEmailConfirmed: Bool? = nil, accessToken: String, refreshToken: String, didDocument: DIDDocument? = nil, pdsURL: String? = nil) {
+    public init(handle: String, sessionDID: String, email: String? = nil, isEmailConfirmed: Bool? = nil, accessToken: String, refreshToken: String,
+                didDocument: DIDDocument? = nil, pdsURL: String? = nil) {
         self.handle = handle
         self.sessionDID = sessionDID
         self.email = email

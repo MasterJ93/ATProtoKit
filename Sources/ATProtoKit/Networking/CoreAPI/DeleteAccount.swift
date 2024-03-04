@@ -25,7 +25,11 @@ extension ATProtoKit {
         let requestBody = ServerDeleteAccount(accountDID: account, accountPassword: password, token: token)
 
         do {
-            let request = APIClientService.createRequest(forRequest: requestURL, andMethod: .post, acceptValue: nil, contentTypeValue: "application/json", authorizationValue: nil)
+            let request = APIClientService.createRequest(forRequest: requestURL,
+                                                         andMethod: .post,
+                                                         acceptValue: nil,
+                                                         contentTypeValue: "application/json",
+                                                         authorizationValue: nil)
 
             try await APIClientService.sendRequest(request, withEncodingBody: requestBody)
         } catch {

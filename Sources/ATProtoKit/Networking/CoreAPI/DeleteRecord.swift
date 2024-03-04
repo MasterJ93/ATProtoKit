@@ -21,7 +21,9 @@ extension ATProtoKit {
         }
 
         do {
-            let request = APIClientService.createRequest(forRequest: requestURL, andMethod: .post, authorizationValue: "Bearer \(session.accessToken)")
+            let request = APIClientService.createRequest(forRequest: requestURL,
+                                                         andMethod: .post,
+                                                         authorizationValue: "Bearer \(session.accessToken)")
 
             try await APIClientService.sendRequest(request, withEncodingBody: requestBody)
         } catch {

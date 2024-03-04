@@ -39,7 +39,8 @@ public class ATProtocolConfiguration: ProtocolConfiguration {
         let credentials = SessionCredentials(identifier: handle, password: appPassword)
 
         do {
-            let request = APIClientService.createRequest(forRequest: requestURL, andMethod: .post)
+            let request = APIClientService.createRequest(forRequest: requestURL,
+                                                         andMethod: .post)
             let userSession = try await APIClientService.sendRequest(request, withEncodingBody: credentials, decodeTo: UserSession.self)
             userSession.pdsURL = self.pdsURL
 
@@ -53,7 +54,8 @@ public class ATProtocolConfiguration: ProtocolConfiguration {
     /// Creates an a new account for the user.
     ///
     /// - Note: According to the AT Protocol specifications: "Create an account. Implemented by PDS."
-    /// - Important: `plcOp` is currently broken: there's nothing that can be used for this at the moment while Bluesky continues to work on account migration. Until everything settles and they have a concrete example of what to do, don't use it. In the meantime, leave it at `nil`.
+    /// - Important: `plcOp` is currently broken: there's nothing that can be used for this at the moment while Bluesky continues to work on account migration. Until everything settles and they have a
+    /// concrete example of what to do, don't use it. In the meantime, leave it at `nil`.
     /// - Parameters:
     ///   - email: The email of the user. Optional
     ///   - handle: The handle the user wishes to use.
@@ -63,9 +65,12 @@ public class ATProtocolConfiguration: ProtocolConfiguration {
     ///   - verificationPhone: A code that has come from a text message in the user's phone. Optional.
     ///   - password: The password the user will use for the account. Optional.
     ///   - recoveryKey: DID PLC rotation key (aka, recovery key) to be included in PLC creation operation. Optional.
-    ///   - plcOp: A signed DID PLC operation to be submitted as part of importing an existing account to this instance. NOTE: this optional field may be updated when full account migration is implemented. Optional.
+    ///   - plcOp: A signed DID PLC operation to be submitted as part of importing an existing account to this instance. NOTE: this optional field may be updated when full account migration
+    ///   is implemented. Optional.
     /// - Returns: A `Result`, containing either a ``UserSession`` if successful, or an `Error` if not.
-    public func createAccount(_ email: String? = nil, handle: String, existingDID: String? = nil, inviteCode: String? = nil, verificationCode: String? = nil, verificationPhone: String? = nil, password: String? = nil, recoveryKey: String? = nil, plcOp: UnknownType? = nil) async throws -> Result<UserSession, Error> {
+    public func createAccount(_ email: String? = nil, handle: String, existingDID: String? = nil, inviteCode: String? = nil,
+                              verificationCode: String? = nil, verificationPhone: String? = nil, password: String? = nil, recoveryKey: String? = nil,
+                              plcOp: UnknownType? = nil) async throws -> Result<UserSession, Error> {
         guard let requestURL = URL(string: "\(self.pdsURL)/xrpc/com.atproto.server.createAccount") else {
             return .failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"]))
         }
@@ -82,7 +87,8 @@ public class ATProtocolConfiguration: ProtocolConfiguration {
             plcOp: plcOp)
 
         do {
-            let request = APIClientService.createRequest(forRequest: requestURL, andMethod: .post)
+            let request = APIClientService.createRequest(forRequest: requestURL,
+                                                         andMethod: .post)
             let userSession = try await APIClientService.sendRequest(request, withEncodingBody: requestBody, decodeTo: UserSession.self)
             userSession.pdsURL = self.pdsURL
 
@@ -100,12 +106,15 @@ public class ATProtocolConfiguration: ProtocolConfiguration {
     /// - Returns: Returns: A `Result` containing ``SessionResponse`` on success or an `Error` on failure.
     ///
     /// - Note: According to the AT Protocol specifications: "Get information about the current auth session. Requires auth."
-    public static func getSession(byAccessToken accessToken: String, pdsURL: String = "https://bsky.social") async throws -> Result<SessionResponse, Error> {
+    public static func getSession(byAccessToken accessToken: String,
+                                  pdsURL: String = "https://bsky.social") async throws -> Result<SessionResponse, Error> {
         guard let requestURL = URL(string: "\(pdsURL)/xrpc/com.atproto.server.getSession") else {
             return .failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"]))
         }
 
-        let request = APIClientService.createRequest(forRequest: requestURL, andMethod: .get, authorizationValue: "Bearer \(accessToken)")
+        let request = APIClientService.createRequest(forRequest: requestURL,
+                                                     andMethod: .get,
+                                                     authorizationValue: "Bearer \(accessToken)")
 
         do {
             let response = try await APIClientService.sendRequest(request, decodeTo: SessionResponse.self)
@@ -123,12 +132,15 @@ public class ATProtocolConfiguration: ProtocolConfiguration {
     ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `https://bsky.social`.
     ///
     /// - Note: According to the AT Protocol specifications: "Refresh an authentication session. Requires auth using the 'refreshJwt' (not the 'accessJwt')."
-    public func refreshSession(_ refreshToken: String, pdsURL: String = "https://bsky.social") async throws -> Result<UserSession, Error> {
+    public func refreshSession(_ refreshToken: String,
+                               pdsURL: String = "https://bsky.social") async throws -> Result<UserSession, Error> {
         guard let requestURL = URL(string: "\(self.pdsURL)/xrpc/com.atproto.server.refreshSession") else {
             return .failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"]))
         }
 
-        let request = APIClientService.createRequest(forRequest: requestURL, andMethod: .post, authorizationValue: "Bearer \(refreshToken)")
+        let request = APIClientService.createRequest(forRequest: requestURL,
+                                                     andMethod: .post,
+                                                     authorizationValue: "Bearer \(refreshToken)")
 
         do {
             let response = try await APIClientService.sendRequest(request, decodeTo: UserSession.self)
@@ -145,12 +157,15 @@ public class ATProtocolConfiguration: ProtocolConfiguration {
     /// - Parameters:
     ///   - accessToken: The access token for the session.
     ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `https://bsky.social`.
-    public static func deleteSession(_ accessToken: String, pdsURL: String = "https://bsky.social") async throws {
+    public static func deleteSession(_ accessToken: String,
+                                     pdsURL: String = "https://bsky.social") async throws {
         guard let requestURL = URL(string: "\(pdsURL)/xrpc/com.atproto.server.deleteSession") else {
             throw NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"])
         }
 
-        let request = APIClientService.createRequest(forRequest: requestURL, andMethod: .post, authorizationValue: "Bearer \(accessToken)")
+        let request = APIClientService.createRequest(forRequest: requestURL,
+                                                     andMethod: .post,
+                                                     authorizationValue: "Bearer \(accessToken)")
 
         do {
             _ = try await APIClientService.sendRequest(request, withEncodingBody: nil)

@@ -24,7 +24,11 @@ extension ATProtoKit {
         let requestBody = AdminUpdateAccountPassword(accountDID: accountDID, newPassword: newPassword)
 
         do {
-            let request = APIClientService.createRequest(forRequest: requestURL, andMethod: .post, acceptValue: nil, contentTypeValue: "application/json", authorizationValue: "Bearer \(session.accessToken)")
+            let request = APIClientService.createRequest(forRequest: requestURL,
+                                                         andMethod: .post,
+                                                         acceptValue: nil,
+                                                         contentTypeValue: "application/json",
+                                                         authorizationValue: "Bearer \(session.accessToken)")
 
             try await APIClientService.sendRequest(request, withEncodingBody: requestBody)
         } catch {

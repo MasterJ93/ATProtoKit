@@ -36,7 +36,9 @@ extension ATProtoKit {
 
             print("QueryURL: \(queryURL)")
 
-            let request = APIClientService.createRequest(forRequest: queryURL, andMethod: .get, authorizationValue: "Bearer \(session.accessToken)")
+            let request = APIClientService.createRequest(forRequest: queryURL,
+                                                         andMethod: .get,
+                                                         authorizationValue: "Bearer \(session.accessToken)")
             let response = try await APIClientService.sendRequest(request, decodeTo: ActorGetSuggestionsOutput.self)
 
             return .success(response)

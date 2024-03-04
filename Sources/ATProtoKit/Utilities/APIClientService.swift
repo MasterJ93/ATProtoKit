@@ -19,7 +19,8 @@ public class APIClientService {
     ///   - contentTypeValue: The Content-Type header value, defaults to "application/json".
     ///   - authorizationValue: The Authorization header value, optional.
     /// - Returns: A configured `URLRequest` instance.
-    public static func createRequest(forRequest requestURL: URL, andMethod httpMethod: HTTPMethod, acceptValue: String? = "application/json", contentTypeValue: String? = "application/json", authorizationValue: String? = nil) -> URLRequest {
+    public static func createRequest(forRequest requestURL: URL, andMethod httpMethod: HTTPMethod, acceptValue: String? = "application/json",
+                                     contentTypeValue: String? = "application/json", authorizationValue: String? = nil) -> URLRequest {
         var request = URLRequest(url: requestURL)
         request.httpMethod = httpMethod.rawValue
 
@@ -41,7 +42,9 @@ public class APIClientService {
     }
 
     static func encode<T: Encodable>(_ jsonData: T) async throws -> Data {
-        guard let httpBody = try? JSONSerialization.data(withJSONObject: jsonData) else { throw NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey : "Error encoding request body"]) }
+        guard let httpBody = try? JSONSerialization.data(withJSONObject: jsonData) else {
+            throw NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey : "Error encoding request body"])
+        }
         return httpBody
     }
 
@@ -100,7 +103,8 @@ public class APIClientService {
     ///   - filename: The filename of the blob to upload.
     ///   - imageData: The data of the blob to upload.
     /// - Returns: A `BlobContainer` instance with the upload result.
-    public static func uploadBlob(pdsURL: String = "https://bsky.social", accessToken: String, filename: String, imageData: Data) async throws -> BlobContainer {
+    public static func uploadBlob(pdsURL: String = "https://bsky.social", accessToken: String, filename: String,
+                                  imageData: Data) async throws -> BlobContainer {
          guard let requestURL = URL(string: "\(pdsURL)/xrpc/com.atproto.repo.uploadBlob") else {
              throw NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"])
          }
@@ -145,7 +149,8 @@ public class APIClientService {
             throw URLError(.badServerResponse)
         }
 
-        guard let response = try JSONSerialization.jsonObject(with: data, options: .mutableLeaves) as? [String: Any] else { return ["Response": "No response"] }
+        guard let response = try JSONSerialization.jsonObject(
+            with: data, options: .mutableLeaves) as? [String: Any] else { return ["Response": "No response"] }
         return response
     }
 

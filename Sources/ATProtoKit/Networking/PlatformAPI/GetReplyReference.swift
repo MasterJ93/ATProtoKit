@@ -60,7 +60,8 @@ extension ATProtoKit {
     ///   - uri: The URI to parse.
     ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `https://bsky.social`.
     /// - Returns: A ``RecordQuery``.
-    internal static func parseURI(_ uri: String, pdsURL: String = "https://bsky.app") throws -> RecordQuery {
+    internal static func parseURI(_ uri: String,
+                                  pdsURL: String = "https://bsky.app") throws -> RecordQuery {
         if uri.hasPrefix("at://") {
             let components = uri.split(separator: "/").map(String.init)
             guard components.count >= 4 else { throw URIError.invalidFormat }

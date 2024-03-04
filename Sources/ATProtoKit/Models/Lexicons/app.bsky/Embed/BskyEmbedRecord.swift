@@ -147,7 +147,8 @@ public enum RecordViewUnion: Codable {
         } else if let value = try? container.decode(GraphListView.self) {
             self = .listView(value)
         } else {
-            throw DecodingError.typeMismatch(RecordViewUnion.self, DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Unknown RecordViewUnion type"))
+            throw DecodingError.typeMismatch(RecordViewUnion.self, DecodingError.Context(codingPath: decoder.codingPath,
+                                                                                         debugDescription: "Unknown RecordViewUnion type"))
         }
     }
 

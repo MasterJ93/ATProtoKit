@@ -23,7 +23,11 @@ extension ATProtoKit {
         let requestBody = ServerReserveSigningKey(repositoryDID: repositoryDID)
 
         do {
-            let request = APIClientService.createRequest(forRequest: requestURL, andMethod: .post, acceptValue: "application/json", contentTypeValue: "application/json", authorizationValue: nil)
+            let request = APIClientService.createRequest(forRequest: requestURL,
+                                                         andMethod: .post,
+                                                         acceptValue: "application/json",
+                                                         contentTypeValue: "application/json",
+                                                         authorizationValue: nil)
             let response = try await APIClientService.sendRequest(request, withEncodingBody: requestBody, decodeTo: ServerReserveSigningKeyOutput.self)
 
             return .success(response)
