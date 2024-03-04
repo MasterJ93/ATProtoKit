@@ -18,11 +18,11 @@ extension ATProtoKit {
     /// like records for user accounts other than the authenticated one, use ``listRecords`` instead.
     ///
     /// - Parameters:
-    ///   - actor: The decentralized identifier (DID) of the user account.
+    ///   - actorDID: The decentralized identifier (DID) of the user account.
     ///   - limit: The number of items the list will hold. Optional. Defaults to `50`.
     ///   - cursor: The mark used to indicate the starting point for the next set of result. Optional.
     /// - Returns: A `Result`, containing either a ``FeedGetActorLikesOutput`` if successful, or an `Error` if not.
-    public func getActorLikes(by actor: String, limit: Int? = 50, cursor: String? = nil) async throws -> Result<FeedGetActorLikesOutput, Error> {
+    public func getActorLikes(by actorDID: String, limit: Int? = 50, cursor: String? = nil) async throws -> Result<FeedGetActorLikesOutput, Error> {
         guard let sessionURL = session.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/app.bsky.feed.getActorLikes") else {
             return .failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"]))
@@ -30,7 +30,7 @@ extension ATProtoKit {
 
         var queryItems = [(String, String)]()
 
-        queryItems.append(("actor", actor))
+        queryItems.append(("actor", actorDID))
 
         if let limit {
             let finalLimit = min(1, max(limit, 100))
