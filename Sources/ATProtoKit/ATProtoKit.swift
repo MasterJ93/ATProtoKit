@@ -24,7 +24,7 @@ import Foundation
 /// ```
 public class ATProtoKit {
     /// Represents an authenticated user session within the AT Protocol.
-    let session: UserSession
+    public let session: UserSession
 
     /// Initializes a new instance of `ATProtoKit`.
     /// - Parameters:
