@@ -1,27 +1,27 @@
 //
-//  DisableAccountInvitesAsAdmin.swift
+//  UpdateAccountEmailAsAdmin.swift
 //
 //
-//  Created by Christopher Jr Riley on 2024-02-28.
+//  Created by Christopher Jr Riley on 2024-03-02.
 //
 
 import Foundation
 
-extension ATProtoKit {
-    /// Disables a user account's ability to receive future invite codes as an administrator.
-    ///  
-    /// - Important: According to the AT Protocol specifications: "Disable an account from receiving new invite codes, but does not invalidate existing codes."
+extension ATProtoAdmin {
+    /// Updates the email address of a user account as an administrator.
+    /// 
+    /// - Note: Many of the parameter's descriptions are taken directly from the AT Protocol's specification.
     /// 
     /// - Parameters:
     ///   - accountDID: The decentralized identifier (DID) of the user account.
-    ///   - note: A note on why the account will lose the ability to get new invite codes.
-    public func disableAccountInvitesAsAdmin(_ accountDID: String, note: String?) async throws {
+    ///   - email: The new email address the user wants to change to.
+    public func updateAccountEmailAsAdmin(_ accountDID: String, email: String) async throws {
         guard let sessionURL = session.pdsURL,
-              let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.admin.disableAccountInvites") else {
+              let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.admin.updateAccountEmail") else {
             throw NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"])
         }
 
-        let requestBody = AdminDisableAccountInvites(accountDID: accountDID, note: note)
+        let requestBody = AdminUpdateAccountEmail(accountDID: accountDID, accountEmail: email)
 
         do {
             let request = APIClientService.createRequest(forRequest: requestURL,

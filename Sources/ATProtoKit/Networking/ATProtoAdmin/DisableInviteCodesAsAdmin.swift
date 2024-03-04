@@ -7,7 +7,7 @@
 
 import Foundation
 
-extension ATProtoKit {
+extension ATProtoAdmin {
     /// Disables some or all of the invite codes for one or more user accounts as an administrator.
     /// 
     /// - Important: This is an administrator task and as such, regular users won't be able to access this; if they attempt to do so, an error will occur.

@@ -7,7 +7,7 @@
 
 import Foundation
 
-extension ATProtoKit {
+extension ATProtoAdmin {
     /// Sends an email to the user's email address as an administrator.
     /// 
     /// - Parameters:

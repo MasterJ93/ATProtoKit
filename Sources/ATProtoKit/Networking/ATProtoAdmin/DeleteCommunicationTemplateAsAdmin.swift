@@ -1,29 +1,25 @@
 //
-//  EnableAccountInvitesAsAdmin.swift
+//  DeleteCommunicationTemplateAsAdmin.swift
 //
 //
-//  Created by Christopher Jr Riley on 2024-02-29.
+//  Created by Christopher Jr Riley on 2024-02-28.
 //
 
 import Foundation
 
-extension ATProtoKit {
-    /// Turns on the ability for the user account to receive invite codes again.
-    /// 
-    /// This only works if the user account had lost access to this ability.
+extension ATProtoAdmin {
+    /// Deletes a communication template as an administrator.
     /// 
     /// - Important: This is an administrator task and as such, regular users won't be able to access this; if they attempt to do so, an error will occur.
-    ///
-    /// - Parameters:
-    ///   - accountDID: The decentralized identifier (DID) of the user's account.
-    ///   - note: A note as to why the user account is getting the ability to receive invite codes reinstated. Optional.
-    public func enableAccountInvitesAsAdmin(_ accountDID: String, note: String?) async throws {
+    /// 
+    /// - Parameter id: The ID of the communication template.
+    public func deleteCommunicationTemplateAsAdmin(_ id: String) async throws {
         guard let sessionURL = session.pdsURL,
-              let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.admin.enableAccountInvites") else {
+              let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.admin.deleteCommunicationTemplate") else {
             throw NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"])
         }
 
-        let requestBody = AdminEnableAccountInvites(accountDID: accountDID, note: note)
+        let requestBody = AdminDeleteCommunicationTemplate(id: id)
 
         do {
             let request = APIClientService.createRequest(forRequest: requestURL,

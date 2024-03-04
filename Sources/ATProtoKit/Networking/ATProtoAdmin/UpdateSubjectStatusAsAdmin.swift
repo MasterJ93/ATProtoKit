@@ -7,7 +7,7 @@
 
 import Foundation
 
-extension ATProtoKit {
+extension ATProtoAdmin {
     /// Updates a subject status of an account, record, or blob.
     /// 
     /// - Note: According to the AT Protocol specifications: "Update the password for a user account as an administrator."
