@@ -77,7 +77,6 @@ let result = ATProtocolConfiguration(handle: "lucy.example.social", appPassword:
 This session contains all of the elements you need, such as the access and refresh tokens:
 ```swift
 Task {
-    print("Starting application...")
     let session = try await config.authenticate()
 
     switch session {
