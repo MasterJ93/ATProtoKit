@@ -31,6 +31,7 @@ public struct FeedDescribeFeedGeneratorOutput: Codable {
     }
 }
 
+/// A data model definiion for the feed generator.
 public struct FeedDescribeFeedGeneratorFeed: Codable {
     /// The URI of the feed.
     public let feedURI: String
@@ -40,6 +41,7 @@ public struct FeedDescribeFeedGeneratorFeed: Codable {
     }
 }
 
+/// A data model definition for the Privacy Policy and Terms of Service URLs.
 public struct FeedDescribeFeedGeneratorLinks: Codable {
     /// The URL to the Privacy Policy.
     public let privacyPolicy: URL
