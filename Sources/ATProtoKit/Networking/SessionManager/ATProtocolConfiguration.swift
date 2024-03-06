@@ -132,7 +132,7 @@ public class ATProtocolConfiguration: ProtocolConfiguration {
     ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `https://bsky.social`.
     ///
     /// - Note: According to the AT Protocol specifications: "Refresh an authentication session. Requires auth using the 'refreshJwt' (not the 'accessJwt')."
-    public func refreshSession(_ refreshToken: String,
+    public func refreshSession(using refreshToken: String,
                                pdsURL: String = "https://bsky.social") async throws -> Result<UserSession, Error> {
         guard let requestURL = URL(string: "\(self.pdsURL)/xrpc/com.atproto.server.refreshSession") else {
             return .failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"]))

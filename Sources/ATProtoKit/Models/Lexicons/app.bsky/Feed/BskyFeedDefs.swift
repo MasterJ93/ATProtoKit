@@ -20,7 +20,7 @@ public struct FeedPostView: Codable {
     /// The author of the post. This will give the basic details of the post author.
     public let author: ActorProfileViewBasic
     /// The record data itself.
-    public let record: UnknownType
+    public let record: FeedPost
     /// An embed view of a specific type. Optional.
     public var embed: EmbedViewUnion? = nil
     /// The number of replies in the post. Optional.
@@ -38,7 +38,7 @@ public struct FeedPostView: Codable {
     /// The ruleset of who can reply to the post. Optional.
     public var threadgate: FeedThreadgateView? = nil
 
-    public init(postURI: String, cidHash: String, author: ActorProfileViewBasic, record: UnknownType, embed: EmbedViewUnion?, replyCount: Int?,
+    public init(postURI: String, cidHash: String, author: ActorProfileViewBasic, record: FeedPost, embed: EmbedViewUnion?, replyCount: Int?,
                 repostCount: Int?, likeCount: Int?, indexedAt: Date, viewer: FeedViewerState?, labels: [Label]?, threadgate: FeedThreadgateView?) {
         self.postURI = postURI
         self.cidHash = cidHash
@@ -60,7 +60,7 @@ public struct FeedPostView: Codable {
         self.postURI = try container.decode(String.self, forKey: .postURI)
         self.cidHash = try container.decode(String.self, forKey: .cidHash)
         self.author = try container.decode(ActorProfileViewBasic.self, forKey: .author)
-        self.record = try container.decode(UnknownType.self, forKey: .record)
+        self.record = try container.decode(FeedPost.self, forKey: .record)
         self.embed = try container.decodeIfPresent(EmbedViewUnion.self, forKey: .embed)
         self.replyCount = try container.decodeIfPresent(Int.self, forKey: .replyCount)
         self.repostCount = try container.decodeIfPresent(Int.self, forKey: .repostCount)
@@ -441,9 +441,9 @@ public struct FeedThreadgateView: Codable {
 // MARK: - Union Types
 /// A reference containing the list of the types of embeds.
 ///
-/// - Note: This is based on the following lexicons:
-///   - `app.bsky.embed.record`
-///     - `app.bsky.feed.defs`
+/// - Note: This is based on the following lexicons:\
+///\- `app.bsky.embed.record`\
+///\- `app.bsky.feed.defs`
 ///
 /// - SeeAlso: The lexicons can be viewed in their GitHub repo pages:\
 /// \- [`app.bsky.embed.record`][embed_record]\
