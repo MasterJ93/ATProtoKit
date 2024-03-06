@@ -9,7 +9,11 @@ import Foundation
 
 extension ATProtoKit {
     /// Gets a list of feed generators suggested for the user account.
-    ///
+    /// 
+    /// - Parameters:
+    ///   - limit: The number of items the list will hold. Optional. Defaults to `50`.
+    ///   - cursor: The mark used to indicate the starting point for the next set of result. Optional.
+    /// - Returns: A `Result`, containing either a ``FeedGetSuggestedFeedsOutput`` if successful, or an `Error` if not.
     public func getSuggestedFeeds(limit: Int? = 50, cursor: String? = nil) async throws -> Result<FeedGetSuggestedFeedsOutput, Error> {
         guard let sessionURL = session.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/app.bsky.feed.getSuggestedFeeds") else {
