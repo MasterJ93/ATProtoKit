@@ -201,9 +201,9 @@ public struct FeedThreadViewPost: Codable {
     /// The post contained in a thread.
     public let post: FeedPostView
     /// The direct post that the user's post is replying to. Optional.
-    public var parent: PostUnion? = nil
+    public var parent: ThreadPostUnion? = nil
     /// An array of posts of various types. Optional.
-    public var replies: [PostUnion]? = nil
+    public var replies: [ThreadPostUnion]? = nil
 }
 
 /// A data model for a definition of a post that may not have been found.
@@ -518,7 +518,9 @@ public enum PostUnion: Codable {
         } else if let value = try? container.decode(FeedBlockedPost.self) {
             self = .blockedPost(value)
         } else {
-            throw DecodingError.typeMismatch(PostUnion.self, DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Unknown PostUnion type"))
+            throw DecodingError.typeMismatch(
+                PostUnion.self, DecodingError.Context(
+                    codingPath: decoder.codingPath, debugDescription: "Unknown PostUnion type"))
         }
     }
 
@@ -527,6 +529,50 @@ public enum PostUnion: Codable {
 
         switch self {
             case .postView(let union):
+                try container.encode(union)
+            case .notFoundPost(let union):
+                try container.encode(union)
+            case .blockedPost(let union):
+                try container.encode(union)
+        }
+    }
+}
+
+/// A reference containing the list of the states of a post.
+///
+/// - SeeAlso: This is based on the [`app.bsky.feed.defs`][github] lexicon.
+///
+/// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/feed/defs.json
+public indirect enum ThreadPostUnion: Codable {
+    /// The view of a post thread.
+    case threadViewPost(FeedThreadViewPost)
+    /// The view of a post that may not have been found.
+    case notFoundPost(FeedNotFoundPost)
+    /// The view of a post that's been blocked by the post author.
+    case blockedPost(FeedBlockedPost)
+
+    // Custom coding keys and init(from:) / encode(to:) will be needed here for Codable conformance.
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.singleValueContainer()
+
+        if let value = try? container.decode(FeedThreadViewPost.self) {
+            self = .threadViewPost(value)
+        } else if let value = try? container.decode(FeedNotFoundPost.self) {
+            self = .notFoundPost(value)
+        } else if let value = try? container.decode(FeedBlockedPost.self) {
+            self = .blockedPost(value)
+        } else {
+            throw DecodingError.typeMismatch(
+                ThreadPostUnion.self, DecodingError.Context(
+                    codingPath: decoder.codingPath, debugDescription: "Unknown ThreadPostUnion type"))
+        }
+    }
+
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.singleValueContainer()
+
+        switch self {
+            case .threadViewPost(let union):
                 try container.encode(union)
             case .notFoundPost(let union):
                 try container.encode(union)
