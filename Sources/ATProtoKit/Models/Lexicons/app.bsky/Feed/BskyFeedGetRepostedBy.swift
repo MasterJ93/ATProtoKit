@@ -21,7 +21,7 @@ public struct FeedGetRepostedBy: Codable {
     public let postCID: String?
     /// The mark used to indicate the starting point for the next set of results. Optional.
     public let cursor: String?
-    /// An array of
+    /// An array of user accounts who reported the post record.
     public let repostedBy: [ActorProfileView]
 
     enum CodingKeys:String, CodingKey {
