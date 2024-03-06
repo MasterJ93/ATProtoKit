@@ -1,26 +1,25 @@
 //
-//  BskyFeedLike.swift
+//  BskyFeedRepost.swift
 //
 //
-//  Created by Christopher Jr Riley on 2024-02-08.
+//  Created by Christopher Jr Riley on 2024-03-06.
 //
 
 import Foundation
 
-// MARK: - Main definition
-/// The main data model definition for a like record.
+/// The main data model definition for a repost record on Bluesky.
 ///
-/// - SeeAlso: This is based on the [`app.bsky.feed.like`][github] lexicon.
+/// - Note: According to the AT Protocol specifications: "Record representing a 'repost' of an existing Bluesky post."
 ///
-/// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/feed/like.json
-public struct FeedLike: Codable {
+/// - SeeAlso: This is based on the [`app.bsky.feed.repost`][github] lexicon.
+///
+/// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/feed/repost.json
+public struct FeedRepost: Codable {
     /// The identifier of the lexicon.
     ///
     /// - Warning: The value must not change.
-    public let type: String = "app.bsky.feed.like"
-    /// The strong reference of the like.
-    ///
-    /// - Note: According to the AT Protocol specifications: "Record declaring a 'like' of a piece of subject content."
+    public let type: String = "app.bsky.feed.repost"
+    /// The strong reference of the repost record.
     public let subject: StrongReference
     /// The date the like record was created.
     ///
@@ -34,14 +33,12 @@ public struct FeedLike: Codable {
 
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-
         self.subject = try container.decode(StrongReference.self, forKey: .subject)
         self.createdAt = try container.decode(DateFormatting.self, forKey: .createdAt).wrappedValue
     }
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-
         try container.encode(self.type, forKey: .type)
         try container.encode(self.subject, forKey: .subject)
         try container.encode(self._createdAt, forKey: .createdAt)
