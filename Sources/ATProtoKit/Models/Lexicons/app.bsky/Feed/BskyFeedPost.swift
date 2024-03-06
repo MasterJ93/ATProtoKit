@@ -175,18 +175,20 @@ public enum EmbedUnion: Codable {
     case recordWithMedia(EmbedRecordWithMedia)
 
     public init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
+        let container = try decoder.singleValueContainer()
 
-        if let imagesValue = try container.decodeIfPresent(EmbedImages.self, forKey: .images) {
+        if let imagesValue = try? container.decode(EmbedImages.self) {
             self = .images(imagesValue)
-        } else if let externalValue = try container.decodeIfPresent(EmbedExternal.self, forKey: .external) {
+        } else if let externalValue = try? container.decode(EmbedExternal.self) {
             self = .external(externalValue)
-        } else if let recordValue = try container.decodeIfPresent(EmbedRecord.self, forKey: .record) {
+        } else if let recordValue = try? container.decode(EmbedRecord.self) {
             self = .record(recordValue)
-        } else if let recordWithMediaValue = try container.decodeIfPresent(EmbedRecordWithMedia.self, forKey: .recordWithMedia) {
+        } else if let recordWithMediaValue = try? container.decode(EmbedRecordWithMedia.self) {
             self = .recordWithMedia(recordWithMediaValue)
         } else {
-            throw DecodingError.dataCorruptedError(forKey: .images, in: container, debugDescription: "Unable to decode Embed")
+            throw DecodingError.typeMismatch(
+                EmbedUnion.self, DecodingError.Context(
+                    codingPath: decoder.codingPath, debugDescription: "Unknown EmbedUnion type"))
         }
     }
 
@@ -203,13 +205,6 @@ public enum EmbedUnion: Codable {
             case .recordWithMedia(let recordWithMediaValue):
                 try container.encode(recordWithMediaValue)
         }
-    }
-
-    enum CodingKeys: String, CodingKey {
-        case images
-        case external
-        case record
-        case recordWithMedia
     }
 }
 
