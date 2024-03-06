@@ -1,5 +1,5 @@
 //
-//  GetTimeline.swift
+//  SearchPosts.swift
 //
 //
 //  Created by Christopher Jr Riley on 2024-03-06.
@@ -8,26 +8,23 @@
 import Foundation
 
 extension ATProtoKit {
-    /// Gets the user account's timeline.
+    /// Retrieves the results of a search query.
     /// 
-    /// - Note: As of now, the `algorithm` value only supports a reverse-chonological order, and so the use cases of this is limited. It's best to use methods such
-    /// as ``getFeedGenerators(_:)`` and combine them with this method if you want to tweak how the timeline works.
-    ///
+    ///  
     /// - Parameters:
-    ///   - algorithm: The selected "algorithm" to use. Defaults to a reverse-chronological order if no value is inserted.
-    ///   - limit: The number of items the list will hold. Optional. Defaults to `50`. Can only be between `1` and `100`.
-    ///   - cursor: The mark used to indicate the starting point for the next set of result. Optional.
-    /// - Returns: A `Result`, containing either a ``FeedGetTimelineOutput`` if successful, or an `Error` if not.
-    public func getTimeline(using algorithm: String? = nil, limit: Int? = 50, cursor: String? = nil) async throws -> Result<FeedGetTimelineOutput, Error> {
+    ///   - searchQuery: The string being searched against. Lucene query syntax recommended.
+    ///   - limit: The number of suggested users to follow. Optional. Defaults to `25`. Can only choose between `1` and `100`.
+    ///   - cursor: The mark used to indicate the starting point for the next set of results. Optional.
+    /// - Returns: A `Result`, containing either an ``FeedSearchPostsOutput`` if succesful, or an `Error` if it's not.
+    public func searchPosts(with searchQuery: String, limit: Int? = 25, cursor: String? = nil) async throws -> Result<FeedSearchPostsOutput, Error> {
         guard let sessionURL = session.pdsURL,
-              let requestURL = URL(string: "\(sessionURL)/xrpc/app.bsky.feed.getTimeline") else {
+              let requestURL = URL(string: "\(sessionURL)/xrpc/app.bsky.feed.searchPosts") else {
             return .failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"]))
         }
 
         var queryItems = [(String, String)]()
-        if let algorithm {
-            queryItems.append(("algorithm", algorithm))
-        }
+
+        queryItems.append(("q", searchQuery))
 
         if let limit {
             let finalLimit = min(1, max(limit, 100))
@@ -49,11 +46,12 @@ extension ATProtoKit {
                                                          acceptValue: "application/json",
                                                          contentTypeValue: nil,
                                                          authorizationValue: "Bearer \(session.accessToken)")
-            let response = try await APIClientService.sendRequest(request, decodeTo: FeedGetTimelineOutput.self)
+            let response = try await APIClientService.sendRequest(request, decodeTo: FeedSearchPostsOutput.self)
 
             return .success(response)
         } catch {
             return .failure(error)
         }
+
     }
 }
