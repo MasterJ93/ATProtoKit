@@ -12,7 +12,7 @@ extension ATProtoKit {
     /// Gets information about a given feed generator.
     /// 
     /// - Returns: A `Result`, containing either a ``FeedDescribeFeedGenerator`` if successful, or an `Error` if not.
-    public static func describeFeedGenerator(_ pdsURL: String = "https://bsky.social") async throws -> Result<FeedDescribeFeedGeneratorOutput, Error> {
+    public static func describeFeedGenerator(pdsURL: String = "https://bsky.social") async throws -> Result<FeedDescribeFeedGeneratorOutput, Error> {
         guard let requestURL = URL(string: "\(pdsURL)/app.bsky.feed.describeFeedGenerator") else {
             return .failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"]))
         }
