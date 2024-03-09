@@ -16,7 +16,7 @@ import Foundation
 ///
 /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/graph/block.json
 public struct GraphBlock: Codable {
-    /// The subject that has been blocked.
+    /// The decentralized identifier(DID) of the subject that has been blocked.
     ///
     /// - Note: According to the AT Protocol specifications: "DID of the account to be blocked."
     public let subjectDID: String
