@@ -9,7 +9,12 @@ import Foundation
 
 extension ATProtoKit {
     /// Grabs a given list.
-    ///
+    /// 
+    /// - Parameters:
+    ///   - listURI: The URI of the list.
+    ///   - limit: The number of items that can be in the list. Optional. Defaults to `50`.
+    ///   - cursor: The mark used to indicate the starting point for the next set of result. Optional.
+    /// - Returns: A `Result`, containing either a ``GraphGetListOutput`` if successful, or an `Error` if not.
     public func getList(from listURI: String, limit: Int? = 50, cursor: String? = nil) async throws -> Result<GraphGetListOutput, Error> {
         guard let sessionURL = session.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/app.bsky.graph.getList") else {
