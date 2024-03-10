@@ -1,5 +1,5 @@
 //
-//  BskyGraphListblock.swift
+//  BskyGraphListitem.swift
 //
 //
 //  Created by Christopher Jr Riley on 2024-03-10.
@@ -7,27 +7,33 @@
 
 import Foundation
 
-/// The main data model definition for a blocking list record.
+/// The main data model definition for a list item record.
 ///
-/// - Note: According to the AT Protocol specifications: "Record representing a block relationship against an entire [...] list of accounts (actors)."
+/// - Note: According to the AT Protocol specifications: "Record representing an account's inclusion on a specific list.
+/// The AppView will ignore duplicate listitem records."
 ///
-/// - SeeAlso: This is based on the [`app.bsky.graph.listblock`][github] lexicon.
+/// - SeeAlso: This is based on the [`app.bsky.graph.listitem`][github] lexicon.
 ///
-/// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/graph/listblock.json
-public struct GraphListBlock: Codable {
+/// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/graph/listitem.json
+public struct GraphListItem: Codable {
     /// The identifier of the lexicon.
     ///
     /// - Warning: The value must not change.
-    internal let type: String = "app.bsky.graph.listblock"
-    /// The decentralized identifier (DID) of the moderator list record.
+    internal let type: String = "app.bsky.graph.listitem"
+    /// The decentralized identifier (DID) of the account that's in a list.
     ///
-    /// - Note: According to the AT Protocol specifications: "Reference (AT-URI) to the mod list record."
+    /// - Note: According to the AT Protocol specifications: "The account which is included on the list."
     public let subjectDID: String
+    /// The decentralized identifier (DID) of the list record.
+    ///
+    /// - Note: According to the AT Protocol specifications: "The account which is included on the list."
+    public let list: String
     /// The date and time the record was created.
     @DateFormatting public var createdAt: Date
 
-    public init(subjectDID: String, createdAt: Date) {
+    public init(subjectDID: String, list: String, createdAt: Date) {
         self.subjectDID = subjectDID
+        self.list = list
         self._createdAt = DateFormatting(wrappedValue: createdAt)
     }
 
@@ -35,6 +41,7 @@ public struct GraphListBlock: Codable {
         let container = try decoder.container(keyedBy: CodingKeys.self)
 
         self.subjectDID = try container.decode(String.self, forKey: .subjectDID)
+        self.list = try container.decode(String.self, forKey: .list)
         self.createdAt = try container.decode(DateFormatting.self, forKey: .createdAt).wrappedValue
     }
 
@@ -42,12 +49,14 @@ public struct GraphListBlock: Codable {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(self.type, forKey: .type)
         try container.encode(self.subjectDID, forKey: .subjectDID)
+        try container.encode(self.list, forKey: .list)
         try container.encode(self._createdAt, forKey: .createdAt)
     }
 
     enum CodingKeys: String, CodingKey {
         case type = "$type"
         case subjectDID = "subject"
+        case list
         case createdAt
     }
 }
