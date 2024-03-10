@@ -14,4 +14,9 @@ import Foundation
 /// - SeeAlso: This is based on the [`app.bsky.graph.getListBlocks`][github] lexicon.
 ///
 /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/graph/getListBlocks.json
-public struct 
+public struct GraphGetListBlocksOutput: Codable {
+    /// The mark used to indicate the starting point for the next set of results. Optional.
+    public let cursor: String?
+    /// An array of lists that the user account is blocking.
+    public let lists: [GraphListView]
+}
