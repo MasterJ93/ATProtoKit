@@ -45,28 +45,45 @@ public struct RepoApplyWrites: Codable {
 public struct RepoApplyWritesCreate: Codable {
     /// The NSID of the collection.
     public let collection: String
-    /// The rKey of the write operation. Optional.
-    public let rKey: String?
+    /// The record key of the write operation. Optional.
+    public let recordKey: String?
     /// The value of the write operation.
     public let value: UnknownType
+
+    enum CodingKeys: String, CodingKey {
+        case collection
+        case recordKey = "rkey"
+        case value
+    }
 }
 
 /// A data model definition for an "Update" write operation.
 public struct RepoApplyWritesUpdate: Codable {
     /// The NSID of the collection.
     public let collection: String
-    /// The rKey of the write operation.
-    public let rKey: String
+    /// The record key of the write operation.
+    public let recordKey: String
     /// The value of the write operation.
     public let value: UnknownType
+
+    enum CodingKeys: String, CodingKey {
+        case collection
+        case recordKey = "rkey"
+        case value
+    }
 }
 
 /// A data model definition for a "Delete" write operation.
 public struct RepoApplyWritesDelete: Codable {
     /// The NSID of the collection.
     public let collection: String
-    /// The rKey of the write operation.
-    public let rKey: String
+    /// The record key of the write operation.
+    public let recordKey: String
+
+    enum CodingKeys: String, CodingKey {
+        case collection
+        case recordKey = "rkey"
+    }
 }
 
 /// A reference containing the list of write operations.
