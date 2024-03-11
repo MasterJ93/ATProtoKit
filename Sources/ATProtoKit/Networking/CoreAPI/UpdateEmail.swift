@@ -17,7 +17,7 @@ extension ATProtoKit {
     ///   - token: The token used to confirm the change. Optional.
     public func updateEmail(_ email: String, token: String? = nil) async throws {
         guard let sessionURL = session.pdsURL,
-              let requestURL = URL(string: "\(sessionURL)/xrpc/om.atproto.server.updateEmail") else {
+              let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.server.updateEmail") else {
             throw NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey : "Invalid URL"])
         }
 

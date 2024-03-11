@@ -17,7 +17,7 @@ extension ATProtoKit {
     ///   - swapCommit: Swaps out an operation based on the CID. Optional.
     public func applyWrites(_ repositoryDID: String, shouldValidate: Bool? = true, writes: [ApplyWritesUnion], swapCommit: String?) async throws {
         guard let sessionURL = session.pdsURL,
-              let requestURL = URL(string: "\(sessionURL)/xrpc/app.bsky.repo.applyWrites") else {
+              let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.repo.applyWrites") else {
             throw NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"])
         }
 

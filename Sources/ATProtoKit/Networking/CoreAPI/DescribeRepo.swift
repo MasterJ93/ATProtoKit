@@ -13,7 +13,7 @@ extension ATProtoKit {
     /// - Parameter repositoryDID: The decentralized identifier (DID) or handle of the repository.
     /// - Returns: A `Result`, containing either a ``RepoDescribeRepoOutput`` if successful, ot an `Error` if not.
     public static func describeRepository(_ repositoryDID: String, pdsURL: String = "https://bsky.social") async throws -> Result<RepoDescribeRepoOutput, Error> {
-        guard let requestURL = URL(string: "\(pdsURL)/xrpc/app.bsky.repo.describeRepo") else {
+        guard let requestURL = URL(string: "\(pdsURL)/xrpc/com.atproto.repo.describeRepo") else {
             return .failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"]))
         }
 
