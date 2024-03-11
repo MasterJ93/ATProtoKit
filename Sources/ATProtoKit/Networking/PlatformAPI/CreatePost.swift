@@ -58,9 +58,6 @@ extension ATProtoKit {
             }
         }
 
-        // Labels
-        var resolvedLabels: FeedLabelUnion? = nil
-
 
         // Compiling all parts of the post into one.
         let post = FeedPost(
