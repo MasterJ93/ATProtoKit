@@ -30,13 +30,6 @@ protocol ImageProtocol {
     func loadImageData(from imagePath: String) -> Self?
 }
 
-/// An error type related to ``ATImageProcessable``..
-enum ATImageProcessingError: Error {
-    /// The image's file size can't be lowered any further to fit the target file size.
-    case unableToResizeImage
-}
-
-
 /// Provides a standardized approach to processing images for uploading to servers that interact with the AT Protocol.
 /// 
 /// This protocol aids in the conversion of images into an ``ImageQuery`` (which is used to give all of the necessary information
