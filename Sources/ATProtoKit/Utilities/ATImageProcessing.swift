@@ -139,7 +139,7 @@ public extension ATImageProcessable {
                 imageData = bitmapImage.representation(using: .png, properties: [:])
             case "jpg", "jpeg":
                 do {
-                    try decreaseJPGSize(tiffData, bitmapImage: bitmapImage, targetFileSize: targetFileSize)
+                    imageData = try decreaseJPGSize(tiffData, bitmapImage: bitmapImage, targetFileSize: targetFileSize)
                 } catch ATImageProcessingError.unableToResizeImage {
                     return nil
                 } catch {
