@@ -108,7 +108,7 @@ public protocol ATImageProcessable {
     func stripMetadata(from image: ATImage) -> ATImage?
 }
 
-extension ATImageProcessable {
+public extension ATImageProcessable {
     public func convertToImageQuery(imagePath: String, altText: String?, targetFileSize: Int = 1_000_000) -> ImageQuery? {
         guard let image = NSImage(contentsOfFile: imagePath) else {
             print("Image could not be loaded.")
