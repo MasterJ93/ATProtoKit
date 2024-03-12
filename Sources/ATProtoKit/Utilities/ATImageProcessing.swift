@@ -194,7 +194,7 @@ public extension ATImageProcessable {
         throw ATImageProcessingError.unableToResizeImage
     }
 
-    internal func stripMetadata(from image: ATImage) -> ATImage? {
+    func stripMetadata(from image: ATImage) -> ATImage? {
         guard let tiffRepresentation = image.tiffRepresentation,
               let source = CGImageSourceCreateWithData(tiffRepresentation as CFData, nil) else {
             return nil
