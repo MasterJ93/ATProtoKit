@@ -7,8 +7,10 @@
 
 import Foundation
 
+public protocol ATProtoError: Error {}
+
 /// The base exception class for ATProtoKit.
-public enum ATProtoError: Error, Decodable {
+public enum ATAPIError: ATProtoError, Decodable {
     /// Represents a bad request error (HTTP 400) with an associated message.
     /// - Parameter message: The message received along side the error.
     case badRequest(message: String) // Error 400
@@ -104,4 +106,10 @@ public enum ATProtoError: Error, Decodable {
         case error
         case message
     }
+}
+
+/// An error type related to ``ATImageProcessable``..
+enum ATImageProcessingError: ATProtoError {
+    /// The image's file size can't be lowered any further to fit the target file size.
+    case unableToResizeImage
 }
