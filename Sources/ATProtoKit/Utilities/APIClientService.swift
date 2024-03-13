@@ -232,7 +232,7 @@ public class APIClientService {
     }
     
     /// Determines the MIME type based on a file's extension.
-    /// 
+    ///
     /// - Parameter filename: The filename to determine the MIME type for.
     /// - Returns: A string representing the MIME type.
     private static func mimeType(for filename: String) -> String {
