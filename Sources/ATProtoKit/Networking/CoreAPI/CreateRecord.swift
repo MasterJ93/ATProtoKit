@@ -27,9 +27,9 @@ extension ATProtoKit {
                                                          acceptValue: "application/json",
                                                          contentTypeValue: "application/json",
                                                          authorizationValue: "Bearer \(session.accessToken)")
-            let result = try await APIClientService.sendRequest(request, withEncodingBody: requestBody, decodeTo: StrongReference.self)
+            let response = try await APIClientService.sendRequest(request, withEncodingBody: requestBody, decodeTo: StrongReference.self)
 
-            return .success(result)
+            return .success(response)
         } catch {
             return .failure(error)
         }
