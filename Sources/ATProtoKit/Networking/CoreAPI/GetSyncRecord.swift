@@ -8,16 +8,14 @@
 import Foundation
 
 extension ATProtoKit {
-    // TODO: Search up parsing .CAR files for implementation in this method.
-    /// 
+    /// Gets a record as a .car format.
     ///
     /// - Parameters:
     ///   - recordQuery: The information required to get a record.
     ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `https://bsky.social`.
     /// - Returns: A `Result`, containing either a `Data` if successful, or an `Error` if not.
-    public static func getSyncRecord(_ recordQuery: RecordQuery, pdsURL: String? = "https://bsky.social") async throws -> Result<Data, Error> {
-        guard let sessionURL = pdsURL,
-              let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.sync.getRecord") else {
+    public static func getSyncRecord(_ recordQuery: RecordQuery, pdsURL: String = "https://bsky.social") async throws -> Result<Data, Error> {
+        guard let requestURL = URL(string: "\(pdsURL)/xrpc/com.atproto.sync.getRecord") else {
             return .failure(URIError.invalidFormat)
         }
 
