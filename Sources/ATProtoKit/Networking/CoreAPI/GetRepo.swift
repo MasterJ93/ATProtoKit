@@ -1,35 +1,34 @@
 //
-//  GetSyncRecord.swift
-//  
+//  GetRepo.swift
 //
-//  Created by Christopher Jr Riley on 2024-02-18.
+//
+//  Created by Christopher Jr Riley on 2024-03-13.
 //
 
 import Foundation
 
 extension ATProtoKit {
-    /// Gets a record as a .car format.
-    ///
+    /// Gets a repository in a .car format.
+    /// 
     /// - Parameters:
-    ///   - recordQuery: The information required to get a record.
+    ///   - repositoryDID: The decentralized identifier (DID) or handle of the repository.
+    ///   - since: The repository's revision for diff creation. Optional.
     ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `https://bsky.social`.
-    /// - Returns: A `Result`, containing either a `Data` if successful, or an `Error` if not.
-    public static func getSyncRecord(_ recordQuery: RecordQuery, pdsURL: String = "https://bsky.social") async throws -> Result<Data, Error> {
-        guard let requestURL = URL(string: "\(pdsURL)/xrpc/com.atproto.sync.getRecord") else {
+    /// - Returns: A `Result`, containing either a `Data` object if successful, or an `Error` if not.
+    public static func getRepo(_ repositoryDID: String, since: String? = nil, pdsURL: String = "https://bsky.social") async throws -> Result<Data, Error> {
+        guard let requestURL = URL(string: "\(pdsURL)/xrpc/com.atproto.sync.getRepo") else {
             return .failure(URIError.invalidFormat)
         }
 
+        var queryItems = [(String, String)]()
+
+        queryItems.append(("did", repositoryDID))
+
+        if let since {
+            queryItems.append(("since", since))
+        }
+
         do {
-            var queryItems = [
-                ("repo", recordQuery.repo),
-                ("collection", recordQuery.collection),
-                ("rkey", recordQuery.recordKey)
-            ]
-
-            if let cid = recordQuery.recordCID {
-                queryItems.append(("cid", cid))
-            }
-
             let queryURL = try APIClientService.setQueryItems(
                 for: requestURL,
                 with: queryItems

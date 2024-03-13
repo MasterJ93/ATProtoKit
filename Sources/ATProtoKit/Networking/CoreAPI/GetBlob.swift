@@ -31,7 +31,9 @@ extension ATProtoKit {
 
             let request = APIClientService.createRequest(forRequest: queryURL,
                                                          andMethod: .get,
-                                                         acceptValue: "'*/*'")
+                                                         acceptValue: "'*/*'",
+                                                         contentTypeValue: nil,
+                                                         authorizationValue: nil)
             let response = try await APIClientService.sendRequest(request)
 
             return .success(response)
