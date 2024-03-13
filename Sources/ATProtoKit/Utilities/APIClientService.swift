@@ -87,7 +87,11 @@ public class APIClientService {
         _ = try await performRequest(request, withEncodingBody: body)
     }
 
-    /// Sends a `URLRequest` in order to receive a blob.
+    /// Sends a `URLRequest` in order to receive a data object.
+    ///
+    /// Typically, this will be used for getting a blob object as the output. However, this is also useful for when the output is an unknown format, can be any format,
+    /// or is unreliable. If it can be any format or if the format is unreliable, it's your responsibility to handle the information stored inside the `Data` object. If the
+    /// output is known and it's not a blob, however, then the other `sendRequest` methods are more appropriate.
     /// - Parameter request: The `URLRequest` to send.
     /// - Returns: A `Data` object that contains the blob.
     public static func sendRequest(_ request: URLRequest) async throws -> Data {
@@ -96,6 +100,7 @@ public class APIClientService {
     }
 
     /// Uploads a blob to a specified URL with multipart/form-data encoding.
+    ///
     /// - Parameters:
     ///   - pdsURL: The base URL for the blob upload.
     ///   - accessToken: The access token for authorization.
@@ -120,6 +125,7 @@ public class APIClientService {
     }
 
     /// Sends a `URLRequest` and returns the raw JSON output as a `Dictionary`.
+    ///
     /// - Parameters:
     ///   - request: The `URLRequest` to send.
     ///   - body: An optional `Encodable` body to be encoded and attached to the request.
@@ -154,6 +160,7 @@ public class APIClientService {
     }
 
     /// Sends a `URLRequest` and returns the raw HTML output as a `String`.
+    ///
     /// - Parameters:
     ///   - request: The `URLRequest` to send.
     /// - Returns: A `String` representation of the HTML response.
@@ -178,6 +185,7 @@ public class APIClientService {
     }
 
     /// Private method to handle the common request sending logic.
+    ///
     /// - Parameters:
     ///   - request: The `URLRequest` to send.
     ///   - body: An optional `Encodable` body to be encoded and attached to the request.
@@ -224,6 +232,7 @@ public class APIClientService {
     }
     
     /// Determines the MIME type based on a file's extension.
+    /// 
     /// - Parameter filename: The filename to determine the MIME type for.
     /// - Returns: A string representing the MIME type.
     private static func mimeType(for filename: String) -> String {
