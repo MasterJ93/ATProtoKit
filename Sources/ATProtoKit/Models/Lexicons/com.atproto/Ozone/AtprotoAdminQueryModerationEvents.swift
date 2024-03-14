@@ -18,7 +18,7 @@ public struct AdminQueryModerationEventOutput: Codable {
     /// The mark used to indicate the starting point for the next set of results. Optional.
     public let cursor: String?
     /// An array of moderator events.
-    public let events: [AdminModEventView]
+    public let events: [OzoneModerationEventViewDetail]
 }
 
 /// Indicates the sorting direction for the array of moderation events.

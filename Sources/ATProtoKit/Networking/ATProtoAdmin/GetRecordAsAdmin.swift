@@ -15,8 +15,8 @@ extension ATProtoAdmin {
     /// - Parameters:
     ///   - recordURI: The URI of the record.
     ///   - recordCID: The CID hash of the record. Optional.
-    /// - Returns: A `Result`, containing either an ``AdminRecordViewDetail`` if successful, or an `Error` if not.
-    public func getRecordAsAdmin(_ recordURI: String, recordCID: String?) async throws -> Result<AdminRecordViewDetail, Error> {
+    /// - Returns: A `Result`, containing either an ``OzoneModerationRecordViewDetail`` if successful, or an `Error` if not.
+    public func getRecordAsAdmin(_ recordURI: String, recordCID: String?) async throws -> Result<OzoneModerationRecordViewDetail, Error> {
         guard let sessionURL = session.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.admin.getRecord") else {
             return .failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"]))
@@ -39,7 +39,7 @@ extension ATProtoAdmin {
                                                          acceptValue: "application/json",
                                                          contentTypeValue: nil,
                                                          authorizationValue: "Bearer \(session.accessToken)")
-            let response = try await APIClientService.sendRequest(request, decodeTo: AdminRecordViewDetail.self)
+            let response = try await APIClientService.sendRequest(request, decodeTo: OzoneModerationRecordViewDetail.self)
 
             return .success(response)
         } catch {
