@@ -322,6 +322,10 @@ public enum AdminEventViewUnion: Codable {
     case moderationEventUnmute(OzoneModerationEventUnmute)
     /// An email event.
     case moderationEventEmail(OzoneModerationEventEmail)
+    /// A resolve appeal event.
+    case moderationEventResolveAppeal(OzoneModerationEventResolveAppeal)
+    /// A diversion event.
+    case moderationEventDivert(OzoneModerationEventDivert)
 
     public init(from decoder: Decoder) throws {
         let container = try decoder.singleValueContainer()
@@ -346,6 +350,10 @@ public enum AdminEventViewUnion: Codable {
             self = .moderationEventUnmute(value)
         } else if let value = try? container.decode(OzoneModerationEventEmail.self) {
             self = .moderationEventEmail(value)
+        } else if let value = try? container.decode(OzoneModerationEventResolveAppeal.self) {
+            self = .moderationEventResolveAppeal(value)
+        } else if let value = try? container.decode(OzoneModerationEventDivert.self) {
+            self = .moderationEventDivert(value)
         } else {
             throw DecodingError.typeMismatch(AdminEventViewUnion.self,
                                              DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Unknown EventViewUnion type"))
@@ -376,7 +384,10 @@ public enum AdminEventViewUnion: Codable {
                 try container.encode(moderationEventUnmute)
             case .moderationEventEmail(let moderationEventEmail):
                 try container.encode(moderationEventEmail)
-
+            case .moderationEventResolveAppeal(let moderationEventResolveAppeal):
+                try container.encode(moderationEventResolveAppeal)
+            case .moderationEventDivert(let moderationEventDivert):
+                try container.encode(moderationEventDivert)
         }
     }
 }

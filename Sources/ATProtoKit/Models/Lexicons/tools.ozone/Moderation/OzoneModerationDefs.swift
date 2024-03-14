@@ -294,6 +294,12 @@ public enum OzoneSubjectReviewState: String, Codable {
     ///
     /// - Note: The above documentation was taken directly from the AT Protocol specifications.
     case reviewClosed
+
+    /// Moderator review status of a subject: Unnecessary. Indicates that the subject does not need a review at the moment but there
+    /// is probably some moderation related metadata available for it
+    ///
+    /// - Note: The above documentation was taken directly from the AT Protocol specifications.
+    case reviewNone
 }
 
 /// A data model for an event takedown definition.
@@ -458,6 +464,10 @@ public struct OzoneModerationEventEmail: Codable {
     ///
     /// - Note: According to the AT Protocol specifications: "The subject line of the email sent to the user."
     public let subjectLine: String
+    /// The body of the email.
+    ///
+    /// - Note: According to the AT Protocol specifications: "The content of the email sent to the user."
+    public let content: String
     /// Any additional comments about the email. Optional.
     ///
     /// - Note: According to the AT Protocol specifications: "Additional comment about the outgoing comm."
