@@ -47,8 +47,6 @@ extension ATProtoKit {
                 with: queryItems
             )
 
-            print("===Query URL: \(queryURL)")
-
             let request = APIClientService.createRequest(forRequest: queryURL,
                                                          andMethod: .get,
                                                          contentTypeValue: nil,

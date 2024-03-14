@@ -6,6 +6,13 @@
 
 <p align="center">A straightforward solution for using the AT Protocol and Bluesky, written in Swift.</p>
 
+<div align="center">
+
+[![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2FMasterJ93%2FATProtoKit%2Fbadge%3Ftype%3Dswift-versions)](https://swiftpackageindex.com/MasterJ93/ATProtoKit)
+[![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2FMasterJ93%2FATProtoKit%2Fbadge%3Ftype%3Dplatforms)](https://swiftpackageindex.com/MasterJ93/ATProtoKit)
+
+</div>
+
 ---
 
 ***This API library is highly unstable. Things will change. Things are incomplete. Things will break. Until the project reaches version 1.0.0, stability will not be guaranteed.***
@@ -25,6 +32,7 @@ Task {
             let postResult = await atProto.createPostRecord(text: "Hello Bluesky!")
         case .failure(let error):
             print("Error: \(error)")
+        }
 }
 ```
 
@@ -50,7 +58,7 @@ I believe Bluesky and its accompanying AT Protocol gives the perfect balance bet
 You can use the Swift Package Manager to download and import the library into your project:
 ```swift
 dependencies: [
-    .package(url: "https://github.com/MasterJ93/ATProtoKit.git", from: "0.2.0")
+    .package(url: "https://github.com/MasterJ93/ATProtoKit.git", from: "0.4.0")
 ]
 ```
 

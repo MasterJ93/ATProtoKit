@@ -30,7 +30,6 @@ protocol ImageProtocol {
     func loadImageData(from imagePath: String) -> Self?
 }
 
-
 /// Provides a standardized approach to processing images for uploading to servers that interact with the AT Protocol.
 /// 
 /// This protocol aids in the conversion of images into an ``ImageQuery`` (which is used to give all of the necessary information
@@ -52,7 +51,7 @@ protocol ImageProtocol {
 /// Below is a sample implementation showcasing how to conform to `ATImageProcessable` for a custom image type:
 /// ```swift
 /// class CustomImageProcessor: ATImageProcessable {
-///      func convertToImageQuery(image: ATImage, altText: String, targetFileSize: Int = 1_000_000) -> ImageQuery? {
+///      func convertToImageQuery(imagePath: String, altText: String, targetFileSize: Int = 1_000_000) -> ImageQuery? {
 ///          let atImage = stripMetadata(from: image)
 ///          guard let customImage = atImage as? CustomImageType else {
 ///              return nil
@@ -91,18 +90,18 @@ public protocol ATImageProcessable {
     ///
     /// It's required for the image to be less than 1MB (1,000,000 bytes). This method will shrink the file size to the largest possible size that doesn't exceed the limit. Note that image quality may be affected.
     /// - Parameters:
-    ///   - image: The image that needs to be prepared.
+    ///   - image: The file path of the image that needs to be prepared.
     ///   - altText: The alt text used to help blind and low-vision users know what's contained in the text. Optional.
     ///   - targetFileSize: The size (in bytes) the file needs to be.
     /// - Returns: An ``ImageQuery``, which combines the image itself in a `Data` format and the alt text.
-    func convertToImageQuery(image: ATImage, altText: String?, targetFileSize: Int) -> ImageQuery?
+    func convertToImageQuery(imagePath: String, altText: String?, targetFileSize: Int) -> ImageQuery?
     /// Removes all EXIF and GPS metadata from the image.
     ///
-    /// This method should ideally be before ``convertToImageQuery(image:altText:)`` does anything to the image, as it will help with the process of maintaining more of the image quality.
+    /// This method should ideally be before ``convertToImageQuery(imagePath:altText:targetFileSize:)-2fma7`` does anything to the image, as it will help with the process of maintaining more of the image quality.
     func stripMetadata(from image: ATImage) -> ATImage?
 }
 
-extension ATImageProcessable {
+public extension ATImageProcessable {
     public func convertToImageQuery(imagePath: String, altText: String?, targetFileSize: Int = 1_000_000) -> ImageQuery? {
         guard let image = NSImage(contentsOfFile: imagePath) else {
             print("Image could not be loaded.")
@@ -115,6 +114,13 @@ extension ATImageProcessable {
             return nil
         }
 
+        // Aspect ratio.
+        let imageHeight = atImage.size.height
+        let imageWidth = atImage.size.width
+
+        // Calculate the aspect ratio. Make sure it's not dividing by zero.
+        let aspectRatio: CGFloat = imageHeight > 0 ? imageWidth / imageHeight : 0
+
         // Determine the image format from the file extension.
         let filename = URL(fileURLWithPath: imagePath).lastPathComponent
 
@@ -125,7 +131,15 @@ extension ATImageProcessable {
             case "png":
                 imageData = bitmapImage.representation(using: .png, properties: [:])
             case "jpg", "jpeg":
-                imageData = bitmapImage.representation(using: .jpeg, properties: [:])
+                do {
+                    imageData = try decreaseJPGSize(tiffData, bitmapImage: bitmapImage, targetFileSize: targetFileSize)
+                } catch ATImageProcessingError.unableToResizeImage {
+                    return nil
+                } catch {
+                    // Handle any other errors
+                    print("An unexpected error occurred: \(error.localizedDescription)")
+                    return nil
+                }
             case "gif":
                 imageData = bitmapImage.representation(using: .gif, properties: [:])
             case "webp":
@@ -142,7 +156,38 @@ extension ATImageProcessable {
         return nil
     }
 
-    internal func stripMetadata(from image: ATImage) -> ATImage? {
+    internal func decreaseJPGSize(_ image: Data, bitmapImage: NSBitmapImageRep, targetFileSize: Int) throws -> Data {
+        var imageData = image
+        var imageBitmap = bitmapImage
+        // Check if the file size is already lower than the targetFileSize.
+        if imageData.count <= targetFileSize {
+            return image
+        }
+
+        // Loops while the size of the image exceeds the target image size.
+        var compressionFloat = 1.0
+
+        while compressionFloat >= 0.5 {
+            var imageInstance = bitmapImage
+
+            // Lower the compression factor by 5%.
+            compressionFloat -= 0.05
+
+            guard let finalImage = imageInstance.representation(using: .jpeg, properties: [.compressionFactor : compressionFloat]) else {
+                break
+            }
+
+            // If the resulting compression makes the file size lower, set the value and break the loop.
+            if finalImage.count <= targetFileSize {
+                imageBitmap = imageInstance
+                break
+            }
+        }
+
+        throw ATImageProcessingError.unableToResizeImage
+    }
+
+    func stripMetadata(from image: ATImage) -> ATImage? {
         guard let tiffRepresentation = image.tiffRepresentation,
               let source = CGImageSourceCreateWithData(tiffRepresentation as CFData, nil) else {
             return nil

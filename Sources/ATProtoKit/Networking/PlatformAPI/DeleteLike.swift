@@ -24,10 +24,16 @@ extension ATProtoKit {
 
         let requestBody = likeRecord
 
-        try await deleteRecord(requestBody: requestBody)
+        guard let repositoryDID = requestBody?.repo,
+              let likeCollection = requestBody?.collection,
+              let likeRecordKey = requestBody?.recordKey else {
+            throw NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid Record"])
+        }
+
+        try await deleteRecord(repositoryDID: repositoryDID, collection: likeCollection, recordKey: likeRecordKey, swapRecord: requestBody?.recordCID)
     }
 
-    fileprivate func resolveRecordIdentifierToQuery(_ record: ATProtoKit.RecordIdentifier, _ sessionURL: String,
+    fileprivate func resolveRecordIdentifierToQuery(_ record: RecordIdentifier, _ sessionURL: String,
                                                     _ likeRecord: inout RecordQuery?) async throws {
         switch record {
             case .recordQuery(let recordQuery):

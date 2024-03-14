@@ -44,7 +44,7 @@ public struct External: Codable {
     /// The thumbnail image of the external content.
     ///
     /// - Warning: The image size can't be higher than 1 MB. Failure to do so will result in the image failing to upload.
-    public let thumbnailImage: Data
+    public let thumbnailImage: UploadBlobOutput
 
     enum CodingKeys: String, CodingKey {
         case embedURI = "uri"

@@ -30,7 +30,11 @@ public struct ServerDescribeServerOutput: Codable {
     /// A group of URLs for the server's service policies. Optional.
     ///
     /// - Note: According to the AT Protocol specifications: "URLs of service policy documents."
-    public let servicePolicyURLs: ServicePolicyURLs
+    public let servicePolicyURLs: ServerServicePolicyURLs
+    /// The contact information for the server.
+    ///
+    /// - Note: According to the AT Protocol specifications: "Contact information."
+    public let contactInformation: ServerContactInformation
     /// The decentralized identifier (DID) of the server.
     public let serverDID: String
 
@@ -39,6 +43,7 @@ public struct ServerDescribeServerOutput: Codable {
         case isPhoneVerificationRequired = "phoneVerificationRequired"
         case availableUserDomains
         case servicePolicyURLs = "links"
+        case contactInformation = "contact"
         case serverDID = "did"
     }
 }
@@ -50,7 +55,7 @@ public struct ServerDescribeServerOutput: Codable {
 /// - SeeAlso: This is based on the [`com.atproto.server.describeServer`][github] lexicon.
 ///
 /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/server/describeServer.json
-public struct ServicePolicyURLs: Codable {
+public struct ServerServicePolicyURLs: Codable {
     /// The URL for the server's Privacy Policy. Optional.
     public let privacyPolicyURL: URL?
     /// The URL for the server's Terms of Service. Optional.
@@ -60,4 +65,14 @@ public struct ServicePolicyURLs: Codable {
         case privacyPolicyURL = "privacyPolicy"
         case termsOfServiceURL = "termsOfService"
     }
+}
+
+/// A data model definition of the server's contact information.
+///
+/// - SeeAlso: This is based on the [`com.atproto.server.describeServer`][github] lexicon.
+///
+/// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/server/describeServer.json
+public struct ServerContactInformation: Codable {
+    /// The email address users can use to contact the server owner.
+    public let email: String
 }

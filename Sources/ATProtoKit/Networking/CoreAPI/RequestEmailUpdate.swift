@@ -13,7 +13,7 @@ extension ATProtoKit {
     /// - Returns: A `Result`, containing either a ``RequestEmailUpdateOutput`` if successful, or an `Error` if not.
     public func requestEmailUpdate() async throws -> Result<RequestEmailUpdateOutput, Error> {
         guard let sessionURL = session.pdsURL,
-              let requestURL = URL(string: "\(sessionURL)/xrpc/om.atproto.server.requestEmailUpdate") else {
+              let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.server.requestEmailUpdate") else {
             return .failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey : "Invalid URL"]))
         }
 

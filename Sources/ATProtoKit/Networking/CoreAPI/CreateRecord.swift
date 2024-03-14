@@ -8,7 +8,7 @@
 import Foundation
 
 extension ATProtoKit {
-    /// Creates a record attached to a user's account.
+    /// Creates a record attached to a user account.
     /// 
     /// - Parameters:
     ///   - collection: The NSID of the record.
@@ -24,10 +24,12 @@ extension ATProtoKit {
         do {
             let request = APIClientService.createRequest(forRequest: requestURL,
                                                          andMethod: .post,
+                                                         acceptValue: "application/json",
+                                                         contentTypeValue: "application/json",
                                                          authorizationValue: "Bearer \(session.accessToken)")
-            let result = try await APIClientService.sendRequest(request, withEncodingBody: requestBody, decodeTo: StrongReference.self)
+            let response = try await APIClientService.sendRequest(request, withEncodingBody: requestBody, decodeTo: StrongReference.self)
 
-            return .success(result)
+            return .success(response)
         } catch {
             return .failure(error)
         }

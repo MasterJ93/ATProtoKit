@@ -20,7 +20,7 @@ public struct FeedPostView: Codable {
     /// The author of the post. This will give the basic details of the post author.
     public let author: ActorProfileViewBasic
     /// The record data itself.
-    public let record: UnknownType
+    public let record: FeedPost
     /// An embed view of a specific type. Optional.
     public var embed: EmbedViewUnion? = nil
     /// The number of replies in the post. Optional.
@@ -38,7 +38,7 @@ public struct FeedPostView: Codable {
     /// The ruleset of who can reply to the post. Optional.
     public var threadgate: FeedThreadgateView? = nil
 
-    public init(postURI: String, cidHash: String, author: ActorProfileViewBasic, record: UnknownType, embed: EmbedViewUnion?, replyCount: Int?,
+    public init(postURI: String, cidHash: String, author: ActorProfileViewBasic, record: FeedPost, embed: EmbedViewUnion?, replyCount: Int?,
                 repostCount: Int?, likeCount: Int?, indexedAt: Date, viewer: FeedViewerState?, labels: [Label]?, threadgate: FeedThreadgateView?) {
         self.postURI = postURI
         self.cidHash = cidHash
@@ -60,7 +60,7 @@ public struct FeedPostView: Codable {
         self.postURI = try container.decode(String.self, forKey: .postURI)
         self.cidHash = try container.decode(String.self, forKey: .cidHash)
         self.author = try container.decode(ActorProfileViewBasic.self, forKey: .author)
-        self.record = try container.decode(UnknownType.self, forKey: .record)
+        self.record = try container.decode(FeedPost.self, forKey: .record)
         self.embed = try container.decodeIfPresent(EmbedViewUnion.self, forKey: .embed)
         self.replyCount = try container.decodeIfPresent(Int.self, forKey: .replyCount)
         self.repostCount = try container.decodeIfPresent(Int.self, forKey: .repostCount)
@@ -201,9 +201,9 @@ public struct FeedThreadViewPost: Codable {
     /// The post contained in a thread.
     public let post: FeedPostView
     /// The direct post that the user's post is replying to. Optional.
-    public var parent: PostUnion? = nil
+    public var parent: ThreadPostUnion? = nil
     /// An array of posts of various types. Optional.
-    public var replies: [PostUnion]? = nil
+    public var replies: [ThreadPostUnion]? = nil
 }
 
 /// A data model for a definition of a post that may not have been found.
@@ -305,7 +305,7 @@ public struct FeedGeneratorView: Codable {
     /// The description of the feed generator. Optional.
     public var description: String? = nil
     /// An array of the facets within the feed generator's description.
-    public let descriptionFacets: [Facet]
+    public let descriptionFacets: [Facet]?
     /// The avatar image URL of the feed generator.
     public var avatarImageURL: URL? = nil
     /// The number of likes for the feed generator.
@@ -324,7 +324,7 @@ public struct FeedGeneratorView: Codable {
         self.creator = try container.decode(ActorProfileView.self, forKey: .creator)
         self.displayName = try container.decode(String.self, forKey: .displayName)
         self.description = try container.decodeIfPresent(String.self, forKey: .description)
-        self.descriptionFacets = try container.decode([Facet].self, forKey: .descriptionFacets)
+        self.descriptionFacets = try container.decodeIfPresent([Facet].self, forKey: .descriptionFacets)
         self.avatarImageURL = try container.decodeIfPresent(URL.self, forKey: .avatarImageURL)
         self.viewer = try container.decodeIfPresent(FeedGeneratorViewerState.self, forKey: .viewer)
         self.indexedAt = try container.decode(DateFormatting.self, forKey: .indexedAt).wrappedValue
@@ -343,7 +343,7 @@ public struct FeedGeneratorView: Codable {
         // `maxGraphemes`'s limit is 300, but `String.count` should respect that limit
         try truncatedEncodeIfPresent(self.description, withContainer: &container, forKey: .displayName, upToLength: 3000)
 
-        try container.encode(self.descriptionFacets, forKey: .descriptionFacets)
+        try container.encodeIfPresent(self.descriptionFacets, forKey: .descriptionFacets)
         try container.encodeIfPresent(self.avatarImageURL, forKey: .avatarImageURL)
 
         // Assuming `likeCount` is not nil, only encode it if it's 0 or higher
@@ -441,9 +441,9 @@ public struct FeedThreadgateView: Codable {
 // MARK: - Union Types
 /// A reference containing the list of the types of embeds.
 ///
-/// - Note: This is based on the following lexicons:
-///   - `app.bsky.embed.record`
-///     - `app.bsky.feed.defs`
+/// - Note: This is based on the following lexicons:\
+///\- `app.bsky.embed.record`\
+///\- `app.bsky.feed.defs`
 ///
 /// - SeeAlso: The lexicons can be viewed in their GitHub repo pages:\
 /// \- [`app.bsky.embed.record`][embed_record]\
@@ -518,7 +518,9 @@ public enum PostUnion: Codable {
         } else if let value = try? container.decode(FeedBlockedPost.self) {
             self = .blockedPost(value)
         } else {
-            throw DecodingError.typeMismatch(PostUnion.self, DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Unknown PostUnion type"))
+            throw DecodingError.typeMismatch(
+                PostUnion.self, DecodingError.Context(
+                    codingPath: decoder.codingPath, debugDescription: "Unknown PostUnion type"))
         }
     }
 
@@ -527,6 +529,50 @@ public enum PostUnion: Codable {
 
         switch self {
             case .postView(let union):
+                try container.encode(union)
+            case .notFoundPost(let union):
+                try container.encode(union)
+            case .blockedPost(let union):
+                try container.encode(union)
+        }
+    }
+}
+
+/// A reference containing the list of the states of a post.
+///
+/// - SeeAlso: This is based on the [`app.bsky.feed.defs`][github] lexicon.
+///
+/// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/feed/defs.json
+public indirect enum ThreadPostUnion: Codable {
+    /// The view of a post thread.
+    case threadViewPost(FeedThreadViewPost)
+    /// The view of a post that may not have been found.
+    case notFoundPost(FeedNotFoundPost)
+    /// The view of a post that's been blocked by the post author.
+    case blockedPost(FeedBlockedPost)
+
+    // Custom coding keys and init(from:) / encode(to:) will be needed here for Codable conformance.
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.singleValueContainer()
+
+        if let value = try? container.decode(FeedThreadViewPost.self) {
+            self = .threadViewPost(value)
+        } else if let value = try? container.decode(FeedNotFoundPost.self) {
+            self = .notFoundPost(value)
+        } else if let value = try? container.decode(FeedBlockedPost.self) {
+            self = .blockedPost(value)
+        } else {
+            throw DecodingError.typeMismatch(
+                ThreadPostUnion.self, DecodingError.Context(
+                    codingPath: decoder.codingPath, debugDescription: "Unknown ThreadPostUnion type"))
+        }
+    }
+
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.singleValueContainer()
+
+        switch self {
+            case .threadViewPost(let union):
                 try container.encode(union)
             case .notFoundPost(let union):
                 try container.encode(union)

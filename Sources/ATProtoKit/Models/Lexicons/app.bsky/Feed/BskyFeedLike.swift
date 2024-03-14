@@ -49,8 +49,6 @@ public struct FeedLike: Codable {
 
     enum CodingKeys: String, CodingKey {
         case type = "$type"
-        case recordURI = "uri"
-        case cidHash = "cid"
         case subject
         case createdAt
     }

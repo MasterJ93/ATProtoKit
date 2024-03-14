@@ -58,9 +58,6 @@ extension ATProtoKit {
             }
         }
 
-        // Labels
-        var resolvedLabels: FeedLabelUnion? = nil
-
 
         // Compiling all parts of the post into one.
         let post = FeedPost(
@@ -112,10 +109,12 @@ extension ATProtoKit {
     /// Scraps the website for the required information in order to attach to a record's embed at a later request.
     /// - Parameter url: The URL of the website
     /// - Returns: An ``EmbedUnion`` which contains an ``EmbedExternal`` for use in a record.
-    public func buildExternalEmbed(from url: URL) async throws -> EmbedUnion {
-        
-        let external = EmbedExternal(external: External(embedURI: "", title: "", description: "", thumbnailImage: Data(count: 1)))
-        return .external(external)
+    public func buildExternalEmbed(from url: URL) async throws -> EmbedUnion? {
+
+        // Temporary comment until it's time to work on this part of the library.
+//        let external = EmbedExternal(external: External(embedURI: "", title: "", description: "", thumbnailImage: UploadBlobOutput(type: <#T##String?#>, reference: <#T##BlobReference#>, mimeType: <#T##String#>, size: <#T##Int#>)))
+//        return .external(external)
+        return nil
     }
 
     /// Grabs and validates a post record to attach to a record's embed at a later request.
