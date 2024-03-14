@@ -7,10 +7,14 @@
 
 import Foundation
 
-/// The main data model definition for notifying the crawling service to start or resume crawling.
+/// The main data model definition for the crawling service.
 ///
-/// - Note: According to the AT Protocol specifications: "Notify a crawling service of a recent update, and that crawling should resume. Intended use is after a
-/// gap between repo stream events caused the crawling service to disconnect. Does not require auth; implemented by Relay."
+/// - Note: According to the AT Protocol specifications:\
+/// `com.atproto.sync.notifyOfUpdate`: "Notify a crawling service of a recent update, and that crawling should resume. Intended use is after a
+/// gap between repo stream events caused the crawling service to disconnect. Does not require auth; implemented by Relay." \
+/// \
+/// `com.atproto.sync.requestCrawl`: "Request a service to persistently crawl hosted repos. Expected use is new PDS instances declaring their existence
+///  to Relays. Does not require auth."
 ///
 /// - SeeAlso: This is based on the following lexicons:\
 ///  \- [`com.atproto.sync.notifyOfUpdate`][notifyOfUpdate]\

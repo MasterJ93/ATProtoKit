@@ -1,5 +1,5 @@
 //
-//  NotifyOfUpdate.swift
+//  RequestCrawl.swift
 //
 //
 //  Created by Christopher Jr Riley on 2024-03-14.
@@ -8,14 +8,9 @@
 import Foundation
 
 extension ATProtoKit {
-    /// Notifies the crawling service to re-index or resume crawling.
-    /// 
-    /// - Note: If `crawlingHostname` and `pdsURL` are the same, then it's best not to give a value to `hostname`.
+    /// Requests the crawling service to begin crawling the repositories.
     ///
-    /// - Parameters:
-    ///   - crawlingHostname: The hostname that the crawling service resides in. Optional.
-    ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `https://bsky.social`.
-    public static func notifyOfUpdate(in crawlingHostname: URL? = nil, pdsURL: String = "https://bsky.social") async throws {
+    public static func requestCrawl(in crawlingHostname: URL? = nil, pdsURL: String = "https://bsky.social") async throws {
         guard let requestURL = URL(string: "\(pdsURL)/xrpc/app.bsky.graph.notifyOfUpdate") else {
             throw NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"])
         }
