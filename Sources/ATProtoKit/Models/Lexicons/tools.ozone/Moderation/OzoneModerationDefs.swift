@@ -18,7 +18,7 @@ public struct OzoneModerationEventView: Codable {
     /// The type of the moderator's event view.
     public let event: AdminEventViewUnion
     /// The subject reference of the moderator's event view.
-    public let subject: RepoReferencesUnion
+    public let subject: RepositoryReferencesUnion
     /// An array of CID hashes related to blobs for the moderator's event view.
     public let subjectBlobCIDHashes: [String]
     /// The creator of the event view.
@@ -30,7 +30,7 @@ public struct OzoneModerationEventView: Codable {
     /// The subject handle of the event view. Optional.
     public var subjectHandle: String? = nil
 
-    public init(id: Int, event: AdminEventViewUnion, subject: RepoReferencesUnion, subjectBlobCIDHashes: [String], createdBy: String,
+    public init(id: Int, event: AdminEventViewUnion, subject: RepositoryReferencesUnion, subjectBlobCIDHashes: [String], createdBy: String,
                 createdAt: Date, creatorHandle: String?, subjectHandle: String?) {
         self.id = id
         self.event = event
@@ -47,7 +47,7 @@ public struct OzoneModerationEventView: Codable {
 
         self.id = try container.decode(Int.self, forKey: .id)
         self.event = try container.decode(AdminEventViewUnion.self, forKey: .event)
-        self.subject = try container.decode(RepoReferencesUnion.self, forKey: .subject)
+        self.subject = try container.decode(RepositoryReferencesUnion.self, forKey: .subject)
         self.subjectBlobCIDHashes = try container.decode([String].self, forKey: .subjectBlobCIDHashes)
         self.createdBy = try container.decode(String.self, forKey: .createdBy)
         self.createdAt = try container.decode(DateFormatting.self, forKey: .createdAt).wrappedValue
@@ -91,7 +91,7 @@ public struct OzoneModerationEventViewDetail: Codable {
     /// The type of the moderator's event view.
     public let event: EventViewDetailUnion
     /// The subject reference of the moderator's event view.
-    public let subject: RepoViewUnion
+    public let subject: RepositoryViewUnion
     /// An array of blobs for a moderator to look at.
     public let subjectBlobs: [OzoneModerationBlobView]
     /// The creator of the event view.
@@ -99,7 +99,7 @@ public struct OzoneModerationEventViewDetail: Codable {
     /// The date and time the event view was created.
     @DateFormatting public var createdAt: Date
 
-    public init(id: Int, event: EventViewDetailUnion, subject: RepoViewUnion, subjectBlobs: [OzoneModerationBlobView], createdBy: String, createdAt: Date) {
+    public init(id: Int, event: EventViewDetailUnion, subject: RepositoryViewUnion, subjectBlobs: [OzoneModerationBlobView], createdBy: String, createdAt: Date) {
         self.id = id
         self.event = event
         self.subject = subject
@@ -113,7 +113,7 @@ public struct OzoneModerationEventViewDetail: Codable {
 
         self.id = try container.decode(Int.self, forKey: .id)
         self.event = try container.decode(EventViewDetailUnion.self, forKey: .event)
-        self.subject = try container.decode(RepoViewUnion.self, forKey: .subject)
+        self.subject = try container.decode(RepositoryViewUnion.self, forKey: .subject)
         self.subjectBlobs = try container.decode([OzoneModerationBlobView].self, forKey: .subjectBlobs)
         self.createdBy = try container.decode(String.self, forKey: .createdBy)
         self.createdAt = try container.decode(DateFormatting.self, forKey: .createdAt).wrappedValue
@@ -149,7 +149,7 @@ public struct OzoneSubjectStatusView: Codable {
     /// The ID of the status view.
     public let id: Int
     /// The subject reference of the status view.
-    public let subject: RepoReferencesUnion
+    public let subject: RepositoryReferencesUnion
     /// An array of CID hashes related to blobs. Optional.
     public var subjectBlobCIDHashes: [String]? = nil
     /// The handle of the subject related to the status. Optional.
@@ -187,7 +187,7 @@ public struct OzoneSubjectStatusView: Codable {
     /// An array of tags. Optional.
     public var tags: [String]? = nil
 
-    public init(id: Int, subject: RepoReferencesUnion, subjectBlobCIDHashes: [String]?, subjectRepoHandle: String?, updatedAt: Date, createdAt: Date,
+    public init(id: Int, subject: RepositoryReferencesUnion, subjectBlobCIDHashes: [String]?, subjectRepoHandle: String?, updatedAt: Date, createdAt: Date,
                 reviewState: OzoneSubjectReviewState, comment: String?, muteUntil: Date?, lastReviewedBy: String?, lastReviewedAt: Date?,
                 lastReportedAt: Date?, lastAppealedAt: Date?, isTakenDown: Bool?, wasAppealed: Bool?, suspendUntil: Date?, tags: [String]?) {
         self.id = id
@@ -213,7 +213,7 @@ public struct OzoneSubjectStatusView: Codable {
         let container = try decoder.container(keyedBy: CodingKeys.self)
 
         self.id = try container.decode(Int.self, forKey: .id)
-        self.subject = try container.decode(RepoReferencesUnion.self, forKey: .subject)
+        self.subject = try container.decode(RepositoryReferencesUnion.self, forKey: .subject)
         self.subjectBlobCIDHashes = try container.decodeIfPresent([String].self, forKey: .subjectBlobCIDHashes)
         self.subjectRepoHandle = try container.decodeIfPresent(String.self, forKey: .subjectRepoHandle)
         self.updatedAt = try container.decode(DateFormatting.self, forKey: .updatedAt).wrappedValue

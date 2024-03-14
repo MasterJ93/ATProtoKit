@@ -39,7 +39,7 @@ public struct AdminReportView: Codable {
     /// The handle of the subject who's related to the report. Optional.
     public let subjectRepoHandle: String? = nil
     /// The subject reference of the report.
-    public let subject: RepoReferencesUnion
+    public let subject: RepositoryReferencesUnion
     /// The user who created the report.
     public let reportedBy: String
     /// The date and time the report was created.
@@ -47,7 +47,7 @@ public struct AdminReportView: Codable {
     /// An array of action IDs that relate to resolutions.
     public let resolvedByActionIDs: [Int]
 
-    public init(id: Int, reasonType: ModerationReasonType, subject: RepoReferencesUnion, reportedBy: String, createdAt: Date, resolvedByActionIDs: [Int]) {
+    public init(id: Int, reasonType: ModerationReasonType, subject: RepositoryReferencesUnion, reportedBy: String, createdAt: Date, resolvedByActionIDs: [Int]) {
         self.id = id
         self.reasonType = reasonType
         self.subject = subject
@@ -61,7 +61,7 @@ public struct AdminReportView: Codable {
 
         self.id = try container.decode(Int.self, forKey: .id)
         self.reasonType = try container.decode(ModerationReasonType.self, forKey: .reasonType)
-        self.subject = try container.decode(RepoReferencesUnion.self, forKey: .subject)
+        self.subject = try container.decode(RepositoryReferencesUnion.self, forKey: .subject)
         self.reportedBy = try container.decode(String.self, forKey: .reportedBy)
         self.createdAt = try container.decode(DateFormatting.self, forKey: .createdAt).wrappedValue
         self.resolvedByActionIDs = try container.decode([Int].self, forKey: .resolvedByActionIDs)
@@ -110,7 +110,7 @@ public struct AdminReportViewDetail: Codable {
     ///   \* **For items with some inferable context from property names or references**: its best interpretation, though not with full certainty.\
     ///   \* **For items without enough context for even an educated guess**: a direct acknowledgment of their undocumented status.\
     ///   Clarifications from Bluesky are needed in order to fully understand this item.
-    public let subject: RepoViewUnion
+    public let subject: RepositoryViewUnion
     /// The status for the subject of the report. Optional.
     ///
     /// - Important: The item associated with this property is undocumented in the AT Protocol specifications. The documentation here is based on:\
@@ -125,7 +125,7 @@ public struct AdminReportViewDetail: Codable {
     /// An array of resolved actions made in relation to the report.
     public let resolvedByActions: [OzoneModerationEventView]
 
-    public init(id: Int, reasonType: ModerationReasonType, comment: String? = nil, subject: RepoViewUnion, subjectStatus: OzoneSubjectStatusView? = nil,
+    public init(id: Int, reasonType: ModerationReasonType, comment: String? = nil, subject: RepositoryViewUnion, subjectStatus: OzoneSubjectStatusView? = nil,
                 reportedBy: String, createdAt: Date, resolvedByActions: [OzoneModerationEventView]) {
         self.id = id
         self.reasonType = reasonType
@@ -143,7 +143,7 @@ public struct AdminReportViewDetail: Codable {
         self.id = try container.decode(Int.self, forKey: .id)
         self.reasonType = try container.decode(ModerationReasonType.self, forKey: .reasonType)
         self.comment = try container.decodeIfPresent(String.self, forKey: .comment)
-        self.subject = try container.decode(RepoViewUnion.self, forKey: .subject)
+        self.subject = try container.decode(RepositoryViewUnion.self, forKey: .subject)
         self.subjectStatus = try container.decodeIfPresent(OzoneSubjectStatusView.self, forKey: .subjectStatus)
         self.reportedBy = try container.decode(String.self, forKey: .reportedBy)
         self.createdAt = try container.decode(DateFormatting.self, forKey: .createdAt).wrappedValue
@@ -270,12 +270,12 @@ public struct AdminAccountView: Codable {
 /// - SeeAlso: This is based on the [`com.atproto.admin.defs`][github] lexicon.
 ///
 /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/admin/defs.json
-public struct AdminRepoReference: Codable {
+public struct AdminRepositoryReference: Codable {
     /// The decentralized identifier (DID) of the repository.
-    public let atDID: String
+    public let repositoryDID: String
 
     enum CodingKeys: String, CodingKey {
-        case atDID = "did"
+        case repositoryDID = "did"
     }
 }
 
@@ -286,14 +286,14 @@ public struct AdminRepoReference: Codable {
 /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/admin/defs.json
 public struct AdminRepoBlobReference: Codable {
     /// The decentralized identifier (DID) of the blob reference.
-    public let atDID: String
+    public let blobDID: String
     /// The CID hash of the blob reference.
     public let cidHash: String
     /// The URI of the record that contains the blob reference.
     public let recordURI: String?
 
     enum CodingKeys: String, CodingKey {
-        case atDID = "did"
+        case blobDID = "did"
         case cidHash = "cid"
         case recordURI = "recordUri"
     }
@@ -383,22 +383,22 @@ public enum AdminEventViewUnion: Codable {
 
 // Create the custom init and encode methods.
 /// A reference containing the list of repository references.
-public enum RepoReferencesUnion: Codable {
+public enum RepositoryReferencesUnion: Codable {
     /// A repository reference.
-    case repoReference(AdminRepoReference)
+    case repositoryReference(AdminRepositoryReference)
     /// A strong reference.
     case strongReference(StrongReference)
 
     public init(from decoder: Decoder) throws {
         let container = try decoder.singleValueContainer()
 
-        if let value = try? container.decode(AdminRepoReference.self) {
-            self = .repoReference(value)
+        if let value = try? container.decode(AdminRepositoryReference.self) {
+            self = .repositoryReference(value)
         } else if let value = try? container.decode(StrongReference.self) {
             self = .strongReference(value)
         } else {
             throw DecodingError.typeMismatch(ActorPreferenceUnion.self,
-                                             DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Unknown RepoReferencesUnion type"))
+                                             DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Unknown RepositoryReferencesUnion type"))
         }
     }
 
@@ -406,10 +406,10 @@ public enum RepoReferencesUnion: Codable {
         var container = encoder.singleValueContainer()
 
         switch self {
-            case .repoReference(let repoReference):
-                try container.encode(repoReference)
-            case .strongReference(let repoReference):
-                try container.encode(repoReference)
+            case .repositoryReference(let repositoryReference):
+                try container.encode(repositoryReference)
+            case .strongReference(let strongReference):
+                try container.encode(strongReference)
         }
     }
 }
@@ -491,9 +491,9 @@ public enum EventViewDetailUnion: Codable {
 
 // Create the custom init and encode methods.
 /// A reference containing the list of the types of repository or record views.
-public enum RepoViewUnion: Codable {
+public enum RepositoryViewUnion: Codable {
     /// A normal repository view.
-    case repoView(AdminReportView)
+    case repositoryView(AdminReportView)
     /// A repository view that may not have been found.
     case repositoryViewNotFound(OzoneModerationRepositoryViewNotFound)
     /// A normal record.
@@ -505,7 +505,7 @@ public enum RepoViewUnion: Codable {
         let container = try decoder.singleValueContainer()
 
         if let value = try? container.decode(AdminReportView.self) {
-            self = .repoView(value)
+            self = .repositoryView(value)
         } else if let value = try? container.decode(OzoneModerationRepositoryViewNotFound.self) {
             self = .repositoryViewNotFound(value)
         } else if let value = try? container.decode(OzoneModerationRecordView.self) {
@@ -514,7 +514,7 @@ public enum RepoViewUnion: Codable {
             self = .recordViewNotFound(value)
         } else {
             throw DecodingError.typeMismatch(ActorPreferenceUnion.self,
-                                             DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Unknown RepoViewUnion type"))
+                                             DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Unknown RepositoryViewUnion type"))
         }
     }
 
@@ -522,8 +522,8 @@ public enum RepoViewUnion: Codable {
         var container = encoder.singleValueContainer()
 
         switch self {
-            case .repoView(let repoView):
-                try container.encode(repoView)
+            case .repositoryView(let repositoryView):
+                try container.encode(repositoryView)
             case .repositoryViewNotFound(let repositoryViewNotFound):
                 try container.encode(repositoryViewNotFound)
             case .recordView(let recordView):
@@ -550,7 +550,7 @@ public enum MediaDetailUnion: Codable {
             self = .mediaVideoDetails(value)
         } else {
             throw DecodingError.typeMismatch(ActorPreferenceUnion.self,
-                                             DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Unknown ActorPreference type"))
+                                             DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Unknown MediaDetailUnion type"))
         }
     }
 

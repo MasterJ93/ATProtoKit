@@ -22,7 +22,7 @@ public struct AdminGetSubjectStatusOutput: Codable {
 /// A reference containing the list of repository references.
 public enum AdminGetSubjectStatusUnion: Codable {
     /// A repository reference.
-    case repoReference(AdminRepoReference)
+    case repositoryReference(AdminRepositoryReference)
     /// A strong reference.
     case strongReference(StrongReference)
     /// A repository blob reference.
@@ -31,8 +31,8 @@ public enum AdminGetSubjectStatusUnion: Codable {
     public init(from decoder: Decoder) throws {
         let container = try decoder.singleValueContainer()
         
-        if let value = try? container.decode(AdminRepoReference.self) {
-            self = .repoReference(value)
+        if let value = try? container.decode(AdminRepositoryReference.self) {
+            self = .repositoryReference(value)
         } else if let value = try? container.decode(StrongReference.self) {
             self = .strongReference(value)
         } else if let value = try? container.decode(AdminRepoBlobReference.self) {
@@ -48,8 +48,8 @@ public enum AdminGetSubjectStatusUnion: Codable {
         var container = encoder.singleValueContainer()
         
         switch self {
-            case .repoReference(let repoReference):
-                try container.encode(repoReference)
+            case .repositoryReference(let repositoryReference):
+                try container.encode(repositoryReference)
             case .strongReference(let strongReference):
                 try container.encode(strongReference)
             case .repoBlobReference(let repoBlobReference):

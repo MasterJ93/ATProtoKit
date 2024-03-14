@@ -18,7 +18,7 @@ public struct AdminEmitModerationEvent: Codable {
     /// The type of event the moderator is taking,
     public let event: AdminEventViewUnion
     /// The type of repository reference.
-    public let subject: RepoReferencesUnion
+    public let subject: RepositoryReferencesUnion
     /// An array of CID hashes related to blobs for the moderator's event view. Optional.
     public let subjectBlobCIDHashes: [String]?
     /// The decentralized identifier (DID) of the moderator taking this action.

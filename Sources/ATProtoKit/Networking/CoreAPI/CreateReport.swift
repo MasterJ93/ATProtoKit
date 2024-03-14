@@ -16,7 +16,7 @@ extension ATProtoAdmin {
     ///   - subject: The responsible party being reported.
     /// - Returns: A `Result`, containing either ``ModerationCreateReportOutput`` if successful, or an `Error` if not.
     public func createReport(with reasonType: ModerationReasonType, withContextof reason: String?,
-                             subject: RepoReferencesUnion) async throws -> Result<ModerationCreateReportOutput, Error> {
+                             subject: RepositoryReferencesUnion) async throws -> Result<ModerationCreateReportOutput, Error> {
         guard let sessionURL = session.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.moderation.createReport") else {
             return .failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"]))

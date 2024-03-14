@@ -10,7 +10,7 @@ import Foundation
 extension ATProtoKit {
     /// Retrieves a blob from a given record.
     ///
-    /// - Parameter blobQuery: An object containing the `atDID` and `cidHash` of the blob.
+    /// - Parameter blobQuery: An object containing the `accountDID` and `cidHash` of the blob.
     /// - Returns: A `Result` containing `Data` on success or `Error` on failure.
     public static func getBlob(from blobQuery: BlobQuery, pdsURL: String? = "https://bsky.social") async -> Result<Data, Error> {
         guard let sessionURL = pdsURL,
