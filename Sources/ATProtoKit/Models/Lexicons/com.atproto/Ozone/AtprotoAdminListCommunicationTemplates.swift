@@ -16,5 +16,5 @@ import Foundation
 /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/admin/listCommunicationTemplates.json
 public struct AdminListCommunicationTemplatesOutput: Codable {
     /// An array of communication templates.
-    public let communicationTemplates: [AdminCommunicationTemplateView]
+    public let communicationTemplates: [OzoneCommunicationTemplateView]
 }

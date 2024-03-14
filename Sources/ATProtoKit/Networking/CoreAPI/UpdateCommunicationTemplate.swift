@@ -19,9 +19,9 @@ extension ATProtoKit {
     ///   - subject: The subject line of the message itself. Optional.
     ///   - updatedBy: The decentralized identifier (DID) of the user who updated the communication template. Optional.
     ///   - isDisabled: Indicates whether the communication template is disabled. Optional.
-    /// - Returns: A `Result`, containing either an ``AdminCommunicationTemplateView`` if successful, or an `Error` if not.
+    /// - Returns: A `Result`, containing either an ``OzoneCommunicationTemplateView`` if successful, or an `Error` if not.
     public func updateCommunicationTemplateAsAdmin(_ id: String, name: String?, contentMarkdown: String?, subject: String?, updatedBy: String?,
-                                                   isDisabled: Bool?) async throws -> Result<AdminCommunicationTemplateView, Error> {
+                                                   isDisabled: Bool?) async throws -> Result<OzoneCommunicationTemplateView, Error> {
         guard let sessionURL = session.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.admin.updateCommunicationTemplate") else {
             return .failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"]))
@@ -38,7 +38,7 @@ extension ATProtoKit {
                                                          acceptValue: "application/json",
                                                          contentTypeValue: "application/json",
                                                          authorizationValue: "Bearer \(session.accessToken)")
-            let response = try await APIClientService.sendRequest(request, withEncodingBody: requestBody, decodeTo: AdminCommunicationTemplateView.self)
+            let response = try await APIClientService.sendRequest(request, withEncodingBody: requestBody, decodeTo: OzoneCommunicationTemplateView.self)
 
             return .success(response)
         } catch {

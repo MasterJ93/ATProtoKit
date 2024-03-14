@@ -17,9 +17,9 @@ extension ATProtoAdmin {
     ///   - contentMarkdown: A Markdown-formatted content of the communitcation template.
     ///   - subject: The subject line of the communication template.
     ///   - createdBy: The decentralized identifier (DID) of the creator of the communication template. Optional.
-    /// - Returns: A `Result`, containing either ``AdminCommunicationTemplateView`` if successful, or an `Error` if not.
+    /// - Returns: A `Result`, containing either ``OzoneCommunicationTemplateView`` if successful, or an `Error` if not.
     public func createCommunicationTemplateAsAdmin(named name: String, contentMarkdown: String, subject: String,
-                                                   createdBy: String?) async throws -> Result<AdminCommunicationTemplateView, Error> {
+                                                   createdBy: String?) async throws -> Result<OzoneCommunicationTemplateView, Error> {
         guard let sessionURL = session.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.admin.createCommunicationTemplate") else {
             return .failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"]))
@@ -38,7 +38,7 @@ extension ATProtoAdmin {
                                                          acceptValue: "application/json",
                                                          contentTypeValue: "application/json",
                                                          authorizationValue: "Bearer \(session.accessToken)")
-            let response = try await APIClientService.sendRequest(request, withEncodingBody: requestBody, decodeTo: AdminCommunicationTemplateView.self)
+            let response = try await APIClientService.sendRequest(request, withEncodingBody: requestBody, decodeTo: OzoneCommunicationTemplateView.self)
 
             return .success(response)
         } catch {
