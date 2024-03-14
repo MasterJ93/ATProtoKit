@@ -16,7 +16,7 @@ extension ATProtoAdmin {
     /// 
     /// - Parameter accountDIDs: An array of decentralized identifiers (DIDs) of user accounts.
     /// - Returns: A `Result`, containing either an ``AdminGetInviteCodesOutput`` if successful, or an `Error` if not.
-    public func getAccountInfosAsAdmin(_ accountDIDs: [String]) async throws -> Result<AdminGetAccountInfosOutput, Error> {
+    public func getAccountInfos(_ accountDIDs: [String]) async throws -> Result<AdminGetAccountInfosOutput, Error> {
         guard let sessionURL = session.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.admin.getAccountInfos") else {
             return .failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"]))

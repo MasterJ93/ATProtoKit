@@ -10,6 +10,8 @@ import Foundation
 extension ATProtoKit {
     /// Updates a communication template.
     /// 
+    /// - Important: This is a moderator task and as such, regular users won't be able to access this; if they attempt to do so, an error will occur.
+    ///
     /// - Note: According to the AT Protocol specifications: "Update the password for a user account as an administrator."
     /// 
     /// - Parameters:
@@ -20,7 +22,7 @@ extension ATProtoKit {
     ///   - updatedBy: The decentralized identifier (DID) of the user who updated the communication template. Optional.
     ///   - isDisabled: Indicates whether the communication template is disabled. Optional.
     /// - Returns: A `Result`, containing either an ``OzoneCommunicationTemplateView`` if successful, or an `Error` if not.
-    public func updateCommunicationTemplateAsAdmin(_ id: String, name: String?, contentMarkdown: String?, subject: String?, updatedBy: String?,
+    public func updateCommunicationTemplate(_ id: String, name: String?, contentMarkdown: String?, subject: String?, updatedBy: String?,
                                                    isDisabled: Bool?) async throws -> Result<OzoneCommunicationTemplateView, Error> {
         guard let sessionURL = session.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.admin.updateCommunicationTemplate") else {

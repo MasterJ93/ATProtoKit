@@ -10,7 +10,7 @@ import Foundation
 extension ATProtoAdmin {
     /// List all moderator events pertaining a subject.
     /// 
-    /// - Important: This is an administrator task and as such, regular users won't be able to access this; if they attempt to do so, an error will occur.
+    /// - Important: This is an moderator task and as such, regular users won't be able to access this; if they attempt to do so, an error will occur.
     /// 
     /// - Note: Many of the parameter's descriptions are taken directly from the AT Protocol's specification.
     /// 
@@ -32,7 +32,7 @@ extension ATProtoAdmin {
     ///   - reportTypes: An array of report types.
     ///   - cursor: The mark used to indicate the starting point for the next set of results. Optional.
     /// - Returns: A `Result`, containing either an ``AdminQueryModerationEventOutput`` if successful, or an `Error` if not.
-    public func queryModerationEventsAsAdmin(_ eventTypes: [String]? = nil, createdBy: String? = nil,
+    public func queryEvents(_ eventTypes: [String]? = nil, createdBy: String? = nil,
                                              sortDirection: AdminQueryModerationEventSortDirection? = .descending, createdAfter: Date? = nil,
                                              createdBefore: Date? = nil, subject: String? = nil, canIncludeAllUserRecords: Bool? = false, limit: Int? = 50,
                                              doesHaveComment: Bool? = nil, comment: String? = nil, addedLabels: [String]? = nil, removedLabels: [String]? = nil,

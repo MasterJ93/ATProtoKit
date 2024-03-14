@@ -17,7 +17,7 @@ extension ATProtoAdmin {
     /// - Parameters:
     ///   - accountDID: The decentralized identifier (DID) of the user's account.
     ///   - note: A note as to why the user account is getting the ability to receive invite codes reinstated. Optional.
-    public func enableAccountInvitesAsAdmin(_ accountDID: String, note: String?) async throws {
+    public func enableAccountInvites(for accountDID: String, note: String?) async throws {
         guard let sessionURL = session.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.admin.enableAccountInvites") else {
             throw NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"])

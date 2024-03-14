@@ -8,12 +8,12 @@
 import Foundation
 
 extension ATProtoAdmin {
-    /// Deletes a communication template as an administrator.
-    /// 
-    /// - Important: This is an administrator task and as such, regular users won't be able to access this; if they attempt to do so, an error will occur.
+    /// Deletes a communication template as an administrator or moderator.
+    ///
+    /// - Important: This is a moderator task and as such, regular users won't be able to access this; if they attempt to do so, an error will occur.
     /// 
     /// - Parameter id: The ID of the communication template.
-    public func deleteCommunicationTemplateAsAdmin(_ id: String) async throws {
+    public func deleteCommunicationTemplate(by id: String) async throws {
         guard let sessionURL = session.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.admin.deleteCommunicationTemplate") else {
             throw NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"])

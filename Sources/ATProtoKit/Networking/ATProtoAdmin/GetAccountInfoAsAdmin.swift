@@ -16,7 +16,7 @@ extension ATProtoAdmin {
     ///
     /// - Parameter accountDID: The decentralized identifier (DID) of the user account.
     /// - Returns: A `Result`, containing either an ``AdminAccountView`` if successful, or an `Error` if not.
-    public func getAccountInfoAsAdmin(_ accountDID: String) async throws -> Result<AdminAccountView, Error> {
+    public func getAccountInfo(_ accountDID: String) async throws -> Result<AdminAccountView, Error> {
         guard let sessionURL = session.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.admin.getAccountInfo") else {
             return .failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"]))

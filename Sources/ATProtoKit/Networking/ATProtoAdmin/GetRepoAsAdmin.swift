@@ -12,15 +12,15 @@ extension ATProtoAdmin {
     /// 
     /// - Important: This is an administrator task and as such, regular users won't be able to access this; if they attempt to do so, an error will occur.
     /// 
-    /// - Parameter repoDID: The decentralized identifier (DID) of the repository.
+    /// - Parameter repositoryDID: The decentralized identifier (DID) of the repository.
     /// - Returns: A `Result`, containing either an ``OzoneModerationRepositoryViewDetail`` if successful, or an `Error` if not.
-    public func getRepoAsAdmin(_ repoDID: String) async throws -> Result<OzoneModerationRepositoryViewDetail, Error> {
+    public func getRepository(_ repositoryDID: String) async throws -> Result<OzoneModerationRepositoryViewDetail, Error> {
         guard let sessionURL = session.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.admin.getRepo") else {
             return .failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"]))
         }
 
-        let queryItems = [("did", repoDID)]
+        let queryItems = [("did", repositoryDID)]
 
         do {
             let queryURL = try APIClientService.setQueryItems(

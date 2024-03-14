@@ -10,10 +10,10 @@ import Foundation
 extension ATProtoAdmin {
     /// Retrieves a list of communication templates.
     /// 
-    /// - Important: This is an administrator task and as such, regular users won't be able to access this; if they attempt to do so, an error will occur.
+    /// - Important: This is a moderator task and as such, regular users won't be able to access this; if they attempt to do so, an error will occur.
     /// 
     /// - Returns: A `Result`, containing either an ``AdminListCommunicationTemplatesOutput`` if successful, or an `Error` if not.
-    public func listCommunicationTemplatesAsAdmin() async throws -> Result<AdminListCommunicationTemplatesOutput, Error> {
+    public func listCommunicationTemplates() async throws -> Result<AdminListCommunicationTemplatesOutput, Error> {
         guard let sessionURL = session.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.admin.listCommunicationTemplates") else {
             return .failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"]))

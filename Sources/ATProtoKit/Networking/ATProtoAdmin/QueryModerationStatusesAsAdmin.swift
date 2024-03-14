@@ -10,7 +10,7 @@ import Foundation
 extension ATProtoAdmin {
     /// Gets the moderation statuses of records and repositories.
     /// 
-    /// - Important: This is an administrator task and as such, regular users won't be able to access this; if they attempt to do so, an error will occur.
+    /// - Important: This is an moderator task and as such, regular users won't be able to access this; if they attempt to do so, an error will occur.
     /// 
     /// - Note: Many of the parameter's descriptions are taken directly from the AT Protocol's specification.
     /// 18
@@ -34,7 +34,7 @@ extension ATProtoAdmin {
     ///   - excludeTags: An array of tags that makes the list display events that doesn't contain the added tags. Optional.
     ///   - cursor: The mark used to indicate the starting point for the next set of results. Optional.
     /// - Returns: A `Result`, containing either an ``AdminQueryModerationStatusesOutput`` if successful, or an `Error` if not.
-    public func queryModerationStatusesAsAdmin(_ subject: String?, comment: String?, reportedAfter: Date?, reportedBefore: Date?, reviewedAfter: Date?,
+    public func queryStatuses(_ subject: String?, comment: String?, reportedAfter: Date?, reportedBefore: Date?, reviewedAfter: Date?,
                                                reviewedBefore: Date?, shouldIncludeMuted: Bool? = false, reviewState: String?, ignoreSubjects: [String]?,
                                                lastReviewedBy: String?, sortField: AdminQueryModerationStatusesSortField? = .lastReportedAt,
                                                sortDirection: AdminQueryModerationStatusesSortDirection? = .descending, isTakenDown: Bool?,

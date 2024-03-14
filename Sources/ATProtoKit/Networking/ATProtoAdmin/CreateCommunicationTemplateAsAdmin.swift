@@ -8,9 +8,9 @@
 import Foundation
 
 extension ATProtoAdmin {
-    /// Creates a communication template for administrators.
-    /// 
-    /// - Important: This is an administrator task and as such, regular users won't be able to access this; if they attempt to do so, an error will occur.
+    /// Creates a communication template for administrators and moderators.
+    ///
+    /// - Important: This is a moderator task and as such, regular users won't be able to access this; if they attempt to do so, an error will occur.
     /// 
     /// - Parameters:
     ///   - name: The name of the template.
@@ -18,7 +18,7 @@ extension ATProtoAdmin {
     ///   - subject: The subject line of the communication template.
     ///   - createdBy: The decentralized identifier (DID) of the creator of the communication template. Optional.
     /// - Returns: A `Result`, containing either ``OzoneCommunicationTemplateView`` if successful, or an `Error` if not.
-    public func createCommunicationTemplateAsAdmin(named name: String, contentMarkdown: String, subject: String,
+    public func createCommunicationTemplate(named name: String, contentMarkdown: String, subject: String,
                                                    createdBy: String?) async throws -> Result<OzoneCommunicationTemplateView, Error> {
         guard let sessionURL = session.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.admin.createCommunicationTemplate") else {

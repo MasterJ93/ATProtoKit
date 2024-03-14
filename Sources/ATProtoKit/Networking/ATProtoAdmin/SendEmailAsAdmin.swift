@@ -10,14 +10,16 @@ import Foundation
 extension ATProtoAdmin {
     /// Sends an email to the user's email address as an administrator.
     /// 
+    /// - Important: This is an administrator task and as such, regular users won't be able to access this; if they attempt to do so, an error will occur.
+    ///
     /// - Parameters:
     ///   - recipientDID: The decentralized identifier (DID) of the recipient.
+    ///   - subjectLine: The subject line of the email. Optional.
     ///   - content: The content of the email.
-    ///   - subject: The subject line of the email. Optional.
     ///   - senderDID: The decentralized identifier (DID) of the sender.
     ///   - comment: Any additional comments viewable to other moderators and administrators.
     /// - Returns: A `Result`, containing either an ``AdminSendEmailOutput`` if successful, or an `Error` if not.
-    public func sendEmailAsAdmin(_ recipientDID: String, content: String, subject: String?, senderDID: String, comment: String?) async throws -> Result<AdminSendEmailOutput, Error> {
+    public func sendEmail(to recipientDID: String, withSubjectLine subjectLine: String?, content: String, senderDID: String, comment: String?) async throws -> Result<AdminSendEmailOutput, Error> {
         guard let sessionURL = session.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.admin.sendEmail") else {
             return .failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"]))
@@ -26,7 +28,7 @@ extension ATProtoAdmin {
         let requestBody = AdminSendEmail(
             recipientDID: recipientDID,
             content: content,
-            subject: subject,
+            subject: subjectLine,
             senderDID: senderDID,
             comment: comment
         )

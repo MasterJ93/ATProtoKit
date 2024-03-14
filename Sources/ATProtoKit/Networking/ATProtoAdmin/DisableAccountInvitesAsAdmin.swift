@@ -15,7 +15,7 @@ extension ATProtoAdmin {
     /// - Parameters:
     ///   - accountDID: The decentralized identifier (DID) of the user account.
     ///   - note: A note on why the account will lose the ability to get new invite codes.
-    public func disableAccountInvitesAsAdmin(_ accountDID: String, note: String?) async throws {
+    public func disableAccountInvites(for accountDID: String, note: String?) async throws {
         guard let sessionURL = session.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.admin.disableAccountInvites") else {
             throw NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"])
