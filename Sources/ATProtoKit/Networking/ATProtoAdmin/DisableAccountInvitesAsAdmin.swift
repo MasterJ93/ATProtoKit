@@ -1,27 +1,27 @@
 //
-//  UpdateAccountPasswordAsAdmin.swift
+//  DisableAccountInvitesAsAdmin.swift
 //
 //
-//  Created by Christopher Jr Riley on 2024-03-03.
+//  Created by Christopher Jr Riley on 2024-02-28.
 //
 
 import Foundation
 
-extension ATProtoKit {
-    /// Updates the password of a user account as an administrator.
-    /// 
-    /// - Note: According to the AT Protocol specifications: "Update the password for a user account as an administrator."
+extension ATProtoAdmin {
+    /// Disables a user account's ability to receive future invite codes as an administrator.
+    ///  
+    /// - Important: According to the AT Protocol specifications: "Disable an account from receiving new invite codes, but does not invalidate existing codes."
     /// 
     /// - Parameters:
     ///   - accountDID: The decentralized identifier (DID) of the user account.
-    ///   - newPassword: The new password for the user account.
-    public func updateAccountPasswordAsAdmin(_ accountDID: String, newPassword: String) async throws {
+    ///   - note: A note on why the account will lose the ability to get new invite codes.
+    public func disableAccountInvitesAsAdmin(_ accountDID: String, note: String?) async throws {
         guard let sessionURL = session.pdsURL,
-              let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.admin.updateAccountPassword") else {
+              let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.admin.disableAccountInvites") else {
             throw NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"])
         }
 
-        let requestBody = AdminUpdateAccountPassword(accountDID: accountDID, newPassword: newPassword)
+        let requestBody = AdminDisableAccountInvites(accountDID: accountDID, note: note)
 
         do {
             let request = APIClientService.createRequest(forRequest: requestURL,

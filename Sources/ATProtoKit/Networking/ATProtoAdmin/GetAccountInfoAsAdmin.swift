@@ -1,32 +1,29 @@
 //
-//  GetSubjectStatusAsAdmin.swift
+//  GetAccountInfoAsAdmin.swift
 //
 //
-//  Created by Christopher Jr Riley on 2024-03-01.
+//  Created by Christopher Jr Riley on 2024-02-29.
 //
 
 import Foundation
 
-extension ATProtoKit {
-    /// Gets the status of a subject as an administrator.
+extension ATProtoAdmin {
+    /// Gets details about a user account.
     /// 
     /// - Important: This is an administrator task and as such, regular users won't be able to access this; if they attempt to do so, an error will occur.
-    /// 
-    /// - Parameters:
-    ///   - subjectDID: The decentralized identifier (DID) of the subject.
-    ///   - subjectURI: The URI of the subject.
-    ///   - subjectBlobCIDHash: The CID hash of the blob for the subject.
-    /// - Returns: A `Result`, containing either an ``AdminGetSubjectStatusOutput`` if successful, or an `Error` if not.
-    public func getSubjectStatusAsAdmin(_ subjectDID: String, subjectURI: String, subjectBlobCIDHash: String) async throws -> Result<AdminGetSubjectStatusOutput, Error> {
+    ///
+    /// - Note: If you need to get details of multiple user accounts, use ``getAccountInfosAsAdmin(_:)`` instead.
+    ///
+    /// - Parameter accountDID: The decentralized identifier (DID) of the user account.
+    /// - Returns: A `Result`, containing either an ``AdminAccountView`` if successful, or an `Error` if not.
+    public func getAccountInfoAsAdmin(_ accountDID: String) async throws -> Result<AdminAccountView, Error> {
         guard let sessionURL = session.pdsURL,
-              let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.admin.getSubjectStatus") else {
+              let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.admin.getAccountInfo") else {
             return .failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"]))
         }
 
         let queryItems = [
-            ("did", subjectDID),
-            ("uri", subjectURI),
-            ("blob", subjectBlobCIDHash)
+            ("did", accountDID)
         ]
 
         do {
@@ -40,7 +37,7 @@ extension ATProtoKit {
                                                          acceptValue: "application/json",
                                                          contentTypeValue: nil,
                                                          authorizationValue: "Bearer \(session.accessToken)")
-            let response = try await APIClientService.sendRequest(request, decodeTo: AdminGetSubjectStatusOutput.self)
+            let response = try await APIClientService.sendRequest(request, decodeTo: AdminAccountView.self)
 
             return .success(response)
         } catch {

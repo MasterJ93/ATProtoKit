@@ -18,7 +18,7 @@ public struct AdminQueryModerationStatusesOutput: Codable {
     /// The mark used to indicate the starting point for the next set of results. Optional.
     public let cursor: String
     /// An array of subject statuses.
-    public let subjectStatuses: [AdminSubjectStatusView]
+    public let subjectStatuses: [OzoneSubjectStatusView]
 }
 
 /// Indicates the sorting field for the moderation status array.

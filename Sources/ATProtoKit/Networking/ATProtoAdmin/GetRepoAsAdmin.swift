@@ -1,30 +1,26 @@
 //
-//  GetAccountInfoAsAdmin.swift
+//  GetRepoAsAdmin.swift
 //
 //
-//  Created by Christopher Jr Riley on 2024-02-29.
+//  Created by Christopher Jr Riley on 2024-03-01.
 //
 
 import Foundation
 
-extension ATProtoKit {
-    /// Gets details about a user account.
+extension ATProtoAdmin {
+    /// Get details about a repository as an administrator.
     /// 
     /// - Important: This is an administrator task and as such, regular users won't be able to access this; if they attempt to do so, an error will occur.
-    ///
-    /// - Note: If you need to get details of multiple user accounts, use ``getAccountInfosAsAdmin(_:)`` instead.
-    ///
-    /// - Parameter accountDID: The decentralized identifier (DID) of the user account.
-    /// - Returns: A `Result`, containing either an ``AdminAccountView`` if successful, or an `Error` if not.
-    public func getAccountInfoAsAdmin(_ accountDID: String) async throws -> Result<AdminAccountView, Error> {
+    /// 
+    /// - Parameter repoDID: The decentralized identifier (DID) of the repository.
+    /// - Returns: A `Result`, containing either an ``OzoneModerationRepositoryViewDetail`` if successful, or an `Error` if not.
+    public func getRepoAsAdmin(_ repoDID: String) async throws -> Result<OzoneModerationRepositoryViewDetail, Error> {
         guard let sessionURL = session.pdsURL,
-              let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.admin.getAccountInfo") else {
+              let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.admin.getRepo") else {
             return .failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"]))
         }
 
-        let queryItems = [
-            ("did", accountDID)
-        ]
+        let queryItems = [("did", repoDID)]
 
         do {
             let queryURL = try APIClientService.setQueryItems(
@@ -37,7 +33,7 @@ extension ATProtoKit {
                                                          acceptValue: "application/json",
                                                          contentTypeValue: nil,
                                                          authorizationValue: "Bearer \(session.accessToken)")
-            let response = try await APIClientService.sendRequest(request, decodeTo: AdminAccountView.self)
+            let response = try await APIClientService.sendRequest(request, decodeTo: OzoneModerationRepositoryViewDetail.self)
 
             return .success(response)
         } catch {

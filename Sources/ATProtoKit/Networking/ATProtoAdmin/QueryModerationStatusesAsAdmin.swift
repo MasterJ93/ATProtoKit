@@ -7,7 +7,7 @@
 
 import Foundation
 
-extension ATProtoKit {
+extension ATProtoAdmin {
     /// Gets the moderation statuses of records and repositories.
     /// 
     /// - Important: This is an administrator task and as such, regular users won't be able to access this; if they attempt to do so, an error will occur.
