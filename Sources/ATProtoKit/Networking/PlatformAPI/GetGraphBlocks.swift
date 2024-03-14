@@ -1,5 +1,5 @@
 //
-//  GetBlocks.swift
+//  GetGraphBlocks.swift
 //
 //
 //  Created by Christopher Jr Riley on 2024-03-08.
@@ -14,7 +14,7 @@ extension ATProtoKit {
     ///   - limit: The number of items the list will hold. Optional. Defaults to `50`.
     ///   - cursor: The mark used to indicate the starting point for the next set of result. Optional.
     /// - Returns: A `Result`, containing either a ``GraphGetBlocksOutput`` if successful, or an `Error` if not.
-    public func getBlocks(limit: Int? = 50, cursor: String? = nil) async throws -> Result<GraphGetBlocksOutput, Error> {
+    public func getGraphBlocks(limit: Int? = 50, cursor: String? = nil) async throws -> Result<GraphGetBlocksOutput, Error> {
         guard let sessionURL = session.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/app.bsky.graph.getBlocks") else {
             return .failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"]))

@@ -1,6 +1,6 @@
 //
-//  File.swift
-//  
+//  GetSyncBlocks.swift
+//
 //
 //  Created by Christopher Jr Riley on 2024-03-12.
 //
@@ -16,7 +16,7 @@ extension ATProtoKit {
     ///   - repositoryCIDHashes: An array of CID hashes from the repository.
     ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `https://bsky.social`.
     /// - Returns: A `Result`, containing either
-    public static func getBlocks(from repositoryDID: String, by repositoryCIDHashes: [String], pdsURL: String = "https://bsky.social") async throws -> Result<Data, Error> {
+    public static func getSyncBlocks(from repositoryDID: String, by repositoryCIDHashes: [String], pdsURL: String = "https://bsky.social") async throws -> Result<Data, Error> {
         guard let requestURL = URL(string: "\(pdsURL)/xrpc/com.atproto.sync.getBlocks") else {
             print("Failure")
             return .failure(URIError.invalidFormat)
