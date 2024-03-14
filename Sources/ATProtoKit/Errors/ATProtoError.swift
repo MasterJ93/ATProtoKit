@@ -110,6 +110,15 @@ public enum ATAPIError: ATProtoError, Decodable {
     }
 }
 
+enum URIError: ATProtoError {
+    /// The format of the object is incorrect.
+    case invalidFormat
+    /// The requestURL may be incorrect (either the endpoint itself or the URL of the Personal Data Server (PDS)).
+    case invalidRequestURL
+    /// The hostname's URL may be incorrect.
+    case invalidHostnameURL
+}
+
 /// An error type related to ``ATImageProcessable``..
 enum ATImageProcessingError: ATProtoError {
     /// The image's file size can't be lowered any further to fit the target file size.

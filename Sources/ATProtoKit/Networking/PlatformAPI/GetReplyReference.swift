@@ -92,8 +92,4 @@ extension ATProtoKit {
             throw URIError.invalidFormat
         }
     }
-
-    enum URIError: Error {
-        case invalidFormat
-    }
 }

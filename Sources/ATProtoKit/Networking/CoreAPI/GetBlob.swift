@@ -15,7 +15,7 @@ extension ATProtoKit {
     public static func getBlob(from blobQuery: BlobQuery, pdsURL: String = "https://bsky.social") async -> Result<Data, Error> {
         guard let requestURL = URL(string: "\(pdsURL)/xrpc/com.atproto.sync.getBlob") else {
             print("Failure")
-            return .failure(URIError.invalidFormat)
+            return .failure(URIError.invalidRequestURL)
         }
 
         do {
