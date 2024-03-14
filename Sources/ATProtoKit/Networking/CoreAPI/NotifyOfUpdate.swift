@@ -26,7 +26,7 @@ extension ATProtoKit {
             throw NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid Hostname"])
         }
 
-        let requestBody = SyncNotifyOfUpdate(
+        let requestBody = SyncCrawler(
             crawlingHostname: finalHostName
         )
 
