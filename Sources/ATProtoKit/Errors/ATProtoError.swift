@@ -77,7 +77,9 @@ public enum ATAPIError: ATProtoError, Decodable {
                 "IncompatibleDidDoc",
                 "AccountTakedown",
                 "DuplicateCreate",
-                "TokenRequired":
+                "TokenRequired",
+                "FutureCursor",
+                "ConsumerTooSlow":
                 self = .badRequest(message: message)
             case "Unauthorized":
                 self = .unknown(message: message)
