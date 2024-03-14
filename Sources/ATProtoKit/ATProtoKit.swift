@@ -83,8 +83,12 @@ public class ATProtoKit: ATProtoKitConfiguration {
 /// }
 /// ```
 public class ATProtoAdmin: ATProtoKitConfiguration {
+    /// Represents an authenticated user session within the AT Protocol.
     public let session: UserSession
 
+    /// Initializes a new instance of `ATProtoAdmin`.
+    /// - Parameters:
+    ///   - session: The authenticated user session within the AT Protocol.
     public init(session: UserSession) {
         self.session = session
     }

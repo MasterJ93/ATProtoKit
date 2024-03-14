@@ -15,6 +15,10 @@ import Foundation
 ///
 /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/label/defs.json
 public struct Label: Codable {
+    /// The version number of the label. Optional.
+    ///
+    /// - Note: According to the AT Protocol specifications: "The AT Protocol version of the label object."
+    public let version: Int?
     /// The decentralized identifier (DID) of the label creator.
     ///
     /// - Note: According to the AT Protocol specifications: "DID of the actor who created this label."
@@ -25,7 +29,8 @@ public struct Label: Codable {
     public let atURI: String
     /// The CID hash of the resource the label applies to. Optional.
     ///
-    /// - Note: According to the AT Protocol specifications: "Optionally, CID specifying the specific version of 'uri' resource this label applies to."
+    /// - Note: According to the AT Protocol specifications: "Optionally, CID specifying the specific version of 'uri' resource this label
+    /// applies to."
     public let cidHash: String?
     /// The name of the label.
     ///
@@ -41,30 +46,45 @@ public struct Label: Codable {
     ///
     /// - Note: According to the AT Protocol specifications: "Timestamp when this label was created."
     @DateFormatting public var timestamp: Date
+    /// The date and time the label expires on.
+    ///
+    /// - Note: According to the AT Protocol specifications: "Timestamp at which this label expires (no longer applies)."
+    @DateFormattingOptional public var expiresOn: Date?
+    /// The DAG-CBOR-encoded signature. Optional.
+    ///
+    /// - Note: According to the AT Protocol specifications: "Signature of dag-cbor encoded label."
+    public let signature: Data?
 
-    public init(actorDID: String, atURI: String, cidHash: String?, name: String, isNegated: Bool?, timestamp: Date) {
+    public init(version: Int?, actorDID: String, atURI: String, cidHash: String?, name: String, isNegated: Bool?, timestamp: Date, expiresOn: Date?, signature: Data) {
+        self.version = version
         self.actorDID = actorDID
         self.atURI = atURI
         self.cidHash = cidHash
         self.name = name
         self.isNegated = isNegated
         self._timestamp = DateFormatting(wrappedValue: timestamp)
+        self._expiresOn = DateFormattingOptional(wrappedValue: expiresOn)
+        self.signature = signature
     }
 
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
 
+        self.version = try container.decodeIfPresent(Int.self, forKey: .version)
         self.actorDID = try container.decode(String.self, forKey: .actorDID)
         self.atURI = try container.decode(String.self, forKey: .atURI)
         self.cidHash = try container.decodeIfPresent(String.self, forKey: .cidHash)
         self.name = try container.decode(String.self, forKey: .name)
         self.isNegated = try container.decodeIfPresent(Bool.self, forKey: .isNegated)
         self.timestamp = try container.decode(DateFormatting.self, forKey: .timestamp).wrappedValue
+        self.expiresOn = try container.decodeIfPresent(DateFormattingOptional.self, forKey: .expiresOn)?.wrappedValue
+        self.signature = try container.decodeIfPresent(Data.self, forKey: .signature)
     }
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
 
+        try container.encodeIfPresent(self.version, forKey: .version)
         try container.encode(self.actorDID, forKey: .actorDID)
         try container.encode(self.atURI, forKey: .atURI)
         try container.encodeIfPresent(self.cidHash, forKey: .cidHash)
@@ -74,15 +94,20 @@ public struct Label: Codable {
 
         try container.encodeIfPresent(self.isNegated, forKey: .isNegated)
         try container.encode(self._timestamp, forKey: .timestamp)
+        try container.encodeIfPresent(self._expiresOn, forKey: .expiresOn)
+        try container.encodeIfPresent(self.signature, forKey: .signature)
     }
 
     enum CodingKeys: String, CodingKey {
+        case version = "ver"
         case actorDID = "src"
         case atURI = "uri"
         case cidHash = "cid"
         case name = "val"
         case isNegated = "neg"
         case timestamp = "cts"
+        case expiresOn = "exp"
+        case signature = "sig"
     }
 }
 
