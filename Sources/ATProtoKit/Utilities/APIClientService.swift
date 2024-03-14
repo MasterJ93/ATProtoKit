@@ -11,6 +11,7 @@ import Foundation
 public class APIClientService {
     private init() {}
 
+// MARK: Creating requests -
     /// Creates a `URLRequest` with specified parameters.
     /// - Parameters:
     ///   - requestURL: The URL for the request.
@@ -65,7 +66,8 @@ public class APIClientService {
         }
         return finalURL
     }
-    
+
+// MARK: Sending requests -
     /// Sends a `URLRequest` and decodes the response to a specified `Decodable` type.
     /// - Parameters:
     ///   - request: The `URLRequest` to send.
@@ -219,6 +221,7 @@ public class APIClientService {
         return (data, httpResponse)
     }
 
+// MARK: -
     /// Represents the HTTP methods used to interact with the AT Protocol.
     public enum HTTPMethod: String {
         /// Retrieve information from the AT Protocol using a given URI.
