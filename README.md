@@ -13,7 +13,7 @@
 ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/masterj93/atprotokit?logo=github)
 
 </div>
-<div>
+<div align="center">
 
 ![Static Badge](https://img.shields.io/badge/Follow-%40cjrriley.com-0073fa?style=flat&logo=bluesky&labelColor=%23151e27&link=https%3A%2F%2Fbsky.app%2Fprofile%2Fcjrriley.com)
 
@@ -72,7 +72,7 @@ dependencies: [
 ## Roadmap
 The Projects page isn't set up yet, so it'll be a while before you can see the progress for this project. However, some of the goals include:
 - Making the library fully compatible for Linux, for both client-side and server-side applications.
-- Replacing SwiftSoup to a more laser-focused Swift Package dedicated for the AT Protocol and Bluesky.
+- Replacing SwiftSoup to a more laser-focused Swift package dedicated for the AT Protocol and Bluesky.
 - Adding a separate package for auto-generating lexicons based on the Swift API Design Guidelines, Swift best practices, and this project’s own API design guidelines.
 
 ## Quick Start
@@ -124,4 +124,4 @@ While this project will change significantly, early feedback, issues, and contri
 If you have any questions, you can ask me on Bluesky ([@cjrriley.com](https://bsky.app/profile/cjrriley.com)). And while you're at it, give me a follow!
 
 ## License
-This Swift Package is using the MIT License. Please view [LICENSE.md](https://github.com/MasterJ93/ATProtoKit/blob/ed45edcd717e7341ae688d294504e0019550b3f0/LICENSE.md) for more details.
+This Swift package is using the MIT License. Please view [LICENSE.md](https://github.com/MasterJ93/ATProtoKit/blob/ed45edcd717e7341ae688d294504e0019550b3f0/LICENSE.md) for more details.
