@@ -10,7 +10,7 @@
 
 [![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2FMasterJ93%2FATProtoKit%2Fbadge%3Ftype%3Dswift-versions)](https://swiftpackageindex.com/MasterJ93/ATProtoKit)
 [![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2FMasterJ93%2FATProtoKit%2Fbadge%3Ftype%3Dplatforms)](https://swiftpackageindex.com/MasterJ93/ATProtoKit)
-![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/masterj93/atprotokit?logo=github)
+[![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/masterj93/atprotokit?logo=github)](https://github.com/MasterJ93/ATProtoKit)
 
 </div>
 <div align="center">
