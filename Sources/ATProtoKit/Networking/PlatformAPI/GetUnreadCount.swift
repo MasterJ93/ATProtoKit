@@ -10,7 +10,7 @@ import Foundation
 extension ATProtoKit {
     /// Counts the number of unread notifications.
     /// 
-    /// - Parameter seenAt: The date and time the notifications were seen.
+    /// - Parameter seenAt: The date and time the notifications were seen. Defaults to the date and time the request was sent.
     /// - Returns: A `Result`, containing either a ``NotificationGetUnreadCountOutput`` if successful, or an `Error` if not.
     public func getUnreadCount(seenAt: Date = Date.now) async throws -> Result<NotificationGetUnreadCountOutput, Error> {
         guard let sessionURL = session.pdsURL,
