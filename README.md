@@ -105,10 +105,10 @@ Task {
 
 ## Requirements
 To use ATProtoKit in your apps, your app should target the specific version numbers:
-- **iOS** and **iPadOS** 13 or later.
+- **iOS** and **iPadOS** 15 or later.
 - **macOS** 12 or later.
-- **tvOS** 13 or later.
-- **watchOS** 6 or later.
+- **tvOS** 15 or later.
+- **watchOS** 8 or later.
 - **visionOS** 1 or later.
 
 As of right now, Linux support is theoretically possible, but not guaranteed to be tested. The plan is to make it fully compatible with Linux by version 1.0, though this is not a required goal to get there. For other platforms (such as Android), this is also not tested, but should be theoretically possible. While it’s not a goal to make it fully compatible, contributions and feedback on the matter are welcomed.
