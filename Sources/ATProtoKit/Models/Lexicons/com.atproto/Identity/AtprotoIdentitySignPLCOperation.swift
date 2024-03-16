@@ -37,5 +37,6 @@ public struct IdentitySignPLCOperation: Codable {
 ///
 /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/identity/signPlcOperation.json
 public struct IdentitySignPLCOperationOutput: Codable {
+    /// The operation itself.
     public let operation: UnknownType
 }
