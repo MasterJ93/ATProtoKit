@@ -75,12 +75,12 @@ public struct DIDDocument: Codable {
     public var context: [String]
     /// The unique identifier of the DID document.
     public var id: String
-    /// An array of URIs under which this DID is also known, including the primary handle URI. Optional.
+    /// An array of URIs under which this decentralized identifier (DID) is also known, including the primary handle URI. Optional.
     public var alsoKnownAs: [String]?
     /// An array of methods for verifying digital signatures, including the public signing key for the account.
     public var verificationMethod: [VerificationMethod]
-    /// An array of service endpoints related to the DID, including the PDS location.
-    public var service: [Service]
+    /// An array of service endpoints related to the decentralized identifier (DID), including the Personal Data Server's (PDS) location.
+    public var service: [ATService]
 
     enum CodingKeys: String, CodingKey {
         case context = "@context"
@@ -97,14 +97,14 @@ public struct VerificationMethod: Codable {
     public var id: String
     /// The type of verification method that indicates the cryptographic curve used.
     public var type: String
-    /// The controller of the verification method, which matches the DID.
+    /// The controller of the verification method, which matches the decentralized identifier (DID).
     public var controller: String
     /// The public key, in multibase encoding; used for verifying digital signatures.
     public var publicKeyMultibase: String
 }
 
-/// Represents a service endpoint in a DID document, such as the PDS location for the AT Protocol.
-public struct Service: Codable {
+/// Represents a service endpoint in a DID document, such as the Personal Data Server's (PDS) location.
+public struct ATService: Codable {
     /// The unique identifier of the service.
     public var id: String
     /// The type of service (matching `AtprotoPersonalDataServer`) for use in identifying the Personal Data Server (PDS).
