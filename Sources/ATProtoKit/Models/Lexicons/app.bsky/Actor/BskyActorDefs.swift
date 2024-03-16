@@ -499,7 +499,7 @@ public struct FeedViewPreferences: Codable {
     /// Indicates whether replies from users you don't follow are hidden from the user. Optional.
     ///
     /// - Note: From the AT Protocol specification: "Hide replies in the feed if they are not by followed users."
-    public let areUnfollowedRepliesHidden: Bool? = nil
+    public let areUnfollowedRepliesHidden: Bool? = true
     /// Indicates how many likes a post needs in order for the user to see the reply. Optional.
     ///
     /// - Note: From the AT Protocol specification: "Hide replies in the feed if they do not have this number of likes."
@@ -725,23 +725,23 @@ public struct HiddenPostsPreferences: Codable {
     }
 }
 
-/// A data model definition for a "Mod" preference.
+/// A data model for a "Labelers" preference definition.
 ///
 /// - SeeAlso: This is based on the [`app.bsky.actor.defs`][github] lexicon.
 ///
 /// [github]: https://github.com/bluesky-social/atproto/blob/9579bec720d30e40c995d09772040212c261d6fb/lexicons/app/bsky/actor/defs.json
-public struct ActorModPreferences: Codable {
-    /// An array of mods.
-    public let mods: [ModPreferenceItem]
+public struct LabelersPreferences: Codable {
+    /// An array of labeler items.
+    public let labelers: [String]
 }
 
-/// A data model definition for a mod.
+/// A data model definition for a labeler item.
 ///
 /// - SeeAlso: This is based on the [`app.bsky.actor.defs`][github] lexicon.
 ///
 /// [github]: https://github.com/bluesky-social/atproto/blob/9579bec720d30e40c995d09772040212c261d6fb/lexicons/app/bsky/actor/defs.json
-public struct ModPreferenceItem: Codable {
-    /// The decentralized identifier (DID) of the mod.
+public struct LabelersPreferenceItem: Codable {
+    /// The decentralized identifier (DID) of the labeler.
     public let atDID: String
 }
 
