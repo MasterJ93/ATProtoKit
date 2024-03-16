@@ -25,5 +25,5 @@ public struct IdentityGetRecommendedDidCredentialsOutput: Codable {
     /// A verification method recommeneded to be added in the DID document. Optional.
     public let verificationMethods: VerificationMethod?
     /// The service endpoint recommended in the DID document. Optional.
-    public let service: ATService
+    public let service: ATService?
 }
