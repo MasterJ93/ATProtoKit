@@ -18,6 +18,8 @@ import Foundation
 ///
 /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/unspecced/getPopularFeedGenerators.json
 public struct UnspeccedGetPopularFeedGeneratorsOutput: Codable {
-    public let cursor: String
+    /// The mark used to indicate the starting point for the next set of result. Optional.
+    public let cursor: String?
+    /// An array of feed generators.
     public let feeds: [FeedGeneratorView]
 }
