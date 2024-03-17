@@ -18,8 +18,8 @@ extension ATProtoKit {
     ///
     /// - Parameters:
     ///   - query: The string used against a list of actors.
-    ///   - limit: The number of suggested users to follow. Optional. Defaults to 50. Can only choose between 1 and 100.
-    ///   - cursor: The number of items in the results. Optional. Defaults to 25 items. Can only be a limit between 1 and 100.
+    ///   - limit: The number of suggested users to follow. Optional. Defaults to 25. Can only choose between 1 and 100.
+    ///   - cursor: The mark used to indicate the starting point for the next set of results. Optional.
     ///   - accessToken: The access token
     ///   - pdsURL: The URL of the Personal Data Server. Defaults to `https://bsky.social`.
     /// - Returns: A `Result`, containing either ``ActorSearchActorsOutput`` if successful, and an `Error` if not.

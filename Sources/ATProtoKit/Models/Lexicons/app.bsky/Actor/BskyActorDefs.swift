@@ -182,6 +182,8 @@ public struct ActorProfileViewDetailed: Codable {
     public var followCount: Int? = nil
     /// The number of posts the user has. Optional.
     public var postCount: Int? = nil
+    /// The associated profile view. Optional.
+    public let associated: ActorProfileAssociated?
     /// The date the profile was last indexed. Optional.
     @DateFormattingOptional public var indexedAt: Date? = nil
     /// The list of metadata relating to the requesting account's relationship with the subject account. Optional.
@@ -190,7 +192,7 @@ public struct ActorProfileViewDetailed: Codable {
     public var labels: [Label]? = nil
 
     public init(actorDID: String, actorHandle: String, displayName: String?, description: String?, avatarImageURL: URL?, bannerImageURL: URL?,
-                followerCount: Int?, followCount: Int?, postCount: Int?, indexedAt: Date?, viewer: ActorViewerState?, labels: [Label]?) {
+                followerCount: Int?, followCount: Int?, postCount: Int?, associated: ActorProfileAssociated?, indexedAt: Date?, viewer: ActorViewerState?, labels: [Label]?) {
         self.actorDID = actorDID
         self.actorHandle = actorHandle
         self.displayName = displayName
@@ -200,6 +202,7 @@ public struct ActorProfileViewDetailed: Codable {
         self.followerCount = followerCount
         self.followCount = followCount
         self.postCount = postCount
+        self.associated = associated
         self._indexedAt = DateFormattingOptional(wrappedValue: indexedAt)
         self.viewer = viewer
         self.labels = labels
@@ -217,6 +220,7 @@ public struct ActorProfileViewDetailed: Codable {
         self.followerCount = try container.decodeIfPresent(Int.self, forKey: .followerCount)
         self.followCount = try container.decodeIfPresent(Int.self, forKey: .followCount)
         self.postCount = try container.decodeIfPresent(Int.self, forKey: .postCount)
+        self.associated = try container.decodeIfPresent(ActorProfileAssociated.self, forKey: .associated)
         self.indexedAt = try container.decodeIfPresent(DateFormattingOptional.self, forKey: .indexedAt)?.wrappedValue
         self.viewer = try container.decodeIfPresent(ActorViewerState.self, forKey: .viewer)
         self.labels = try container.decodeIfPresent([Label].self, forKey: .labels)
@@ -240,6 +244,7 @@ public struct ActorProfileViewDetailed: Codable {
         try container.encodeIfPresent(self.followerCount, forKey: .followerCount)
         try container.encodeIfPresent(self.followCount, forKey: .followCount)
         try container.encodeIfPresent(self.postCount, forKey: .postCount)
+        try container.encodeIfPresent(self.associated, forKey: .associated)
         try container.encodeIfPresent(self._indexedAt, forKey: .indexedAt)
         try container.encodeIfPresent(self.viewer, forKey: .viewer)
         try container.encodeIfPresent(self.labels, forKey: .labels)
@@ -255,9 +260,30 @@ public struct ActorProfileViewDetailed: Codable {
         case followerCount = "followersCount"
         case followCount = "followsCount"
         case postCount = "postsCount"
+        case associated
         case indexedAt
         case viewer
         case labels
+    }
+}
+
+/// A data model definition for an actor's associated profile.
+///
+/// - SeeAlso: This is based on the [`app.bsky.actor.defs`][github] lexicon.
+///
+/// [github]: https://github.com/bluesky-social/atproto/blob/9579bec720d30e40c995d09772040212c261d6fb/lexicons/app/bsky/actor/defs.json
+public struct ActorProfileAssociated: Codable {
+    /// The number of lists associated with the user. Optional.
+    public let lists: Int?
+    /// The number of feed generators associated with the user. Optional.
+    public let feedGenerators: Int?
+    /// Indicates whether the user account is a labeler. Optional.
+    public let isActorLabeler: Bool?
+
+    enum CodingKeys: String, CodingKey {
+        case lists
+        case feedGenerators = "feedgens"
+        case isActorLabeler = "labeler"
     }
 }
 
@@ -265,6 +291,7 @@ public struct ActorProfileViewDetailed: Codable {
 ///
 /// - Note: From the AT Protocol specification: "Metadata about the requesting account's relationship with the subject account.
 /// Only has meaningful content for authed requests."
+///
 /// - SeeAlso: This is based on the [`app.bsky.actor.defs`][github] lexicon.
 ///
 /// [github]: https://github.com/bluesky-social/atproto/blob/9579bec720d30e40c995d09772040212c261d6fb/lexicons/app/bsky/actor/defs.json
@@ -346,17 +373,26 @@ public struct ContentLabelPreferences: Codable {
     ///
     /// - Warning: The value must not change.
     public let type: String = "app.bsky.actor.defs#contentLabelPref"
+    /// The decentralized identifier of the labeler that this preference applies to.
+    ///
+    /// - Note: If this field is empty, then the preferences apply to all labels.
+    ///
+    /// - Note: According to the AT Protocol specifications: "Which labeler does this preference apply to? If undefined, applies globally."
+    public let labelerDID: String?
     /// The name of the content label.
     public let label: String
     /// Indicates the visibility of the label's content.
     public let visibility: Visibility
 
-    public init(label: String, visibility: Visibility) {
+    public init(labelerDID: String?, label: String, visibility: Visibility) {
+        self.labelerDID = labelerDID
         self.label = label
         self.visibility = visibility
     }
     /// Determines how visible a label's content is.
     public enum Visibility: String, Codable {
+        /// Indicates the content can be ignored.
+        case ignore = "ignore"
         /// Indicates the content can be seen without restriction.
         case show = "show"
         /// Indicates the content can be seen, but will ask if the user wants to view it.
@@ -367,6 +403,7 @@ public struct ContentLabelPreferences: Codable {
 
     enum CodingKeys: String, CodingKey {
         case type = "$type"
+        case labelerDID = "labelerDid"
         case label
         case visibility
     }
@@ -462,7 +499,7 @@ public struct FeedViewPreferences: Codable {
     /// Indicates whether replies from users you don't follow are hidden from the user. Optional.
     ///
     /// - Note: From the AT Protocol specification: "Hide replies in the feed if they are not by followed users."
-    public let areUnfollowedRepliesHidden: Bool? = nil
+    public let areUnfollowedRepliesHidden: Bool? = true
     /// Indicates how many likes a post needs in order for the user to see the reply. Optional.
     ///
     /// - Note: From the AT Protocol specification: "Hide replies in the feed if they do not have this number of likes."
@@ -686,6 +723,26 @@ public struct HiddenPostsPreferences: Codable {
         case type = "$type"
         case items
     }
+}
+
+/// A data model for a "Labelers" preference definition.
+///
+/// - SeeAlso: This is based on the [`app.bsky.actor.defs`][github] lexicon.
+///
+/// [github]: https://github.com/bluesky-social/atproto/blob/9579bec720d30e40c995d09772040212c261d6fb/lexicons/app/bsky/actor/defs.json
+public struct LabelersPreferences: Codable {
+    /// An array of labeler items.
+    public let labelers: [String]
+}
+
+/// A data model definition for a labeler item.
+///
+/// - SeeAlso: This is based on the [`app.bsky.actor.defs`][github] lexicon.
+///
+/// [github]: https://github.com/bluesky-social/atproto/blob/9579bec720d30e40c995d09772040212c261d6fb/lexicons/app/bsky/actor/defs.json
+public struct LabelersPreferenceItem: Codable {
+    /// The decentralized identifier (DID) of the labeler.
+    public let atDID: String
 }
 
 // MARK: - Union types

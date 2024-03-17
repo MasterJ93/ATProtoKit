@@ -29,7 +29,7 @@ public struct ModerationCreateReport: Codable {
     ///   \* **For items with some inferable context from property names or references**: its best interpretation, though not with full certainty.\
     ///   \* **For items without enough context for even an educated guess**: a direct acknowledgment of their undocumented status.\
     ///   Clarifications from Bluesky are needed in order to fully understand this item.
-    public let subject: RepoReferencesUnion
+    public let subject: RepositoryReferencesUnion
 }
 
 /// A data model definition for the output of creating a report.
@@ -50,13 +50,13 @@ public struct ModerationCreateReportOutput: Codable {
     ///   \* **For items with some inferable context from property names or references**: its best interpretation, though not with full certainty.\
     ///   \* **For items without enough context for even an educated guess**: a direct acknowledgment of their undocumented status.\
     ///   Clarifications from Bluesky are needed in order to fully understand this item.
-    public let subject: RepoReferencesUnion
+    public let subject: RepositoryReferencesUnion
     /// The decentralized identifier (DID) of the user who created the report.
     public let reportedBy: String
     /// The date and time the report was created.
     @DateFormatting public var createdAt: Date
 
-    public init(id: Int, reasonType: ModerationReasonType, reason: String?, subject: RepoReferencesUnion, reportedBy: String, createdAt: Date) {
+    public init(id: Int, reasonType: ModerationReasonType, reason: String?, subject: RepositoryReferencesUnion, reportedBy: String, createdAt: Date) {
         self.id = id
         self.reasonType = reasonType
         self.reason = reason
@@ -71,7 +71,7 @@ public struct ModerationCreateReportOutput: Codable {
         self.id = try container.decode(Int.self, forKey: .id)
         self.reasonType = try container.decode(ModerationReasonType.self, forKey: .reasonType)
         self.reason = try container.decodeIfPresent(String.self, forKey: .reason)
-        self.subject = try container.decode(RepoReferencesUnion.self, forKey: .subject)
+        self.subject = try container.decode(RepositoryReferencesUnion.self, forKey: .subject)
         self.reportedBy = try container.decode(String.self, forKey: .reportedBy)
         self.createdAt = try container.decode(DateFormatting.self, forKey: .createdAt).wrappedValue
     }

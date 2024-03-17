@@ -10,6 +10,12 @@
 
 [![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2FMasterJ93%2FATProtoKit%2Fbadge%3Ftype%3Dswift-versions)](https://swiftpackageindex.com/MasterJ93/ATProtoKit)
 [![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2FMasterJ93%2FATProtoKit%2Fbadge%3Ftype%3Dplatforms)](https://swiftpackageindex.com/MasterJ93/ATProtoKit)
+[![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/masterj93/atprotokit?logo=github)](https://github.com/MasterJ93/ATProtoKit)
+
+</div>
+<div align="center">
+
+[![Static Badge](https://img.shields.io/badge/Follow-%40cjrriley.com-0073fa?style=flat&logo=bluesky&labelColor=%23151e27&link=https%3A%2F%2Fbsky.app%2Fprofile%2Fcjrriley.com)](https://bsky.social/profile/cjrriley.com)
 
 </div>
 
@@ -58,7 +64,7 @@ I believe Bluesky and its accompanying AT Protocol gives the perfect balance bet
 You can use the Swift Package Manager to download and import the library into your project:
 ```swift
 dependencies: [
-    .package(url: "https://github.com/MasterJ93/ATProtoKit.git", from: "0.4.0")
+    .package(url: "https://github.com/MasterJ93/ATProtoKit.git", from: "0.6.0")
 ]
 ```
 
@@ -66,7 +72,7 @@ dependencies: [
 ## Roadmap
 The Projects page isn't set up yet, so it'll be a while before you can see the progress for this project. However, some of the goals include:
 - Making the library fully compatible for Linux, for both client-side and server-side applications.
-- Replacing SwiftSoup to a more laser-focused Swift Package dedicated for the AT Protocol and Bluesky.
+- Replacing SwiftSoup to a more laser-focused Swift package dedicated for the AT Protocol and Bluesky.
 - Adding a separate package for auto-generating lexicons based on the Swift API Design Guidelines, Swift best practices, and this project’s own API design guidelines.
 
 ## Quick Start
@@ -99,10 +105,10 @@ Task {
 
 ## Requirements
 To use ATProtoKit in your apps, your app should target the specific version numbers:
-- **iOS** and **iPadOS** 13 or later.
+- **iOS** and **iPadOS** 15 or later.
 - **macOS** 12 or later.
-- **tvOS** 13 or later.
-- **watchOS** 6 or later.
+- **tvOS** 15 or later.
+- **watchOS** 8 or later.
 - **visionOS** 1 or later.
 
 As of right now, Linux support is theoretically possible, but not guaranteed to be tested. The plan is to make it fully compatible with Linux by version 1.0, though this is not a required goal to get there. For other platforms (such as Android), this is also not tested, but should be theoretically possible. While it’s not a goal to make it fully compatible, contributions and feedback on the matter are welcomed.
@@ -118,4 +124,4 @@ While this project will change significantly, early feedback, issues, and contri
 If you have any questions, you can ask me on Bluesky ([@cjrriley.com](https://bsky.app/profile/cjrriley.com)). And while you're at it, give me a follow!
 
 ## License
-This Swift Package is using the MIT License. Please view [LICENSE.md](https://github.com/MasterJ93/ATProtoKit/blob/ed45edcd717e7341ae688d294504e0019550b3f0/LICENSE.md) for more details.
+This Swift package is using the MIT License. Please view [LICENSE.md](https://github.com/MasterJ93/ATProtoKit/blob/ed45edcd717e7341ae688d294504e0019550b3f0/LICENSE.md) for more details.

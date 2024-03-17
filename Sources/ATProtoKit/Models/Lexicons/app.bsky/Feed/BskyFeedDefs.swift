@@ -309,12 +309,28 @@ public struct FeedGeneratorView: Codable {
     /// The avatar image URL of the feed generator.
     public var avatarImageURL: URL? = nil
     /// The number of likes for the feed generator.
-    public let likeCount: Int? = nil
+    public var likeCount: Int? = nil
+    /// An array of labels. Optional.
+    public let labels: [Label]?
     /// The viewer's state for the feed generator.
     public var viewer: FeedGeneratorViewerState? = nil
     /// The last time the feed generator was indexed.
     @DateFormatting public var indexedAt: Date
 
+    public init(feedURI: String, cidHash: String, feedDID: String, creator: ActorProfileView, displayName: String, description: String?, descriptionFacets: [Facet]?, avatarImageURL: URL?, likeCount: Int?, labels: [Label]?, viewer: FeedGeneratorViewerState?, indexedAt: Date) {
+        self.feedURI = feedURI
+        self.cidHash = cidHash
+        self.feedDID = feedDID
+        self.creator = creator
+        self.displayName = displayName
+        self.description = description
+        self.descriptionFacets = descriptionFacets
+        self.avatarImageURL = avatarImageURL
+        self.likeCount = likeCount
+        self.labels = labels
+        self.viewer = viewer
+        self._indexedAt = DateFormatting(wrappedValue: indexedAt)
+    }
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
 
@@ -326,6 +342,8 @@ public struct FeedGeneratorView: Codable {
         self.description = try container.decodeIfPresent(String.self, forKey: .description)
         self.descriptionFacets = try container.decodeIfPresent([Facet].self, forKey: .descriptionFacets)
         self.avatarImageURL = try container.decodeIfPresent(URL.self, forKey: .avatarImageURL)
+        self.likeCount = try container.decodeIfPresent(Int.self, forKey: .likeCount)
+        self.labels = try container.decodeIfPresent([Label].self, forKey: .labels)
         self.viewer = try container.decodeIfPresent(FeedGeneratorViewerState.self, forKey: .viewer)
         self.indexedAt = try container.decode(DateFormatting.self, forKey: .indexedAt).wrappedValue
     }
@@ -350,6 +368,7 @@ public struct FeedGeneratorView: Codable {
         if let likeCount = self.likeCount, likeCount >= 0 {
             try container.encode(likeCount, forKey: .likeCount)
         }
+        try container.encodeIfPresent(self.labels, forKey: .labels)
         try container.encodeIfPresent(self.viewer, forKey: .viewer)
         try container.encode(self._indexedAt, forKey: .indexedAt)
     }
@@ -363,7 +382,8 @@ public struct FeedGeneratorView: Codable {
         case description
         case descriptionFacets = "descriptionFacets"
         case avatarImageURL = "avatar"
-        case likeCount = "likeCount"
+        case likeCount
+        case labels
         case viewer
         case indexedAt
     }

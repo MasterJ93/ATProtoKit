@@ -18,5 +18,5 @@ public struct AdminSearchReposOutput: Codable {
     /// The mark used to indicate the starting point for the next set of results. Optional.
     public let cursor: String?
     /// An array of repositories.
-    public let repos: AdminRepoView
+    public let repos: OzoneModerationRepositoryView
 }

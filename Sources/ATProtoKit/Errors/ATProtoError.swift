@@ -13,43 +13,46 @@ public protocol ATProtoError: Error {}
 public enum ATAPIError: ATProtoError, Decodable {
     /// Represents a bad request error (HTTP 400) with an associated message.
     /// - Parameter message: The message received along side the error.
-    case badRequest(message: String) // Error 400
+    case badRequest(message: String?) // Error 400
     /// Represents an unauthorized error (HTTP 401) with an associated message.
     /// - Parameter message: The message received along side the error.
-    case unauthorized(message: String)
+    case unauthorized(message: String?)
     /// Represents a forbidden error (HTTP 403) with an associated message.
     /// - Parameter message: The message received along side the error.
-    case forbidden(message: String)
+    case forbidden(message: String?)
+    /// Represents a not found error (HTTP 404) with an associated message.
+    /// - Parameter message: The message received along side the error.
+    case notFound(message: String?)
     /// Represents a payload too large error (HTTP 413) with an associated message.
     /// - Parameter message: The message received along side the error.
-    case payloadTooLarge(message: String)
+    case payloadTooLarge(message: String?)
     /// Represents a too many requests error (HTTP 429) with an associated message.
     /// - Parameter message: The message received along side the error.
-    case tooManyRequests(message: String)
+    case tooManyRequests(message: String?)
     /// Represents an internal server error (HTTP 500) with an associated message.
     /// - Parameter message: The message received along side the error.
-    case internalServerError(message: String)
+    case internalServerError(message: String?)
     /// Represents a method not implemented error (HTTP 501) with an associated message.
     /// - Parameter message: The message received along side the error.
-    case methodNotImplemented(message: String)
+    case methodNotImplemented(message: String?)
     /// Represents a bad gateway error (HTTP 502) with an associated message.
     /// - Parameter message: The message received along side the error.
-    case badGateway(message: String)
+    case badGateway(message: String?)
     /// Represents a service unavailable error (HTTP 503) with an associated message.
     /// - Parameter message: The message received along side the error.
-    case serviceUnavailable(message: String)
+    case serviceUnavailable(message: String?)
     /// Represents a gateway timeout error (HTTP 504) with an associated message.
     /// - Parameter message: The message received along side the error.
-    case gatewayTimeout(message: String)
+    case gatewayTimeout(message: String?)
     /// Represents an unknown error with an associated message.
     /// - Parameter message: The message received along side the error.
-    case unknown(message: String)
+    case unknown(message: String?)
 
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
 
         let errorType = try container.decode(String.self, forKey: .error)
-        let message = try container.decode(String.self, forKey: .message)
+        let message = try container.decodeIfPresent(String.self, forKey: .message)
 
         switch errorType {
             case 
@@ -82,9 +85,11 @@ public enum ATAPIError: ATProtoError, Decodable {
                 "ConsumerTooSlow":
                 self = .badRequest(message: message)
             case "Unauthorized":
-                self = .unknown(message: message)
+                self = .unauthorized(message: message)
             case "Forbidden":
                 self = .forbidden(message: message)
+            case "NotFound":
+                self = .notFound(message: message)
             case "PayloadTooLarge":
                 self = .payloadTooLarge(message: message)
             case "TooManyRequests":
@@ -108,6 +113,25 @@ public enum ATAPIError: ATProtoError, Decodable {
         case error
         case message
     }
+}
+
+/// An error type related to issues surrounding preparing a request to be sent.
+enum ATRequestPrepareError: ATProtoError {
+    /// The format of the object is incorrect.
+    case invalidFormat
+    /// The requestURL may be incorrect (either the endpoint itself or the URL of the Personal Data Server (PDS)).
+    case invalidRequestURL
+    /// The hostname's URL may be incorrect.
+    case invalidHostnameURL
+    /// There's no valid or active session in the instance.
+    ///
+    /// Authentication is required for methods that need it.
+    case missingActiveSession
+}
+
+/// An error type related to issues surrounding
+enum ATEventStreamError: ATProtoError {
+    case invalidEndpoint
 }
 
 /// An error type related to ``ATImageProcessable``..

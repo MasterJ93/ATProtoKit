@@ -26,7 +26,7 @@ extension ATProtoKit {
 
             try await APIClientService.sendRequest(request, withEncodingBody: requestBody)
         } catch {
-            throw URIError.invalidFormat
+            throw ATRequestPrepareError.invalidFormat
         }
     }
 }
