@@ -9,6 +9,9 @@ import Foundation
 
 /// The main data model definition for the output of retrieving the skeleton results of actors (users).
 ///
+/// - Important: This is an unspecced model, and as such, this is highly volatile and may change or be removed at any time. Use at your
+/// own risk.
+///
 /// - Note: According to the AT Protocol specifications: "Backend Actors (profile) search, returns only skeleton."
 ///
 /// - SeeAlso: This is based on the [`app.bsky.unspecced.searchActorsSkeleton`][github] lexicon.
