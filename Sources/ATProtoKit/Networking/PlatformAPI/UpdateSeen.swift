@@ -13,7 +13,7 @@ extension ATProtoKit {
     /// - Parameter seenAt: The date and time the notification was seen. Defaults to the date and time the request was sent.
     public func updateSeen(seenAt: Date = Date.now) async throws {
         guard let sessionURL = session.pdsURL,
-              let requestURL = URL(string: "\(sessionURL)/xrpc/`app.bsky.notification.updateSeen") else {
+              let requestURL = URL(string: "\(sessionURL)/xrpc/app.bsky.notification.updateSeen") else {
             throw NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"])
         }
 

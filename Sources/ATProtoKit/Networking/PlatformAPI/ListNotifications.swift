@@ -17,7 +17,7 @@ extension ATProtoKit {
     /// - Returns: A `Result`, containing either a ``NotificationListNotificationsOutput`` if successful, or an `Error` if not.
     public func listNotifications(withLimitOf limit: Int? = 50, cursor: String? = nil, seenAt: Date = Date.now) async throws -> Result<NotificationListNotificationsOutput, Error> {
         guard let sessionURL = session.pdsURL,
-              let requestURL = URL(string: "\(sessionURL)/xrpc/`app.bsky.notification.listNotifications") else {
+              let requestURL = URL(string: "\(sessionURL)/xrpc/app.bsky.notification.listNotifications") else {
             return .failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"]))
         }
 
@@ -29,7 +29,7 @@ extension ATProtoKit {
         }
 
         if let cursor {
-            queryItems.append(("limit", cursor))
+            queryItems.append(("cursor", cursor))
         }
 
         guard let formattedSeenAt = CustomDateFormatter.shared.string(from: seenAt) else {
