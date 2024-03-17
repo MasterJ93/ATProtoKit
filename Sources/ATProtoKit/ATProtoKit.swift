@@ -3,9 +3,12 @@ import Foundation
 /// Defines a protocol for configurations in the `ATProtoKit` API library.
 ///
 /// `ATProtoKitConfiguration` defines the basic requirements for any configuration class or structure
-/// within `ATProtoKit`. Any class that conforms to this protocol must be geared for sending API calls to the AT Protocol. Creating a class that conforms to this is useful if you have additional
-/// lexicons specific to the service you're running.
+/// within `ATProtoKit`. Any class that conforms to this protocol must be geared for sending API calls to the AT Protocol. Creating a class
+/// that conforms to this is useful if you have additional lexicons specific to the service you're running.
 public protocol ATProtoKitConfiguration {
+    /// Represents an authenticated user session within the AT Protocol. Optional.
+    ///
+    /// If you're using a method that uses authentication, then this is required.
     var session: UserSession? { get }
 }
 
@@ -32,7 +35,9 @@ public protocol ATProtoKitConfiguration {
 /// }
 /// ```
 public class ATProtoKit: ATProtoKitConfiguration {
-    /// Represents an authenticated user session within the AT Protocol.
+    /// Represents an authenticated user session within the AT Protocol. Optional.
+    ///
+    /// If you're using a method that uses authentication, then this is required.
     public let session: UserSession?
 
     /// Initializes a new instance of `ATProtoKit`.
@@ -83,7 +88,9 @@ public class ATProtoKit: ATProtoKitConfiguration {
 /// }
 /// ```
 public class ATProtoAdmin: ATProtoKitConfiguration {
-    /// Represents an authenticated user session within the AT Protocol.
+    /// Represents an authenticated user session within the AT Protocol. Optional.
+    ///
+    /// If you're using a method that uses authentication, then this is required.
     public let session: UserSession?
 
     /// Initializes a new instance of `ATProtoAdmin`.
