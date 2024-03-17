@@ -124,6 +124,11 @@ enum ATRequestPrepareError: ATProtoError {
     case missingActiveSession
 }
 
+/// An error type related to issues surrounding
+enum ATEventStreamError: ATProtoError {
+    case invalidEndpoint
+}
+
 /// An error type related to ``ATImageProcessable``..
 enum ATImageProcessingError: ATProtoError {
     /// The image's file size can't be lowered any further to fit the target file size.
