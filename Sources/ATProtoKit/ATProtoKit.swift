@@ -6,7 +6,7 @@ import Foundation
 /// within `ATProtoKit`. Any class that conforms to this protocol must be geared for sending API calls to the AT Protocol. Creating a class that conforms to this is useful if you have additional
 /// lexicons specific to the service you're running.
 public protocol ATProtoKitConfiguration {
-    var session: UserSession { get }
+    var session: UserSession? { get }
 }
 
 /// The base class that handles the main functionality of the `ATProtoKit` API library.
@@ -33,7 +33,7 @@ public protocol ATProtoKitConfiguration {
 /// ```
 public class ATProtoKit: ATProtoKitConfiguration {
     /// Represents an authenticated user session within the AT Protocol.
-    public let session: UserSession
+    public let session: UserSession?
 
     /// Initializes a new instance of `ATProtoKit`.
     /// - Parameters:
@@ -84,7 +84,7 @@ public class ATProtoKit: ATProtoKitConfiguration {
 /// ```
 public class ATProtoAdmin: ATProtoKitConfiguration {
     /// Represents an authenticated user session within the AT Protocol.
-    public let session: UserSession
+    public let session: UserSession?
 
     /// Initializes a new instance of `ATProtoAdmin`.
     /// - Parameters:
