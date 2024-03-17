@@ -17,7 +17,7 @@ extension ATProtoKit {
     /// - Returns: A `Result`, containing either a ``SyncListReposOutput`` if successful, or an `Error` if not.
     public static func listRepos(limit: Int? = 500, cursor: String? = nil, pdsURL: String = "https://bsky.social") async throws -> Result<SyncListReposOutput, Error> {
         guard let requestURL = URL(string: "\(pdsURL)/xrpc/com.atproto.sync.getRepos") else {
-            return .failure(ATURIError.invalidRequestURL)
+            return .failure(ATRequestPrepareError.invalidRequestURL)
         }
 
         var queryItems = [(String, String)]()

@@ -16,7 +16,7 @@ extension ATProtoKit {
     /// - Returns: A `Result`, containing either a `Data` if successful, or an `Error` if not.
     public static func getSyncRecord(_ recordQuery: RecordQuery, pdsURL: String = "https://bsky.social") async throws -> Result<Data, Error> {
         guard let requestURL = URL(string: "\(pdsURL)/xrpc/com.atproto.sync.getRecord") else {
-            return .failure(ATURIError.invalidRequestURL)
+            return .failure(ATRequestPrepareError.invalidRequestURL)
         }
 
         do {

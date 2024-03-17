@@ -16,7 +16,7 @@ extension ATProtoKit {
     /// - Returns: A `Result`, which either contains a `RecordOutput` if successful, and an `Error` if not.
     public static func getRepoRecord(from recordQuery: RecordQuery, pdsURL: String = "https://bsky.social") async throws -> Result<RecordOutput, Error> {
         guard let requestURL = URL(string: "\(pdsURL)/xrpc/com.atproto.repo.getRecord") else {
-            return .failure(ATURIError.invalidRequestURL)
+            return .failure(ATRequestPrepareError.invalidRequestURL)
         }
 
         do {

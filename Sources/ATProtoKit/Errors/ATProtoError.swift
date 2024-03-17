@@ -110,13 +110,18 @@ public enum ATAPIError: ATProtoError, Decodable {
     }
 }
 
-enum ATURIError: ATProtoError {
+/// An error type related to issues surrounding preparing a request to be sent.
+enum ATRequestPrepareError: ATProtoError {
     /// The format of the object is incorrect.
     case invalidFormat
     /// The requestURL may be incorrect (either the endpoint itself or the URL of the Personal Data Server (PDS)).
     case invalidRequestURL
     /// The hostname's URL may be incorrect.
     case invalidHostnameURL
+    /// There's no valid or active session in the instance.
+    ///
+    /// Authentication is required for methods that need it.
+    case missingActiveSession
 }
 
 /// An error type related to ``ATImageProcessable``..

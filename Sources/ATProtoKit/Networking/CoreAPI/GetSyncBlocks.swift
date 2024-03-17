@@ -19,7 +19,7 @@ extension ATProtoKit {
     public static func getSyncBlocks(from repositoryDID: String, by repositoryCIDHashes: [String], pdsURL: String = "https://bsky.social") async throws -> Result<Data, Error> {
         guard let requestURL = URL(string: "\(pdsURL)/xrpc/com.atproto.sync.getBlocks") else {
             print("Failure")
-            return .failure(ATURIError.invalidRequestURL)
+            return .failure(ATRequestPrepareError.invalidRequestURL)
         }
 
         var queryItems = [(String, String)]()
