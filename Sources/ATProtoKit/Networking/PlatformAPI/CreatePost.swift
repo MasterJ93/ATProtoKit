@@ -12,15 +12,18 @@ extension ATProtoKit {
     /// 
     /// - Parameters:
     ///   - text: The text that's directly displayed in the post record. Current limit is 300 characters.
-    ///   - locales: The languages the text is written in. Current limit is 3 lanagues.
+    ///   - locales: The languages the text is written in. Current limit is 3 languages.
     ///   - replyTo: The post record that this record is replying to.
     ///   - embed: The embed container attached to the post record. Current items include images, external links, other posts, lists, and post records with media.
     ///   - labels: An array of labels made by the user.
     ///   - tags: An array of tags for the post record.
     ///   - creationDate: The date of the post record. Defaults to `Date.now`.
-    /// - Returns: A strong reference, which contains the newly-created record's `recordURI` (URI) and the `cidHash` (CID) .
+    ///   - recordKey: The record key of the collection. Optional.
+    ///   - shouldValidate: Indicates whether the record should be validated. Optional. Defaults to `true`.
+    ///   - swapCommit: Swaps out an operation based on the CID. Optional.
+    /// - Returns: A strong reference, which contains the newly-created record's URI and CID hash.
     public func createPostRecord(text: String, locales: [Locale] = [], replyTo: String? = nil, embed: EmbedIdentifier? = nil,
-                                 labels: FeedLabelUnion? = nil, tags: [String]? = nil, creationDate: Date = Date.now) async -> Result<StrongReference, Error> {
+                                 labels: FeedLabelUnion? = nil, tags: [String]? = nil, creationDate: Date = Date.now, recordKey: String? = nil, shouldValidate: Bool? = true, swapCommit: String? = nil) async -> Result<StrongReference, Error> {
 
         guard let sessionURL = session.pdsURL else {
             return .failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid pdsURL"]))
@@ -75,7 +78,14 @@ extension ATProtoKit {
             record: post
         )
 
-        return await createRecord(collection: "app.bsky.feed.post", requestBody: requestBody)
+        return await createRecord(
+            repositoryDID: session.sessionDID,
+            collection: "app.bsky.feed.post",
+            recordKey: recordKey ?? nil,
+            shouldValidate: shouldValidate,
+            record: UnknownType(),
+            swapCommit: swapCommit ?? nil
+        )
     }
     
     /// Uploads images to the AT Protocol for attaching to a record at a later request.

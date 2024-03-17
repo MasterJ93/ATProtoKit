@@ -9,18 +9,29 @@ import Foundation
 
 extension ATProtoKit {
     /// Creates a record attached to a user account.
-    /// 
+    ///  
     /// - Parameters:
+    ///   - repositoryDID: The decentralized identifier (DID) of the repository.
     ///   - collection: The NSID of the record.
-    ///   - requestBody: The request body that contains the information needed to create the specific type of record.
-    ///   - createdAt: The date and time the record was created. Defaults to the date and time this method was called.
+    ///   - recordKey: The record key of the collection. Optional.
+    ///   - shouldValidate: ndicates whether the record should be validated. Optional. Defaults to `true`.
+    ///   - record: /// The record itself.
+    ///   - swapCommit: Swaps out an operation based on the CID. Optional.
     /// - Returns: A `Result`, containing either a ``StrongReference`` if successful, and an `Error` if not.
-    public func createRecord<T: Encodable>(collection: String, requestBody: T, createdAt: Date = Date.now) async -> Result<StrongReference, Error> {
+    public func createRecord(repositoryDID: String, collection: String, recordKey: String? = nil, shouldValidate: Bool? = true, record: UnknownType, swapCommit: String? = nil) async -> Result<StrongReference, Error> {
         guard let sessionURL = session.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.repo.createRecord") else {
             return .failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"]))
         }
         
+        let requestBody = RepoCreateRecord(
+            repositoryDID: repositoryDID,
+            collection: collection,
+            recordKey: recordKey,
+            shouldValidate: shouldValidate,
+            record: record,
+            swapCommit: swapCommit)
+
         do {
             let request = APIClientService.createRequest(forRequest: requestURL,
                                                          andMethod: .post,

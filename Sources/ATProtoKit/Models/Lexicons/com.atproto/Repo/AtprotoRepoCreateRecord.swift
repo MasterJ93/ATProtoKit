@@ -36,7 +36,7 @@ public struct RepoCreateRecord: Codable {
     /// - Important: If a value is entered in here, the entire operation will fail if there is no matching value in the repository.
     ///
     /// - Note: According to the AT Protocol specifications: "Compare and swap with the previous commit by CID."
-    public let swapCommit: String
+    public let swapCommit: String?
 
     enum CodingKeys: String, CodingKey {
         case repositoryDID = "repo"
