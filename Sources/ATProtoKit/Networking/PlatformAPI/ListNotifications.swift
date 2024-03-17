@@ -33,7 +33,7 @@ extension ATProtoKit {
         }
 
         guard let formattedSeenAt = CustomDateFormatter.shared.string(from: seenAt) else {
-            return .failure(URIError.invalidFormat)
+            return .failure(ATRequestPrepareError.invalidFormat)
         }
         queryItems.append(("seenAt", formattedSeenAt))
 
