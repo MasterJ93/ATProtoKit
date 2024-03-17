@@ -16,7 +16,7 @@ extension ATProtoKit {
         guard let sessionURL = pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.sync.getBlob") else {
             print("Failure")
-            return .failure(URIError.invalidRequestURL)
+            return .failure(ATURIError.invalidRequestURL)
         }
 
         do {

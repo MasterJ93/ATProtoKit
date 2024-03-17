@@ -17,7 +17,7 @@ extension ATProtoKit {
     /// - Returns: A `Result`, containing either a `Data` object if successful, or an `Error` if not.
     public static func getRepo(_ repositoryDID: String, sinceRevision: String? = nil, pdsURL: String = "https://bsky.social") async throws -> Result<Data, Error> {
         guard let requestURL = URL(string: "\(pdsURL)/xrpc/com.atproto.sync.getRepo") else {
-            return .failure(URIError.invalidRequestURL)
+            return .failure(ATURIError.invalidRequestURL)
         }
 
         var queryItems = [(String, String)]()

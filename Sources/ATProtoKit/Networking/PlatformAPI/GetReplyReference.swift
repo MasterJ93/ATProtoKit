@@ -64,13 +64,13 @@ extension ATProtoKit {
                                   pdsURL: String = "https://bsky.app") throws -> RecordQuery {
         if uri.hasPrefix("at://") {
             let components = uri.split(separator: "/").map(String.init)
-            guard components.count >= 4 else { throw URIError.invalidFormat }
+            guard components.count >= 4 else { throw ATURIError.invalidFormat }
 
             return RecordQuery(repo: components[1], collection: components[2], recordKey: components[3])
         } else if uri.hasPrefix("\(pdsURL)/") {
             let components = uri.split(separator: "/").map(String.init)
             guard components.count >= 6 else {
-                throw URIError.invalidFormat }
+                throw ATURIError.invalidFormat }
 
             let record = components[3]
             let recordKey = components[5]
@@ -84,12 +84,12 @@ extension ATProtoKit {
                 case "feed":
                     collection = "app.bsky.feed.generator"
                 default:
-                    throw URIError.invalidFormat
+                    throw ATURIError.invalidFormat
             }
 
             return RecordQuery(repo: record, collection: collection, recordKey: recordKey)
         } else {
-            throw URIError.invalidFormat
+            throw ATURIError.invalidFormat
         }
     }
 }

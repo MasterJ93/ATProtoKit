@@ -12,13 +12,13 @@ extension ATProtoKit {
     ///
     public static func requestCrawl(in crawlingHostname: URL? = nil, pdsURL: String = "https://bsky.social") async throws {
         guard let requestURL = URL(string: "\(pdsURL)/xrpc/app.bsky.graph.notifyOfUpdate") else {
-            throw URIError.invalidRequestURL
+            throw ATURIError.invalidRequestURL
         }
 
         // Check if the `crawlingHostname` and `pdsURL` are the same.
         // If so, then default the variable to `pdsURL`.
         guard let finalHostName = crawlingHostname ?? URL(string: pdsURL) else {
-            throw URIError.invalidHostnameURL
+            throw ATURIError.invalidHostnameURL
         }
 
         let requestBody = SyncCrawler(

@@ -19,7 +19,7 @@ extension ATProtoKit {
     /// - Returns: A `Result`, containing either a ``SyncListBlobsOutput`` if successful, or an `Error` if not.
     public static func listBlobs(from repositoryDID: String, sinceRevision: String?, limit: Int? = 500, cursor: String? = nil, pdsURL: String = "https://bsky.social") async throws -> Result<SyncListBlobsOutput, Error> {
         guard let requestURL = URL(string: "\(pdsURL)/xrpc/com.atproto.sync.listBlobs") else {
-            return .failure(URIError.invalidRequestURL)
+            return .failure(ATURIError.invalidRequestURL)
         }
 
         var queryItems = [(String, String)]()

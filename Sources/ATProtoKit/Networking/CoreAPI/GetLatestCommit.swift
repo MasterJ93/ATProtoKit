@@ -13,7 +13,7 @@ extension ATProtoKit {
     public static func getLatestCommit(from repositoryDID: String, pdsURL: String = "https://bsky.social") async throws -> Result<SyncGetBlocksOutput, Error> {
         guard let requestURL = URL(string: "\(pdsURL)/xrpc/com.atproto.sync.getLatestCommit") else {
             print("Failure")
-            return .failure(URIError.invalidRequestURL)
+            return .failure(ATURIError.invalidRequestURL)
         }
 
         let queryItems = [("did", repositoryDID)]

@@ -110,7 +110,7 @@ public enum ATAPIError: ATProtoError, Decodable {
     }
 }
 
-enum URIError: ATProtoError {
+enum ATURIError: ATProtoError {
     /// The format of the object is incorrect.
     case invalidFormat
     /// The requestURL may be incorrect (either the endpoint itself or the URL of the Personal Data Server (PDS)).

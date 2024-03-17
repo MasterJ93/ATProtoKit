@@ -18,7 +18,7 @@ extension ATProtoKit {
     public static func getLabelerServices(labelerDIDs: [String], isDetailed: Bool? = nil, pdsURL: String = "https://bsky.social") async throws -> Result<LabelerGetServicesOutput, Error> {
         guard let requestURL = URL(string: "\(pdsURL)/xrpc/app.bsky.labeler.getServices") else {
             print("Failure")
-            return .failure(URIError.invalidFormat)
+            return .failure(ATURIError.invalidFormat)
         }
 
         var queryItems = [(String, String)]()
