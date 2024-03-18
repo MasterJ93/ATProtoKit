@@ -18,7 +18,7 @@ extension ATProtoKit {
     public func activateAccount() async throws {
         guard let sessionURL = session.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.server.activateAccount") else {
-            throw NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"])
+            throw ATRequestPrepareError.invalidRequestURL
         }
 
         do {
