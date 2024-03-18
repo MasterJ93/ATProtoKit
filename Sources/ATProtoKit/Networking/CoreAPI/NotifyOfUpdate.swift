@@ -37,7 +37,7 @@ extension ATProtoKit {
                                                          contentTypeValue: "application/json",
                                                          authorizationValue: nil)
 
-            let response = try await APIClientService.sendRequest(request, withEncodingBody: requestBody)
+            try await APIClientService.sendRequest(request, withEncodingBody: requestBody)
         } catch {
             throw error
         }

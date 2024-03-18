@@ -26,7 +26,7 @@ extension ATProtoKit {
                                                          contentTypeValue: nil,
                                                          authorizationValue: "Bearer \(session.accessToken)")
 
-            let response = try await APIClientService.sendRequest(request)
+            try await APIClientService.sendRequest(request, withEncodingBody: requestBody)
         } catch {
             throw error
         }

@@ -20,8 +20,9 @@ extension ATProtoKit {
 
         var queryItems = [(String, String)]()
 
-        let seenAtDate = CustomDateFormatter.shared.string(from: seenAt)
-        queryItems.append(("seenAt", "\(seenAtDate)"))
+        if let seenAtDate = CustomDateFormatter.shared.string(from: seenAt) {
+            queryItems.append(("seenAt", "\(seenAtDate)"))
+        }
 
         do {
             let queryURL = try APIClientService.setQueryItems(

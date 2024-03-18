@@ -50,7 +50,7 @@ extension ATProtoKit {
                 with: queryItems
             )
 
-            let request = APIClientService.createRequest(forRequest: requestURL,
+            let request = APIClientService.createRequest(forRequest: queryURL,
                                                          andMethod: .post,
                                                          acceptValue: "application/json",
                                                          contentTypeValue: nil,

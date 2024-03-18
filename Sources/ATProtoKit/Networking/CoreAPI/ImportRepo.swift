@@ -32,7 +32,7 @@ extension ATProtoKit {
                                                          acceptValue: nil,
                                                          contentTypeValue: "application/vnd.ipld.car",
                                                          authorizationValue: nil)
-            let response = try await APIClientService.sendRequest(request, withEncodingBody: requestBody)
+            try await APIClientService.sendRequest(request, withEncodingBody: requestBody)
         } catch {
             throw error
         }

@@ -483,7 +483,7 @@ public struct OzoneModerationEventEmail: Codable {
 /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/tools/ozone/moderation/defs.json
 public struct OzoneModerationEventDivert: Codable {
     /// Any additional comments about the diversion.
-    public let comment: String? = nil
+    public let comment: String?
 }
 
 /// A data model for a tag event definition.
