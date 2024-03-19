@@ -14,14 +14,22 @@ extension ATProtoKit {
     ///
     /// - Important: The lexicon associated with this model may be removed at any time. This may not work.
     ///
+    /// - Note: According to the AT Protocol specifications: "Request a verification code to be sent to the supplied phone number."
+    ///
+    /// - SeeAlso: This is based on the [`com.atproto.temp.requestPhoneVerification`][github] lexicon.
+    ///
+    /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/temp/requestPhoneVerification.json
+    ///
     /// - Parameter textTo: The user's phone number used for sending the verification code to.
     public func requestPhoneVerification(to phoneNumber: String) async throws {
-        guard let sessionURL = session.pdsURL,
+        guard let sessionURL = session?.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.temp.requestPhoneVerification") else {
             throw ATRequestPrepareError.invalidRequestURL
         }
 
-        let requestBody = TempRequestPhoneVerification(phoneNumber: phoneNumber)
+        let requestBody = TempRequestPhoneVerification(
+            phoneNumber: phoneNumber
+        )
 
         do {
             let request = APIClientService.createRequest(forRequest: requestURL,

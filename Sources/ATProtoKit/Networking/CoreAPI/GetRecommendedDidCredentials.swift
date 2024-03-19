@@ -30,7 +30,7 @@ extension ATProtoKit {
                                                          contentTypeValue: nil,
                                                          authorizationValue: nil)
             let response = try await APIClientService.sendRequest(request, decodeTo:
-                                                                    IdentityGetRecommendedDidCredentialsOutput.self)
+                                                                  IdentityGetRecommendedDidCredentialsOutput.self)
 
             return .success(response)
         } catch {

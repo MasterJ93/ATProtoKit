@@ -12,10 +12,16 @@ extension ATProtoKit {
     /// 
     /// - Important: The lexicon associated with this model may be removed at any time. This may not work.
     /// 
+    /// - Note: According to the AT Protocol specifications: "Check accounts location in signup queue."
+    ///
+    /// - SeeAlso: This is based on the [`com.atproto.temp.checkSignupQueue`][github] lexicon.
+    ///
+    /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/temp/checkSignupQueue.json
+    ///
     /// - Parameter query: The string used to search for the username.
     /// - Returns: A `Result`, containing either a ``TempCheckSignupQueueOutput`` if successful, ot an `Error` if not.
     public func checkSignupQueue(for query: String) async throws -> Result<TempCheckSignupQueueOutput, Error> {
-        guard let sessionURL = session.pdsURL,
+        guard let sessionURL = session?.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.temp.checkSignupQueue") else {
             return .failure(ATRequestPrepareError.invalidRequestURL)
         }
@@ -24,8 +30,10 @@ extension ATProtoKit {
 
         queryItems.append(("q", query))
 
+        let queryURL: URL
+
         do {
-            let queryURL = try APIClientService.setQueryItems(
+            queryURL = try APIClientService.setQueryItems(
                 for: requestURL,
                 with: queryItems
             )
@@ -35,7 +43,8 @@ extension ATProtoKit {
                                                          acceptValue: "application/json",
                                                          contentTypeValue: "application/json",
                                                          authorizationValue: nil)
-            let response = try await APIClientService.sendRequest(request, decodeTo: TempCheckSignupQueueOutput.self)
+            let response = try await APIClientService.sendRequest(request,
+                                                                  decodeTo: TempCheckSignupQueueOutput.self)
 
             return .success(response)
         } catch {

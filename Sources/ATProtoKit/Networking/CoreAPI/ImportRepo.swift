@@ -21,7 +21,7 @@ extension ATProtoKit {
     ///
     /// - Parameters:
     ///   - repositoryData: The repository data in the form of a CAR file.
-    ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `https://bsky.social`.
+    ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `nil`.
     public func importRepo(_ repositoryData: Data, pdsURL: String? = nil) async throws {
         guard let sessionURL = pdsURL != nil ? pdsURL : session?.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.repo.importRepo") else {
@@ -38,7 +38,9 @@ extension ATProtoKit {
                                                          acceptValue: nil,
                                                          contentTypeValue: "application/vnd.ipld.car",
                                                          authorizationValue: nil)
-            try await APIClientService.sendRequest(request, withEncodingBody: requestBody)
+
+            try await APIClientService.sendRequest(request,
+                                                   withEncodingBody: requestBody)
         } catch {
             throw error
         }

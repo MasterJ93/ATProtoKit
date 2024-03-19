@@ -14,7 +14,7 @@ extension ATProtoKit {
     /// - Parameters:
     ///   - repositoryDID: The decentralized identifier (DID) of the repository.
     ///   - repositoryCIDHashes: An array of CID hashes from the repository.
-    ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `https://bsky.social`.
+    ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `nil`.
     /// - Returns: A `Result`, containing either
     public static func getSyncBlocks(from repositoryDID: String, by repositoryCIDHashes: [String], pdsURL: String = "https://bsky.social") async throws -> Result<Data, Error> {
         guard let requestURL = URL(string: "\(pdsURL)/xrpc/com.atproto.sync.getBlocks") else {
@@ -31,8 +31,10 @@ extension ATProtoKit {
         queryItems.append(("did", repositoryDID))
         queryItems += repositoryCIDHashes.map { ("cids", $0) }
 
+        let queryURL: URL
+
         do {
-            let queryURL = try APIClientService.setQueryItems(
+            queryURL = try APIClientService.setQueryItems(
                 for: requestURL,
                 with: queryItems
             )
