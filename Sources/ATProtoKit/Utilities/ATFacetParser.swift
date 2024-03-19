@@ -161,7 +161,7 @@ public class ATFacetParser {
 //                            await facets.append(mentionFacet)
 //                        }
 
-                        let mentionResult = try await ATProtoKit.retrieveDID(from: notATHandle, pdsURL: pdsURL)
+                        let mentionResult = try await ATProtoKit().resolveHandle(from: notATHandle, pdsURL: pdsURL)
 
                         switch mentionResult {
                             case .success(let resolveHandleOutput):
