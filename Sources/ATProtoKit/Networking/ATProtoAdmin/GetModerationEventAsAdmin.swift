@@ -12,12 +12,23 @@ extension ATProtoAdmin {
     /// 
     /// - Important: This is a moderator task and as such, regular users won't be able to access this; if they attempt to do so, an error will occur.
     ///  
+    /// - Note: According to the AT Protocol specifications: "Get details about a moderation event."
+    ///
+    /// - SeeAlso: This is based on the [`tools.ozone.moderation.getEvent`][github] lexicon.
+    ///
+    /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/tools/ozone/moderation/getEvent.json
+    ///
     /// - Parameter id: The ID of the moderator event.
     /// - Returns: A `Result`, containing either an ``OzoneModerationEventViewDetail`` if successful, or an `Error` if not.
     public func getEvent(_ id: String) async throws -> Result<OzoneModerationEventViewDetail, Error> {
-        guard let sessionURL = session.pdsURL,
-              let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.admin.getModerationEvent") else {
-            return .failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"]))
+        guard session != nil,
+              let accessToken = session?.accessToken else {
+            return .failure(ATRequestPrepareError.missingActiveSession)
+        }
+
+        guard let sessionURL = session?.pdsURL,
+              let requestURL = URL(string: "\(sessionURL)/xrpc/tools.ozone.moderation.getEvent") else {
+            return .failure(ATRequestPrepareError.invalidRequestURL)
         }
 
         let queryItems = [("id", id)]
@@ -32,8 +43,9 @@ extension ATProtoAdmin {
                                                          andMethod: .get,
                                                          acceptValue: "application/json",
                                                          contentTypeValue: nil,
-                                                         authorizationValue: "Bearer \(session.accessToken)")
-            let response = try await APIClientService.sendRequest(request, decodeTo: OzoneModerationEventViewDetail.self)
+                                                         authorizationValue: "Bearer \(accessToken)")
+            let response = try await APIClientService.sendRequest(request,
+                                                                  decodeTo: OzoneModerationEventViewDetail.self)
 
             return .success(response)
         } catch {

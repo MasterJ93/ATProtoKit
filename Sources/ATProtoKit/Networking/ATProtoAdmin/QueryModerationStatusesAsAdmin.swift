@@ -13,7 +13,13 @@ extension ATProtoAdmin {
     /// - Important: This is an moderator task and as such, regular users won't be able to access this; if they attempt to do so, an error will occur.
     /// 
     /// - Note: Many of the parameter's descriptions are taken directly from the AT Protocol's specification.
-    /// 18
+    ///
+    /// - Note: According to the AT Protocol specifications: "View moderation statuses of subjects (record or repo)."
+    ///
+    /// - SeeAlso: This is based on the [`tools.ozone.moderation.queryStatuses`][github] lexicon.
+    ///
+    /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/tools/ozone/moderation/queryStatuses.json
+    ///
     /// - Parameters:
     ///   - subject: The URI of the subject. Optional.
     ///   - comment: A query that makes the list display events with comments containing the keywords used here. Optional.
@@ -40,9 +46,14 @@ extension ATProtoAdmin {
                                                sortDirection: AdminQueryModerationStatusesSortDirection? = .descending, isTakenDown: Bool?,
                                                isAppealed: Bool?, limit: Int? = 50, tags: [String]?, excludeTags: [String]?,
                                                cursor: String?) async throws -> Result<AdminQueryModerationStatusesOutput, Error> {
-        guard let sessionURL = session.pdsURL,
-              let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.admin.queryModerationStatuses") else {
-            return .failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"]))
+        guard session != nil,
+              let accessToken = session?.accessToken else {
+            return .failure(ATRequestPrepareError.missingActiveSession)
+        }
+
+        guard let sessionURL = session?.pdsURL,
+              let requestURL = URL(string: "\(sessionURL)/xrpc/tools.ozone.moderation.queryStatuses") else {
+            return .failure(ATRequestPrepareError.invalidRequestURL)
         }
 
         var queryItems = [(String, String)]()
@@ -139,7 +150,7 @@ extension ATProtoAdmin {
                                                          andMethod: .get,
                                                          acceptValue: "application/json",
                                                          contentTypeValue: nil,
-                                                         authorizationValue: "Bearer \(session.accessToken)")
+                                                         authorizationValue: "Bearer \(accessToken)")
             let response = try await APIClientService.sendRequest(request, decodeTo: AdminQueryModerationStatusesOutput.self)
 
             return .success(response)
