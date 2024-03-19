@@ -19,27 +19,29 @@ extension ATProtoKit {
             return .failure(ATRequestPrepareError.invalidRequestURL)
         }
 
+        var queryItems = [
+            ("repo", recordQuery.repo),
+            ("collection", recordQuery.collection),
+            ("rkey", recordQuery.recordKey)
+        ]
+
+        if let cid = recordQuery.recordCID {
+            queryItems.append(("cid", cid))
+        }
+
+        let queryURL: URL
+
         do {
-            var queryItems = [
-                ("repo", recordQuery.repo),
-                ("collection", recordQuery.collection),
-                ("rkey", recordQuery.recordKey)
-            ]
-
-            if let cid = recordQuery.recordCID {
-                queryItems.append(("cid", cid))
-            }
-
-            let queryURL = try APIClientService.setQueryItems(
+            queryURL = try APIClientService.setQueryItems(
                 for: requestURL,
                 with: queryItems
             )
 
-            print("\n===\nqueryURL: \(queryURL)")
             let request = APIClientService.createRequest(forRequest: queryURL,
                                                          andMethod: .get,
                                                          authorizationValue: nil)
-            let response = try await APIClientService.sendRequest(request, decodeTo: RecordOutput.self)
+            let response = try await APIClientService.sendRequest(request,
+                                                                  decodeTo: RecordOutput.self)
 
             return .success(response)
         } catch {

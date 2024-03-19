@@ -18,7 +18,7 @@ extension ATProtoAdmin {
     public func updateAccountHandle(for accountDID: String, newAccountHandle: String) async throws {
         guard let sessionURL = session.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.admin.updateAccountHandle") else {
-            throw NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"])
+            throw ATRequestPrepareError.invalidRequestURL
         }
 
         let requestBody = AdminUpdateAccountHandle(accountDID: accountDID, accountHandle: newAccountHandle)

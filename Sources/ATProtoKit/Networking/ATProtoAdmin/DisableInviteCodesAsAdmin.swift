@@ -12,16 +12,25 @@ extension ATProtoAdmin {
     /// 
     /// - Important: This is an administrator task and as such, regular users won't be able to access this; if they attempt to do so, an error will occur.
     /// 
+    /// - Note: According to the AT Protocol specifications: "Disable some set of codes and/or all codes associated with a set of users."
+    ///
+    /// - SeeAlso: This is based on the [`com.atproto.admin.disableInviteCodes`][github] lexicon.
+    ///
+    /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/admin/disableInviteCodes.json
+    ///
     /// - Parameters:
     ///   - codes: The invite codes to disable.
     ///   - accountDIDs: The decentralized identifiers (DIDs) of the user accounts.
     public func disableInviteCodes(codes: [String], accountDIDs: [String]) async throws {
         guard let sessionURL = session.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.admin.disableInviteCodes") else {
-            throw NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"])
+            throw ATRequestPrepareError.invalidRequestURL
         }
 
-        let requestBody = AdminDisableInviteCodes(codes: codes, accountDIDs: accountDIDs)
+        let requestBody = AdminDisableInviteCodes(
+            codes: codes,
+            accountDIDs: accountDIDs
+        )
 
         do {
             let request = APIClientService.createRequest(forRequest: requestURL,
@@ -30,7 +39,8 @@ extension ATProtoAdmin {
                                                          contentTypeValue: "'application/json",
                                                          authorizationValue: "Bearer \(session.accessToken)")
 
-            try await APIClientService.sendRequest(request, withEncodingBody: requestBody)
+            try await APIClientService.sendRequest(request,
+                                                   withEncodingBody: requestBody)
         } catch {
             throw error
         }
