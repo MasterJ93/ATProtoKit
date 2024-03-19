@@ -12,21 +12,31 @@ extension ATProtoKit {
     ///
     /// - Note: According to the AT Protocol specifications: "Updates the current account's handle. Verifies handle validity, and updates did:plc document if necessary. Implemented by PDS, and requires auth."
     /// 
+    /// - SeeAlso: This is based on the [`com.atproto.identity.updateHandle`][github] lexicon.
+    ///
+    /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/identity/updateHandle.json
+    ///
     /// - Parameter handle: The object which conains the user's new handle.
     public func updateHandle(_ handle: UpdateHandleQuery) async throws {
-        guard let sessionURL = session.pdsURL,
+        guard session != nil,
+              let accessToken = session?.accessToken else {
+            throw ATRequestPrepareError.missingActiveSession
+        }
+
+        guard let sessionURL = session?.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.identity.updateHandle") else {
-            throw NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"])
+            throw ATRequestPrepareError.invalidRequestURL
         }
 
         do {
             let request = APIClientService.createRequest(forRequest: requestURL,
                                                          andMethod: .post,
-                                                         authorizationValue: "Bearer \(session.accessToken)")
+                                                         authorizationValue: "Bearer \(accessToken)")
 
-            try await APIClientService.sendRequest(request, withEncodingBody: handle)
+            try await APIClientService.sendRequest(request,
+                                                   withEncodingBody: handle)
         } catch {
-            throw NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "\(error)"])
+            throw error
         }
     }
 }
