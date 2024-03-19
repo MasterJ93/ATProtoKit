@@ -10,15 +10,26 @@ import Foundation
 extension ATProtoKit {
     /// Applies creation, updates, and deletion transactions into the repository in batches.
     /// 
+    /// - Note: According to the AT Protocol specifications: "Apply a batch transaction of repository creates, updates, and deletes. Requires auth, implemented by PDS."
+    ///
+    /// - SeeAlso: This is based on the [`com.atproto.repo.applyWrites`][github] lexicon.
+    ///
+    /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/repo/applyWrites.json
+    ///
     /// - Parameters:
     ///   - repositoryDID: The decentralized identifier (DID) or handle of the repository.
     ///   - shouldValidate: Indicates whether the operation should be validated. Optional. Defaults to `true`.
     ///   - writes: The write operation itself.
     ///   - swapCommit: Swaps out an operation based on the CID. Optional.
     public func applyWrites(_ repositoryDID: String, shouldValidate: Bool? = true, writes: [ApplyWritesUnion], swapCommit: String?) async throws {
-        guard let sessionURL = session.pdsURL,
+        guard session != nil,
+              let accessToken = session?.accessToken else {
+            throw ATRequestPrepareError.missingActiveSession
+        }
+
+        guard let sessionURL = session?.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.repo.applyWrites") else {
-            throw NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"])
+            throw ATRequestPrepareError.invalidRequestURL
         }
 
         let requestBody = RepoApplyWrites(
@@ -33,9 +44,10 @@ extension ATProtoKit {
                                                          andMethod: .post,
                                                          acceptValue: nil,
                                                          contentTypeValue: "application/json",
-                                                         authorizationValue: "Bearer \(session.accessToken)")
+                                                         authorizationValue: "Bearer \(accessToken)")
 
-            try await APIClientService.sendRequest(request, withEncodingBody: requestBody)
+            try await APIClientService.sendRequest(request,
+                                                   withEncodingBody: requestBody)
         } catch {
             throw error
         }

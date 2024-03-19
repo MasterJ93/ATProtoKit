@@ -103,6 +103,13 @@ public class APIClientService {
 
     /// Uploads a blob to a specified URL with multipart/form-data encoding.
     ///
+    /// - Note: According to the AT Protocol specifications: "Upload a new blob, to be referenced from a repository record. The blob will be deleted if it is not referenced within a time window (eg, minutes).
+    /// Blob restrictions (mimetype, size, etc) are enforced when the reference is created. Requires auth, implemented by PDS."
+    ///
+    /// - SeeAlso: This is based on the [`com.atproto.repo.uploadBlob`][github] lexicon.
+    ///
+    /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/repo/uploadBlob.json
+    ///
     /// - Parameters:
     ///   - pdsURL: The base URL for the blob upload.
     ///   - accessToken: The access token for authorization.
@@ -112,17 +119,25 @@ public class APIClientService {
     public static func uploadBlob(pdsURL: String = "https://bsky.social", accessToken: String, filename: String,
                                   imageData: Data) async throws -> BlobContainer {
          guard let requestURL = URL(string: "\(pdsURL)/xrpc/com.atproto.repo.uploadBlob") else {
-             throw NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"])
+             throw ATRequestPrepareError.invalidRequestURL
          }
+
         let mimeType = mimeType(for: filename)
 
         do {
-            var request = createRequest(forRequest: requestURL, andMethod: .post, contentTypeValue: mimeType, authorizationValue: "Bearer \(accessToken)")
+            var request = createRequest(
+                forRequest: requestURL,
+                andMethod: .post,
+                contentTypeValue: mimeType,
+                authorizationValue: "Bearer \(accessToken)")
             request.httpBody = imageData
 
-            return try await sendRequest(request, decodeTo: BlobContainer.self)
+            let response = try await sendRequest(request,
+                                                 decodeTo: BlobContainer.self)
+
+            return response
         } catch {
-            throw NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid Response"])
+            throw error
         }
     }
 
