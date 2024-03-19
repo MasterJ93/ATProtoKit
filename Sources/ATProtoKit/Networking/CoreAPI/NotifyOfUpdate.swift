@@ -12,22 +12,31 @@ extension ATProtoKit {
     /// 
     /// - Note: If `crawlingHostname` and `pdsURL` are the same, then it's best not to give a value to `hostname`.
     ///
+    /// - Note: According to the AT Protocol specifications: "Notify a crawling service of a recent update, and that crawling should resume. Intended use is after a gap between repo stream events caused the
+    /// crawling service to disconnect. Does not require auth; implemented by Relay."
+    ///
+    /// - SeeAlso: This is based on the [`com.atproto.sync.notifyOfUpdate`][github] lexicon.
+    ///
+    /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/sync/notifyOfUpdate.json
+    ///
     /// - Parameters:
     ///   - crawlingHostname: The hostname that the crawling service resides in. Optional.
-    ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `https://bsky.social`.
-    public static func notifyOfUpdate(in crawlingHostname: URL? = nil, pdsURL: String = "https://bsky.social") async throws {
-        guard let requestURL = URL(string: "\(pdsURL)/xrpc/app.bsky.graph.notifyOfUpdate") else {
-            throw NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"])
+    ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `nil`.
+    public func notifyOfUpdate(in crawlingHostname: String? = nil,
+                               pdsURL: String? = nil) async throws {
+        guard let sessionURL = pdsURL != nil ? pdsURL : session?.pdsURL,
+              let requestURL = URL(string: "\(sessionURL)/xrpc/app.bsky.graph.notifyOfUpdate") else {
+            throw ATRequestPrepareError.invalidRequestURL
         }
 
-        // Check if the `crawlingHostname` and `pdsURL` are the same.
-        // If so, then default the variable to `pdsURL`.
-        guard let finalHostName = crawlingHostname ?? URL(string: pdsURL) else {
-            throw NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid Hostname"])
+        var hostnameURL = URL(string: crawlingHostname ?? sessionURL)
+
+        guard let finalhostnameURL = hostnameURL else {
+            throw ATRequestPrepareError.invalidHostnameURL
         }
 
         let requestBody = SyncCrawler(
-            crawlingHostname: finalHostName
+            crawlingHostname: finalhostnameURL
         )
 
         do {
@@ -37,7 +46,8 @@ extension ATProtoKit {
                                                          contentTypeValue: "application/json",
                                                          authorizationValue: nil)
 
-            try await APIClientService.sendRequest(request, withEncodingBody: requestBody)
+            try await APIClientService.sendRequest(request,
+                                                   withEncodingBody: requestBody)
         } catch {
             throw error
         }

@@ -9,20 +9,25 @@ import Foundation
 
 extension ATProtoKit {
     /// Requests the crawling service to begin crawling the repositories.
-    ///
-    public static func requestCrawl(in crawlingHostname: URL? = nil, pdsURL: String = "https://bsky.social") async throws {
-        guard let requestURL = URL(string: "\(pdsURL)/xrpc/app.bsky.graph.notifyOfUpdate") else {
+    /// 
+    /// - Parameters:
+    ///   - crawlingHostname: The hostname that the crawling service resides in. Optional.
+    ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `nil`.
+    public func requestCrawl(in crawlingHostname: String? = nil,
+                             pdsURL: String? = nil) async throws {
+        guard let sessionURL = pdsURL != nil ? pdsURL : session?.pdsURL,
+              let requestURL = URL(string: "\(sessionURL)/xrpc/app.bsky.graph.notifyOfUpdate") else {
             throw ATRequestPrepareError.invalidRequestURL
         }
 
-        // Check if the `crawlingHostname` and `pdsURL` are the same.
-        // If so, then default the variable to `pdsURL`.
-        guard let finalHostName = crawlingHostname ?? URL(string: pdsURL) else {
+        var hostnameURL = URL(string: crawlingHostname ?? sessionURL)
+
+        guard let finalhostnameURL = hostnameURL else {
             throw ATRequestPrepareError.invalidHostnameURL
         }
 
         let requestBody = SyncCrawler(
-            crawlingHostname: finalHostName
+            crawlingHostname: finalhostnameURL
         )
 
         do {

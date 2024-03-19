@@ -10,15 +10,23 @@ import Foundation
 extension ATProtoKit {
     /// Lists a user account's blob CID hashes.
     /// 
+    /// - Note: According to the AT Protocol specifications: "List blob CIDso for an account, since some repo revision. Does not require auth; implemented by PDS."
+    ///
+    /// - SeeAlso: This is based on the [`com.atproto.sync.listBlobs`][github] lexicon.
+    ///
+    /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/sync/listBlobs.json
+    ///
     /// - Parameters:
     ///   - repositoryDID: The decentralized identifier (DID) or handle of the repository.
     ///   - sinceRevision: The revision of the repository to list blobs starting from. Optional.
     ///   - limit: The number of invite codes in the list. Optional. Defaults to `500`.
     ///   - cursor: The mark used to indicate the starting point for the next set of results. Optional.
-    ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `https://bsky.social`.
+    ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `nil`.
     /// - Returns: A `Result`, containing either a ``SyncListBlobsOutput`` if successful, or an `Error` if not.
-    public static func listBlobs(from repositoryDID: String, sinceRevision: String?, limit: Int? = 500, cursor: String? = nil, pdsURL: String = "https://bsky.social") async throws -> Result<SyncListBlobsOutput, Error> {
-        guard let requestURL = URL(string: "\(pdsURL)/xrpc/com.atproto.sync.listBlobs") else {
+    public func listBlobs(from repositoryDID: String, sinceRevision: String?, limit: Int? = 500, cursor: String? = nil,
+                                 pdsURL: String? = nil) async throws -> Result<SyncListBlobsOutput, Error> {
+        guard let sessionURL = pdsURL != nil ? pdsURL : session?.pdsURL,
+              let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.sync.listBlobs") else {
             return .failure(ATRequestPrepareError.invalidRequestURL)
         }
 
@@ -39,8 +47,10 @@ extension ATProtoKit {
             queryItems.append(("cursor", cursor))
         }
 
+        let queryURL: URL
+
         do {
-            let queryURL = try APIClientService.setQueryItems(
+            queryURL = try APIClientService.setQueryItems(
                 for: requestURL,
                 with: queryItems
             )
@@ -50,7 +60,8 @@ extension ATProtoKit {
                                                          acceptValue: "application/vnd.ipld.car",
                                                          contentTypeValue: nil,
                                                          authorizationValue: nil)
-            let response = try await APIClientService.sendRequest(request, decodeTo: SyncListBlobsOutput.self)
+            let response = try await APIClientService.sendRequest(request,
+                                                                  decodeTo: SyncListBlobsOutput.self)
 
             return .success(response)
         } catch {
