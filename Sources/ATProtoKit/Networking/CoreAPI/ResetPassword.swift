@@ -12,13 +12,21 @@ extension ATProtoKit {
     /// 
     /// - Note: This doesn't reset the App Password.
     /// 
+    /// - Note: According to the AT Protocol specifications: "Reset a user account password using a token."
+    ///
+    /// - SeeAlso: This is based on the [`com.atproto.server.resetPassword`][github] lexicon.
+    ///
+    /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/server/resetPassword.json
+    ///
     /// - Parameters:
     ///   - token: The token used to reset the password.
     ///   - newPassword: The new password for the user's account.
-    ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `https://bsky.social`.
-    public static func resetPassword(using token: String, newPassword: String, pdsURL: String = "https://bsky.social") async throws {
-        guard let requestURL = URL(string: "\(pdsURL)/xrpc/com.atproto.server.resetPassword") else {
-            throw NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey : "Invalid URL"])
+    ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `nil`.
+    public func resetPassword(using token: String, newPassword: String,
+                              pdsURL: String? = nil) async throws {
+        guard let sessionURL = pdsURL != nil ? pdsURL : session?.pdsURL,
+              let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.server.resetPassword") else {
+            throw ATRequestPrepareError.invalidRequestURL
         }
 
         let requestBody = ServerResetPassword(
@@ -33,7 +41,8 @@ extension ATProtoKit {
                                                          contentTypeValue: "application/json",
                                                          authorizationValue: nil)
 
-            try await APIClientService.sendRequest(request, withEncodingBody: requestBody)
+            try await APIClientService.sendRequest(request,
+                                                   withEncodingBody: requestBody)
         } catch {
             throw error
         }

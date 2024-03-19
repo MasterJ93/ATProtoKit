@@ -45,14 +45,11 @@ public class ATProtoKit: ATProtoKitConfiguration {
 
     /// Determines the appropriate Personal Data Server (PDS) URL.
     /// - Parameters:
-    ///   - accessToken: The access token for authenticated requests. If `nil` or empty, defaults to unauthenticated URL.
     ///   - customPDSURL: An optional custom PDS URL. If provided, this URL is used regardless of the access token's presence.
     /// - Returns: The final PDS URL as a `String`.
-    static func determinePDSURL(accessToken: String? = nil, customPDSURL: String? = nil) -> String {
+    func determinePDSURL(customPDSURL: String? = nil) -> String {
         if let customURL = customPDSURL {
             return customURL
-        } else if let token = accessToken, !token.isEmpty {
-            return "https://bsky.social"
         } else {
             return "https://api.bsky.app"
         }
