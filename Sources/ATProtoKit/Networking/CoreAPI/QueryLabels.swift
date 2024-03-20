@@ -26,7 +26,8 @@ extension ATProtoKit {
     ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `nil`.
     ///   - shouldAuthenticate: Indicates whether the method will use the access token when sending the request. Defaults to `false`.
     /// - Returns: A `Result`, containing either a ``LabelQueryLabelOutput`` if successful, ot an `Error` if not.
-    public func queryLabels(uriPatterns: [String], sources: [String]?, limit: Int? = 50, cursor: String? = nil, pdsURL: String? = nil,
+    public func queryLabels(uriPatterns: [String], sources: [String]?, limit: Int? = 50, cursor: String? = nil,
+                            pdsURL: String? = nil,
                             shouldAuthenticate: Bool = false) async throws -> Result<LabelQueryLabelsOutput, Error> {
         var accessToken: String? = nil
 
