@@ -19,11 +19,12 @@ public class APIClientService {
     ///   - acceptValue: The Accept header value. Defaults to "application/json".
     ///   - contentTypeValue: The Content-Type header value. Defaults to "application/json".
     ///   - authorizationValue: The Authorization header value. Optional.
+    ///   - proxyValue: The `atproto-proxy` header value. Optional.
     ///   - labelersValue: The `atproto-accept-labelers` value. Optional.
     /// - Returns: A configured `URLRequest` instance.
     public static func createRequest(forRequest requestURL: URL, andMethod httpMethod: HTTPMethod, acceptValue: String? = "application/json",
                                      contentTypeValue: String? = "application/json", authorizationValue: String? = nil,
-                                     labelersValue: String? = nil) -> URLRequest {
+                                     labelersValue: String? = nil, proxyValue: String? = nil) -> URLRequest {
         var request = URLRequest(url: requestURL)
         request.httpMethod = httpMethod.rawValue
 
@@ -41,6 +42,10 @@ public class APIClientService {
             }
         }
 
+        // Send the data specifically for proxy-related data.
+        if let proxyValue {
+            request.addValue(proxyValue, forHTTPHeaderField: "atproto-proxy")
+        }
         // Send the data specifically for label-related calls.
         if let labelersValue {
             request.addValue(labelersValue, forHTTPHeaderField: "atproto-accept-labelers")
