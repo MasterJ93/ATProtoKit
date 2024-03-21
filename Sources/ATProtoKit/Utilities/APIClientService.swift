@@ -21,7 +21,8 @@ public class APIClientService {
     ///   - authorizationValue: The Authorization header value, optional.
     /// - Returns: A configured `URLRequest` instance.
     public static func createRequest(forRequest requestURL: URL, andMethod httpMethod: HTTPMethod, acceptValue: String? = "application/json",
-                                     contentTypeValue: String? = "application/json", authorizationValue: String? = nil) -> URLRequest {
+                                     contentTypeValue: String? = "application/json", authorizationValue: String? = nil,
+                                     labelersValue: String? = nil) -> URLRequest {
         var request = URLRequest(url: requestURL)
         request.httpMethod = httpMethod.rawValue
 
@@ -37,6 +38,11 @@ public class APIClientService {
             if let contentTypeValue {
                 request.addValue(contentTypeValue, forHTTPHeaderField: "Content-Type")
             }
+        }
+
+        // Send the data specifically for label-related calls.
+        if let labelersValue {
+            request.addValue(labelersValue, forHTTPHeaderField: "atproto-accept-labelers")
         }
 
         return request
