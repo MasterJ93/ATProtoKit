@@ -16,9 +16,10 @@ public class APIClientService {
     /// - Parameters:
     ///   - requestURL: The URL for the request.
     ///   - httpMethod: The HTTP method to use (GET, POST, PUT, DELETE).
-    ///   - acceptValue: The Accept header value, defaults to "application/json".
-    ///   - contentTypeValue: The Content-Type header value, defaults to "application/json".
-    ///   - authorizationValue: The Authorization header value, optional.
+    ///   - acceptValue: The Accept header value. Defaults to "application/json".
+    ///   - contentTypeValue: The Content-Type header value. Defaults to "application/json".
+    ///   - authorizationValue: The Authorization header value. Optional.
+    ///   - labelersValue: The `atproto-accept-labelers` value. Optional.
     /// - Returns: A configured `URLRequest` instance.
     public static func createRequest(forRequest requestURL: URL, andMethod httpMethod: HTTPMethod, acceptValue: String? = "application/json",
                                      contentTypeValue: String? = "application/json", authorizationValue: String? = nil,
