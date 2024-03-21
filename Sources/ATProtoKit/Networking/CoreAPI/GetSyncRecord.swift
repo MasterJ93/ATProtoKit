@@ -10,11 +10,11 @@ import Foundation
 extension ATProtoKit {
     /// Gets a record as a .car format.
     ///
-    /// - Note: According to the AT Protocol specifications: "Get a single record from a repository. Does not require auth."
+    /// - Note: According to the AT Protocol specifications: "Get data blocks needed to prove the existence or non-existence of record in the current version of repo. Does not require auth."
     ///
-    /// - SeeAlso: This is based on the [`com.atproto.repo.getRecord`][github] lexicon.
+    /// - SeeAlso: This is based on the [`com.atproto.sync.getRecord`][github] lexicon.
     ///
-    /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/repo/getRecord.json
+    /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/sync/getRecord.json
     ///
     /// - Parameters:
     ///   - recordQuery: The information required to get a record.

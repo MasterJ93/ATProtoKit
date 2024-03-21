@@ -21,7 +21,7 @@ extension ATProtoKit {
     ///   - repositoryDID: The decentralized identifier (DID) of the repository.
     ///   - repositoryCIDHashes: An array of CID hashes from the repository.
     ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `nil`.
-    /// - Returns: A `Result`, containing either
+    /// - Returns: A `Result`, containing either `Data` if successful, or `Error` if not.
     public func getSyncBlocks(from repositoryDID: String, by repositoryCIDHashes: [String],
                                      pdsURL: String? = nil) async throws -> Result<Data, Error> {
         guard let sessionURL = pdsURL != nil ? pdsURL : session?.pdsURL,
