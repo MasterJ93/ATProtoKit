@@ -107,7 +107,7 @@ extension ATProtoKit {
         for image in images {
             // Check if the image is too large.
             guard image.imageData.count <= 1_000_000 else {
-                throw NSError(domain: "ATProtoKit", code: -2, userInfo: [NSLocalizedDescriptionKey: "Image file size too large. 1,000,000 bytes maximum."])
+                throw ATBlueskyError.imageTooLarge
             }
 
             // Upload the image, then get the server response.

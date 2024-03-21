@@ -162,7 +162,7 @@ public class APIClientService {
         let (data, response) = try await URLSession.shared.data(for: urlRequest)
 
         guard let httpResponse = response as? HTTPURLResponse else {
-            throw NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Error getting response"])
+            throw ATHTTPRequestError.errorGettingResponse
         }
 
         guard httpResponse.statusCode == 200 else {

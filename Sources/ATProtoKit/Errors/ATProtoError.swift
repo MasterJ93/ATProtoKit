@@ -124,6 +124,8 @@ enum ATRequestPrepareError: ATProtoError {
     case missingActiveSession
     /// This PDS will not work.
     case invalidPDS
+    /// The record may be invalid.
+    case invalidRecord
 }
 
 /// An error type related to issues surrounding HTTP requests and responses.
@@ -138,6 +140,12 @@ enum ATHTTPRequestError: ATProtoError {
     case errorGettingResponse
     /// The response may be invalid.
     case invalidResponse
+}
+
+/// An error type specifically related to Bluesky (either before or after interacting with the service).
+enum ATBlueskyError: ATProtoError {
+    /// The image used is too large.
+    case imageTooLarge
 }
 
 /// An error type related to issues surrounding

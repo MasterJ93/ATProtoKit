@@ -31,7 +31,7 @@ extension ATProtoKit {
         guard let repositoryDID = requestBody?.repo,
               let likeCollection = requestBody?.collection,
               let likeRecordKey = requestBody?.recordKey else {
-            throw NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid Record"])
+            throw ATRequestPrepareError.invalidRecord
         }
 
         try await deleteRecord(repositoryDID: repositoryDID, collection: likeCollection, recordKey: likeRecordKey, swapRecord: requestBody?.recordCID)
@@ -48,7 +48,7 @@ extension ATProtoKit {
                     case .success(let result):
                         let recordURI = "at://\(recordQuery.repo)/\(recordQuery.collection)/\(recordQuery.recordKey)"
                         guard result.recordURI == recordURI else {
-                            throw NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid Record"])
+                            throw ATRequestPrepareError.invalidRecord
                         }
 
                         likeRecord = recordQuery
@@ -64,7 +64,7 @@ extension ATProtoKit {
                 switch output {
                     case .success(let result):
                         guard recordURI == result.recordURI else {
-                            throw NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid Record"])
+                            throw ATRequestPrepareError.invalidRecord
                         }
 
                         likeRecord = parsedURI
