@@ -16,12 +16,15 @@ public class APIClientService {
     /// - Parameters:
     ///   - requestURL: The URL for the request.
     ///   - httpMethod: The HTTP method to use (GET, POST, PUT, DELETE).
-    ///   - acceptValue: The Accept header value, defaults to "application/json".
-    ///   - contentTypeValue: The Content-Type header value, defaults to "application/json".
-    ///   - authorizationValue: The Authorization header value, optional.
+    ///   - acceptValue: The Accept header value. Defaults to "application/json".
+    ///   - contentTypeValue: The Content-Type header value. Defaults to "application/json".
+    ///   - authorizationValue: The Authorization header value. Optional.
+    ///   - proxyValue: The `atproto-proxy` header value. Optional.
+    ///   - labelersValue: The `atproto-accept-labelers` value. Optional.
     /// - Returns: A configured `URLRequest` instance.
     public static func createRequest(forRequest requestURL: URL, andMethod httpMethod: HTTPMethod, acceptValue: String? = "application/json",
-                                     contentTypeValue: String? = "application/json", authorizationValue: String? = nil) -> URLRequest {
+                                     contentTypeValue: String? = "application/json", authorizationValue: String? = nil,
+                                     labelersValue: String? = nil, proxyValue: String? = nil) -> URLRequest {
         var request = URLRequest(url: requestURL)
         request.httpMethod = httpMethod.rawValue
 
@@ -39,12 +42,21 @@ public class APIClientService {
             }
         }
 
+        // Send the data specifically for proxy-related data.
+        if let proxyValue {
+            request.addValue(proxyValue, forHTTPHeaderField: "atproto-proxy")
+        }
+        // Send the data specifically for label-related calls.
+        if let labelersValue {
+            request.addValue(labelersValue, forHTTPHeaderField: "atproto-accept-labelers")
+        }
+
         return request
     }
 
     static func encode<T: Encodable>(_ jsonData: T) async throws -> Data {
         guard let httpBody = try? JSONSerialization.data(withJSONObject: jsonData) else {
-            throw NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey : "Error encoding request body"])
+            throw ATHTTPRequestError.unableToEncodeRequestBody
         }
         return httpBody
     }
@@ -62,7 +74,7 @@ public class APIClientService {
         components?.queryItems = queryItems.map { URLQueryItem(name: $0.0, value: $0.1) }
 
         guard let finalURL = components?.url else {
-            throw NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Failed to construct URL with parameters"])
+            throw ATHTTPRequestError.failedToConstructURLWithParameters
         }
         return finalURL
     }
@@ -103,6 +115,13 @@ public class APIClientService {
 
     /// Uploads a blob to a specified URL with multipart/form-data encoding.
     ///
+    /// - Note: According to the AT Protocol specifications: "Upload a new blob, to be referenced from a repository record. The blob will be deleted if it is not referenced within a time window (eg, minutes).
+    /// Blob restrictions (mimetype, size, etc) are enforced when the reference is created. Requires auth, implemented by PDS."
+    ///
+    /// - SeeAlso: This is based on the [`com.atproto.repo.uploadBlob`][github] lexicon.
+    ///
+    /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/repo/uploadBlob.json
+    ///
     /// - Parameters:
     ///   - pdsURL: The base URL for the blob upload.
     ///   - accessToken: The access token for authorization.
@@ -112,17 +131,25 @@ public class APIClientService {
     public static func uploadBlob(pdsURL: String = "https://bsky.social", accessToken: String, filename: String,
                                   imageData: Data) async throws -> BlobContainer {
          guard let requestURL = URL(string: "\(pdsURL)/xrpc/com.atproto.repo.uploadBlob") else {
-             throw NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"])
+             throw ATRequestPrepareError.invalidRequestURL
          }
+
         let mimeType = mimeType(for: filename)
 
         do {
-            var request = createRequest(forRequest: requestURL, andMethod: .post, contentTypeValue: mimeType, authorizationValue: "Bearer \(accessToken)")
+            var request = createRequest(
+                forRequest: requestURL,
+                andMethod: .post,
+                contentTypeValue: mimeType,
+                authorizationValue: "Bearer \(accessToken)")
             request.httpBody = imageData
 
-            return try await sendRequest(request, decodeTo: BlobContainer.self)
+            let response = try await sendRequest(request,
+                                                 decodeTo: BlobContainer.self)
+
+            return response
         } catch {
-            throw NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid Response"])
+            throw ATHTTPRequestError.invalidResponse
         }
     }
 
@@ -140,14 +167,14 @@ public class APIClientService {
             do {
                 urlRequest.httpBody = try body.toJsonData()
             } catch {
-                throw NSError(domain: "APIClientService", code: -1, userInfo: [NSLocalizedDescriptionKey: "Error encoding request body"])
+                throw ATHTTPRequestError.unableToEncodeRequestBody
             }
         }
 
         let (data, response) = try await URLSession.shared.data(for: urlRequest)
 
         guard let httpResponse = response as? HTTPURLResponse else {
-            throw NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Error getting response"])
+            throw ATHTTPRequestError.errorGettingResponse
         }
 
         guard httpResponse.statusCode == 200 else {
@@ -170,7 +197,7 @@ public class APIClientService {
         let (data, response) = try await URLSession.shared.data(for: request)
 
         guard let httpResponse = response as? HTTPURLResponse else {
-            throw NSError(domain: "APIClientService", code: -1, userInfo: [NSLocalizedDescriptionKey: "Error getting response"])
+            throw ATHTTPRequestError.errorGettingResponse
         }
 
         guard httpResponse.statusCode == 200 else {
@@ -180,7 +207,7 @@ public class APIClientService {
         }
 
         guard let htmlString = String(data: data, encoding: .utf8) else {
-            throw NSError(domain: "APIClientService", code: -1, userInfo: [NSLocalizedDescriptionKey: "Failed to decode HTML"])
+            throw ATHTTPRequestError.failedToDecodeHTML
         }
 
         return htmlString
@@ -199,14 +226,14 @@ public class APIClientService {
             do {
                 urlRequest.httpBody = try body.toJsonData()
             } catch {
-                throw NSError(domain: "APIClientService", code: -1, userInfo: [NSLocalizedDescriptionKey: "Error encoding request body"])
+                throw ATHTTPRequestError.unableToEncodeRequestBody
             }
         }
 
         let (data, response) = try await URLSession.shared.data(for: urlRequest)
 
         guard let httpResponse = response as? HTTPURLResponse else {
-            throw NSError(domain: "APIClientService", code: -1, userInfo: [NSLocalizedDescriptionKey: "Error getting response"])
+            throw ATHTTPRequestError.errorGettingResponse
         }
 
 //        print("Status Code: \(httpResponse.statusCode)")  // Debugging line

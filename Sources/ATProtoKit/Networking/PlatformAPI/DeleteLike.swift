@@ -15,8 +15,12 @@ extension ATProtoKit {
     ///
     /// This can be either the URI of the record, or the full record object itself.
     public func deleteLikeRecord(_ record: RecordIdentifier) async throws {
+        guard let session else {
+            throw ATRequestPrepareError.missingActiveSession
+        }
+
         guard let sessionURL = session.pdsURL else {
-            throw NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"])
+            throw ATRequestPrepareError.invalidRequestURL
         }
 
         var likeRecord: RecordQuery? = nil
@@ -27,7 +31,7 @@ extension ATProtoKit {
         guard let repositoryDID = requestBody?.repo,
               let likeCollection = requestBody?.collection,
               let likeRecordKey = requestBody?.recordKey else {
-            throw NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid Record"])
+            throw ATRequestPrepareError.invalidRecord
         }
 
         try await deleteRecord(repositoryDID: repositoryDID, collection: likeCollection, recordKey: likeRecordKey, swapRecord: requestBody?.recordCID)
@@ -38,13 +42,13 @@ extension ATProtoKit {
         switch record {
             case .recordQuery(let recordQuery):
                 // Perform the fetch and validation based on recordQuery.
-                let output = try await ATProtoKit.getRepoRecord(from: recordQuery, pdsURL: sessionURL)
+                let output = try await ATProtoKit().getRepoRecord(from: recordQuery, pdsURL: sessionURL)
 
                 switch output {
                     case .success(let result):
                         let recordURI = "at://\(recordQuery.repo)/\(recordQuery.collection)/\(recordQuery.recordKey)"
                         guard result.recordURI == recordURI else {
-                            throw NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid Record"])
+                            throw ATRequestPrepareError.invalidRecord
                         }
 
                         likeRecord = recordQuery
@@ -54,13 +58,13 @@ extension ATProtoKit {
 
             case .recordURI(let recordURI):
                 // Perform the fetch and validation based on the parsed URI.
-                let parsedURI = try ATProtoKit.parseURI(recordURI)
-                let output = try await ATProtoKit.getRepoRecord(from: parsedURI, pdsURL: sessionURL)
+                let parsedURI = try ATProtoKit().parseURI(recordURI)
+                let output = try await ATProtoKit().getRepoRecord(from: parsedURI, pdsURL: sessionURL)
 
                 switch output {
                     case .success(let result):
                         guard recordURI == result.recordURI else {
-                            throw NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid Record"])
+                            throw ATRequestPrepareError.invalidRecord
                         }
 
                         likeRecord = parsedURI

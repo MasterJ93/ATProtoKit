@@ -10,23 +10,37 @@ import Foundation
 extension ATProtoKit {
     /// Mutes a user account.
     /// 
+    /// - Note: According to the AT Protocol specifications: "Creates a mute relationship for the specified account. Mutes are private in Bluesky. Requires auth."
+    ///
+    /// - SeeAlso: This is based on the [`app.bsky.graph.muteActor`][github] lexicon.
+    ///
+    /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/graph/muteActor.json
+    ///
     /// - Parameter actorDID: The decentralized identifier (DID) or handle of a user account.
     public func muteActor(_ actorDID: String) async throws {
-        guard let sessionURL = session.pdsURL,
-              let requestURL = URL(string: "\(sessionURL)/xrpc/app.bsky.graph.muteActor") else {
-            throw NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"])
+        guard session != nil,
+              let accessToken = session?.accessToken else {
+            throw ATRequestPrepareError.missingActiveSession
         }
 
-        let requestBody = GraphMuteActor(actorDID: actorDID)
+        guard let sessionURL = session?.pdsURL,
+              let requestURL = URL(string: "\(sessionURL)/xrpc/app.bsky.graph.muteActor") else {
+            throw ATRequestPrepareError.invalidRequestURL
+        }
+
+        let requestBody = GraphMuteActor(
+            actorDID: actorDID
+        )
 
         do {
             let request = APIClientService.createRequest(forRequest: requestURL,
                                                          andMethod: .post,
                                                          acceptValue: "application/json",
                                                          contentTypeValue: nil,
-                                                         authorizationValue: "Bearer \(session.accessToken)")
+                                                         authorizationValue: "Bearer \(accessToken)")
 
-            let response = try await APIClientService.sendRequest(request)
+            try await APIClientService.sendRequest(request,
+                                                   withEncodingBody: requestBody)
         } catch {
             throw error
         }

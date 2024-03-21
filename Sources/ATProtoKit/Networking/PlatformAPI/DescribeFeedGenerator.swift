@@ -7,14 +7,21 @@
 
 import Foundation
 
-// TODO: Figure out the proper version of this.
 extension ATProtoKit {
     /// Gets information about a given feed generator.
     /// 
+    /// - Note: According to the AT Protocol specifications: "Get information about a feed generator, including policies and offered feed URIs. Does not require auth; implemented by Feed Generator services
+    /// (not App View)."
+    ///
+    /// - SeeAlso: This is based on the [`app.bsky.feed.describeFeedGenerator`][github] lexicon.
+    ///
+    /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/feed/describeFeedGenerator.json
+    ///
     /// - Returns: A `Result`, containing either a ``FeedDescribeFeedGenerator`` if successful, or an `Error` if not.
-    public static func describeFeedGenerator(pdsURL: String = "https://bsky.social") async throws -> Result<FeedDescribeFeedGeneratorOutput, Error> {
-        guard let requestURL = URL(string: "\(pdsURL)/app.bsky.feed.describeFeedGenerator") else {
-            return .failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"]))
+    public func describeFeedGenerator(pdsURL: String? = nil) async throws -> Result<FeedDescribeFeedGeneratorOutput, Error> {
+        guard let sessionURL = pdsURL != nil ? pdsURL : session?.pdsURL,
+              let requestURL = URL(string: "\(sessionURL)/app.bsky.feed.describeFeedGenerator") else {
+            return .failure(ATRequestPrepareError.invalidRequestURL)
         }
 
         do {
@@ -23,7 +30,8 @@ extension ATProtoKit {
                                                          acceptValue: nil,
                                                          contentTypeValue: "application/json",
                                                          authorizationValue: nil)
-            let response = try await APIClientService.sendRequest(request, decodeTo: FeedDescribeFeedGeneratorOutput.self)
+            let response = try await APIClientService.sendRequest(request,
+                                                                  decodeTo: FeedDescribeFeedGeneratorOutput.self)
 
             return .success(response)
         } catch {

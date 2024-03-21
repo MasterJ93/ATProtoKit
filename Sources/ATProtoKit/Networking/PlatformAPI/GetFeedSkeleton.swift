@@ -12,6 +12,13 @@ extension ATProtoKit {
     /// 
     /// - Important: This method will only work with a PDS that's not owned by Bluesky (example: `https://bsky.social`).
     ///
+    /// - Note: According to the AT Protocol specifications: "Get a skeleton of a feed provided by a feed generator. Auth is optional, depending on provider requirements, and provides the DID of the requester.
+    /// Implemented by Feed Generator Service."
+    ///
+    /// - SeeAlso: This is based on the [`app.bsky.feed.getFeedSkeleton`][github] lexicon.
+    ///
+    /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/feed/getFeedSkeleton.json
+    ///
     /// - Parameters:
     ///   - feedURI: The URI of the feed generator.
     ///   - limit: The number of items that can be in the list. Optional. Defaults to `50`.
@@ -22,18 +29,20 @@ extension ATProtoKit {
     public static func getFeedSkeleton(_ feedURI: String, limit: Int? = 50, cursor: String? = nil,
                                        pdsURL: String) async throws -> Result <FeedGetFeedSkeletonOutput, Error> {
         guard let requestURL = URL(string: "\(pdsURL)/xrpc/app.bsky.feed.getFeedSkeleton") else {
-            return .failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"]))
+            return .failure(ATRequestPrepareError.invalidRequestURL)
         }
 
         if pdsURL == "https://bsky.social" {
-            return .failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "This PDS will not work. Please use a different one."]))
+            return .failure(ATRequestPrepareError.invalidPDS)
         }
         var queryItems = [(String, String)]()
 
         queryItems.append(("feed", feedURI))
 
+        let queryURL: URL
+
         do {
-            let queryURL = try APIClientService.setQueryItems(
+            queryURL = try APIClientService.setQueryItems(
                 for: requestURL,
                 with: queryItems
             )
@@ -43,7 +52,8 @@ extension ATProtoKit {
                                                          acceptValue: nil,
                                                          contentTypeValue: "application/json",
                                                          authorizationValue: nil)
-            let response = try await APIClientService.sendRequest(request, decodeTo: FeedGetFeedSkeletonOutput.self)
+            let response = try await APIClientService.sendRequest(request,
+                                                                  decodeTo: FeedGetFeedSkeletonOutput.self)
 
             return .success(response)
         } catch {

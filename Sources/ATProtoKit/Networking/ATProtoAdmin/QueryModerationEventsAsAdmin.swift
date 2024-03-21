@@ -14,6 +14,12 @@ extension ATProtoAdmin {
     /// 
     /// - Note: Many of the parameter's descriptions are taken directly from the AT Protocol's specification.
     /// 
+    /// - Note: According to the AT Protocol specifications: "List moderation events related to a subject."
+    ///
+    /// - SeeAlso: This is based on the [`tools.ozone.moderation.queryEvents`][github] lexicon.
+    ///
+    /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/tools/ozone/moderation/queryEvents.json
+    ///
     /// - Parameters:
     ///   - eventTypes: An array of event types. Optional.
     ///   - createdBy: The decentralized identifier (DID) of the user who created the events. Optional.
@@ -38,9 +44,14 @@ extension ATProtoAdmin {
                                              doesHaveComment: Bool? = nil, comment: String? = nil, addedLabels: [String]? = nil, removedLabels: [String]? = nil,
                                              addedTags: [String]? = nil, removedTags: [String]? = nil, reportTypes: [String]? = nil,
                                              cursor: String? = nil) async throws -> Result<AdminQueryModerationEventOutput, Error> {
-        guard let sessionURL = session.pdsURL,
-              let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.admin.queryModerationEvents") else {
-            return .failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"]))
+        guard session != nil,
+              let accessToken = session?.accessToken else {
+            return .failure(ATRequestPrepareError.missingActiveSession)
+        }
+
+        guard let sessionURL = session?.pdsURL,
+              let requestURL = URL(string: "\(sessionURL)/xrpc/tools.ozone.moderation.queryEvent") else {
+            return .failure(ATRequestPrepareError.invalidRequestURL)
         }
 
         var queryItems = [(String, String)]()
@@ -82,7 +93,7 @@ extension ATProtoAdmin {
 
         // limit
         if let limit {
-            let finalLimit = min(1, max(limit, 100))
+            let finalLimit = max(1, min(limit, 100))
             queryItems.append(("limit", "\(finalLimit)"))
         }
 
@@ -126,8 +137,10 @@ extension ATProtoAdmin {
             queryItems.append(("cursor", cursor))
         }
 
+        let queryURL: URL
+
         do {
-            let queryURL = try APIClientService.setQueryItems(
+            queryURL = try APIClientService.setQueryItems(
                 for: requestURL,
                 with: queryItems
             )
@@ -136,8 +149,9 @@ extension ATProtoAdmin {
                                                          andMethod: .get,
                                                          acceptValue: "application/json",
                                                          contentTypeValue: nil,
-                                                         authorizationValue: "Bearer \(session.accessToken)")
-            let response = try await APIClientService.sendRequest(request, decodeTo: AdminQueryModerationEventOutput.self)
+                                                         authorizationValue: "Bearer \(accessToken)")
+            let response = try await APIClientService.sendRequest(request,
+                                                                  decodeTo: AdminQueryModerationEventOutput.self)
 
             return .success(response)
         } catch {

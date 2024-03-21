@@ -22,16 +22,20 @@ public struct ActorProfileViewBasic: Codable {
     public var displayName: String? = nil
     /// The avatar image URL of the user's profile. Optional.
     public var avatarImageURL: URL? = nil
+    /// The associated profile view. Optional.
+    public var associated: ActorProfileAssociated?
     /// The list of metadata relating to the requesting account's relationship with the subject account. Optional.
     public var viewer: ActorViewerState? = nil
     /// An array of labels created by the user. Optional.
     public var labels: [Label]? = nil
 
-    public init(actorDID: String, actorHandle: String, displayName: String?, avatarImageURL: URL?, viewer: ActorViewerState?, labels: [Label]?) {
+    public init(actorDID: String, actorHandle: String, displayName: String?, avatarImageURL: URL?, associated: ActorProfileAssociated?,
+                viewer: ActorViewerState?, labels: [Label]?) {
         self.actorDID = actorDID
         self.actorHandle = actorHandle
         self.displayName = displayName
         self.avatarImageURL = avatarImageURL
+        self.associated = associated
         self.viewer = viewer
         self.labels = labels
     }
@@ -43,6 +47,7 @@ public struct ActorProfileViewBasic: Codable {
         self.actorHandle = try container.decode(String.self, forKey: .actorHandle)
         self.displayName = try container.decodeIfPresent(String.self, forKey: .displayName)
         self.avatarImageURL = try container.decodeIfPresent(URL.self, forKey: .avatarImageURL)
+        self.associated = try container.decodeIfPresent(ActorProfileAssociated.self, forKey: .associated)
         self.viewer = try container.decodeIfPresent(ActorViewerState.self, forKey: .viewer)
         self.labels = try container.decodeIfPresent([Label].self, forKey: .labels)
     }
@@ -57,6 +62,7 @@ public struct ActorProfileViewBasic: Codable {
         // `maxGraphemes`'s limit is 64, but `String.count` should respect that limit implictly
         try truncatedEncodeIfPresent(self.displayName, withContainer: &container, forKey: .displayName, upToLength: 640)
         try container.encodeIfPresent(self.avatarImageURL, forKey: .avatarImageURL)
+        try container.encodeIfPresent(self.associated, forKey: .associated)
         try container.encodeIfPresent(self.viewer, forKey: .viewer)
         try container.encodeIfPresent(self.labels, forKey: .labels)
     }
@@ -66,6 +72,7 @@ public struct ActorProfileViewBasic: Codable {
         case actorHandle = "handle"
         case displayName
         case avatarImageURL = "avatar"
+        case associated
         case viewer
         case labels
     }
@@ -91,6 +98,8 @@ public struct ActorProfileView: Codable {
     public var description: String? = nil
     /// The avatar image URL of a user's profile. Optional.
     public let avatarImageURL: URL?
+    /// The associated profile view. Optional.
+    public var associated: ActorProfileAssociated?
     /// The date the profile was last indexed. Optional.
     @DateFormattingOptional public var indexedAt: Date? = nil
     /// The list of metadata relating to the requesting account's relationship with the subject account. Optional.
@@ -98,13 +107,14 @@ public struct ActorProfileView: Codable {
     /// An array of labels created by the user. Optional.
     public var labels: [Label]? = nil
 
-    public init(actorDID: String, actorHandle: String, displayName: String?, description: String?, avatarImageURL: URL?, indexedAt: Date?,
-                viewer: ActorViewerState?, labels: [Label]?) {
+    public init(actorDID: String, actorHandle: String, displayName: String?, description: String?, avatarImageURL: URL?, associated: ActorProfileAssociated?,
+                indexedAt: Date?, viewer: ActorViewerState?, labels: [Label]?) {
         self.actorDID = actorDID
         self.actorHandle = actorHandle
         self.displayName = displayName
         self.description = description
         self.avatarImageURL = avatarImageURL
+        self.associated = associated
         self._indexedAt = DateFormattingOptional(wrappedValue: indexedAt)
         self.viewer = viewer
         self.labels = labels
@@ -118,6 +128,7 @@ public struct ActorProfileView: Codable {
         self.displayName = try container.decodeIfPresent(String.self, forKey: .displayName)
         self.description = try container.decodeIfPresent(String.self, forKey: .description)
         self.avatarImageURL = try container.decodeIfPresent(URL.self, forKey: .avatarImageURL)
+        self.associated = try container.decodeIfPresent(ActorProfileAssociated.self, forKey: .associated)
         self.indexedAt = try container.decodeIfPresent(DateFormattingOptional.self, forKey: .indexedAt)?.wrappedValue
         self.viewer = try container.decodeIfPresent(ActorViewerState.self, forKey: .viewer)
         self.labels = try container.decodeIfPresent([Label].self, forKey: .labels)
@@ -137,6 +148,7 @@ public struct ActorProfileView: Codable {
         // `maxGraphemes`'s limit is 256, but `String.count` should respect that limit
         try truncatedEncodeIfPresent(self.description, withContainer: &container, forKey: .description, upToLength: 2560)
         try container.encodeIfPresent(self.avatarImageURL, forKey: .avatarImageURL)
+        try container.encodeIfPresent(self.associated, forKey: .associated)
         try container.encodeIfPresent(self._indexedAt, forKey: .indexedAt)
         try container.encodeIfPresent(self.viewer, forKey: .viewer)
         try container.encodeIfPresent(self.labels, forKey: .labels)
@@ -148,6 +160,7 @@ public struct ActorProfileView: Codable {
         case displayName
         case description
         case avatarImageURL = "avatar"
+        case associated
         case indexedAt
         case viewer
         case labels

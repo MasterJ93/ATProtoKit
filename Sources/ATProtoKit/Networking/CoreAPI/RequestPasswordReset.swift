@@ -12,15 +12,30 @@ extension ATProtoKit {
     /// 
     /// - Note: This is resetting the main password, not the App Password.
     /// 
+    /// - Note: According to the AT Protocol specifications: "Initiate a user account password reset via email."
+    ///
+    /// - SeeAlso: This is based on the [`com.atproto.server.requestPasswordReset`][github] lexicon.
+    ///
+    /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/server/requestPasswordReset.json
+    ///
     /// - Parameters:
     ///   - email: The email associated with the user's account.
-    ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `https://bsky.social`.
-    public static func requestPasswordReset(_ email: String, pdsURL: String = "https://bsky.social") async throws {
-        guard let requestURL = URL(string: "\(pdsURL)/xrpc/com.atproto.server.requestPasswordReset") else {
-            throw NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey : "Invalid URL"])
+    ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `nil`.
+    public func requestPasswordReset(_ email: String,
+                                     pdsURL: String? = nil) async throws {
+        guard session != nil,
+              let accessToken = session?.accessToken else {
+            throw ATRequestPrepareError.missingActiveSession
         }
 
-        let requestBody = ServerRequestPasswordReset(email: email)
+        guard let sessionURL = pdsURL != nil ? pdsURL : session?.pdsURL,
+              let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.server.requestPasswordReset") else {
+            throw ATRequestPrepareError.invalidRequestURL
+        }
+
+        let requestBody = ServerRequestPasswordReset(
+            email: email
+        )
 
         do {
             let request = APIClientService.createRequest(forRequest: requestURL,
@@ -29,7 +44,8 @@ extension ATProtoKit {
                                                          contentTypeValue: "application/json",
                                                          authorizationValue: nil)
 
-            try await APIClientService.sendRequest(request, withEncodingBody: requestBody)
+            try await APIClientService.sendRequest(request,
+                                                   withEncodingBody: requestBody)
         } catch {
             throw error
         }

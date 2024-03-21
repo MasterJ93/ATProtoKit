@@ -14,25 +14,40 @@ extension ATProtoKit {
     /// 
     /// - Important: `token` is required. Getting `token` requires an email to be sent to the email address. You can send this email via ``requestEmailConfirmation()``.
     ///
+    /// - Note: According to the AT Protocol specifications: "Confirm an email using a token from com.atproto.server.requestEmailConfirmation."
+    ///
+    /// - SeeAlso: This is based on the [`com.atproto.server.confirmEmail`][github] lexicon.
+    ///
+    /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/server/confirmEmail.json
+    ///
     /// - Parameters:
     ///   - email: The email address to confirm.
     ///   - token: The token used to confirm the email address.
     public func confirmEmail(_ email: String, token: String) async throws {
-        guard let sessionURL = session.pdsURL,
-              let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.server.confirmEmail") else {
-            throw NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey : "Invalid URL"])
+        guard session != nil,
+              let accessToken = session?.accessToken else {
+            throw ATRequestPrepareError.missingActiveSession
         }
 
-        let requestBody = ServerConfirmEmail(email: email, token: token)
+        guard let sessionURL = session?.pdsURL,
+              let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.server.confirmEmail") else {
+            throw ATRequestPrepareError.invalidRequestURL
+        }
+
+        let requestBody = ServerConfirmEmail(
+            email: email,
+            token: token
+        )
 
         do {
             let request = APIClientService.createRequest(forRequest: requestURL,
                                                          andMethod: .post,
                                                          acceptValue: nil,
                                                          contentTypeValue: "application/json",
-                                                         authorizationValue: "Bearer \(session.accessToken)")
+                                                         authorizationValue: "Bearer \(accessToken)")
 
-            _ = try await APIClientService.sendRequest(request, withEncodingBody: requestBody)
+            _ = try await APIClientService.sendRequest(request,
+                                                       withEncodingBody: requestBody)
         } catch {
             throw error
         }

@@ -10,27 +10,33 @@ import Foundation
 extension ATProtoKit {
     /// Gets a record as a .car format.
     ///
+    /// - Note: According to the AT Protocol specifications: "Get data blocks needed to prove the existence or non-existence of record in the current version of repo. Does not require auth."
+    ///
+    /// - SeeAlso: This is based on the [`com.atproto.sync.getRecord`][github] lexicon.
+    ///
+    /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/sync/getRecord.json
+    ///
     /// - Parameters:
     ///   - recordQuery: The information required to get a record.
-    ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `https://bsky.social`.
+    ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `nil`.
     /// - Returns: A `Result`, containing either a `Data` if successful, or an `Error` if not.
-    public static func getSyncRecord(_ recordQuery: RecordQuery, pdsURL: String = "https://bsky.social") async throws -> Result<Data, Error> {
-        guard let requestURL = URL(string: "\(pdsURL)/xrpc/com.atproto.sync.getRecord") else {
+    public func getSyncRecord(_ recordQuery: RecordQuery,
+                                     pdsURL: String? = nil) async throws -> Result<Data, Error> {
+        guard let sessionURL = pdsURL != nil ? pdsURL : session?.pdsURL,
+              let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.sync.getRecord") else {
             return .failure(ATRequestPrepareError.invalidRequestURL)
         }
 
+        let queryItems = [
+            ("repo", recordQuery.repo),
+            ("collection", recordQuery.collection),
+            ("rkey", recordQuery.recordKey)
+        ]
+
+        let queryURL: URL
+
         do {
-            var queryItems = [
-                ("repo", recordQuery.repo),
-                ("collection", recordQuery.collection),
-                ("rkey", recordQuery.recordKey)
-            ]
-
-            if let cid = recordQuery.recordCID {
-                queryItems.append(("cid", cid))
-            }
-
-            let queryURL = try APIClientService.setQueryItems(
+            queryURL = try APIClientService.setQueryItems(
                 for: requestURL,
                 with: queryItems
             )

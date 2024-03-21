@@ -1,5 +1,5 @@
 //
-//  AtprotoLabelQueryLabel.swift
+//  AtprotoLabelQueryLabels.swift
 //
 //
 //  Created by Christopher Jr Riley on 2024-03-16.
@@ -15,7 +15,7 @@ import Foundation
 /// - SeeAlso: This is based on the [`com.atproto.label.queryLabels`][github] lexicon.
 ///
 /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/label/queryLabels.json
-public struct LabelQueryLabelOutput: Codable {
+public struct LabelQueryLabelsOutput: Codable {
     /// An array of labels.
     public let labels: [Label]
 }

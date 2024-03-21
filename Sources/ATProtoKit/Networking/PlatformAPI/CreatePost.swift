@@ -12,24 +12,31 @@ extension ATProtoKit {
     /// 
     /// - Parameters:
     ///   - text: The text that's directly displayed in the post record. Current limit is 300 characters.
-    ///   - locales: The languages the text is written in. Current limit is 3 lanagues.
+    ///   - locales: The languages the text is written in. Current limit is 3 languages.
     ///   - replyTo: The post record that this record is replying to.
     ///   - embed: The embed container attached to the post record. Current items include images, external links, other posts, lists, and post records with media.
     ///   - labels: An array of labels made by the user.
     ///   - tags: An array of tags for the post record.
     ///   - creationDate: The date of the post record. Defaults to `Date.now`.
-    /// - Returns: A strong reference, which contains the newly-created record's `recordURI` (URI) and the `cidHash` (CID) .
+    ///   - recordKey: The record key of the collection. Optional.
+    ///   - shouldValidate: Indicates whether the record should be validated. Optional. Defaults to `true`.
+    ///   - swapCommit: Swaps out an operation based on the CID. Optional.
+    /// - Returns: A strong reference, which contains the newly-created record's URI and CID hash.
     public func createPostRecord(text: String, locales: [Locale] = [], replyTo: String? = nil, embed: EmbedIdentifier? = nil,
-                                 labels: FeedLabelUnion? = nil, tags: [String]? = nil, creationDate: Date = Date.now) async -> Result<StrongReference, Error> {
+                                 labels: FeedLabelUnion? = nil, tags: [String]? = nil, creationDate: Date = Date.now, recordKey: String? = nil, shouldValidate: Bool? = true, swapCommit: String? = nil) async -> Result<StrongReference, Error> {
+
+        guard let session else {
+            return .failure(ATRequestPrepareError.missingActiveSession)
+        }
 
         guard let sessionURL = session.pdsURL else {
-            return .failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid pdsURL"]))
+            return .failure(ATRequestPrepareError.invalidPDS)
         }
         // Replies
         var resolvedReplyTo: ReplyReference? = nil
         if let replyURI = replyTo {
             do {
-                resolvedReplyTo = try await ATProtoKit.resolveReplyReferences(parentURI: replyURI)
+                resolvedReplyTo = try await ATProtoKit().resolveReplyReferences(parentURI: replyURI)
             } catch {
                 return .failure(error)
             }
@@ -68,20 +75,28 @@ extension ATProtoKit {
             languages: localeIdentifiers,
             labels: labels,
             tags: tags,
-            createdAt: creationDate)
+            createdAt: creationDate
+        )
 
         let requestBody = FeedPostRequestBody(
             repo: session.sessionDID,
             record: post
         )
 
-        return await createRecord(collection: "app.bsky.feed.post", requestBody: requestBody)
+        return await createRecord(
+            repositoryDID: session.sessionDID,
+            collection: "app.bsky.feed.post",
+            recordKey: recordKey ?? nil,
+            shouldValidate: shouldValidate,
+            record: UnknownType(),
+            swapCommit: swapCommit ?? nil
+        )
     }
     
     /// Uploads images to the AT Protocol for attaching to a record at a later request.
     /// - Parameters:
     ///   - images: The ``ImageQuery`` that contains the image data. Current limit is 4 images.
-    ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `https://bsky.social`.
+    ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `nil`.
     ///   - accessToken: The access token used to authenticate to the user.
     /// - Returns: An ``EmbedUnion``, which contains an array of ``EmbedImage``s for use in a record.
     ///
@@ -92,7 +107,7 @@ extension ATProtoKit {
         for image in images {
             // Check if the image is too large.
             guard image.imageData.count <= 1_000_000 else {
-                throw NSError(domain: "ATProtoKit", code: -2, userInfo: [NSLocalizedDescriptionKey: "Image file size too large. 1,000,000 bytes maximum."])
+                throw ATBlueskyError.imageTooLarge
             }
 
             // Upload the image, then get the server response.
@@ -121,7 +136,7 @@ extension ATProtoKit {
     /// - Parameter strongReference: An object that contains the record's `recordURI` (URI) and the `cidHash` (CID) .
     /// - Returns: A strong reference, which contains a record's `recordURI` (URI) and the `cidHash` (CID) .
     public func addQuotePostToEmbed(_ strongReference: StrongReference) async throws -> EmbedUnion {
-        let record = try await ATProtoKit.fetchRecordForURI(strongReference.recordURI)
+        let record = try await ATProtoKit().fetchRecordForURI(strongReference.recordURI)
         let reference = StrongReference(recordURI: record.recordURI, cidHash: record.recordCID)
         let embedRecord = EmbedRecord(record: reference)
 

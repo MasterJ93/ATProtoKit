@@ -12,14 +12,25 @@ extension ATProtoKit {
     ///
     /// - Note: If you need to create multiple invite codes at once, please use ``create`` instead.
     /// 
+    /// - Note: According to the AT Protocol specifications: "Create an invite code."
+    ///
+    /// - SeeAlso: This is based on the [`com.atproto.server.createInviteCode`][github] lexicon.
+    ///
+    /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/server/createInviteCode.json
+    ///
     /// - Parameters:
     ///   - codeCount: The number of invite codes to be created. Defaults to 1.
     ///   - forAccount: The decentralized identifier (DIDs) of the user that can use the invite code. Optional.
     /// - Returns: A `Result`, containing either a ``ServerCreateInviteCodeOutput`` if successful, or an `Error` if not.
     public func createInviteCode(_ codeCount: Int = 1, for account: [String]) async throws -> Result<ServerCreateInviteCodeOutput, Error> {
-        guard let sessionURL = session.pdsURL,
+        guard session != nil,
+              let accessToken = session?.accessToken else {
+            return .failure(ATRequestPrepareError.missingActiveSession)
+        }
+
+        guard let sessionURL = session?.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.server.createInviteCode") else {
-            return .failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"]))
+            return .failure(ATRequestPrepareError.invalidRequestURL)
         }
 
         // Make sure the number isn't lower than one.
@@ -33,8 +44,10 @@ extension ATProtoKit {
                                                          andMethod: .post,
                                                          acceptValue: "application/json",
                                                          contentTypeValue: "application/json",
-                                                         authorizationValue: "Bearer \(session.accessToken)")
-            let response = try await APIClientService.sendRequest(request, withEncodingBody: requestBody, decodeTo: ServerCreateInviteCodeOutput.self)
+                                                         authorizationValue: "Bearer \(accessToken)")
+            let response = try await APIClientService.sendRequest(request,
+                                                                  withEncodingBody: requestBody,
+                                                                  decodeTo: ServerCreateInviteCodeOutput.self)
 
             return .success(response)
         } catch {

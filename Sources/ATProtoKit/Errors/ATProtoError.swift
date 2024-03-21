@@ -20,9 +20,6 @@ public enum ATAPIError: ATProtoError, Decodable {
     /// Represents a forbidden error (HTTP 403) with an associated message.
     /// - Parameter message: The message received along side the error.
     case forbidden(message: String?)
-    /// Represents a not found error (HTTP 404) with an associated message.
-    /// - Parameter message: The message received along side the error.
-    case notFound(message: String?)
     /// Represents a payload too large error (HTTP 413) with an associated message.
     /// - Parameter message: The message received along side the error.
     case payloadTooLarge(message: String?)
@@ -88,8 +85,6 @@ public enum ATAPIError: ATProtoError, Decodable {
                 self = .unauthorized(message: message)
             case "Forbidden":
                 self = .forbidden(message: message)
-            case "NotFound":
-                self = .notFound(message: message)
             case "PayloadTooLarge":
                 self = .payloadTooLarge(message: message)
             case "TooManyRequests":
@@ -127,10 +122,35 @@ enum ATRequestPrepareError: ATProtoError {
     ///
     /// Authentication is required for methods that need it.
     case missingActiveSession
+    /// This PDS will not work.
+    case invalidPDS
+    /// The record may be invalid.
+    case invalidRecord
+}
+
+/// An error type related to issues surrounding HTTP requests and responses.
+enum ATHTTPRequestError: ATProtoError {
+    /// Unable to encode the request body.
+    case unableToEncodeRequestBody
+    /// Failed to construct URL with the given parameters.
+    case failedToConstructURLWithParameters
+    /// Failed to decode HTML content.
+    case failedToDecodeHTML
+    /// Error encountered while getting the response from the server.
+    case errorGettingResponse
+    /// The response may be invalid.
+    case invalidResponse
+}
+
+/// An error type specifically related to Bluesky (either before or after interacting with the service).
+enum ATBlueskyError: ATProtoError {
+    /// The image used is too large.
+    case imageTooLarge
 }
 
 /// An error type related to issues surrounding
 enum ATEventStreamError: ATProtoError {
+    /// The endpoint URL used may not be correct.
     case invalidEndpoint
 }
 

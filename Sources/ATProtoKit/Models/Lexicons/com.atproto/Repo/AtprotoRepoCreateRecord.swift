@@ -25,6 +25,8 @@ public struct RepoCreateRecord: Codable {
     public let collection: String
     /// The record key of the collection. Optional.
     ///
+    /// - Important: Current maximum length is 15 characters. This library will automatically truncate the `String` to the maximum length if it does go over the limit.
+    ///
     /// - Note: According to the AT Protocol specifications: "The Record Key."
     public let recordKey: String?
     /// Indicates whether the record should be validated. Optional. Defaults to `true`.
@@ -36,7 +38,18 @@ public struct RepoCreateRecord: Codable {
     /// - Important: If a value is entered in here, the entire operation will fail if there is no matching value in the repository.
     ///
     /// - Note: According to the AT Protocol specifications: "Compare and swap with the previous commit by CID."
-    public let swapCommit: String
+    public let swapCommit: String?
+
+    public func encode(to encoder: any Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+
+        try container.encode(self.repositoryDID, forKey: .repositoryDID)
+        try container.encode(self.collection, forKey: .collection)
+        try truncatedEncodeIfPresent(self.recordKey, withContainer: &container, forKey: .recordKey, upToLength: 15)
+        try container.encodeIfPresent(self.shouldValidate, forKey: .shouldValidate)
+        try container.encode(self.record, forKey: .record)
+        try container.encodeIfPresent(self.swapCommit, forKey: .swapCommit)
+    }
 
     enum CodingKeys: String, CodingKey {
         case repositoryDID = "repo"

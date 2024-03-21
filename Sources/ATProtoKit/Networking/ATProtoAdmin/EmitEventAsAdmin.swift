@@ -12,6 +12,12 @@ extension ATProtoAdmin {
     ///
     /// - Important: This is a moderator task and as such, regular users won't be able to access this; if they attempt to do so, an error will occur.
     ///
+    /// - Note: According to the AT Protocol specifications: "Take a moderation action on an actor."
+    ///
+    /// - SeeAlso: This is based on the [`tools.ozone.moderation.emitEvent`][github] lexicon.
+    ///
+    /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/tools/ozone/moderation/emitEvent.json
+    ///
     /// - Parameters:
     ///   - event: The type of event the moderator is taking,
     ///   - subject: The type of repository reference.
@@ -19,10 +25,15 @@ extension ATProtoAdmin {
     ///   - createdBy: The decentralized identifier (DID) of the moderator taking this action.
     /// - Returns: A `Result`, containing either an ``OzoneModerationEventView`` if successful, or an `Error` if not.
     public func emitEvent(_ event: AdminEventViewUnion, subject: RepositoryReferencesUnion, subjectBlobCIDHashes: [String]?,
-                                           createdBy: String) async throws -> Result<OzoneModerationEventView, Error> {
-        guard let sessionURL = session.pdsURL,
-              let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.admin.emitModerationEvent") else {
-            return .failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"]))
+                          createdBy: String) async throws -> Result<OzoneModerationEventView, Error> {
+        guard session != nil,
+              let accessToken = session?.accessToken else {
+            return .failure(ATRequestPrepareError.missingActiveSession)
+        }
+
+        guard let sessionURL = session?.pdsURL,
+              let requestURL = URL(string: "\(sessionURL)/xrpc/tools.ozone.moderation.emitEvent") else {
+            return .failure(ATRequestPrepareError.invalidRequestURL)
         }
 
         let requestBody = AdminEmitModerationEvent(
@@ -37,8 +48,10 @@ extension ATProtoAdmin {
                                                          andMethod: .post,
                                                          acceptValue: "application/json",
                                                          contentTypeValue: "application/json",
-                                                         authorizationValue: "Bearer \(session.accessToken)")
-            let response = try await APIClientService.sendRequest(request, withEncodingBody: requestBody, decodeTo: OzoneModerationEventView.self)
+                                                         authorizationValue: "Bearer \(accessToken)")
+            let response = try await APIClientService.sendRequest(request,
+                                                                  withEncodingBody: requestBody,
+                                                                  decodeTo: OzoneModerationEventView.self)
 
             return .success(response)
         } catch {

@@ -12,18 +12,31 @@ extension ATProtoAdmin {
     /// 
     /// - Important: This is an administrator task and as such, regular users won't be able to access this; if they attempt to do so, an error will occur.
     /// 
+    /// - Note: According to the AT Protocol specifications: "Get details about a repository."
+    ///
+    /// - SeeAlso: This is based on the [`tools.ozone.moderation.getRepo`][github] lexicon.
+    ///
+    /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/tools/ozone/moderation/getRepo.json
+    ///
     /// - Parameter repositoryDID: The decentralized identifier (DID) of the repository.
     /// - Returns: A `Result`, containing either an ``OzoneModerationRepositoryViewDetail`` if successful, or an `Error` if not.
     public func getRepository(_ repositoryDID: String) async throws -> Result<OzoneModerationRepositoryViewDetail, Error> {
-        guard let sessionURL = session.pdsURL,
-              let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.admin.getRepo") else {
-            return .failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"]))
+        guard session != nil,
+              let accessToken = session?.accessToken else {
+            return .failure(ATRequestPrepareError.missingActiveSession)
+        }
+
+        guard let sessionURL = session?.pdsURL,
+              let requestURL = URL(string: "\(sessionURL)/xrpc/tools.ozone.moderation.getRepo") else {
+            return .failure(ATRequestPrepareError.invalidRequestURL)
         }
 
         let queryItems = [("did", repositoryDID)]
 
+        let queryURL: URL
+
         do {
-            let queryURL = try APIClientService.setQueryItems(
+            queryURL = try APIClientService.setQueryItems(
                 for: requestURL,
                 with: queryItems
             )
@@ -32,8 +45,9 @@ extension ATProtoAdmin {
                                                          andMethod: .get,
                                                          acceptValue: "application/json",
                                                          contentTypeValue: nil,
-                                                         authorizationValue: "Bearer \(session.accessToken)")
-            let response = try await APIClientService.sendRequest(request, decodeTo: OzoneModerationRepositoryViewDetail.self)
+                                                         authorizationValue: "Bearer \(accessToken)")
+            let response = try await APIClientService.sendRequest(request,
+                                                                  decodeTo: OzoneModerationRepositoryViewDetail.self)
 
             return .success(response)
         } catch {

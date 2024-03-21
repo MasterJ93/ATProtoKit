@@ -6,8 +6,8 @@ import Foundation
 /// within `ATProtoKit`. Any class that conforms to this protocol must be geared for sending API calls to the AT Protocol. Creating a class
 /// that conforms to this is useful if you have additional lexicons specific to the service you're running.
 public protocol ATProtoKitConfiguration {
-    /// Represents an authenticated user session within the AT Protocol.
-    var session: UserSession { get }
+    /// Represents an authenticated user session within the AT Protocol. Optional.
+    var session: UserSession? { get }
 }
 
 /// The base class that handles the main functionality of the `ATProtoKit` API library.
@@ -33,26 +33,23 @@ public protocol ATProtoKitConfiguration {
 /// }
 /// ```
 public class ATProtoKit: ATProtoKitConfiguration {
-    /// Represents an authenticated user session within the AT Protocol.
-    public let session: UserSession
+    /// Represents an authenticated user session within the AT Protocol. Optional.
+    public let session: UserSession?
 
     /// Initializes a new instance of `ATProtoKit`.
     /// - Parameters:
-    ///   - session: The authenticated user session within the AT Protocol.
-    public init(session: UserSession) {
+    ///   - session: The authenticated user session within the AT Protocol. Optional.
+    public init(session: UserSession? = nil) {
         self.session = session
     }
 
     /// Determines the appropriate Personal Data Server (PDS) URL.
     /// - Parameters:
-    ///   - accessToken: The access token for authenticated requests. If `nil` or empty, defaults to unauthenticated URL.
     ///   - customPDSURL: An optional custom PDS URL. If provided, this URL is used regardless of the access token's presence.
     /// - Returns: The final PDS URL as a `String`.
-    static func determinePDSURL(accessToken: String? = nil, customPDSURL: String? = nil) -> String {
+    func determinePDSURL(customPDSURL: String? = nil) -> String {
         if let customURL = customPDSURL {
             return customURL
-        } else if let token = accessToken, !token.isEmpty {
-            return "https://bsky.social"
         } else {
             return "https://api.bsky.app"
         }
@@ -84,13 +81,13 @@ public class ATProtoKit: ATProtoKitConfiguration {
 /// }
 /// ```
 public class ATProtoAdmin: ATProtoKitConfiguration {
-    /// Represents an authenticated user session within the AT Protocol.
-    public let session: UserSession
+    /// Represents an authenticated user session within the AT Protocol. Optional.
+    public let session: UserSession?
 
     /// Initializes a new instance of `ATProtoAdmin`.
     /// - Parameters:
     ///   - session: The authenticated user session within the AT Protocol.
-    public init(session: UserSession) {
+    public init(session: UserSession? = nil) {
         self.session = session
     }
 }

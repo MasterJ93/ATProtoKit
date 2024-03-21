@@ -10,11 +10,18 @@ import Foundation
 extension ATProtoKit {
     /// Describes the server instance in the AT Protocol.
     /// 
-    /// - Parameter pdsURL: The URL for the Personal Data Server (PDS). Defaults to `https://bsky.social`.
+    /// - Note: According to the AT Protocol specifications: "Describes the server's account creation requirements and capabilities. Implemented by PDS."
+    ///
+    /// - SeeAlso: This is based on the [`com.atproto.server.describeServer`][github] lexicon.
+    ///
+    /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/server/describeServer.json
+    ///
+    /// - Parameter pdsURL: The URL of the Personal Data Server (PDS). Defaults to `nil`..
     /// - Returns: A `Result`, containing either a ``ServerDescribeServerOutput`` if successful, or an `Error` if not.
-    public static func describeServer(_ pdsURL: String = "https://bsky.social") async throws -> Result<ServerDescribeServerOutput, Error> {
-        guard let requestURL = URL(string: "\(pdsURL)/xrpc/com.atproto.server.describeServer") else {
-            return .failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"]))
+    public func describeServer(_ pdsURL: String? = nil) async throws -> Result<ServerDescribeServerOutput, Error> {
+        guard let sessionURL = pdsURL != nil ? pdsURL : session?.pdsURL,
+              let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.server.describeServer") else {
+            return .failure(ATRequestPrepareError.invalidRequestURL)
         }
 
         do {
@@ -23,7 +30,8 @@ extension ATProtoKit {
                                                          acceptValue: "application/json",
                                                          contentTypeValue: nil,
                                                          authorizationValue: nil)
-            let response = try await APIClientService.sendRequest(request, decodeTo: ServerDescribeServerOutput.self)
+            let response = try await APIClientService.sendRequest(request,
+                                                                  decodeTo: ServerDescribeServerOutput.self)
 
             return .success(response)
         } catch {

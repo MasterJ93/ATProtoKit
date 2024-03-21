@@ -12,25 +12,40 @@ extension ATProtoAdmin {
     /// 
     /// - Note: Many of the parameter's descriptions are taken directly from the AT Protocol's specification.
     /// 
+    /// - Note: According to the AT Protocol specifications: "Administrative action to update an account's handle."
+    ///
+    /// - SeeAlso: This is based on the [`com.atproto.admin.updateAccountHandle`][github] lexicon.
+    ///
+    /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/admin/updateAccountHandle.json
+    ///
     /// - Parameters:
     ///   - accountDID: The decentralized identifier (DID) of the user account.
     ///   - newAccountHandle: The new handle for the user account.
     public func updateAccountHandle(for accountDID: String, newAccountHandle: String) async throws {
-        guard let sessionURL = session.pdsURL,
-              let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.admin.updateAccountHandle") else {
-            throw NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"])
+        guard session != nil,
+              let accessToken = session?.accessToken else {
+            throw ATRequestPrepareError.missingActiveSession
         }
 
-        let requestBody = AdminUpdateAccountHandle(accountDID: accountDID, accountHandle: newAccountHandle)
+        guard let sessionURL = session?.pdsURL,
+              let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.admin.updateAccountHandle") else {
+            throw ATRequestPrepareError.invalidRequestURL
+        }
+
+        let requestBody = AdminUpdateAccountHandle(
+            accountDID: accountDID,
+            accountHandle: newAccountHandle
+        )
 
         do {
             let request = APIClientService.createRequest(forRequest: requestURL,
                                                          andMethod: .post,
                                                          acceptValue: nil,
                                                          contentTypeValue: "application/json",
-                                                         authorizationValue: "Bearer \(session.accessToken)")
+                                                         authorizationValue: "Bearer \(accessToken)")
 
-            try await APIClientService.sendRequest(request, withEncodingBody: requestBody)
+            try await APIClientService.sendRequest(request,
+                                                   withEncodingBody: requestBody)
         } catch {
             throw error
         }

@@ -14,20 +14,33 @@ extension ATProtoAdmin {
     ///
     /// - Note: If you need to get details of multiple user accounts, use ``getAccountInfosAsAdmin(_:)`` instead.
     ///
+    /// - Note: According to the AT Protocol specifications: "Get details about an account."
+    ///
+    /// - SeeAlso: This is based on the [`com.atproto.admin.getAccountInfo`][github] lexicon.
+    ///
+    /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/admin/getAccountInfo.json
+    ///
     /// - Parameter accountDID: The decentralized identifier (DID) of the user account.
     /// - Returns: A `Result`, containing either an ``AdminAccountView`` if successful, or an `Error` if not.
     public func getAccountInfo(_ accountDID: String) async throws -> Result<AdminAccountView, Error> {
-        guard let sessionURL = session.pdsURL,
+        guard session != nil,
+              let accessToken = session?.accessToken else {
+            throw ATRequestPrepareError.missingActiveSession
+        }
+
+        guard let sessionURL = session?.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.admin.getAccountInfo") else {
-            return .failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"]))
+            return .failure(ATRequestPrepareError.invalidRequestURL)
         }
 
         let queryItems = [
             ("did", accountDID)
         ]
 
+        let queryURL: URL
+
         do {
-            let queryURL = try APIClientService.setQueryItems(
+            queryURL = try APIClientService.setQueryItems(
                 for: requestURL,
                 with: queryItems
             )
@@ -36,8 +49,9 @@ extension ATProtoAdmin {
                                                          andMethod: .get,
                                                          acceptValue: "application/json",
                                                          contentTypeValue: nil,
-                                                         authorizationValue: "Bearer \(session.accessToken)")
-            let response = try await APIClientService.sendRequest(request, decodeTo: AdminAccountView.self)
+                                                         authorizationValue: "Bearer \(accessToken)")
+            let response = try await APIClientService.sendRequest(request,
+                                                                  decodeTo: AdminAccountView.self)
 
             return .success(response)
         } catch {

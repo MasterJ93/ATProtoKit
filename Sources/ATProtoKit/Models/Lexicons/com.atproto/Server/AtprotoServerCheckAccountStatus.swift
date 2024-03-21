@@ -18,8 +18,8 @@ import Foundation
 public struct ServerCheckAccountStatusOutput: Codable {
     /// Indicates whether the user's account has been activated.
     public let isActivated: Bool
-    /// Indicates whether the user's account has a valid ID.
-    public let isValidID: Bool
+    /// Indicates whether the user's account has a valid decentralized identifier (DID).
+    public let isValidDID: Bool
     /// - Important: The item associated with this property is undocumented in the AT Protocol specifications. The documentation here is based on:\
     ///   \* **For items with some inferable context from property names or references**: its best interpretation, though not with full certainty.\
     ///   \* **For items without enough context for even an educated guess**: a direct acknowledgment of their undocumented status.\
@@ -49,7 +49,7 @@ public struct ServerCheckAccountStatusOutput: Codable {
 
     enum CodingKeys: String, CodingKey {
         case isActivated = "activated"
-        case isValidID = "validID"
+        case isValidDID = "validDid"
         case repositoryCommit = "repoCommit"
         case repositoryRev = "repoRev"
         case repositoryBlocks = "repoBlocks"
