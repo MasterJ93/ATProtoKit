@@ -34,7 +34,7 @@ extension ATProtoKit {
         var queryItems = [(String, String)]()
 
         if let limit {
-            let finalLimit = min(1, max(limit, 100))
+            let finalLimit = max(1, min(limit, 100))
             queryItems.append(("limit", "\(finalLimit)"))
         }
 

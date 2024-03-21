@@ -51,12 +51,12 @@ extension ATProtoKit {
         queryItems.append(("uri", postURI))
 
         if let depth {
-            let finalDepth = min(0, max(depth, 1_000))
+            let finalDepth = max(0, min(depth, 1_000))
             queryItems.append(("depth", "\(finalDepth)"))
         }
 
         if let parentHeight {
-            let finalParentHeight = min(0, max(parentHeight, 1_000))
+            let finalParentHeight = max(0, min(parentHeight, 1_000))
             queryItems.append(("parentHeight", "\(finalParentHeight)"))
         }
 
