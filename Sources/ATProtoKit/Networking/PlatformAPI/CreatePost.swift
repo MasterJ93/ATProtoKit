@@ -25,14 +25,18 @@ extension ATProtoKit {
     public func createPostRecord(text: String, locales: [Locale] = [], replyTo: String? = nil, embed: EmbedIdentifier? = nil,
                                  labels: FeedLabelUnion? = nil, tags: [String]? = nil, creationDate: Date = Date.now, recordKey: String? = nil, shouldValidate: Bool? = true, swapCommit: String? = nil) async -> Result<StrongReference, Error> {
 
+        guard let session else {
+            return .failure(ATRequestPrepareError.missingActiveSession)
+        }
+
         guard let sessionURL = session.pdsURL else {
-            return .failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid pdsURL"]))
+            return .failure(ATRequestPrepareError.invalidPDS)
         }
         // Replies
         var resolvedReplyTo: ReplyReference? = nil
         if let replyURI = replyTo {
             do {
-                resolvedReplyTo = try await ATProtoKit.resolveReplyReferences(parentURI: replyURI)
+                resolvedReplyTo = try await ATProtoKit().resolveReplyReferences(parentURI: replyURI)
             } catch {
                 return .failure(error)
             }
@@ -71,7 +75,8 @@ extension ATProtoKit {
             languages: localeIdentifiers,
             labels: labels,
             tags: tags,
-            createdAt: creationDate)
+            createdAt: creationDate
+        )
 
         let requestBody = FeedPostRequestBody(
             repo: session.sessionDID,
@@ -91,7 +96,7 @@ extension ATProtoKit {
     /// Uploads images to the AT Protocol for attaching to a record at a later request.
     /// - Parameters:
     ///   - images: The ``ImageQuery`` that contains the image data. Current limit is 4 images.
-    ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `https://bsky.social`.
+    ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `nil`.
     ///   - accessToken: The access token used to authenticate to the user.
     /// - Returns: An ``EmbedUnion``, which contains an array of ``EmbedImage``s for use in a record.
     ///
@@ -131,7 +136,7 @@ extension ATProtoKit {
     /// - Parameter strongReference: An object that contains the record's `recordURI` (URI) and the `cidHash` (CID) .
     /// - Returns: A strong reference, which contains a record's `recordURI` (URI) and the `cidHash` (CID) .
     public func addQuotePostToEmbed(_ strongReference: StrongReference) async throws -> EmbedUnion {
-        let record = try await ATProtoKit.fetchRecordForURI(strongReference.recordURI)
+        let record = try await ATProtoKit().fetchRecordForURI(strongReference.recordURI)
         let reference = StrongReference(recordURI: record.recordURI, cidHash: record.recordCID)
         let embedRecord = EmbedRecord(record: reference)
 
