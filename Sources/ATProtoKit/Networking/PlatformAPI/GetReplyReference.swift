@@ -8,11 +8,12 @@
 import Foundation
 
 extension ATProtoKit {
+    // TODO: Move this method to a new class and make it a static method.
     /// Resolves the reply references to prepare them for a later post record request.
     ///
     /// - Parameter parentURI: The URI of the post record the current one is directly replying to.
     /// - Returns: A ``ReplyReference``.
-    public static func resolveReplyReferences(parentURI: String) async throws -> ReplyReference {
+    public func resolveReplyReferences(parentURI: String) async throws -> ReplyReference {
         let parentRecord = try await fetchRecordForURI(parentURI)
 
         guard let replyReference = parentRecord.value?.reply else {
@@ -26,14 +27,15 @@ extension ATProtoKit {
         return ReplyReference(root: rootReference, parent: replyReference.parent)
     }
     
+    // TODO: Move this method to a new class and make it a static method.
     /// Gets a record from the user's repository.
     ///
     /// - Parameter uri: The URI of the record.
     /// - Returns: A ``RecordOutput``
-    public static func fetchRecordForURI(_ uri: String) async throws -> RecordOutput {
+    public func fetchRecordForURI(_ uri: String) async throws -> RecordOutput {
         let query = try parseURI(uri)
 
-        let record = try await getRepoRecord(from: query)
+        let record = try await getRepoRecord(from: query, pdsURL: nil)
 
         switch record {
             case .success(let result):
@@ -43,11 +45,12 @@ extension ATProtoKit {
         }
     }
     
+    // TODO: Move this method to a new class and make it a static method.
     /// A utility method for converting a ``RecordOutput`` into a ``ReplyReference``.
     /// 
     /// - Parameter record: The record to convert.
     /// - Returns: A ``ReplyReference``.
-    private static func createReplyReference(from record: RecordOutput) -> ReplyReference {
+    private func createReplyReference(from record: RecordOutput) -> ReplyReference {
         let reference = StrongReference(recordURI: record.recordURI, cidHash: record.recordCID)
         return ReplyReference(root: reference, parent: reference)
     }
@@ -58,9 +61,9 @@ extension ATProtoKit {
     /// them and return a proper ``RecordQuery``. However, it's still important to validate the record by using ``getRepoRecord(from:pdsURL:)``.
     /// - Parameters:
     ///   - uri: The URI to parse.
-    ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `https://bsky.social`.
+    ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `nil`.
     /// - Returns: A ``RecordQuery``.
-    internal static func parseURI(_ uri: String,
+    internal func parseURI(_ uri: String,
                                   pdsURL: String = "https://bsky.app") throws -> RecordQuery {
         if uri.hasPrefix("at://") {
             let components = uri.split(separator: "/").map(String.init)
