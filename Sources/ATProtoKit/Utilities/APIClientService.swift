@@ -44,7 +44,7 @@ public class APIClientService {
 
     static func encode<T: Encodable>(_ jsonData: T) async throws -> Data {
         guard let httpBody = try? JSONSerialization.data(withJSONObject: jsonData) else {
-            throw NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey : "Error encoding request body"])
+            throw ATHTTPRequestError.unableToEncodeRequestBody
         }
         return httpBody
     }
@@ -62,7 +62,7 @@ public class APIClientService {
         components?.queryItems = queryItems.map { URLQueryItem(name: $0.0, value: $0.1) }
 
         guard let finalURL = components?.url else {
-            throw NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Failed to construct URL with parameters"])
+            throw ATHTTPRequestError.failedToConstructURLWithParameters
         }
         return finalURL
     }
@@ -122,7 +122,7 @@ public class APIClientService {
 
             return try await sendRequest(request, decodeTo: BlobContainer.self)
         } catch {
-            throw NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid Response"])
+            throw ATHTTPRequestError.invalidResponse
         }
     }
 
@@ -140,7 +140,7 @@ public class APIClientService {
             do {
                 urlRequest.httpBody = try body.toJsonData()
             } catch {
-                throw NSError(domain: "APIClientService", code: -1, userInfo: [NSLocalizedDescriptionKey: "Error encoding request body"])
+                throw ATHTTPRequestError.unableToEncodeRequestBody
             }
         }
 
@@ -170,7 +170,7 @@ public class APIClientService {
         let (data, response) = try await URLSession.shared.data(for: request)
 
         guard let httpResponse = response as? HTTPURLResponse else {
-            throw NSError(domain: "APIClientService", code: -1, userInfo: [NSLocalizedDescriptionKey: "Error getting response"])
+            throw ATHTTPRequestError.errorGettingResponse
         }
 
         guard httpResponse.statusCode == 200 else {
@@ -180,7 +180,7 @@ public class APIClientService {
         }
 
         guard let htmlString = String(data: data, encoding: .utf8) else {
-            throw NSError(domain: "APIClientService", code: -1, userInfo: [NSLocalizedDescriptionKey: "Failed to decode HTML"])
+            throw ATHTTPRequestError.failedToDecodeHTML
         }
 
         return htmlString
@@ -199,14 +199,14 @@ public class APIClientService {
             do {
                 urlRequest.httpBody = try body.toJsonData()
             } catch {
-                throw NSError(domain: "APIClientService", code: -1, userInfo: [NSLocalizedDescriptionKey: "Error encoding request body"])
+                throw ATHTTPRequestError.unableToEncodeRequestBody
             }
         }
 
         let (data, response) = try await URLSession.shared.data(for: urlRequest)
 
         guard let httpResponse = response as? HTTPURLResponse else {
-            throw NSError(domain: "APIClientService", code: -1, userInfo: [NSLocalizedDescriptionKey: "Error getting response"])
+            throw ATHTTPRequestError.errorGettingResponse
         }
 
 //        print("Status Code: \(httpResponse.statusCode)")  // Debugging line

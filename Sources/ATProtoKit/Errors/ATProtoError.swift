@@ -139,6 +139,8 @@ enum ATHTTPRequestError: ATProtoError {
     case failedToDecodeHTML
     /// Error encountered while getting the response from the server.
     case errorGettingResponse
+    /// The response may be invalid.
+    case invalidResponse
 }
 
 /// An error type related to issues surrounding
