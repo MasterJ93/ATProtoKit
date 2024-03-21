@@ -31,10 +31,14 @@ extension ATProtoAdmin {
             return .failure(ATRequestPrepareError.invalidRequestURL)
         }
 
-        let queryItems = [("id", id)]
+        let queryItems = [
+            ("id", id)
+        ]
+
+        let queryURL: URL
 
         do {
-            let queryURL = try APIClientService.setQueryItems(
+            queryURL = try APIClientService.setQueryItems(
                 for: requestURL,
                 with: queryItems
             )

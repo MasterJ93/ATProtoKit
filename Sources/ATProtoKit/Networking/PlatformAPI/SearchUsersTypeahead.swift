@@ -60,14 +60,20 @@ extension ATProtoKit {
             ("limit", "\(finalLimit)")
         ]
 
+        let queryURL: URL
+
         do {
-            let queryURL = try APIClientService.setQueryItems(for: requestURL, with: queryItems)
+            queryURL = try APIClientService.setQueryItems(
+                for: requestURL,
+                with: queryItems
+            )
 
             let request = APIClientService.createRequest(forRequest: queryURL,
                                                          andMethod: .get,
                                                          acceptValue: "application/json",
                                                          authorizationValue: authorizationValue)
-            let response = try await APIClientService.sendRequest(request, decodeTo: ActorSearchActorsTypeaheadOutput.self)
+            let response = try await APIClientService.sendRequest(request,
+                                                                  decodeTo: ActorSearchActorsTypeaheadOutput.self)
 
             return .success(response)
         } catch {

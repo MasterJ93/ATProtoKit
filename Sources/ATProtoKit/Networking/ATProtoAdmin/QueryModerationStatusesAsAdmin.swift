@@ -140,8 +140,10 @@ extension ATProtoAdmin {
             queryItems.append(("cursor", cursor))
         }
 
+        let queryURL: URL
+
         do {
-            let queryURL = try APIClientService.setQueryItems(
+            queryURL = try APIClientService.setQueryItems(
                 for: requestURL,
                 with: queryItems
             )
@@ -151,7 +153,8 @@ extension ATProtoAdmin {
                                                          acceptValue: "application/json",
                                                          contentTypeValue: nil,
                                                          authorizationValue: "Bearer \(accessToken)")
-            let response = try await APIClientService.sendRequest(request, decodeTo: AdminQueryModerationStatusesOutput.self)
+            let response = try await APIClientService.sendRequest(request,
+                                                                  decodeTo: AdminQueryModerationStatusesOutput.self)
 
             return .success(response)
         } catch {

@@ -35,7 +35,8 @@ extension ATProtoKit {
                                                          acceptValue: "application/json",
                                                          contentTypeValue: nil,
                                                          authorizationValue: "Bearer \(accessToken)")
-            let response = try await APIClientService.sendRequest(request, decodeTo: ActorPreferences.self)
+            let response = try await APIClientService.sendRequest(request,
+                                                                  decodeTo: ActorPreferences.self)
 
             return .success(response)
         } catch(let error) {

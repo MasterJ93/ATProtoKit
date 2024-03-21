@@ -55,7 +55,8 @@ extension ATProtoKit {
                                                          acceptValue: "application/json",
                                                          contentTypeValue: nil,
                                                          authorizationValue: "Bearer \(accessToken)")
-            let response = try await APIClientService.sendRequest(request, decodeTo: RepoListMissingBlobsOutput.self)
+            let response = try await APIClientService.sendRequest(request,
+                                                                  decodeTo: RepoListMissingBlobsOutput.self)
 
             return .success(response)
         } catch {

@@ -31,7 +31,7 @@ extension ATProtoAdmin {
 
         guard let sessionURL = session?.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/tools.ozone.moderation.searchRepos") else {
-            return .failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"]))
+            return .failure(ATRequestPrepareError.invalidRequestURL)
         }
 
         var queryItems = [(String, String)]()
@@ -49,8 +49,10 @@ extension ATProtoAdmin {
             queryItems.append(("cursor", cursor))
         }
 
+        let queryURL: URL
+
         do {
-            let queryURL = try APIClientService.setQueryItems(
+            queryURL = try APIClientService.setQueryItems(
                 for: requestURL,
                 with: queryItems
             )
@@ -60,7 +62,8 @@ extension ATProtoAdmin {
                                                          acceptValue: "application/json",
                                                          contentTypeValue: nil,
                                                          authorizationValue: "Bearer \(accessToken)")
-            let response = try await APIClientService.sendRequest(request, decodeTo: AdminSearchReposOutput.self)
+            let response = try await APIClientService.sendRequest(request,
+                                                                  decodeTo: AdminSearchReposOutput.self)
 
             return .success(response)
         } catch {

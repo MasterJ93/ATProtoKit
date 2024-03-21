@@ -44,8 +44,10 @@ extension ATProtoKit {
             queryItems.append(("cursor", cursor))
         }
 
+        let queryURL: URL
+
         do {
-            let queryURL = try APIClientService.setQueryItems(
+            queryURL = try APIClientService.setQueryItems(
                 for: requestURL,
                 with: queryItems
             )

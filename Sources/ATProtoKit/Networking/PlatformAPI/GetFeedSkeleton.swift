@@ -39,8 +39,10 @@ extension ATProtoKit {
 
         queryItems.append(("feed", feedURI))
 
+        let queryURL: URL
+
         do {
-            let queryURL = try APIClientService.setQueryItems(
+            queryURL = try APIClientService.setQueryItems(
                 for: requestURL,
                 with: queryItems
             )

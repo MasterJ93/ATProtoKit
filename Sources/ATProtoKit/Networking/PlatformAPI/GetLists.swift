@@ -45,8 +45,10 @@ extension ATProtoKit {
             queryItems.append(("cursor", cursor))
         }
 
+        let queryURL: URL
+
         do {
-            let queryURL = try APIClientService.setQueryItems(
+            queryURL = try APIClientService.setQueryItems(
                 for: requestURL,
                 with: queryItems
             )
@@ -56,7 +58,8 @@ extension ATProtoKit {
                                                          acceptValue: "application/json",
                                                          contentTypeValue: nil,
                                                          authorizationValue: "Bearer \(accessToken)")
-            let response = try await APIClientService.sendRequest(request, decodeTo: GraphGetListsOutput.self)
+            let response = try await APIClientService.sendRequest(request,
+                                                                  decodeTo: GraphGetListsOutput.self)
 
             return .success(response)
         } catch {

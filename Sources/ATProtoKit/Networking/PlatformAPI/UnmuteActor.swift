@@ -28,7 +28,9 @@ extension ATProtoKit {
             throw ATRequestPrepareError.invalidRequestURL
         }
 
-        let requestBody = GraphUnmuteActor(actorDID: actorDID)
+        let requestBody = GraphUnmuteActor(
+            actorDID: actorDID
+        )
 
         do {
             let request = APIClientService.createRequest(forRequest: requestURL,

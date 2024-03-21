@@ -39,8 +39,10 @@ extension ATProtoKit {
         let cappedURIArray = postURIs.prefix(25)
         queryItems += cappedURIArray.map { ("uris", $0) }
 
+        let queryURL: URL
+
         do {
-            let queryURL = try APIClientService.setQueryItems(
+            queryURL = try APIClientService.setQueryItems(
                 for: requestURL,
                 with: queryItems
             )

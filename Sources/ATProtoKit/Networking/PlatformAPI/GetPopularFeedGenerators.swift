@@ -24,7 +24,8 @@ extension ATProtoKit {
     ///   - limit: The number of items that can be in the list. Optional. Defaults to `50`.
     ///   - cursor: The mark used to indicate the starting point for the next set of result. Optional.
     /// - Returns: A `Result`, containing either an ``UnspeccedGetPopularFeedGeneratorsOutput`` if successful, or an `Error` if not.
-    public func getPopularFeedGenerators(_ query: String?, limit: Int? = 50, cursor: String? = nil) async throws -> Result<UnspeccedGetPopularFeedGeneratorsOutput, Error> {
+    public func getPopularFeedGenerators(_ query: String?, limit: Int? = 50,
+                                         cursor: String? = nil) async throws -> Result<UnspeccedGetPopularFeedGeneratorsOutput, Error> {
         guard let sessionURL = session?.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/app.bsky.unspecced.getPopularFeedGenerators") else {
             return .failure(ATRequestPrepareError.invalidRequestURL)

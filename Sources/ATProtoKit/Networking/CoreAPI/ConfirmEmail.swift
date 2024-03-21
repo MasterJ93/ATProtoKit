@@ -46,7 +46,8 @@ extension ATProtoKit {
                                                          contentTypeValue: "application/json",
                                                          authorizationValue: "Bearer \(accessToken)")
 
-            _ = try await APIClientService.sendRequest(request, withEncodingBody: requestBody)
+            _ = try await APIClientService.sendRequest(request,
+                                                       withEncodingBody: requestBody)
         } catch {
             throw error
         }

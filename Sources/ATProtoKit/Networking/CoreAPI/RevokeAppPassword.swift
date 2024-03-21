@@ -25,7 +25,7 @@ extension ATProtoKit {
 
         guard let sessionURL = session?.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.server.revokeAppPassword") else {
-            throw NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey : "Invalid URL"])
+            throw ATRequestPrepareError.invalidRequestURL
         }
 
         let requestBody = ServerRevokeAppPassword(
@@ -39,7 +39,8 @@ extension ATProtoKit {
                                                          contentTypeValue: "application/json",
                                                          authorizationValue: "Bearer \(accessToken)")
 
-            try await APIClientService.sendRequest(request, withEncodingBody: requestBody)
+            try await APIClientService.sendRequest(request,
+                                                   withEncodingBody: requestBody)
         } catch {
             throw error
         }

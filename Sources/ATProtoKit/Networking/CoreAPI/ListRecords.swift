@@ -33,7 +33,7 @@ extension ATProtoKit {
 
         guard let sessionURL = pdsURL != nil ? pdsURL : session?.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.repo.listRecords") else {
-            return .failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"]))
+            return .failure(ATRequestPrepareError.invalidRequestURL)
         }
 
         var queryItems = [(String, String)]()
