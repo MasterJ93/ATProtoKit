@@ -129,6 +129,18 @@ enum ATRequestPrepareError: ATProtoError {
     case missingActiveSession
 }
 
+/// An error type related to issues surrounding HTTP requests and responses.
+enum ATHTTPRequestError: ATProtoError {
+    /// Unable to encode the request body.
+    case unableToEncodeRequestBody
+    /// Failed to construct URL with the given parameters.
+    case failedToConstructURLWithParameters
+    /// Failed to decode HTML content.
+    case failedToDecodeHTML
+    /// Error encountered while getting the response from the server.
+    case errorGettingResponse
+}
+
 /// An error type related to issues surrounding
 enum ATEventStreamError: ATProtoError {
     case invalidEndpoint
