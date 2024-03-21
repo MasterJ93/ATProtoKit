@@ -24,7 +24,12 @@ extension ATProtoAdmin {
     ///   - accountDID: The decentralized identifier (DID) of the user's account.
     ///   - note: A note as to why the user account is getting the ability to receive invite codes reinstated. Optional.
     public func enableAccountInvites(for accountDID: String, note: String?) async throws {
-        guard let sessionURL = session.pdsURL,
+        guard session != nil,
+              let accessToken = session?.accessToken else {
+            throw ATRequestPrepareError.missingActiveSession
+        }
+
+        guard let sessionURL = session?.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.admin.enableAccountInvites") else {
             throw ATRequestPrepareError.invalidRequestURL
         }
@@ -39,7 +44,7 @@ extension ATProtoAdmin {
                                                          andMethod: .post,
                                                          acceptValue: nil,
                                                          contentTypeValue: "application/json",
-                                                         authorizationValue: "Bearer \(session.accessToken)")
+                                                         authorizationValue: "Bearer \(accessToken)")
 
             try await APIClientService.sendRequest(request,
                                                    withEncodingBody: requestBody)

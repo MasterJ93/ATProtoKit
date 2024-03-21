@@ -29,7 +29,7 @@ extension ATProtoKit {
             throw ATRequestPrepareError.invalidRequestURL
         }
 
-        var hostnameURL = URL(string: crawlingHostname ?? sessionURL)
+        let hostnameURL = URL(string: crawlingHostname ?? sessionURL)
 
         guard let finalhostnameURL = hostnameURL else {
             throw ATRequestPrepareError.invalidHostnameURL

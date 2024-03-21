@@ -16,6 +16,12 @@ extension ATProtoKit {
     /// - Bug: According to the AT Protocol specifications, this API call does not require authentication. However, there's an issue where it asks for authentication if there's no `accessToken`.
     /// It's unknown whether this is an issue on the AT Protocol's end or `AKProtoKit`'s end. For now, use the `shouldAuthenticate` parameter when using this method.
     ///
+    /// - Note: According to the AT Protocol specifications: "Find actors (profiles) matching search criteria. Does not require auth."
+    ///
+    /// - SeeAlso: This is based on the [`app.bsky.actor.searchActors`][github] lexicon.
+    ///
+    /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/actor/searchActors.json
+    ///
     /// - Parameters:
     ///   - query: The string used against a list of actors.
     ///   - limit: The number of suggested users to follow. Optional. Defaults to 25. Can only choose between 1 and 100.

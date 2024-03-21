@@ -55,7 +55,7 @@ extension ATProtoKit {
 
         var queryItems = [(String, String)]()
 
-        var cappedActorsArray = actors.prefix(25)
+        let cappedActorsArray = actors.prefix(25)
         queryItems += cappedActorsArray.map { ("actors", $0) }
 
         let queryURL: URL

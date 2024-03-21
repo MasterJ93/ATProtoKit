@@ -23,7 +23,12 @@ extension ATProtoAdmin {
     /// - Parameter accountDID: The decentralized identifier (DID) of the user account.
     /// - Returns: A `Result`, containing either an ``AdminAccountView`` if successful, or an `Error` if not.
     public func getAccountInfo(_ accountDID: String) async throws -> Result<AdminAccountView, Error> {
-        guard let sessionURL = session.pdsURL,
+        guard session != nil,
+              let accessToken = session?.accessToken else {
+            throw ATRequestPrepareError.missingActiveSession
+        }
+
+        guard let sessionURL = session?.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.admin.getAccountInfo") else {
             return .failure(ATRequestPrepareError.invalidRequestURL)
         }
@@ -44,7 +49,7 @@ extension ATProtoAdmin {
                                                          andMethod: .get,
                                                          acceptValue: "application/json",
                                                          contentTypeValue: nil,
-                                                         authorizationValue: "Bearer \(session.accessToken)")
+                                                         authorizationValue: "Bearer \(accessToken)")
             let response = try await APIClientService.sendRequest(request,
                                                                   decodeTo: AdminAccountView.self)
 

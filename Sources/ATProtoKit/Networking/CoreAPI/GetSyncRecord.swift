@@ -10,6 +10,12 @@ import Foundation
 extension ATProtoKit {
     /// Gets a record as a .car format.
     ///
+    /// - Note: According to the AT Protocol specifications: "Get a single record from a repository. Does not require auth."
+    ///
+    /// - SeeAlso: This is based on the [`com.atproto.repo.getRecord`][github] lexicon.
+    ///
+    /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/repo/getRecord.json
+    ///
     /// - Parameters:
     ///   - recordQuery: The information required to get a record.
     ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `nil`.
@@ -21,15 +27,11 @@ extension ATProtoKit {
             return .failure(ATRequestPrepareError.invalidRequestURL)
         }
 
-        var queryItems = [
+        let queryItems = [
             ("repo", recordQuery.repo),
             ("collection", recordQuery.collection),
             ("rkey", recordQuery.recordKey)
         ]
-
-        if let cid = recordQuery.recordCID {
-            queryItems.append(("cid", cid))
-        }
 
         let queryURL: URL
 

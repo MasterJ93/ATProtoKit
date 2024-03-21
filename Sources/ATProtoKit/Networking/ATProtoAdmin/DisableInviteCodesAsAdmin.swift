@@ -22,7 +22,12 @@ extension ATProtoAdmin {
     ///   - codes: The invite codes to disable.
     ///   - accountDIDs: The decentralized identifiers (DIDs) of the user accounts.
     public func disableInviteCodes(codes: [String], accountDIDs: [String]) async throws {
-        guard let sessionURL = session.pdsURL,
+        guard session != nil,
+              let accessToken = session?.accessToken else {
+            throw ATRequestPrepareError.missingActiveSession
+        }
+
+        guard let sessionURL = session?.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.admin.disableInviteCodes") else {
             throw ATRequestPrepareError.invalidRequestURL
         }
@@ -37,7 +42,7 @@ extension ATProtoAdmin {
                                                          andMethod: .post,
                                                          acceptValue: nil,
                                                          contentTypeValue: "'application/json",
-                                                         authorizationValue: "Bearer \(session.accessToken)")
+                                                         authorizationValue: "Bearer \(accessToken)")
 
             try await APIClientService.sendRequest(request,
                                                    withEncodingBody: requestBody)
