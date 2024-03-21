@@ -12,20 +12,33 @@ extension ATProtoKit {
     /// 
     /// - Note: If you need information about multiple feed generators, it's best to use ``getFeedGenerators(_:)`` instead.
     ///
+    /// - Note: According to the AT Protocol specifications: "Get information about a feed generator. Implemented by AppView."
+    ///
+    /// - SeeAlso: This is based on the [`app.bsky.feed.getFeedGenerator`][github] lexicon.
+    ///
+    /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/feed/getFeedGenerator.json
+    ///
     /// - Parameter feedURI: The URI of the feed generator.
     /// - Returns: A `Result`, containing either a ``FeedGetFeedGeneratorOutput`` if successful, or an `Error` if not.
     public func getFeedGenerator(_ feedURI: String) async throws -> Result<FeedGetFeedGeneratorOutput, Error> {
-        guard let sessionURL = session.pdsURL,
+        guard session != nil,
+              let accessToken = session?.accessToken else {
+            return .failure(ATRequestPrepareError.missingActiveSession)
+        }
+
+        guard let sessionURL = session?.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/app.bsky.feed.getFeedGenerator") else {
-            return .failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"]))
+            return .failure(ATRequestPrepareError.invalidRequestURL)
         }
 
         var queryItems = [(String, String)]()
 
         queryItems.append(("feed", feedURI))
 
+        let queryURL: URL
+
         do {
-            let queryURL = try APIClientService.setQueryItems(
+            queryURL = try APIClientService.setQueryItems(
                 for: requestURL,
                 with: queryItems
             )
@@ -34,8 +47,9 @@ extension ATProtoKit {
                                                          andMethod: .get,
                                                          acceptValue: "application/json",
                                                          contentTypeValue: nil,
-                                                         authorizationValue: "Bearer \(session.accessToken)")
-            let response = try await APIClientService.sendRequest(request, decodeTo: FeedGetFeedGeneratorOutput.self)
+                                                         authorizationValue: "Bearer \(accessToken)")
+            let response = try await APIClientService.sendRequest(request,
+                                                                  decodeTo: FeedGetFeedGeneratorOutput.self)
 
             return .success(response)
         } catch {
