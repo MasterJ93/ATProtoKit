@@ -23,7 +23,7 @@ extension ATProtoKit {
     ///   - cursor: The mark used to indicate the starting point for the next set of result. Optional.
     /// - Returns: A `Result`, containing either a ``FeedGetRepostedBy`` if successful, or an `Error` if not.
     public func getRepostedBy(_ postURI: String, postCID: String? = nil, limit: Int? = 50,
-                              cursor: String? = nil) async throws -> Result<FeedGetRepostedBy, Error>{
+                              cursor: String? = nil) async throws -> Result<FeedGetRepostedBy, Error> {
         guard session != nil,
               let accessToken = session?.accessToken else {
             return .failure(ATRequestPrepareError.missingActiveSession)
