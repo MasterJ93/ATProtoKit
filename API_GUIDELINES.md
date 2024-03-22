@@ -202,7 +202,7 @@ There are multiple kinds of models: main models, definition models, output model
 
 ## Model Designs
 ### Regular models
-_TBD._
+_TBD..._
 
 ### Lexicon models
 - All models must be `public` `struct`s and should conform to `Codable`, `Decodable`, or `Encodable`.
@@ -261,10 +261,19 @@ _TBD._
     - Two additional parameters are added at the end: `pdsURL` and `shouldAuthenticate`.
         - `pdsURL` is a `String?` parameter and defaults to `nil`. This is used for if the method call needs to use a Personal Data Server other than the one attached to the `UserSession` instance.
         - `shouldAuthenticate` is a `Bool` parameter and defaults to `false`. This is used for is the method call wants the access token to be part of the request payload.
-- 
+- If the method is AuthRequired, use a `guard` statement. In it, `session` must not be `nil`, and a variable `accessToken` will have the value `session?.accessToken. In the `else` block, the method will either `return` a `.failure` case containing `ATRequestPrepareError.missingActiveSession` (if the method returns either a response or error) or `throw`s `ATRequestPrepareError.missingActiveSession` (if the method only throws errors).
+```swift
+guard session != nil,
+      let accessToken = session?.accessToken else {
+        return .failure(ATRequestPrepareError.missingActiveSession)
+}
+```
 - There must be a `guard` statement.
     - `sessionURL` defines the Personal Data Server's hostname.
-        - For AuthOptional
+        - For AuthOptional, a terniary operator is used: `pdsURL` is set to the method parameter version of `pdsURL` (if it's not `nil`), or `session?.pdsURL` if `pdsURL` is `nil`).
+        ```swift
+        guard let pdsURL != nil ? pdsURL : session?.pdsURL,
+        ```
     - `requestURL` combines `sessionURL` and the endpoint, which, after `sessionURL` contains "xrpc/" followed by the namespaced identifier of the lexicon.
     - Depending on whether the lexicon method can `return` a response/error or just `throw` an error, the `else` block will either `throw` `ATRequestPrepareError.missingActiveSession` (if the method only throws errors) or `return`s a `.failure()` enum of `ATRequestPrepareError.missingActiveSession` (if it can `return` a response or error).
     ```swift
@@ -332,6 +341,8 @@ _TBD._
                 with: queryItems
     )
     ```
+## Logging
+_TBD..._
 
 ## Uncategorized
 - For methods using `APIClientService`:
