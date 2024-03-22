@@ -16,6 +16,7 @@ The [Swift API Design Guidelines](https://www.swift.org/documentation/api-design
 	- `public` should be used for all API user-facing items.
     - `internal` should be used for any items that aren’t appropriate for the API user to use alone.
     - `fileprivate` is rare. This is only reserved for `ATProtoKit` extensions. This is so other parts of the project don’t have access to it if it should only be used for the method it’s in.
+- ***Do NOT force-unwrap***. `if let` and `guard` statements must be used instead.
 - As said in the Swift API Design Guidelines, don't shorten the words like with the lexicon. All structs, methods, functions, properties, and enums must especially follow this rule.
     - Abbreviations are fine, however.
     ```swift
@@ -201,7 +202,7 @@ There are multiple kinds of models: main models, definition models, output model
 
 ## Model Designs
 ### Regular models
-
+_TBD._
 
 ### Lexicon models
 - All models must be `public` `struct`s and should conform to `Codable`, `Decodable`, or `Encodable`.
@@ -239,7 +240,12 @@ There are multiple kinds of models: main models, definition models, output model
 /// - Parameters:
 /// [...]
     ```
-- 
+- The documentation parameter associated with the method parameter must only have one sentence. There are exceptions:
+    - If the method parameter's data type is optional, then the word "Optional." Will be added to the documentation parameter's explanation.
+    ```swift
+    ///   - sources: An array of decentralized identifiers (DIDs) for label sources. Optional.
+    ```
+    - If the method parameter has a default value, then the the following will be added as an addition sentence: "Defaults to `[value]`", where `[value]` is the default value.
 
 ### Lexicon Methods
 - All methods must be inside an `extension` for `ATProtoKit`, unless it's related to adminstration or moderation, in which case, it needs to be inside the `extension` of `ATProtoAdmin`.
@@ -248,14 +254,14 @@ There are multiple kinds of models: main models, definition models, output model
 - The list of parameters should be inline with the lexicon's parameter list. Any additional parameters that need to be added should be at the end.
     - The only exception to this rule is if there's an order that makes more sense and is in alignment with the Swift API Deisgn Guideline's "Strive for Fluent Usage" guidelines.
 - There are three types of lexicon methods: methods where authentication is required (will henceforth be called "AuthRequired"), methods where authentication is optional (will henceforth be called "AuthOptional"), and methods where authentication is not used (will henceforth be called "AuthUnneeded").
-- For AuthRequired lexicon methods:
-    - 
 - For AuthUnneeded lexicon methods:
-    - 
+    - An additional parameter is added at the end: `pdsURL.
+        - `pdsURL` is a `String?` parameter and defaults to `nil`. This is used for if the method call needs to use a Personal Data Server other than the one attached to the `UserSession` instance.
 - For AuthOptional lexicon methods:
     - Two additional parameters are added at the end: `pdsURL` and `shouldAuthenticate`.
         - `pdsURL` is a `String?` parameter and defaults to `nil`. This is used for if the method call needs to use a Personal Data Server other than the one attached to the `UserSession` instance.
         - `shouldAuthenticate` is a `Bool` parameter and defaults to `false`. This is used for is the method call wants the access token to be part of the request payload.
+- 
 - There must be a `guard` statement.
     - `sessionURL` defines the Personal Data Server's hostname.
         - For AuthOptional
@@ -266,6 +272,65 @@ There are multiple kinds of models: main models, definition models, output model
           let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.repo.createRecord") else {
         return .failure(ATRequestPrepareError.invalidRequestURL)
     }
+    ```
+- If the method uses a request body:
+    - Call the variable `requestBody`, while using the value of the `requestBody` model associated with the method.
+    - All of the parameters of the model must be in separate lines. The closing paranthesis must also have a separate line.
+    Example:
+    ```swift
+    let requestBody = RepoCreateRecord(
+            repositoryDID: repositoryDID,
+            collection: collection,
+            recordKey: recordKey,
+            shouldValidate: shouldValidate,
+            record: record,
+            swapCommit: swapCommit
+    )
+    ```
+- If the method uses a query:
+    - Create a variable (named `queryItems`) and set the value of `[(String, String)]()`.
+    ```swift
+    var queryItems = [(String, String)]()
+    ```
+    - For each query item:
+        - Append `queryItems` with `(String, String)`, where the first `String` contains the real query variable the lexicon specifies, and the second `String` contains the parameter associated with the query item.
+        ```swift
+        queryItems.append(("q", query))
+        ```
+        - If the query is optional, use an `if let` statement.
+        ```swift
+        if let cursor {
+            queryItems.append(("cursor", cursor))
+        }
+        ```
+        - If the query is an array, use `Array.map()` to loop through all elements. The element will be denoted by `$0`.
+        ```swift
+        queryItems += uriPatterns.map { ("uriPatterns", $0) }
+        ``` 
+        - If the query is related to a date, then an `if let` statement will be used to unwrap the variable Use `CustomDateFormatter` to convert the `Date` object to an ISO8601 format. After that, the standard rules apply.
+        ```swift
+        if let createdAfterDate = createdAfter, let formattedCreatedAfter = CustomDateFormatter.shared.string(from: createdAfterDate) {
+            queryItems.append(("createdAfter", formattedCreatedAfter))
+        }
+        ```
+        - If the query is `limit`, grab the `limit` parameter and put it inside of `min(x, y)`, where `x` is `limit` and `y` is the highest number the lexicon allows for the property. Then put `min()` inside of `max(x, y)`, where `x` is the lowest number the lexicon allows for the property and `y` is the `min()` function. This will be the value for `finalLimit`, which will be used for value of the second `String` of the query item.
+        ```swift
+        if let limit {
+            let finalLimit = max(1, min(limit, 100))
+            queryItems.append(("limit", "\(finalLimit)"))
+        }
+        ```
+    - Create a `queryURL` variable of type `URL`. Don't add a value to it.
+    ```swift
+    let queryURL: URL
+    ```
+    - Inside the `do` block, set the value of `queryURL` to `APIClientService.setQueryItems()`, inserting `requestURL` and `queryItems` respectively. Each parameter, and the closing paranthesis, must have a separate line.
+    ```swift
+    do {
+    queryURL = try APIClientService.setQueryItems(
+                for: requestURL,
+                with: queryItems
+    )
     ```
 
 ## Uncategorized
@@ -285,5 +350,4 @@ There are multiple kinds of models: main models, definition models, output model
     ```
         - If there’s a `return` statement in the `do-catch` block, or if the query method is in there, the request and response methods should be beside each other.
         - If any additional method calls are being made, put them beside `createRequest()` and `sendRequest()` if they're strongly related to them.
-        - 
         
