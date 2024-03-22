@@ -74,7 +74,7 @@ public struct FeedThreadgateListRule: Codable {
 }
 
 
-
+/// A reference containing the list of thread rules for a post.
 public enum ThreadgateUnion: Codable {
     case mentionRule(FeedThreadgateMentionRule)
     case followingRule(FeedThreadgateFollowingRule)

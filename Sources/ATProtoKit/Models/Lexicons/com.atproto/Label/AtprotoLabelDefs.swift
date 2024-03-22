@@ -312,7 +312,13 @@ public struct LabelValueDefinitionStrings: Codable {
     }
 }
 
-
+/// An enumuation that defines the value of a label.
+///
+/// - Note: According to the AT Protocol specifications: "Strings which describe the label in the UI, localized into a specific language."
+///
+/// - SeeAlso: This is based on the [`com.atproto.label.defs`][github] lexicon.
+///
+/// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/label/defs.json
 public enum LabelValue: String, Codable {
     case hide = "!hide"
     case noPromote = "!no-promote"
