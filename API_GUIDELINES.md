@@ -12,6 +12,39 @@ The [Swift API Design Guidelines](https://www.swift.org/documentation/api-design
 - For documentation, the maximum length of a line is also 170 characters. However, this _is_ a strict rule: if you need to break it down into multiple lines, then that’s fine.
 - Documentation lines should use the triple slashes (`///`) rather than the multi-block delimiter (`/** */`).
 - Everything in the project must be written in American English.
+- All methods/functions, classes, structs, enums, and properties need to display their access keywords. The only permitted keywords used in this project are `public`, `internal`, `private`, and `fileprivate`:
+	- `public` should be used for all API user-facing items.
+    - `internal` should be used for any items that aren’t appropriate for the API user to use alone.
+    - `fileprivate` is rare. This is only reserved for `ATProtoKit` extensions. This is so other parts of the project don’t have access to it if it should only be used for the method it’s in.
+- As said in the Swift API Design Guidelines, don't shorten the words like with the lexicon. All structs, methods, functions, properties, and enums must especially follow this rule.
+    - Abbreviations are fine, however.
+    ```swift
+    // Always use the full term.
+    public func getRepo() // Incorrect.
+    
+    public func getRepository() // Correct.
+    
+    // Abbreviations are okay.
+    pdsURL // Acceptable.
+    
+    finalPDSURL // Acceptable.
+    
+    repositoryCID // Acceptable.
+    ```
+- File names have some naming conventions:
+    - They must be in PascalCase and can't have their words separated.
+    - For Lexicon Models and Lexicon Methods (seen below):
+        - Files that contain a lexicon model should be based on the lexicon that it's used for. To be more specific, the lexicon's hostname, subdomain, and action name are combined into one.
+        Examples:
+            - BskyActorDefs.swift
+            - BskyRichTextFacet.swift
+            - AtprotoSyncSubscribeRepos.swift
+            - OzoneCommunicationDefs.swift
+        - With respect to file names, files which contain lexicon models don't use the requirement of expanding the shortened name, as they're designed to be closely aligned with the name of the namespaced identifier.
+        - Files that contain a lexicon method will be named the same as the method, albeit, in PascalCase.
+            - For admin and moderator methods, the file name must have an "-AsAdmin" suffix.
+- Folder names will be PascalCase, except for the folders inside the `Models/Lexicons` folder, where the namespace identifier's TLD and hostname are all lowercased.
+    - Any folders in the lower level and beyond continue to use PascalCase.
 
 ## Documentation
 ### General
@@ -45,12 +78,10 @@ The [Swift API Design Guidelines](https://www.swift.org/documentation/api-design
     - [`Warning`](https://developer.apple.com/library/archive/documentation/Xcode/Reference/xcode_markup_formatting_ref/Warning.html): Use this if the user must know something, and failure to do so will cause something major to break.
 
 ## Lexicon Models
-
 Lexicons are relevant to models and methods. Here are some general guidelines:
 - Models follow the reverse DNS style of naming, but it removes the domain name and the periods. (Example: for the lexicon `app.bsky.actor.profile`, instead of naming the model as “app.bsky.actor.profile”, you name it as “ActorProfile”.)
-- All models are structs, with one exception:
+- All models are `struct`s, with one exception:
 	- If a lexicon has a `union` type, then the list of values are combined into another model, which will be of type `enum`.
-  	  - For these models, they will have the `Union` suffix. (Example: `PreferenceUnion`.)
 - All models must conform to `Codable`, but depending on the model, it may only need to conform to either `Encodable` or `Decodable`.
 - Properties that are of type `Date` must use the `@DateFormatting` property wrapper. Likewise, properties that are of type `Date?` must use the `@DateFormattingOptional` property wrapper. There are a number of things that need to be done when doing this:
 	- In the initialization method, set the value of an underscored (_) version of the property name to an instance of `@DateFormatting` or `@DateFormattingOptional` (which will henceforth be named "`@DateFormatting` group”). The `wrappedValue` parameter’s should have the value of the initializer’s version of the non-underscored property:
@@ -168,12 +199,13 @@ There are multiple kinds of models: main models, definition models, output model
 	/// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/actor/getProfile.json
 	```
 
-## Model Design
+## Model Designs
 ### Regular models
 
 
 ### Lexicon models
-- All models must be `public` `struct`s.
+- All models must be `public` `struct`s and should conform to `Codable`, `Decodable`, or `Encodable`.
+    - If the model should only be used to be encoded or decoded, but not both, then the model must _only_ be conforming to `Encodable` or `Decodable` respectively; they can't conform to `Codable`.
 - The name of the model must be the namespaced identifier's subdomain, followed by the name of the lexicon's file name, all in PascalCase. For example: `com.atproto.sync.notifyOfUpdate` becomes `SyncNotifyOfUpdate`. Furthermore, the suffix of the name depends on the type of model it is:
     - For main definition and normal definition models, there is no suffix.
     - For output models, they add the `-Output` suffix.
@@ -186,12 +218,72 @@ There are multiple kinds of models: main models, definition models, output model
     - In `init(from decoder: Decoder) throws`, attempt to to decode each `Date` property using `@DateFormatting`/`@DateFormattingOptional's `wrappedValue`:
     - For `CodingKeys`, only override the case if the value doesn't match the required value in the lexicon.
 
+## Lexicon Union Designs
+- All union types must be `public` `enum`s and should conform to `Codable`, `Decodable`, or `Encodable`.
+- The name of the union must have the `Union` suffix.
+- For documentation, It should say "A reference containing a list of " followed by the name of the list.
+```swift
+/// A reference containing the list of preferences.
+```
+
+## Lexicon Method Designs
+### Documentation
+- The first line should summarize what the method will do in one sentence.
+- All paragraphs will be separated by a space.
+- Any reference links will be added between the last paragraph of explanation and the group of `Parameter(s)`, `Returns`, and `Throws` values.
+```swift
+/// - SeeAlso: This is based on the [`com.atproto.repo.createRecord`][github] lexicon.
+///
+/// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/repo/createRecord.json
+///
+/// - Parameters:
+/// [...]
+    ```
+- 
+
+### Lexicon Methods
+- All methods must be inside an `extension` for `ATProtoKit`, unless it's related to adminstration or moderation, in which case, it needs to be inside the `extension` of `ATProtoAdmin`.
+- The method's name must be the name of the namespaced identifier of the lexicon, if the TLD, doman, and subdomain was removed.
+    - If there's a conflict (there's more than one method with the same name in a class), the sub-domain will be addedin a way that somewhat makes grammatical sense at least. For example: `getRepositoryRecord()` and `getSyncRecord()`.
+- The list of parameters should be inline with the lexicon's parameter list. Any additional parameters that need to be added should be at the end.
+    - The only exception to this rule is if there's an order that makes more sense and is in alignment with the Swift API Deisgn Guideline's "Strive for Fluent Usage" guidelines.
+- There are three types of lexicon methods: methods where authentication is required (will henceforth be called "AuthRequired"), methods where authentication is optional (will henceforth be called "AuthOptional"), and methods where authentication is not used (will henceforth be called "AuthUnneeded").
+- For AuthRequired lexicon methods:
+    - 
+- For AuthUnneeded lexicon methods:
+    - 
+- For AuthOptional lexicon methods:
+    - Two additional parameters are added at the end: `pdsURL` and `shouldAuthenticate`.
+        - `pdsURL` is a `String?` parameter and defaults to `nil`. This is used for if the method call needs to use a Personal Data Server other than the one attached to the `UserSession` instance.
+        - `shouldAuthenticate` is a `Bool` parameter and defaults to `false`. This is used for is the method call wants the access token to be part of the request payload.
+- There must be a `guard` statement.
+    - `sessionURL` defines the Personal Data Server's hostname.
+        - For AuthOptional
+    - `requestURL` combines `sessionURL` and the endpoint, which, after `sessionURL` contains "xrpc/" followed by the namespaced identifier of the lexicon.
+    - Depending on whether the lexicon method can `return` a response/error or just `throw` an error, the `else` block will either `throw` `ATRequestPrepareError.missingActiveSession` (if the method only throws errors) or `return`s a `.failure()` enum of `ATRequestPrepareError.missingActiveSession` (if it can `return` a response or error).
+    ```swift
+    guard let sessionURL = session?.pdsURL,
+          let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.repo.createRecord") else {
+        return .failure(ATRequestPrepareError.invalidRequestURL)
+    }
+    ```
+
 ## Uncategorized
-- All methods/functions, classes, structs, enums, and properties need to display their access keywords. The only permitted keywords used in this project are `public`, `internal`, `private`, and `fileprivate`:
-	- `public` should be used for all API user-facing items.
-    - `internal` should be used for any items that aren’t appropriate for the API user to use alone.
-    - `fileprivate` is rare. This is only reserved for `ATProtoKit` extensions. This is so other parts of the project don’t have access to it if it should only be used for the method it’s in.
 - For methods using `APIClientService`:
-    - Each parameter must be separated in each line.
-    - If the request and response are the only ones in the `do-catch` block, separate them with a space.
-    - If there’s a `return` statement in the `do-catch` block, or if the query method is in there, the request and response methods should be beside each other.
+    - Each parameter in `createRequest()` and `sendRequest()` must be separated in each line, unless there is only one parameter being used.
+    - If `createRequest()` and `sendRequest()` are the only ones in the `do-catch` block, separate them with a space; `createRequest()` must be the first line in the `do` block, followed by a space. `sendRequest()` must be at the last line of the `do` block.
+    ```swift
+    do {
+        let request = APIClientService.createRequest(forRequest: queryURL,
+                                                         andMethod: .post,
+                                                         acceptValue: "application/json",
+                                                         contentTypeValue: nil,
+                                                         authorizationValue: accessToken)
+        try await APIClientService.sendRequest(request,
+                                               decodeTo: LabelQueryLabelsOutput.self)
+    }
+    ```
+        - If there’s a `return` statement in the `do-catch` block, or if the query method is in there, the request and response methods should be beside each other.
+        - If any additional method calls are being made, put them beside `createRequest()` and `sendRequest()` if they're strongly related to them.
+        - 
+        
