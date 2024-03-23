@@ -111,15 +111,16 @@ public class ATProtoKit: ATProtoKitConfiguration {
 
 /// A class containing all administrator and moderator functionality of the `ATProtoKit` API library.
 ///
-/// `ATProtoAdmin` works similarly to the ``ATProtoKit/ATProtoKit`` class, but dedicated for API calls related for administrators and moderators. More specifically, API calls that
-/// work with the `com.atproto.admin.*` and `com.atproto.ozone.*` lexicons.
+/// `ATProtoAdmin` works similarly to the ``ATProtoKit/ATProtoKit`` class, but dedicated for API calls related for administrators and moderators. More specifically,
+/// API calls that work with the `com.atproto.admin.*` and `com.atproto.ozone.*` lexicons.
 ///
 /// Instantiating `ATProtoAdmin` is required to use any of the methods. To get the access token, an instance of ``ATProtocolConfiguration`` is required:
 ///
 /// ```swift
 /// let config = ATProtocolConfiguration(handle: "example.bsky.social", appPassword: "hunter2")
 /// ```
-/// ``ATProtocolConfiguration/authenticate()`` should then be used to get information about the session. The result is handed over to the `ATProtoAdmin`'s instance:
+/// ``ATProtocolConfiguration/authenticate()`` should then be used to get information about the session. The result is handed over to the
+/// `ATProtoAdmin`'s instance:
 ///
 ///```swift
 /// Task {
