@@ -33,26 +33,17 @@ extension ATProtoKit {
     public func searchUsers(by query: String, limit: Int? = 25, cursor: String? = nil,
                             pdsURL: String? = nil,
                             shouldAuthenticate: Bool = false) async throws -> Result<ActorSearchActorsOutput, Error> {
-        var accessToken: String? = nil
-
-        if shouldAuthenticate == true {
-            guard session != nil,
-                  accessToken == session?.accessToken else {
-                throw ATRequestPrepareError.missingActiveSession
-            }
-        }
+        let authorizationValue = prepareAuthorizationValue(
+            methodPDSURL: pdsURL,
+            shouldAuthenticate: shouldAuthenticate,
+            session: session
+        )
 
         let finalPDSURL = determinePDSURL(customPDSURL: pdsURL)
         
         guard let requestURL = URL(string: "\(finalPDSURL)/xrpc/app.bsky.actor.searchActors") else {
             return .failure(ATRequestPrepareError.invalidRequestURL)
         }
-
-        // Use guard to check if accessToken is non-nil and non-empty, otherwise set authorizationValue to nil.
-        let authorizationValue: String? = {
-            guard let token = accessToken, !token.isEmpty else { return nil }
-            return "Bearer \(token)"
-        }()
 
         // Make sure limit is between 1 and 100. If no value is given, set it to 25.
         let finalLimit = max(1, min(limit ?? 25, 100))

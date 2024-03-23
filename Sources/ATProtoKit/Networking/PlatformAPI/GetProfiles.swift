@@ -32,26 +32,17 @@ extension ATProtoKit {
     public func getProfiles(_ actors: [String],
                             pdsURL: String? = nil,
                             shouldAuthenticate: Bool = false) async throws -> Result<ActorGetProfilesOutput, Error> {
-        var accessToken: String? = nil
-
-        if shouldAuthenticate == true {
-            guard session != nil,
-                  accessToken == session?.accessToken else {
-                throw ATRequestPrepareError.missingActiveSession
-            }
-        }
+        let authorizationValue = prepareAuthorizationValue(
+            methodPDSURL: pdsURL,
+            shouldAuthenticate: shouldAuthenticate,
+            session: session
+        )
 
         let finalPDSURL = determinePDSURL(customPDSURL: pdsURL)
 
         guard let requestURL = URL(string: "\(finalPDSURL)/xrpc/app.bsky.actor.getProfiles") else {
             return .failure(ATRequestPrepareError.invalidRequestURL)
         }
-
-        // Use guard to check if accessToken is non-nil and non-empty, otherwise set authorizationValue to nil.
-        let authorizationValue: String? = {
-            guard let token = accessToken, !token.isEmpty else { return nil }
-            return "Bearer \(token)"
-        }()
 
         var queryItems = [(String, String)]()
 

@@ -23,18 +23,13 @@ extension ATProtoKit {
     ///   - accessToken: The access token of the user. Optional.
     ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `nil`.
     /// - Returns: A `Result`, containing either an ``FeedGetListFeedOutput`` if succesful, or an `Error` if it's not.
-    public static func getListFeed(from listURI: String, limit: Int? = 50, cursor: String? = nil,
+    public func getListFeed(from listURI: String, limit: Int? = 50, cursor: String? = nil,
                                    accessToken: String? = nil,
-                                   pdsURL: String = "https://bsky.social") async throws -> Result<FeedGetListFeedOutput, Error> {
-        guard let requestURL = URL(string: "\(pdsURL)/xrpc/app.bsky.feed.getListFeed") else {
+                                   pdsURL: String? = nil) async throws -> Result<FeedGetListFeedOutput, Error> {
+        guard let sessionURL = pdsURL != nil ? pdsURL : session?.pdsURL,
+              let requestURL = URL(string: "\(sessionURL)/xrpc/app.bsky.feed.getListFeed") else {
             return .failure(ATRequestPrepareError.invalidRequestURL)
         }
-
-        // Use guard to check if accessToken is non-nil and non-empty, otherwise set authorizationValue to nil.
-        let authorizationValue: String? = {
-            guard let token = accessToken, !token.isEmpty else { return nil }
-            return "Bearer \(token)"
-        }()
 
         var queryItems = [(String, String)]()
 
@@ -61,7 +56,7 @@ extension ATProtoKit {
                                                          andMethod: .get,
                                                          acceptValue: "application/json",
                                                          contentTypeValue: nil,
-                                                         authorizationValue: authorizationValue)
+                                                         authorizationValue: nil)
             let response = try await APIClientService.sendRequest(request,
                                                                   decodeTo: FeedGetListFeedOutput.self)
 

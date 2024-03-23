@@ -23,11 +23,6 @@ extension ATProtoKit {
     ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `nil`.
     public func requestPasswordReset(_ email: String,
                                      pdsURL: String? = nil) async throws {
-        guard session != nil,
-              let accessToken = session?.accessToken else {
-            throw ATRequestPrepareError.missingActiveSession
-        }
-
         guard let sessionURL = pdsURL != nil ? pdsURL : session?.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.server.requestPasswordReset") else {
             throw ATRequestPrepareError.invalidRequestURL
