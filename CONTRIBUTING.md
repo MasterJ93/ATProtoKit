@@ -11,7 +11,7 @@ Contributions to ATProtoKit are welcomed and appreciated. Here are the areas whe
 
 ## Contribution Process
 ### Setting Up Your Environment
-Fork the `ATProtoKit repository and open the project with your IDE of choice.
+Fork the `ATProtoKit` repository and open the project with your IDE of choice.
 
 ### Making Changes
 For new features and improvements, put these changes into the `develop` branch. If you’re fixing a bug, then it should be in `main`. Be sure to fill out the Pull Request form before sending in a pull request.
