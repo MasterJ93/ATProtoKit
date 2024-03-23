@@ -23,7 +23,8 @@ extension ATProtoAdmin {
     ///   - limit: The number of repositories in the array. Optional. Defaults to `50`. Can only choose between `1` and `100`.
     ///   - cursor: The mark used to indicate the starting point for the next set of results. Optional.
     /// - Returns: A `Result`, containing either an ``AdminSearchReposOutput`` if successful, or an `Error` if not.
-    public func searchRepositories(_ query: String?, withLimitOf limit: Int? = 50, cursor: String?) async throws -> Result<AdminSearchReposOutput, Error> {
+    public func searchRepositories(_ query: String?, withLimitOf limit: Int? = 50,
+                                   cursor: String?) async throws -> Result<AdminSearchReposOutput, Error> {
         guard session != nil,
               let accessToken = session?.accessToken else {
             return .failure(ATRequestPrepareError.missingActiveSession)

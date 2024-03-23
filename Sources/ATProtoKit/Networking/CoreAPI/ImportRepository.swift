@@ -1,5 +1,5 @@
 //
-//  ImportRepo.swift
+//  ImportRepository.swift
 //
 //
 //  Created by Christopher Jr Riley on 2024-03-11.
@@ -22,7 +22,7 @@ extension ATProtoKit {
     /// - Parameters:
     ///   - repositoryData: The repository data in the form of a CAR file.
     ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `nil`.
-    public func importRepo(_ repositoryData: Data, pdsURL: String? = nil) async throws {
+    public func importRepository(_ repositoryData: Data, pdsURL: String? = nil) async throws {
         guard let sessionURL = pdsURL != nil ? pdsURL : session?.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.repo.importRepo") else {
             throw ATRequestPrepareError.invalidRequestURL

@@ -12,7 +12,7 @@ extension ATProtoAdmin {
     /// 
     /// - Important: This is an administrator task and as such, regular users won't be able to access this; if they attempt to do so, an error will occur.
     /// 
-    /// - Note: If you need details for just one user account, it's better to simply use ``getAccountInfoAsAdmin(_:)`` instead.
+    /// - Note: If you need details for just one user account, it's better to simply use ``getAccountInfo(_:)`` instead.
     /// 
     /// - Note: According to the AT Protocol specifications: "Get details about some accounts."
     ///

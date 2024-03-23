@@ -39,8 +39,12 @@ extension ATProtoKit {
         }
 
         let requestBody = AdminUpdateCommunicationTemplate(
-            id: id, name: name, contentMarkdown: contentMarkdown,
-            subject: subject, updatedBy: updatedBy, isDisabled: isDisabled
+            id: id,
+            name: name,
+            contentMarkdown: contentMarkdown,
+            subject: subject,
+            updatedBy: updatedBy,
+            isDisabled: isDisabled
         )
 
         do {
