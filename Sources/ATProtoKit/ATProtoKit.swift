@@ -8,6 +8,59 @@ import Foundation
 public protocol ATProtoKitConfiguration {
     /// Represents an authenticated user session within the AT Protocol. Optional.
     var session: UserSession? { get }
+    /// Prepares an authorization value for API requests based on `session` and `pdsURL`.
+    ///
+    /// This determines whether the "Authorization" header will be included in the request payload. It takes both `shouldAuthenticate` and `pdsURL` into account if
+    /// the method has them, as well as the current session. You can use this method as-is, or customize the implementation as you see fit.
+    ///
+    /// - Note: Don't use this method if authorization is required or unneeded. This is only for methods where autheorization is optional.
+    ///
+    /// - Important:  If `pdsURL` is not `nil`, then authentication will never be considered since the session's access token wasn't created by
+    /// the Personal Data Server (PDS).
+    ///
+    /// - Parameters:
+    ///   - shouldAuthenticate: Indicates whether the method call should be authenticated.
+    ///   - methodPDSURL: The URL of the Personal Data Server (PDS). Optional.
+    ///   - session: The current session used in the class's instance. Optional.
+    ///
+    /// - Returns: A `String`, containing either `nil` if it's determined that there should be no authorization header in the request, or  `"Bearer \(accessToken)"`
+    /// (where `accessToken` is the session's access token) if it's determined there should be an authorization header.
+    func prepareAuthorizationValue(shouldAuthenticate: Bool, methodPDSURL: String?, session: UserSession?) -> String?
+}
+
+extension ATProtoKitConfiguration {
+    /// Prepares an authorization value for API requests based on `session` and `pdsURL`.
+    ///
+    /// This determines whether the "Authorization" header will be included in the request payload. It takes both `shouldAuthenticate` and `pdsURL` into account if
+    /// the method has them, as well as the current session.
+    ///
+    /// - Note: Don't use this method if authorization is required or unneeded. This is only for methods where autheorization is optional.
+    ///
+    /// - Important:  If `pdsURL` is not `nil`, then authentication will never be considered since the session's access token wasn't created by
+    /// the Personal Data Server (PDS).
+    ///
+    /// - Parameters:
+    ///   - shouldAuthenticate: Indicates whether the method call should be authenticated.
+    ///   - methodPDSURL: The URL of the Personal Data Server (PDS). Optional.
+    ///   - session: The current session used in the class's instance. Optional.
+    ///
+    /// - Returns: A `String`, containing either `nil` if it's determined that there should be no authorization header in the request, or  `"Bearer \(accessToken)"`
+    /// (where `accessToken` is the session's access token) if it's determined there should be an authorization header.
+    public func prepareAuthorizationValue(shouldAuthenticate: Bool, methodPDSURL: String?, session: UserSession?) -> String? {
+        guard methodPDSURL == nil else {
+            return nil
+        }
+
+        // Proceed with authentication only if required and a session exists with a valid access token.
+        if shouldAuthenticate,
+           let session = session,
+           !session.accessToken.isEmpty {
+            return "Bearer \(session.accessToken)"
+        }
+
+        // Return nil if authentication is not needed or can't be performed.
+        return nil
+    }
 }
 
 /// The base class that handles the main functionality of the `ATProtoKit` API library.
