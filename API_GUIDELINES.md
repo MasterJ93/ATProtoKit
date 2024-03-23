@@ -5,11 +5,12 @@ One of the major goals of `ATProtoKit` is to create a well-written and well-docu
 - Major updates to this project should only apply to `ATProtoKit`’s major updates.
 
 ## Swift API Design Guidelines
-The [Swift API Design Guidelines](https://www.swift.org/documentation/api-design-guidelines/) sets the foundation of these guidelines. These guidelines follow the parent guidelines fairly strictly, and should only deviate from it if it’s 100% necessary and if there’s no other logical way to get around it.
+The [Swift API Design Guidelines](https://www.swift.org/documentation/api-design-guidelines/) sets the foundation for these principles. Adherence to these guidelines is strict, and should only deviate from it if it’s 100% necessary and if there’s no other logical way to get around it.
+
 
 ## Fundamentals
 - For code, the maximum length of a line is 170 characters. However, this isn’t a strong goal to have: it can be much longer than this.
-- For documentation, the maximum length of a line is also 170 characters. However, this _is_ a strict rule: if you need to break it down into multiple lines, then that’s fine.
+- For documentation, the maximum length of a line is also 170 characters. However, this _is_ a strict rule: if necessary, break it down into smaller lines.
 - Documentation lines should use the triple slashes (`///`) rather than the multi-block delimiter (`/** */`).
 - Everything in the project must be written in American English.
 - All methods/functions, classes, structs, enums, and properties need to display their access keywords. The only permitted keywords used in this project are `public`, `internal`, `private`, and `fileprivate`:
@@ -109,7 +110,7 @@ There are multiple kinds of models: main models, definition models, output model
    ```swift
 	/// The main model for getting a detailed profile view for the user.
    ```
-   - After an empty `///` in the next line, the following line has the description that’s provided by the lexicon. If there’s no description, then this can be skipped. If there is one, it must say "- Note: According to the AT Protocol specifications: “<#Description#>””, where "<#Description#>” is the description provided by the lexicon:
+   - After an empty `///` in the next line, the following line has the description that’s provided by the lexicon. If there’s no description, then this can be skipped. If there is one, it must say "- Note: According to the AT Protocol specifications: “`<#Description#>`””, where "`<#Description#>`” is the description provided by the lexicon:
 	```swift
 	/// - Note: According to the AT Protocol specifications: "Get detailed profile view of an actor. Does not require auth, but contains relevant metadata with auth."
     ```
@@ -119,7 +120,7 @@ There are multiple kinds of models: main models, definition models, output model
 	///
 	/// [github]: <#Lexicon link#>
     ```
-    where: "<#Lexicon Type ID#>” is the lexicon’s name, and “<#Lexicon link#>” is the link to the lexicon itself:
+    where: "`<#Lexicon Type ID#>`” is the lexicon’s name, and “`<#Lexicon link#>`” is the link to the lexicon itself:
 	```swift
 	/// - SeeAlso: This is based on the [`app.bsky.actor.getProfile`][github] lexicon.
 	///
@@ -137,7 +138,7 @@ There are multiple kinds of models: main models, definition models, output model
    The requirements remain the same for the AT Protocol lexicon descriptions, the lexicon's NSID', and the GitHub link.
 - For the models themselves, they have the following requirements:
 	- The name of the struct is exactly the same as the with the Main model name, but the suffix is the property name within the lexicon itself, and `defs` is removed. For example, `com.atproto.admin.defs` contains a property named `modEventView`. Therefore, the name of the struct is called `AdminModEventView`.
-    - After an empty `///` in the next line, the following line has the description that’s provided by the lexicon. If there’s no description, then this can be skipped. If there is one, it must say "- Note: According to the AT Protocol specifications: “<#Description#>””, where "<#Description#>” is the description provided by the lexicon:
+    - After an empty `///` in the next line, the following line has the description that’s provided by the lexicon. If there’s no description, then this can be skipped. If there is one, it must say "- Note: According to the AT Protocol specifications: “`<#Description#>`””, where "`<#Description#>`” is the description provided by the lexicon:
 	```swift
 	/// - Note: According to the AT Protocol specifications: "Get detailed profile view of an actor. Does not require auth, but contains relevant metadata with auth."
     ```
@@ -147,7 +148,7 @@ There are multiple kinds of models: main models, definition models, output model
 	///
 	/// [github]: <#Lexicon link#>
     ```
-    where: "<#Lexicon Type ID#>” is the lexicon’s name, and “<#Lexicon link#>” is the link to the lexicon itself:
+    where: "`<#Lexicon Type ID#>`” is the lexicon’s name, and “`<#Lexicon link#>`” is the link to the lexicon itself:
 	```swift
 	/// - SeeAlso: This is based on the [`app.bsky.actor.getProfile`][github] lexicon.
 	///
@@ -160,7 +161,7 @@ There are multiple kinds of models: main models, definition models, output model
     ```swift
     /// An output model for checking the user's account status.
     ```
-    - After an empty `///` in the next line, the following line has the description that’s provided by the lexicon. If there’s no description, then this can be skipped. If there is one, it must say "- Note: According to the AT Protocol specifications: “<#Description#>””, where "<#Description#>” is the description provided by the lexicon:
+    - After an empty `///` in the next line, the following line has the description that’s provided by the lexicon. If there’s no description, then this can be skipped. If there is one, it must say "- Note: According to the AT Protocol specifications: “`<#Description#>`””, where "`<#Description#>`” is the description provided by the lexicon:
 	```swift
 	/// - Note: According to the AT Protocol specifications: "Get detailed profile view of an actor. Does not require auth, but contains relevant metadata with auth."
     ```
@@ -170,7 +171,7 @@ There are multiple kinds of models: main models, definition models, output model
 	///
 	/// [github]: <#Lexicon link#>
     ```
-    where: "<#Lexicon Type ID#>” is the lexicon’s name, and “<#Lexicon link#>” is the link to the lexicon itself:
+    where: "`<#Lexicon Type ID#>`” is the lexicon’s name, and “`<#Lexicon link#>`” is the link to the lexicon itself:
 	```swift
 	/// - SeeAlso: This is based on the [`app.bsky.actor.getProfile`][github] lexicon.
 	///
@@ -183,7 +184,7 @@ There are multiple kinds of models: main models, definition models, output model
     ```swift
     /// A request body model for checking the user's account status.
     ```
-    - After an empty `///` in the next line, the following line has the description that’s provided by the lexicon. If there’s no description, then this can be skipped. If there is one, it must say "- Note: According to the AT Protocol specifications: “<#Description#>””, where "<#Description#>” is the description provided by the lexicon:
+    - After an empty `///` in the next line, the following line has the description that’s provided by the lexicon. If there’s no description, then this can be skipped. If there is one, it must say "- Note: According to the AT Protocol specifications: “`<#Description#>`””, where "`<#Description#>`” is the description provided by the lexicon:
 	```swift
 	/// - Note: According to the AT Protocol specifications: "Get detailed profile view of an actor. Does not require auth, but contains relevant metadata with auth."
     ```
@@ -193,7 +194,7 @@ There are multiple kinds of models: main models, definition models, output model
 	///
 	/// [github]: <#Lexicon link#>
     ```
-    where: "<#Lexicon Type ID#>” is the lexicon’s name, and “<#Lexicon link#>” is the link to the lexicon itself:
+    where: "`<#Lexicon Type ID#>`” is the lexicon’s name, and “`<#Lexicon link#>`” is the link to the lexicon itself:
 	```swift
 	/// - SeeAlso: This is based on the [`app.bsky.actor.getProfile`][github] lexicon.
 	///
@@ -216,7 +217,7 @@ _TBD..._
 - If `@DateFormatting` and `@DateFormattingOptional` are used in at least one propery, the following must happen:
     - The property affected must be using `var` instead of `let`.
     - In the standard `init()` method, set the value of `wrappedValue` to an underscored (`_`) version of the name of the property.
-    - In `init(from decoder: Decoder) throws`, attempt to to decode each `Date` property using `@DateFormatting`/`@DateFormattingOptional's `wrappedValue`:
+    - In `init(from decoder: Decoder) throws`, attempt to to decode each `Date` property using `@DateFormatting`/`@DateFormattingOptional`'s `wrappedValue`:
     - For `CodingKeys`, only override the case if the value doesn't match the required value in the lexicon.
 
 ## Lexicon Union Designs
@@ -239,7 +240,7 @@ _TBD..._
 ///
 /// - Parameters:
 /// [...]
-    ```
+```
 - The documentation parameter associated with the method parameter must only have one sentence. There are exceptions:
     - If the method parameter's data type is optional, then the word "Optional." Will be added to the documentation parameter's explanation.
     ```swift
