@@ -7,19 +7,28 @@ on:
   push:
     branches: [ "main" ]
 
+
 jobs:
   build:
-    runs-on: macos-latest
+    name: Swift ${{ matrix.swift }} on ${{ matrix.os }}
+
+    
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+        swift: ["5.10", "5.10"]
 
     steps:
     - uses: actions/checkout@v4
-
     - uses: swift-actions/setup-swift@v2
-    - name: Get swift version
-      run: swift --version # Swift 5.10
+      with:
+        swift-version: ${{ matrix.swift }}
+
 
     - name: Build
       run: swift build -v
+
 
 #    - name: Run tests
 #      run: swift test -v
