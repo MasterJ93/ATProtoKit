@@ -26,25 +26,16 @@ extension ATProtoKit {
     public func getPostThread(from postURI: String, depth: Int? = 6, parentHeight: Int? = 80,
                               pdsURL: String? = nil,
                               shouldAuthenticate: Bool = false) async throws -> Result<FeedGetPostThreadOutput, Error> {
-        var accessToken: String? = nil
-
-        if shouldAuthenticate == true {
-            guard session != nil,
-                  accessToken == session?.accessToken else {
-                throw ATRequestPrepareError.missingActiveSession
-            }
-        }
+        let authorizationValue = prepareAuthorizationValue(
+            methodPDSURL: pdsURL,
+            shouldAuthenticate: shouldAuthenticate,
+            session: session
+        )
 
         guard let sessionURL = pdsURL != nil ? pdsURL : session?.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/app.bsky.feed.getPostThread") else {
             return .failure(ATRequestPrepareError.invalidRequestURL)
         }
-
-        // Use guard to check if accessToken is non-nil and non-empty, otherwise set authorizationValue to nil.
-        let authorizationValue: String? = {
-            guard let token = accessToken, !token.isEmpty else { return nil }
-            return "Bearer \(token)"
-        }()
 
         var queryItems = [(String, String)]()
 

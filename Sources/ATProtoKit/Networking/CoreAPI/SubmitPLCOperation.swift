@@ -19,11 +19,6 @@ extension ATProtoKit {
     /// - Parameter operation:
     /// - Returns: A `Result`, containing either an ``IdentitySignPLCOperationOutput`` if successful, or an `Error` if not.
     public func submitPLCOperation(_ operation: UnknownType) async throws -> Result<IdentitySignPLCOperation, Error> {
-        guard session != nil,
-              let accessToken = session?.accessToken else {
-            return .failure(ATRequestPrepareError.missingActiveSession)
-        }
-
         guard let sessionURL = session?.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.identity.identitySubmitPLCOperation") else {
             return .failure(ATRequestPrepareError.invalidRequestURL)

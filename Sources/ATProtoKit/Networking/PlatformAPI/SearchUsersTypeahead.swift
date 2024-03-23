@@ -31,26 +31,17 @@ extension ATProtoKit {
     public func searchUsersTypeahead(by query: String, limit: Int? = 10,
                                      pdsURL: String? = nil,
                                      shouldAuthenticate: Bool = false) async throws -> Result<ActorSearchActorsTypeaheadOutput, Error> {
-        var accessToken: String? = nil
-
-        if shouldAuthenticate == true {
-            guard session != nil,
-                  accessToken == session?.accessToken else {
-                throw ATRequestPrepareError.missingActiveSession
-            }
-        }
+        let authorizationValue = prepareAuthorizationValue(
+            methodPDSURL: pdsURL,
+            shouldAuthenticate: shouldAuthenticate,
+            session: session
+        )
 
         let finalPDSURL = determinePDSURL(customPDSURL: pdsURL)
 
         guard let requestURL = URL(string: "\(finalPDSURL)/xrpc/app.bsky.actor.searchActorsTypeahead") else {
             return .failure(ATRequestPrepareError.invalidRequestURL)
         }
-
-        // Use guard to check if accessToken is non-nil and non-empty, otherwise set authorizationValue to nil.
-        let authorizationValue: String? = {
-            guard let token = accessToken, !token.isEmpty else { return nil }
-            return "Bearer \(token)"
-        }()
 
         // Make sure limit is between 1 and 100. If no value is given, set it to 25.
         let finalLimit = max(1, min(limit ?? 10, 100))

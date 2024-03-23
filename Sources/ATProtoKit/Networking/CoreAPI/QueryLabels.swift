@@ -29,14 +29,11 @@ extension ATProtoKit {
     public func queryLabels(uriPatterns: [String], sources: [String]?, limit: Int? = 50, cursor: String? = nil,
                             pdsURL: String? = nil,
                             shouldAuthenticate: Bool = false) async throws -> Result<LabelQueryLabelsOutput, Error> {
-        var accessToken: String? = nil
-
-        if shouldAuthenticate == true {
-            guard session != nil,
-                  accessToken == session?.accessToken else {
-                throw ATRequestPrepareError.missingActiveSession
-            }
-        }
+        let authorizationValue = prepareAuthorizationValue(
+            methodPDSURL: pdsURL,
+            shouldAuthenticate: shouldAuthenticate,
+            session: session
+        )
 
         guard let sessionURL = pdsURL != nil ? pdsURL : session?.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.label.queryLabels") else {
@@ -72,7 +69,7 @@ extension ATProtoKit {
                                                          andMethod: .post,
                                                          acceptValue: "application/json",
                                                          contentTypeValue: nil,
-                                                         authorizationValue: accessToken)
+                                                         authorizationValue: authorizationValue)
             let response = try await APIClientService.sendRequest(request,
                                                                   decodeTo: LabelQueryLabelsOutput.self)
 

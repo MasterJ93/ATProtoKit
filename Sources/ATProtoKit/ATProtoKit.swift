@@ -19,13 +19,13 @@ public protocol ATProtoKitConfiguration {
     /// the Personal Data Server (PDS).
     ///
     /// - Parameters:
-    ///   - shouldAuthenticate: Indicates whether the method call should be authenticated.
-    ///   - methodPDSURL: The URL of the Personal Data Server (PDS). Optional.
+    ///   - methodPDSURL: The URL of the Personal Data Server (PDS). Optional. Defaults to `nil`.
+    ///   - shouldAuthenticate: Indicates whether the method call should be authenticated. Defaults to `false`.
     ///   - session: The current session used in the class's instance. Optional.
     ///
     /// - Returns: A `String`, containing either `nil` if it's determined that there should be no authorization header in the request, or  `"Bearer \(accessToken)"`
     /// (where `accessToken` is the session's access token) if it's determined there should be an authorization header.
-    func prepareAuthorizationValue(shouldAuthenticate: Bool, methodPDSURL: String?, session: UserSession?) -> String?
+    func prepareAuthorizationValue(methodPDSURL: String?, shouldAuthenticate: Bool, session: UserSession?) -> String?
 }
 
 extension ATProtoKitConfiguration {
@@ -40,13 +40,13 @@ extension ATProtoKitConfiguration {
     /// the Personal Data Server (PDS).
     ///
     /// - Parameters:
-    ///   - shouldAuthenticate: Indicates whether the method call should be authenticated.
-    ///   - methodPDSURL: The URL of the Personal Data Server (PDS). Optional.
+    ///   - methodPDSURL: The URL of the Personal Data Server (PDS). Optional. Defaults to `nil`.
+    ///   - shouldAuthenticate: Indicates whether the method call should be authenticated. Defaults to `false`.
     ///   - session: The current session used in the class's instance. Optional.
     ///
     /// - Returns: A `String`, containing either `nil` if it's determined that there should be no authorization header in the request, or  `"Bearer \(accessToken)"`
     /// (where `accessToken` is the session's access token) if it's determined there should be an authorization header.
-    public func prepareAuthorizationValue(shouldAuthenticate: Bool, methodPDSURL: String?, session: UserSession?) -> String? {
+    public func prepareAuthorizationValue(methodPDSURL: String? = nil, shouldAuthenticate: Bool = false, session: UserSession?) -> String? {
         guard methodPDSURL == nil else {
             return nil
         }
