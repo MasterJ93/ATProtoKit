@@ -49,12 +49,12 @@ I believe Bluesky and its accompanying AT Protocol gives the perfect balance bet
 ## Features
 - [x] Full compatibility with Apple’s APIs for each of the platforms.
 - [x] Written with adherence to the Swift API Design Guidelines and up-to-date best practices.
-- [] Well-written documentation for all of the AT Protocol and Bluesky APIs.
+- [ ] Well-written documentation for all of the AT Protocol and Bluesky APIs.
 - [x] A RichText helper to parse text into the applicable facets.
-- [] Extend the capabilities of generic classes within the AT Protocol in case your instance requires it.
-- [] A powerful Firehose API that retrieves and filters events and records in real-time.
-- [] An HTML-parsing system to grab search engine-friendly elements for embeds.
-- [] A logging tool for easy debugging.
+- [ ] Extend the capabilities of generic classes within the AT Protocol in case your instance requires it.
+- [ ] A powerful Firehose API that retrieves and filters events and records in real-time.
+- [ ] An HTML-parsing system to grab search engine-friendly elements for embeds.
+- [ ] A logging tool for easy debugging.
 
 \* _Not all features above have been implemented; however, they will be, soon._
 
