@@ -9,28 +9,27 @@ import Foundation
 
 /// The base protocol which all data stream-related classes conform to.
 ///
-/// `ATDataStreamConfiguration` contains all of the basic properties, initializers, and methods needed to manage connections in the AT Protocol's event streams. Some of these include directly managing the connection (opening, clousing, and reconnecting), creating parameters for allowing and disallowing content, handling sequences, and
-public protocol ATDataStreamConfiguration: Decodable {
+/// `ATEventStreamConfiguration` contains all of the basic properties, initializers, and methods needed to manage connections in the AT Protocol's event streams. Some of these include directly managing the connection (opening, clousing, and reconnecting), creating parameters for allowing and disallowing content, and handling sequences.
+public protocol ATEventStreamConfiguration: Decodable {
     /// The URL of the relay.
     ///
     /// The endpoint must begin with `wss://`.
     var relayURL: String { get }
-    /// The URL of the endpoint.
+    /// The Namespaced Identifier (NSID) of the endpoint.
     ///
     /// The endpoint must be the lexicon name (example: `com.atproto.sync.subscribeRepos`).
-    var endpointURL: String { get }
+    var namespacedIdentifiertURL: String { get }
 
     /// The mark used to indicate the starting point for the next set of results. Optional.
     ///
     /// - Note: According to the AT Protocol specifications: "The last known event seq number to backfill from."
     var cursor: String? { get }
 
+    init(relayURL: String, namespacedIdentifiertURL: String, cursor: String?)
+
     func connect()
-
     func disconnect()
-
     func reConnect()
-
     func receiveMessages()
 }
 
