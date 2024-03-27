@@ -20,6 +20,10 @@ public protocol ATEventStreamConfiguration: Decodable {
     ///
     /// The endpoint must be the lexicon name (example: `com.atproto.sync.subscribeRepos`).
     var namespacedIdentifiertURL: String { get }
+    /// The number of the last successful message decoded. Optional.
+    ///
+    /// When a message gets successfully decoded, this property is populated with the number.
+    var sequencePostion: Int64? { get }
     /// The mark used to indicate the starting point for the next set of results. Optional.
     ///
     /// - Note: According to the AT Protocol specifications: "The last known event seq number to backfill from."

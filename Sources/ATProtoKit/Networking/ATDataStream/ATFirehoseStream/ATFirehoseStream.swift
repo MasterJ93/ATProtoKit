@@ -13,6 +13,10 @@ class ATFirehoseStream: ATEventStreamConfiguration {
     public var relayURL: String = "wss://bsky.network"
     /// The URL of the endpoint. Defaults to `com.atproto.sync.subscribeRepos`.
     internal var namespacedIdentifiertURL: String = "com.atproto.sync.subscribeRepos"
+    /// The number of the last successful message decoded. Optional.
+    ///
+    /// When a message gets successfully decoded, this property is populated with the number.
+    public var sequencePostion: Int64?
     /// The mark used to indicate the starting point for the next set of results. Optional.
     public var cursor: Int64?
 
