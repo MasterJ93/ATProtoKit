@@ -34,7 +34,7 @@ public protocol ATEventStreamConfiguration: Decodable {
 }
 
 /// A protocol used for the basic skeleton of the model definitions.
-public protocol DataStreamSkeleton: Decodable {
+public protocol FirehoseEventRepresentable: Decodable {
     /// Represents the stream sequence number of this message.
     ///
     /// - Note: According to the AT Protocol specifications: "The stream sequence number of this message."
