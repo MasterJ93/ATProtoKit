@@ -43,3 +43,8 @@ public struct WebSocketFrameHeader: Codable {
     /// Indicates the Lexicon sub-type for this message, in short form.
     public let type: String?
 }
+
+public struct WebSocketFrameMessageError: Codable, ATProtoError {
+    public let error: String
+    public let message: String?
+}
