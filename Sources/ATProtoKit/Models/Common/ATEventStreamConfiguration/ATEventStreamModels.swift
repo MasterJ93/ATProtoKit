@@ -60,7 +60,10 @@ public struct WebSocketFrameHeader: Codable {
     public let type: String?
 }
 
+/// An error type containing WebSocket frames for error messages.
 public struct WebSocketFrameMessageError: Codable, ATProtoError {
+    /// The type of error given.
     public let error: String
+    /// The message contained with the error. Optional.
     public let message: String?
 }
