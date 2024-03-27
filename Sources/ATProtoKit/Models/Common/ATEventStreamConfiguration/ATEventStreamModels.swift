@@ -32,3 +32,14 @@ public protocol ATEventStreamConfiguration: Decodable {
     func reConnect()
     func receiveMessages()
 }
+
+public struct WebSocketFrameHeader: Codable {
+    /// Indicates what this frame contains.
+    ///
+    /// If it contains a `1`, then a normal message will be in the payload and `type` will have a value. If it contains a `-1`, then an error message will be displayed in the payload instead.
+    ///
+    /// - Note: If `operation` contains a value other than `1` or `-1`, the entire frame will be completely ignored.
+    public let operation: Int
+    /// Indicates the Lexicon sub-type for this message, in short form.
+    public let type: String?
+}
