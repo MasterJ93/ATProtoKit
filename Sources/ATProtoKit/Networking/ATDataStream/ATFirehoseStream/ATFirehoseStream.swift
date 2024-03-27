@@ -21,4 +21,6 @@ class ATFirehoseStream: ATEventStreamConfiguration {
         self.namespacedIdentifiertURL = namespacedIdentifiertURL
         self.cursor = cursor
     }
+
+    
 }
