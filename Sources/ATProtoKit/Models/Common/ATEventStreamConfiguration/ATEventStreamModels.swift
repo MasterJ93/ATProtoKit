@@ -83,6 +83,11 @@ public struct WebSocketFrameHeader: Codable {
     public let operation: Int
     /// Indicates the Lexicon sub-type for this message, in short form.
     public let type: String?
+
+    enum CodingKeys: String, CodingKey {
+        case operation = "op"
+        case type = "t"
+    }
 }
 
 /// An error type containing WebSocket frames for error messages.
