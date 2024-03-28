@@ -34,6 +34,8 @@ public protocol ATEventStreamConfiguration {
 
     /// Creates a new instance to prepare for the event stream.
     ///
+    /// It's recommended that you set `urlSessionConfiguration` to `URLSessionConfiguration.default`.
+    ///
     /// - Parameters:
     ///   - relayURL: The URL of the relay.
     ///   - namespacedIdentifiertURL: The Namespaced Identifier (NSID) of the endpoint.

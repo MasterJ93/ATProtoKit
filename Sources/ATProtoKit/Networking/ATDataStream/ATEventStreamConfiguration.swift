@@ -35,6 +35,12 @@ extension ATEventStreamConfiguration {
 
     }
 
+    /// Receives decoded messages and manages the sequence number.
+    ///
+    /// This will attempt to decode each of the messages that arrive from the event stream. All of the messages are in a [DAG-CBOR][DAG_CBOR] format and are
+    /// decoded accordingly.
+    ///
+    /// [DAG_CBOR]: https://ipld.io/docs/codecs/known/dag-cbor/
     public func receiveMessages() {
 
     }
