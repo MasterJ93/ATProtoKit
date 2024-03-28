@@ -20,7 +20,7 @@ extension ATEventStreamConfiguration {
     ///
     /// - Parameter cursor: The mark used to indicate the starting point for the next set of results. Optional.
     public func connect(cursor: Int64? = nil) async {
-
+        
     }
 
     /// Disconnects the client from the event stream.
@@ -49,12 +49,7 @@ extension ATEventStreamConfiguration {
     /// decoded accordingly.
     ///
     /// [DAG_CBOR]: https://ipld.io/docs/codecs/known/dag-cbor/
-    public func receiveMessages() {
+    public func receiveMessages() async {
 
-    }
-
-    /// Pings the server to maintain a connection.
-    public func ping() {
-        
     }
 }

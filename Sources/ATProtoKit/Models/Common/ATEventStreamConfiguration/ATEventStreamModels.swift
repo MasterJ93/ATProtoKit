@@ -83,8 +83,6 @@ public protocol ATEventStreamConfiguration {
     ///
     /// [DAG_CBOR]: https://ipld.io/docs/codecs/known/dag-cbor/
     func receiveMessages() async
-    /// Pings the server to maintain a connection.
-    func ping()
 }
 
 public struct WebSocketFrameHeader: Codable {
