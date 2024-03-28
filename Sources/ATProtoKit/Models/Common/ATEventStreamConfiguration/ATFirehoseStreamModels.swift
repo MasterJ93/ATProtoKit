@@ -229,3 +229,23 @@ public struct FirehoseFrameTombstoneMessage: Decodable {
     }
 }
 
+// MARK: - #info
+/// A data model definition for an information state.
+///
+/// - SeeAlso: This is based on the [`com.atproto.sync.subscribeRepos`][github] lexicon.
+///
+/// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/sync/subscribeRepos.json
+public struct FirehoseFrameInfoMessage: Decodable {
+    public let eventName: EventName
+    public let message: String
+
+    enum CodingKeys: String, CodingKey {
+        case eventName = "name"
+        case message
+    }
+
+    // Enums
+    public enum EventName: String, Decodable {
+        case outdatedCursor = "OutdatedCursor"
+    }
+}
