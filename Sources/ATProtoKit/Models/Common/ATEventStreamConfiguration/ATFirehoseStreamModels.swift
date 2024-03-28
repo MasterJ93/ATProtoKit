@@ -178,4 +178,30 @@ public struct FirehoseFrameHandleMessage: Decodable {
     }
 }
 
+// MARK: - #migrate
+/// A data model definition for an account migration event.
+///
+/// - Note: According to the AT Protocol specifications: "Represents an account moving from one PDS instance to another. NOTE: not implemented; account migration
+/// uses #identity instead"
+///
+/// - SeeAlso: This is based on the [`com.atproto.sync.subscribeRepos`][github] lexicon.
+///
+/// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/sync/subscribeRepos.json
+public struct FirehoseFrameMigrateMessage: Decodable {
+    /// Represents the stream sequence number of this message.
+    public let sequence: Int
+    /// The decentralized identifier (DID) of the account that has changed their identity.
+    public let accountDID: String
+    /// The target Personal Data Server (PDS) the account is migrating to. Optional.
+    public let migrateTo: String?
+    /// The date and time the event was broadcast.
+    @DateFormatting public var timestamp: Date
+
+    enum CodingKeys: String, CodingKey {
+        case sequence = "seq"
+        case accountDID = "did"
+        case migrateTo
+        case timestamp = "time"
+    }
+}
 
