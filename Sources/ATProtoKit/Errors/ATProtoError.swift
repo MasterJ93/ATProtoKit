@@ -20,9 +20,15 @@ public enum ATAPIError: ATProtoError, Decodable {
     /// Represents a forbidden error (HTTP 403) with an associated message.
     /// - Parameter message: The message received along side the error.
     case forbidden(message: String?)
+    /// Represents a method not allowed error (HTTP 405) with an associated message.
+    /// - Parameter message: The message received along side the error.
+    case methodNotAllowed(message: String?)
     /// Represents a payload too large error (HTTP 413) with an associated message.
     /// - Parameter message: The message received along side the error.
     case payloadTooLarge(message: String?)
+    /// Represents an upgrade required error (HTTP 426) with an associated message.
+    /// - Parameter message: The message received along side the error.
+    case upgradeRequired(message: String?)
     /// Represents a too many requests error (HTTP 429) with an associated message.
     /// - Parameter message: The message received along side the error.
     case tooManyRequests(message: String?)
@@ -85,8 +91,12 @@ public enum ATAPIError: ATProtoError, Decodable {
                 self = .unauthorized(message: message)
             case "Forbidden":
                 self = .forbidden(message: message)
+            case "MethodNotAllowed":
+                self = .methodNotAllowed(message: message)
             case "PayloadTooLarge":
                 self = .payloadTooLarge(message: message)
+            case "UpgradeRequired":
+                self = .upgradeRequired(message: message)
             case "TooManyRequests":
                 self = .tooManyRequests(message: message)
             case "InternalServerError":
