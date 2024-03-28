@@ -39,6 +39,7 @@ extension ATEventStreamConfiguration {
 
     }
 
+    /// Pings the server to maintain a connection.
     public func ping() {
         
     }

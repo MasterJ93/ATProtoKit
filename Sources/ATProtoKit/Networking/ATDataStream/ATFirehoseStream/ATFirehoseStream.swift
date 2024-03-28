@@ -21,7 +21,16 @@ class ATFirehoseStream: ATEventStreamConfiguration {
     public var cursor: Int64?
     /// The configuration object that defines the behaviours and polices for a URL session in the event stream.
     internal let urlSession: URLSession
-
+    
+    /// Creates a new instance to prepare for the event stream.
+    ///
+    /// - Parameters:
+    ///   - relayURL: The URL of the relay.
+    ///   - namespacedIdentifiertURL: The Namespaced Identifier (NSID) of the endpoint.
+    ///   - cursor: The number of the last successful message decoded. Optional.
+    ///   - sequencePosition: The number of the last successful message decoded. Optional.
+    ///   - urlSessionConfiguration: The configuration object that defines the behaviours and polices for a URL session in the event stream. Defaults
+    ///   to `URLSessionConfiguration.default`.
     required init(relayURL: String, namespacedIdentifiertURL: String, cursor: Int64?, sequencePosition: Int64?,
                   urlSessionConfiguration: URLSessionConfiguration = .default) {
         self.relayURL = relayURL
