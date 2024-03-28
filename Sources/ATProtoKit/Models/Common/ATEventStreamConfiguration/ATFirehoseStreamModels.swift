@@ -126,3 +126,27 @@ public struct FirehoseEventRepositoryOperation: Decodable {
         case delete
     }
 }
+
+// MARK: - #Identity
+/// A data model definition for an account identity change.
+///
+/// - Note: According to the AT Protocol specifications: "Represents a change to an account's identity. Could be an updated handle, signing key, or pds hosting
+/// endpoint. Serves as a prod to all downstream services to refresh their identity cache."
+///
+/// - SeeAlso: This is based on the [`com.atproto.sync.subscribeRepos`][github] lexicon.
+///
+/// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/sync/subscribeRepos.json
+public struct FirehoseFrameIdentityMessage: Decodable {
+    /// Represents the stream sequence number of this message.
+    public let sequence: Int
+    /// The decentralized identifier (DID) of the account that has changed their identity.
+    public let accountDID: String
+    /// The date and time the event was broadcast.
+    @DateFormatting public var timestamp: Date
+
+    enum CodingKeys: String, CodingKey {
+        case sequence = "seq"
+        case accountDID = "did"
+        case timestamp = "time"
+    }
+}
