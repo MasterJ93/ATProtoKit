@@ -205,3 +205,27 @@ public struct FirehoseFrameMigrateMessage: Decodable {
     }
 }
 
+// MARK: - #tombstone
+/// A data model definition for an account deletion event.
+///
+/// - Note: According to the AT Protocol specifications: "Indicates that an account has been deleted. NOTE: may be deprecated in favor of #identity or a future
+/// #account event"
+///
+/// - SeeAlso: This is based on the [`com.atproto.sync.subscribeRepos`][github] lexicon.
+///
+/// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/sync/subscribeRepos.json
+public struct FirehoseFrameTombstoneMessage: Decodable {
+    /// Represents the stream sequence number of this message.
+    public let sequence: Int
+    /// The decentralized identifier (DID) of the account that has had their account deleted.
+    public let accountDID: String
+    /// The date and time the event was broadcast.
+    @DateFormatting public var timestamp: Date
+
+    enum CodingKeys: String, CodingKey {
+        case sequence = "seq"
+        case accountDID = "did"
+        case timestamp = "time"
+    }
+}
+
