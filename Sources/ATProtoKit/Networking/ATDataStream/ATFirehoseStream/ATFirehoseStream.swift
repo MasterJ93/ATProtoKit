@@ -19,8 +19,11 @@ class ATFirehoseStream: ATEventStreamConfiguration {
     public var sequencePostion: Int64?
     /// The mark used to indicate the starting point for the next set of results. Optional.
     public var cursor: Int64?
+    /// The configuration object that defines the behaviours and polices for a URL session in the event stream.
+    public let urlSessionConfiguration: URLSessionConfiguration
 
-    required init(relayURL: String, namespacedIdentifiertURL: String, cursor: Int64?) {
+    required init(relayURL: String, namespacedIdentifiertURL: String, cursor: Int64?, sequencePosition: Int64?,
+                  urlSessionConfiguration: URLSessionConfiguration = .default) {
         self.relayURL = relayURL
         self.cursor = cursor
     }

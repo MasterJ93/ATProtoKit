@@ -38,4 +38,8 @@ extension ATEventStreamConfiguration {
     public func receiveMessages() {
 
     }
+
+    public func ping() {
+        
+    }
 }

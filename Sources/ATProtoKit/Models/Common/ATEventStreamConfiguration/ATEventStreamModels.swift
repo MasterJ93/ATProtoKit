@@ -9,9 +9,10 @@ import Foundation
 
 /// The base protocol which all data stream-related classes conform to.
 ///
-/// `ATEventStreamConfiguration` contains all of the basic properties, initializers, and methods needed to manage connections in the AT Protocol's event streams. Some
-/// of these include directly managing the connection (opening, closing, and reconnecting), creating parameters for allowing and disallowing content, and handling sequences.
-public protocol ATEventStreamConfiguration: Decodable {
+/// `ATEventStreamConfiguration` contains all of the basic properties, initializers, and methods needed to manage connections in the AT Protocol's event streams.
+/// Some of these include directly managing the connection (opening, closing, and reconnecting), creating parameters for allowing and disallowing content, and
+/// handling sequences.
+public protocol ATEventStreamConfiguration {
     /// The URL of the relay.
     ///
     /// The endpoint must begin with `wss://`.
@@ -28,8 +29,18 @@ public protocol ATEventStreamConfiguration: Decodable {
     ///
     /// - Note: According to the AT Protocol specifications: "The last known event seq number to backfill from."
     var cursor: Int64? { get }
+    /// The configuration object that defines the behaviours and polices for a URL session in the event stream.
+    var urlSessionConfiguration: URLSessionConfiguration { get }
 
-    init(relayURL: String, namespacedIdentifiertURL: String, cursor: Int64?)
+    /// Creates a new instance to prepare for the event stream.
+    ///
+    /// - Parameters:
+    ///   - relayURL: The URL of the relay.
+    ///   - namespacedIdentifiertURL: The Namespaced Identifier (NSID) of the endpoint.
+    ///   - cursor: The number of the last successful message decoded. Optional.
+    ///   - sequencePosition: The number of the last successful message decoded. Optional.
+    ///   - urlSessionConfiguration: The configuration object that defines the behaviours and polices for a URL session in the event stream.
+    init(relayURL: String, namespacedIdentifiertURL: String, cursor: Int64?, sequencePosition: Int64?, urlSessionConfiguration: URLSessionConfiguration)
 
     /// Connects the client to the event stream.
     ///
@@ -49,7 +60,15 @@ public protocol ATEventStreamConfiguration: Decodable {
     ///
     /// This method can only be used if the client didn't disconnect itself from the server.
     func reConnect(cursor: Int64?)
+    /// Receives decoded messages and manages the sequence number.
+    ///
+    /// This will attempt to decode each of the messages that arrive from the event stream. All of the messages are in a [DAG-CBOR][DAG_CBOR] format and must
+    /// be decoded.
+    ///
+    /// [DAG_CBOR]: https://ipld.io/docs/codecs/known/dag-cbor/
     func receiveMessages()
+    /// Pings the server to maintain a connection.
+    func ping()
 }
 
 public struct WebSocketFrameHeader: Codable {

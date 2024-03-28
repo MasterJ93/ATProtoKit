@@ -13,6 +13,7 @@ public protocol FirehoseEventRepresentable: Decodable {
     ///
     /// - Note: According to the AT Protocol specifications: "The stream sequence number of this message."
     var sequence: Int? { get }
+    // TODO: Remove this.
     /// The date and time the object was sent to the stream.
     ///
     /// - Note: According to the AT Protocol specifications: "Timestamp of when this message was originally broadcast."
