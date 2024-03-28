@@ -12,7 +12,7 @@ import Foundation
 /// `ATEventStreamConfiguration` contains all of the basic properties, initializers, and methods needed to manage connections in the AT Protocol's event streams.
 /// Some of these include directly managing the connection (opening, closing, and reconnecting), creating parameters for allowing and disallowing content, and
 /// handling sequences.
-public protocol ATEventStreamConfiguration: URLSessionWebSocketDelegate {
+public protocol ATEventStreamConfiguration {
     /// The URL of the relay.
     ///
     /// The endpoint must begin with `wss://`.
@@ -30,7 +30,7 @@ public protocol ATEventStreamConfiguration: URLSessionWebSocketDelegate {
     /// - Note: According to the AT Protocol specifications: "The last known event seq number to backfill from."
     var cursor: Int64? { get }
     /// The configuration object that defines the behaviours and polices for a URL session in the event stream.
-    var urlSessionConfiguration: URLSessionConfiguration { get }
+    var urlSession: URLSession { get }
 
     /// Creates a new instance to prepare for the event stream.
     ///
@@ -59,7 +59,7 @@ public protocol ATEventStreamConfiguration: URLSessionWebSocketDelegate {
     /// Attempts to reconnect the client to the event stream after a disconnect.
     ///
     /// This method can only be used if the client didn't disconnect itself from the server.
-    func reConnect(cursor: Int64?)
+    func reconnect(cursor: Int64?)
     /// Receives decoded messages and manages the sequence number.
     ///
     /// This will attempt to decode each of the messages that arrive from the event stream. All of the messages are in a [DAG-CBOR][DAG_CBOR] format and must

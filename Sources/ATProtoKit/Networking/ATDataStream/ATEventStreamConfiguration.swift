@@ -31,7 +31,7 @@ extension ATEventStreamConfiguration {
     /// Attempts to reconnect the client to the event stream after a disconnect.
     ///
     /// This method can only be used if the client didn't disconnect itself from the server.
-    public func reConnect(cursor: Int64?) {
+    public func reconnect(cursor: Int64?) {
 
     }
 
