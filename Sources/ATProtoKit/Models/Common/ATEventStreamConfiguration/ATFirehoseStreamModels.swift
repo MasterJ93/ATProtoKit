@@ -20,7 +20,7 @@ public protocol FirehoseEventRepresentable: Decodable {
     var timeStamp: Date { get }
 }
 
-// MARK: - #Commit
+// MARK: - #commit
 /// A data model definition for a repository state change.
 ///
 /// - Note: According to the AT Protocol specifications: "Represents an update of repository state. Note that empty commits are allowed, which include no repo data
@@ -127,7 +127,7 @@ public struct FirehoseEventRepositoryOperation: Decodable {
     }
 }
 
-// MARK: - #Identity
+// MARK: - #identity
 /// A data model definition for an account identity change.
 ///
 /// - Note: According to the AT Protocol specifications: "Represents a change to an account's identity. Could be an updated handle, signing key, or pds hosting
@@ -150,3 +150,32 @@ public struct FirehoseFrameIdentityMessage: Decodable {
         case timestamp = "time"
     }
 }
+
+// MARK: - #handle
+/// A data model definition for an account handle change state.
+///
+/// - Note: According to the AT Protocol specifications: "Represents an update of the account's handle, or transition to/from invalid state. NOTE: Will be deprecated
+/// in favor of #identity."
+///
+/// - SeeAlso: This is based on the [`com.atproto.sync.subscribeRepos`][github] lexicon.
+///
+/// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/sync/subscribeRepos.json
+public struct FirehoseFrameHandleMessage: Decodable {
+    /// Represents the stream sequence number of this message.
+    public let sequence: Int
+    /// The decentralized identifier (DID) of the account that has changed their identity.
+    public let accountDID: String
+    /// The account's new handle.
+    public let newHandle: String
+    /// The date and time the event was broadcast.
+    @DateFormatting public var timestamp: Date
+
+    enum CodingKeys: String, CodingKey {
+        case sequence = "seq"
+        case accountDID = "did"
+        case newHandle = "handle"
+        case timestamp = "time"
+    }
+}
+
+
