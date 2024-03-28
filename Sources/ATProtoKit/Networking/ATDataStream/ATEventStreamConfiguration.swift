@@ -19,7 +19,7 @@ extension ATEventStreamConfiguration {
     /// - If `cursor` is `0`, then the server will send the oldest message it has and continues the stream.
     ///
     /// - Parameter cursor: The mark used to indicate the starting point for the next set of results. Optional.
-    public func connect(cursor: Int64? = nil) {
+    public func connect(cursor: Int64? = nil) async {
 
     }
 
@@ -35,7 +35,11 @@ extension ATEventStreamConfiguration {
     /// Attempts to reconnect the client to the event stream after a disconnect.
     ///
     /// This method can only be used if the client didn't disconnect itself from the server.
-    public func reconnect(cursor: Int64?) {
+    ///
+    /// - Parameters:
+    ///   - cursor: The mark used to indicate the starting point for the next set of results. Optional.
+    ///   - retry: The number of times the connection attempts can be retried.
+    func reconnect(cursor: Int64?, retry: Int) async {
 
     }
 

@@ -48,7 +48,7 @@ public protocol ATEventStreamConfiguration {
     ///   - urlSessionConfiguration: The configuration object that defines the behaviours and polices for a URL session in the event stream.
     ///   - webSocketTask: The URL session task that communicates over the WebSockets protocol standard.
     init(relayURL: String, namespacedIdentifiertURL: String, cursor: Int64?, sequencePosition: Int64?, urlSessionConfiguration: URLSessionConfiguration,
-         webSocketTask: URLSessionWebSocketTask) throws
+         webSocketTask: URLSessionWebSocketTask) async throws
 
     /// Connects the client to the event stream.
     ///
@@ -61,7 +61,7 @@ public protocol ATEventStreamConfiguration {
     /// - If `cursor` is `0`, then the server will send the oldest message it has and continues the stream.
     ///
     /// - Parameter cursor: The mark used to indicate the starting point for the next set of results. Optional.
-    func connect(cursor: Int64?)
+    func connect(cursor: Int64?) async
     /// Disconnects the client from the event stream.
     /// 
     /// - Parameters:
@@ -69,16 +69,20 @@ public protocol ATEventStreamConfiguration {
     ///   - reason: The reason why the client disconnected from the server.
     func disconnect(with closeCode: URLSessionWebSocketTask.CloseCode, reason: Data)
     /// Attempts to reconnect the client to the event stream after a disconnect.
-    ///
+    /// 
     /// This method can only be used if the client didn't disconnect itself from the server.
-    func reconnect(cursor: Int64?)
+    ///
+    /// - Parameters:
+    ///   - cursor: The mark used to indicate the starting point for the next set of results. Optional.
+    ///   - retry: The number of times the connection attempts can be retried.
+    func reconnect(cursor: Int64?, retry: Int) async
     /// Receives decoded messages and manages the sequence number.
     ///
     /// This will attempt to decode each of the messages that arrive from the event stream. All of the messages are in a [DAG-CBOR][DAG_CBOR] format and must
     /// be decoded.
     ///
     /// [DAG_CBOR]: https://ipld.io/docs/codecs/known/dag-cbor/
-    func receiveMessages()
+    func receiveMessages() async
     /// Pings the server to maintain a connection.
     func ping()
 }

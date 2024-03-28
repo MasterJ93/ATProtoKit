@@ -36,7 +36,7 @@ class ATFirehoseStream: ATEventStreamConfiguration {
     ///   - urlSessionConfiguration: The configuration object that defines the behaviours and polices for a URL session in the event stream. Defaults
     ///   to `URLSessionConfiguration.default`.
     required init(relayURL: String, namespacedIdentifiertURL: String, cursor: Int64?, sequencePosition: Int64?,
-                  urlSessionConfiguration: URLSessionConfiguration = .default, webSocketTask: URLSessionWebSocketTask) throws {
+                  urlSessionConfiguration: URLSessionConfiguration = .default, webSocketTask: URLSessionWebSocketTask) async throws {
         self.relayURL = relayURL
         self.namespacedIdentifiertURL = namespacedIdentifiertURL
         self.cursor = cursor
@@ -49,6 +49,6 @@ class ATFirehoseStream: ATEventStreamConfiguration {
         self.webSocketTask = urlSession.webSocketTask(with: webSocketURL)
         webSocketTask.resume()
 
-        self.connect()
+        await self.connect()
     }
 }
