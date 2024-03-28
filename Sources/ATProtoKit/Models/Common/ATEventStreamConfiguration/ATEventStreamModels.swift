@@ -12,7 +12,7 @@ import Foundation
 /// `ATEventStreamConfiguration` contains all of the basic properties, initializers, and methods needed to manage connections in the AT Protocol's event streams.
 /// Some of these include directly managing the connection (opening, closing, and reconnecting), creating parameters for allowing and disallowing content, and
 /// handling sequences.
-public protocol ATEventStreamConfiguration {
+public protocol ATEventStreamConfiguration: URLSessionWebSocketDelegate {
     /// The URL of the relay.
     ///
     /// The endpoint must begin with `wss://`.
