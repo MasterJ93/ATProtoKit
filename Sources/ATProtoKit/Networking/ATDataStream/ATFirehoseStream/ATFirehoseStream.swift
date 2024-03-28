@@ -48,5 +48,7 @@ class ATFirehoseStream: ATEventStreamConfiguration {
         guard let webSocketURL = URL(string: "\(relayURL)/xrpc/\(namespacedIdentifiertURL)") else { throw ATRequestPrepareError.invalidFormat }
         self.webSocketTask = urlSession.webSocketTask(with: webSocketURL)
         webSocketTask.resume()
+
+        self.connect()
     }
 }

@@ -19,13 +19,17 @@ extension ATEventStreamConfiguration {
     /// - If `cursor` is `0`, then the server will send the oldest message it has and continues the stream.
     ///
     /// - Parameter cursor: The mark used to indicate the starting point for the next set of results. Optional.
-    public func connect(cursor: Int64?) {
+    public func connect(cursor: Int64? = nil) {
 
     }
 
     /// Disconnects the client from the event stream.
-    public func disconnect() {
-
+    /// 
+    /// - Parameters:
+    ///   - closeCode: A code that indicates why the event stream connection closed.
+    ///   - reason: The reason why the client disconnected from the server.
+    public func disconnect(with closeCode: URLSessionWebSocketTask.CloseCode, reason: Data) {
+        webSocketTask.cancel(with: closeCode, reason: reason)
     }
 
     /// Attempts to reconnect the client to the event stream after a disconnect.

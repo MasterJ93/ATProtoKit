@@ -63,7 +63,11 @@ public protocol ATEventStreamConfiguration {
     /// - Parameter cursor: The mark used to indicate the starting point for the next set of results. Optional.
     func connect(cursor: Int64?)
     /// Disconnects the client from the event stream.
-    func disconnect()
+    /// 
+    /// - Parameters:
+    ///   - closeCode: A code that indicates why the event stream connection closed.
+    ///   - reason: The reason why the client disconnected from the server.
+    func disconnect(with closeCode: URLSessionWebSocketTask.CloseCode, reason: Data)
     /// Attempts to reconnect the client to the event stream after a disconnect.
     ///
     /// This method can only be used if the client didn't disconnect itself from the server.
