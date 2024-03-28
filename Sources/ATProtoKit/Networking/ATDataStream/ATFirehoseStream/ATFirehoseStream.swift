@@ -21,7 +21,11 @@ class ATFirehoseStream: ATEventStreamConfiguration {
     public var cursor: Int64?
     /// The configuration object that defines the behaviours and polices for a URL session in the event stream.
     internal let urlSession: URLSession
-    
+    /// The configuration object that defines behavior and policies for a URL session.
+    internal let urlSessionConfiguration: URLSessionConfiguration
+    /// The URL session task that communicates over the WebSockets protocol standard.
+    internal var webSocketTask: URLSessionWebSocketTask
+
     /// Creates a new instance to prepare for the event stream.
     ///
     /// - Parameters:
@@ -32,10 +36,17 @@ class ATFirehoseStream: ATEventStreamConfiguration {
     ///   - urlSessionConfiguration: The configuration object that defines the behaviours and polices for a URL session in the event stream. Defaults
     ///   to `URLSessionConfiguration.default`.
     required init(relayURL: String, namespacedIdentifiertURL: String, cursor: Int64?, sequencePosition: Int64?,
-                  urlSessionConfiguration: URLSessionConfiguration = .default) {
+                  urlSessionConfiguration: URLSessionConfiguration = .default, webSocketTask: URLSessionWebSocketTask) throws {
         self.relayURL = relayURL
+        self.namespacedIdentifiertURL = namespacedIdentifiertURL
         self.cursor = cursor
+        self.sequencePosition = sequencePosition
+        self.urlSessionConfiguration = urlSessionConfiguration
         self.urlSession = URLSession(configuration: urlSessionConfiguration)
-        let webSocketURL = URL(string: "\(relayURL)/xrpc/\(namespacedIdentifiertURL)")
+        self.webSocketTask = webSocketTask
+
+        guard let webSocketURL = URL(string: "\(relayURL)/xrpc/\(namespacedIdentifiertURL)") else { throw ATRequestPrepareError.invalidFormat }
+        self.webSocketTask = urlSession.webSocketTask(with: webSocketURL)
+        webSocketTask.resume()
     }
 }

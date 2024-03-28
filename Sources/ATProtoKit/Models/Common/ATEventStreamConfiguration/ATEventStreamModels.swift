@@ -31,6 +31,10 @@ public protocol ATEventStreamConfiguration {
     var cursor: Int64? { get }
     /// The configuration object that defines the behaviours and polices for a URL session in the event stream.
     var urlSession: URLSession { get }
+    /// The configuration object that defines behavior and policies for a URL session.
+    var urlSessionConfiguration: URLSessionConfiguration { get }
+    /// The URL session task that communicates over the WebSockets protocol standard.
+    var webSocketTask: URLSessionWebSocketTask { get }
 
     /// Creates a new instance to prepare for the event stream.
     ///
@@ -42,7 +46,9 @@ public protocol ATEventStreamConfiguration {
     ///   - cursor: The number of the last successful message decoded. Optional.
     ///   - sequencePosition: The number of the last successful message decoded. Optional.
     ///   - urlSessionConfiguration: The configuration object that defines the behaviours and polices for a URL session in the event stream.
-    init(relayURL: String, namespacedIdentifiertURL: String, cursor: Int64?, sequencePosition: Int64?, urlSessionConfiguration: URLSessionConfiguration)
+    ///   - webSocketTask: The URL session task that communicates over the WebSockets protocol standard.
+    init(relayURL: String, namespacedIdentifiertURL: String, cursor: Int64?, sequencePosition: Int64?, urlSessionConfiguration: URLSessionConfiguration,
+         webSocketTask: URLSessionWebSocketTask) throws
 
     /// Connects the client to the event stream.
     ///
