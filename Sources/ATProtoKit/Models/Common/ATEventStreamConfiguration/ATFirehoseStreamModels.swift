@@ -163,7 +163,7 @@ public struct FirehoseFrameIdentityMessage: Decodable {
 public struct FirehoseFrameHandleMessage: Decodable {
     /// Represents the stream sequence number of this message.
     public let sequence: Int
-    /// The decentralized identifier (DID) of the account that has changed their identity.
+    /// The decentralized identifier (DID) of the account that has changed their handle.
     public let accountDID: String
     /// The account's new handle.
     public let newHandle: String
@@ -190,7 +190,7 @@ public struct FirehoseFrameHandleMessage: Decodable {
 public struct FirehoseFrameMigrateMessage: Decodable {
     /// Represents the stream sequence number of this message.
     public let sequence: Int
-    /// The decentralized identifier (DID) of the account that has changed their identity.
+    /// The decentralized identifier (DID) of the account that's migrating.
     public let accountDID: String
     /// The target Personal Data Server (PDS) the account is migrating to. Optional.
     public let migrateTo: String?
