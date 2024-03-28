@@ -16,7 +16,7 @@ class ATFirehoseStream: ATEventStreamConfiguration {
     /// The number of the last successful message decoded. Optional.
     ///
     /// When a message gets successfully decoded, this property is populated with the number.
-    public var sequencePostion: Int64?
+    public var sequencePosition: Int64?
     /// The mark used to indicate the starting point for the next set of results. Optional.
     public var cursor: Int64?
     /// The configuration object that defines the behaviours and polices for a URL session in the event stream.
@@ -36,5 +36,6 @@ class ATFirehoseStream: ATEventStreamConfiguration {
         self.relayURL = relayURL
         self.cursor = cursor
         self.urlSession = URLSession(configuration: urlSessionConfiguration)
+        let webSocketURL = URL(string: "\(relayURL)/xrpc/\(namespacedIdentifiertURL)")
     }
 }
