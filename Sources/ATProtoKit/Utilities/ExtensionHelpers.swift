@@ -92,3 +92,24 @@ extension Encodable {
         return try JSONEncoder().encode(self)
     }
 }
+
+// MARK: - UInt64 Extension
+extension UInt64 {
+    /// Converts a `UInt64` to a Base32-sortable string.
+    ///
+    /// - Returns: A `String` that's encoded in Base32.
+    func toBase32Sortable() -> String {
+        let base32Characters = "234567abcdefghijklmnopqrstuvwxyz"
+        var number = self
+        var encoded = ""
+
+        for _ in 0..<13 {
+            let index = Int(number & 31) // Get the last 5 bits
+            let character = Array(base32Characters)[index]
+            encoded = String(character) + encoded
+            number >>= 5
+        }
+
+        return encoded
+    }
+}
