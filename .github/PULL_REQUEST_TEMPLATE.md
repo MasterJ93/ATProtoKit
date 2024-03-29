@@ -21,3 +21,10 @@ Attach any screenshots or GIFs showcasing the changes effect.
 
 ## Additional Notes
 Add any other notes about the Pull Request here.
+
+## Credits
+If you want to be credited in the CONTRIBUTORS file, you can fill out the form below. Please don't remove the square brackets.
+- Name: [Replace this with your first and last name or an alias]
+- GitHub: [Replace with your GitHub username]
+- Bluesky: [Replace with your Bluesky handle if you have one]
+- Email: [Replace with your email address, or delete this line]
