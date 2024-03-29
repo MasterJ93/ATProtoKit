@@ -363,6 +363,6 @@ _TBD..._
                                                decodeTo: LabelQueryLabelsOutput.self)
     }
     ```
-        - If there’s a `return` statement in the `do-catch` block, or if the query method is in there, the request and response methods should be beside each other.
-        - If any additional method calls are being made, put them beside `createRequest()` and `sendRequest()` if they're strongly related to them.
+    - If there’s a `return` statement in the `do-catch` block, or if the query method is in there, the request and response methods should be beside each other.
+    - If any additional method calls are being made, put them beside `createRequest()` and `sendRequest()` if they're strongly related to them.
         
