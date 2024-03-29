@@ -4,6 +4,9 @@ One of the major goals of `ATProtoKit` is to create a well-written and well-docu
 - Minor updates to this project should only apply to `ATProtoKit`’s minor updates.
 - Major updates to this project should only apply to `ATProtoKit`’s major updates.
 
+> [!NOTE]
+> This is a living document. Please re-visit these guidelines when a new minor or major version of this project is released.
+
 ## Swift API Design Guidelines
 The [Swift API Design Guidelines](https://www.swift.org/documentation/api-design-guidelines/) sets the foundation for these principles. Adherence to these guidelines is strict, and should only deviate from it if it’s 100% necessary and if there’s no other logical way to get around it.
 
