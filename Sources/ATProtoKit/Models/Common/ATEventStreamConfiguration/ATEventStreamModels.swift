@@ -85,7 +85,6 @@ public protocol ATEventStreamConfiguration {
     func receiveMessages() async
 }
 
-public struct WebSocketFrameHeader: Codable {
 public struct WebSocketFrameHeader: Decodable {
     /// Indicates what this frame contains.
     ///
