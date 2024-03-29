@@ -33,7 +33,7 @@ public struct FirehoseFrameCommitMessage: Decodable {
     /// Represents the stream sequence number of this message.
     ///
     /// - Note: According to the AT Protocol specifications: "The stream sequence number of this message."
-    public let sequence: String
+    public let sequence: Int
     /// Indicates that this commit contained too many operations, or the data size was too large.
     ///
     /// If this value is true, then a separate request will be needed to get the missing data.
