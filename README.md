@@ -20,8 +20,8 @@
 </div>
 
 ---
-
-***This API library is highly unstable. Things will change. Things are incomplete. Things will break. Until the project reaches version 1.0.0, stability will not be guaranteed.***
+> [!WARNING]
+> ***This API library is highly unstable. Things will change. Things are incomplete. Things will break. Until the project reaches version 1.0.0, stability will not be guaranteed.***
 
 ATProtoKit is an easy-to-understand API library that leverages the AT Protocol with the type-safety and ease-of-use you’ve come to expect with the Swift programming language. Whether you’re building a bot, a server app, or just another user-facing Bluesky client, this project should hopefully get you up to speed.
 
@@ -48,10 +48,10 @@ I believe Bluesky and its accompanying AT Protocol gives the perfect balance bet
 
 ## Features
 - [x] Full compatibility with Apple’s APIs for each of the platforms.
-- [x] Written with adherence to the Swift API Design Guidelines and up-to-date best practices.
+- [x] Written with adherence to the Swift API Design Guidelines.
 - [ ] Well-written documentation for all of the AT Protocol and Bluesky APIs.
 - [x] A RichText helper to parse text into the applicable facets.
-- [ ] Extend the capabilities of generic classes within the AT Protocol in case your instance requires it.
+- [ ] Extend the capabilities of the classes in case your project requires it.
 - [ ] A powerful Firehose API that retrieves and filters events and records in real-time.
 - [ ] An HTML-parsing system to grab search engine-friendly elements for embeds.
 - [ ] A logging tool for easy debugging.
