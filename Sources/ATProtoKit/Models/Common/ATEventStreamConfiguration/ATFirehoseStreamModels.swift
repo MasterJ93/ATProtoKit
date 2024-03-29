@@ -249,3 +249,15 @@ public struct FirehoseFrameInfoMessage: Decodable {
         case outdatedCursor = "OutdatedCursor"
     }
 }
+
+// MARK: - Union type
+/// A reference containing the list of event messages.
+public enum FirehoseFrameMessageUnion: Decodable {
+    case commit(FirehoseFrameCommitMessage)
+    case identity(FirehoseFrameIdentityMessage)
+    case handle(FirehoseFrameHandleMessage)
+    case migrate(FirehoseFrameMigrateMessage)
+    case tombstone(FirehoseFrameTombstoneMessage)
+    case info(FirehoseFrameInfoMessage)
+    case error(WebSocketFrameMessageError)
+}
