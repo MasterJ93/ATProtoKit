@@ -86,6 +86,7 @@ public protocol ATEventStreamConfiguration {
 }
 
 public struct WebSocketFrameHeader: Codable {
+public struct WebSocketFrameHeader: Decodable {
     /// Indicates what this frame contains.
     ///
     /// If it contains a `1`, then a normal message will be in the payload and `type` will have a value. If it contains a `-1`, then an error message will be displayed
@@ -103,7 +104,7 @@ public struct WebSocketFrameHeader: Codable {
 }
 
 /// An error type containing WebSocket frames for error messages.
-public struct WebSocketFrameMessageError: Codable, ATProtoError {
+public struct WebSocketFrameMessageError: Decodable, ATProtoError {
     /// The type of error given.
     public let error: String
     /// The message contained with the error. Optional.
