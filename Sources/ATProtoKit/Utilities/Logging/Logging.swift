@@ -5,48 +5,52 @@
 //  Created by Christopher Jr Riley on 2024-04-04.
 //
 
-#if canImport(os)
-import Foundation
 import Logging
+
+#if canImport(os)
 import os
 
-public struct OSLogHandler: LogHandler {
-    public var logLevel: Logging.Logger.Level = .info
-    public var metadata: Logging.Logger.Metadata = [:]
-    private let osLogger: os.Logger
+struct OSLogHandler: LogHandler {
+    let subsystem: String
+    let category: String
+    var logLevel: Logging.Logger.Level = .info
+    var metadata: Logging.Logger.Metadata = [:]
 
-    init(label: String) {
-        osLogger = os.Logger(subsystem: Bundle.main.bundleIdentifier ?? "default", category: label)
+    init(subsystem: String, category: String) {
+        self.subsystem = subsystem
+        self.category = category
     }
 
-    public func log(level: Logging.Logger.Level, message: Logging.Logger.Message, metadata: Logging.Logger.Metadata?,
-                    source: String, file: String, function: String, line: UInt) {
-        let combinedMetadata = self.metadata.merging(metadata ?? [:]) { (_, new) in new }
-        let metaString = combinedMetadata.map { "\($0)=\($1)" }.joined(separator: " ")
+    public func log(level: Logging.Logger.Level, message: Logging.Logger.Message, metadata: Logging.Logger.Metadata?, source: String, file: String,
+                    function: String, line: UInt) {
+        let combinedMetadata = (metadata ?? [:]).merging(self.metadata) { _, new in new }
+        let metaString = combinedMetadata.map { "\($0)=\($1)" }.joined(separator: ", ")
+        let logMessage = "\(message) \(metaString)"
 
-        let finalMessage = "\(message) \(metaString)"
+        let appleLogger = Logger(subsystem: subsystem, category: category)
 
         switch level {
-            case .trace, .debug:
-                osLogger.debug("\(finalMessage, privacy: .public)")
-            case .info, .notice:
-                osLogger.info("\(finalMessage, privacy: .public)")
+            case .trace:
+                appleLogger.trace("%{public}@")
+            case .debug:
+                appleLogger.debug("%{public}@")
+            case .info:
+                appleLogger.info("%{public}@")
+            case .notice:
+                appleLogger.notice("%{public}@")
             case .warning:
-                osLogger.warning("\(finalMessage, privacy: .public)")
+                appleLogger.warning("%{public}@")
             case .error:
-                osLogger.error("\(finalMessage, privacy: .public)")
+                appleLogger.error("%{public}@")
             case .critical:
-                osLogger.log(level: .fault, "\(finalMessage, privacy: .public)")
+                appleLogger.critical("%{public}@")
         }
     }
 
-    public subscript(metadataKey key: String) -> Logging.Logger.Metadata.Value? {
-        get {
-            metadata[key]
-        }
-        set(newValue) {
-            metadata[key] = newValue
-        }
+    subscript(metadataKey key: String) -> Logging.Logger.Metadata.Value? {
+        get { metadata[key] }
+        set { metadata[key] = newValue }
     }
 }
 #endif
+
