@@ -11,10 +11,11 @@ import Logging
 import os
 
 struct OSLogHandler: LogHandler {
-    let subsystem: String
-    let category: String
-    var logLevel: Logging.Logger.Level = .info
-    var metadata: Logging.Logger.Metadata = [:]
+    public let subsystem: String
+    public let category: String
+    public var logLevel: Logging.Logger.Level = .info
+    public var metadata: Logging.Logger.Metadata = [:]
+    private let appleLogger: Logging.Logger
 
     init(subsystem: String, category: String) {
         self.subsystem = subsystem
