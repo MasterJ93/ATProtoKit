@@ -10,16 +10,23 @@ import Logging
 
 struct ATLogging {
     public func bootstrap() {
-        func bootstrapWithOSLog(subsystem: String) {
+        func bootstrapWithOSLog(subsystem: String?) {
             LoggingSystem.bootstrap { label in
                 #if canImport(os)
-                OSLogHandler(subsystem: subsystem, category: label)
+                OSLogHandler(subsystem: subsystem ?? defaultIdentifier(), category: label)
                 #else
                 StreamLogHandler.standardOutput(label: label)
                 #endif
             }
         }
     }
+
+    #if canImport(os)
+    private func defaultIdentifier() -> String {
+        return Bundle.main.bundleIdentifier ?? "com.cjrriley.ATProtoKit"
+    }
+    #endif
+
     public func handleBehavior(_ behavior: HandleBehavior = .default) {
 
     }
