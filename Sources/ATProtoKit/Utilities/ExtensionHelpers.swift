@@ -6,6 +6,10 @@
 //
 
 import Foundation
+#if canImport(os)
+import Logging
+import os
+#endif
 
 // MARK: - String Extension
 extension String: Truncatable {
@@ -113,3 +117,29 @@ extension UInt64 {
         return encoded
     }
 }
+
+// MARK: - Logging.Logger Extension
+#if canImport(os)
+extension Logging.Logger {
+    enum PrivacyAwareMetadataValue {
+        case string(String, OSLogPrivacy)
+        case stringConvertible(CustomStringConvertible, OSLogPrivacy)
+
+        var privacy: OSLogPrivacy {
+            switch self {
+                case .string(_, let privacy), .stringConvertible(_, let privacy):
+                    return privacy
+            }
+        }
+
+        var value: String {
+            switch self {
+                case .string(let value, _):
+                    return value
+                case .stringConvertible(let value, _):
+                    return value.description
+            }
+        }
+    }
+}
+#endif
