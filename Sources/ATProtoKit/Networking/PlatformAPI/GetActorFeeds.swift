@@ -20,7 +20,7 @@ extension ATProtoKit {
     ///   - actorDID: The decentralized identifier (DID) of the user who created the feeds.
     ///   - limit: The number of items that can be in the list. Optional. Defaults to `50`.
     ///   - cursor: The mark used to indicate the starting point for the next set of result. Optional.
-    /// - Returns: A `Result`, containing either a ``FeedGetActorFeeds`` if successful, or an `Error` if not.
+    /// - Returns: A `Result`, containing either a ``FeedGetActorFeedsOutput`` if successful, or an `Error` if not.
     public func getActorFeeds(by actorDID: String, limit: Int? = 50, cursor: String? = nil) async throws -> Result<FeedGetActorFeedsOutput, Error> {
         guard session != nil,
               let accessToken = session?.accessToken else {
