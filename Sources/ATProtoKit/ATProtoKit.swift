@@ -9,6 +9,14 @@ import Logging
 public protocol ATProtoKitConfiguration {
     /// Represents an authenticated user session within the AT Protocol. Optional.
     var session: UserSession? { get }
+    /// Specifies the identifier for managing log outputs. Optional.
+    ///
+    /// This should default to the bundle identifier if it's in an Apple platform (`CFBundleIdentifier`).
+    var logIdentifier: String? { get }
+    /// Specifies the highest level of logs that will be outputted. Optional.
+    ///
+    /// This should default to `.info`
+    var logLevel: Logger.Level? { get }
     /// Prepares an authorization value for API requests based on `session` and `pdsURL`.
     ///
     /// This determines whether the "Authorization" header will be included in the request payload. It takes both `shouldAuthenticate` and `pdsURL` into account if
@@ -89,12 +97,32 @@ extension ATProtoKitConfiguration {
 public class ATProtoKit: ATProtoKitConfiguration {
     /// Represents an authenticated user session within the AT Protocol. Optional.
     public let session: UserSession?
+    /// Specifies the identifier for managing log outputs. Optional. Defaults to the project's `CFBundleIdentifier`.
+    public let logIdentifier: String?
+    /// Specifies the highest level of logs that will be outputted. Optional. Defaults to `.info`.
+    public let logLevel: Logger.Level?
 
     /// Initializes a new instance of `ATProtoKit`.
+    ///
+    /// This will also handle some of the logging-related setup. The identifier will either be your project's `CFBundleIdentifier` or an identifier named
+    /// `com.cjrriley.ATProtoKit`. However, you can manually override this.
     /// - Parameters:
     ///   - session: The authenticated user session within the AT Protocol. Optional.
-    public init(session: UserSession? = nil) {
+    ///   - logIdentifier: Specifies the identifier for managing log outputs. Optional. Defaults to the project's `CFBundleIdentifier`.
+    ///   - logLevel: Specifies the highest level of logs that will be outputted. Optional. Defaults to `.info`.
+    public init(session: UserSession? = nil, logIdentifier: String? = nil, logLevel: Logger.Level? = .info) {
         self.session = session
+        self.logIdentifier = logIdentifier ?? Bundle.main.bundleIdentifier ?? "com.cjrriley.ATProtoKit"
+        self.logLevel = logLevel
+
+        #if canImport(os)
+        LoggingSystem.bootstrap(LoggingOSLog.init)
+        #else
+        LoggingSystem.bootstrap(StreamLogHandler.standardOutput)
+        #endif
+
+        var logger = Logger(label: logIdentifier ?? "com.cjrriley.ATProtoKit")
+        logger.logLevel = logLevel ?? .info
     }
 
     /// Determines the appropriate Personal Data Server (PDS) URL.
@@ -138,12 +166,26 @@ public class ATProtoKit: ATProtoKitConfiguration {
 public class ATProtoAdmin: ATProtoKitConfiguration {
     /// Represents an authenticated user session within the AT Protocol. Optional.
     public let session: UserSession?
+    /// Specifies the identifier for managing log outputs. Optional. Defaults to the project's `CFBundleIdentifier`.
+    public let logIdentifier: String?
+    /// Specifies the highest level of logs that will be outputted. Optional. Defaults to `.info`.
+    public let logLevel: Logger.Level?
 
     /// Initializes a new instance of `ATProtoAdmin`.
     /// - Parameters:
     ///   - session: The authenticated user session within the AT Protocol.
-    public init(session: UserSession? = nil) {
+    ///   - logIdentifier: Specifies the identifier for managing log outputs. Optional. Defaults to the project's `CFBundleIdentifier`.
+    ///   - logLevel: Specifies the highest level of logs that will be outputted. Optional. Defaults to `.info`.
+    public init(session: UserSession? = nil, logIdentifier: String? = nil, logLevel: Logger.Level? = .info) {
         self.session = session
+        self.logIdentifier = logIdentifier
+        self.logLevel = logLevel
+
+        #if canImport(os)
+        LoggingSystem.bootstrap(LoggingOSLog.init)
+        #else
+        LoggingSystem.bootstrap(StreamLogHandler.standardOutput)
+        #endif
     }
 }
 
