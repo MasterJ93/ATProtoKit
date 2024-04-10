@@ -1,4 +1,5 @@
 import Foundation
+import Logging
 
 /// Defines a protocol for configurations in the `ATProtoKit` API library.
 ///
