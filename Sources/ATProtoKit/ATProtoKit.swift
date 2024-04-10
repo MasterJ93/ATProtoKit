@@ -6,9 +6,32 @@ import Logging
 /// `ATProtoKitConfiguration` defines the basic requirements for any configuration class or structure
 /// within `ATProtoKit`. Any class that conforms to this protocol must be geared for sending API calls to the AT Protocol. Creating a class
 /// that conforms to this is useful if you have additional lexicons specific to the service you're running.
+///
+/// For logging-related tasks, make sure you set up the logging instide the `init()` method and attach it to the `logger` property.
+/// ```swift
+/// public init(session: UserSession? = nil, logIdentifier: String? = nil, logLevel: Logger.Level? = .info) {
+///     self.session = session
+///     self.logIdentifier = logIdentifier ?? Bundle.main.bundleIdentifier ?? "com.cjrriley.ATProtoKit"
+///     self.logLevel = logLevel
+///
+///     #if canImport(os)
+///     LoggingSystem.bootstrap(LoggingOSLog.init)
+///     #else
+///     LoggingSystem.bootstrap(StreamLogHandler.standardOutput)
+///     #endif
+///
+///     // Attach the instance to the logger.
+///     logger = Logger(label: logIdentifier ?? "com.cjrriley.ATProtoKit")
+///     logger.logLevel = logLevel ?? .info
+/// }
+/// ```
 public protocol ATProtoKitConfiguration {
     /// Represents an authenticated user session within the AT Protocol. Optional.
     var session: UserSession? { get }
+    /// Specifies the logger that will be used for emitting log messages.
+    ///
+    /// - Note: Be sure to create an instance inside the `init()` method. This is important
+    var logger: Logger { get }
     /// Specifies the identifier for managing log outputs. Optional.
     ///
     /// This should default to the bundle identifier if it's in an Apple platform (`CFBundleIdentifier`).
@@ -97,6 +120,8 @@ extension ATProtoKitConfiguration {
 public class ATProtoKit: ATProtoKitConfiguration {
     /// Represents an authenticated user session within the AT Protocol. Optional.
     public let session: UserSession?
+    /// Specifies the logger that will be used for emitting log messages.
+    public var logger: Logger
     /// Specifies the identifier for managing log outputs. Optional. Defaults to the project's `CFBundleIdentifier`.
     public let logIdentifier: String?
     /// Specifies the highest level of logs that will be outputted. Optional. Defaults to `.info`.
@@ -121,7 +146,7 @@ public class ATProtoKit: ATProtoKitConfiguration {
         LoggingSystem.bootstrap(StreamLogHandler.standardOutput)
         #endif
 
-        var logger = Logger(label: logIdentifier ?? "com.cjrriley.ATProtoKit")
+        logger = Logger(label: logIdentifier ?? "com.cjrriley.ATProtoKit")
         logger.logLevel = logLevel ?? .info
     }
 
@@ -166,6 +191,8 @@ public class ATProtoKit: ATProtoKitConfiguration {
 public class ATProtoAdmin: ATProtoKitConfiguration {
     /// Represents an authenticated user session within the AT Protocol. Optional.
     public let session: UserSession?
+    /// Specifies the logger that will be used for emitting log messages.
+    public var logger: Logger
     /// Specifies the identifier for managing log outputs. Optional. Defaults to the project's `CFBundleIdentifier`.
     public let logIdentifier: String?
     /// Specifies the highest level of logs that will be outputted. Optional. Defaults to `.info`.
@@ -187,7 +214,7 @@ public class ATProtoAdmin: ATProtoKitConfiguration {
         LoggingSystem.bootstrap(StreamLogHandler.standardOutput)
         #endif
 
-        var logger = Logger(label: logIdentifier ?? "com.cjrriley.ATProtoKit")
+        logger = Logger(label: logIdentifier ?? "com.cjrriley.ATProtoKit")
         logger.logLevel = logLevel ?? .info
     }
 }
