@@ -178,7 +178,7 @@ public class ATProtoAdmin: ATProtoKitConfiguration {
     ///   - logLevel: Specifies the highest level of logs that will be outputted. Optional. Defaults to `.info`.
     public init(session: UserSession? = nil, logIdentifier: String? = nil, logLevel: Logger.Level? = .info) {
         self.session = session
-        self.logIdentifier = logIdentifier
+        self.logIdentifier = logIdentifier ?? Bundle.main.bundleIdentifier ?? "com.cjrriley.ATProtoKit"
         self.logLevel = logLevel
 
         #if canImport(os)
@@ -186,6 +186,9 @@ public class ATProtoAdmin: ATProtoKitConfiguration {
         #else
         LoggingSystem.bootstrap(StreamLogHandler.standardOutput)
         #endif
+
+        var logger = Logger(label: logIdentifier ?? "com.cjrriley.ATProtoKit")
+        logger.logLevel = logLevel ?? .info
     }
 }
 
