@@ -23,7 +23,8 @@ extension ATProtoKit {
     ///   - swapCommit: Swaps out an operation based on the CID. Optional.
     /// - Returns: A strong reference, which contains the newly-created record's URI and CID hash.
     public func createPostRecord(text: String, locales: [Locale] = [], replyTo: String? = nil, embed: EmbedIdentifier? = nil,
-                                 labels: FeedLabelUnion? = nil, tags: [String]? = nil, creationDate: Date = Date.now, recordKey: String? = nil, shouldValidate: Bool? = true, swapCommit: String? = nil) async -> Result<StrongReference, Error> {
+                                 labels: FeedLabelUnion? = nil, tags: [String]? = nil, creationDate: Date = Date.now, recordKey: String? = nil,
+                                 shouldValidate: Bool? = true, swapCommit: String? = nil) async -> Result<StrongReference, Error> {
 
         guard let session else {
             return .failure(ATRequestPrepareError.missingActiveSession)
