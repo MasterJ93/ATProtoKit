@@ -4,6 +4,9 @@ One of the major goals of `ATProtoKit` is to create a well-written and well-docu
 - Minor updates to this project should only apply to `ATProtoKit`’s minor updates.
 - Major updates to this project should only apply to `ATProtoKit`’s major updates.
 
+> [!NOTE]
+> This is a living document. Please re-visit these guidelines when a new minor or major version of this project is released.
+
 ## Swift API Design Guidelines
 The [Swift API Design Guidelines](https://www.swift.org/documentation/api-design-guidelines/) sets the foundation for these principles. Adherence to these guidelines is strict, and should only deviate from it if it’s 100% necessary and if there’s no other logical way to get around it.
 
@@ -360,6 +363,6 @@ _TBD..._
                                                decodeTo: LabelQueryLabelsOutput.self)
     }
     ```
-        - If there’s a `return` statement in the `do-catch` block, or if the query method is in there, the request and response methods should be beside each other.
-        - If any additional method calls are being made, put them beside `createRequest()` and `sendRequest()` if they're strongly related to them.
+    - If there’s a `return` statement in the `do-catch` block, or if the query method is in there, the request and response methods should be beside each other.
+    - If any additional method calls are being made, put them beside `createRequest()` and `sendRequest()` if they're strongly related to them.
         

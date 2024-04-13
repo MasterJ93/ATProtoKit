@@ -23,7 +23,8 @@ extension ATProtoKit {
     ///   - swapCommit: Swaps out an operation based on the CID. Optional.
     /// - Returns: A strong reference, which contains the newly-created record's URI and CID hash.
     public func createPostRecord(text: String, locales: [Locale] = [], replyTo: String? = nil, embed: EmbedIdentifier? = nil,
-                                 labels: FeedLabelUnion? = nil, tags: [String]? = nil, creationDate: Date = Date.now, recordKey: String? = nil, shouldValidate: Bool? = true, swapCommit: String? = nil) async -> Result<StrongReference, Error> {
+                                 labels: FeedLabelUnion? = nil, tags: [String]? = nil, creationDate: Date = Date.now, recordKey: String? = nil,
+                                 shouldValidate: Bool? = true, swapCommit: String? = nil) async -> Result<StrongReference, Error> {
 
         guard let session else {
             return .failure(ATRequestPrepareError.missingActiveSession)
@@ -158,8 +159,8 @@ extension ATProtoKit {
     ///
     /// `EmbedIdentifier` provides a unified interface for specifying embeddable content, simplifying the process of attaching
     /// images, external links, other post records, or media to a post. By abstracting the details of each embed type, it allows methods
-    /// like ``createPostRecord(text:locales:replyTo:embed:labels:tags:creationDate:)`` to handle the
-    /// necessary operations (e.g., uploading, grabbing metadata, validation, etc.) behind the scenes, streamlining the embedding process.
+    /// like ``createPostRecord(text:locales:replyTo:embed:labels:tags:creationDate:recordKey:shouldValidate:swapCommit:)``
+    /// to handle the necessary operations (e.g., uploading, grabbing metadata, validation, etc.) behind the scenes, streamlining the embedding process.
     public enum EmbedIdentifier {
         /// Represents a set of images to be embedded in the post.
         /// - Parameter images: An array of `ImageQuery` objects, each containing the image data, metadata, and filenames of the image.

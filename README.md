@@ -20,8 +20,8 @@
 </div>
 
 ---
-
-***This API library is highly unstable. Things will change. Things are incomplete. Things will break. Until the project reaches version 1.0.0, stability will not be guaranteed.***
+> [!CAUTION]
+> ***This API library is highly unstable. Things will change. Things are incomplete. Things will break. Until the project reaches version 1.0.0, stability will not be guaranteed.***
 
 ATProtoKit is an easy-to-understand API library that leverages the AT Protocol with the type-safety and ease-of-use you’ve come to expect with the Swift programming language. Whether you’re building a bot, a server app, or just another user-facing Bluesky client, this project should hopefully get you up to speed.
 
@@ -47,15 +47,14 @@ I believe Bluesky and its accompanying AT Protocol gives the perfect balance bet
 
 
 ## Features
-- Full compatibility with Apple’s APIs for each of the platforms.
-- Written with adherence to the Swift API Design Guidelines and up-to-date best practices.
-- Uses Swift’s powerful type inference and pattern matching for cleaner, more readable code.
-- Well-written documentation for all of the AT Protocol and Bluesky APIs.
-- A RichText helper to parse text into the applicable facets.
--  Extend the capabilities of generic structures within the AT Protocol in case your instance requires it.
-- A powerful Firehose API that retrieves and filters events and records in real-time.
-- An HTML-parsing system to grab search engine-friendly elements for embeds.
-- A logging tool for easy debugging.
+- [x] Full compatibility with Apple’s APIs for each of the platforms.
+- [x] Written with adherence to the Swift API Design Guidelines.
+- [ ] Well-written documentation for all of the AT Protocol and Bluesky APIs.
+- [x] A RichText helper to parse text into the applicable facets.
+- [ ] Extend the capabilities of the classes in case your project requires it.
+- [ ] A powerful Firehose API that retrieves and filters events and records in real-time.
+- [ ] An HTML-parsing system to grab search engine-friendly elements for embeds.
+- [x] A logging tool for easy debugging.
 
 \* _Not all features above have been implemented; however, they will be, soon._
 
@@ -64,7 +63,7 @@ I believe Bluesky and its accompanying AT Protocol gives the perfect balance bet
 You can use the Swift Package Manager to download and import the library into your project:
 ```swift
 dependencies: [
-    .package(url: "https://github.com/MasterJ93/ATProtoKit.git", from: "0.8.0")
+    .package(url: "https://github.com/MasterJ93/ATProtoKit.git", from: "0.9.0")
 ]
 ```
 
@@ -111,17 +110,14 @@ To use ATProtoKit in your apps, your app should target the specific version numb
 - **watchOS** 8 or later.
 - **visionOS** 1 or later.
 
-As of right now, Linux support is theoretically possible, but not guaranteed to be tested. The plan is to make it fully compatible with Linux by version 1.0, though this is not a required goal to get there. For other platforms (such as Android), this is also not tested, but should be theoretically possible. While it’s not a goal to make it fully compatible, contributions and feedback on the matter are welcomed.
+> [!WARNING]
+> As of right now, Linux support is theoretically possible, but not guaranteed to be tested. The plan is to make it fully compatible with Linux by version 1.0, though this is not a required goal to get there. For other platforms (such as Android), this is also not tested, but should be theoretically possible. While it’s not a goal to make it fully compatible, contributions and feedback on the matter are welcomed.
 
 
 ## Contributions and Feedback
-While this project will change significantly, early feedback, issues, and contributions are highly welcomed and encouraged. At a later date, I'll post some contributor guidelines and templates, but since this project is in its early days, I have yet to have a significant amount of time in terms of thinking of this. However, some of the things to keep in mind are:
-- Be sure to adhere to the [Swift API Design Guidelines](https://www.swift.org/documentation/api-design-guidelines/) when contributing code.
-- When writing documentation, make sure it's clear, understandable, and comprehensible enough for users (both experienced and new) to understand it.
-- Try to follow the [Git commit best practices](https://cbea.ms/git-commit/).
-- If you're creating a method in `ATProtoKit`'s class and authentication is either not required or optional, it must be a `static` method. Otherwise, it must be an instance method.
+While this project will change significantly, early feedback, issues, and contributions are highly welcomed and encouraged. If you'd like to contribute to this project, please be sure to read both the [API Guidelines](https://github.com/MasterJ93/ATProtoKit/blob/main/API_GUIDELINES.md) as well as the [Contributor Guidelines](https://github.com/MasterJ93/ATProtoKit/blob/main/CONTRIBUTING.md) before submitting a pull request.
 
 If you have any questions, you can ask me on Bluesky ([@cjrriley.com](https://bsky.app/profile/cjrriley.com)). And while you're at it, give me a follow!
 
 ## License
-This Swift package is using the MIT License. Please view [LICENSE.md](https://github.com/MasterJ93/ATProtoKit/blob/ed45edcd717e7341ae688d294504e0019550b3f0/LICENSE.md) for more details.
+This Swift package is using the MIT License. Please view [LICENSE.md](https://github.com/MasterJ93/ATProtoKit/blob/main/LICENSE.md) for more details.
