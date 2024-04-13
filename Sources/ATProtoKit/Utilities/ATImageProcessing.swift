@@ -45,7 +45,7 @@ protocol ImageProtocol {
 /// - Important: `stripMetadata(from:)` is an important method to create as, according to the AT Protocol documentation, the protocol may be more strict about stripping metadata in the future.\
 /// \
 /// Also, this should be an `internal` method, as it will be part of `convertToImageQuery(image:altText:targetFileSize)`. It's recommended that it's called before
-/// ``convertToImageQuery(image:altText:targetFileSize)`` attempts to access the image.
+/// ``convertToImageQuery(imagePath:altText:targetFileSize:)-2fma7`` attempts to access the image.
 ///
 /// ### Example
 /// Below is a sample implementation showcasing how to conform to `ATImageProcessable` for a custom image type:

@@ -17,7 +17,7 @@ extension ATProtoKit {
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/feed/describeFeedGenerator.json
     ///
-    /// - Returns: A `Result`, containing either a ``FeedDescribeFeedGenerator`` if successful, or an `Error` if not.
+    /// - Returns: A `Result`, containing either a ``FeedDescribeFeedGeneratorOutput`` if successful, or an `Error` if not.
     public func describeFeedGenerator(pdsURL: String? = nil) async throws -> Result<FeedDescribeFeedGeneratorOutput, Error> {
         guard let sessionURL = pdsURL != nil ? pdsURL : session?.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/app.bsky.feed.describeFeedGenerator") else {

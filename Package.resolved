@@ -1,21 +1,21 @@
 {
   "pins" : [
     {
-      "identity" : "swift-docc-plugin",
+      "identity" : "swift-log",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/apple/swift-docc-plugin",
+      "location" : "https://github.com/apple/swift-log.git",
       "state" : {
-        "revision" : "26ac5758409154cc448d7ab82389c520fa8a8247",
-        "version" : "1.3.0"
+        "revision" : "e97a6fcb1ab07462881ac165fdbb37f067e205d5",
+        "version" : "1.5.4"
       }
     },
     {
-      "identity" : "swift-docc-symbolkit",
+      "identity" : "swift-log-oslog",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/apple/swift-docc-symbolkit",
+      "location" : "https://github.com/MasterJ93/swift-log-oslog.git",
       "state" : {
-        "revision" : "b45d1f2ed151d057b54504d653e0da5552844e34",
-        "version" : "1.0.0"
+        "branch" : "master",
+        "revision" : "b3d6886e0e236036f83b5b8966827b707e174e81"
       }
     },
     {

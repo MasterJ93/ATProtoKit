@@ -15,8 +15,8 @@ extension ATProtoKit {
     /// - Note: If your Personal Data Server's (PDS) URL is something other than `https://bsky.social` and you're not using authentication, be sure to change it if the normal URL isn't used
     /// for unauthenticated API calls.\
     ///\
-    /// If you need profiles of several users, it's best to use ``getProfiles(_:accessToken:pdsURL:)``.
-    /// 
+    /// If you need profiles of several users, it's best to use ``getProfiles(_:pdsURL:shouldAuthenticate:)``.
+    ///
     /// - Note: According to the AT Protocol specifications: "Get detailed profile view of an actor. Does not require auth, but contains relevant metadata with auth."
     ///
     /// - SeeAlso: This is based on the [`app.bsky.actor.getProfile`][github] lexicon.
