@@ -28,15 +28,6 @@
       }
     },
     {
-      "identity" : "swift-log-oslog",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/MasterJ93/swift-log-oslog.git",
-      "state" : {
-        "branch" : "master",
-        "revision" : "b3d6886e0e236036f83b5b8966827b707e174e81"
-      }
-    },
-    {
       "identity" : "swiftsoup",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/scinfu/SwiftSoup.git",

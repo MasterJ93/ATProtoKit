@@ -20,7 +20,6 @@ let package = Package(
     ],
     dependencies: [
         .package(url: "https://github.com/scinfu/SwiftSoup.git", from: "2.7.0"),
-        .package(url: "https://github.com/MasterJ93/swift-log-oslog.git", branch: "master"),
         .package(url: "https://github.com/apple/swift-docc-plugin", from: "1.3.0"),
         .package(url: "https://github.com/apple/swift-log.git", from: "1.0.0")
     ],
@@ -31,7 +30,7 @@ let package = Package(
             name: "ATProtoKit",
           dependencies: [
             "SwiftSoup",
-            "Logging"
+            .product(name: "Logging", package: "swift-log")
         ])
 //        .testTarget(
 //            name: "ATProtoKitTests",
