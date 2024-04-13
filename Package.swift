@@ -20,7 +20,9 @@ let package = Package(
     ],
     dependencies: [
         .package(url: "https://github.com/scinfu/SwiftSoup.git", from: "2.7.0"),
-        .package(url: "https://github.com/MasterJ93/swift-log-oslog.git", branch: "master")
+        .package(url: "https://github.com/MasterJ93/swift-log-oslog.git", branch: "master"),
+        .package(url: "https://github.com/apple/swift-docc-plugin", from: "1.3.0"),
+        .package(url: "https://github.com/apple/swift-log.git", from: "1.0.0")
     ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
@@ -29,7 +31,7 @@ let package = Package(
             name: "ATProtoKit",
           dependencies: [
             "SwiftSoup",
-            .product(name: "LoggingOSLog", package: "swift-log-oslog")
+            "Logging"
         ])
 //        .testTarget(
 //            name: "ATProtoKitTests",
