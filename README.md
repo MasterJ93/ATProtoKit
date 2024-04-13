@@ -54,7 +54,7 @@ I believe Bluesky and its accompanying AT Protocol gives the perfect balance bet
 - [ ] Extend the capabilities of the classes in case your project requires it.
 - [ ] A powerful Firehose API that retrieves and filters events and records in real-time.
 - [ ] An HTML-parsing system to grab search engine-friendly elements for embeds.
-- [ ] A logging tool for easy debugging.
+- [x] A logging tool for easy debugging.
 
 \* _Not all features above have been implemented; however, they will be, soon._
 
@@ -63,7 +63,7 @@ I believe Bluesky and its accompanying AT Protocol gives the perfect balance bet
 You can use the Swift Package Manager to download and import the library into your project:
 ```swift
 dependencies: [
-    .package(url: "https://github.com/MasterJ93/ATProtoKit.git", from: "0.8.0")
+    .package(url: "https://github.com/MasterJ93/ATProtoKit.git", from: "0.9.0")
 ]
 ```
 
