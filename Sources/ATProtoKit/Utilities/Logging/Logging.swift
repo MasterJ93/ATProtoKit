@@ -23,7 +23,13 @@ struct ATLogHandler: LogHandler {
         self.appleLogger = Logger(subsystem: subsystem, category: category ?? "ATProtoKit")
     }
 
-    mutating func log(level: Logging.Logger.Level, message: Logging.Logger.Message, metadata: Logging.Logger.Metadata?, source: String, file: String, function: String, line: UInt) {
+    public func log(level: Logging.Logger.Level,
+                    message: Logging.Logger.Message,
+                    metadata explicitMetadata: Logging.Logger.Metadata?,
+                    source: String,
+                    file: String,
+                    function: String,
+                    line: UInt) {
         let allMetadata = self.metadata.merging(metadata ?? [:]) { _, new in new }
         var messageMetadata = [String: Any]()
         var privacySettings = [String: OSLogPrivacy]()
@@ -31,20 +37,18 @@ struct ATLogHandler: LogHandler {
 //        appleLogger(level: level, message: formattedMessage)
 //        appleLogger.log(level: .info, "\(formattedMessage)")
         switch level {
-            case .trace:
-                appleLogger.trace("\(message, privacy: .auto)")
-            case .debug:
-                appleLogger.debug("\(message, privacy: .auto)")
+            case .trace, .debug:
+                appleLogger.log(level: .debug, "\(message, privacy: .auto)")
             case .info:
-                appleLogger.info("\(message, privacy: .auto)")
+                appleLogger.log(level: .info, "\(message, privacy: .auto)")
             case .notice:
-                appleLogger.notice("\(message, privacy: .auto)")
+                appleLogger.log(level: .default, "\(message, privacy: .auto)")
             case .warning:
-                appleLogger.warning("\(message, privacy: .auto)")
+                appleLogger.log(level: .error, "\(message, privacy: .auto)")
             case .error:
-                appleLogger.error("\(message, privacy: .auto)")
+                appleLogger.log(level: .error, "\(message, privacy: .auto)")
             case .critical:
-                appleLogger.critical("\(message, privacy: .auto)")
+                appleLogger.log(level: .fault, "\(message, privacy: .auto)")
         }
     }
 
