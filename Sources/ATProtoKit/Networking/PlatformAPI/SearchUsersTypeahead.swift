@@ -31,7 +31,7 @@ extension ATProtoKit {
     ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `nil`.
     ///   - shouldAuthenticate: Indicates whether the method will use the access token when sending the request. Defaults to `false`.
     /// - Returns: A `Result`, containing either ``ActorSearchActorsOutput`` if successful, and an `Error` if not.
-    public func searchUsersTypeahead(by query: String, viewerDID: String?, limit: Int? = 10,
+    public func searchUsersTypeahead(by query: String, viewerDID: String? = nil, limit: Int? = 10,
                                      pdsURL: String? = nil,
                                      shouldAuthenticate: Bool = false) async throws -> Result<ActorSearchActorsTypeaheadOutput, Error> {
         let authorizationValue = prepareAuthorizationValue(
