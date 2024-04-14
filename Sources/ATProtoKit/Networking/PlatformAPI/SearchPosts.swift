@@ -18,10 +18,21 @@ extension ATProtoKit {
     ///
     /// - Parameters:
     ///   - searchQuery: The string being searched against. Lucene query syntax recommended.
+    ///   - sortRanking: The ranking order for the results. Optional. Defaults to `.latest`.
+    ///   - sinceDate: The date and time of the results of posts created after this time. Optional.
+    ///   - untilDate: The date and time of the results of posts created before this time. Optional.
+    ///   - mentionIdentifier: The AT Identifier to filter posts that contains a given user. Optional.
+    ///   - author: Filters posts that were created by the author the AT Identifier resolves to. Optional.
+    ///   - language: Filters posts that have a specific language. Optional.
+    ///   - domain: Filters result to posts containing the facet and embed links that point to a specific domain. Optional.
+    ///   - url: Filters result to posts containing facet and embed links that point to this URL. Optional.
+    ///   - tags: An array of tags to be used against the results. Optional.
     ///   - limit: The number of suggested users to follow. Optional. Defaults to `25`. Can only choose between `1` and `100`.
     ///   - cursor: The mark used to indicate the starting point for the next set of results. Optional.
     /// - Returns: A `Result`, containing either an ``FeedSearchPostsOutput`` if succesful, or an `Error` if it's not.
-    public func searchPosts(with searchQuery: String, limit: Int? = 25, cursor: String? = nil) async throws -> Result<FeedSearchPostsOutput, Error> {
+    public func searchPosts(with searchQuery: String, sortRanking: FeedSearchPostsSortRanking? = .latest, sinceDate: Date?, untilDate: Date?,
+                            mentionIdentifier: String? = nil, author: String? = nil, language: Locale?, domain: String?, url: String?, tags: [String]?,
+                            limit: Int? = 25, cursor: String? = nil) async throws -> Result<FeedSearchPostsOutput, Error> {
         guard session != nil,
               let accessToken = session?.accessToken else {
             return .failure(ATRequestPrepareError.missingActiveSession)
@@ -35,6 +46,42 @@ extension ATProtoKit {
         var queryItems = [(String, String)]()
 
         queryItems.append(("q", searchQuery))
+
+        if let sortRanking {
+            queryItems.append(("sort", "\(sortRanking.rawValue)"))
+        }
+
+        if let createdAfterDate = sinceDate, let formattedCreatedAfter = CustomDateFormatter.shared.string(from: createdAfterDate) {
+            queryItems.append(("since", formattedCreatedAfter))
+        }
+
+        if let createdBeforeDate = untilDate, let formattedCreatedBefore = CustomDateFormatter.shared.string(from: createdBeforeDate) {
+            queryItems.append(("until", formattedCreatedBefore))
+        }
+
+        if let mentionIdentifier {
+            queryItems.append(("mentions", mentionIdentifier))
+        }
+
+        if let author {
+            queryItems.append(("author", author))
+        }
+
+        if let language {
+            queryItems.append(("lang", language.identifier))
+        }
+
+        if let domain {
+            queryItems.append(("domain", domain))
+        }
+
+        if let url {
+            queryItems.append(("url", url))
+        }
+
+        if let tags {
+            queryItems += tags.map { ("tag", $0) }
+        }
 
         if let limit {
             let finalLimit = max(1, min(limit, 100))
