@@ -24,7 +24,7 @@ extension ATProtoKit {
     ///   - limit: The number of items that can be in the list. Optional. Defaults to `25`.
     ///   - cursor: The mark used to indicate the starting point for the next set of result. Optional.
     /// - Returns: A `Result`, containing either an ``UnspeccedSearchPostsSkeletonOutput`` if successful, or an `Error` if not.
-    public func searchPostsSkeleton(_ query: String, limit: Int? = 25, cursor: String? = nil,
+    public func searchPostsSkeleton(with searchQuery: String, limit: Int? = 25, cursor: String? = nil,
                                     pdsURL: String? = nil) async throws -> Result<UnspeccedSearchPostsSkeletonOutput, Error> {
         guard let sessionURL = pdsURL != nil ? pdsURL : session?.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/app.bsky.unspecced.searchPostsSkeleton") else {
@@ -33,7 +33,7 @@ extension ATProtoKit {
 
         var queryItems = [(String, String)]()
 
-        queryItems.append(("q", query))
+        queryItems.append(("q", searchQuery))
 
         if let limit {
             let finalLimit = max(1, min(limit, 100))
