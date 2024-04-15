@@ -10,6 +10,9 @@ import Foundation
 extension ATProtoKit {
     /// Creates a record attached to a user account.
     ///  
+    /// - Warning: If you're using a lexicon that's not made by `com.atproto` or `app.bsky`, make sure you set `shouldValidate` to `false`. Failure to do so will result in an error that the
+    /// lexicon isn't found.
+    ///
     /// - Note: According to the AT Protocol specifications: "Create a single new repository record. Requires auth, implemented by PDS."
     ///
     /// - SeeAlso: This is based on the [`com.atproto.repo.createRecord`][github] lexicon.

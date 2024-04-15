@@ -27,3 +27,15 @@ public struct FeedSearchPostsOutput: Codable {
     /// An array of post records in the results.
     public let posts: [FeedPostView]
 }
+
+/// Determines the ranking order for the search results.
+///
+/// - Note: According to the AT Protocol specifications: "Specifies the ranking order of results."
+///
+/// - SeeAlso: This is based on the [`app.bsky.feed.searchPosts`][github] lexicon.
+///
+/// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/feed/searchPosts.json
+public enum FeedSearchPostsSortRanking: String {
+    case top
+    case latest
+}

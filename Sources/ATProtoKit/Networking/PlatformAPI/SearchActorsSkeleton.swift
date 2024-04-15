@@ -10,6 +10,8 @@ import Foundation
 extension ATProtoKit {
     /// Retrieves the skeleton results of actors (users).
     ///  
+    /// - Note: `viewerDID` will be ignored in public or unauthenticated queries.
+    ///
     /// - Note: According to the AT Protocol specifications: "Backend Actors (profile) search, returns only skeleton."
     ///
     /// - SeeAlso: This is based on the [`app.bsky.unspecced.searchActorsSkeleton`][github] lexicon.
@@ -18,11 +20,12 @@ extension ATProtoKit {
     ///
     /// - Parameters:
     ///   - query: The string used for searching the users.
+    ///   - viewerDID: The decentralized identifier (DID) of account making the request for boosting followed accounts in rankings.
     ///   - canTypeAhead: Indicates whether the results can be typed ahead. Optional.
     ///   - limit: The number of items that can be in the list. Optional. Defaults to `25`.
     ///   - cursor: The mark used to indicate the starting point for the next set of result. Optional.
     /// - Returns: A `Result`, containing either an ``UnspeccedSearchActorsSkeletonOutput`` if successful, or an `Error` if not.
-    public func searchActorsSkeleton(_ query: String, canTypeAhead: Bool?, limit: Int? = 25, cursor: String? = nil,
+    public func searchActorsSkeleton(_ query: String, viewerDID: String? = nil, canTypeAhead: Bool?, limit: Int? = 25, cursor: String? = nil,
                                      pdsURL: String? = nil) async throws -> Result<UnspeccedSearchActorsSkeletonOutput, Error> {
         guard let sessionURL = pdsURL != nil ? pdsURL : session?.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/app.bsky.unspecced.searchActorsSkeleton") else {
@@ -32,6 +35,10 @@ extension ATProtoKit {
         var queryItems = [(String, String)]()
 
         queryItems.append(("q", query))
+
+        if let viewerDID {
+            queryItems.append(("viewer", viewerDID))
+        }
 
         if let canTypeAhead {
             queryItems.append(("typeAhead", "\(canTypeAhead)"))

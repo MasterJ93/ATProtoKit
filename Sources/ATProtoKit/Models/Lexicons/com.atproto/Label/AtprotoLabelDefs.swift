@@ -173,7 +173,7 @@ public struct SelfLabel: Codable {
     }
 }
 
-/// A data model definition for
+/// A data model definition for labeler-created labels.
 ///
 /// - Note: According to the AT Protocol specifications: "Declares a label value and its expected interpertations and behaviors."
 ///

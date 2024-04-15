@@ -12,6 +12,8 @@ extension ATProtoKit {
     ///
     /// This will search for the display names, descriptions, and handles within the user profiles.
     ///
+    /// - Note: `viewerDID` will be ignored in public or unauthenticated queries.
+    ///
     /// - Bug: According to the AT Protocol specifications, this API call does not require authentication. However, there's an issue where it asks for authentication if there's no `accessToken`.
     /// It's unknown whether this is an issue on the AT Protocol's end or `AKProtoKit`'s end. For now, use the `shouldAuthenticate` parameter when using this method.
     ///
@@ -23,12 +25,13 @@ extension ATProtoKit {
     ///
     /// - Parameters:
     ///   - query: The string used against a list of actors.
+    ///   - viewerDID: The decentralized identifier (DID) of account making the request for boosting followed accounts in rankings.
     ///   - limit: The number of suggested users to follow. Optional. Defaults to `50`. Can only choose between `1` and `100`.
     ///   - accessToken: The access token
     ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `nil`.
     ///   - shouldAuthenticate: Indicates whether the method will use the access token when sending the request. Defaults to `false`.
     /// - Returns: A `Result`, containing either ``ActorSearchActorsOutput`` if successful, and an `Error` if not.
-    public func searchUsersTypeahead(by query: String, limit: Int? = 10,
+    public func searchUsersTypeahead(by query: String, viewerDID: String? = nil, limit: Int? = 10,
                                      pdsURL: String? = nil,
                                      shouldAuthenticate: Bool = false) async throws -> Result<ActorSearchActorsTypeaheadOutput, Error> {
         let authorizationValue = prepareAuthorizationValue(
@@ -43,13 +46,18 @@ extension ATProtoKit {
             return .failure(ATRequestPrepareError.invalidRequestURL)
         }
 
-        // Make sure limit is between 1 and 100. If no value is given, set it to 25.
-        let finalLimit = max(1, min(limit ?? 10, 100))
+        var queryItems = [(String, String)]()
 
-        let queryItems = [
-            ("q", query),
-            ("limit", "\(finalLimit)")
-        ]
+        queryItems.append(("q", query))
+
+        if let viewerDID {
+            queryItems.append(("viewer", viewerDID))
+        }
+
+        if let limit {
+            let finalLimit = max(1, min(limit, 100))
+            queryItems.append(("limit", "\(finalLimit)"))
+        }
 
         let queryURL: URL
 

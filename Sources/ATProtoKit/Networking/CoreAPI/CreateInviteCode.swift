@@ -10,8 +10,8 @@ import Foundation
 extension ATProtoKit {
     /// Creates an invite code.
     ///
-    /// - Note: If you need to create multiple invite codes at once, please use ``create`` instead.
-    /// 
+    /// - Note: If you need to create multiple invite codes at once, please use ``createInviteCodes(_:for:)`` instead.
+    ///
     /// - Note: According to the AT Protocol specifications: "Create an invite code."
     ///
     /// - SeeAlso: This is based on the [`com.atproto.server.createInviteCode`][github] lexicon.

@@ -29,5 +29,17 @@ public struct UnspeccedSearchPostsSkeletonOutput: Codable {
     /// possible to paginate through all hits."
     public let hitsTotal: Int?
     /// An array of posts.
-    public let posts: [UnspeccedSearchPostsSkeletonOutput]
+    public let posts: [UnspeccedSkeletonSearchPost]
+}
+
+/// Determines the ranking order for the search results.
+///
+/// - Note: According to the AT Protocol specifications: "Specifies the ranking order of results."
+///
+/// - SeeAlso: This is based on the [`app.bsky.unspecced.searchPostsSkeleton`][github] lexicon.
+///
+/// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/unspecced/searchPostsSkeleton.json
+public enum UnspeccedSearchPostsSortRanking: String {
+    case top
+    case latest
 }

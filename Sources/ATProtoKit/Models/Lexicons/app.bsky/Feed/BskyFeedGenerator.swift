@@ -29,18 +29,23 @@ public struct FeedGenerator: Codable {
     public let descriptionFacets: [Facet]?
     /// The URL of the avatar image. Optional.
     public let avatarImageURL: URL?
+    /// Indicates whether the feed generator can accept interactions.
+    ///
+    /// - Note: According to the AT Protocol specifications: "Declaration that a feed accepts feedback interactions from a client through `app.bsky.feed.sendInteractions`"
+    public let canAcceptInteractions: Bool?
     /// An array of labels created by the user. Optional.
     public let labels: [SelfLabels]?
     /// The date and time the feed was created.
     @DateFormatting public var createdAt: Date
 
     public init(feedDID: String, displayName: String, description: String?, descriptionFacets: [Facet]?, avatarImageURL: URL?,
-                labels: [SelfLabels]?, createdAt: Date) {
+                canAcceptInteractions: Bool?, labels: [SelfLabels]?, createdAt: Date) {
         self.feedDID = feedDID
         self.displayName = displayName
         self.description = description
         self.descriptionFacets = descriptionFacets
         self.avatarImageURL = avatarImageURL
+        self.canAcceptInteractions = canAcceptInteractions
         self.labels = labels
         self._createdAt = DateFormatting(wrappedValue: createdAt)
     }
@@ -53,6 +58,7 @@ public struct FeedGenerator: Codable {
         self.description = try container.decodeIfPresent(String.self, forKey: .description)
         self.descriptionFacets = try container.decodeIfPresent([Facet].self, forKey: .descriptionFacets)
         self.avatarImageURL = try container.decodeIfPresent(URL.self, forKey: .avatarImageURL)
+        self.canAcceptInteractions = try container.decodeIfPresent(Bool.self, forKey: .canAcceptInteractions)
         self.labels = try container.decodeIfPresent([SelfLabels].self, forKey: .labels)
         self.createdAt = try container.decode(DateFormatting.self, forKey: .createdAt).wrappedValue
     }
@@ -69,6 +75,7 @@ public struct FeedGenerator: Codable {
         try truncatedEncodeIfPresent(self.description, withContainer: &container, forKey: .description, upToLength: 3_000)
         try container.encodeIfPresent(self.descriptionFacets, forKey: .descriptionFacets)
         try container.encodeIfPresent(self.avatarImageURL, forKey: .avatarImageURL)
+        try container.encodeIfPresent(self.canAcceptInteractions, forKey: .canAcceptInteractions)
         try container.encodeIfPresent(self.labels, forKey: .labels)
         try container.encode(self._createdAt, forKey: .createdAt)
     }
@@ -79,6 +86,7 @@ public struct FeedGenerator: Codable {
         case description
         case descriptionFacets
         case avatarImageURL = "avatar"
+        case canAcceptInteractions = "acceptsInteractions"
         case labels
         case createdAt
     }

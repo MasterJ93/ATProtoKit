@@ -139,6 +139,44 @@ public struct FeedViewPost: Codable {
     // TODO: Check to see if this is correct.
     /// The user who reposted the post. Optional.
     public var reason: FeedReasonRepost? = nil
+    /// The feed generator's context.
+    ///
+    /// - Note: According to the AT Protocol specifications: "Context provided by feed generator that may be passed back alongside interactions."
+    public let feedContext: String
+
+    public init(post: FeedPostView, reply: FeedReplyReference? = nil, reason: FeedReasonRepost? = nil, feedContext: String) {
+        self.post = post
+        self.reply = reply
+        self.reason = reason
+        self.feedContext = feedContext
+    }
+
+    public init(from decoder: any Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+
+        self.post = try container.decode(FeedPostView.self, forKey: .post)
+        self.reply = try container.decodeIfPresent(FeedReplyReference.self, forKey: .reply)
+        self.reason = try container.decodeIfPresent(FeedReasonRepost.self, forKey: .reason)
+        self.feedContext = try container.decode(String.self, forKey: .feedContext)
+    }
+
+    public func encode(to encoder: any Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+
+        try container.encode(self.post, forKey: .post)
+        try container.encodeIfPresent(self.reply, forKey: .reply)
+        try container.encodeIfPresent(self.reason, forKey: .reason)
+        // Truncate `description` to 2000 characters before encoding
+        // `maxGraphemes`'s limit is 300, but `String.count` should respect that limit
+        try truncatedEncodeIfPresent(self.feedContext, withContainer: &container, forKey: .feedContext, upToLength: 2000)
+    }
+
+    public enum CodingKeys: CodingKey {
+        case post
+        case reply
+        case reason
+        case feedContext
+    }
 }
 
 /// A data model for a reply reference definition.
@@ -310,6 +348,10 @@ public struct FeedGeneratorView: Codable {
     public var avatarImageURL: URL? = nil
     /// The number of likes for the feed generator.
     public var likeCount: Int? = nil
+    /// Indicates whether the feed generator can accept interactions.
+    ///
+    /// - Note: According to the AT Protocol specifications: "Context that will be passed through to client and may be passed to feed generator back alongside interactions."
+    public let canAcceptInteractions: Bool?
     /// An array of labels. Optional.
     public let labels: [Label]?
     /// The viewer's state for the feed generator.
@@ -317,7 +359,9 @@ public struct FeedGeneratorView: Codable {
     /// The last time the feed generator was indexed.
     @DateFormatting public var indexedAt: Date
 
-    public init(feedURI: String, cidHash: String, feedDID: String, creator: ActorProfileView, displayName: String, description: String?, descriptionFacets: [Facet]?, avatarImageURL: URL?, likeCount: Int?, labels: [Label]?, viewer: FeedGeneratorViewerState?, indexedAt: Date) {
+    public init(feedURI: String, cidHash: String, feedDID: String, creator: ActorProfileView, displayName: String, description: String?,
+                descriptionFacets: [Facet]?, avatarImageURL: URL?, likeCount: Int?, canAcceptInteractions: Bool?, labels: [Label]?,
+                viewer: FeedGeneratorViewerState?, indexedAt: Date) {
         self.feedURI = feedURI
         self.cidHash = cidHash
         self.feedDID = feedDID
@@ -327,6 +371,7 @@ public struct FeedGeneratorView: Codable {
         self.descriptionFacets = descriptionFacets
         self.avatarImageURL = avatarImageURL
         self.likeCount = likeCount
+        self.canAcceptInteractions = canAcceptInteractions
         self.labels = labels
         self.viewer = viewer
         self._indexedAt = DateFormatting(wrappedValue: indexedAt)
@@ -343,6 +388,7 @@ public struct FeedGeneratorView: Codable {
         self.descriptionFacets = try container.decodeIfPresent([Facet].self, forKey: .descriptionFacets)
         self.avatarImageURL = try container.decodeIfPresent(URL.self, forKey: .avatarImageURL)
         self.likeCount = try container.decodeIfPresent(Int.self, forKey: .likeCount)
+        self.canAcceptInteractions = try container.decodeIfPresent(Bool.self, forKey: .canAcceptInteractions)
         self.labels = try container.decodeIfPresent([Label].self, forKey: .labels)
         self.viewer = try container.decodeIfPresent(FeedGeneratorViewerState.self, forKey: .viewer)
         self.indexedAt = try container.decode(DateFormatting.self, forKey: .indexedAt).wrappedValue
@@ -359,7 +405,7 @@ public struct FeedGeneratorView: Codable {
 
         // Truncate `description` to 3000 characters before encoding
         // `maxGraphemes`'s limit is 300, but `String.count` should respect that limit
-        try truncatedEncodeIfPresent(self.description, withContainer: &container, forKey: .displayName, upToLength: 3000)
+        try truncatedEncodeIfPresent(self.description, withContainer: &container, forKey: .description, upToLength: 3000)
 
         try container.encodeIfPresent(self.descriptionFacets, forKey: .descriptionFacets)
         try container.encodeIfPresent(self.avatarImageURL, forKey: .avatarImageURL)
@@ -368,6 +414,7 @@ public struct FeedGeneratorView: Codable {
         if let likeCount = self.likeCount, likeCount >= 0 {
             try container.encode(likeCount, forKey: .likeCount)
         }
+        try container.encodeIfPresent(self.canAcceptInteractions, forKey: .canAcceptInteractions)
         try container.encodeIfPresent(self.labels, forKey: .labels)
         try container.encodeIfPresent(self.viewer, forKey: .viewer)
         try container.encode(self._indexedAt, forKey: .indexedAt)
@@ -383,6 +430,7 @@ public struct FeedGeneratorView: Codable {
         case descriptionFacets = "descriptionFacets"
         case avatarImageURL = "avatar"
         case likeCount
+        case canAcceptInteractions = "acceptsInteractions"
         case labels
         case viewer
         case indexedAt
@@ -456,6 +504,108 @@ public struct FeedThreadgateView: Codable {
         case record = "record"
         case lists = "lists"
     }
+}
+
+/// The main data model definition for an interaction for an item in a feed generator.
+///
+/// - SeeAlso: This is based on the [`app.bsky.feed.defs`][github] lexicon.
+///
+/// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/feed/defs.json
+public struct FeedInteraction: Codable {
+    /// The item itself. Optional.
+    public let item: String?
+    /// The interaction event of the feed generator. Optional.
+    public let event: FeedInteractionEvent?
+    /// The feed generator's context. Optional.
+    ///
+    /// - Note: According to the AT Protocol specifications: "Context on a feed item that was orginally supplied by the feed generator on getFeedSkeleton."
+    public let feedContext: String?
+
+    public init(item: String, event: FeedInteractionEvent, feedContext: String) {
+        self.item = item
+        self.event = event
+        self.feedContext = feedContext
+    }
+
+    public init(from decoder: any Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+
+        self.item = try container.decode(String.self, forKey: .item)
+        self.event = try container.decode(FeedInteractionEvent.self, forKey: .event)
+        self.feedContext = try container.decode(String.self, forKey: .feedContext)
+    }
+
+    public func encode(to encoder: any Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+
+        try container.encode(self.item, forKey: .item)
+        try container.encode(self.event, forKey: .event)
+        // Truncate `description` to 2000 characters before encoding
+        // `maxGraphemes`'s limit is 300, but `String.count` should respect that limit
+        try truncatedEncodeIfPresent(self.feedContext, withContainer: &container, forKey: .feedContext, upToLength: 2000)
+    }
+
+    enum CodingKeys: CodingKey {
+        case item
+        case event
+        case feedContext
+    }
+}
+
+/// A data model definition for an interaction event.
+///
+/// - SeeAlso: This is based on the [`app.bsky.feed.defs`][github] lexicon.
+///
+/// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/feed/defs.json
+public enum FeedInteractionEvent: Codable {
+    /// Indicates the feed generator should request less content similar to the feed's item.
+    ///
+    /// - Note: According to the AT Protocol specifications: "Request that less content like the given feed item be shown in the feed."
+    case requestLess
+    /// Indicates the feed generator should request more content similar to the feed's item.
+    ///
+    /// - Note: According to the AT Protocol specifications: "Request that more content like the given feed item be shown in the feed."
+    case requestMore
+    /// Indicates the feed generator clicked on the feed's item.
+    ///
+    /// - Note: According to the AT Protocol specifications: "User clicked through to the feed item."
+    case clickthroughItem
+    /// Indicates the user clicked on the author of the feed's item.
+    ///
+    /// - Note: According to the AT Protocol specifications: "User clicked through to the author of the feed item."
+    case clickthroughAuthor
+    /// Indicates the user clicked on the reposter of the feed's item.
+    ///
+    /// - Note: According to the AT Protocol specifications: "User clicked through to the reposter of the feed item."
+    case clickthroughReposter
+    /// Indicates the user clicked on the embedded content of the feed's item.
+    ///
+    /// - Note: According to the AT Protocol specifications: "User clicked through to the embedded content of the feed item."
+    case clickthroughEmbed
+    /// Indicates the user has viewed the item in the feed.
+    ///
+    /// - Note: According to the AT Protocol specifications: "Feed item was seen by user."
+    case interactionSeen
+    /// Indicates the user has liked the item of the feed.
+    ///
+    /// - Note: According to the AT Protocol specifications: "User liked the feed item."
+    case interactionLike
+    /// Indicates the user has reposted the item of the feed.
+    ///
+    /// - Note: According to the AT Protocol specifications: "User reposted the feed item."
+    case interactionRepost
+    /// Indicates the user has replied to the item of the feed.
+    ///
+    /// - Note: According to the AT Protocol specifications: "User replied to the feed item."
+    case interactionReply
+    /// Indicates the user has quote posted the feed's item.
+    ///
+    /// - Note: According to the AT Protocol specifications: "User quoted the feed item."
+    case interactionQuote
+    /// Indicates the user has shared the feed's item.
+    ///
+    /// - Note: According to the AT Protocol specifications: "User shared the feed item."
+    case interactionShare
 }
 
 // MARK: - Union Types
