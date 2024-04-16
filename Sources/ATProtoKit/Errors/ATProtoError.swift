@@ -7,9 +7,10 @@
 
 import Foundation
 
+/// The base exception class for ATProtoKit.
 public protocol ATProtoError: Error {}
 
-/// The base exception class for ATProtoKit.
+/// The base exception class for ATProtoKit's API requests.
 public enum ATAPIError: ATProtoError, Decodable {
     /// Represents a bad request error (HTTP 400) with an associated message.
     /// - Parameter message: The message received along side the error.
