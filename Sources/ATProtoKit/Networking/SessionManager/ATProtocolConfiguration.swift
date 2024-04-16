@@ -215,11 +215,4 @@ public class ATProtocolConfiguration: ProtocolConfiguration {
             throw error
         }
     }
-//    private func reAuthenticateUser(completion: @escaping (Result<Void, Error>) -> Void) {
-//        // Use stored credentials or prompt the user for credentials to re-authenticate.
-//        self.loginToBluesky(with: <#T##String#>, appPassword: <#T##String#>, pdsURL: <#T##String#>) { result in
-//            <#code#>
-//        }
-//        // and create a new session
-//    }
 }
