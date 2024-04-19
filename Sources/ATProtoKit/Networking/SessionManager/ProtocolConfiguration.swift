@@ -21,9 +21,12 @@ public protocol ProtocolConfiguration {
     /// Attempts to authenticate with the PDS using the `handle` and `appPassword`.
     ///
     /// This method should implement the necessary logic to authenticate the user against the PDS,
-    /// returning a `UserSession` object upon successful authentication or an error if authentication fails.
+    /// returning a `UserSession` object upon successful authentication or an error if
+    /// authentication fails. If the account has Two-Factor Authentication enabled, this must be
+    /// handled as well.
     ///
+    /// - Parameter authenticationFactorToken: A token used for Two-Factor Authentication. Optional.
     /// - Returns: A `Result` type containing either a ``UserSession`` on success or an `Error` on failure.
-    /// - Throws: An error if there are issues forming the request or communicating with the PDS.
-    func authenticate() async throws -> Result<UserSession, Error>
+    /// - Throws: An error if there are issues creating the request or communicating with the PDS.
+    func authenticate(authenticationFactorToken: String?) async throws -> Result<UserSession, Error>
 }

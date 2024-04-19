@@ -35,9 +35,9 @@ public class ATProtocolConfiguration: ProtocolConfiguration {
     /// - SeeAlso: This is based on the [`com.atproto.server.createSession`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/server/createSession.json
-    ///
+    /// - Parameter authenticationFactorToken: A token used for Two-Factor Authentication. Optional.
     /// - Returns: A `Result` containing ``UserSession`` on success or an `Error` on failure.
-    public func authenticate() async throws -> Result<UserSession, Error> {
+    public func authenticate(authenticationFactorToken: String? = nil) async throws -> Result<UserSession, Error> {
         guard let requestURL = URL(string: "\(self.pdsURL)/xrpc/com.atproto.server.createSession") else {
             return .failure(ATRequestPrepareError.invalidRequestURL)
         }
@@ -85,7 +85,7 @@ public class ATProtocolConfiguration: ProtocolConfiguration {
     ///   - recoveryKey: DID PLC rotation key (aka, recovery key) to be included in PLC creation operation. Optional.
     ///   - plcOp: A signed DID PLC operation to be submitted as part of importing an existing account to this instance. Optional.
     /// - Returns: A `Result`, containing either a ``UserSession`` if successful, or an `Error` if not.
-    public func createAccount(_ email: String? = nil, handle: String, existingDID: String? = nil, inviteCode: String? = nil,
+    public func createAccount(email: String? = nil, handle: String, existingDID: String? = nil, inviteCode: String? = nil,
                               verificationCode: String? = nil, verificationPhone: String? = nil, password: String? = nil, recoveryKey: String? = nil,
                               plcOp: UnknownType? = nil) async throws -> Result<UserSession, Error> {
         guard let requestURL = URL(string: "\(self.pdsURL)/xrpc/com.atproto.server.createAccount") else {
