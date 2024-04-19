@@ -7,13 +7,14 @@
 
 import Foundation
 
-/// Defines the requirements for protocol configurations within the ATProtoKit.
+/// Defines the requirements for protocol configurations within ATProtoKit.
 public protocol ProtocolConfiguration {
     /// The user's unique handle used for authentication purposes.
     var handle: String { get }
     /// The app password associated with the user's account, used for authentication.
     var appPassword: String { get }
     /// The base URL of the Personal Data Server (PDS) with which the AT Protocol interacts.
+    ///
     /// This URL is used to make network requests to the PDS for various operations, such as
     /// session creation, refresh, and deletion.
     var pdsURL: String { get }
