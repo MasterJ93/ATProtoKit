@@ -16,7 +16,7 @@ public class ATProtocolConfiguration: ProtocolConfiguration {
     /// The URL of the Personal Data Server (PDS).
     public private(set) var pdsURL: String
     
-    /// Initializes a new instance of `ATProtocolConfiguration`.
+    /// Initializes a new instance of `ATProtocolConfiguration`, which assembles a new session for the user account.
     ///
     /// - Parameters:
     ///   - handle: The user's handle identifier in their account.
