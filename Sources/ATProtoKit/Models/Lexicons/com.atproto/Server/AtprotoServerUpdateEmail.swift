@@ -21,6 +21,13 @@ public struct ServerUpdateEmail: Codable {
     public let isEmailAuthenticationFactorEnabled: Bool?
     /// The token that's used if the email has been confirmed. Optional.
     ///
-    /// - Note: According to the AT Protocol specifications: "Requires a token from com.atproto.sever.requestEmailUpdate if the account's email has been confirmed."
+    /// - Note: According to the AT Protocol specifications: "Requires a token from com.atproto.sever.requestEmailUpdate if the account's email has
+    /// been confirmed."
     public let token: String?
+
+    enum CodingKeys: String, CodingKey {
+        case email
+        case isEmailAuthenticationFactorEnabled = "emailAuthFactor"
+        case token
+    }
 }

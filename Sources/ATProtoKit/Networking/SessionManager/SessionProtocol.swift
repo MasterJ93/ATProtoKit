@@ -17,6 +17,8 @@ public protocol SessionProtocol: Codable {
     var email: String? { get }
     /// Indicates whether the user confirmed their email. Optional.
     var isEmailConfirmed: Bool? { get }
+    /// Indicates whether Two-Factor Authentication (via email) is enabled. Optional.
+    var isEmailAuthenticationFactorEnabled: Bool? { get }
     /// The DID document associated with the user, which contains AT Protocol-specific information. Optional.
     var didDocument: DIDDocument? { get }
 }

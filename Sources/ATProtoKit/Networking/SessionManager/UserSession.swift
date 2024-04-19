@@ -21,6 +21,8 @@ public class UserSession: SessionProtocol {
     public private(set) var email: String?
     /// Indicates whether the user's email address has been confirmed. Optional.
     public private(set) var isEmailConfirmed: Bool?
+    /// Indicates whether Two-Factor Authentication (via email) is enabled. Optional.
+    public private(set) var isEmailAuthenticationFactorEnabled: Bool?
     /// The access token used for API requests that requests authentication.
     public private(set) var accessToken: String
     /// The refresh token used to generate a new access token.
@@ -33,12 +35,13 @@ public class UserSession: SessionProtocol {
     public var pdsURL: String?
     
     /// Initializes a new user session with the specified details.
-    public init(handle: String, sessionDID: String, email: String? = nil, isEmailConfirmed: Bool? = nil, accessToken: String, refreshToken: String,
-                didDocument: DIDDocument? = nil, pdsURL: String? = nil) {
+    public init(handle: String, sessionDID: String, email: String? = nil, isEmailConfirmed: Bool? = nil, isEmailAuthenticationFactorEnabled: Bool?,
+                accessToken: String, refreshToken: String, didDocument: DIDDocument? = nil, pdsURL: String? = nil) {
         self.handle = handle
         self.sessionDID = sessionDID
         self.email = email
         self.isEmailConfirmed = isEmailConfirmed
+        self.isEmailAuthenticationFactorEnabled = isEmailAuthenticationFactorEnabled
         self.accessToken = accessToken
         self.refreshToken = refreshToken
         self.didDocument = didDocument
@@ -50,6 +53,7 @@ public class UserSession: SessionProtocol {
         case sessionDID = "did"
         case email
         case isEmailConfirmed = "emailConfirmed"
+        case isEmailAuthenticationFactorEnabled = "emailAuthFactor"
         case accessToken = "accessJwt"
         case refreshToken = "refreshJwt"
         case didDocument = "didDoc"

@@ -21,9 +21,9 @@ extension ATProtoKit {
     /// 
     /// - Parameters:
     ///   - email: The new email addtess the user wants to associate with their account.
-    ///   - token: The token used to confirm the change. Optional.
     ///   - isEmailAuthenticationFactorEnabled: Indicates whether Two-Factor Authentication (via email) is enabled. Optional.
-    public func updateEmail(_ email: String, token: String? = nil, isEmailAuthenticationFactorEnabled: Bool? = nil) async throws {
+    ///   - token: The token used to confirm the change. Optional.
+    public func updateEmail(_ email: String, isEmailAuthenticationFactorEnabled: Bool? = nil, token: String? = nil) async throws {
         guard session != nil,
               let accessToken = session?.accessToken else {
             throw ATRequestPrepareError.missingActiveSession
