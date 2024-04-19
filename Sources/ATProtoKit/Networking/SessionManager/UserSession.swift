@@ -59,14 +59,6 @@ public class UserSession: SessionProtocol {
         case didDocument = "didDoc"
         case pdsURL
     }
-
-    /// Checks whether the current access token is expired.
-    /// - Returns: A Boolean value indicating if the access token is expired.
-    public func isAccessTokenExpired() -> Bool {
-        // Implement logic to check if the accessToken is expired
-        // This could involve decoding the JWT and checking its expiry timestamp
-        return false
-    }
 }
 
 
