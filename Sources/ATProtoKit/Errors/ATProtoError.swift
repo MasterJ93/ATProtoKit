@@ -86,7 +86,8 @@ public enum ATAPIError: ATProtoError, Decodable {
                 "DuplicateCreate",
                 "TokenRequired",
                 "FutureCursor",
-                "ConsumerTooSlow":
+                "ConsumerTooSlow",
+                "AuthFactorTokenRequired":
                 self = .badRequest(message: message)
             case "Unauthorized":
                 self = .unauthorized(message: message)

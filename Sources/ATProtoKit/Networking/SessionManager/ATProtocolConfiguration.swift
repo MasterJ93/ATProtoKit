@@ -30,6 +30,8 @@ public class ATProtocolConfiguration: ProtocolConfiguration {
     
     /// Attempts to authenticate the user into the server.
     ///
+    /// If the user has Two-Factor Authentication enabled, then `authenticationFactorToken` is required to be used.
+    ///
     /// - Note: According to the AT Protocol specifications: "Handle or other identifier supported by the server for the authenticating user."
     ///
     /// - SeeAlso: This is based on the [`com.atproto.server.createSession`][github] lexicon.
