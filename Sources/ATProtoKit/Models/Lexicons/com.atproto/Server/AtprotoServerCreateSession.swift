@@ -22,4 +22,6 @@ public struct SessionCredentials: Encodable {
     let identifier: String
     /// The App Password of the user's account.
     let password: String
+    /// A token used for Two-Factor Authentication. Optional.
+    let authenticationFactorToken: String?
 }
