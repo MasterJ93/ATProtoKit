@@ -62,6 +62,12 @@ public struct ViewRecord: Codable {
     public let value: UnknownType
     /// An array of labels attached to the record.
     public let labels: [Label]?
+    /// The number of replies for the record. Optional.
+    public let replyCount: Int?
+    /// The number of reposts for the record. Optional.
+    public let repostCount: Int?
+    /// The number of likes for the record. Optional.
+    public let likeCount: Int?
     /// An array of embed views of various types.
     public let embeds: [EmbedViewUnion]?
     /// The date the record was last indexed.
@@ -73,6 +79,9 @@ public struct ViewRecord: Codable {
         case author
         case value = "value"
         case labels = "labels"
+        case replyCount
+        case repostCount
+        case likeCount
         case embeds = "embeds"
         case indexedAt
     }
