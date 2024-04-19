@@ -19,6 +19,8 @@ public struct SessionResponse: SessionProtocol {
     public var email: String?
     /// Indicates whether the user confirmed their email. Optional.
     public var isEmailConfirmed: Bool?
+    /// Indicates whether Two-Factor Authentication (via email) is enabled. Optional.
+    public var isEmailAuthenticationFactorEnabled: Bool?
     /// The DID document associated with the user, which contains AT Protocol-specific information. Optional.
     public var didDocument: DIDDocument?
 

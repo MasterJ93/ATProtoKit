@@ -17,6 +17,8 @@ import Foundation
 public struct ServerUpdateEmail: Codable {
     /// The email associated with the user's account.
     public let email: String
+    /// Indicates whether Two-Factor Authentication (via email) is enabled. Optional.
+    public let isEmailAuthenticationFactorEnabled: Bool?
     /// The token that's used if the email has been confirmed. Optional.
     ///
     /// - Note: According to the AT Protocol specifications: "Requires a token from com.atproto.sever.requestEmailUpdate if the account's email has been confirmed."

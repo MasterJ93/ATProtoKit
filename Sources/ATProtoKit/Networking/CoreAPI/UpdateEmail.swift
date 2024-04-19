@@ -9,19 +9,21 @@ import Foundation
 
 extension ATProtoKit {
     /// Updates the email address associated with the user's account.
-    /// 
-    /// - Important: If the email has already been confirmed, then `token` must be used. `token` can be retrieved by sending an email to the confirmed email address using ``requestEmailUpdate()``.
+    ///  
+    /// - Important: If the email has already been confirmed, then `token` must be used. `token` can be retrieved by sending an email to the confirmed
+    /// email address using ``requestEmailUpdate()``.
     ///
     /// - Note: According to the AT Protocol specifications: "Update an account's email."
-    ///
+    /// 
     /// - SeeAlso: This is based on the [`com.atproto.server.updateEmail`][github] lexicon.
-    ///
+    /// 
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/server/updateEmail.json
-    ///
+    /// 
     /// - Parameters:
     ///   - email: The new email addtess the user wants to associate with their account.
     ///   - token: The token used to confirm the change. Optional.
-    public func updateEmail(_ email: String, token: String? = nil) async throws {
+    ///   - isEmailAuthenticationFactorEnabled: Indicates whether Two-Factor Authentication (via email) is enabled. Optional.
+    public func updateEmail(_ email: String, token: String? = nil, isEmailAuthenticationFactorEnabled: Bool? = nil) async throws {
         guard session != nil,
               let accessToken = session?.accessToken else {
             throw ATRequestPrepareError.missingActiveSession
@@ -33,6 +35,7 @@ extension ATProtoKit {
 
         let requestBody = ServerUpdateEmail(
             email: email,
+            isEmailAuthenticationFactorEnabled: isEmailAuthenticationFactorEnabled,
             token: token
         )
 
