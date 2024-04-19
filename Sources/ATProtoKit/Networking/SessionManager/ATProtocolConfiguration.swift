@@ -44,7 +44,8 @@ public class ATProtocolConfiguration: ProtocolConfiguration {
 
         let credentials = SessionCredentials(
             identifier: handle,
-            password: appPassword
+            password: appPassword,
+            authenticationFactorToken: authenticationFactorToken
         )
 
         do {
