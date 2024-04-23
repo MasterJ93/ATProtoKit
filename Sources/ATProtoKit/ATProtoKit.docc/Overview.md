@@ -5,7 +5,7 @@ Develop and manage client and server-side applications for the AT Protocol and B
 @Metadata {
     @PageImage(
         purpose: icon, 
-        source: "slothCreator-icon", 
+        source: "atprotokit_logo", 
         alt: "A technology icon representing the ATProtoKit framework.")
 }
 
@@ -38,25 +38,57 @@ Task {
 
 ### Essentials
 
+- <doc:Getting-Started-with-ATProtoKit>
+
+@Comment {
+    Add a tutorial named "Meet ATProtoKit".
+}
+
 - ``ATProtoAdmin``
 - ``ATProtoKit/ATProtoKit``
 
 ### Authentication and Session Management
 
-
+- ``ATProtoKit/ATProtoKitConfiguration``
+- ``UserSession``
+ 
+ @Comment {
+     The following should be added:
+        Creating and Managing a Session (Article)
+ }
+ 
 ### Lexicons and Records
 
+@Comment {
+    The following should be added:
+        Records Overview (Article)
+        Creating Your Own Records (Article)
+        Converting a Lexicon Into a Model-Method Pair (Article)
+}
 
 ### Interacting With Users
 
+@Comment {
+    
+}
 
 ### Data Streams
 
+@Comment {
+    The following should be added:
+        Overview of Data Streams (Article)
+        Extending ATDataStreamConfiguration For Accessing Your Service’s Data Stream (Article)
+        LepidWatch: Accessing Bluesky’s Firehose Data Stream (Sample Code)
+}
 
 ### Utilities
+- ``APIClientService``
+- ``ATImageProcessable``
+- <doc:DateFormatting-PropertyWrapper>
 
+@Comment {
+    The following should be added:
+        Creating a Custom Image Processor (Article)
+}
 
 ### Error Handling
-
-
-### Tutorials
