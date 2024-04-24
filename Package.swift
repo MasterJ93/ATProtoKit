@@ -28,10 +28,11 @@ let package = Package(
         // Targets can depend on other targets in this package and products from dependencies.
         .target(
             name: "ATProtoKit",
-          dependencies: [
-            "SwiftSoup",
-            .product(name: "Logging", package: "swift-log")
-        ])
+            dependencies: [
+                "SwiftSoup",
+                .product(name: "Logging", package: "swift-log")
+        ]
+    )
 //        .testTarget(
 //            name: "ATProtoKitTests",
 //            dependencies: ["ATProtoKit"]),
