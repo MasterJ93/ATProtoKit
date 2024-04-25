@@ -109,6 +109,7 @@ public struct AdminReportViewDetail: Codable {
     /// - Important: The item associated with this property is undocumented in the AT Protocol specifications. The documentation here is based on:\
     ///   \* **For items with some inferable context from property names or references**: its best interpretation, though not with full certainty.\
     ///   \* **For items without enough context for even an educated guess**: a direct acknowledgment of their undocumented status.\
+    ///   \
     ///   Clarifications from Bluesky are needed in order to fully understand this item.
     public let subject: RepositoryViewUnion
     /// The status for the subject of the report. Optional.
@@ -116,6 +117,7 @@ public struct AdminReportViewDetail: Codable {
     /// - Important: The item associated with this property is undocumented in the AT Protocol specifications. The documentation here is based on:\
     ///   \* **For items with some inferable context from property names or references**: its best interpretation, though not with full certainty.\
     ///   \* **For items without enough context for even an educated guess**: a direct acknowledgment of their undocumented status.\
+    ///   \
     ///   Clarifications from Bluesky are needed in order to fully understand this item.
     public var subjectStatus: OzoneSubjectStatusView? = nil
     /// The user who created the report.
@@ -192,6 +194,7 @@ public struct AdminAccountView: Codable {
     /// - Important: The item associated with this property is undocumented in the AT Protocol specifications. The documentation here is based on:\
     ///   \* **For items with some inferable context from property names or references**: its best interpretation, though not with full certainty.\
     ///   \* **For items without enough context for even an educated guess**: a direct acknowledgment of their undocumented status.\
+    ///   \
     ///   Clarifications from Bluesky are needed in order to fully understand this item.
     public var relatedRecords: [UnknownType]? = nil
     /// The date and time the user was last indexed.

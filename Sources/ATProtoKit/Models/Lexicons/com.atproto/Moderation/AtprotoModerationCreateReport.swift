@@ -28,6 +28,7 @@ public struct ModerationCreateReport: Codable {
     /// - Important: The item associated with this property is undocumented in the AT Protocol specifications. The documentation here is based on:\
     ///   \* **For items with some inferable context from property names or references**: its best interpretation, though not with full certainty.\
     ///   \* **For items without enough context for even an educated guess**: a direct acknowledgment of their undocumented status.\
+    ///   \
     ///   Clarifications from Bluesky are needed in order to fully understand this item.
     public let subject: RepositoryReferencesUnion
 }
@@ -49,6 +50,7 @@ public struct ModerationCreateReportOutput: Codable {
     /// - Important: The item associated with this property is undocumented in the AT Protocol specifications. The documentation here is based on:\
     ///   \* **For items with some inferable context from property names or references**: its best interpretation, though not with full certainty.\
     ///   \* **For items without enough context for even an educated guess**: a direct acknowledgment of their undocumented status.\
+    ///   \
     ///   Clarifications from Bluesky are needed in order to fully understand this item.
     public let subject: RepositoryReferencesUnion
     /// The decentralized identifier (DID) of the user who created the report.
