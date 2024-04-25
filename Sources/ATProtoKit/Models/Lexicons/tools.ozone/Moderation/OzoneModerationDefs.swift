@@ -577,6 +577,7 @@ public struct OzoneModerationRepositoryView: Codable {
     /// - Important: The item associated with this property is undocumented in the AT Protocol specifications. The documentation here is based on:\
     ///   \* **For items with some inferable context from property names or references**: its best interpretation, though not with full certainty.\
     ///   \* **For items without enough context for even an educated guess**: a direct acknowledgment of their undocumented status.\
+    ///   \
     ///   Clarifications from Bluesky are needed in order to fully understand this item.
     public let relatedRecords: UnknownType
     /// The date and time the user was indexed.
@@ -661,6 +662,7 @@ public struct OzoneModerationRepositoryViewDetail: Codable {
     /// - Important: The item associated with this property is undocumented in the AT Protocol specifications. The documentation here is based on:\
     ///   \* **For items with some inferable context from property names or references**: its best interpretation, though not with full certainty.\
     ///   \* **For items without enough context for even an educated guess**: a direct acknowledgment of their undocumented status.\
+    ///   \
     ///   Clarifications from Bluesky are needed in order to fully understand this item.
     public let relatedRecords: UnknownType
     /// The date and time the user was last indexed.
@@ -776,6 +778,7 @@ public struct OzoneModerationRecordView: Codable {
     /// - Important: The item associated with this property is undocumented in the AT Protocol specifications. The documentation here is based on:\
     ///   \* **For items with some inferable context from property names or references**: its best interpretation, though not with full certainty.\
     ///   \* **For items without enough context for even an educated guess**: a direct acknowledgment of their undocumented status.\
+    ///   \
     ///   Clarifications from Bluesky are needed in order to fully understand this item.
     public let value: UnknownType
     /// An array of CID hashes for blobs.
@@ -787,6 +790,7 @@ public struct OzoneModerationRecordView: Codable {
     /// - Important: The item associated with this property is undocumented in the AT Protocol specifications. The documentation here is based on:\
     ///   \* **For items with some inferable context from property names or references**: its best interpretation, though not with full certainty.\
     ///   \* **For items without enough context for even an educated guess**: a direct acknowledgment of their undocumented status.\
+    ///   \
     ///   Clarifications from Bluesky are needed in order to fully understand this item.
     public let moderation: OzoneModeration
     /// The repository view of the record.
@@ -794,6 +798,7 @@ public struct OzoneModerationRecordView: Codable {
     /// - Important: The item associated with this property is undocumented in the AT Protocol specifications. The documentation here is based on:\
     ///   \* **For items with some inferable context from property names or references**: its best interpretation, though not with full certainty.\
     ///   \* **For items without enough context for even an educated guess**: a direct acknowledgment of their undocumented status.\
+    ///   \
     ///   Clarifications from Bluesky are needed in order to fully understand this item.
     public let repository: OzoneModerationRepositoryView
 
@@ -858,6 +863,7 @@ public struct OzoneModerationRecordViewDetail: Codable {
     /// - Important: The item associated with this property is undocumented in the AT Protocol specifications. The documentation here is based on:\
     ///   \* **For items with some inferable context from property names or references**: its best interpretation, though not with full certainty.\
     ///   \* **For items without enough context for even an educated guess**: a direct acknowledgment of their undocumented status.\
+    ///   \
     ///   Clarifications from Bluesky are needed in order to fully understand this item.
     public let value: String
     /// An array of CID hashes for blobs.
@@ -871,6 +877,7 @@ public struct OzoneModerationRecordViewDetail: Codable {
     /// - Important: The item associated with this property is undocumented in the AT Protocol specifications. The documentation here is based on:\
     ///   \* **For items with some inferable context from property names or references**: its best interpretation, though not with full certainty.\
     ///   \* **For items without enough context for even an educated guess**: a direct acknowledgment of their undocumented status.\
+    ///   \
     ///   Clarifications from Bluesky are needed in order to fully understand this item.
     public let moderation: OzoneModerationDetail
     /// The repository view of the record.
@@ -878,6 +885,7 @@ public struct OzoneModerationRecordViewDetail: Codable {
     /// - Important: The item associated with this property is undocumented in the AT Protocol specifications. The documentation here is based on:\
     ///   \* **For items with some inferable context from property names or references**: its best interpretation, though not with full certainty.\
     ///   \* **For items without enough context for even an educated guess**: a direct acknowledgment of their undocumented status.\
+    ///   \
     ///   Clarifications from Bluesky are needed in order to fully understand this item.
     public let repository: OzoneModerationRepositoryView
 
@@ -950,6 +958,7 @@ public struct OzoneModerationRecordViewNotFound: Codable {
 /// - Important: The item associated with this struct is undocumented in the AT Protocol specifications. The documentation here is based on:\
 ///   \* **For items with some inferable context from property names or references**: its best interpretation, though not with full certainty.\
 ///   \* **For items without enough context for even an educated guess**: a direct acknowledgment of their undocumented status.\
+///   \
 ///   Clarifications from Bluesky are needed in order to fully understand this item.
 ///
 /// - SeeAlso: This is based on the [`com.atproto.admin.defs`][github] lexicon.
@@ -961,6 +970,7 @@ public struct OzoneModeration: Codable {
     /// - Important: The item associated with this property is undocumented in the AT Protocol specifications. The documentation here is based on:\
     ///   \* **For items with some inferable context from property names or references**: its best interpretation, though not with full certainty.\
     ///   \* **For items without enough context for even an educated guess**: a direct acknowledgment of their undocumented status.\
+    ///   \
     ///   Clarifications from Bluesky are needed in order to fully understand this item.
     public var subjectStatus: OzoneSubjectStatusView? = nil
 }
@@ -970,6 +980,7 @@ public struct OzoneModeration: Codable {
 /// - Important: The item associated with this struct is undocumented in the AT Protocol specifications. The documentation here is based on:\
 ///   \* **For items with some inferable context from property names or references**: its best interpretation, though not with full certainty.\
 ///   \* **For items without enough context for even an educated guess**: a direct acknowledgment of their undocumented status.\
+///   \
 ///   Clarifications from Bluesky are needed in order to fully understand this item.
 ///
 /// - SeeAlso: This is based on the [`com.atproto.admin.defs`][github] lexicon.
@@ -981,6 +992,7 @@ public struct OzoneModerationDetail: Codable {
     /// - Important: The item associated with this property is undocumented in the AT Protocol specifications. The documentation here is based on:\
     ///   \* **For items with some inferable context from property names or references**: its best interpretation, though not with full certainty.\
     ///   \* **For items without enough context for even an educated guess**: a direct acknowledgment of their undocumented status.\
+    ///   \
     ///   Clarifications from Bluesky are needed in order to fully understand this item.
     public var subjectStatus: OzoneSubjectStatusView? = nil
 }
