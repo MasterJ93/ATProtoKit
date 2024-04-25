@@ -320,6 +320,10 @@ public enum AdminEventViewUnion: Codable {
     case moderationEventMute(OzoneModerationEventMute)
     /// An unmute event.
     case moderationEventUnmute(OzoneModerationEventUnmute)
+    /// A mute reporter event.
+    case moderationEventMuteReporter(OzoneModerationEventMuteReporter)
+    /// An unmute reporter event.
+    case moderationEventUnmuteReporter(OzoneModerationEventUnmuteReporter)
     /// An email event.
     case moderationEventEmail(OzoneModerationEventEmail)
     /// A resolve appeal event.
@@ -348,6 +352,10 @@ public enum AdminEventViewUnion: Codable {
             self = .moderationEventMute(value)
         } else if let value = try? container.decode(OzoneModerationEventUnmute.self) {
             self = .moderationEventUnmute(value)
+        } else if let value = try? container.decode(OzoneModerationEventMuteReporter.self) {
+            self = .moderationEventMuteReporter(value)
+        } else if let value = try? container.decode(OzoneModerationEventUnmuteReporter.self) {
+            self = .moderationEventUnmuteReporter(value)
         } else if let value = try? container.decode(OzoneModerationEventEmail.self) {
             self = .moderationEventEmail(value)
         } else if let value = try? container.decode(OzoneModerationEventResolveAppeal.self) {
@@ -382,6 +390,10 @@ public enum AdminEventViewUnion: Codable {
                 try container.encode(moderationEventMute)
             case .moderationEventUnmute(let moderationEventUnmute):
                 try container.encode(moderationEventUnmute)
+            case .moderationEventMuteReporter(let moderationEventMuteReporter):
+                try container.encode(moderationEventMuteReporter)
+            case .moderationEventUnmuteReporter(let moderationEventUnmuteReporter):
+                try container.encode(moderationEventUnmuteReporter)
             case .moderationEventEmail(let moderationEventEmail):
                 try container.encode(moderationEventEmail)
             case .moderationEventResolveAppeal(let moderationEventResolveAppeal):
