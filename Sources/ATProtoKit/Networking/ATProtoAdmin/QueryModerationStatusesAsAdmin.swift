@@ -28,6 +28,7 @@ extension ATProtoAdmin {
     ///   - reviewedAfter: States that the moderator statuses displayed should be after a specified review date. Optional.
     ///   - reviewedBefore: States that the moderator statuses displayed should be before a specified review date. Optional.
     ///   - shouldIncludeMuted: Indicates whether muted subjects should be included in the results. Optional. Defaults to `false`.
+    ///   - isOnlyMuted: Indicates whether only muted subjects and reporters will be returned.
     ///   - reviewState: Specify when fetching subjects in a certain state. Optional.
     ///   - ignoreSubjects: An array of records and repositories to ignore. Optional.
     ///   - lastReviewedBy: Specifies the decentralized identifier (DID) of the moderator whose reviewed statuses are queried. Optional.
@@ -41,8 +42,8 @@ extension ATProtoAdmin {
     ///   - cursor: The mark used to indicate the starting point for the next set of results. Optional.
     /// - Returns: A `Result`, containing either an ``AdminQueryModerationStatusesOutput`` if successful, or an `Error` if not.
     public func queryStatuses(_ subject: String?, comment: String?, reportedAfter: Date?, reportedBefore: Date?, reviewedAfter: Date?,
-                              reviewedBefore: Date?, shouldIncludeMuted: Bool? = false, reviewState: String?, ignoreSubjects: [String]?,
-                              lastReviewedBy: String?, sortField: AdminQueryModerationStatusesSortField? = .lastReportedAt,
+                              reviewedBefore: Date?, shouldIncludeMuted: Bool? = false, isOnlyMuted: Bool?, reviewState: String?,
+                              ignoreSubjects: [String]?, lastReviewedBy: String?, sortField: AdminQueryModerationStatusesSortField? = .lastReportedAt,
                               sortDirection: AdminQueryModerationStatusesSortDirection? = .descending, isTakenDown: Bool?,
                               isAppealed: Bool?, limit: Int? = 50, tags: [String]?, excludeTags: [String]?,
                               cursor: String?) async throws -> Result<AdminQueryModerationStatusesOutput, Error> {
@@ -81,6 +82,11 @@ extension ATProtoAdmin {
         // shouldIncludeMuted (includeMuted)
         if let shouldIncludeMuted {
             queryItems.append(("includeMuted", "\(shouldIncludeMuted)"))
+        }
+
+        // isOnlyMuted (onlyMuted)
+        if let isOnlyMuted {
+            queryItems.append(("onlyMuted", "\(isOnlyMuted)"))
         }
 
         // reviewState
