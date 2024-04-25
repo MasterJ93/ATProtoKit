@@ -67,6 +67,17 @@ dependencies: [
 ]
 ```
 
+Then under `targets`:
+```swift
+targets: [
+    .target(
+        // name: ...,
+        dependencies: [
+            .product(name: "ATProtoKit", package: "atprotokit")
+        ]
+    )
+]
+```
 
 ## Roadmap
 The Projects page isn't set up yet, so it'll be a while before you can see the progress for this project. However, some of the goals include:

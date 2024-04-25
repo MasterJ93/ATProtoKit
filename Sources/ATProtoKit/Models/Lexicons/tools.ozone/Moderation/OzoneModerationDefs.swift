@@ -452,6 +452,36 @@ public struct OzoneModerationEventUnmute: Codable {
     public var comment: String? = nil
 }
 
+/// A data model definition for a mute reporter event.
+///
+/// - Note: According to the AT Protocol specifications: "Mute incoming reports from an account."
+///
+/// - SeeAlso: This is based on the [`com.atproto.admin.defs`][github] lexicon.
+///
+/// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/tools/ozone/moderation/defs.json
+public struct OzoneModerationEventMuteReporter: Codable {
+    /// Indicates how long the account should remain muted (in hours).
+    ///
+    /// - Note: According to the AT Protocol specifications: "Indicates how long the account should remain muted."
+    public let durationInHours: Int
+    /// Any additional comments about the event. Optional.
+    public let comment: String?
+}
+
+/// A data model definition for an unmute reporter event.
+///
+/// - Note: According to the AT Protocol specifications: "Unmute incoming reports from an account."
+///
+/// - SeeAlso: This is based on the [`com.atproto.admin.defs`][github] lexicon.
+///
+/// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/tools/ozone/moderation/defs.json
+public struct OzoneModerationEventUnmuteReporter: Codable {
+    /// Any additional comments about the event.
+    ///
+    /// - Note: According to the AT Protocol specifications: "Describe reasoning behind the reversal."
+    public let comment: String?
+}
+
 /// A data model for a definition of an email event.
 ///
 /// - Note: According to the AT Protocol specifications: "Keep a log of outgoing email to a user."
