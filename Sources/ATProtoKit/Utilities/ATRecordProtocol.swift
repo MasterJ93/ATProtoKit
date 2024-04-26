@@ -9,7 +9,7 @@ import Foundation
 
 /// The common interface for record structs in the AT Protocol.
 ///
-/// This enables cariadic polymorphic handing of different record by providing a uniform way to decode and identify
+/// This enables variadic polymorphic handing of different record by providing a uniform way to decode and identify
 /// record types using their Namespaced Identifier (NSID).
 ///
 /// - Note: For performance reasons, It's strongly recommended to create your record as a `struct` instead of a `class`.
@@ -46,6 +46,9 @@ public protocol ATRecordProtocol: Codable {
     ///
     /// This initializer mirrors the one from `Decodable`, but is needed to help make the polymorphic
     /// decoding work.
+    /// - Parameter decoder: The decoder to read data from.
+    /// - Throws: An error is thrown if reading from the decoder fails, or if the data
+    /// read is corrupted or otherwise invalid.
     init(from decoder: Decoder) throws
 }
 
