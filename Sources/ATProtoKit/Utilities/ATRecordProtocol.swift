@@ -15,7 +15,7 @@ import Foundation
 /// - Note: For performance reasons, It's strongly recommended to create your record as a `struct` instead of a `class`.
 /// All documentation in ATProtoKit will assume that all of the record objects are `struct`s.
 ///
-/// To create a record, you'll need to make a `public` `struct` that conforms to `ATRecordProtocol`:
+/// To create a record, you'll need to make a `public` `struct` that conforms to this `protocol`:
 /// ```swift
 /// public struct UserProfile {
 ///     public let type = "com.example.actor.profile"
@@ -63,15 +63,14 @@ public struct ATRecordTypeRegistry {
     ///
     /// Stores a mapping from NSID strings to corresponding record types.
     /// This contains a `Dictionary`, which contains the value of the `$type` property in the
-    /// lexicon (which is used as the "key"), and the `ATRecordProtocol`-conforming `struct`s
+    /// lexicon (which is used as the "key"), and the ``ATRecordProtocol``-conforming `struct`s
     /// (which is used as the "value"). `UnknownType` will search for the key that matches with
     /// the JSON object's `$type` property, and then decode or encode the JSON object using the
     /// `struct` that was found if there's a match.
     static var recordRegistry = [String: ATRecordProtocol.Type]()
 
-    // Variadic initializer to register multiple types
     /// Initializes the registry with an array of record types.
-    /// - Parameter types: An array of `ATRecordProtocol`-conforming `struct`s.
+    /// - Parameter types: An array of ``ATRecordProtocol``-conforming `struct`s.
     public init(types: [ATRecordProtocol.Type]) {
         for type in types {
             ATRecordTypeRegistry.recordRegistry[String(describing: type)] = type
