@@ -98,4 +98,103 @@ public struct ATRecordTypeRegistry {
     }
 }
 
-public struct UnknownType: Codable {}
+/// Handles decoding and encoding of records when their type is not known ahead of type.
+///
+/// This supports either the instantiation of registered record types or fallback to a dictionary
+/// representation.
+///
+/// Within the ``ATRecordProtocol``-conforming `struct`, any properties that are of type
+/// `unknown` as dictated by the `struct`'s lexicon must of this type. For example, here's the
+/// basic structure for ``ATNotification``:
+/// ```swift
+/// public struct ATNotification: Codable {
+///     public let notificationURI: String
+///     public let notificationCID: String
+///     public let notificationAuthor: String
+///     public let notificationReason: Reason
+///     public let reasonSubjectURI: String?
+///     public let record: UnknownType
+///     public let isRead: Bool
+///     @DateFormatting public var indexedAt: Date
+///     public let labels: [Label]?
+/// }
+/// ```
+/// 
+/// 
+///
+public enum UnknownType: Codable {
+    /// Represents a decoded ``ATRecordProtocol``-conforming `struct`.
+    case record(ATRecordProtocol)
+    /// Represents an unknown type.
+    ///
+    /// When this is used, the JSON object is converted to `[String: Any]` object. It's your
+    /// responsibility to handle this properly.
+    case unknown([String: Any])
+
+    /// Initializes `UnknownType` by attempting to decode a known record type or falling back
+    /// to a raw dictionary.
+    ///
+    /// (Inherited from `Encoder`.)
+    ///
+    /// - Parameter decoder: The decoder to read data from.
+    /// - Throws: an error can occur if the following happens:\
+    ///     \- reading from the decoder fails\
+    ///     \- the data read is corrupted or otherwise invalid\
+    ///     \- the decoder is unable to find the `$type` property\
+    ///     \- the JSON object is invalid
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: DynamicCodingKeys.self)
+
+        guard let typeKey = DynamicCodingKeys(stringValue: "$type") else {
+            throw DecodingError.dataCorrupted(
+                DecodingError.Context(
+                    codingPath: container.codingPath,
+                    debugDescription: "Cannot create key for `$type`."))
+        }
+
+        let typeIdentifier = try container.decode(String.self, forKey: typeKey)
+
+        if let recordType = try? ATRecordTypeRegistry.createInstance(ofType: typeIdentifier, from: decoder) {
+            self = .record(recordType)
+        } else {
+            let jsonData = try decoder.singleValueContainer().decode(Data.self)
+            if let jsonDict = try JSONSerialization.jsonObject(with: jsonData, options: []) as? [String: Any] {
+                self = .unknown(jsonDict)
+            } else {
+                throw DecodingError.dataCorrupted(
+                    DecodingError.Context(
+                        codingPath: decoder.codingPath,
+                        debugDescription: "Failed to decode unknown type as [String: Any]."))
+            }
+        }
+    }
+
+    /// Encodes this instance into the given encoder.
+    ///
+    /// Inherited from `Encoder`.
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.singleValueContainer()
+
+        switch self {
+            case .record(let record):
+                try container.encode(record)
+            case .unknown(let unknownData):
+                let jsonData = try JSONSerialization.data(withJSONObject: unknownData, options: [])
+                try container.encode(jsonData)
+        }
+    }
+
+    /// Aids in decoding by allowing dynamic key lookup.
+    private struct DynamicCodingKeys: CodingKey {
+        var stringValue: String
+        init?(stringValue: String) {
+            self.stringValue = stringValue
+        }
+
+        // `Int` will never be used here.
+        var intValue: Int?
+        init?(intValue: Int) {
+            return nil
+        }
+    }
+}
