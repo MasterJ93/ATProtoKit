@@ -13,6 +13,7 @@ import Foundation
 /// record types using their Namespaced Identifier (NSID).
 ///
 /// - Note: For performance reasons, It's strongly recommended to create your record as a `struct` instead of a `class`.
+/// All documentation in ATProtoKit will assume that all of the record objects are `struct`s.
 ///
 /// To create a record, you'll need to make a `public` `struct` that conforms to `ATRecordProtocol`:
 /// ```swift
@@ -50,6 +51,52 @@ public protocol ATRecordProtocol: Codable {
     /// - Throws: An error is thrown if reading from the decoder fails, or if the data
     /// read is corrupted or otherwise invalid.
     init(from decoder: Decoder) throws
+}
+
+/// A registry for all decodable record types in the AT Protocol.
+///
+/// All record lexicon `struct`s (whether from Bluesky or user created) will be included in the registry.
+/// This is used as a map for `UnknownType` to find the most appropriate type that the JSON object
+/// will fit into.
+public struct ATRecordTypeRegistry {
+    /// The registry itself.
+    ///
+    /// Stores a mapping from NSID strings to corresponding record types.
+    /// This contains a `Dictionary`, which contains the value of the `$type` property in the
+    /// lexicon (which is used as the "key"), and the `ATRecordProtocol`-conforming `struct`s
+    /// (which is used as the "value"). `UnknownType` will search for the key that matches with
+    /// the JSON object's `$type` property, and then decode or encode the JSON object using the
+    /// `struct` that was found if there's a match.
+    static var recordRegistry = [String: ATRecordProtocol.Type]()
+
+    // Variadic initializer to register multiple types
+    /// Initializes the registry with an array of record types.
+    /// - Parameter types: An array of `ATRecordProtocol`-conforming `struct`s.
+    public init(types: [ATRecordProtocol.Type]) {
+        for type in types {
+            ATRecordTypeRegistry.recordRegistry[String(describing: type)] = type
+        }
+    }
+
+    /// Attempts to create an instance of a record type based on the provided NSID string and decoder.
+    ///
+    /// While `Codable` allows for polymorphic handling via `enum`s, it has a limitation where it
+    /// can't directly decode or encode `protocol`s. This method circumvents this limitation by
+    /// decoding the object directly and returning the result. To `Codable`, this is not a
+    /// `protocol`, but a normal object.
+    ///
+    /// - Parameters:
+    ///   - type: The Namespaced Identifier (NSID) of the record.
+    ///   - decoder: The decoder to read data from.
+    /// - Returns: A
+    /// - Throws: An error can occur if one if the following happens:\
+    ///     \- reading from the decoder fails\
+    ///     \- the data read is corrupted or otherwise invalid
+    ///     \- no object key in `recordRegistry` matches the `$type`'s value.
+    public static func createInstance(ofType type: String, from decoder: Decoder) throws -> ATRecordProtocol? {
+        guard let typeClass = recordRegistry[type] else { return nil }
+        return try typeClass.init(from: decoder)
+    }
 }
 
 public struct UnknownType: Codable {}
