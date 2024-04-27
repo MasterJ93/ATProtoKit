@@ -10,6 +10,8 @@ import Foundation
 // MARK: - Main definition
 /// The main data model definition for a like record.
 ///
+/// - Note: According to the AT Protocol specifications: "Record declaring a 'like' of a piece of subject content."
+///
 /// - SeeAlso: This is based on the [`app.bsky.feed.like`][github] lexicon.
 ///
 /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/feed/like.json
