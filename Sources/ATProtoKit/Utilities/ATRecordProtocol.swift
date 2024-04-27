@@ -56,7 +56,7 @@ public protocol ATRecordProtocol: Codable {
 /// A registry for all decodable record types in the AT Protocol.
 ///
 /// All record lexicon `struct`s (whether from Bluesky or user created) will be included in the registry.
-/// This is used as a map for `UnknownType` to find the most appropriate type that the JSON object
+/// This is used as a map for ``UnknownType`` to find the most appropriate type that the JSON object
 /// will fit into.
 public struct ATRecordTypeRegistry {
     /// The registry itself.
@@ -64,10 +64,10 @@ public struct ATRecordTypeRegistry {
     /// Stores a mapping from NSID strings to corresponding record types.
     /// This contains a `Dictionary`, which contains the value of the `$type` property in the
     /// lexicon (which is used as the "key"), and the ``ATRecordProtocol``-conforming `struct`s
-    /// (which is used as the "value"). `UnknownType` will search for the key that matches with
+    /// (which is used as the "value"). ``UnknownType`` will search for the key that matches with
     /// the JSON object's `$type` property, and then decode or encode the JSON object using the
     /// `struct` that was found if there's a match.
-    static var recordRegistry = [String: ATRecordProtocol.Type]()
+    public static var recordRegistry = [String: ATRecordProtocol.Type]()
 
     /// Initializes the registry with an array of record types.
     /// - Parameter types: An array of ``ATRecordProtocol``-conforming `struct`s.
@@ -104,8 +104,8 @@ public struct ATRecordTypeRegistry {
 /// representation.
 ///
 /// Within the ``ATRecordProtocol``-conforming `struct`, any properties that are of type
-/// `unknown` as dictated by the `struct`'s lexicon must of this type. For example, here's the
-/// basic structure for ``ATNotification``:
+/// `unknown` as dictated by the lexicon the `struct`conforms to _must_ of this type. For example,
+/// here's the basic structure for ``ATNotification``:
 /// ```swift
 /// public struct ATNotification: Codable {
 ///     public let notificationURI: String
@@ -113,15 +113,16 @@ public struct ATRecordTypeRegistry {
 ///     public let notificationAuthor: String
 ///     public let notificationReason: Reason
 ///     public let reasonSubjectURI: String?
-///     public let record: UnknownType
+///     public let record: UnknownType // Records will be stored here.
 ///     public let isRead: Bool
 ///     @DateFormatting public var indexedAt: Date
 ///     public let labels: [Label]?
 /// }
 /// ```
 /// 
-/// 
-///
+/// As shown above, the `records` property is of type `UnknownType`. By adding this, any `struct`s
+/// within the dictionary of ``ATRecordTypeRegistry/recordRegistry``  can be used to potentially
+/// decode and encode the JSON object.
 public enum UnknownType: Codable {
     /// Represents a decoded ``ATRecordProtocol``-conforming `struct`.
     case record(ATRecordProtocol)
