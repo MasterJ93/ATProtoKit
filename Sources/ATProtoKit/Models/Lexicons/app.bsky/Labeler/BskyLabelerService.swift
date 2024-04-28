@@ -21,8 +21,8 @@ public struct LabelerService: ATRecordProtocol {
     public private(set) var type: String = "app.bsky.labeler.service"
     /// The policies the labeler service adheres to.
     public let policies: LabelerPolicies
-    /// An array of labels the labeler uses.
-    public let labels: [SelfLabels]
+    /// An array of labels the labeler uses. Optional.
+    public let labels: [SelfLabels]?
     /// The date and time the labeler service was created.
     @DateFormatting public var createdAt: Date
 

@@ -15,6 +15,9 @@ import Foundation
 ///
 /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/actor/putPreferences.json
 public struct ActorPutPreferences: Codable {
+    /// The identifier of the lexicon.
+    ///
+    /// - Warning: The value must not change.
     public let type: String = "app.bsky.actor.putPreferences"
     /// A list of preferences by the user.
     public let preferences: [ActorPreferenceUnion]
