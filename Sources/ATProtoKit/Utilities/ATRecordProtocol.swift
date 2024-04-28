@@ -12,13 +12,16 @@ import Foundation
 /// This enables variadic polymorphic handing of different record by providing a uniform way to decode and identify
 /// record types using their Namespaced Identifier (NSID).
 ///
-/// - Note: For performance reasons, It's strongly recommended to create your record as a `struct` instead of a `class`.
-/// All documentation in ATProtoKit will assume that all of the record objects are `struct`s.
+/// - Note: For performance reasons, It's strongly recommended to create your record as a `struct`
+/// instead of a `class`. All documentation in ATProtoKit will assume that all of the record
+/// objects are `struct`s.
 ///
-/// To create a record, you'll need to make a `public` `struct` that conforms to this `protocol`:
+/// To create a record, you'll need to make a `public` `struct` that conforms to this `protocol`.
+/// The `type` property must be `public` due to the `protocol`, but it shouldn't be changed for
+/// the entire lifetime of the `struct`. One way to solve this is to use a `private(set)` keyword:
 /// ```swift
-/// public struct UserProfile {
-///     public let type = "com.example.actor.profile"
+/// public struct UserProfile: ATRecordProtocol {
+///     public private(set) var type = "com.example.actor.profile" // `private(set)` used here.
 ///     public let userID: Int
 ///     public let username: String
 ///     public var bio: String?
@@ -27,8 +30,9 @@ import Foundation
 ///     public var followingCount: Int?
 /// }
 /// ```
-/// You must create a `CodingKeys` `enum` that is of types `String` and `CodingKey`. This is because the `type` property
-/// needs to map to the `$type` property in the lexicon.
+/// 
+/// You must create a `CodingKeys` `enum` that is of types `String` and `CodingKey`. This is
+/// because the `type` property needs to map to the `$type` property in the lexicon.
 /// ```swift
 /// enum CodingKeys: String, CodingKeys {
 ///     case type = "$type"
