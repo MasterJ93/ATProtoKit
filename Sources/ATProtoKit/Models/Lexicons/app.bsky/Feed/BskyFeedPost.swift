@@ -15,11 +15,11 @@ import Foundation
 /// - SeeAlso: This is based on the [`app.bsky.feed.post`][github] lexicon.
 ///
 /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/feed/post.json
-public struct FeedPost: Codable {
+public struct FeedPost: ATRecordProtocol {
     /// The identifier of the lexicon.
     ///
     /// - Warning: The value must not change.
-    internal let type: String = "app.bsky.feed.post"
+    public private(set) var type: String = "app.bsky.feed.post"
     /// The text contained in the post.
     ///
     /// - Note: According to the AT Protocol specifications: "The primary post content. May be an empty string, if there are embeds."
@@ -98,7 +98,7 @@ public struct FeedPost: Codable {
 
         // Truncate `tags` to 640 characters before encoding
         // `maxGraphemes`'s limit is 64, but `String.count` should respect that limit implictly
-        // Then, truncate `tags` to 3 items before encoding
+        // Then, truncate `tags` to 8 items before encoding
         let truncatedTags = self.tags.map { $0.truncated(toLength: 640) }
         try truncatedEncodeIfPresent(truncatedTags, withContainer: &container, forKey: .tags, upToLength: 8)
 

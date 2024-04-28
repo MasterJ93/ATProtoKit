@@ -15,11 +15,11 @@ import Foundation
 /// - SeeAlso: This is based on the [`app.bsky.feed.like`][github] lexicon.
 ///
 /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/feed/like.json
-public struct FeedLike: Codable {
+public struct FeedLike: ATRecordProtocol {
     /// The identifier of the lexicon.
     ///
     /// - Warning: The value must not change.
-    public let type: String = "app.bsky.feed.like"
+    public private(set) var type: String = "app.bsky.feed.like"
     /// The strong reference of the like.
     ///
     /// - Note: According to the AT Protocol specifications: "Record declaring a 'like' of a piece of subject content."

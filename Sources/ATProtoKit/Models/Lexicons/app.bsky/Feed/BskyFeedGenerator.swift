@@ -14,7 +14,11 @@ import Foundation
 /// - SeeAlso: This is based on the [`app.bsky.feed.generator`][github] lexicon.
 ///
 /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/feed/generator.json
-public struct FeedGenerator: Codable {
+public struct FeedGenerator: ATRecordProtocol {
+    /// The identifier of the lexicon.
+    ///
+    /// - Warning: The value must not change.
+    public private(set) var type: String = "app.bsky.feed.generator"
     /// The decentralized identifier (DID) of the feed.
     public let feedDID: String
     /// The display name of the feed.
@@ -66,6 +70,7 @@ public struct FeedGenerator: Codable {
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
 
+        try container.encode(self.type, forKey: .type)
         try container.encode(self.feedDID, forKey: .feedDID)
         // Truncate `displayName` to 240 characters before encoding
         // `maxGraphemes`'s limit is 24, but `String.count` should respect that limit implictly
@@ -81,6 +86,7 @@ public struct FeedGenerator: Codable {
     }
 
     enum CodingKeys: String, CodingKey {
+        case type = "$type"
         case feedDID = "did"
         case displayName
         case description

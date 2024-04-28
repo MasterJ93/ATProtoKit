@@ -14,11 +14,11 @@ import Foundation
 /// - SeeAlso: This is based on the [`app.bsky.feed.repost`][github] lexicon.
 ///
 /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/feed/repost.json
-public struct FeedRepost: Codable {
+public struct FeedRepost: ATRecordProtocol {
     /// The identifier of the lexicon.
     ///
     /// - Warning: The value must not change.
-    public let type: String = "app.bsky.feed.repost"
+    public private(set) var type: String = "app.bsky.feed.repost"
     /// The strong reference of the repost record.
     public let subject: StrongReference
     /// The date the like record was created.

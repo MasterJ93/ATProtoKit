@@ -16,6 +16,10 @@ import Foundation
 ///
 /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/graph/block.json
 public struct GraphBlock: Codable {
+    /// The identifier of the lexicon.
+    ///
+    /// - Warning: The value must not change.
+    public private(set) var type: String = "app.bsky.graph.block"
     /// The decentralized identifier(DID) of the subject that has been blocked.
     ///
     /// - Note: According to the AT Protocol specifications: "DID of the account to be blocked."
@@ -38,11 +42,13 @@ public struct GraphBlock: Codable {
     public func encode(to encoder: any Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
 
+        try container.encode(self.type, forKey: .type)
         try container.encode(self.subjectDID, forKey: .subjectDID)
         try container.encode(self._createdAt, forKey: .createdAt)
     }
 
     enum CodingKeys: String, CodingKey {
+        case type = "$type"
         case subjectDID = "subject"
         case createdAt
     }

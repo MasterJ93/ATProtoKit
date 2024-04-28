@@ -15,11 +15,11 @@ import Foundation
 /// - SeeAlso: This is based on the [`app.bsky.graph.list`][github] lexicon.
 ///
 /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/graph/list.json
-public struct GraphList: Codable {
+public struct GraphList: ATRecordProtocol {
     /// The identifier of the lexicon.
     ///
     /// - Warning: The value must not change.
-    internal let type: String = "app.bsky.graph.list"
+    public private(set) var type: String = "app.bsky.graph.list"
     /// The name of the list.
     ///
     /// - Note: According to the AT Protocol specifications: "Display name for list; can not be empty."
