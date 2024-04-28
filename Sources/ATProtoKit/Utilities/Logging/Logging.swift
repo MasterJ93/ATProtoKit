@@ -34,8 +34,6 @@ struct ATLogHandler: LogHandler {
         var messageMetadata = [String: Any]()
         var privacySettings = [String: OSLogPrivacy]()
 
-//        appleLogger(level: level, message: formattedMessage)
-//        appleLogger.log(level: .info, "\(formattedMessage)")
         switch level {
             case .trace, .debug:
                 appleLogger.log(level: .debug, "\(message, privacy: .auto)")
