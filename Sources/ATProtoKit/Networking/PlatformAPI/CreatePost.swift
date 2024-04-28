@@ -68,7 +68,7 @@ extension ATProtoKit {
 
 
         // Compiling all parts of the post into one.
-        let post = FeedPost(
+        let postRecord = FeedPost(
             text: text,
             facets: await ATFacetParser.parseFacets(from: text, pdsURL: session.accessToken),
             reply: resolvedReplyTo,
@@ -81,7 +81,7 @@ extension ATProtoKit {
 
         let requestBody = FeedPostRequestBody(
             repo: session.sessionDID,
-            record: post
+            record: postRecord
         )
 
         return await createRecord(
@@ -89,7 +89,7 @@ extension ATProtoKit {
             collection: "app.bsky.feed.post",
             recordKey: recordKey ?? nil,
             shouldValidate: shouldValidate,
-            record: UnknownType(),
+            record: UnknownType.record(postRecord),
             swapCommit: swapCommit ?? nil
         )
     }

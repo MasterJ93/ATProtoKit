@@ -38,7 +38,7 @@ extension ATProtoKit {
             repositoryDID: session.sessionDID,
             collection: "app.bsky.feed.like",
             shouldValidate: shouldValidate,
-            record: UnknownType()
+            record: UnknownType.record(likeRecord)
         )
     }
     
