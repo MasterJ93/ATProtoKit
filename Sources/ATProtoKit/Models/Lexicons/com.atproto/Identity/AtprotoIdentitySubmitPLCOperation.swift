@@ -16,5 +16,6 @@ import Foundation
 ///
 /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/identity/submitPlcOperation.json
 public struct IdentitySubmitPLCOperationOutput: Codable {
+    /// The operation itself.
     public let operation: UnknownType
 }
