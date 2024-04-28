@@ -124,6 +124,12 @@ extension ATProtoKitConfiguration {
 public class ATProtoKit: ATProtoKitConfiguration {
     /// Represents an authenticated user session within the AT Protocol. Optional.
     public let session: UserSession?
+    /// An array of record lexicon structs created by Bluesky.
+    ///
+    /// If `canUseBlueskyRecords` is set to `false`, these will not be used.
+    private let recordLexicons: [ATRecordProtocol.Type] = [
+        FeedGenerator.self, FeedLike.self, FeedPost.self, FeedRepost.self, FeedThreadgate.self, GraphBlock.self, GraphFollow.self, GraphList.self, 
+        GraphListBlock.self, GraphListItem.self, LabelerService.self]
     /// Specifies the logger that will be used for emitting log messages.
     public private(set) var logger: Logger
     /// Specifies the identifier for managing log outputs. Optional. Defaults to the project's `CFBundleIdentifier`.
@@ -141,14 +147,20 @@ public class ATProtoKit: ATProtoKitConfiguration {
     /// `com.cjrriley.ATProtoKit`. However, you can manually override this.
     /// - Parameters:
     ///   - session: The authenticated user session within the AT Protocol. Optional.
+    ///   - canUseBlueskyRecords: Indicates whether Bluesky's lexicons should be used. Defaults to `true`.
     ///   - logIdentifier: Specifies the identifier for managing log outputs. Optional. Defaults to the project's `CFBundleIdentifier`.
     ///   - logCategory: Specifies the category name the logs in the logger within ATProtoKit will be in. Optional. Defaults to `ATProtoKit`.
     ///   - logLevel: Specifies the highest level of logs that will be outputted. Optional. Defaults to `.info`.
-    public init(session: UserSession? = nil, logIdentifier: String? = nil, logCategory: String? = nil, logLevel: Logger.Level? = .info) {
+    public init(session: UserSession? = nil, canUseBlueskyRecords: Bool = true, logIdentifier: String? = nil, logCategory: String? = nil,
+                logLevel: Logger.Level? = .info) {
         self.session = session
         self.logIdentifier = logIdentifier ?? Bundle.main.bundleIdentifier ?? "com.cjrriley.ATProtoKit"
         self.logCategory = logCategory ?? "ATProtoKit"
         self.logLevel = logLevel
+
+        if canUseBlueskyRecords {
+            _ = ATRecordTypeRegistry(types: self.recordLexicons)
+        }
 
         #if canImport(os)
         LoggingSystem.bootstrap { label in
