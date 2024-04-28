@@ -139,12 +139,12 @@ public struct FeedViewPost: Codable {
     // TODO: Check to see if this is correct.
     /// The user who reposted the post. Optional.
     public var reason: FeedReasonRepost? = nil
-    /// The feed generator's context.
+    /// The feed generator's context. Optional
     ///
     /// - Note: According to the AT Protocol specifications: "Context provided by feed generator that may be passed back alongside interactions."
-    public let feedContext: String
+    public let feedContext: String?
 
-    public init(post: FeedPostView, reply: FeedReplyReference? = nil, reason: FeedReasonRepost? = nil, feedContext: String) {
+    public init(post: FeedPostView, reply: FeedReplyReference? = nil, reason: FeedReasonRepost? = nil, feedContext: String?) {
         self.post = post
         self.reply = reply
         self.reason = reason
@@ -157,7 +157,7 @@ public struct FeedViewPost: Codable {
         self.post = try container.decode(FeedPostView.self, forKey: .post)
         self.reply = try container.decodeIfPresent(FeedReplyReference.self, forKey: .reply)
         self.reason = try container.decodeIfPresent(FeedReasonRepost.self, forKey: .reason)
-        self.feedContext = try container.decode(String.self, forKey: .feedContext)
+        self.feedContext = try container.decodeIfPresent(String.self, forKey: .feedContext)
     }
 
     public func encode(to encoder: any Encoder) throws {
