@@ -13,7 +13,8 @@ The [Swift API Design Guidelines](https://www.swift.org/documentation/api-design
 
 ## Fundamentals
 - For code, the maximum length of a line is 170 characters. However, this isn’t a strong goal to have: it can be much longer than this.
-- For documentation, the maximum length of a line is also 170 characters. However, this _is_ a strict rule: if necessary, break it down into smaller lines.
+- For documentation, the maximum length of a line is 100 characters. However, this _is_ a (mostly) strict rule: if necessary, break it down into smaller lines.
+    - The only exception to this rule relates to code lines: if it goes a little over the line, or if the line genuinely needs to be longer than 100 characters, then this will be allowed.
 - Documentation lines should use the triple slashes (`///`) rather than the multi-block delimiter (`/** */`).
 - Everything in the project must be written in American English.
 - All methods/functions, classes, structs, enums, and properties need to display their access keywords. The only permitted keywords used in this project are `public`, `internal`, `private`, and `fileprivate`:
@@ -104,6 +105,24 @@ Lexicons are relevant to models and methods. Here are some general guidelines:
     try container.encode(self._indexedAt, forKey: .indexedAt)
 	try container.encodeIfPresent(self._indexedAt, forKey: .indexedAt)
     ```
+
+Here's the general layout for all Lexicon models:
+```swift
+// Each model starts out with the one-line sentence summary of the model.
+// Will be called "one-line documentation summary" for future reference.
+/// The record definition for a post record.
+///
+// If the lexicon associated with this model contains documentation, then it must be inserted as a note.
+// Will be called "lexicon spec note" for future reference.
+/// - Note: According to the AT Protocol specifications: "Record containing a Bluesky post."
+///
+// The Namespaced Identifier (NSID) of the lexicon must be displayed. It should also be linked: the link
+// will go to the lexicon JSON file associated with this model.
+// Will be called "lexicon link" for future reference.
+/// - SeeAlso: This is based on the [`app.bsky.feed.post`][github] lexicon.
+///
+/// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/feed/post.json
+```
 
 There are multiple kinds of models: main models, definition models, record models, output models, and requestBody models.
 
