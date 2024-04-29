@@ -9,7 +9,8 @@ import Foundation
 
 /// The main data model definition for a labeler service record.
 ///
-/// - Note: According to the AT Protocol specifications: "A declaration of the existence of labeler service."
+/// - Note: According to the AT Protocol specifications: "A declaration of the existence of
+/// labeler service."
 ///
 /// - SeeAlso: This is based on the [`app.bsky.labeler.service`][github] lexicon.
 ///

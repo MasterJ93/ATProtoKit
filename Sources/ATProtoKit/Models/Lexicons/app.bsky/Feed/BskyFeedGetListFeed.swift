@@ -7,9 +7,11 @@
 
 import Foundation
 
-/// The main data model definition for the output of retireving recent posts and reposts from a given feed.
+/// The main data model definition for the output of retireving recent posts and reposts from a
+/// given feed.
 ///
-/// - Note: According to the AT Protocol specifications: "Get a feed of recent posts from a list (posts and reposts from any actors on the list).
+/// - Note: According to the AT Protocol specifications: "Get a feed of recent posts from a list
+/// (posts and reposts from any actors on the list).
 /// Does not require auth."
 ///
 /// - SeeAlso: This is based on the [`app.bsky.feed.getListFeed`][github] lexicon.

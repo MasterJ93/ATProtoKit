@@ -9,7 +9,8 @@ import Foundation
 
 /// The main data model definition for the output of retrieving like records of a specific subject.
 ///
-/// - Note: According to the AT Protocol specifications: "Get like records which reference a subject (by AT-URI and CID)."
+/// - Note: According to the AT Protocol specifications: "Get like records which reference a
+/// subject (by AT-URI and CID)."
 ///
 /// - SeeAlso: This is based on the [`app.bsky.feed.getLikes`][github] lexicon.
 ///

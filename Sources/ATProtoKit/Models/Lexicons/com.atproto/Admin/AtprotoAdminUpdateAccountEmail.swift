@@ -7,9 +7,11 @@
 
 import Foundation
 
-/// The main data model definition for updating the email address of a user account as an administrator.
+/// The main data model definition for updating the email address of a user account as
+/// an administrator.
 ///
-/// - Note: According to the AT Protocol specifications: "Administrative action to update an account's email."
+/// - Note: According to the AT Protocol specifications: "Administrative action to update an
+/// account's email."
 ///
 /// - SeeAlso: This is based on the [`com.atproto.admin.updateAccountEmail`][github] lexicon.
 ///

@@ -9,7 +9,8 @@ import Foundation
 
 /// The main data model definition for the output of the labeler service information.
 ///
-/// - Note: According to the AT Protocol specifications: "Get information about a list of labeler services."
+/// - Note: According to the AT Protocol specifications: "Get information about a list of
+/// labeler services."
 ///
 /// - SeeAlso: This is based on the [`app.bsky.labeler.getServices`][github] lexicon.
 ///

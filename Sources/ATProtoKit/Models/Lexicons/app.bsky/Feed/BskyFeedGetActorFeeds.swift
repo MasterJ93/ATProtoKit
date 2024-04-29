@@ -9,7 +9,8 @@ import Foundation
 
 /// The main data model definition for the output of retrieving a feed list by a user.
 ///
-/// - Note: According to the AT Protocol specifications: "Get a list of feeds (feed generator records) created by the actor (in the actor's repo)."
+/// - Note: According to the AT Protocol specifications: "Get a list of feeds (feed generator
+/// records) created by the actor (in the actor's repo)."
 ///
 /// - SeeAlso: This is based on the [`app.bsky.feed.getActorFeeds`][github] lexicon.
 ///

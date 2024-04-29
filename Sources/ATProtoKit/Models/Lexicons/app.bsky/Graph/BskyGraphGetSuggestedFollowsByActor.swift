@@ -7,10 +7,12 @@
 
 import Foundation
 
-/// The main data model definition for the output of getting the list of user accounts that requesting user account is suggested to follow.
+/// The main data model definition for the output of getting the list of user accounts that
+/// requesting user account is suggested to follow.
 ///
-/// - Note: According to the AT Protocol specifications: "Enumerates follows similar to a given account (actor). Expected use is to recommend
-/// additional accounts immediately after following one account."
+/// - Note: According to the AT Protocol specifications: "Enumerates follows similar to a given
+/// account (actor). Expected use is to recommend additional accounts immediately after following
+/// one account."
 ///
 /// - SeeAlso: This is based on the [`app.bsky.graph.getSuggestedFollowsByActor`][github] lexicon.
 ///

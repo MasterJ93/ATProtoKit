@@ -9,7 +9,8 @@ import Foundation
 
 /// The main data model definition for updating the server of the user seeing the notification.
 ///
-/// - Note: According to the AT Protocol specifications: "Notify server that the requesting account has seen notifications. Requires auth."
+/// - Note: According to the AT Protocol specifications: "Notify server that the requesting account
+/// has seen notifications. Requires auth."
 ///
 /// - SeeAlso: This is based on the [`app.bsky.notification.updateSeen`][github] lexicon.
 ///

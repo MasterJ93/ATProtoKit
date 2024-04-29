@@ -9,8 +9,8 @@ import Foundation
 
 /// The main data model definition for a list item record.
 ///
-/// - Note: According to the AT Protocol specifications: "Record representing an account's inclusion on a specific list.
-/// The AppView will ignore duplicate listitem records."
+/// - Note: According to the AT Protocol specifications: "Record representing an account's
+/// inclusion on a specific list. The AppView will ignore duplicate listitem records."
 ///
 /// - SeeAlso: This is based on the [`app.bsky.graph.listitem`][github] lexicon.
 ///
@@ -22,11 +22,13 @@ public struct GraphListItem: ATRecordProtocol {
     public static private(set) var type: String = "app.bsky.graph.listitem"
     /// The decentralized identifier (DID) of the account that's in a list.
     ///
-    /// - Note: According to the AT Protocol specifications: "The account which is included on the list."
+    /// - Note: According to the AT Protocol specifications: "The account which is included on
+    /// the list."
     public let subjectDID: String
     /// The decentralized identifier (DID) of the list record.
     ///
-    /// - Note: According to the AT Protocol specifications: "The account which is included on the list."
+    /// - Note: According to the AT Protocol specifications: "The account which is included on
+    /// the list."
     public let list: String
     /// The date and time the record was created.
     @DateFormatting public var createdAt: Date

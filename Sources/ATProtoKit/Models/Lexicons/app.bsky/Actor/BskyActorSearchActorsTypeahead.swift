@@ -7,7 +7,8 @@
 
 import Foundation
 
-/// A data model definition for the output of searching for actors matching the prefixed search criteria.
+/// A data model definition for the output of searching for actors matching the prefixed
+/// search criteria.
 ///
 /// - SeeAlso: This is based on the [`app.bsky.actor.searchActorsTypeahead`][github] lexicon.
 ///

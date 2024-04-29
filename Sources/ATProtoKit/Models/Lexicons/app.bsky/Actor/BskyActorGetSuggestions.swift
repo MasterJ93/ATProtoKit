@@ -9,7 +9,8 @@ import Foundation
 
 /// A data model for the output of the list of suggested users to follow.
 ///
-/// - Note: According to the AT Protocol specifications: "Get a list of suggested actors. Expected use is discovery of accounts to follow during new account onboarding."
+/// - Note: According to the AT Protocol specifications: "Get a list of suggested actors.
+/// Expected use is discovery of accounts to follow during new account onboarding."
 ///
 /// - SeeAlso: This is based on the [`app.bsky.actor.getSuggestions`][github] lexicon.
 ///

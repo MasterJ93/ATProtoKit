@@ -9,8 +9,9 @@ import Foundation
 
 /// The main data model definition for the output of getting a skeleton for a feed generator.
 ///
-/// - Note: According to the AT Protocol specifications: "Get a skeleton of a feed provided by a feed generator. Auth is optional, depending on provider requirements,
-/// and provides the DID of the requester. Implemented by Feed Generator Service."
+/// - Note: According to the AT Protocol specifications: "Get a skeleton of a feed provided by a
+/// feed generator. Auth is optional, depending on provider requirements, and provides the DID of
+/// the requester. Implemented by Feed Generator Service."
 ///
 /// - SeeAlso: This is based on the [`app.bsky.feed.getFeedSkeleton`][github] lexicon.
 ///

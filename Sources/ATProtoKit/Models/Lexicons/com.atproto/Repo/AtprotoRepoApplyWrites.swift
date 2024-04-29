@@ -9,7 +9,8 @@ import Foundation
 
 /// The main data model definition for applying batch CRUD transactions.
 ///
-/// - Note: According to the AT Protocol specifications: "Apply a batch transaction of repository creates, updates, and deletes. Requires auth, implemented by PDS."
+/// - Note: According to the AT Protocol specifications: "Apply a batch transaction of repository
+/// creates, updates, and deletes. Requires auth, implemented by PDS."
 ///
 /// - SeeAlso: This is based on the [`com.atproto.repo.applyWrites`][github] lexicon.
 ///
@@ -17,20 +18,24 @@ import Foundation
 public struct RepoApplyWrites: Codable {
     /// The decentralized identifier (DID) or handle of the repository.
     ///
-    /// - Note: According to the AT Protocol specifications: "The handle or DID of the repo (aka, current account)."
+    /// - Note: According to the AT Protocol specifications: "The handle or DID of the repo (aka,
+    /// current account)."
     public let repositoryDID: String
     /// Indicates whether the operation should be validated. Optional. Defaults to `true`.
     ///
-    /// - Note: According to the AT Protocol specifications: "Can be set to 'false' to skip Lexicon schema validation of record data, for all operations."
+    /// - Note: According to the AT Protocol specifications: "Can be set to 'false' to skip Lexicon
+    /// schema validation of record data, for all operations."
     public let shouldValidate: Bool?
     /// The write operation itself.
     public let writes: [ApplyWritesUnion]?
     /// Swaps out an operation based on the CID. Optional.
     ///
-    /// - Important: If a value is entered in here, the entire operation will fail if there is no matching value in the repository.
+    /// - Important: If a value is entered in here, the entire operation will fail if there is no
+    /// matching value in the repository.
     ///
-    /// - Note: According to the AT Protocol specifications: "If provided, the entire operation will fail if the current repo commit CID does not match this value.
-    /// Used to prevent conflicting repo mutations."
+    /// - Note: According to the AT Protocol specifications: "If provided, the entire operation
+    /// will fail if the current repo commit CID does not match this value. Used to prevent
+    /// conflicting repo mutations."
     public let swapCommit: String?
 
     enum CodingKeys: String, CodingKey {
@@ -105,8 +110,9 @@ public enum ApplyWritesUnion: Codable {
         } else if let value = try? container.decode(RepoApplyWritesDelete.self) {
             self = .delete(value)
         } else {
-            throw DecodingError.typeMismatch(EmbedViewUnion.self,
-                                             DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Unknown ApplyWritesUnion type"))
+            throw DecodingError.typeMismatch(
+                EmbedViewUnion.self, DecodingError.Context(
+                    codingPath: decoder.codingPath, debugDescription: "Unknown ApplyWritesUnion type"))
         }
     }
 

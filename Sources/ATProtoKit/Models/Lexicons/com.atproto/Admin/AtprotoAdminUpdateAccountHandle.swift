@@ -7,9 +7,11 @@
 
 import Foundation
 
-/// The main data model definition for updating the handle of a user account as an administrator.
+/// The main data model definition for updating the handle of a user account as
+/// an administrator.
 ///
-/// - Note: According to the AT Protocol specifications: "Administrative action to update an account's handle."
+/// - Note: According to the AT Protocol specifications: "Administrative action to update
+/// an account's handle."
 ///
 /// - SeeAlso: This is based on the [`com.atproto.admin.updateAccountHandle`][github] lexicon.
 ///

@@ -7,9 +7,11 @@
 
 import Foundation
 
-/// The main data model definition for disabling some or all of the invite codes for one or more user accounts.
+/// The main data model definition for disabling some or all of the invite codes for one or more
+/// user accounts.
 ///
-/// - Note: According to the AT Protocol specifications: "Disable some set of codes and/or all codes associated with a set of users."
+/// - Note: According to the AT Protocol specifications: "Disable some set of codes and/or all
+/// codes associated with a set of users."
 ///
 /// - SeeAlso: This is based on the [`com.atproto.admin.disableInviteCodes`][github] lexicon.
 ///

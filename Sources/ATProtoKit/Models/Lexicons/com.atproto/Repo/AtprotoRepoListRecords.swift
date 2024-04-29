@@ -9,7 +9,8 @@ import Foundation
 
 /// The main data model definition for the output of listing records.
 ///
-/// - Note: According to the AT Protocol specifications: "List a range of records in a repository, matching a specific collection. Does not require auth."
+/// - Note: According to the AT Protocol specifications: "List a range of records in a repository,
+/// matching a specific collection. Does not require auth."
 ///
 /// - SeeAlso: This is based on the [`com.atproto.repo.listRecords`][github] lexicon.
 ///

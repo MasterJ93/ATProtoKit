@@ -171,14 +171,16 @@ public struct LabelerViewerState: Codable {
 public struct LabelerPolicies: Codable {
     /// An array of the labeler-published values.
     ///
-    /// - Note: According to the AT Protocol specifications: "The label values which this labeler publishes. May include global
+    /// - Note: According to the AT Protocol specifications: "The label values which this labeler
+    /// publishes. May include global
     /// or custom labels."
     public let labelValues: [LabelValue]
     /// An array of labeler-created labels.
     ///
     /// Labels made in here will override global definitions.
     ///
-    /// - Note: According to the AT Protocol specifications: "Label values created by this labeler and scoped exclusively to it.
-    /// Labels defined here will override global label definitions for this labeler."
+    /// - Note: According to the AT Protocol specifications: "Label values created by this labeler
+    /// and scoped exclusively to it. Labels defined here will override global label definitions
+    /// for this labeler."
     public let labelValueDefinitions: [LabelValueDefinition]
 }

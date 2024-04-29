@@ -7,7 +7,8 @@
 
 import Foundation
 
-/// The main data model definition for the output of retrieving an array of users who have reposted the given post.
+/// The main data model definition for the output of retrieving an array of users who have
+/// reposted the given post.
 ///
 /// - Note: According to the AT Protocol specifications: "Get a list of reposts for a given post."
 ///

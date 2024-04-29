@@ -10,7 +10,9 @@ import Foundation
 // MARK: - Main definition
 /// The main data model definition for record embeds.
 ///
-/// - Note: According to the AT Protocol specifications: "A representation of a record embedded in a Bluesky record (eg, a post). For example, a quote-post, or sharing a feed generator record."
+/// - Note: According to the AT Protocol specifications: "A representation of a record embedded in
+/// a Bluesky record (eg, a post). For example, a quote-post, or sharing a feed generator record."
+///
 /// - SeeAlso: This is based on the [`app.bsky.embed.record`][github] lexicon.
 ///
 /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/embed/record.json
@@ -214,8 +216,9 @@ public enum RecordViewUnion: Codable {
         } else if let value = try? container.decode(LabelerView.self) {
             self = .labelerView(value)
         } else {
-            throw DecodingError.typeMismatch(RecordViewUnion.self, DecodingError.Context(codingPath: decoder.codingPath,
-                                                                                         debugDescription: "Unknown RecordViewUnion type"))
+            throw DecodingError.typeMismatch(
+                RecordViewUnion.self, DecodingError.Context(
+                    codingPath: decoder.codingPath, debugDescription: "Unknown RecordViewUnion type"))
         }
     }
 

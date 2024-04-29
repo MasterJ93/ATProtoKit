@@ -7,9 +7,11 @@
 
 import Foundation
 
-/// The main data model definition for the output of getting information about several feed generators.
+/// The main data model definition for the output of getting information about several
+/// feed generators.
 ///
-/// - Note: According to the AT Protocol specifications: "Get information about a list of feed generators."
+/// - Note: According to the AT Protocol specifications: "Get information about a list of
+/// feed generators."
 ///
 /// - SeeAlso: This is based on the [`app.bsky.feed.getFeedGenerators`][github] lexicon.
 ///

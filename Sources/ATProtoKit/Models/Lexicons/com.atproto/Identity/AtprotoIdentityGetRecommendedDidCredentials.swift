@@ -7,10 +7,11 @@
 
 import Foundation
 
-/// The main data model definition for the output of getting the required information of a Personal Data Server's (PDS) DID document for migration.
+/// The main data model definition for the output of getting the required information of a
+/// Personal Data Server's (PDS) DID document for migration.
 ///
-/// - Note: According to the AT Protocol specifications: "Describe the credentials that should be included in the DID doc of an account that
-/// is migrating to this service."
+/// - Note: According to the AT Protocol specifications: "Describe the credentials that should
+/// be included in the DID doc of an account that is migrating to this service."
 ///
 /// - SeeAlso: This is based on the [`com.atproto.identity.getRecommendedDidCredentials`][github] lexicon.
 ///
@@ -18,7 +19,8 @@ import Foundation
 public struct IdentityGetRecommendedDidCredentialsOutput: Codable {
     /// The rotation keys recommended to be added in the DID document. Optional.
     ///
-    /// - Note: According to the AT Protocol specifications: "Recommended rotation keys for PLC dids. Should be undefined (or ignored) for did:webs."
+    /// - Note: According to the AT Protocol specifications: "Recommended rotation keys for PLC
+    /// dids. Should be undefined (or ignored) for did:webs."
     public let rotationKeys: [String]?
     /// An array of aliases of the user account. Optional.
     public let alsoKnownAs: [String]?

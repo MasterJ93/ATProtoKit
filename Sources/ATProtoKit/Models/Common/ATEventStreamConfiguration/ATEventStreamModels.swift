@@ -9,9 +9,10 @@ import Foundation
 
 /// The base protocol which all data stream-related classes conform to.
 ///
-/// `ATEventStreamConfiguration` contains all of the basic properties, initializers, and methods needed to manage connections in the AT Protocol's event streams.
-/// Some of these include directly managing the connection (opening, closing, and reconnecting), creating parameters for allowing and disallowing content, and
-/// handling sequences.
+/// `ATEventStreamConfiguration` contains all of the basic properties, initializers, and methods
+/// needed to manage connections in the AT Protocol's event streams. Some of these include directly
+/// managing the connection (opening, closing, and reconnecting), creating parameters for allowing
+/// and disallowing content, and handling sequences.
 public protocol ATEventStreamConfiguration {
     /// The URL of the relay.
     ///
@@ -27,9 +28,11 @@ public protocol ATEventStreamConfiguration {
     var sequencePosition: Int64? { get }
     /// The mark used to indicate the starting point for the next set of results. Optional.
     ///
-    /// - Note: According to the AT Protocol specifications: "The last known event seq number to backfill from."
+    /// - Note: According to the AT Protocol specifications: "The last known event seq number to
+    /// backfill from."
     var cursor: Int64? { get }
-    /// The configuration object that defines the behaviours and polices for a URL session in the event stream.
+    /// The configuration object that defines the behaviours and polices for a URL session in the
+    /// event stream.
     var urlSession: URLSession { get }
     /// The configuration object that defines behavior and policies for a URL session.
     var urlSessionConfiguration: URLSessionConfiguration { get }
@@ -38,29 +41,37 @@ public protocol ATEventStreamConfiguration {
 
     /// Creates a new instance to prepare for the event stream.
     ///
-    /// It's recommended that you set `urlSessionConfiguration` to `URLSessionConfiguration.default`.
+    /// It's recommended that you set `urlSessionConfiguration` to
+    /// `URLSessionConfiguration.default`.
     ///
     /// - Parameters:
     ///   - relayURL: The URL of the relay.
     ///   - namespacedIdentifiertURL: The Namespaced Identifier (NSID) of the endpoint.
     ///   - cursor: The number of the last successful message decoded. Optional.
     ///   - sequencePosition: The number of the last successful message decoded. Optional.
-    ///   - urlSessionConfiguration: The configuration object that defines the behaviours and polices for a URL session in the event stream.
-    ///   - webSocketTask: The URL session task that communicates over the WebSockets protocol standard.
+    ///   - urlSessionConfiguration: The configuration object that defines the behaviours
+    ///   and polices for a URL session in the event stream.
+    ///   - webSocketTask: The URL session task that communicates over the WebSockets
+    ///   protocol standard.
     init(relayURL: String, namespacedIdentifiertURL: String, cursor: Int64?, sequencePosition: Int64?, urlSessionConfiguration: URLSessionConfiguration,
          webSocketTask: URLSessionWebSocketTask) async throws
 
     /// Connects the client to the event stream.
     ///
-    /// Normally, when connecting to the event stream, it will start from the first message the event stream gets. The client will always look at the last successful
-    /// `sequencePosition` and stores it internally. However, the following can occur when `cursor` is invloved:
-    /// - If `cursor` is higher than `sequencePosition`, the connection will close after outputting an error.
-    /// - If `cursor` is within the server's rollback window, the server will attempt to give the client all of the messages it might have missed.
-    /// - If `cursor` is outside of the rollback window, then the server will send an info message saying it's too old, then sends the oldest message it has and
-    /// continues the stream.
-    /// - If `cursor` is `0`, then the server will send the oldest message it has and continues the stream.
+    /// Normally, when connecting to the event stream, it will start from the first message the
+    /// event stream gets. The client will always look at the last successful `sequencePosition`
+    /// and stores it internally. However, the following can occur when `cursor` is invloved:
+    /// - If `cursor` is higher than `sequencePosition`, the connection will close after
+    /// outputting an error.
+    /// - If `cursor` is within the server's rollback window, the server will attempt to give the
+    /// client all of the messages it might have missed.
+    /// - If `cursor` is outside of the rollback window, then the server will send an info message
+    /// saying it's too old, then sends the oldest message it has and continues the stream.
+    /// - If `cursor` is `0`, then the server will send the oldest message it has and continues
+    /// the stream.
     ///
-    /// - Parameter cursor: The mark used to indicate the starting point for the next set of results. Optional.
+    /// - Parameter cursor: The mark used to indicate the starting point for the next set of
+    /// results. Optional.
     func connect(cursor: Int64?) async
     /// Disconnects the client from the event stream.
     /// 
@@ -73,12 +84,14 @@ public protocol ATEventStreamConfiguration {
     /// This method can only be used if the client didn't disconnect itself from the server.
     ///
     /// - Parameters:
-    ///   - cursor: The mark used to indicate the starting point for the next set of results. Optional.
+    ///   - cursor: The mark used to indicate the starting point for the next set
+    ///   of results. Optional.
     ///   - retry: The number of times the connection attempts can be retried.
     func reconnect(cursor: Int64?, retry: Int) async
     /// Receives decoded messages and manages the sequence number.
     ///
-    /// This will attempt to decode each of the messages that arrive from the event stream. All of the messages are in a [DAG-CBOR][DAG_CBOR] format and must
+    /// This will attempt to decode each of the messages that arrive from the event stream.
+    /// All of the messages are in a [DAG-CBOR][DAG_CBOR] format and must
     /// be decoded.
     ///
     /// [DAG_CBOR]: https://ipld.io/docs/codecs/known/dag-cbor/
@@ -88,10 +101,12 @@ public protocol ATEventStreamConfiguration {
 public struct WebSocketFrameHeader: Decodable {
     /// Indicates what this frame contains.
     ///
-    /// If it contains a `1`, then a normal message will be in the payload and `type` will have a value. If it contains a `-1`, then an error message will be displayed
-    /// in the payload instead.
+    /// If it contains a `1`, then a normal message will be in the payload and `type` will have
+    /// a value. If it contains a `-1`, then an error message will be displayed in the
+    /// payload instead.
     ///
-    /// - Note: If `operation` contains a value other than `1` or `-1`, the entire frame will be completely ignored.
+    /// - Note: If `operation` contains a value other than `1` or `-1`, the entire frame
+    /// will be completely ignored.
     public let operation: Int
     /// Indicates the Lexicon sub-type for this message, in short form.
     public let type: String?

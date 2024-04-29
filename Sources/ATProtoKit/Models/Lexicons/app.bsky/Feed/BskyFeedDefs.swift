@@ -106,7 +106,8 @@ public struct FeedPostView: Codable {
 
 /// A data model for a viewer state definition.
 ///
-/// - Note: According to the AT Protocol specifications: "Metadata about the requesting account's relationship with the subject content. Only has meaningful content for authed requests."
+/// - Note: According to the AT Protocol specifications: "Metadata about the requesting account's
+/// relationship with the subject content. Only has meaningful content for authed requests."
 ///
 /// - SeeAlso: This is based on the [`app.bsky.feed.defs`][github] lexicon.
 ///
@@ -141,7 +142,8 @@ public struct FeedViewPost: Codable {
     public var reason: FeedReasonRepost? = nil
     /// The feed generator's context. Optional
     ///
-    /// - Note: According to the AT Protocol specifications: "Context provided by feed generator that may be passed back alongside interactions."
+    /// - Note: According to the AT Protocol specifications: "Context provided by feed generator
+    /// that may be passed back alongside interactions."
     public let feedContext: String?
 
     public init(post: FeedPostView, reply: FeedReplyReference? = nil, reason: FeedReasonRepost? = nil, feedContext: String?) {
@@ -190,7 +192,8 @@ public struct FeedReplyReference: Codable {
     // TODO: Fix up the note's message.
     /// The direct post that the user's post is replying to.
     ///
-    /// - Note: If `parent` and `root` are identical, the post is a direct reply to the original post of the thread.
+    /// - Note: If `parent` and `root` are identical, the post is a direct reply to the original
+    /// post of the thread.
     public let parent: PostUnion
 }
 
@@ -350,7 +353,8 @@ public struct FeedGeneratorView: Codable {
     public var likeCount: Int? = nil
     /// Indicates whether the feed generator can accept interactions.
     ///
-    /// - Note: According to the AT Protocol specifications: "Context that will be passed through to client and may be passed to feed generator back alongside interactions."
+    /// - Note: According to the AT Protocol specifications: "Context that will be passed through
+    /// to client and may be passed to feed generator back alongside interactions."
     public let canAcceptInteractions: Bool?
     /// An array of labels. Optional.
     public let labels: [Label]?
@@ -455,7 +459,8 @@ public struct FeedGeneratorViewerState: Codable {
 public struct FeedSkeletonFeedPost: Codable {
     /// The URI of the post in the feed generator.
     ///
-    /// - Note: This refers to the original post's URI. If the post is a repost, then `reason` will contain a value.
+    /// - Note: This refers to the original post's URI. If the post is a repost, then `reason`
+    /// will contain a value.
     public let postURI: String
     /// The indication that the post was a repost. Optional.
     public var reason: FeedSkeletonReasonRepost? = nil
@@ -518,7 +523,8 @@ public struct FeedInteraction: Codable {
     public let event: FeedInteractionEvent?
     /// The feed generator's context. Optional.
     ///
-    /// - Note: According to the AT Protocol specifications: "Context on a feed item that was orginally supplied by the feed generator on getFeedSkeleton."
+    /// - Note: According to the AT Protocol specifications: "Context on a feed item that was orginally
+    /// supplied by the feed generator on getFeedSkeleton."
     public let feedContext: String?
 
     public init(item: String, event: FeedInteractionEvent, feedContext: String) {
@@ -560,27 +566,33 @@ public struct FeedInteraction: Codable {
 public enum FeedInteractionEvent: Codable {
     /// Indicates the feed generator should request less content similar to the feed's item.
     ///
-    /// - Note: According to the AT Protocol specifications: "Request that less content like the given feed item be shown in the feed."
+    /// - Note: According to the AT Protocol specifications: "Request that less content like the
+    /// given feed item be shown in the feed."
     case requestLess
     /// Indicates the feed generator should request more content similar to the feed's item.
     ///
-    /// - Note: According to the AT Protocol specifications: "Request that more content like the given feed item be shown in the feed."
+    /// - Note: According to the AT Protocol specifications: "Request that more content like the
+    /// given feed item be shown in the feed."
     case requestMore
     /// Indicates the feed generator clicked on the feed's item.
     ///
-    /// - Note: According to the AT Protocol specifications: "User clicked through to the feed item."
+    /// - Note: According to the AT Protocol specifications: "User clicked through to the
+    /// feed item."
     case clickthroughItem
     /// Indicates the user clicked on the author of the feed's item.
     ///
-    /// - Note: According to the AT Protocol specifications: "User clicked through to the author of the feed item."
+    /// - Note: According to the AT Protocol specifications: "User clicked through to the author
+    /// of the feed item."
     case clickthroughAuthor
     /// Indicates the user clicked on the reposter of the feed's item.
     ///
-    /// - Note: According to the AT Protocol specifications: "User clicked through to the reposter of the feed item."
+    /// - Note: According to the AT Protocol specifications: "User clicked through to the reposter
+    /// of the feed item."
     case clickthroughReposter
     /// Indicates the user clicked on the embedded content of the feed's item.
     ///
-    /// - Note: According to the AT Protocol specifications: "User clicked through to the embedded content of the feed item."
+    /// - Note: According to the AT Protocol specifications: "User clicked through to the embedded
+    /// content of the feed item."
     case clickthroughEmbed
     /// Indicates the user has viewed the item in the feed.
     ///
@@ -644,8 +656,9 @@ public enum EmbedViewUnion: Codable {
         } else if let value = try? container.decode(EmbedRecordWithMediaView.self) {
             self = .embedRecordWithMediaView(value)
         } else {
-            throw DecodingError.typeMismatch(EmbedViewUnion.self,
-                                             DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Unknown EmbedView type"))
+            throw DecodingError.typeMismatch(
+                EmbedViewUnion.self, DecodingError.Context(
+                    codingPath: decoder.codingPath, debugDescription: "Unknown EmbedView type"))
         }
     }
 
@@ -678,7 +691,6 @@ public enum PostUnion: Codable {
     /// The view of a post that's been blocked by the post author.
     case blockedPost(FeedBlockedPost)
 
-    // Custom coding keys and init(from:) / encode(to:) will be needed here for Codable conformance.
     public init(from decoder: Decoder) throws {
         let container = try decoder.singleValueContainer()
 
@@ -722,7 +734,6 @@ public indirect enum ThreadPostUnion: Codable {
     /// The view of a post that's been blocked by the post author.
     case blockedPost(FeedBlockedPost)
 
-    // Custom coding keys and init(from:) / encode(to:) will be needed here for Codable conformance.
     public init(from decoder: Decoder) throws {
         let container = try decoder.singleValueContainer()
 

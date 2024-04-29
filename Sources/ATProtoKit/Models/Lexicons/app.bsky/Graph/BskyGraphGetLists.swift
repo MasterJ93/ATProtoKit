@@ -7,9 +7,11 @@
 
 import Foundation
 
-/// The main data model definition for the output of retrieving the lists created by the user account.
+/// The main data model definition for the output of retrieving the lists created by the
+/// user account.
 ///
-/// - Note: According to the AT Protocol specifications: "Enumerates the lists created by a specified account (actor)."
+/// - Note: According to the AT Protocol specifications: "Enumerates the lists created by a
+/// specified account (actor)."
 ///
 /// - SeeAlso: This is based on the [`app.bsky.graph.getLists`][github] lexicon.
 ///

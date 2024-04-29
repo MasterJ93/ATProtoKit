@@ -7,9 +7,10 @@
 
 import Foundation
 
-/// The main data model definition for a repost record on Bluesky.
+/// The record model definition for a repost record on Bluesky.
 ///
-/// - Note: According to the AT Protocol specifications: "Record representing a 'repost' of an existing Bluesky post."
+/// - Note: According to the AT Protocol specifications: "Record representing a 'repost' of an
+/// existing Bluesky post."
 ///
 /// - SeeAlso: This is based on the [`app.bsky.feed.repost`][github] lexicon.
 ///

@@ -10,7 +10,8 @@ import Foundation
 // MARK: - Main definition
 /// The main data model definition for external embeds.
 ///
-/// - Note: According to the AT Protocol specifications: "A representation of some externally linked content (eg, a URL and 'card'), embedded in a Bluesky record (eg, a post)."
+/// - Note: According to the AT Protocol specifications: "A representation of some externally
+/// linked content (eg, a URL and 'card'), embedded in a Bluesky record (eg, a post)."
 ///
 /// - SeeAlso: This is based on the [`app.bsky.embed.external`][github] lexicon.
 ///
@@ -43,7 +44,8 @@ public struct External: Codable {
     public let description: String
     /// The thumbnail image of the external content.
     ///
-    /// - Warning: The image size can't be higher than 1 MB. Failure to do so will result in the image failing to upload.
+    /// - Warning: The image size can't be higher than 1 MB. Failure to do so will result in the
+    /// image failing to upload.
     public let thumbnailImage: UploadBlobOutput?
 
     enum CodingKeys: String, CodingKey {

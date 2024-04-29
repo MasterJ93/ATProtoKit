@@ -8,9 +8,10 @@
 import Foundation
 
 // MARK: - Main definition
-/// The main data model definition for a like record.
+/// The record model definition for a like record.
 ///
-/// - Note: According to the AT Protocol specifications: "Record declaring a 'like' of a piece of subject content."
+/// - Note: According to the AT Protocol specifications: "Record declaring a 'like' of a piece
+/// of subject content."
 ///
 /// - SeeAlso: This is based on the [`app.bsky.feed.like`][github] lexicon.
 ///
@@ -22,7 +23,8 @@ public struct FeedLike: ATRecordProtocol {
     public static private(set) var type: String = "app.bsky.feed.like"
     /// The strong reference of the like.
     ///
-    /// - Note: According to the AT Protocol specifications: "Record declaring a 'like' of a piece of subject content."
+    /// - Note: According to the AT Protocol specifications: "Record declaring a 'like' of a piece
+    /// of subject content."
     public let subject: StrongReference
     /// The date the like record was created.
     ///

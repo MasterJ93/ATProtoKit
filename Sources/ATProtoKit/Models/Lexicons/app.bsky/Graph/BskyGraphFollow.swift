@@ -9,8 +9,8 @@ import Foundation
 
 /// The main data model definition for a follow record.
 ///
-/// - Note: According to the AT Protocol specifications: "Record declaring a social 'follow' relationship of another account. Duplicate follows will be ignored
-/// by the AppView."
+/// - Note: According to the AT Protocol specifications: "Record declaring a social 'follow'
+/// relationship of another account. Duplicate follows will be ignored by the AppView."
 ///
 /// - SeeAlso: This is based on the [`app.bsky.graph.follow`][github] lexicon.
 ///

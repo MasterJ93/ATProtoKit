@@ -9,7 +9,9 @@ import Foundation
 
 /// The main data model definition for creating a report.
 ///
-/// - Note: According to the AT Protocol specifications: "Submit a moderation report regarding an atproto account or record. Implemented by moderation services (with PDS proxying), and requires auth."
+/// - Note: According to the AT Protocol specifications: "Submit a moderation report regarding
+/// an atproto account or record. Implemented by moderation services (with PDS proxying), and
+/// requires auth."
 ///
 /// - SeeAlso: This is based on the [`com.atproto.moderation.createReport`][github] lexicon.
 ///
@@ -17,11 +19,13 @@ import Foundation
 public struct ModerationCreateReport: Codable {
     /// The reason for the report.
     ///
-    /// - Note: According to the AT Protocol specifications: "Indicates the broad category of violation the report is for."
+    /// - Note: According to the AT Protocol specifications: "Indicates the broad category of
+    /// violation the report is for."
     public let reasonType: ModerationReasonType
     /// Any clarifying comments accompanying the report. Optional.
     ///
-    /// - Note: According to the AT Protocol specifications: "Additional context about the content and violation."
+    /// - Note: According to the AT Protocol specifications: "Additional context about the
+    /// content and violation."
     public let reason: String?
     /// The subject reference.
     ///

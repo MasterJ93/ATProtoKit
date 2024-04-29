@@ -9,10 +9,11 @@ import Foundation
 
 /// The main data model definition for the output of getting tagged suggestions.
 ///
-/// - Note: According to the AT Protocol specifications: "Get a list of suggestions (feeds and users) tagged with categories."
+/// - Note: According to the AT Protocol specifications: "Get a list of suggestions (feeds
+/// and users) tagged with categories."
 ///
-/// - Important: This is an unspecced model, and as such, this is highly volatile and may change or be removed at any time. Use at your
-/// own risk.
+/// - Important: This is an unspecced model, and as such, this is highly volatile and may change
+/// or be removed at any time. Use at your own risk.
 ///
 /// - SeeAlso: This is based on the [`app.bsky.unspecced.getTaggedSuggestions`][github] lexicon.
 ///
@@ -24,8 +25,8 @@ public struct UnspeccedGetTaggedSuggestionsOutput: Codable {
 
 /// A data model for a tagged suggestion.
 ///
-/// - Important: This is an unspecced model, and as such, this is highly volatile and may change or be removed at any time. Use at your
-/// own risk.
+/// - Important: This is an unspecced model, and as such, this is highly volatile and may change
+/// or be removed at any time. Use at your own risk.
 ///
 /// - SeeAlso: This is based on the [`app.bsky.unspecced.getTaggedSuggestions`][github] lexicon.
 ///

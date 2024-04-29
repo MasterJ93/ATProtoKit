@@ -9,7 +9,8 @@ import Foundation
 
 /// The main data model definition for a blocking list record.
 ///
-/// - Note: According to the AT Protocol specifications: "Record representing a block relationship against an entire [...] list of accounts (actors)."
+/// - Note: According to the AT Protocol specifications: "Record representing a block relationship
+/// against an entire [...] list of accounts (actors)."
 ///
 /// - SeeAlso: This is based on the [`app.bsky.graph.listblock`][github] lexicon.
 ///
@@ -21,7 +22,8 @@ public struct GraphListBlock: ATRecordProtocol {
     public static private(set) var type: String = "app.bsky.graph.listblock"
     /// The decentralized identifier (DID) of the moderator list record.
     ///
-    /// - Note: According to the AT Protocol specifications: "Reference (AT-URI) to the mod list record."
+    /// - Note: According to the AT Protocol specifications: "Reference (AT-URI) to the mod
+    /// list record."
     public let subjectDID: String
     /// The date and time the record was created.
     @DateFormatting public var createdAt: Date

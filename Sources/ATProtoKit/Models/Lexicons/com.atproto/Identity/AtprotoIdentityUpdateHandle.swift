@@ -10,7 +10,9 @@ import Foundation
 // MARK: - Main definition
 /// The main data model definition for updating a handle.
 ///
-/// - Note: According to the AT Protocol specifications: "Updates the current account's handle. Verifies handle validity, and updates did:plc document if necessary. Implemented by PDS, and requires auth."
+/// - Note: According to the AT Protocol specifications: "Updates the current account's handle.
+/// Verifies handle validity, and updates did:plc document if necessary. Implemented by PDS,
+/// and requires auth."
 ///
 /// - SeeAlso: This is based on the [`com.atproto.identity.updateHandle`][github] lexicon.
 ///

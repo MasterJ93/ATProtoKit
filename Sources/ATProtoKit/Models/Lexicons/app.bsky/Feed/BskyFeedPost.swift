@@ -8,7 +8,7 @@
 import Foundation
 
 // MARK: - Main definition
-/// The main data model definition for a post record.
+/// The record model definition for a post record.
 ///
 /// - Note: According to the AT Protocol specifications: "Record containing a Bluesky post."
 ///
@@ -22,13 +22,16 @@ public struct FeedPost: ATRecordProtocol {
     public static private(set) var type: String = "app.bsky.feed.post"
     /// The text contained in the post.
     ///
-    /// - Note: According to the AT Protocol specifications: "The primary post content. May be an empty string, if there are embeds."
+    /// - Note: According to the AT Protocol specifications: "The primary post content. May be
+    /// an empty string, if there are embeds."
     ///
-    /// - Important: Current maximum length is 300 characters. This library will automatically truncate the `String` to the maximum length if it does go over the limit.
+    /// - Important: Current maximum length is 300 characters. This library will automatically
+    /// truncate the `String` to the maximum length if it does go over the limit.
     public let text: String
     /// An array of facets contained in the post's text. Optional.
     ///
-    /// - Note: According to the AT Protocol specifications: "Annotations of text (mentions, URLs, hashtags, etc)"
+    /// - Note: According to the AT Protocol specifications: "Annotations of text (mentions, URLs,
+    /// hashtags, etc)"
     public var facets: [Facet]? = nil
     /// The references to posts when replying. Optional.
     public var reply: ReplyReference? = nil
@@ -36,24 +39,30 @@ public struct FeedPost: ATRecordProtocol {
     public var embed: EmbedUnion? = nil
     /// An array of languages the post text contains. Optional.
     ///
-    /// - Note: According to the AT Protocol specifications: "Indicates human language of post primary text content."
+    /// - Note: According to the AT Protocol specifications: "Indicates human language of post
+    /// primary text content."
     ///
-    /// - Important: Current maximum length is 3 languages. This library will automatically truncate the `Array` to the maximum number of items if it does go over the limit.
+    /// - Important: Current maximum length is 3 languages. This library will automatically
+    /// truncate the `Array` to the maximum number of items if it does go over the limit.
     public var languages: [String]? = nil
     /// An array of user-defined labels. Optional.
     ///
-    /// - Note: According to the AT Protocol specifications: "Self-label values for this post. Effectively content warnings."
+    /// - Note: According to the AT Protocol specifications: "Self-label values for this post.
+    /// Effectively content warnings."
     public var labels: FeedLabelUnion? = nil
     /// An array of user-defined tags. Optional.
     ///
-    /// - Note: According to the AT Protocol specifications: "Additional hashtags, in addition to any included in post text and facets."
+    /// - Note: According to the AT Protocol specifications: "Additional hashtags, in addition to
+    /// any included in post text and facets."
     ///
-    /// - Important: Current maximum length is 8 tags. Current maximum length of the tag name is 64 characters. This library will automatically truncate the `Array`and `String` respectively to
-    /// the maximum length if it does go over the limit.
+    /// - Important: Current maximum length is 8 tags. Current maximum length of the tag name is
+    /// 64 characters. This library will automatically truncate the `Array`and `String`
+    /// respectively to the maximum length if it does go over the limit.
     public var tags: [String]? = nil
     /// The date the post was created.
     ///
-    /// - Note: According to the AT Protocol specifications: "Client-declared timestamp when this post was originally created."
+    /// - Note: According to the AT Protocol specifications: "Client-declared timestamp when this
+    /// post was originally created."
     @DateFormatting public var createdAt: Date
 
     public init(text: String, facets: [Facet]? = nil, reply: ReplyReference? = nil, embed: EmbedUnion? = nil, languages: [String]? = nil,
@@ -130,7 +139,8 @@ public struct ReplyReference: Codable {
     public let root: StrongReference
     /// The direct post that the user's post is replying to.
     ///
-    /// - Note: If `parent` and `root` are identical, the post is a direct reply to the original post of the thread.
+    /// - Note: If `parent` and `root` are identical, the post is a direct reply to the original
+    /// post of the thread.
     public let parent: StrongReference
 
     public init(root: StrongReference, parent: StrongReference) {
@@ -186,9 +196,6 @@ public enum EmbedUnion: Codable {
         } else if let recordWithMediaValue = try? container.decode(EmbedRecordWithMedia.self) {
             self = .recordWithMedia(recordWithMediaValue)
         } else {
-            let rawData = try container.decode(Data.self) // Attempt to decode the raw data
-            let rawString = String(data: rawData, encoding: .utf8) ?? "\nUnknown data\n"
-            print("\nRaw String: \(rawString)")
             throw DecodingError.typeMismatch(
                 EmbedUnion.self, DecodingError.Context(
                     codingPath: decoder.codingPath, debugDescription: "Unknown EmbedUnion type"))

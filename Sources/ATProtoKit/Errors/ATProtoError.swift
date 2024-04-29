@@ -126,7 +126,8 @@ public enum ATAPIError: ATProtoError, Decodable {
 enum ATRequestPrepareError: ATProtoError {
     /// The format of the object is incorrect.
     case invalidFormat
-    /// The requestURL may be incorrect (either the endpoint itself or the URL of the Personal Data Server (PDS)).
+    /// The requestURL may be incorrect (either the endpoint itself or the URL of the
+    /// Personal Data Server (PDS)).
     case invalidRequestURL
     /// The hostname's URL may be incorrect.
     case invalidHostnameURL
@@ -154,7 +155,8 @@ enum ATHTTPRequestError: ATProtoError {
     case invalidResponse
 }
 
-/// An error type specifically related to Bluesky (either before or after interacting with the service).
+/// An error type specifically related to Bluesky (either before or after interacting with
+/// the service).
 enum ATBlueskyError: ATProtoError {
     /// The image used is too large.
     case imageTooLarge

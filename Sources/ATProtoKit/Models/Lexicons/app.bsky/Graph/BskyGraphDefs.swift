@@ -21,7 +21,8 @@ public struct GraphListViewBasic: Codable {
     public let name: String
     /// The purpose of the user list.
     ///
-    /// - Important: Current maximum length is 64 characters. This library will truncate the `String` to the maximum number of characters if it does go over.
+    /// - Important: Current maximum length is 64 characters. This library will truncate the
+    /// `String` to the maximum number of characters if it does go over.
     public let purpose: GraphListPurpose
     /// The avatar image URL of the user list. Optional.
     public let avatarImageURL: URL?
@@ -92,13 +93,15 @@ public struct GraphListView: Codable {
     public let creator: ActorProfileView
     /// The name of the user list.
     ///
-    /// - Important: Current maximum length is 64 characters. This library will truncate the `String` to the maximum number of characters if it does go over.
+    /// - Important: Current maximum length is 64 characters. This library will truncate the
+    /// `String` to the maximum number of characters if it does go over.
     public let name: String
     /// The purpose of the user list.
     public let purpose: GraphListPurpose
     /// The description of the user list. Optional.
     ///
-    /// - Important: Current maximum length is 300 characters. This library will truncate the `String` to the maximum number of characters if it does go over.
+    /// - Important: Current maximum length is 300 characters. This library will truncate the
+    /// `String` to the maximum number of characters if it does go over.
     public var description: String? = nil
     /// An array of facets contained in the post's text. Optional.
     public var descriptionFacets: [Facet]? = nil
@@ -227,7 +230,8 @@ public struct GraphListViewerState: Codable {
 public struct GraphNotFoundActor: Codable {
     /// The URI of the user.
     ///
-    /// - Note: According to the AT Protocol specifications: "indicates that a handle or DID could not be resolved",
+    /// - Note: According to the AT Protocol specifications: "indicates that a handle or DID could
+    /// not be resolved",
     public let actorURI: String
     /// Indicates whether the user is not found.
     public let isNotFound: Bool
@@ -240,7 +244,9 @@ public struct GraphNotFoundActor: Codable {
 
 /// A data model for the graph relationship definition.
 ///
-/// - Note: According to the AT Protocol specifications: "lists the bi-directional graph relationships between one actor (not indicated in the object), and the target actors (the DID included in the object)"
+/// - Note: According to the AT Protocol specifications: "lists the bi-directional graph
+/// relationships between one actor (not indicated in the object), and the target actors (the DID
+/// included in the object)"
 ///
 /// - SeeAlso: This is based on the [`app.bsky.graph.defs`][github] lexicon.
 ///
@@ -250,11 +256,13 @@ public struct GraphRelationship: Codable {
     public let actorDID: String
     /// The URI of the follow record, if the first user is following the target user. Optional.
     ///
-    /// - Note: According to the AT Protocol specifications: "if the actor follows this DID, this is the AT-URI of the follow record"
+    /// - Note: According to the AT Protocol specifications: "if the actor follows this DID, this
+    /// is the AT-URI of the follow record"
     public let followingURI: String?
     /// The URI of the follow record, if the target user is following the first user. Optional.
     ///
-    /// - Note: According to the AT Protocol specifications: "if the actor is followed by this DID, contains the AT-URI of the follow record"
+    /// - Note: According to the AT Protocol specifications: "if the actor is followed by this
+    /// DID, contains the AT-URI of the follow record"
     public let followedByURI: String?
 
     enum CodingKeys: String, CodingKey {

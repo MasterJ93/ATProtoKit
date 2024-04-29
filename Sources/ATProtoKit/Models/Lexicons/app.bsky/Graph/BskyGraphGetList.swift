@@ -9,7 +9,8 @@ import Foundation
 
 /// The main data model definition for the output of grabbing the list view.
 ///
-/// - Note: According to the AT Protocol specifications: "Gets a 'view' (with additional context) of a specified list."
+/// - Note: According to the AT Protocol specifications: "Gets a 'view' (with additional context)
+/// of a specified list."
 ///
 /// - SeeAlso: This is based on the [`app.bsky.graph.getList`][github] lexicon.
 ///

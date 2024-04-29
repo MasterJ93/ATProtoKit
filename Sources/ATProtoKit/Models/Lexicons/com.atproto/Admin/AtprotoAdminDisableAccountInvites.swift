@@ -7,9 +7,11 @@
 
 import Foundation
 
-/// The main data model definition for disabling a user account's ability to receive new invite codes.
+/// The main data model definition for disabling a user account's ability to receive new
+/// invite codes.
 ///
-/// - Note: According to the AT Protocol specifications: "Disable an account from receiving new invite codes, but does not invalidate existing codes."
+/// - Note: According to the AT Protocol specifications: "Disable an account from receiving new
+/// invite codes, but does not invalidate existing codes."
 ///
 /// - SeeAlso: This is based on the [`com.atproto.admin.disableAccountInvites`][github] lexicon.
 ///
@@ -19,7 +21,8 @@ public struct AdminDisableAccountInvites: Codable {
     public let accountDID: String
     /// A comment explaining why the user won't receive new account invites. Optional.
     ///
-    /// - Note: According to the AT Protocol specifications: "Optional reason for disabled invites."
+    /// - Note: According to the AT Protocol specifications: "Optional reason for
+    /// disabled invites."
     public let note: String?
 
     enum CodingKeys: String, CodingKey {

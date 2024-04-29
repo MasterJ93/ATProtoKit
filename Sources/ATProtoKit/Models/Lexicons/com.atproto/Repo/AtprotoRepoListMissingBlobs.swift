@@ -7,10 +7,11 @@
 
 import Foundation
 
-/// The main data model definition for the output of listing any missing blobs attached to the user account.
+/// The main data model definition for the output of listing any missing blobs attached to the
+/// user account.
 ///
-/// - Note: According to the AT Protocol specifications: "Returns a list of missing blobs for the requesting account. Intended to be used in the
-/// account migration flow."
+/// - Note: According to the AT Protocol specifications: "Returns a list of missing blobs for the
+/// requesting account. Intended to be used in the account migration flow."
 ///
 /// - SeeAlso: This is based on the [`com.atproto.repo.listMissingBlobs`][github] lexicon.
 ///

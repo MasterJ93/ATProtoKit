@@ -9,7 +9,8 @@ import Foundation
 
 /// The main data model definition for the output of getting a hydrated array of posts.
 ///
-/// - Note: According to the AT Protocol specifications: "Gets post views for a specified list of posts (by AT-URI). This is sometimes referred to as 'hydrating'
+/// - Note: According to the AT Protocol specifications: "Gets post views for a specified list
+/// of posts (by AT-URI). This is sometimes referred to as 'hydrating'
 /// a 'feed skeleton'."
 ///
 /// - SeeAlso: This is based on the [`app.bsky.feed.getPosts`][github] lexicon.

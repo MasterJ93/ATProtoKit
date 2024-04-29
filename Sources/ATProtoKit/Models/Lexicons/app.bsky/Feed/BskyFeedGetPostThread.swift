@@ -9,7 +9,8 @@ import Foundation
 
 /// The main data model definition for the output of retrieving a post thread.
 ///
-/// - Note: According to the AT Protocol specifications: "Get posts in a thread. Does not require auth, but additional metadata and filtering will be applied for authed requests."
+/// - Note: According to the AT Protocol specifications: "Get posts in a thread. Does not require
+/// auth, but additional metadata and filtering will be applied for authed requests."
 ///
 /// - SeeAlso: This is based on the [`app.bsky.feed.getPostThread`][github] lexicon.
 ///
@@ -38,8 +39,9 @@ public enum FeedGetPostThreadUnion: Codable {
         } else if let value = try? container.decode(FeedBlockedPost.self) {
             self = .blockedPost(value)
         } else {
-            throw DecodingError.typeMismatch(FeedGetPostThreadUnion.self,
-                                             DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Unknown FeedGetPostThread type"))
+            throw DecodingError.typeMismatch(
+                FeedGetPostThreadUnion.self, DecodingError.Context(
+                    codingPath: decoder.codingPath, debugDescription: "Unknown FeedGetPostThread type"))
         }
     }
 

@@ -9,10 +9,11 @@ import Foundation
 
 /// The main data model definition for the output of globally popular feed generators.
 ///
-/// - Note: According to the AT Protocol specifications: "An unspecced view of globally popular feed generators."
+/// - Note: According to the AT Protocol specifications: "An unspecced view of globally
+/// popular feed generators."
 ///
-/// - Important: This is an unspecced model, and as such, this is highly volatile and may change or be removed at any time. Use at your
-/// own risk.
+/// - Important: This is an unspecced model, and as such, this is highly volatile and may change
+/// or be removed at any time. Use at your own risk.
 ///
 /// - SeeAlso: This is based on the [`app.bsky.unspecced.getPopularFeedGenerators`][github] lexicon.
 ///

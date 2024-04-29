@@ -9,7 +9,8 @@ import Foundation
 
 /// The main data model definition for a feed generator record.
 ///
-/// - Note: According to the AT Protocol specifications: "Record declaring of the existence of a feed generator, and containing metadata about it. The record can exist in any repository."
+/// - Note: According to the AT Protocol specifications: "Record declaring of the existence of a
+/// feed generator, and containing metadata about it. The record can exist in any repository."
 ///
 /// - SeeAlso: This is based on the [`app.bsky.feed.generator`][github] lexicon.
 ///
@@ -23,11 +24,13 @@ public struct FeedGenerator: ATRecordProtocol {
     public let feedDID: String
     /// The display name of the feed.
     ///
-    /// - Important: Current maximum lenth is 24 characters. This library will automatically truncate the `String` to the maximum length if it does go over the limit.
+    /// - Important: Current maximum lenth is 24 characters. This library will automatically
+    /// truncate the `String` to the maximum length if it does go over the limit.
     public let displayName: String
     /// The description of the feed. Optional.
     ///
-    /// - Important: Current maximum lenth is 300 characters. This library will automatically truncate the `String` to the maximum length if it does go over the limit.
+    /// - Important: Current maximum lenth is 300 characters. This library will automatically
+    /// truncate the `String` to the maximum length if it does go over the limit.
     public let description: String?
     /// An array of the facets within the feed generator's description. Optional.
     public let descriptionFacets: [Facet]?
@@ -35,7 +38,8 @@ public struct FeedGenerator: ATRecordProtocol {
     public let avatarImageURL: URL?
     /// Indicates whether the feed generator can accept interactions.
     ///
-    /// - Note: According to the AT Protocol specifications: "Declaration that a feed accepts feedback interactions from a client through `app.bsky.feed.sendInteractions`"
+    /// - Note: According to the AT Protocol specifications: "Declaration that a feed accepts
+    /// feedback interactions from a client through `app.bsky.feed.sendInteractions`"
     public let canAcceptInteractions: Bool?
     /// An array of labels created by the user. Optional.
     public let labels: [SelfLabels]?

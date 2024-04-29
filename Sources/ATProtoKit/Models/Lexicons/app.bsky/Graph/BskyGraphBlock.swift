@@ -9,8 +9,8 @@ import Foundation
 
 /// The main data model definition for a block record.
 ///
-/// - Note: According to the AT Protocol specifications: "Record declaring a 'block' relationship against another account. NOTE: blocks are public in Bluesky;
-/// see blog posts for details."
+/// - Note: According to the AT Protocol specifications: "Record declaring a 'block' relationship
+/// against another account. NOTE: blocks are public in Bluesky; see blog posts for details."
 ///
 /// - SeeAlso: This is based on the [`app.bsky.graph.block`][github] lexicon.
 ///

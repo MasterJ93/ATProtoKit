@@ -9,7 +9,8 @@ import Foundation
 
 /// The main data model definition for signing a PLC operation to a DID document.
 ///
-/// - Note: According to the AT Protocol specifications: "Signs a PLC operation to update some value(s) in the requesting DID's document."
+/// - Note: According to the AT Protocol specifications: "Signs a PLC operation to update some
+/// value(s) in the requesting DID's document."
 ///
 /// - SeeAlso: This is based on the [`com.atproto.identity.signPlcOperation`][github] lexicon.
 ///
@@ -17,7 +18,8 @@ import Foundation
 public struct IdentitySignPLCOperation: Codable {
     /// A token received from ``ATProtoKit/ATProtoKit/requestPLCOperationSignature()``. Optional.
     ///
-    /// - Note: According to the AT Protocol specifications: "A token received through com.atproto.identity.requestPlcOperationSignature"
+    /// - Note: According to the AT Protocol specifications: "A token received
+    /// through com.atproto.identity.requestPlcOperationSignature"
     public let token: String?
     /// The rotation keys recommended to be added in the DID document. Optional.
     public let rotationKeys: [String]?
@@ -31,7 +33,8 @@ public struct IdentitySignPLCOperation: Codable {
 
 /// The main data model definition for the output of signing a PLC operation to a DID document.
 ///
-/// - Note: According to the AT Protocol specifications: "Signs a PLC operation to update some value(s) in the requesting DID's document."
+/// - Note: According to the AT Protocol specifications: "Signs a PLC operation to update some
+/// value(s) in the requesting DID's document."
 ///
 /// - SeeAlso: This is based on the [`com.atproto.identity.signPlcOperation`][github] lexicon.
 ///

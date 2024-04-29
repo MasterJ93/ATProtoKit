@@ -9,10 +9,11 @@ import Foundation
 
 /// The main data model definition for getting a skeleton of suggestion of actors.
 ///
-/// - Note: According to the AT Protocol specifications: "Get a skeleton of suggested actors. Intended to be called and then hydrated through app.bsky.actor.getSuggestions."
+/// - Note: According to the AT Protocol specifications: "Get a skeleton of suggested actors.
+/// Intended to be called and then hydrated through app.bsky.actor.getSuggestions."
 ///
-/// - Important: This is an unspecced model, and as such, this is highly volatile and may change or be removed at any time. Use at your
-/// own risk.
+/// - Important: This is an unspecced model, and as such, this is highly volatile and may change
+/// or be removed at any time. Use at your own risk.
 ///
 /// - SeeAlso: This is based on the [`app.bsky.unspecced.getSuggestionsSkeleton`][github] lexicon.
 ///

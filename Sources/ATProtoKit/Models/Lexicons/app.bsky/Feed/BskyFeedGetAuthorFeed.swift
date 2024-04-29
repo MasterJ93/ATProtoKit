@@ -9,7 +9,8 @@ import Foundation
 
 /// The main data model definition for the output of seeing the user account's posts and reposts.
 ///
-/// - Note: According to the AT Protocol specifications: "Get a view of an actor's 'author feed' (post and reposts by the author). Does not require auth."
+/// - Note: According to the AT Protocol specifications: "Get a view of an actor's 'author feed'
+/// (post and reposts by the author). Does not require auth."
 ///
 /// - SeeAlso: This is based on the [`app.bsky.feed.getAuthorFeed`][github] lexicon.
 ///
@@ -23,7 +24,8 @@ public struct FeedGetAuthorFeedOutput: Codable {
 
 /// Indicates the kind of combinations of posts and reposts for the feed's array.
 ///
-/// - Note: According to the AT Protocol specifications: "Combinations of post/repost types to include in response."
+/// - Note: According to the AT Protocol specifications: "Combinations of post/repost types to
+/// include in response."
 public enum FeedGetAuthorFeedFilter: String {
     /// Indicates the array of feeds will contain posts with replies.
     case postsWithReplies = "posts_with_replies"

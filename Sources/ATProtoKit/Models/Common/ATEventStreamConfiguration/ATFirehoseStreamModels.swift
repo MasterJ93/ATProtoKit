@@ -11,15 +11,17 @@ import Foundation
 public protocol FirehoseEventRepresentable: Decodable {
     /// Represents the stream sequence number of this message.
     ///
-    /// - Note: According to the AT Protocol specifications: "The stream sequence number of this message."
+    /// - Note: According to the AT Protocol specifications: "The stream sequence number of
+    /// this message."
     var sequence: Int? { get }
 }
 
 // MARK: - #commit
 /// A data model definition for a repository state change.
 ///
-/// - Note: According to the AT Protocol specifications: "Represents an update of repository state. Note that empty commits are allowed, which include no repo data
-/// changes, but an update to rev and signature."
+/// - Note: According to the AT Protocol specifications: "Represents an update of repository state.
+/// Note that empty commits are allowed, which include no repo data changes, but an update to rev
+/// and signature."
 ///
 /// - SeeAlso: This is based on the [`com.atproto.sync.subscribeRepos`][github] lexicon.
 ///
@@ -27,14 +29,16 @@ public protocol FirehoseEventRepresentable: Decodable {
 public struct FirehoseFrameCommitMessage: Decodable {
     /// Represents the stream sequence number of this message.
     ///
-    /// - Note: According to the AT Protocol specifications: "The stream sequence number of this message."
+    /// - Note: According to the AT Protocol specifications: "The stream sequence number of
+    /// this message."
     public let sequence: Int
     /// Indicates that this commit contained too many operations, or the data size was too large.
     ///
     /// If this value is true, then a separate request will be needed to get the missing data.
     ///
-    /// - Note: According to the AT Protocol specifications: "Indicates that this commit contained too many ops, or data size was too large. Consumers will
-    /// need to make a separate request to get missing data."
+    /// - Note: According to the AT Protocol specifications: "Indicates that this commit contained
+    /// too many ops, or data size was too large. Consumers will need to make a separate request
+    /// to get missing data."
     public let isTooBig: Bool
     /// The repository from which this event originates.
     ///
@@ -48,30 +52,37 @@ public struct FirehoseFrameCommitMessage: Decodable {
     ///
     /// This information is duplicated in ``blocks``, unless ``isTooBig`` is set to `true`.
     ///
-    /// - Note: According to the AT Protocol specifications: "The rev of the emitted commit. Note that this information is also in the commit object included in
-    /// blocks, unless this is a tooBig event."
+    /// - Note: According to the AT Protocol specifications: "The rev of the emitted commit.
+    /// Note that this information is also in the commit object included in blocks, unless this is
+    /// a tooBig event."
     public let revision: String
     /// The revision of the last commit from the repository.
     ///
-    /// - Note: According to the AT Protocol specifications: "The rev of the last emitted commit from this repo (if any)."
+    /// - Note: According to the AT Protocol specifications: "The rev of the last emitted commit
+    /// from this repo (if any)."
     public let since: String
-    /// A .CAR file representing the changes in the repository state as a diff since the previous state.
+    /// A .CAR file representing the changes in the repository state as a diff since the
+    /// previous state.
     ///
     /// This is also in a DAG-CBOR format. This needs to be decoded separately.
     ///
-    /// - Note: According to the AT Protocol specifications: "CAR file containing relevant blocks, as a diff since the previous repo state."
+    /// - Note: According to the AT Protocol specifications: "CAR file containing relevant
+    /// blocks, as a diff since the previous repo state."
     public let blocks: Data
     /// An array of operations from the repository.
     ///
-    /// - Note: According to the AT Protocol specifications: "List of repo mutation operations in this commit (eg, records created, updated, or deleted)."
+    /// - Note: According to the AT Protocol specifications: "List of repo mutation operations
+    /// in this commit (eg, records created, updated, or deleted)."
     public let repositoryOperations: [FirehoseEventRepositoryOperation]
     /// An array of Content Identifiers (CIDs) that represent blobs.
     ///
-    /// - Note: According to the AT Protocol specifications: "List of new blobs (by CID) referenced by records in this commit."
+    /// - Note: According to the AT Protocol specifications: "List of new blobs (by CID) referenced
+    /// by records in this commit."
     public let blobIdentifiers: [String]
     /// The date and time the message was first broadcast.
     ///
-    /// - Note: According to the AT Protocol specifications: "Timestamp of when this message was originally broadcast."
+    /// - Note: According to the AT Protocol specifications: "Timestamp of when this message
+    /// was originally broadcast."
     @DateFormatting public var timestamp: Date
 
 
@@ -91,7 +102,8 @@ public struct FirehoseFrameCommitMessage: Decodable {
 
 /// A data model definition for a repository operation.
 ///
-/// - Note: According to the AT Protocol specifications: "A repo operation, ie a mutation of a single record."
+/// - Note: According to the AT Protocol specifications: "A repo operation, ie a mutation of a
+/// single record."
 ///
 /// - SeeAlso: This is based on the [`com.atproto.sync.subscribeRepos`][github] lexicon.
 ///
@@ -103,9 +115,11 @@ public struct FirehoseEventRepositoryOperation: Decodable {
     public let recordPath: String
     /// The Content Identifier (CID) of the record. Optional.
     ///
-    /// This property will have a value if ``action-swift.property`` is either `create` or `update`.
+    /// This property will have a value if ``action-swift.property`` is either `create`
+    /// or `update`.
     ///
-    /// - Note: According to the AT Protocol specifications: "For creates and updates, the new record CID. For deletions, null."
+    /// - Note: According to the AT Protocol specifications: "For creates and updates, the new
+    /// record CID. For deletions, null."
     public let recordCID: String?
 
     enum CodingKeys: String, CodingKey {
@@ -125,7 +139,8 @@ public struct FirehoseEventRepositoryOperation: Decodable {
 // MARK: - #identity
 /// A data model definition for an account identity change.
 ///
-/// - Note: According to the AT Protocol specifications: "Represents a change to an account's identity. Could be an updated handle, signing key, or pds hosting
+/// - Note: According to the AT Protocol specifications: "Represents a change to an account's
+/// identity. Could be an updated handle, signing key, or pds hosting
 /// endpoint. Serves as a prod to all downstream services to refresh their identity cache."
 ///
 /// - SeeAlso: This is based on the [`com.atproto.sync.subscribeRepos`][github] lexicon.
@@ -149,7 +164,8 @@ public struct FirehoseFrameIdentityMessage: Decodable {
 // MARK: - #handle
 /// A data model definition for an account handle change state.
 ///
-/// - Note: According to the AT Protocol specifications: "Represents an update of the account's handle, or transition to/from invalid state. NOTE: Will be deprecated
+/// - Note: According to the AT Protocol specifications: "Represents an update of the account's
+/// handle, or transition to/from invalid state. NOTE: Will be deprecated
 /// in favor of #identity."
 ///
 /// - SeeAlso: This is based on the [`com.atproto.sync.subscribeRepos`][github] lexicon.
@@ -176,7 +192,8 @@ public struct FirehoseFrameHandleMessage: Decodable {
 // MARK: - #migrate
 /// A data model definition for an account migration event.
 ///
-/// - Note: According to the AT Protocol specifications: "Represents an account moving from one PDS instance to another. NOTE: not implemented; account migration
+/// - Note: According to the AT Protocol specifications: "Represents an account moving from one
+/// PDS instance to another. NOTE: not implemented; account migration
 /// uses #identity instead"
 ///
 /// - SeeAlso: This is based on the [`com.atproto.sync.subscribeRepos`][github] lexicon.
@@ -203,7 +220,8 @@ public struct FirehoseFrameMigrateMessage: Decodable {
 // MARK: - #tombstone
 /// A data model definition for an account deletion event.
 ///
-/// - Note: According to the AT Protocol specifications: "Indicates that an account has been deleted. NOTE: may be deprecated in favor of #identity or a future
+/// - Note: According to the AT Protocol specifications: "Indicates that an account has been
+/// deleted. NOTE: may be deprecated in favor of #identity or a future
 /// #account event"
 ///
 /// - SeeAlso: This is based on the [`com.atproto.sync.subscribeRepos`][github] lexicon.

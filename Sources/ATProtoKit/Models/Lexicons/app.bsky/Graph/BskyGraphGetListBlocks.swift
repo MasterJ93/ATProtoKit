@@ -7,9 +7,11 @@
 
 import Foundation
 
-/// The main data model definition for the output of getting the moderator lists that the user account is blocking.
+/// The main data model definition for the output of getting the moderator lists that the user
+/// account is blocking.
 ///
-/// - Note: According to the AT Protocol specifications: "Get mod lists that the requesting account (actor) is blocking. Requires auth."
+/// - Note: According to the AT Protocol specifications: "Get mod lists that the requesting
+/// account (actor) is blocking. Requires auth."
 ///
 /// - SeeAlso: This is based on the [`app.bsky.graph.getListBlocks`][github] lexicon.
 ///

@@ -9,7 +9,8 @@ import Foundation
 
 /// The main data model definition for the output of describing the repository.
 ///
-/// - Note: According to the AT Protocol specifications: "Get information about an account and repository, including the list of collections. Does not require auth."
+/// - Note: According to the AT Protocol specifications: "Get information about an account
+/// and repository, including the list of collections. Does not require auth."
 ///
 /// - SeeAlso: This is based on the [`com.atproto.repo.describeRepo`][github] lexicon.
 ///
@@ -21,15 +22,18 @@ public struct RepoDescribeRepoOutput: Codable {
     public let repositoryDID: String
     /// The DID Document of the repository.
     ///
-    /// - Note: According to the AT Protocol specifications: "The complete DID document for this account."
+    /// - Note: According to the AT Protocol specifications: "The complete DID document for
+    /// this account."
     public let didDocument: DIDDocument
     /// An array of collections related to the repository.
     ///
-    /// - Note: According to the AT Protocol specifications: "List of all the collections (NSIDs) for which this repo contains at least one record."
+    /// - Note: According to the AT Protocol specifications: "List of all the collections (NSIDs)
+    /// for which this repo contains at least one record."
     public let collections: [String]
     /// Indicates whether the repository's handle is valid.
     ///
-    /// - Note: According to the AT Protocol specifications: "Indicates if handle is currently valid (resolves bi-directionally)."
+    /// - Note: According to the AT Protocol specifications: "Indicates if handle is currently
+    /// valid (resolves bi-directionally)."
     public let isHandleCorrect: Bool
 
     enum CodingKeys: String, CodingKey {

@@ -10,8 +10,9 @@ import Foundation
 // TODO: Figure out a proper way of doing this.
 /// A data model definition for the output ofretrieving information about a feed generator.
 ///
-/// - Note: According to the AT Protocol specifications: "Get information about a feed generator, including policies and offered feed URIs. Does not require auth;
-/// implemented by Feed Generator services (not App View)."
+/// - Note: According to the AT Protocol specifications: "Get information about a feed generator,
+/// including policies and offered feed URIs. Does not require auth; implemented by
+/// Feed Generator services (not App View)."
 ///
 /// - SeeAlso: This is based on the [`app.bsky.feed.describeFeedGenerator`][github] lexicon.
 ///
