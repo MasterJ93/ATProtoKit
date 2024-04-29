@@ -76,14 +76,9 @@ public struct ATRecordTypeRegistry {
     /// Initializes the registry with an array of record types.
     /// - Parameter types: An array of ``ATRecordProtocol``-conforming `struct`s.
     public init(types: [ATRecordProtocol.Type]) {
-        print("Incoming types:")
         for type in types {
-
-            print("record registry will now add: \(type)")
             ATRecordTypeRegistry.recordRegistry[String(describing: type.type)] = type
         }
-
-        print("Final list: \(ATRecordTypeRegistry.recordRegistry)")
     }
 
     /// Attempts to create an instance of a record type based on the provided NSID string and decoder.
