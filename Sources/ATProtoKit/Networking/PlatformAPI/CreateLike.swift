@@ -29,11 +29,6 @@ extension ATProtoKit {
             createdAt: createdAt
         )
 
-        let requestBody = LikeRecordRequestBody(
-            repo: session.sessionDID,
-            record: likeRecord
-        )
-
         return await createRecord(
             repositoryDID: session.sessionDID,
             collection: "app.bsky.feed.like",

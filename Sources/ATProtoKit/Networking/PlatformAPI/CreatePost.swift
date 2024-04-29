@@ -66,7 +66,6 @@ extension ATProtoKit {
             }
         }
 
-
         // Compiling all parts of the post into one.
         let postRecord = FeedPost(
             text: text,
@@ -77,11 +76,6 @@ extension ATProtoKit {
             labels: labels,
             tags: tags,
             createdAt: creationDate
-        )
-
-        let requestBody = FeedPostRequestBody(
-            repo: session.sessionDID,
-            record: postRecord
         )
 
         return await createRecord(
