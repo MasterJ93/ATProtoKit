@@ -37,7 +37,7 @@ extension ATProtoKit {
         var resolvedReplyTo: ReplyReference? = nil
         if let replyURI = replyTo {
             do {
-                resolvedReplyTo = try await ATProtoKit().resolveReplyReferences(parentURI: replyURI)
+                resolvedReplyTo = try await ATProtoTools().resolveReplyReferences(parentURI: replyURI)
             } catch {
                 return .failure(error)
             }
@@ -137,7 +137,7 @@ extension ATProtoKit {
     /// - Parameter strongReference: An object that contains the record's `recordURI` (URI) and the `cidHash` (CID) .
     /// - Returns: A strong reference, which contains a record's `recordURI` (URI) and the `cidHash` (CID) .
     public func addQuotePostToEmbed(_ strongReference: StrongReference) async throws -> EmbedUnion {
-        let record = try await ATProtoKit().fetchRecordForURI(strongReference.recordURI)
+        let record = try await ATProtoTools().fetchRecordForURI(strongReference.recordURI)
         let reference = StrongReference(recordURI: record.recordURI, cidHash: record.recordCID)
         let embedRecord = EmbedRecord(record: reference)
 

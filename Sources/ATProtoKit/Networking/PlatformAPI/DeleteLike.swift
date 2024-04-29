@@ -42,7 +42,7 @@ extension ATProtoKit {
         switch record {
             case .recordQuery(let recordQuery):
                 // Perform the fetch and validation based on recordQuery.
-                let output = try await ATProtoKit().getRepoRecord(from: recordQuery, pdsURL: sessionURL)
+                let output = try await ATProtoKit().getRepositoryRecord(from: recordQuery, pdsURL: sessionURL)
 
                 switch output {
                     case .success(let result):
@@ -58,8 +58,8 @@ extension ATProtoKit {
 
             case .recordURI(let recordURI):
                 // Perform the fetch and validation based on the parsed URI.
-                let parsedURI = try ATProtoKit().parseURI(recordURI)
-                let output = try await ATProtoKit().getRepoRecord(from: parsedURI, pdsURL: sessionURL)
+                let parsedURI = try ATProtoTools().parseURI(recordURI)
+                let output = try await ATProtoKit().getRepositoryRecord(from: parsedURI, pdsURL: sessionURL)
 
                 switch output {
                     case .success(let result):
