@@ -17,11 +17,12 @@ import Foundation
 /// objects are `struct`s.
 ///
 /// To create a record, you'll need to make a `public` `struct` that conforms to this `protocol`.
-/// The `type` property must be `public` due to the `protocol`, but it shouldn't be changed for
-/// the entire lifetime of the `struct`. One way to solve this is to use a `private(set)` keyword:
+/// The `type` property must be `public` and `static` due to the `protocol`, but it shouldn't
+/// be changed for the entire lifetime of the `struct`. One way to solve this is to use a
+/// `private(set)` keyword:
 /// ```swift
 /// public struct UserProfile: ATRecordProtocol {
-///     public private(set) var type = "com.example.actor.profile" // `private(set)` used here.
+///     public static private(set) var type = "com.example.actor.profile" // `private(set)` used here.
 ///     public let userID: Int
 ///     public let username: String
 ///     public var bio: String?
@@ -139,7 +140,7 @@ public enum UnknownType: Codable {
     /// Initializes `UnknownType` by attempting to decode a known record type or falling back
     /// to a raw dictionary.
     ///
-    /// (Inherited from `Encoder`.)
+    /// (Inherited from `Decoder`.)
     ///
     /// - Parameter decoder: The decoder to read data from.
     /// - Throws: an error can occur if the following happens:\
