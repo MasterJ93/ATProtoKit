@@ -30,9 +30,9 @@ struct ATLogHandler: LogHandler {
                     file: String,
                     function: String,
                     line: UInt) {
-        let allMetadata = self.metadata.merging(metadata ?? [:]) { _, new in new }
-        var messageMetadata = [String: Any]()
-        var privacySettings = [String: OSLogPrivacy]()
+//        let allMetadata = self.metadata.merging(metadata ?? [:]) { _, new in new }
+//        var messageMetadata = [String: Any]()
+//        var privacySettings = [String: OSLogPrivacy]()
 
         switch level {
             case .trace, .debug:
