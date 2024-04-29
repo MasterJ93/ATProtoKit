@@ -19,7 +19,7 @@ public struct FeedPost: ATRecordProtocol {
     /// The identifier of the lexicon.
     ///
     /// - Warning: The value must not change.
-    public private(set) var type: String = "app.bsky.feed.post"
+    public static private(set) var type: String = "app.bsky.feed.post"
     /// The text contained in the post.
     ///
     /// - Note: According to the AT Protocol specifications: "The primary post content. May be an empty string, if there are embeds."
@@ -84,7 +84,7 @@ public struct FeedPost: ATRecordProtocol {
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
 
-        try container.encode(self.type, forKey: .type)
+//        try container.encode(self.type, forKey: .type)
         try container.encode(self.text, forKey: .text)
         // Truncate `tags` to 3000 characters before encoding
         // `maxGraphemes`'s limit is 300, but `String.count` should respect that limit implictly
@@ -186,6 +186,9 @@ public enum EmbedUnion: Codable {
         } else if let recordWithMediaValue = try? container.decode(EmbedRecordWithMedia.self) {
             self = .recordWithMedia(recordWithMediaValue)
         } else {
+            let rawData = try container.decode(Data.self) // Attempt to decode the raw data
+            let rawString = String(data: rawData, encoding: .utf8) ?? "\nUnknown data\n"
+            print("\nRaw String: \(rawString)")
             throw DecodingError.typeMismatch(
                 EmbedUnion.self, DecodingError.Context(
                     codingPath: decoder.codingPath, debugDescription: "Unknown EmbedUnion type"))

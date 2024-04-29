@@ -19,7 +19,7 @@ public struct GraphFollow: ATRecordProtocol {
     /// The identifier of the lexicon.
     ///
     /// - Warning: The value must not change.
-    public private(set) var type: String = "app.bsky.graph.follow"
+    public static private(set) var type: String = "app.bsky.graph.follow"
 
     /// The subject that the user account wants to "follow."
     public let subjectDID: String

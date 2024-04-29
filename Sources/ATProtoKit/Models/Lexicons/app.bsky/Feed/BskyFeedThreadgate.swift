@@ -19,7 +19,7 @@ public struct FeedThreadgate: ATRecordProtocol {
     /// The identifier of the lexicon.
     ///
     /// - Warning: The value must not change.
-    public private(set) var type: String = "app.bsky.feed.threadgate"
+    public static private(set) var type: String = "app.bsky.feed.threadgate"
     /// The URI of a post record.
     public let post: String
     public let allow: [ThreadgateUnion]
@@ -42,7 +42,7 @@ public struct FeedThreadgate: ATRecordProtocol {
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
 
-        try container.encode(self.type, forKey: .type)
+//        try container.encode(self.type, forKey: .type)
         try container.encode(self.post, forKey: .post)
         try container.encode(self.allow, forKey: .allow)
         try container.encode(self._createdAt, forKey: .createdAt)

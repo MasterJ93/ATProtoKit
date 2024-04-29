@@ -19,7 +19,7 @@ public struct GraphList: ATRecordProtocol {
     /// The identifier of the lexicon.
     ///
     /// - Warning: The value must not change.
-    public private(set) var type: String = "app.bsky.graph.list"
+    public static private(set) var type: String = "app.bsky.graph.list"
     /// The name of the list.
     ///
     /// - Note: According to the AT Protocol specifications: "Display name for list; can not be empty."
@@ -64,7 +64,7 @@ public struct GraphList: ATRecordProtocol {
     public func encode(to encoder: any Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
 
-        try container.encode(self.type, forKey: .type)
+//        try container.encode(self.type, forKey: .type)
         try container.encode(self.name, forKey: .name)
         try container.encode(self.purpose, forKey: .purpose)
         try container.encodeIfPresent(self.description, forKey: .description)

@@ -18,7 +18,7 @@ public struct LabelerService: ATRecordProtocol {
     /// The identifier of the lexicon.
     ///
     /// - Warning: The value must not change.
-    public private(set) var type: String = "app.bsky.labeler.service"
+    public static private(set) var type: String = "app.bsky.labeler.service"
     /// The policies the labeler service adheres to.
     public let policies: LabelerPolicies
     /// An array of labels the labeler uses. Optional.
@@ -43,7 +43,7 @@ public struct LabelerService: ATRecordProtocol {
     public func encode(to encoder: any Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
 
-        try container.encode(self.type, forKey: .type)
+//        try container.encode(self.type, forKey: .type)
         try container.encode(self.policies, forKey: .policies)
         try container.encode(self.labels, forKey: .labels)
         try container.encode(self._createdAt, forKey: .createdAt)

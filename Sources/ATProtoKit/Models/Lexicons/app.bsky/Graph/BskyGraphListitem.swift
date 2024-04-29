@@ -19,7 +19,7 @@ public struct GraphListItem: ATRecordProtocol {
     /// The identifier of the lexicon.
     ///
     /// - Warning: The value must not change.
-    public private(set) var type: String = "app.bsky.graph.listitem"
+    public static private(set) var type: String = "app.bsky.graph.listitem"
     /// The decentralized identifier (DID) of the account that's in a list.
     ///
     /// - Note: According to the AT Protocol specifications: "The account which is included on the list."
@@ -48,7 +48,7 @@ public struct GraphListItem: ATRecordProtocol {
     public func encode(to encoder: any Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
 
-        try container.encode(self.type, forKey: .type)
+//        try container.encode(self.type, forKey: .type)
         try container.encode(self.subjectDID, forKey: .subjectDID)
         try container.encode(self.list, forKey: .list)
         try container.encode(self._createdAt, forKey: .createdAt)

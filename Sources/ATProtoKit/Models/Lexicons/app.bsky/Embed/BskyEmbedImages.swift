@@ -91,6 +91,10 @@ public struct AspectRatio: Codable {
 ///
 /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/embed/images.json
 public struct EmbedImagesView: Codable {
+    /// The identifier of the lexicon.
+    ///
+    /// - Warning: The value must not change.
+    public let type: String = "app.bsky.embed.images#view"
     /// An array of images to be viewed.
     public let images: [ViewImage]
 

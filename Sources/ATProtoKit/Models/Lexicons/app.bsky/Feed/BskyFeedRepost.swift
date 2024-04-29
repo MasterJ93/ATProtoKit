@@ -18,7 +18,7 @@ public struct FeedRepost: ATRecordProtocol {
     /// The identifier of the lexicon.
     ///
     /// - Warning: The value must not change.
-    public private(set) var type: String = "app.bsky.feed.repost"
+    public static private(set) var type: String = "app.bsky.feed.repost"
     /// The strong reference of the repost record.
     public let subject: StrongReference
     /// The date the like record was created.
@@ -39,7 +39,8 @@ public struct FeedRepost: ATRecordProtocol {
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(self.type, forKey: .type)
+
+//        try container.encode(self.type, forKey: .type)
         try container.encode(self.subject, forKey: .subject)
         try container.encode(self._createdAt, forKey: .createdAt)
     }

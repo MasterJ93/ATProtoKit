@@ -639,6 +639,7 @@ public enum EmbedViewUnion: Codable {
         } else if let value = try? container.decode(EmbedImagesView.self) {
             self = .embedImagesView(value)
         } else if let value = try? container.decode(EmbedRecordView.self) {
+            print("EmbedView.embedRecordView is about to be read.")
             self = .embedRecordView(value)
         } else if let value = try? container.decode(EmbedRecordWithMediaView.self) {
             self = .embedRecordWithMediaView(value)

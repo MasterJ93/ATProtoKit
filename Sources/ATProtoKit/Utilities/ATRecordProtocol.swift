@@ -46,7 +46,7 @@ import Foundation
 /// - Warning: All record types _must_ conform to this protocol. ATProtoKit will not be able to hold onto any `struct`s that don't conform to this protocol.
 public protocol ATRecordProtocol: Codable {
     /// The Namespaced Identifier (NSID) of the record.
-    var type: String { get }
+    static var type: String { get }
     /// Creates a new instance by decoding from the given decoder.
     ///
     /// This initializer mirrors the one from `Decodable`, but is needed to help make the polymorphic
@@ -76,9 +76,14 @@ public struct ATRecordTypeRegistry {
     /// Initializes the registry with an array of record types.
     /// - Parameter types: An array of ``ATRecordProtocol``-conforming `struct`s.
     public init(types: [ATRecordProtocol.Type]) {
+        print("Incoming types:")
         for type in types {
-            ATRecordTypeRegistry.recordRegistry[String(describing: type)] = type
+
+            print("record registry will now add: \(type)")
+            ATRecordTypeRegistry.recordRegistry[String(describing: type.type)] = type
         }
+
+        print("Final list: \(ATRecordTypeRegistry.recordRegistry)")
     }
 
     /// Attempts to create an instance of a record type based on the provided NSID string and decoder.
@@ -157,9 +162,12 @@ public enum UnknownType: Codable {
                     debugDescription: "Cannot create key for `$type`."))
         }
 
+        print("Record $type: \(typeKey)")
         let typeIdentifier = try container.decode(String.self, forKey: typeKey)
+        print("typeIdentifier: \(typeIdentifier)")
 
         if let recordType = try? ATRecordTypeRegistry.createInstance(ofType: typeIdentifier, from: decoder) {
+            print("It passed; so why is it not working?")
             self = .record(recordType)
         } else {
             let jsonData = try decoder.singleValueContainer().decode(Data.self)

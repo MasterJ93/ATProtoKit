@@ -39,10 +39,20 @@ public struct EmbedRecordWithMedia: Codable {
 ///
 /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/embed/recordWithMedia.json
 public struct EmbedRecordWithMediaView: Codable {
+    /// The identifier of the lexicon.
+    ///
+    /// - Warning: The value must not change.
+    public let type: String = "app.bsky.embed.recordWithMedia#view"
     /// The embeded record.
     public let record: EmbedRecordView
     /// The embedded media.
     public let media: MediaViewUnion
+
+    enum CodingKeys: String, CodingKey {
+        case type = "$type"
+        case record
+        case media
+    }
 }
 
 // MARK: - Union Types

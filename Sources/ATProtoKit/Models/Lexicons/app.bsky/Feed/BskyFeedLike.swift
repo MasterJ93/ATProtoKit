@@ -19,7 +19,7 @@ public struct FeedLike: ATRecordProtocol {
     /// The identifier of the lexicon.
     ///
     /// - Warning: The value must not change.
-    public private(set) var type: String = "app.bsky.feed.like"
+    public static private(set) var type: String = "app.bsky.feed.like"
     /// The strong reference of the like.
     ///
     /// - Note: According to the AT Protocol specifications: "Record declaring a 'like' of a piece of subject content."
@@ -44,7 +44,7 @@ public struct FeedLike: ATRecordProtocol {
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
 
-        try container.encode(self.type, forKey: .type)
+//        try container.encode(self.type, forKey: .type)
         try container.encode(self.subject, forKey: .subject)
         try container.encode(self._createdAt, forKey: .createdAt)
     }
