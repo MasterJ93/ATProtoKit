@@ -10,7 +10,9 @@ import Foundation
 /// The common interface for record structs in the AT Protocol.
 ///
 /// This enables variadic polymorphic handing of different record by providing a uniform way to decode and identify
-/// record types using their Namespaced Identifier (NSID).
+/// record types using their Namespaced Identifier (NSID). `ATRecordProtocol` conforms to
+/// `Codable`; all `Codable`-related features still apply to this `protocol`.
+///
 ///
 /// - Note: For performance reasons, It's strongly recommended to create your record as a `struct`
 /// instead of a `class`. All documentation in ATProtoKit will assume that all of the record
