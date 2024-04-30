@@ -9,10 +9,10 @@ import Foundation
 
 /// The common interface for record structs in the AT Protocol.
 ///
-/// This enables variadic polymorphic handing of different record by providing a uniform way to decode and identify
-/// record types using their Namespaced Identifier (NSID). `ATRecordProtocol` conforms to
-/// `Codable`; all `Codable`-related features still apply to this `protocol`.
-///
+/// This enables variadic polymorphic handing of different record by providing a uniform
+/// way to decode and identify record types using their Namespaced Identifier (NSID).
+/// `ATRecordProtocol` conforms to `Codable`; all `Codable`-related features still
+/// apply to this `protocol`.
 ///
 /// - Note: For performance reasons, It's strongly recommended to create your record as a `struct`
 /// instead of a `class`. All documentation in ATProtoKit will assume that all of the record
@@ -65,6 +65,15 @@ public protocol ATRecordProtocol: Codable {
 /// All record lexicon `struct`s (whether from Bluesky or user created) will be included in the registry.
 /// This is used as a map for ``UnknownType`` to find the most appropriate type that the JSON object
 /// will fit into.
+///
+/// When adding a record, you need to type `.self` at the end.
+/// ```swift
+/// ATRecordTypeRegistry(types: [UserProfile.self])
+/// ```
+///
+/// - Important: Make sure you don't add the same `struct` multiple times.
+///
+/// - Warning: All record types _must_ conform to ``ATRecordProtocol``. Failure to do so may result in an error.
 public struct ATRecordTypeRegistry {
     /// The registry itself.
     ///
@@ -94,7 +103,7 @@ public struct ATRecordTypeRegistry {
     /// - Parameters:
     ///   - type: The Namespaced Identifier (NSID) of the record.
     ///   - decoder: The decoder to read data from.
-    /// - Returns: A
+    /// - Returns: A `struct` or `class`, which conforms to ``ATRecordProtocol``.
     /// - Throws: An error can occur if one if the following happens:\
     ///     \- reading from the decoder fails\
     ///     \- the data read is corrupted or otherwise invalid
@@ -160,12 +169,9 @@ public enum UnknownType: Codable {
                     debugDescription: "Cannot create key for `$type`."))
         }
 
-        print("Record $type: \(typeKey)")
         let typeIdentifier = try container.decode(String.self, forKey: typeKey)
-        print("typeIdentifier: \(typeIdentifier)")
 
         if let recordType = try? ATRecordTypeRegistry.createInstance(ofType: typeIdentifier, from: decoder) {
-            print("It passed; so why is it not working?")
             self = .record(recordType)
         } else {
             let jsonData = try decoder.singleValueContainer().decode(Data.self)
