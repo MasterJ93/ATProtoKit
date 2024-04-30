@@ -14,7 +14,10 @@ The [Swift API Design Guidelines](https://www.swift.org/documentation/api-design
 ## Fundamentals
 - For code, the maximum length of a line is 170 characters. However, this isn’t a strong goal to have: it can be much longer than this.
 - For documentation, the maximum length of a line is 100 characters. However, this _is_ a (mostly) strict rule: if necessary, break it down into smaller lines.
-    - The only exception to this rule relates to code lines: if it goes a little over the line, or if the line genuinely needs to be longer than 100 characters, then this will be allowed.
+    - The only exceptions to this rule include the following:
+    - If a line that contains a oiece of code goes a little over the line, or if the code line is over 100 characters.
+    - If a link is over 100 characters.
+    - If the Unclear Documentation Note is used.
 - Documentation lines should use the triple slashes (`///`) rather than the multi-block delimiter (`/** */`).
 - Everything in the project must be written in American English.
 - All methods/functions, classes, structs, enums, and properties need to display their access keywords. The only permitted keywords used in this project are `public`, `internal`, `private`, and `fileprivate`:
@@ -240,6 +243,16 @@ There are multiple kinds of models: main models, definition models, record model
 	///
 	/// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/actor/getProfile.json
 	```
+
+### Unclear Documentation Note
+There may be times where documentation may be unclear by the lexicon. If this happens, add a note below everything in the documentation. The note must look like this:
+```swift
+/// - Important: The item associated with this property is undocumented in the AT Protocol specifications. The documentation here is based on:\
+///   \* **For items with some inferable context from property names or references**: its best interpretation, though not with full certainty.\
+///   \* **For items without enough context for even an educated guess**: a direct acknowledgment of their undocumented status.\
+///   \
+///   Clarifications from Bluesky are needed in order to fully understand this item.
+```
 
 ## Model Designs
 ### Regular models
