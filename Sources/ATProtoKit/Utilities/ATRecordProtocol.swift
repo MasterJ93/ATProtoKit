@@ -182,6 +182,13 @@ public enum UnknownType: Codable {
         }
     }
 
+    /// Decodes a nested dictionary from an unknown JSON object.
+    ///
+    /// This is essential to decode truly unknown types.
+    ///
+    /// - Parameter container: The container that the JSON object resides in.
+    /// - A `[String: Any]` object.
+    /// - Throws: A `DecodingError` if there's a type mismatch.
     private static func decodeNestedDictionary(container: KeyedDecodingContainer<DynamicCodingKeys>) throws -> [String: Any] {
         var dictionary = [String: Any]()
         for key in container.allKeys {
@@ -208,6 +215,13 @@ public enum UnknownType: Codable {
         return dictionary
     }
 
+    /// Decodes a nested array from an unknown JSON object.
+    ///
+    /// This is essential to decode truly unknown types.
+    ///
+    /// - Parameter container: The container that the JSON object resides in.
+    /// - An `[Any]` object.
+    /// - Throws: A `DecodingError` if there's a type mismatch.
     private static func decodeArray(from container: KeyedDecodingContainer<DynamicCodingKeys>, forKey key: DynamicCodingKeys) throws -> [Any] {
         var unkeyedContainer = try container.nestedUnkeyedContainer(forKey: key)
         var array = [Any]()
