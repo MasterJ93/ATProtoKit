@@ -9,7 +9,7 @@ import Foundation
 
 /// The common interface for record structs in the AT Protocol.
 ///
-/// This enables variadic polymorphic handing of different record by providing a uniform
+/// This enables variadic polymorphic handing of different records by providing a uniform
 /// way to decode and identify record types using their Namespaced Identifier (NSID).
 /// `ATRecordProtocol` conforms to `Codable`; all `Codable`-related features still
 /// apply to this `protocol`.
@@ -162,28 +162,74 @@ public enum UnknownType: Codable {
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: DynamicCodingKeys.self)
 
-        guard let typeKey = DynamicCodingKeys(stringValue: "$type") else {
-            throw DecodingError.dataCorrupted(
-                DecodingError.Context(
-                    codingPath: container.codingPath,
-                    debugDescription: "Cannot create key for `$type`."))
-        }
-
-        let typeIdentifier = try container.decode(String.self, forKey: typeKey)
-
-        if let recordType = try? ATRecordTypeRegistry.createInstance(ofType: typeIdentifier, from: decoder) {
-            self = .record(recordType)
+        if let typeKey = DynamicCodingKeys(stringValue: "$type"),
+           let typeIdentifier = try container.decodeIfPresent(String.self, forKey: typeKey),
+           let recordType = ATRecordTypeRegistry.recordRegistry[typeIdentifier] {
+            let record = try recordType.init(from: decoder)
+            self = .record(record)
         } else {
-            let jsonData = try decoder.singleValueContainer().decode(Data.self)
-            if let jsonDict = try JSONSerialization.jsonObject(with: jsonData, options: []) as? [String: Any] {
-                self = .unknown(jsonDict)
-            } else {
+            do {
+                let dictionary = try UnknownType.decodeNestedDictionary(container: container)
+                self = .unknown(dictionary)
+            } catch {
+                print("Error decoding nested dictionary: \(error)")
                 throw DecodingError.dataCorrupted(
                     DecodingError.Context(
-                        codingPath: decoder.codingPath,
-                        debugDescription: "Failed to decode unknown type as [String: Any]."))
+                        codingPath: container.codingPath,
+                        debugDescription: "Failed to decode dictionary.",
+                        underlyingError: error))
             }
         }
+    }
+
+    private static func decodeNestedDictionary(container: KeyedDecodingContainer<DynamicCodingKeys>) throws -> [String: Any] {
+        var dictionary = [String: Any]()
+        for key in container.allKeys {
+            if let value = try? container.decode(Bool.self, forKey: key) {
+                dictionary[key.stringValue] = value
+            } else if let value = try? container.decode(Int.self, forKey: key) {
+                dictionary[key.stringValue] = value
+            } else if let value = try? container.decode(Double.self, forKey: key) {
+                dictionary[key.stringValue] = value
+            } else if let value = try? container.decode(String.self, forKey: key) {
+                dictionary[key.stringValue] = value
+            } else if let nestedContainer = try? container.nestedContainer(keyedBy: DynamicCodingKeys.self, forKey: key) {
+                dictionary[key.stringValue] = try decodeNestedDictionary(container: nestedContainer)
+            } else if let array = try? decodeArray(from: container, forKey: key) {
+                dictionary[key.stringValue] = array
+            } else {
+                throw DecodingError.typeMismatch(
+                    [String: Any].self,
+                    DecodingError.Context(
+                        codingPath: container.codingPath,
+                        debugDescription: "Could not decode item at key \(key.stringValue)"))
+            }
+        }
+        return dictionary
+    }
+
+    private static func decodeArray(from container: KeyedDecodingContainer<DynamicCodingKeys>, forKey key: DynamicCodingKeys) throws -> [Any] {
+        var unkeyedContainer = try container.nestedUnkeyedContainer(forKey: key)
+        var array = [Any]()
+
+        while !unkeyedContainer.isAtEnd {
+            if let value = try? unkeyedContainer.decode(Bool.self) {
+                array.append(value)
+            } else if let value = try? unkeyedContainer.decode(Int.self) {
+                array.append(value)
+            } else if let value = try? unkeyedContainer.decode(Double.self) {
+                array.append(value)
+            } else if let value = try? unkeyedContainer.decode(String.self) {
+                array.append(value)
+            } else if let nestedContainer = try? unkeyedContainer.nestedContainer(keyedBy: DynamicCodingKeys.self) {
+                array.append(try decodeNestedDictionary(container: nestedContainer))
+            } else if let nestedArrayContainer = try? unkeyedContainer.nestedUnkeyedContainer() {
+                array.append(try UnknownType.decodeNestedDictionary(container: container))
+            } else {
+                throw DecodingError.dataCorruptedError(in: unkeyedContainer, debugDescription: "Could not decode array element.")
+            }
+        }
+        return array
     }
 
     /// Encodes this instance into the given encoder.
