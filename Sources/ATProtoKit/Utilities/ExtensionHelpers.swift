@@ -99,9 +99,13 @@ extension Encodable {
 
 // MARK: - UInt64 Extension
 extension UInt64 {
-    /// Converts a `UInt64` to a Base32-sortable string.
+    /// Converts a `UInt64` to a Base32-sortable string, according to the
+    /// AT Protocol specifications.
     ///
-    /// - Returns: A `String` that's encoded in Base32.
+    /// According to the (specifications)[atproto], a `base32-sortable` integer is encoded with
+    /// the characters `234567abcdefghijklmnopqrstuvwxyz` and is 13 characters in length.
+    ///
+    /// - Returns: A `String` that's encoded in a Base32-sortable format.
     func toBase32Sortable() -> String {
         let base32Characters = "234567abcdefghijklmnopqrstuvwxyz"
         var number = self

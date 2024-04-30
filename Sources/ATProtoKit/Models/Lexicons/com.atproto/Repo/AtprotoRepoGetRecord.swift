@@ -10,7 +10,8 @@ import Foundation
 // MARK: - Main definition
 /// The main data model definition for a record.
 ///
-/// - Note: According to the AT Protocol specifications: "Get a single record from a repository. Does not require auth."
+/// - Note: According to the AT Protocol specifications: "Get a single record from a repository.
+/// Does not require auth."
 ///
 /// - SeeAlso: This is based on the [`com.atproto.repo.getRecord`][github] lexicon.
 ///
@@ -28,9 +29,11 @@ public struct RecordQuery: Codable {
     ///
     //// - Note: According to the AT Protocol specifications: "The Record Key."
     public let recordKey: String
-    /// The CID of the version of the record. Optional. If not specified, then return the most recent version.
+    /// The CID of the version of the record. Optional. If not specified, then return the most
+    /// recent version.
     ///
-    /// - Note: According to the AT Protocol specifications: "The CID of the version of the record. If not specified, then return the most recent version."
+    /// - Note: According to the AT Protocol specifications: "The CID of the version of the record.
+    /// If not specified, then return the most recent version."
     public let recordCID: String? = nil
 
     public init(repo: String, collection: String, recordKey: String) {

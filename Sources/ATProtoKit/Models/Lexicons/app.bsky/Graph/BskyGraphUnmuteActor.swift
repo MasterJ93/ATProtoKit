@@ -9,7 +9,8 @@ import Foundation
 
 /// The main data model definition for unmuting a user account.
 ///
-/// - Note: According to the AT Protocol specifications: "Unmutes the specified account. Requires auth."
+/// - Note: According to the AT Protocol specifications: "Unmutes the specified account.
+/// Requires auth."
 ///
 /// - SeeAlso: This is based on the [`app.bsky.graph.unmuteActor`][github] lexicon.
 ///

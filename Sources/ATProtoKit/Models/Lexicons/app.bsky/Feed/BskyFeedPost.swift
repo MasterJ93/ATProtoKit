@@ -8,27 +8,30 @@
 import Foundation
 
 // MARK: - Main definition
-/// The main data model definition for a post record.
+/// The record model definition for a post record.
 ///
 /// - Note: According to the AT Protocol specifications: "Record containing a Bluesky post."
 ///
 /// - SeeAlso: This is based on the [`app.bsky.feed.post`][github] lexicon.
 ///
 /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/feed/post.json
-public struct FeedPost: Codable {
+public struct FeedPost: ATRecordProtocol {
     /// The identifier of the lexicon.
     ///
     /// - Warning: The value must not change.
-    internal let type: String = "app.bsky.feed.post"
+    public static private(set) var type: String = "app.bsky.feed.post"
     /// The text contained in the post.
     ///
-    /// - Note: According to the AT Protocol specifications: "The primary post content. May be an empty string, if there are embeds."
+    /// - Note: According to the AT Protocol specifications: "The primary post content. May be
+    /// an empty string, if there are embeds."
     ///
-    /// - Important: Current maximum length is 300 characters. This library will automatically truncate the `String` to the maximum length if it does go over the limit.
+    /// - Important: Current maximum length is 300 characters. This library will automatically
+    /// truncate the `String` to the maximum length if it does go over the limit.
     public let text: String
     /// An array of facets contained in the post's text. Optional.
     ///
-    /// - Note: According to the AT Protocol specifications: "Annotations of text (mentions, URLs, hashtags, etc)"
+    /// - Note: According to the AT Protocol specifications: "Annotations of text (mentions, URLs,
+    /// hashtags, etc)"
     public var facets: [Facet]? = nil
     /// The references to posts when replying. Optional.
     public var reply: ReplyReference? = nil
@@ -36,24 +39,30 @@ public struct FeedPost: Codable {
     public var embed: EmbedUnion? = nil
     /// An array of languages the post text contains. Optional.
     ///
-    /// - Note: According to the AT Protocol specifications: "Indicates human language of post primary text content."
+    /// - Note: According to the AT Protocol specifications: "Indicates human language of post
+    /// primary text content."
     ///
-    /// - Important: Current maximum length is 3 languages. This library will automatically truncate the `Array` to the maximum number of items if it does go over the limit.
+    /// - Important: Current maximum length is 3 languages. This library will automatically
+    /// truncate the `Array` to the maximum number of items if it does go over the limit.
     public var languages: [String]? = nil
     /// An array of user-defined labels. Optional.
     ///
-    /// - Note: According to the AT Protocol specifications: "Self-label values for this post. Effectively content warnings."
+    /// - Note: According to the AT Protocol specifications: "Self-label values for this post.
+    /// Effectively content warnings."
     public var labels: FeedLabelUnion? = nil
     /// An array of user-defined tags. Optional.
     ///
-    /// - Note: According to the AT Protocol specifications: "Additional hashtags, in addition to any included in post text and facets."
+    /// - Note: According to the AT Protocol specifications: "Additional hashtags, in addition to
+    /// any included in post text and facets."
     ///
-    /// - Important: Current maximum length is 8 tags. Current maximum length of the tag name is 64 characters. This library will automatically truncate the `Array`and `String` respectively to
-    /// the maximum length if it does go over the limit.
+    /// - Important: Current maximum length is 8 tags. Current maximum length of the tag name is
+    /// 64 characters. This library will automatically truncate the `Array`and `String`
+    /// respectively to the maximum length if it does go over the limit.
     public var tags: [String]? = nil
     /// The date the post was created.
     ///
-    /// - Note: According to the AT Protocol specifications: "Client-declared timestamp when this post was originally created."
+    /// - Note: According to the AT Protocol specifications: "Client-declared timestamp when this
+    /// post was originally created."
     @DateFormatting public var createdAt: Date
 
     public init(text: String, facets: [Facet]? = nil, reply: ReplyReference? = nil, embed: EmbedUnion? = nil, languages: [String]? = nil,
@@ -84,7 +93,7 @@ public struct FeedPost: Codable {
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
 
-        try container.encode(self.type, forKey: .type)
+//        try container.encode(self.type, forKey: .type)
         try container.encode(self.text, forKey: .text)
         // Truncate `tags` to 3000 characters before encoding
         // `maxGraphemes`'s limit is 300, but `String.count` should respect that limit implictly
@@ -98,7 +107,7 @@ public struct FeedPost: Codable {
 
         // Truncate `tags` to 640 characters before encoding
         // `maxGraphemes`'s limit is 64, but `String.count` should respect that limit implictly
-        // Then, truncate `tags` to 3 items before encoding
+        // Then, truncate `tags` to 8 items before encoding
         let truncatedTags = self.tags.map { $0.truncated(toLength: 640) }
         try truncatedEncodeIfPresent(truncatedTags, withContainer: &container, forKey: .tags, upToLength: 8)
 
@@ -130,7 +139,8 @@ public struct ReplyReference: Codable {
     public let root: StrongReference
     /// The direct post that the user's post is replying to.
     ///
-    /// - Note: If `parent` and `root` are identical, the post is a direct reply to the original post of the thread.
+    /// - Note: If `parent` and `root` are identical, the post is a direct reply to the original
+    /// post of the thread.
     public let parent: StrongReference
 
     public init(root: StrongReference, parent: StrongReference) {

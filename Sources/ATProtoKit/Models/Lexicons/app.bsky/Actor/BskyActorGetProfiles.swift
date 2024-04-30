@@ -9,7 +9,8 @@ import Foundation
 
 /// A data model definition for the output of detailed profile views for multiple users.
 ///
-/// - Note: According to the AT Protocol specifications: "Get detailed profile views of multiple actors."
+/// - Note: According to the AT Protocol specifications: "Get detailed profile views of
+/// multiple actors."
 ///
 /// - SeeAlso: This is based on the [`app.bsky.actor.getProfiles`][github] lexicon.
 ///

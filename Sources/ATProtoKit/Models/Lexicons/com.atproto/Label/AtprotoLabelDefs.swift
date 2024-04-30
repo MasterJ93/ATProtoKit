@@ -9,7 +9,8 @@ import Foundation
 
 /// The main data model definition for a label.
 ///
-/// - Note: According to the AT Protocol specifications: "Metadata tag on an atproto resource (eg, repo or record)."
+/// - Note: According to the AT Protocol specifications: "Metadata tag on an atproto resource (eg,
+/// repo or record)."
 ///
 /// - SeeAlso: This is based on the [`com.atproto.label.defs`][github] lexicon.
 ///
@@ -17,45 +18,54 @@ import Foundation
 public struct Label: Codable {
     /// The version number of the label. Optional.
     ///
-    /// - Note: According to the AT Protocol specifications: "The AT Protocol version of the label object."
+    /// - Note: According to the AT Protocol specifications: "The AT Protocol version of the
+    /// label object."
     public let version: Int?
     /// The decentralized identifier (DID) of the label creator.
     ///
-    /// - Note: According to the AT Protocol specifications: "DID of the actor who created this label."
+    /// - Note: According to the AT Protocol specifications: "DID of the actor who created
+    /// this label."
     public let actorDID: String
     /// The URI of the resource the label applies to.
     ///
-    /// - Note: According to the AT Protocol specifications: "AT URI of the record, repository (account), or other resource that this label applies to."
+    /// - Note: According to the AT Protocol specifications: "AT URI of the record, repository
+    /// (account), or other resource that this label applies to."
     public let atURI: String
     /// The CID hash of the resource the label applies to. Optional.
     ///
-    /// - Note: According to the AT Protocol specifications: "Optionally, CID specifying the specific version of 'uri' resource this label
-    /// applies to."
+    /// - Note: According to the AT Protocol specifications: "Optionally, CID specifying the
+    /// specific version of 'uri' resource this label applies to."
     public let cidHash: String?
     /// The name of the label.
     ///
-    /// - Note: According to the AT Protocol specifications: "The short string name of the value or type of this label."
+    /// - Note: According to the AT Protocol specifications: "The short string name of the value or
+    /// type of this label."
     ///
-    /// - Important: Current maximum length is 128 characters. This library will automatically truncate the `String` to the maximum length if it does go over the limit.
+    /// - Important: Current maximum length is 128 characters. This library will automatically
+    /// truncate the `String` to the maximum length if it does go over the limit.
     public var name: String
     /// Indicates whether this label is negating a previously-used label. Optional.
     ///
-    /// - Note: According to the AT Protocol specifications: "If true, this is a negation label, overwriting a previous label."
+    /// - Note: According to the AT Protocol specifications: "If true, this is a negation label,
+    /// overwriting a previous label."
     public let isNegated: Bool?
     /// The date and time the label was created.
     ///
-    /// - Note: According to the AT Protocol specifications: "Timestamp when this label was created."
+    /// - Note: According to the AT Protocol specifications: "Timestamp when this label
+    /// was created."
     @DateFormatting public var timestamp: Date
     /// The date and time the label expires on.
     ///
-    /// - Note: According to the AT Protocol specifications: "Timestamp at which this label expires (no longer applies)."
+    /// - Note: According to the AT Protocol specifications: "Timestamp at which this label
+    /// expires (no longer applies)."
     @DateFormattingOptional public var expiresOn: Date?
     /// The DAG-CBOR-encoded signature. Optional.
     ///
     /// - Note: According to the AT Protocol specifications: "Signature of dag-cbor encoded label."
     public let signature: Data?
 
-    public init(version: Int?, actorDID: String, atURI: String, cidHash: String?, name: String, isNegated: Bool?, timestamp: Date, expiresOn: Date?, signature: Data) {
+    public init(version: Int?, actorDID: String, atURI: String, cidHash: String?, name: String, isNegated: Bool?, timestamp: Date,
+                expiresOn: Date?, signature: Data) {
         self.version = version
         self.actorDID = actorDID
         self.atURI = atURI
@@ -115,9 +125,11 @@ public struct Label: Codable {
 public struct SelfLabels: Codable {
     /// An array of self-defined tags on a record.
     ///
-    /// - Note: According to the AT Protocol specifications: "Metadata tags on an atproto record, published by the author within the record."
+    /// - Note: According to the AT Protocol specifications: "Metadata tags on an atproto record,
+    /// published by the author within the record."
     ///
-    /// - Important: Current maximum length is 10 tags. This library will automatically truncate the `Array` to the maximum length if it does go over the limit.
+    /// - Important: Current maximum length is 10 tags. This library will automatically truncate
+    /// the `Array` to the maximum length if it does go over the limit.
     ///
     /// - SeeAlso: This is based on the [`com.atproto.label.defs`][github] lexicon.
     ///
@@ -148,7 +160,9 @@ public struct SelfLabels: Codable {
 
 /// A data model for a definition for a user-defined label.
 ///
-/// - Note: According to the AT Protocol specifications: "Metadata tag on an atproto record, published by the author within the record. Note that schemas should use #selfLabels, not #selfLabel.",
+/// - Note: According to the AT Protocol specifications: "Metadata tag on an atproto record,
+/// published by the author within the record. Note that schemas should use #selfLabels,
+/// not #selfLabel.",
 ///
 /// - SeeAlso: This is based on the [`com.atproto.label.defs`][github] lexicon.
 ///
@@ -156,9 +170,11 @@ public struct SelfLabels: Codable {
 public struct SelfLabel: Codable {
     /// A user-defined label.
     ///
-    /// - Note: According to the AT Protocol specifications: "The short string name of the value or type of this label."
+    /// - Note: According to the AT Protocol specifications: "The short string name of the value or
+    /// type of this label."
     ///
-    /// - Important: Current maximum length is 128 characters. This library will automatically truncate the `String` to the maximum length if it does go over the limit.
+    /// - Important: Current maximum length is 128 characters. This library will automatically
+    /// truncate the `String` to the maximum length if it does go over the limit.
     public let value: String
 
     public func encode(to encoder: Encoder) throws {
@@ -175,7 +191,8 @@ public struct SelfLabel: Codable {
 
 /// A data model definition for labeler-created labels.
 ///
-/// - Note: According to the AT Protocol specifications: "Declares a label value and its expected interpertations and behaviors."
+/// - Note: According to the AT Protocol specifications: "Declares a label value and its expected
+/// interpertations and behaviors."
 ///
 /// - SeeAlso: This is based on the [`com.atproto.label.defs`][github] lexicon.
 ///
@@ -183,31 +200,37 @@ public struct SelfLabel: Codable {
 public struct LabelValueDefinition: Codable {
     /// The value of the label.
     ///
-    /// - Important: This field can only contain lowercased letter and the hypen (-) character. This library will automatically convert
-    /// uppercased letters to lowercased, as well as any hashes other than the hypen into a hypen. All additional characters will be removed.
+    /// - Important: This field can only contain lowercased letter and the hypen (-) character.
+    /// This library will automatically convert uppercased letters to lowercased, as well as any
+    /// hashes other than the hypen into a hypen. All additional characters will be removed.
     ///
-    /// - Note: According to the AT Protocol specifications: "The value of the label being defined. Must only include lowercase ascii and the '-' character ([a-z-]+)."
+    /// - Note: According to the AT Protocol specifications: "The value of the label being defined.
+    /// Must only include lowercase ascii and the '-' character ([a-z-]+)."
     public let identifier: String
     // TODO: Make this into an enum.
     /// The visual indicator of the label that indicates the severity.
     ///
-    /// - Note: According to the AT Protocol specifications: "How should a client visually convey this label? 'inform' means neutral
-    /// and informational; 'alert' means negative and warning; 'none' means show nothing."
+    /// - Note: According to the AT Protocol specifications: "How should a client visually convey
+    /// this label? 'inform' means neutral and informational; 'alert' means negative and warning;
+    /// 'none' means show nothing."
     public let severity: Severity
     // TODO: Make this into an enum.
     /// Indicates how much of the content should be hidden for the user.
     ///
-    /// - Note: According to the AT Protocol specifications: "What should this label hide in the UI, if applied? 'content' hides all of the target;
-    /// 'media' hides the images/video/audio; 'none' hides nothing."
+    /// - Note: According to the AT Protocol specifications: "What should this label hide in the
+    /// UI, if applied? 'content' hides all of the target; 'media' hides the images/video/audio;
+    /// 'none' hides nothing."
     public let blurs: Blurs
     // TODO: Make this into an enum.
     /// The default setting for the label.
     ///
     /// - Note: According to the AT Protocol specifications: "The default setting for this label."
     public let defaultSetting: DefaultSetting = .warn
-    /// Indicates whether the "Adult Content" preference needs to be enabled in order to use this label. Optional.
+    /// Indicates whether the "Adult Content" preference needs to be enabled in order to use
+    /// this label. Optional.
     ///
-    /// - Note: According to the AT Protocol specifications: "Does the user need to have adult content enabled in order to configure this label?"
+    /// - Note: According to the AT Protocol specifications: "Does the user need to have adult
+    /// content enabled in order to configure this label?"
     public let isAdultOnly: Bool?
     /// An array of localized strings for the label. Optional.
     public let locales: [LabelValueDefinitionStrings]
@@ -249,7 +272,8 @@ public struct LabelValueDefinition: Codable {
     public enum Blurs: String, Codable {
         /// Indicates the labeler should hide the entire content from the user.
         case content
-        /// Indicates the labeler should hide only the media of the content, but keeps the text intact.
+        /// Indicates the labeler should hide only the media of the content, but keeps the
+        /// text intact.
         case media
         /// Indicates the labeler should hide nothing.
         case none
@@ -268,7 +292,8 @@ public struct LabelValueDefinition: Codable {
 
 /// A data model definition for a localized description of a label.
 ///
-/// - Note: According to the AT Protocol specifications: "Strings which describe the label in the UI, localized into a specific language."
+/// - Note: According to the AT Protocol specifications: "Strings which describe the label in
+/// the UI, localized into a specific language."
 ///
 /// - SeeAlso: This is based on the [`com.atproto.label.defs`][github] lexicon.
 ///
@@ -276,15 +301,18 @@ public struct LabelValueDefinition: Codable {
 public struct LabelValueDefinitionStrings: Codable {
     /// The language code of the label's definition.
     ///
-    /// - Note: According to the AT Protocol specifications: "The code of the language these strings are written in."
+    /// - Note: According to the AT Protocol specifications: "The code of the language these
+    /// strings are written in."
     public let language: Locale
     /// The localized name of the label.
     ///
-    /// - Note: According to the AT Protocol specifications: "A short human-readable name for the label."
+    /// - Note: According to the AT Protocol specifications: "A short human-readable name for
+    /// the label."
     public let name: String
     /// The localized description of the label.
     ///
-    /// - Note: According to the AT Protocol specifications: "A longer description of what the label means and why it might be applied."
+    /// - Note: According to the AT Protocol specifications: "A longer description of what the
+    /// label means and why it might be applied."
     public let description: String
 
     public init(from decoder: any Decoder) throws {
@@ -314,7 +342,8 @@ public struct LabelValueDefinitionStrings: Codable {
 
 /// An enumuation that defines the value of a label.
 ///
-/// - Note: According to the AT Protocol specifications: "Strings which describe the label in the UI, localized into a specific language."
+/// - Note: According to the AT Protocol specifications: "Strings which describe the label in the
+/// UI, localized into a specific language."
 ///
 /// - SeeAlso: This is based on the [`com.atproto.label.defs`][github] lexicon.
 ///

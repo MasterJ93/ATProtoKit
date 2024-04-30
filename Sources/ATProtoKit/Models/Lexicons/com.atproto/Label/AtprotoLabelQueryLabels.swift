@@ -9,8 +9,9 @@ import Foundation
 
 /// The main data model definition for the output of finding relevant labels based on a given URI.
 ///
-/// - Note: According to the AT Protocol specifications: "Find labels relevant to the provided AT-URI patterns. Public endpoint for
-/// moderation services, though may return different or additional results with auth."
+/// - Note: According to the AT Protocol specifications: "Find labels relevant to the provided
+/// AT-URI patterns. Public endpoint for moderation services, though may return different or
+/// additional results with auth."
 ///
 /// - SeeAlso: This is based on the [`com.atproto.label.queryLabels`][github] lexicon.
 ///

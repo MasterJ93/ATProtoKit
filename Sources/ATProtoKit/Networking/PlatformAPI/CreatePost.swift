@@ -37,7 +37,7 @@ extension ATProtoKit {
         var resolvedReplyTo: ReplyReference? = nil
         if let replyURI = replyTo {
             do {
-                resolvedReplyTo = try await ATProtoKit().resolveReplyReferences(parentURI: replyURI)
+                resolvedReplyTo = try await ATProtoTools().resolveReplyReferences(parentURI: replyURI)
             } catch {
                 return .failure(error)
             }
@@ -66,9 +66,8 @@ extension ATProtoKit {
             }
         }
 
-
         // Compiling all parts of the post into one.
-        let post = FeedPost(
+        let postRecord = FeedPost(
             text: text,
             facets: await ATFacetParser.parseFacets(from: text, pdsURL: session.accessToken),
             reply: resolvedReplyTo,
@@ -79,17 +78,12 @@ extension ATProtoKit {
             createdAt: creationDate
         )
 
-        let requestBody = FeedPostRequestBody(
-            repo: session.sessionDID,
-            record: post
-        )
-
         return await createRecord(
             repositoryDID: session.sessionDID,
             collection: "app.bsky.feed.post",
             recordKey: recordKey ?? nil,
             shouldValidate: shouldValidate,
-            record: UnknownType(),
+            record: UnknownType.record(postRecord),
             swapCommit: swapCommit ?? nil
         )
     }
@@ -137,7 +131,7 @@ extension ATProtoKit {
     /// - Parameter strongReference: An object that contains the record's `recordURI` (URI) and the `cidHash` (CID) .
     /// - Returns: A strong reference, which contains a record's `recordURI` (URI) and the `cidHash` (CID) .
     public func addQuotePostToEmbed(_ strongReference: StrongReference) async throws -> EmbedUnion {
-        let record = try await ATProtoKit().fetchRecordForURI(strongReference.recordURI)
+        let record = try await ATProtoTools().fetchRecordForURI(strongReference.recordURI)
         let reference = StrongReference(recordURI: record.recordURI, cidHash: record.recordCID)
         let embedRecord = EmbedRecord(record: reference)
 

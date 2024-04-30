@@ -9,7 +9,8 @@ import Foundation
 
 /// The main data model definition for the output of listing notifications.
 ///
-/// - Note: According to the AT Protocol specifications: "Enumerate notifications for the requesting account. Requires auth."
+/// - Note: According to the AT Protocol specifications: "Enumerate notifications for the
+/// requesting account. Requires auth."
 ///
 /// - SeeAlso: This is based on the [`app.bsky.notification.listNotifications`][github] lexicon.
 ///
@@ -35,7 +36,8 @@ public struct ATNotification: Codable {
     public let notificationAuthor: String
     /// The type of notification received.
     ///
-    /// - Note: According to the AT Protocol specifications: "Expected values are 'like', 'repost', 'follow', 'mention', 'reply', and 'quote'."
+    /// - Note: According to the AT Protocol specifications: "Expected values are 'like', 'repost',
+    /// 'follow', 'mention', 'reply', and 'quote'."
     public let notificationReason: Reason
     /// The URI of the subject in the notification. Optional.
     public let reasonSubjectURI: String?
@@ -48,7 +50,8 @@ public struct ATNotification: Codable {
     /// An array of labels. Optional.
     public let labels: [Label]?
 
-    public init(notificationURI: String, notificationCID: String, notificationAuthor: String, notificationReason: Reason, reasonSubjectURI: String, record: UnknownType, isRead: Bool, indexedAt: Date, labels: [Label]) {
+    public init(notificationURI: String, notificationCID: String, notificationAuthor: String, notificationReason: Reason, reasonSubjectURI: String,
+                record: UnknownType, isRead: Bool, indexedAt: Date, labels: [Label]) {
         self.notificationURI = notificationURI
         self.notificationCID = notificationCID
         self.notificationAuthor = notificationAuthor

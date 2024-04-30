@@ -10,7 +10,8 @@ import Foundation
 // MARK: - Main definition
 /// The main data model definition for registering push notifications.
 ///
-/// - Note: According to the AT Protocol specifications: "Register to receive push notifications, via a specified service, for the requesting account. Requires auth."
+/// - Note: According to the AT Protocol specifications: "Register to receive push notifications,
+/// via a specified service, for the requesting account. Requires auth."
 ///
 /// - SeeAlso: This is based on the [`app.bsky.notification.registerPush`][github] lexicon.
 ///

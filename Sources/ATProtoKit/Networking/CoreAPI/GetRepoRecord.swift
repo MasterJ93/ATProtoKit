@@ -20,7 +20,7 @@ extension ATProtoKit {
     ///   - recordQuery: The record object.
     ///   - pdsURL: The URL of the Personal Data Server (PDS).
     /// - Returns: A `Result`, which either contains a `RecordOutput` if successful, and an `Error` if not.
-    public func getRepoRecord(from recordQuery: RecordQuery, pdsURL: String? = nil) async throws -> Result<RecordOutput, Error> {
+    public func getRepositoryRecord(from recordQuery: RecordQuery, pdsURL: String? = nil) async throws -> Result<RecordOutput, Error> {
         guard let sessionURL = pdsURL != nil ? pdsURL : session?.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.repo.getRecord") else {
             return .failure(ATRequestPrepareError.invalidRequestURL)

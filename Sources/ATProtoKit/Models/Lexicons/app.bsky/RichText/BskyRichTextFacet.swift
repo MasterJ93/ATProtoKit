@@ -10,7 +10,8 @@ import Foundation
 // MARK: - Main definition
 /// The main data model definition for a facet.
 ///
-/// - Note: According to the AT Protocol specifications: "Annotation of a sub-string within rich text."
+/// - Note: According to the AT Protocol specifications: "Annotation of a sub-string within
+/// rich text."
 ///
 /// - SeeAlso: This is based on the [`app.bsky.richtext.facet`][github] lexicon.
 ///
@@ -50,8 +51,11 @@ public struct Facet: Codable {
 // Represents the ByteSlice
 /// The data model definition for the byte slice.
 ///
-/// - Note: According to the AT Protocol specifications: "Specifies the sub-string range a facet feature applies to. Start index is inclusive, end index is exclusive. Indices are zero-indexed, counting bytes of the
-/// UTF-8 encoded text. NOTE: some languages, like Javascript, use UTF-16 or Unicode codepoints for string slice indexing; in these languages, convert to byte arrays before working with facets."
+/// - Note: According to the AT Protocol specifications: "Specifies the sub-string range a facet
+/// feature applies to. Start index is inclusive, end index is exclusive. Indices are zero-indexed,
+/// counting bytes of the UTF-8 encoded text. NOTE: some languages, like Javascript, use
+/// UTF-16 or Unicode codepoints for string slice indexing; in these languages, convert to byte
+/// arrays before working with facets."
 ///
 /// - SeeAlso: This is based on the [`app.bsky.richtext.facet`][github] lexicon.
 ///
@@ -100,7 +104,9 @@ internal protocol FeatureCodable: Codable {
 
 /// A data model for the Mention feature definition.
 ///
-/// - Note: According to the AT Protocol specifications: "Facet feature for mention of another account. The text is usually a handle, including a '@' prefix, but the facet reference is a DID."
+/// - Note: According to the AT Protocol specifications: "Facet feature for mention of
+/// another account. The text is usually a handle, including a '@' prefix, but the facet
+/// reference is a DID."
 ///
 /// - SeeAlso: This is based on the [`app.bsky.richtext.facet`][github] lexicon.
 ///
@@ -140,7 +146,8 @@ public struct Mention: FeatureCodable {
 
 /// A data model for the Link feature definition.
 ///
-/// - Note: According to the AT Protocol specifications: "Facet feature for a URL. The text URL may have been simplified or truncated, but the facet reference should be a complete URL."
+/// - Note: According to the AT Protocol specifications: "Facet feature for a URL. The text URL
+/// may have been simplified or truncated, but the facet reference should be a complete URL."
 ///
 /// - SeeAlso: This is based on the [`app.bsky.richtext.facet`][github] lexicon.
 ///
@@ -179,7 +186,9 @@ public struct Link: FeatureCodable {
 
 /// A data model for the Tag feature definition.
 ///
-/// - Note: According to the AT Protocol specifications: "Facet feature for a hashtag. The text usually includes a '#' prefix, but the facet reference should not (except in the case of 'double hash tags')."
+/// - Note: According to the AT Protocol specifications: "Facet feature for a hashtag. The text
+/// usually includes a '#' prefix, but the facet reference should not (except in the case of
+/// 'double hash tags')."
 ///
 /// - SeeAlso: This is based on the [`app.bsky.richtext.facet`][github] lexicon.
 ///
@@ -240,8 +249,9 @@ public enum FeatureUnion: Codable {
         } else if let value = try? container.decode(Tag.self) {
             self = .tag(value)
         } else {
-            throw DecodingError.typeMismatch(FeatureUnion.self,
-                                             DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Unknown FeatureUnion type"))
+            throw DecodingError.typeMismatch(
+                FeatureUnion.self, DecodingError.Context(
+                    codingPath: decoder.codingPath, debugDescription: "Unknown FeatureUnion type"))
         }
     }
 

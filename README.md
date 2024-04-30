@@ -63,7 +63,7 @@ I believe Bluesky and its accompanying AT Protocol gives the perfect balance bet
 You can use the Swift Package Manager to download and import the library into your project:
 ```swift
 dependencies: [
-    .package(url: "https://github.com/MasterJ93/ATProtoKit.git", from: "0.9.0")
+    .package(url: "https://github.com/MasterJ93/ATProtoKit.git", from: "0.10.0")
 ]
 ```
 
@@ -132,3 +132,5 @@ If you have any questions, you can ask me on Bluesky ([@cjrriley.com](https://bs
 
 ## License
 This Swift package is using the MIT License. Please view [LICENSE.md](https://github.com/MasterJ93/ATProtoKit/blob/main/LICENSE.md) for more details.
+
+The documentation text used by Bluesky is licenced under the MIT Licence. Please view [ATPROTO-LICENSE.md](ATProto \License/ATPROTO-LICENSE.txt) for more details.

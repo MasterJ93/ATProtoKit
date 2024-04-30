@@ -10,7 +10,8 @@ import Foundation
 // MARK: - Main definition
 /// The main data model definition for image embeds.
 ///
-/// - Note: According to the AT Protocol specifications: "A set of images embedded in a Bluesky record (eg, a post)."
+/// - Note: According to the AT Protocol specifications: "A set of images embedded in a Bluesky
+/// record (eg, a post)."
 ///
 /// - SeeAlso: This is based on the [`app.bsky.embed.images`][github] lexicon.
 ///
@@ -44,11 +45,13 @@ public struct EmbedImages: Codable {
 public struct EmbedImage: Codable {
     /// The image that needs to be uploaded.
     ///
-    /// - Warning: The image size can't be higher than 1 MB. Failure to do so will result in the image failing to upload.
+    /// - Warning: The image size can't be higher than 1 MB. Failure to do so will result in the
+    /// image failing to upload.
     public let image: UploadBlobOutput
     /// The alternative text for the image.
     ///
-    /// - Note: From the AT Protocol specification: "Alt text description of the image, for accessibility."
+    /// - Note: From the AT Protocol specification: "Alt text description of the image,
+    /// for accessibility."
     public let altText: String
     /// The aspect ratio of the image. Optional.
     public let aspectRatio: AspectRatio?
@@ -68,8 +71,9 @@ public struct EmbedImage: Codable {
 
 /// A data model for the aspect ratio definition.
 ///
-/// - Note: From the AT Protocol specification: "width:height represents an aspect ratio. It may be approximate, and may not
-/// correspond to absolute dimensions in any given unit."
+/// - Note: From the AT Protocol specification: "width:height represents an aspect ratio.
+/// It may be approximate, and may not correspond to absolute dimensions in any given unit."
+///
 /// - SeeAlso: This is based on the [`app.bsky.embed.images`][github] lexicon.
 ///
 /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/embed/images.json
@@ -91,6 +95,10 @@ public struct AspectRatio: Codable {
 ///
 /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/embed/images.json
 public struct EmbedImagesView: Codable {
+    /// The identifier of the lexicon.
+    ///
+    /// - Warning: The value must not change.
+    public private(set) var type: String = "app.bsky.embed.images#view"
     /// An array of images to be viewed.
     public let images: [ViewImage]
 
@@ -107,16 +115,19 @@ public struct EmbedImagesView: Codable {
 public struct ViewImage: Codable {
     /// The URI of the image's thumbnail.
     ///
-    /// - Note: From the AT Protocol specification: "Fully-qualified URL where a thumbnail of the image can be fetched. For example, CDN location provided by the App View."
+    /// - Note: From the AT Protocol specification: "Fully-qualified URL where a thumbnail of the
+    /// image can be fetched. For example, CDN location provided by the App View."
     public let thumbnailImageURL: URL
     /// The URI of the fully-sized image.
     ///
-    /// - Note: From the AT Protocol specification: "Fully-qualified URL where a large version of the image can be fetched. May or may not be the exact original blob. For example, CDN location
-    /// provided by the App View."
+    /// - Note: From the AT Protocol specification: "Fully-qualified URL where a large version of
+    /// the image can be fetched. May or may not be the exact original blob. For example,
+    /// CDN location provided by the App View."
     public let fullSizeImageURL: URL
     /// /// The alternative text for the image.
     ///
-    /// - Note: From the AT Protocol specification: "Alt text description of the image, for accessibility."
+    /// - Note: From the AT Protocol specification: "Alt text description of the image,
+    /// for accessibility."
     public let altText: String
     /// The aspect ratio of the image. Optional.
     public let aspectRatio: AspectRatio?

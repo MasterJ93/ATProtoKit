@@ -9,7 +9,8 @@ import Foundation
 
 /// The main data model definition for the output of getting all of the user account's followers.
 ///
-/// - Note: According to the AT Protocol specifications: "Enumerates accounts which follow a specified account (actor)."
+/// - Note: According to the AT Protocol specifications: "Enumerates accounts which follow a
+/// specified account (actor)."
 ///
 /// - SeeAlso: This is based on the [`app.bsky.graph.getFollowers`][github] lexicon.
 ///

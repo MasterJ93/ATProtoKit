@@ -9,10 +9,11 @@ import Foundation
 
 /// The main data model definition for the output of retrieving the skeleton results of posts.
 ///
-/// - Important: This is an unspecced model, and as such, this is highly volatile and may change or be removed at any time. Use at your
-/// own risk.
+/// - Important: This is an unspecced model, and as such, this is highly volatile and may change
+/// or be removed at any time. Use at your own risk.
 ///
-/// - Note: According to the AT Protocol specifications: "Backend Posts search, returns only skeleton."
+/// - Note: According to the AT Protocol specifications: "Backend Posts search, returns
+/// only skeleton."
 ///
 /// - SeeAlso: This is based on the [`app.bsky.unspecced.searchPostsSkeleton`][github] lexicon.
 ///
@@ -22,11 +23,11 @@ public struct UnspeccedSearchPostsSkeletonOutput: Codable {
     public let cursor: String?
     /// The number of search results.
     ///
-    /// This number may not be completely reliable, as it can be rounded or truncated. This number doesn't reflect all of the possible posts
-    /// that can be seen.
+    /// This number may not be completely reliable, as it can be rounded or truncated. This number
+    /// doesn't reflect all of the possible posts that can be seen.
     ///
-    /// - Note: According to the AT Protocol specifications: "Count of search hits. Optional, may be rounded/truncated, and may not be
-    /// possible to paginate through all hits."
+    /// - Note: According to the AT Protocol specifications: "Count of search hits. Optional, may
+    /// be rounded/truncated, and may not be possible to paginate through all hits."
     public let hitsTotal: Int?
     /// An array of posts.
     public let posts: [UnspeccedSkeletonSearchPost]

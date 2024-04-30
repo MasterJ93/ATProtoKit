@@ -24,7 +24,8 @@ public struct ActorProfileViewBasic: Codable {
     public var avatarImageURL: URL? = nil
     /// The associated profile view. Optional.
     public var associated: ActorProfileAssociated?
-    /// The list of metadata relating to the requesting account's relationship with the subject account. Optional.
+    /// The list of metadata relating to the requesting account's relationship with the subject
+    /// account. Optional.
     public var viewer: ActorViewerState? = nil
     /// An array of labels created by the user. Optional.
     public var labels: [Label]? = nil
@@ -102,7 +103,8 @@ public struct ActorProfileView: Codable {
     public var associated: ActorProfileAssociated?
     /// The date the profile was last indexed. Optional.
     @DateFormattingOptional public var indexedAt: Date? = nil
-    /// The list of metadata relating to the requesting account's relationship with the subject account. Optional.
+    /// The list of metadata relating to the requesting account's relationship with the subject
+    /// account. Optional.
     public var viewer: ActorViewerState? = nil
     /// An array of labels created by the user. Optional.
     public var labels: [Label]? = nil
@@ -199,7 +201,8 @@ public struct ActorProfileViewDetailed: Codable {
     public let associated: ActorProfileAssociated?
     /// The date the profile was last indexed. Optional.
     @DateFormattingOptional public var indexedAt: Date? = nil
-    /// The list of metadata relating to the requesting account's relationship with the subject account. Optional.
+    /// The list of metadata relating to the requesting account's relationship with the subject
+    /// account. Optional.
     public var viewer: ActorViewerState? = nil
     /// An array of labels created by the user. Optional.
     public var labels: [Label]? = nil
@@ -302,8 +305,8 @@ public struct ActorProfileAssociated: Codable {
 
 /// A data model for an actor viewer state definition.
 ///
-/// - Note: From the AT Protocol specification: "Metadata about the requesting account's relationship with the subject account.
-/// Only has meaningful content for authed requests."
+/// - Note: From the AT Protocol specification: "Metadata about the requesting account's
+/// relationship with the subject account. Only has meaningful content for authed requests."
 ///
 /// - SeeAlso: This is based on the [`app.bsky.actor.defs`][github] lexicon.
 ///
@@ -363,7 +366,8 @@ public struct AdultContentPreferences: Codable {
     ///
     /// - Warning: The value must not change.
     public let type: String = "app.bsky.actor.defs#adultContentPref"
-    /// Indicates whether the user will be able to see adult content in their feed. Set to `false` by default.
+    /// Indicates whether the user will be able to see adult content in their feed. Set to `false`
+    /// by default.
     public var isAdultContentEnabled: Bool = false
 
     public init(isAdultContentEnabled: Bool) {
@@ -390,7 +394,8 @@ public struct ContentLabelPreferences: Codable {
     ///
     /// - Note: If this field is empty, then the preferences apply to all labels.
     ///
-    /// - Note: According to the AT Protocol specifications: "Which labeler does this preference apply to? If undefined, applies globally."
+    /// - Note: According to the AT Protocol specifications: "Which labeler does this preference
+    /// apply to? If undefined, applies globally."
     public let labelerDID: String?
     /// The name of the content label.
     public let label: String
@@ -503,7 +508,8 @@ public struct FeedViewPreferences: Codable {
     public let type: String = "app.bsky.actor.defs#feedViewPref"
     /// The feed's identifier (typically the URI).
     ///
-    /// - Note:From the AT Protocol specification: "The URI of the feed, or an identifier which describes the feed."
+    /// - Note:From the AT Protocol specification: "The URI of the feed, or an identifier which
+    /// describes the feed."
     public let feedURI: String
     /// Indicates whether the replies are hidden from the user. Optional.
     ///
@@ -511,11 +517,13 @@ public struct FeedViewPreferences: Codable {
     public let areRepliesHidden: Bool? = nil
     /// Indicates whether replies from users you don't follow are hidden from the user. Optional.
     ///
-    /// - Note: From the AT Protocol specification: "Hide replies in the feed if they are not by followed users."
+    /// - Note: From the AT Protocol specification: "Hide replies in the feed if they are not by
+    /// followed users."
     public let areUnfollowedRepliesHidden: Bool? = true
     /// Indicates how many likes a post needs in order for the user to see the reply. Optional.
     ///
-    /// - Note: From the AT Protocol specification: "Hide replies in the feed if they do not have this number of likes."
+    /// - Note: From the AT Protocol specification: "Hide replies in the feed if they do not have
+    /// this number of likes."
     public let hideRepliesByLikeCount: Int? = nil
     /// Indicates whether reposts are hidden from the user. Optional.
     ///
@@ -553,7 +561,8 @@ public struct ThreadViewPreferences: Codable {
     public let sortingMode: SortingMode? = nil
     /// Indicates whether users you follow are prioritized over other users. Optional.
     ///
-    /// - Note: From the AT Protocol specification: "Show followed users at the top of all replies."
+    /// - Note: From the AT Protocol specification: "Show followed users at the top of
+    /// all replies."
     public let areFollowedUsersPrioritized: Bool? = nil
 
     /// The sorting mode for a thread.
@@ -587,8 +596,10 @@ public struct InterestViewPreferences: Codable {
     public let type: String = "app.bsky.actor.defs#interestsPref"
     /// An array of interest tags.
     ///
-    /// - Note: According to AT Protocol's specifications: "A list of tags which describe the account owner's interests gathered during onboarding."
-    /// - Important: Current maximum limit is 100 tags. Current maximum length for each tag name is 64 characters.
+    /// - Note: According to AT Protocol's specifications: "A list of tags which describe the
+    /// account owner's interests gathered during onboarding."
+    /// - Important: Current maximum limit is 100 tags. Current maximum length for each tag name
+    /// is 64 characters.
     public let tags: [String]
 
     public init(tags: [String]) {
@@ -708,7 +719,8 @@ public struct MutedWordsPreferences: Codable {
     public let type: String = "app.bsky.actor.defs#mutedWordsPref"
     /// An array of items the user has muted.
     ///
-    /// - Note: According to the AT Protocol specifications: "A list of words the account owner has muted."
+    /// - Note: According to the AT Protocol specifications: "A list of words the account owner
+    /// has muted."
     public let mutedItems: [MutedWord]
 
     enum CodingKeys: String, CodingKey {
@@ -729,7 +741,8 @@ public struct HiddenPostsPreferences: Codable {
     public let type: String = "app.bsky.actor.defs#hiddenPostsPref"
     /// An array of URIs related to posts that the user wants to hide.
     ///
-    /// - Note: According to the AT Protocol specifications: "A list of URIs of posts the account owner has hidden."
+    /// - Note: According to the AT Protocol specifications: "A list of URIs of posts the account
+    /// owner has hidden."
     public let items: [String]
 
     enum CodingKeys: String, CodingKey {
@@ -807,7 +820,9 @@ public enum ActorPreferenceUnion: Codable {
         } else if let value = try? container.decode(HiddenPostsPreferences.self) {
             self = .hiddenPostsPreferences(value)
         } else {
-            throw DecodingError.typeMismatch(ActorPreferenceUnion.self, DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Unknown ActorPreference type"))
+            throw DecodingError.typeMismatch(
+                ActorPreferenceUnion.self, DecodingError.Context(
+                    codingPath: decoder.codingPath, debugDescription: "Unknown ActorPreference type"))
         }
     }
 

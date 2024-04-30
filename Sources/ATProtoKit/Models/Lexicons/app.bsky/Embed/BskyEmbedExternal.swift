@@ -10,7 +10,8 @@ import Foundation
 // MARK: - Main definition
 /// The main data model definition for external embeds.
 ///
-/// - Note: According to the AT Protocol specifications: "A representation of some externally linked content (eg, a URL and 'card'), embedded in a Bluesky record (eg, a post)."
+/// - Note: According to the AT Protocol specifications: "A representation of some externally
+/// linked content (eg, a URL and 'card'), embedded in a Bluesky record (eg, a post)."
 ///
 /// - SeeAlso: This is based on the [`app.bsky.embed.external`][github] lexicon.
 ///
@@ -43,8 +44,9 @@ public struct External: Codable {
     public let description: String
     /// The thumbnail image of the external content.
     ///
-    /// - Warning: The image size can't be higher than 1 MB. Failure to do so will result in the image failing to upload.
-    public let thumbnailImage: UploadBlobOutput
+    /// - Warning: The image size can't be higher than 1 MB. Failure to do so will result in the
+    /// image failing to upload.
+    public let thumbnailImage: UploadBlobOutput?
 
     enum CodingKeys: String, CodingKey {
         case embedURI = "uri"
@@ -60,8 +62,18 @@ public struct External: Codable {
 ///
 /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/embed/external.json
 public struct EmbedExternalView: Codable {
+    /// The identifier of the lexicon.
+    ///
+    /// - Warning: The value must not change.
+    public let type: String = "app.bsky.embed.external#view"
+
     /// The external content embedded in a post.
     public let external: ViewExternal
+
+    enum CodingKeys: String, CodingKey {
+        case type = "$type"
+        case external
+    }
 }
 
 /// A data model for a definition for the external content.

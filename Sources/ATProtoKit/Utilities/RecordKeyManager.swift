@@ -13,6 +13,8 @@ class RecordKeyManager {
     private var lastTimestamp: UInt64 = UInt64(0)
     /// A number used for reducing the risk of collisions.
     private let clockIdentifier: UInt64
+    /// A list of the valid characters in base32.
+    private let base32Alphabet = "234567abcdefghijklmnopqrstuvwxyz"
 
     init() {
         // Generate a random 10-bit clock identifier.
@@ -21,17 +23,20 @@ class RecordKeyManager {
 
     /// Creates a `tid` (Timestamp Identifier) Record Key.
     ///
-    /// According to the [AT Protocol Specifications][atproto], a `tid` Record Key consists of a 64-bit integer, in the big-endian byte order. : `UInt64` is
-    /// encoded in `base32-sortable`, which is a 13 ASCII character that consists of `234567abcdefghijklmnopqrstuvwxyz` with no padding. The
-    /// specification also requires that the number never decreases: it must always increase.
+    /// According to the [AT Protocol Specifications][atproto], a `tid` Record Key consists of a 64-bit
+    /// integer, in the big-endian byte order. : `UInt64` is encoded in `base32-sortable`, which
+    /// is a 13 ASCII character that consists of `234567abcdefghijklmnopqrstuvwxyz` with no
+    /// padding. The specification also requires that the number never decreases: it must
+    /// always increase.
     ///
     /// A specific layout for `UInt64` are as follows:
     /// - Bit 0: `0`
     /// - Bits 1–54: The timestamp in microseconds since UNIX epoch.
     /// - Bits 55–64: The "clock identifier."
     ///
-    /// The "clock identifier" is a 10-bit random number between `0` and `1024`, which reduces the chance of a collision between two Record Keys. However,
-    /// it's important to note that this doesn't _garantee_ that no two Record Keys are alike.
+    /// The "clock identifier" is a 10-bit random number between `0` and `1024`, which reduces the
+    /// chance of a collision between two Record Keys. However, it's important to note that this
+    /// doesn't _guarantee_ that no two Record Keys are alike.
     ///
     /// - Returns: A new `tid` Record Key
     ///
@@ -61,11 +66,74 @@ class RecordKeyManager {
 
     /// Validates a Record Key.
     ///
-    /// This method will say what kind of Record Key it is. It will only be able to validate `any` and `tid` Record Keys at this time.
+    /// This method will say what kind of Record Key it is. It will only be able to validate
+    /// `any` and `tid` Record Keys at this time.
     ///
     /// - Parameter recordKey: The Record Key to validate.
     /// - Returns: A `RecordKeyType`, which states whether it's a known type of Record Key.
-    public func validateRecordKey(_ recordKey: String) {
+    public func validateRecordKey(_ recordKey: String) -> RecordKeyType {
+        if isValidTID(recordKey: recordKey) {
+            return .tid
+        }
 
+        let anyRegexPattern = "^(?!^\\.{1,2}$)[A-Za-z0-9._:~-]{1,512}$"
+
+        if recordKey.range(of: anyRegexPattern, options: .regularExpression) != nil {
+            return .any
+        }
+
+        return .unknown
+    }
+
+    /// Defines the type of Record Key being used.
+    public enum RecordKeyType {
+        /// Indicates the Record Key type as `tid`.
+        case tid
+        /// Indicates the Record Key type as `any`.
+        case any
+        /// The Record Key type is not known at this time.
+        case unknown
+        /// This is not a Record Key.
+        ///
+        /// You can perform some sort of error handling is this is selected.
+        case notARecordKey
+    }
+
+    /// Checks if the Record Key type is a `tid`.
+    ///
+    /// - Parameter recordKey: The Record Key itself.
+    /// - Returns: `true` if it is a `tid` Record Key; `false` if it isn't.
+    private func isValidTID(recordKey: String) -> Bool {
+        // Validate specific TID requirements
+        guard recordKey.count == 13,
+              let tidInt = decodeBase32To64BitInt(recordKey) else {
+            return false
+        }
+
+        // Check top bit is always 0
+        let topBitMask: UInt64 = 1 << 63
+        if tidInt & topBitMask != 0 {
+            return false
+        }
+
+        // TODO: Potentially add checks for the clock identifier and timestamp, if needed.
+
+        return true
+    }
+
+    /// Decodes a base32 string to a 64-bit integer
+    ///
+    /// - Parameter base32String: The string written in base32.
+    /// - Returns: An integer of type `UInt64`.
+    private func decodeBase32To64BitInt(_ base32String: String) -> UInt64? {
+        var result: UInt64 = 0
+        for char in base32String {
+            guard let charIndex = base32Alphabet.firstIndex(of: char) else {
+                return nil
+            }
+            result = result << 5
+            result |= UInt64(base32Alphabet.distance(from: base32Alphabet.startIndex, to: charIndex))
+        }
+        return result
     }
 }

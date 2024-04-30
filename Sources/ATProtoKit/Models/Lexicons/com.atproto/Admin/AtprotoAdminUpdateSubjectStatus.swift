@@ -9,7 +9,8 @@ import Foundation
 
 /// The main data model definition for updating a subject status of an account, record, or blob.
 ///
-/// - Note: According to the AT Protocol specifications: "Update the service-specific admin status of a subject (account, record, or blob)."
+/// - Note: According to the AT Protocol specifications: "Update the service-specific admin status
+/// of a subject (account, record, or blob)."
 ///
 /// - SeeAlso: This is based on the [`com.atproto.admin.updateSubjectStatus`][github] lexicon.
 ///
@@ -23,7 +24,8 @@ public struct AdminUpdateSubjectStatus: Codable {
 
 /// A data model definition for the output of updating a subject status of an account, record, or blob.
 ///
-/// - Note: According to the AT Protocol specifications: "Update the service-specific admin status of a subject (account, record, or blob)."
+/// - Note: According to the AT Protocol specifications: "Update the service-specific admin status
+/// of a subject (account, record, or blob)."
 ///
 /// - SeeAlso: This is based on the [`com.atproto.admin.updateSubjectStatus`][github] lexicon.
 ///

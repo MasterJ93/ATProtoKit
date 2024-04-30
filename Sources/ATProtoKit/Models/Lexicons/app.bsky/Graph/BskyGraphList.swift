@@ -9,24 +9,25 @@ import Foundation
 
 /// The main data model definition for a list record.
 ///
-/// - Note: According to the AT Protocol specifications: "Record representing a list of accounts (actors). Scope includes both moderation-oriented lists
-/// and curration-oriented lists."
+/// - Note: According to the AT Protocol specifications: "Record representing a list of accounts
+/// (actors). Scope includes both moderation-oriented lists and curration-oriented lists."
 ///
 /// - SeeAlso: This is based on the [`app.bsky.graph.list`][github] lexicon.
 ///
 /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/graph/list.json
-public struct GraphList: Codable {
+public struct GraphList: ATRecordProtocol {
     /// The identifier of the lexicon.
     ///
     /// - Warning: The value must not change.
-    internal let type: String = "app.bsky.graph.list"
+    public static private(set) var type: String = "app.bsky.graph.list"
     /// The name of the list.
     ///
     /// - Note: According to the AT Protocol specifications: "Display name for list; can not be empty."
     public let name: String
     /// The purpose of the list.
     ///
-    /// - Note: According to the AT Protocol specifications: "Defines the purpose of the list (aka, moderation-oriented or curration-oriented)."
+    /// - Note: According to the AT Protocol specifications: "Defines the purpose of the list
+    /// (aka, moderation-oriented or curration-oriented)."
     public let purpose: GraphListPurpose
     /// The description of the list. Optional.
     public let description: String?
@@ -39,7 +40,8 @@ public struct GraphList: Codable {
     /// The date and time the list was created.
     @DateFormatting public var createdAt: Date
 
-    public init(name: String, purpose: GraphListPurpose, description: String?, descriptionFacets: [Facet]?, avatarImage: UploadBlobOutput?, labels: SelfLabels, createdAt: Date) {
+    public init(name: String, purpose: GraphListPurpose, description: String?, descriptionFacets: [Facet]?, avatarImage: UploadBlobOutput?,
+                labels: SelfLabels, createdAt: Date) {
         self.name = name
         self.purpose = purpose
         self.description = description
@@ -64,7 +66,7 @@ public struct GraphList: Codable {
     public func encode(to encoder: any Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
 
-        try container.encode(self.type, forKey: .type)
+//        try container.encode(self.type, forKey: .type)
         try container.encode(self.name, forKey: .name)
         try container.encode(self.purpose, forKey: .purpose)
         try container.encodeIfPresent(self.description, forKey: .description)

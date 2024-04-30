@@ -9,8 +9,8 @@ import Foundation
 
 /// The main data model definition for the output of getting the user account's timeline.
 ///
-/// - Note: According to the AT Protocol specifications: "Get a view of the requesting account's home timeline. This is expected to be some form of
-/// reverse-chronological feed."
+/// - Note: According to the AT Protocol specifications: "Get a view of the requesting account's
+/// home timeline. This is expected to be some form of reverse-chronological feed."
 ///
 /// - SeeAlso: This is based on the [`app.bsky.feed.getTimeline`][github] lexicon.
 ///

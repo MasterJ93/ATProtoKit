@@ -47,7 +47,8 @@ public struct AdminReportView: Codable {
     /// An array of action IDs that relate to resolutions.
     public let resolvedByActionIDs: [Int]
 
-    public init(id: Int, reasonType: ModerationReasonType, subject: RepositoryReferencesUnion, reportedBy: String, createdAt: Date, resolvedByActionIDs: [Int]) {
+    public init(id: Int, reasonType: ModerationReasonType, subject: RepositoryReferencesUnion, reportedBy: String, createdAt: Date,
+                resolvedByActionIDs: [Int]) {
         self.id = id
         self.reasonType = reasonType
         self.subject = subject
@@ -366,8 +367,9 @@ public enum AdminEventViewUnion: Codable {
         } else if let value = try? container.decode(OzoneModerationEventDivert.self) {
             self = .moderationEventDivert(value)
         } else {
-            throw DecodingError.typeMismatch(AdminEventViewUnion.self,
-                                             DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Unknown EventViewUnion type"))
+            throw DecodingError.typeMismatch(
+                AdminEventViewUnion.self, DecodingError.Context(
+                    codingPath: decoder.codingPath, debugDescription: "Unknown EventViewUnion type"))
         }
     }
 
@@ -423,8 +425,9 @@ public enum RepositoryReferencesUnion: Codable {
         } else if let value = try? container.decode(StrongReference.self) {
             self = .strongReference(value)
         } else {
-            throw DecodingError.typeMismatch(ActorPreferenceUnion.self,
-                                             DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Unknown RepositoryReferencesUnion type"))
+            throw DecodingError.typeMismatch(
+                ActorPreferenceUnion.self, DecodingError.Context(
+                    codingPath: decoder.codingPath, debugDescription: "Unknown RepositoryReferencesUnion type"))
         }
     }
 
@@ -484,8 +487,9 @@ public enum EventViewDetailUnion: Codable {
         } else if let value = try? container.decode(OzoneModerationEventResolveAppeal.self) {
             self = .moderationEventResolveAppeal(value)
         } else {
-            throw DecodingError.typeMismatch(ActorPreferenceUnion.self,
-                                             DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Unknown EventViewDetailUnion type"))
+            throw DecodingError.typeMismatch(
+                ActorPreferenceUnion.self, DecodingError.Context(
+                    codingPath: decoder.codingPath, debugDescription: "Unknown EventViewDetailUnion type"))
         }
     }
 
@@ -539,8 +543,9 @@ public enum RepositoryViewUnion: Codable {
         } else if let value = try? container.decode(OzoneModerationRecordViewNotFound.self) {
             self = .recordViewNotFound(value)
         } else {
-            throw DecodingError.typeMismatch(ActorPreferenceUnion.self,
-                                             DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Unknown RepositoryViewUnion type"))
+            throw DecodingError.typeMismatch(
+                ActorPreferenceUnion.self, DecodingError.Context(
+                    codingPath: decoder.codingPath, debugDescription: "Unknown RepositoryViewUnion type"))
         }
     }
 
@@ -575,8 +580,9 @@ public enum MediaDetailUnion: Codable {
         } else if let value = try? container.decode(OzoneModerationMediaVideoDetails.self) {
             self = .mediaVideoDetails(value)
         } else {
-            throw DecodingError.typeMismatch(ActorPreferenceUnion.self,
-                                             DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Unknown MediaDetailUnion type"))
+            throw DecodingError.typeMismatch(
+                ActorPreferenceUnion.self, DecodingError.Context(
+                    codingPath: decoder.codingPath, debugDescription: "Unknown MediaDetailUnion type"))
         }
     }
 

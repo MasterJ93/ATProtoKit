@@ -10,7 +10,9 @@ import Foundation
 // MARK: - Main definition
 /// The main data model definition for record embeds.
 ///
-/// - Note: According to the AT Protocol specifications: "A representation of a record embedded in a Bluesky record (eg, a post). For example, a quote-post, or sharing a feed generator record."
+/// - Note: According to the AT Protocol specifications: "A representation of a record embedded in
+/// a Bluesky record (eg, a post). For example, a quote-post, or sharing a feed generator record."
+///
 /// - SeeAlso: This is based on the [`app.bsky.embed.record`][github] lexicon.
 ///
 /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/embed/record.json
@@ -35,11 +37,16 @@ public struct EmbedRecord: Codable {
 ///
 /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/embed/record.json
 public struct EmbedRecordView: Codable {
+    /// The identifier of the lexicon.
+    ///
+    /// - Warning: The value must not change.
+    public let type: String = "app.bsky.embed.record#view"
     /// The record of a specific type.
     public let record: RecordViewUnion
 
-    public init(record: RecordViewUnion) {
-        self.record = record
+    enum CodingKeys: String, CodingKey {
+        case type = "$type"
+        case record
     }
 }
 
@@ -49,6 +56,10 @@ public struct EmbedRecordView: Codable {
 ///
 /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/embed/record.json
 public struct ViewRecord: Codable {
+    /// The identifier of the lexicon.
+    ///
+    /// - Warning: The value must not change.
+    public let type: String = "app.bsky.embed.record#viewRecord"
     /// The URI of the record.
     public let recordURI: String
     /// The CID of the record.
@@ -73,12 +84,57 @@ public struct ViewRecord: Codable {
     /// The date the record was last indexed.
     @DateFormatting public var indexedAt: Date
 
+    public init(recordURI: String, cidHash: String, author: ActorProfileViewBasic, value: UnknownType, labels: [Label]?, replyCount: Int?,
+                repostCount: Int?, likeCount: Int?, embeds: [EmbedViewUnion]?, indexedAt: Date) {
+        self.recordURI = recordURI
+        self.cidHash = cidHash
+        self.author = author
+        self.value = value
+        self.labels = labels
+        self.replyCount = replyCount
+        self.repostCount = repostCount
+        self.likeCount = likeCount
+        self.embeds = embeds
+        self._indexedAt = DateFormatting(wrappedValue: indexedAt)
+    }
+
+    public init(from decoder: any Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+
+        self.recordURI = try container.decode(String.self, forKey: .recordURI)
+        self.cidHash = try container.decode(String.self, forKey: .cidHash)
+        self.author = try container.decode(ActorProfileViewBasic.self, forKey: .author)
+        self.value = try container.decode(UnknownType.self, forKey: .value)
+        self.labels = try container.decodeIfPresent([Label].self, forKey: .labels)
+        self.replyCount = try container.decodeIfPresent(Int.self, forKey: .replyCount)
+        self.repostCount = try container.decodeIfPresent(Int.self, forKey: .repostCount)
+        self.likeCount = try container.decodeIfPresent(Int.self, forKey: .likeCount)
+        self.embeds = try container.decodeIfPresent([EmbedViewUnion].self, forKey: .embeds)
+        self.indexedAt = try container.decode(DateFormatting.self, forKey: .indexedAt).wrappedValue
+    }
+
+    public func encode(to encoder: any Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+
+        try container.encode(self.recordURI, forKey: .recordURI)
+        try container.encode(self.cidHash, forKey: .cidHash)
+        try container.encode(self.author, forKey: .author)
+        try container.encode(self.value, forKey: .value)
+        try container.encodeIfPresent(self.labels, forKey: .labels)
+        try container.encodeIfPresent(self.replyCount, forKey: .replyCount)
+        try container.encodeIfPresent(self.repostCount, forKey: .repostCount)
+        try container.encodeIfPresent(self.likeCount, forKey: .likeCount)
+        try container.encodeIfPresent(self.embeds, forKey: .embeds)
+        try container.encode(self._indexedAt, forKey: .indexedAt)
+    }
+
     enum CodingKeys: String, CodingKey {
+        case type = "$type"
         case recordURI = "uri"
         case cidHash = "cid"
         case author
-        case value = "value"
-        case labels = "labels"
+        case value
+        case labels
         case replyCount
         case repostCount
         case likeCount
@@ -137,10 +193,12 @@ public enum RecordViewUnion: Codable {
     case viewNotFound(ViewNotFound)
     /// A record that may have been blocked.
     case viewBlocked(ViewBlocked)
-    /// A record that contains a generator view.
+    /// A generator view.
     case generatorView(FeedGeneratorView)
-    /// A record that contains a list view.
+    /// A list view.
     case listView(GraphListView)
+    /// A labeler view.
+    case labelerView(LabelerView)
 
     public init(from decoder: Decoder) throws {
         let container = try decoder.singleValueContainer()
@@ -155,9 +213,12 @@ public enum RecordViewUnion: Codable {
             self = .generatorView(value)
         } else if let value = try? container.decode(GraphListView.self) {
             self = .listView(value)
+        } else if let value = try? container.decode(LabelerView.self) {
+            self = .labelerView(value)
         } else {
-            throw DecodingError.typeMismatch(RecordViewUnion.self, DecodingError.Context(codingPath: decoder.codingPath,
-                                                                                         debugDescription: "Unknown RecordViewUnion type"))
+            throw DecodingError.typeMismatch(
+                RecordViewUnion.self, DecodingError.Context(
+                    codingPath: decoder.codingPath, debugDescription: "Unknown RecordViewUnion type"))
         }
     }
 
@@ -175,6 +236,8 @@ public enum RecordViewUnion: Codable {
                 try container.encode(viewRecord)
             case .listView(let viewRecord):
                 try container.encode(viewRecord)
+            case .labelerView(let labelerView):
+                try container.encode(labelerView)
         }
     }
 }

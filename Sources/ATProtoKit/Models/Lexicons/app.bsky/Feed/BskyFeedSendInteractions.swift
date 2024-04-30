@@ -9,8 +9,8 @@ import Foundation
 
 /// The request body model definition for sending interactions to a feed generator.
 ///
-/// - Note: According to the AT Protocol specifications: "end information about interactions with feed items back to the feed generator
-/// that served them."
+/// - Note: According to the AT Protocol specifications: "end information about interactions with
+/// feed items back to the feed generator that served them."
 ///
 /// - SeeAlso: This is based on the [`app.bsky.feed.sendInteractions`][github] lexicon.
 ///

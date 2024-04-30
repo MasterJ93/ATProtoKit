@@ -9,7 +9,8 @@ import Foundation
 
 /// The main data model definition for importing a CAR file.
 ///
-/// - Note: According to the AT Protocol specifications: "Import a repo in the form of a CAR file. Requires Content-Length HTTP header to be set."
+/// - Note: According to the AT Protocol specifications: "Import a repo in the form of a CAR file.
+/// Requires Content-Length HTTP header to be set."
 ///
 /// - SeeAlso: This is based on the [`com.atproto.repo.importRepo`][github] lexicon.
 ///

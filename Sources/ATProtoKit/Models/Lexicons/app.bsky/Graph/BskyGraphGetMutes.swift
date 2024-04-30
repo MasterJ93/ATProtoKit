@@ -7,9 +7,11 @@
 
 import Foundation
 
-/// The main data model definition for the output of retrieving all accounts the user account is currently muting.
+/// The main data model definition for the output of retrieving all accounts the user account is
+/// currently muting.
 ///
-/// - Note: According to the AT Protocol specifications: "Enumerates accounts that the requesting account (actor) currently has muted. Requires auth."
+/// - Note: According to the AT Protocol specifications: "Enumerates accounts that the requesting
+/// account (actor) currently has muted. Requires auth."
 ///
 /// - SeeAlso: This is based on the [`app.bsky.graph.getMutes`][github] lexicon.
 ///

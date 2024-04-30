@@ -7,18 +7,19 @@
 
 import Foundation
 
-/// The main data model definition for a repost record on Bluesky.
+/// The record model definition for a repost record on Bluesky.
 ///
-/// - Note: According to the AT Protocol specifications: "Record representing a 'repost' of an existing Bluesky post."
+/// - Note: According to the AT Protocol specifications: "Record representing a 'repost' of an
+/// existing Bluesky post."
 ///
 /// - SeeAlso: This is based on the [`app.bsky.feed.repost`][github] lexicon.
 ///
 /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/feed/repost.json
-public struct FeedRepost: Codable {
+public struct FeedRepost: ATRecordProtocol {
     /// The identifier of the lexicon.
     ///
     /// - Warning: The value must not change.
-    public let type: String = "app.bsky.feed.repost"
+    public static private(set) var type: String = "app.bsky.feed.repost"
     /// The strong reference of the repost record.
     public let subject: StrongReference
     /// The date the like record was created.
@@ -39,7 +40,8 @@ public struct FeedRepost: Codable {
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(self.type, forKey: .type)
+
+//        try container.encode(self.type, forKey: .type)
         try container.encode(self.subject, forKey: .subject)
         try container.encode(self._createdAt, forKey: .createdAt)
     }

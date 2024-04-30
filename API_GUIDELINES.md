@@ -13,7 +13,11 @@ The [Swift API Design Guidelines](https://www.swift.org/documentation/api-design
 
 ## Fundamentals
 - For code, the maximum length of a line is 170 characters. However, this isn’t a strong goal to have: it can be much longer than this.
-- For documentation, the maximum length of a line is also 170 characters. However, this _is_ a strict rule: if necessary, break it down into smaller lines.
+- For documentation, the maximum length of a line is 100 characters. However, this _is_ a (mostly) strict rule: if necessary, break it down into smaller lines.
+    - The only exceptions to this rule include the following:
+    - If a line that contains a oiece of code goes a little over the line, or if the code line is over 100 characters.
+    - If a link is over 100 characters.
+    - If the Unclear Documentation Note is used.
 - Documentation lines should use the triple slashes (`///`) rather than the multi-block delimiter (`/** */`).
 - Everything in the project must be written in American English.
 - All methods/functions, classes, structs, enums, and properties need to display their access keywords. The only permitted keywords used in this project are `public`, `internal`, `private`, and `fileprivate`:
@@ -105,7 +109,25 @@ Lexicons are relevant to models and methods. Here are some general guidelines:
 	try container.encodeIfPresent(self._indexedAt, forKey: .indexedAt)
     ```
 
-There are multiple kinds of models: main models, definition models, output models, and requestBody models.
+Here's the general layout for all Lexicon models:
+```swift
+// Each model starts out with the one-line sentence summary of the model.
+// Will be called "one-line documentation summary" for future reference.
+/// The record definition for a post record.
+///
+// If the lexicon associated with this model contains documentation, then it must be inserted as a note.
+// Will be called "lexicon spec note" for future reference.
+/// - Note: According to the AT Protocol specifications: "Record containing a Bluesky post."
+///
+// The Namespaced Identifier (NSID) of the lexicon must be displayed. It should also be linked: the link
+// will go to the lexicon JSON file associated with this model.
+// Will be called "lexicon link" for future reference.
+/// - SeeAlso: This is based on the [`app.bsky.feed.post`][github] lexicon.
+///
+/// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/feed/post.json
+```
+
+There are multiple kinds of models: main models, definition models, record models, output models, and requestBody models.
 
 ### Main Models
 - Documentation for the models are as follows:
@@ -123,14 +145,12 @@ There are multiple kinds of models: main models, definition models, output model
 	///
 	/// [github]: <#Lexicon link#>
     ```
-    where: "`<#Lexicon Type ID#>`” is the lexicon’s name, and “`<#Lexicon link#>`” is the link to the lexicon itself:
+    where: "`<#Lexicon Type ID#>`” is the lexicon’s name, and “`<#Lexicon link#>`” is the link to the lexicon itself. Example:
 	```swift
 	/// - SeeAlso: This is based on the [`app.bsky.actor.getProfile`][github] lexicon.
 	///
 	/// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/actor/getProfile.json
 	```
-- The models themselves have the following guidelines:
-	- All models are `public` and must not be instead of a class or struct.
 
 ### Definition Models
 - Documentation for the models are as follows:
@@ -138,7 +158,7 @@ There are multiple kinds of models: main models, definition models, output model
    ```swift
 	/// A data model definition for the output of checking the user's account status.
    ```
-   The requirements remain the same for the AT Protocol lexicon descriptions, the lexicon's NSID', and the GitHub link.
+   The requirements remain the same for the AT Protocol lexicon descriptions, the lexicon's NSID, and the GitHub link.
 - For the models themselves, they have the following requirements:
 	- The name of the struct is exactly the same as the with the Main model name, but the suffix is the property name within the lexicon itself, and `defs` is removed. For example, `com.atproto.admin.defs` contains a property named `modEventView`. Therefore, the name of the struct is called `AdminModEventView`.
     - After an empty `///` in the next line, the following line has the description that’s provided by the lexicon. If there’s no description, then this can be skipped. If there is one, it must say "- Note: According to the AT Protocol specifications: “`<#Description#>`””, where "`<#Description#>`” is the description provided by the lexicon:
@@ -156,6 +176,26 @@ There are multiple kinds of models: main models, definition models, output model
 	/// - SeeAlso: This is based on the [`app.bsky.actor.getProfile`][github] lexicon.
 	///
 	/// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/actor/getProfile.json
+	```
+
+### Record Models
+- Documentation for the models are as follows:
+    - The first line must be structured as "A record definition for ", followed by a short, one sentence description of what the lexicon is for:
+    ```swift
+    /// A record definition of a post.
+    ```
+    - After an empty `///` in the next line, the following line has the description that's procided by the lexicon. If there's no description, then this can be skipped. If there is one, it must say "- Note: According to the AT Protocol specifications: "`<#Description#>`"", where "`<#Description#>`" is the description provided by the lexicon.
+    - After another empty `///` in the next line, the following line states where the API user can see the name of the lexicon, followed by the link. The structure must look like this:
+    ```swift
+	/// - SeeAlso: This is based on the [`<#Lexicon Type ID#>`][github] lexicon.
+	///
+	/// [github]: <#Lexicon link#>
+    ```
+    where: "`<#Lexicon Type ID#>`” is the lexicon’s name, and “`<#Lexicon link#>`” is the link to the lexicon itself:
+	```swift
+	/// - SeeAlso: This is based on the [`app.bsky.feed.post`][github] lexicon.
+	///
+	/// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/feed/post.json
 	```
 
 ### Output Models
@@ -204,12 +244,22 @@ There are multiple kinds of models: main models, definition models, output model
 	/// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/actor/getProfile.json
 	```
 
+### Unclear Documentation Note
+There may be times where documentation may be unclear by the lexicon. If this happens, add a note below everything in the documentation. The note must look like this:
+```swift
+/// - Important: The item associated with this property is undocumented in the AT Protocol specifications. The documentation here is based on:\
+///   \* **For items with some inferable context from property names or references**: its best interpretation, though not with full certainty.\
+///   \* **For items without enough context for even an educated guess**: a direct acknowledgment of their undocumented status.\
+///   \
+///   Clarifications from Bluesky are needed in order to fully understand this item.
+```
+
 ## Model Designs
 ### Regular models
 _TBD..._
 
 ### Lexicon models
-- All models must be `public` `struct`s and should conform to `Codable`, `Decodable`, or `Encodable`.
+- All models must be `public` `struct`s and should conform to `Codable`, `Decodable`, `Encodable`, or `ATRecordProtocol`.
     - If the model should only be used to be encoded or decoded, but not both, then the model must _only_ be conforming to `Encodable` or `Decodable` respectively; they can't conform to `Codable`.
 - The name of the model must be the namespaced identifier's subdomain, followed by the name of the lexicon's file name, all in PascalCase. For example: `com.atproto.sync.notifyOfUpdate` becomes `SyncNotifyOfUpdate`. Furthermore, the suffix of the name depends on the type of model it is:
     - For main definition and normal definition models, there is no suffix.
@@ -222,6 +272,8 @@ _TBD..._
     - In the standard `init()` method, set the value of `wrappedValue` to an underscored (`_`) version of the name of the property.
     - In `init(from decoder: Decoder) throws`, attempt to to decode each `Date` property using `@DateFormatting`/`@DateFormattingOptional`'s `wrappedValue`:
     - For `CodingKeys`, only override the case if the value doesn't match the required value in the lexicon.
+- The decoding and encoding methods, the line that defines `container` and the decoding/encoding process must be separated by a single line.
+- For `truncateEncode()` and `truncateEncodeIfPresent()`, make the rest of the code should be separated from the rest of the encoding process of the other properties.
 
 ## Lexicon Union Designs
 - All union types must be `public` `enum`s and should conform to `Codable`, `Decodable`, or `Encodable`.

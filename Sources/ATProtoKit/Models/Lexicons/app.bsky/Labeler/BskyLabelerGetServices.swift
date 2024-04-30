@@ -9,18 +9,22 @@ import Foundation
 
 /// The main data model definition for the output of the labeler service information.
 ///
-/// - Note: According to the AT Protocol specifications: "Get information about a list of labeler services."
+/// - Note: According to the AT Protocol specifications: "Get information about a list of
+/// labeler services."
 ///
 /// - SeeAlso: This is based on the [`app.bsky.labeler.getServices`][github] lexicon.
 ///
 /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/labeler/getServices.json
 public struct LabelerGetServicesOutput: Codable {
+    /// A labeler view.
     public let views: LabelerViewUnion
 }
 
-/// A reference containing the list of labeler views..
+/// A reference containing the list of labeler views.
 public enum LabelerViewUnion: Codable {
+    /// A labeler view.
     case labelerView(LabelerView)
+    /// A detailed view of a labeler.
     case labelerViewDetailed(LabelerViewDetailed)
 
     public init(from decoder: any Decoder) throws {
@@ -31,10 +35,10 @@ public enum LabelerViewUnion: Codable {
         } else if let value = try? container.decode(LabelerViewDetailed.self) {
             self = .labelerViewDetailed(value)
         } else {
-            throw DecodingError.typeMismatch(ActorPreferenceUnion.self, DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Unknown LabelerViewUnion type"))
+            throw DecodingError.typeMismatch(
+                ActorPreferenceUnion.self, DecodingError.Context(
+                    codingPath: decoder.codingPath, debugDescription: "Unknown LabelerViewUnion type"))
         }
-
-
     }
 
     public func encode(to encoder: any Encoder) throws {

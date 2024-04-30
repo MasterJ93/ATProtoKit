@@ -10,7 +10,8 @@ import Foundation
 // MARK: - Main definition
 /// The main data model definition for resolving handles.
 ///
-/// - Note: According to the AT Protocol specifications: "Resolves a handle (domain name) to a DID."
+/// - Note: According to the AT Protocol specifications: "Resolves a handle (domain name) to
+/// a DID."
 ///
 /// - SeeAlso: This is based on the [`com.atproto.identity.resolveHandle`][github] lexicon.
 ///

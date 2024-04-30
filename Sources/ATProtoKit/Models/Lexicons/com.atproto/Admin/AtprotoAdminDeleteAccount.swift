@@ -9,7 +9,8 @@ import Foundation
 
 /// The main data model definition for deleting a user's account as an administrator.
 ///
-/// - Note: According to the AT Protocol specifications: "Delete a user account as an administrator."
+/// - Note: According to the AT Protocol specifications: "Delete a user account as
+/// an administrator."
 ///
 /// - SeeAlso: This is based on the [`com.atproto.admin.deleteAccount`][github] lexicon.
 ///

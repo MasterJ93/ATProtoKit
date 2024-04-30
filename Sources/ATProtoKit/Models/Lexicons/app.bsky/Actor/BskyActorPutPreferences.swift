@@ -9,12 +9,16 @@ import Foundation
 
 /// The main data model definition for editing user preferences.
 ///
-/// - Note: According to the AT Protocol specifications: "Set the private preferences attached to the account."
+/// - Note: According to the AT Protocol specifications: "Set the private preferences attached to
+/// the account."
 ///
 /// - SeeAlso: This is based on the [`app.bsky.actor.putPreferences`][github] lexicon.
 ///
 /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/actor/putPreferences.json
 public struct ActorPutPreferences: Codable {
+    /// The identifier of the lexicon.
+    ///
+    /// - Warning: The value must not change.
     public let type: String = "app.bsky.actor.putPreferences"
     /// A list of preferences by the user.
     public let preferences: [ActorPreferenceUnion]

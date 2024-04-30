@@ -9,7 +9,8 @@ import Foundation
 
 /// The main data model definition for the output of viewing the selected feed generator.
 ///
-/// - Note: According to the AT Protocol specifications: "Get a hydrated feed from an actor's selected feed generator. Implemented by App View."
+/// - Note: According to the AT Protocol specifications: "Get a hydrated feed from an actor's
+/// selected feed generator. Implemented by App View."
 ///
 /// - SeeAlso: This is based on the [`app.bsky.feed.getFeed`][github] lexicon.
 ///

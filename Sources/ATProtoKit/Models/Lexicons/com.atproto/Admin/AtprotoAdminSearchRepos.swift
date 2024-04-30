@@ -9,7 +9,8 @@ import Foundation
 
 /// The main data model definition for the output of searching repositories.
 ///
-/// - Note: According to the AT Protocol specifications: "Find repositories based on a search term."
+/// - Note: According to the AT Protocol specifications: "Find repositories based on a
+/// search term."
 ///
 /// - SeeAlso: This is based on the [`com.atproto.admin.searchRepos`][github] lexicon.
 ///

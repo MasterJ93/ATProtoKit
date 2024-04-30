@@ -1,14 +1,25 @@
 //
-//  GetReplyReference.swift
+//  ATProtoTools.swift
 //
 //
-//  Created by Christopher Jr Riley on 2024-01-29.
+//  Created by Christopher Jr Riley on 2024-04-29.
 //
 
 import Foundation
 
-extension ATProtoKit {
-    // TODO: Move this method to a new class and make it a static method.
+/// A group of methods for miscellaneous aspects of ATProtoKit.
+///
+/// These methods are useful for anything that's too small or too niche to be added elsewhere.
+/// This may also include methods directly related to the AT Protocol.
+///
+/// If a method is better suited elsewhere, then it will be re-created to a more appropriate
+/// `class`. The version in here will then become deprecated, and then later removed in a
+/// future update.
+///
+/// - Important: The rule where the method becomes deprecated will be active either
+/// when version 1.0 is launched or `ATProtoTools` is stabilized, whichever comes first.
+/// Until then, if a method is better suited elsewhere, it will be immediately moved.
+class ATProtoTools {
     /// Resolves the reply references to prepare them for a later post record request.
     ///
     /// - Parameter parentURI: The URI of the post record the current one is directly replying to.
@@ -26,8 +37,7 @@ extension ATProtoKit {
 
         return ReplyReference(root: rootReference, parent: replyReference.parent)
     }
-    
-    // TODO: Move this method to a new class and make it a static method.
+
     /// Gets a record from the user's repository.
     ///
     /// - Parameter uri: The URI of the record.
@@ -35,7 +45,7 @@ extension ATProtoKit {
     public func fetchRecordForURI(_ uri: String) async throws -> RecordOutput {
         let query = try parseURI(uri)
 
-        let record = try await getRepoRecord(from: query, pdsURL: nil)
+        let record = try await ATProtoKit().getRepositoryRecord(from: query, pdsURL: nil)
 
         switch record {
             case .success(let result):
@@ -44,27 +54,26 @@ extension ATProtoKit {
                 throw failure
         }
     }
-    
-    // TODO: Move this method to a new class and make it a static method.
+
     /// A utility method for converting a ``RecordOutput`` into a ``ReplyReference``.
-    /// 
+    ///
     /// - Parameter record: The record to convert.
     /// - Returns: A ``ReplyReference``.
     private func createReplyReference(from record: RecordOutput) -> ReplyReference {
         let reference = StrongReference(recordURI: record.recordURI, cidHash: record.recordCID)
         return ReplyReference(root: reference, parent: reference)
     }
-    
+
     /// Parses the URI in order to get a ``RecordQuery``.
     ///
     /// There are two formats of URIs: the ones that have the `at://` protocol, and the ones that start off with the URL of the Personal Data Server (PDS). Regardless of option, this method should be able to parse
-    /// them and return a proper ``RecordQuery``. However, it's still important to validate the record by using ``getRepoRecord(from:pdsURL:)``.
+    /// them and return a proper ``RecordQuery``. However, it's still important to validate the record by using ``ATProtoKit/ATProtoKit/getRepositoryRecord(from:pdsURL:)``.
     /// - Parameters:
     ///   - uri: The URI to parse.
     ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `nil`.
     /// - Returns: A ``RecordQuery``.
     internal func parseURI(_ uri: String,
-                                  pdsURL: String = "https://bsky.app") throws -> RecordQuery {
+                           pdsURL: String = "https://bsky.app") throws -> RecordQuery {
         if uri.hasPrefix("at://") {
             let components = uri.split(separator: "/").map(String.init)
             guard components.count >= 4 else { throw ATRequestPrepareError.invalidFormat }

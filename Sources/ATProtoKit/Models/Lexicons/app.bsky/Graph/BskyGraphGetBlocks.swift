@@ -7,9 +7,11 @@
 
 import Foundation
 
-/// The main data model definition for the output of getting all of the users that have been blocked by the user account.
+/// The main data model definition for the output of getting all of the users that have been
+/// blocked by the user account.
 ///
-/// - Note: According to the AT Protocol specifications: "Enumerates which accounts the requesting account is currently blocking. Requires auth."
+/// - Note: According to the AT Protocol specifications: "Enumerates which accounts the
+/// requesting account is currently blocking. Requires auth."
 ///
 /// - SeeAlso: This is based on the [`app.bsky.graph.getBlocks`][github] lexicon.
 ///
