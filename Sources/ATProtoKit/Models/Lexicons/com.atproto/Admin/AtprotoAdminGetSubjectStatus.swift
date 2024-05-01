@@ -9,7 +9,8 @@ import Foundation
 
 /// A data model definition for the output of getting the status of a subject as an administrator.
 ///
-/// - Note: According to the AT Protocol specifications: "Get the service-specific admin status of a subject (account, record, or blob)."
+/// - Note: According to the AT Protocol specifications: "Get the service-specific admin status of
+/// a subject (account, record, or blob)."
 ///
 /// - SeeAlso: This is based on the [`com.atproto.admin.getSubjectStatus`][github] lexicon.
 ///
@@ -38,9 +39,9 @@ public enum AdminGetSubjectStatusUnion: Codable {
         } else if let value = try? container.decode(AdminRepoBlobReference.self) {
             self = .repoBlobReference(value)
         } else {
-            throw DecodingError.typeMismatch(AdminEventViewUnion.self,
-                                             DecodingError.Context(codingPath: decoder.codingPath,
-                                                                   debugDescription: "Unknown AdminGetSubjectStatusUnion type"))
+            throw DecodingError.typeMismatch(
+                AdminEventViewUnion.self, DecodingError.Context(
+                    codingPath: decoder.codingPath, debugDescription: "UnknownAdminGetSubjectStatusUnion type"))
         }
     }
 

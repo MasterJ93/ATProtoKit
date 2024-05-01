@@ -1,5 +1,5 @@
 //
-//  AtprotoAdminQueryModerationEvents.swift
+//  OzoneModerationQueryEvents.swift
 //
 //
 //  Created by Christopher Jr Riley on 2024-03-01.
@@ -11,14 +11,14 @@ import Foundation
 ///
 /// - Note: According to the AT Protocol specifications: "List moderation events related to a subject."
 ///
-/// - SeeAlso: This is based on the [`com.atproto.admin.queryModerationEvents`][github] lexicon.
+/// - SeeAlso: This is based on the [`tools.ozone.moderation.queryEvents`][github] lexicon.
 ///
-/// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/admin/queryModerationEvents.json
-public struct AdminQueryModerationEventOutput: Codable {
+/// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/tools/ozone/moderation/queryEvents.json
+public struct ModerationQueryEventsOutput: Codable {
     /// The mark used to indicate the starting point for the next set of results. Optional.
     public let cursor: String?
     /// An array of moderator events.
-    public let events: [OzoneModerationEventViewDetail]
+    public let events: [OzoneModerationEventView]
 }
 
 /// Indicates the sorting direction for the array of moderation events.
