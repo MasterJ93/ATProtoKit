@@ -1,8 +1,8 @@
 //
-//  AtprotoAdminEmitModerationEvent.swift
+//  OzoneModerationEmitEvent.swift
 //
 //
-//  Created by Christopher Jr Riley on 2024-02-29.
+//  Created by Christopher Jr Riley on 2024-05-01.
 //
 
 import Foundation
@@ -14,7 +14,7 @@ import Foundation
 /// - SeeAlso: This is based on the [`tools.ozone.moderation.emitEvent`][github] lexicon.
 ///
 /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/tools/ozone/moderation/emitEvent.json
-public struct AdminEmitModerationEvent: Codable {
+public struct ModerationEmitEvent: Codable {
     /// The type of event the moderator is taking,
     public let event: AdminEventViewUnion
     /// The type of repository reference.

@@ -1,5 +1,5 @@
 //
-//  AtprotoAdminDeleteCommunicationTemplate.swift
+//  OzoneCommunicationDeleteTemplate.swift
 //
 //
 //  Created by Christopher Jr Riley on 2024-02-28.
@@ -11,10 +11,10 @@ import Foundation
 ///
 /// - Note: According to the AT Protocol specifications: "Delete a communication template."
 ///
-/// - SeeAlso: This is based on the [`com.atproto.admin.deleteCommunicationTemplate`][github] lexicon.
+/// - SeeAlso: This is based on the [`tools.ozone.communication.deleteTemplate`][github] lexicon.
 ///
-/// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/admin/deleteCommunicationTemplate.json
-public struct AdminDeleteCommunicationTemplate: Codable {
+/// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/tools/ozone/communication/deleteTemplate.json
+public struct CommunicationDeleteTemplate: Codable {
     /// The ID of the communication template.
     public let id: String
 }

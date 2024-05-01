@@ -10,9 +10,11 @@ import Foundation
 extension ATProtoKit {
     /// Updates a communication template.
     /// 
-    /// - Important: This is a moderator task and as such, regular users won't be able to access this; if they attempt to do so, an error will occur.
-    /// 
-    /// - Note: According to the AT Protocol specifications: "Administrative action to update an existing communication template. Allows passing partial fields to patch specific fields only."
+    /// - Important: This is a moderator task and as such, regular users won't be able to access
+    /// this; if they attempt to do so, an error will occur.
+    ///
+    /// - Note: According to the AT Protocol specifications: "Administrative action to update an
+    /// existing communication template. Allows passing partial fields to patch specific fields only."
     ///
     /// - SeeAlso: This is based on the [`tools.ozone.communication.updateTemplate`][github] lexicon.
     ///
@@ -23,7 +25,8 @@ extension ATProtoKit {
     ///   - name: The name of the communication template. Optional.
     ///   - contentMarkdown: The content of the communication template. Optional.
     ///   - subject: The subject line of the message itself. Optional.
-    ///   - updatedBy: The decentralized identifier (DID) of the user who updated the communication template. Optional.
+    ///   - updatedBy: The decentralized identifier (DID) of the user who updated the
+    ///   communication template. Optional.
     ///   - isDisabled: Indicates whether the communication template is disabled. Optional.
     /// - Returns: A `Result`, containing either an ``OzoneCommunicationTemplateView`` if successful, or an `Error` if not.
     public func updateCommunicationTemplate(_ id: String, name: String?, contentMarkdown: String?, subject: String?, updatedBy: String?,
@@ -38,7 +41,7 @@ extension ATProtoKit {
             return .failure(ATRequestPrepareError.invalidRequestURL)
         }
 
-        let requestBody = AdminUpdateCommunicationTemplate(
+        let requestBody = CommunicationUpdateTemplate(
             id: id,
             name: name,
             contentMarkdown: contentMarkdown,

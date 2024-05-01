@@ -10,11 +10,14 @@ import Foundation
 extension ATProtoAdmin {
     /// List all moderator events pertaining a subject.
     /// 
-    /// - Important: This is an moderator task and as such, regular users won't be able to access this; if they attempt to do so, an error will occur.
-    /// 
-    /// - Note: Many of the parameter's descriptions are taken directly from the AT Protocol's specification.
-    /// 
-    /// - Note: According to the AT Protocol specifications: "List moderation events related to a subject."
+    /// - Important: This is an moderator task and as such, regular users won't be able to access
+    /// this; if they attempt to do so, an error will occur.
+    ///
+    /// - Note: Many of the parameter's descriptions are taken directly from the
+    /// AT Protocol's specification.
+    ///
+    /// - Note: According to the AT Protocol specifications: "List moderation events related
+    /// to a subject."
     ///
     /// - SeeAlso: This is based on the [`tools.ozone.moderation.queryEvents`][github] lexicon.
     ///
@@ -22,22 +25,34 @@ extension ATProtoAdmin {
     ///
     /// - Parameters:
     ///   - eventTypes: An array of event types. Optional.
-    ///   - createdBy: The decentralized identifier (DID) of the user who created the events. Optional.
-    ///   - sortDirection: The direction set for sorting the events. Optional. Defaults to `.descending`.
-    ///   - createdAfter: States that the moderator events displayed should be after a specified date. Optional.
-    ///   - createdBefore: States that the moderator events displayed should be before a specified date. Optional.
+    ///   - createdBy: The decentralized identifier (DID) of the user who created
+    ///   the events. Optional.
+    ///   - sortDirection: The direction set for sorting the events. Optional. Defaults
+    ///   to `.descending`.
+    ///   - createdAfter: States that the moderator events displayed should be after a
+    ///   specified date. Optional.
+    ///   - createdBefore: States that the moderator events displayed should be before a
+    ///   specified date. Optional.
     ///   - subject: The URI of the subject related to the events. Optional.
-    ///   - canIncludeAllUserRecords: If true, events on all record types (posts, lists, profile etc.) owned by the did are returned. Optional.  Defaults to `false`.
+    ///   - canIncludeAllUserRecords: If true, events on all record types (posts, lists, profile
+    ///   etc.) owned by the did are returned. Optional.  Defaults to `false`.
     ///   - limit: The number of events that can be displayed at once. Optional. Defaults to `50`.
     ///   - doesHaveComment: Indicates whether the list should only include events with comments.
-    ///   - comment: A query that makes the list display events with comments containing the keywords used here. Optional.
-    ///   - addedLabels: An array of labels that makes the list display events that have the labels added. Optional.
-    ///   - removedLabels: An array of labels that makes the list display events that don't have the labels added. Optional.
-    ///   - addedTags: An array of tags that makes the list display events that contains the added tags. Optional.
-    ///   - removedTags: An array of tags that makes the list display events that doesn't contain the added tags. Optional.
+    ///   - comment: A query that makes the list display events with comments containing the
+    ///   keywords used here. Optional.
+    ///   - addedLabels: An array of labels that makes the list display events that have the
+    ///   labels added. Optional.
+    ///   - removedLabels: An array of labels that makes the list display events that don't have
+    ///   the labels added. Optional.
+    ///   - addedTags: An array of tags that makes the list display events that contains the
+    ///   added tags. Optional.
+    ///   - removedTags: An array of tags that makes the list display events that doesn't contain
+    ///   the added tags. Optional.
     ///   - reportTypes: An array of report types.
-    ///   - cursor: The mark used to indicate the starting point for the next set of results. Optional.
-    /// - Returns: A `Result`, containing either an ``AdminQueryModerationEventOutput`` if successful, or an `Error` if not.
+    ///   - cursor: The mark used to indicate the starting point for the next set
+    ///   of results. Optional.
+    /// - Returns: A `Result`, containing either an ``AdminQueryModerationEventOutput``
+    /// if successful, or an `Error` if not.
     public func queryEvents(_ eventTypes: [String]? = nil, createdBy: String? = nil,
                             sortDirection: AdminQueryModerationEventSortDirection? = .descending, createdAfter: Date? = nil, createdBefore: Date? = nil,
                             subject: String? = nil, canIncludeAllUserRecords: Bool? = false, limit: Int? = 50, doesHaveComment: Bool? = nil,
@@ -50,7 +65,7 @@ extension ATProtoAdmin {
         }
 
         guard let sessionURL = session?.pdsURL,
-              let requestURL = URL(string: "\(sessionURL)/xrpc/tools.ozone.moderation.queryEvent") else {
+              let requestURL = URL(string: "\(sessionURL)/xrpc/tools.ozone.moderation.queryEvents") else {
             return .failure(ATRequestPrepareError.invalidRequestURL)
         }
 

@@ -30,7 +30,7 @@ extension ATProtoAdmin {
             throw ATRequestPrepareError.invalidRequestURL
         }
 
-        let requestBody = AdminDeleteCommunicationTemplate(
+        let requestBody = CommunicationDeleteTemplate(
             id: id
         )
 

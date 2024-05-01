@@ -36,7 +36,7 @@ extension ATProtoAdmin {
             return .failure(ATRequestPrepareError.invalidRequestURL)
         }
 
-        let requestBody = AdminCreateCommunicationTemplate(
+        let requestBody = CommunicationCreateTemplate(
             name: name,
             contentMarkdown: contentMarkdown,
             subject: subject,
