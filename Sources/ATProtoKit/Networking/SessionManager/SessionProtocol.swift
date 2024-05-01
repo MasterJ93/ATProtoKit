@@ -11,7 +11,8 @@ import Foundation
 public protocol SessionProtocol: Codable {
     /// The handle of the user's account.
     var handle: String { get }
-    /// The decentralized identifier (DID) of the user's account, serving as a persistent and long-term account identifier according to the W3C standard.
+    /// The decentralized identifier (DID) of the user's account, serving as a persistent and
+    /// long-term account identifier according to the W3C standard.
     var sessionDID: String { get }
     /// The email of the user's account. Optional.
     var email: String? { get }
@@ -19,6 +20,7 @@ public protocol SessionProtocol: Codable {
     var isEmailConfirmed: Bool? { get }
     /// Indicates whether Two-Factor Authentication (via email) is enabled. Optional.
     var isEmailAuthenticationFactorEnabled: Bool? { get }
-    /// The DID document associated with the user, which contains AT Protocol-specific information. Optional.
+    /// The DID document associated with the user, which contains AT Protocol-specific
+    /// information. Optional.
     var didDocument: DIDDocument? { get }
 }

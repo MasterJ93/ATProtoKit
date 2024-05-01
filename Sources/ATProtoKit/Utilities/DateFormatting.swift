@@ -39,12 +39,14 @@ struct CustomDateFormatter {
 // TODO: Find a way to merge `DateFormatting` with `DateFormattingOptional` in order to remove duplicated code.
 /// A property wrapper for encoding and decoding `Date` objects with the ISO8601 format.
 ///
-/// When using `@DateFormatting`, you first need to add it to a `Date` property. It must be of type `var` and can't be an optional `Date`:
+/// When using `@DateFormatting`, you first need to add it to a `Date` property. It must be of type
+/// `var` and can't be an optional `Date`:
 /// ```swift
 /// @DateFormatting public var indexedAt: Date
 /// ```
 ///
-/// In `init()`, instead of initializing the property the standard way, you need to set the value of `wrappedValue` to an underscored (`_`) version of the name of the property.:
+/// In `init()`, instead of initializing the property the standard way, you need to set the value
+/// of `wrappedValue` to an underscored (`_`) version of the name of the property.:
 /// ```swift
 /// // Incorrect method
 /// self.indexedAt = indexedAt
@@ -53,7 +55,8 @@ struct CustomDateFormatter {
 /// self._indexedAt = DateFormatting(wrappedValue: indexedAt)
 /// ```
 ///
-/// In `init(from decoder: Decoder) throws`, attempt to to decode each `Date` property using `@DateFormatting`'s `wrappedValue`:
+/// In `init(from decoder: Decoder) throws`, attempt to to decode each `Date` property using
+/// `@DateFormatting`'s `wrappedValue`:
 /// ```swift
 /// public init(from decoder: Decoder) throws {
 ///     let container = try decoder.container(keyedBy: CodingKeys.self)
@@ -62,8 +65,9 @@ struct CustomDateFormatter {
 /// }
 /// ```
 ///
-/// Finally, for `encode(to encoder: Encoder)`, ensure that each `Date` property wrapped with `@DateFormatting` is encoded using the custom encoding logic defined in the
-/// `DateFormatting` wrapper, using the underscored (`_`) version of the name of the property.:
+/// Finally, for `encode(to encoder: Encoder)`, ensure that each `Date` property wrapped with
+/// `@DateFormatting` is encoded using the custom encoding logic defined in the `DateFormatting`
+/// wrapper, using the underscored (`_`) version of the name of the property.:
 /// ```swift
 /// public func encode(to encoder: Encoder) throws {
 ///     var container = encoder.container(keyedBy: CodingKeys.self)
@@ -101,14 +105,16 @@ public struct DateFormatting: Codable {
 }
 
 // TODO: Find a way to merge `DateFormattingOptional` with `DateFormatting` in order to remove duplicated code.
-/// A property wrapper for optionally encoding and decoding `Date?` objects with the ISO8601 format.
+/// A property wrapper for optionally encoding and decoding `Date?` objects with the
+/// ISO8601 format.
 ///
 /// When using `@DateFormattingOptional`, you first need to add it to a `Date?` property:
 /// ```swift
 /// @DateFormattingOptional public var indexedAt: Date?
 /// ```
 ///
-/// In `init()`, instead of initializing the property the standard way, you need to set the value of `wrappedValue` to an underscored (`_`) version of the name of the property.:
+/// In `init()`, instead of initializing the property the standard way, you need to set the value
+/// of `wrappedValue` to an underscored (`_`) version of the name of the property.:
 /// ```swift
 /// // Incorrect method
 /// self.indexedAt = indexedAt
@@ -117,7 +123,8 @@ public struct DateFormatting: Codable {
 /// self._indexedAt = DateFormattingOptional(wrappedValue: indexedAt)
 /// ```
 ///
-/// In `init(from decoder: Decoder) throws`, attempt to to decode each `Date` property using `@DateFormattingOptional`'s `wrappedValue`:
+/// In `init(from decoder: Decoder) throws`, attempt to to decode each `Date` property using
+/// `@DateFormattingOptional`'s `wrappedValue`:
 /// ```swift
 /// public init(from decoder: Decoder) throws {
 ///     let container = try decoder.container(keyedBy: CodingKeys.self)
@@ -126,8 +133,10 @@ public struct DateFormatting: Codable {
 /// }
 /// ```
 ///
-/// Finally, for `encode(to encoder: Encoder)`, ensure that each `Date` property wrapped with `@DateFormattingOptional` is encoded using the custom encoding logic defined in the
-/// `DateFormattingOptional` wrapper, using the underscored (`_`) version of the name of the property.:
+/// Finally, for `encode(to encoder: Encoder)`, ensure that each `Date` property wrapped with
+/// `@DateFormattingOptional` is encoded using the custom encoding logic defined in the
+/// `DateFormattingOptional` wrapper, using the underscored (`_`) version of the name of
+/// the property:
 /// ```swift
 /// public func encode(to encoder: Encoder) throws {
 ///     var container = encoder.container(keyedBy: CodingKeys.self)
@@ -155,7 +164,8 @@ public struct DateFormattingOptional: Codable {
         }
     }
 
-    /// Encodes the optional `Date?` object to a `String` using the `CustomDateFormatter`, or encodes `nil`
+    /// Encodes the optional `Date?` object to a `String` using the `CustomDateFormatter`,
+    /// or encodes `nil`
     /// if `wrappedValue` is `nil`.
     public func encode(to encoder: Encoder) throws {
         var container = encoder.singleValueContainer()

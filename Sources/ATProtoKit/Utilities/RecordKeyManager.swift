@@ -23,9 +23,9 @@ class RecordKeyManager {
 
     /// Creates a `tid` (Timestamp Identifier) Record Key.
     ///
-    /// According to the [AT Protocol Specifications][atproto], a `tid` Record Key consists of a 64-bit
-    /// integer, in the big-endian byte order. : `UInt64` is encoded in `base32-sortable`, which
-    /// is a 13 ASCII character that consists of `234567abcdefghijklmnopqrstuvwxyz` with no
+    /// According to the [AT Protocol Specifications][atproto], a `tid` Record Key consists of
+    /// a 64-bit integer, in the big-endian byte order. : `UInt64` is encoded in `base32-sortable`,
+    /// which is a 13 ASCII character that consists of `234567abcdefghijklmnopqrstuvwxyz` with no
     /// padding. The specification also requires that the number never decreases: it must
     /// always increase.
     ///

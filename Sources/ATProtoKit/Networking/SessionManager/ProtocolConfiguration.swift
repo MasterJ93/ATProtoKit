@@ -25,8 +25,10 @@ public protocol ProtocolConfiguration {
     /// authentication fails. If the account has Two-Factor Authentication enabled, this must be
     /// handled as well.
     ///
-    /// - Parameter authenticationFactorToken: A token used for Two-Factor Authentication. Optional.
-    /// - Returns: A `Result` type containing either a ``UserSession`` on success or an `Error` on failure.
+    /// - Parameter authenticationFactorToken: A token used for
+    /// Two-Factor Authentication. Optional.
+    /// - Returns: A `Result` type containing either a ``UserSession``
+    /// on success or an `Error` on failure.
     /// - Throws: An error if there are issues creating the request or communicating with the PDS.
     func authenticate(authenticationFactorToken: String?) async throws -> Result<UserSession, Error>
 }

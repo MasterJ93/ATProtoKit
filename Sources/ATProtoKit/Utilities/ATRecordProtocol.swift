@@ -43,17 +43,19 @@ import Foundation
 /// }
 /// ```
 ///
-/// The `init()`, `init(from decoder: Decoder) throws`, and `func encode(to encoder: Encoder) throws`
-/// methods do not need to be implemented, but it's reccommended to do so if custom implementations are needed.
+/// The `init()`, `init(from decoder: Decoder) throws`, and
+/// `func encode(to encoder: Encoder) throws` methods do not need to be implemented, but it's
+/// reccommended to do so if custom implementations are needed.
 ///
-/// - Warning: All record types _must_ conform to this protocol. ATProtoKit will not be able to hold onto any `struct`s that don't conform to this protocol.
+/// - Warning: All record types _must_ conform to this protocol. ATProtoKit will not be able to
+/// hold onto any `struct`s that don't conform to this protocol.
 public protocol ATRecordProtocol: Codable {
     /// The Namespaced Identifier (NSID) of the record.
     static var type: String { get }
     /// Creates a new instance by decoding from the given decoder.
     ///
-    /// This initializer mirrors the one from `Decodable`, but is needed to help make the polymorphic
-    /// decoding work.
+    /// This initializer mirrors the one from `Decodable`, but is needed to help make the
+    /// polymorphic decoding work.
     /// - Parameter decoder: The decoder to read data from.
     /// - Throws: An error is thrown if reading from the decoder fails, or if the data
     /// read is corrupted or otherwise invalid.
@@ -62,9 +64,9 @@ public protocol ATRecordProtocol: Codable {
 
 /// A registry for all decodable record types in the AT Protocol.
 ///
-/// All record lexicon `struct`s (whether from Bluesky or user created) will be included in the registry.
-/// This is used as a map for ``UnknownType`` to find the most appropriate type that the JSON object
-/// will fit into.
+/// All record lexicon `struct`s (whether from Bluesky or user created) will be included in
+/// the registry. This is used as a map for ``UnknownType`` to find the most appropriate type
+/// that the JSON object will fit into.
 ///
 /// When adding a record, you need to type `.self` at the end.
 /// ```swift
@@ -73,7 +75,8 @@ public protocol ATRecordProtocol: Codable {
 ///
 /// - Important: Make sure you don't add the same `struct` multiple times.
 ///
-/// - Warning: All record types _must_ conform to ``ATRecordProtocol``. Failure to do so may result in an error.
+/// - Warning: All record types _must_ conform to ``ATRecordProtocol``. Failure to do so may
+/// result in an error.
 public struct ATRecordTypeRegistry {
     /// The registry itself.
     ///
@@ -93,7 +96,8 @@ public struct ATRecordTypeRegistry {
         }
     }
 
-    /// Attempts to create an instance of a record type based on the provided NSID string and decoder.
+    /// Attempts to create an instance of a record type based on the provided NSID string
+    /// and decoder.
     ///
     /// While `Codable` allows for polymorphic handling via `enum`s, it has a limitation where it
     /// can't directly decode or encode `protocol`s. This method circumvents this limitation by

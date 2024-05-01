@@ -103,9 +103,12 @@ public class APIClientService {
 
     /// Sends a `URLRequest` in order to receive a data object.
     ///
-    /// Typically, this will be used for getting a blob object as the output. However, this is also useful for when the output is an unknown format, can be any format,
-    /// or is unreliable. If it can be any format or if the format is unreliable, it's your responsibility to handle the information stored inside the `Data` object. If the
-    /// output is known and it's not a blob, however, then the other `sendRequest` methods are more appropriate.
+    /// Typically, this will be used for getting a blob object as the output. However, this is
+    /// also useful for when the output is an unknown format, can be any format,
+    /// or is unreliable. If it can be any format or if the format is unreliable, it's your
+    /// responsibility to handle the information stored inside the `Data` object. If the output is
+    /// known and it's not a blob, however, then the other `sendRequest` methods are
+    /// more appropriate.
     /// - Parameter request: The `URLRequest` to send.
     /// - Returns: A `Data` object that contains the blob.
     public static func sendRequest(_ request: URLRequest) async throws -> Data {
@@ -115,8 +118,10 @@ public class APIClientService {
 
     /// Uploads a blob to a specified URL with multipart/form-data encoding.
     ///
-    /// - Note: According to the AT Protocol specifications: "Upload a new blob, to be referenced from a repository record. The blob will be deleted if it is not referenced within a time window (eg, minutes).
-    /// Blob restrictions (mimetype, size, etc) are enforced when the reference is created. Requires auth, implemented by PDS."
+    /// - Note: According to the AT Protocol specifications: "Upload a new blob, to be referenced
+    /// from a repository record. The blob will be deleted if it is not referenced within a time
+    /// window (eg, minutes). Blob restrictions (mimetype, size, etc) are enforced when the
+    /// reference is created. Requires auth, implemented by PDS."
     ///
     /// - SeeAlso: This is based on the [`com.atproto.repo.uploadBlob`][github] lexicon.
     ///

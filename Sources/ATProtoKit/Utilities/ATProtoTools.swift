@@ -66,8 +66,11 @@ class ATProtoTools {
 
     /// Parses the URI in order to get a ``RecordQuery``.
     ///
-    /// There are two formats of URIs: the ones that have the `at://` protocol, and the ones that start off with the URL of the Personal Data Server (PDS). Regardless of option, this method should be able to parse
-    /// them and return a proper ``RecordQuery``. However, it's still important to validate the record by using ``ATProtoKit/ATProtoKit/getRepositoryRecord(from:pdsURL:)``.
+    /// There are two formats of URIs: the ones that have the `at://` protocol, and the ones that
+    /// start off with the URL of the Personal Data Server (PDS). Regardless of option, this method
+    /// should be able to parse
+    /// them and return a proper ``RecordQuery``. However, it's still important to validate the
+    /// record by using ``ATProtoKit/ATProtoKit/getRepositoryRecord(from:pdsURL:)``.
     /// - Parameters:
     ///   - uri: The URI to parse.
     ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `nil`.

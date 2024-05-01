@@ -23,7 +23,8 @@ public class ATFacetParser {
 
     /// Parses mentions from a given text and returns them along with their positions.
     /// - Parameter text: The text to parse for mentions.
-    /// - Returns: An array of `Dictionary`s containing the start and end positions of each mention and the mention text.
+    /// - Returns: An array of `Dictionary`s containing the start and end positions of each mention
+    /// and the mention text.
     public static func parseMentions(from text: String) -> [[String: Any]] {
         var spans = [[String: Any]]()
 
@@ -63,7 +64,8 @@ public class ATFacetParser {
 
     /// Parses URLs from a given text and returns them along with their positions.
     /// - Parameter text: The text to parse for URLs.
-    /// - Returns: An array of `Dictionary`s containing the start and end positions of each URL and the URL text.
+    /// - Returns: An array of `Dictionary`s containing the start and end positions of each URL and
+    /// the URL text.
     public static func parseURLs(from text: String) -> [[String: Any]] {
         var spans = [[String: Any]]()
 
@@ -99,7 +101,8 @@ public class ATFacetParser {
 
     /// Parses hashtags from a given text and returns them along with their positions.
     /// - Parameter text: The text to parse for hashtags.
-    /// - Returns: An array of `Dictionary`s containing the start and end positions of each hashtag and the hashtag text.
+    /// - Returns: An array of `Dictionary`s containing the start and end positions of each
+    /// hashtag and the hashtag text.
     public static func parseHashtags(from text: String) -> [[String: Any]] {
         var spans = [[String: Any]]()
 
@@ -130,11 +133,13 @@ public class ATFacetParser {
         return spans
     }
 
-    /// Processes text to find mentions, URLs, and hashtags, converting these elements into ``Facet`` objects.
+    /// Processes text to find mentions, URLs, and hashtags, converting these elements into
+    /// ``Facet`` objects.
     /// - Parameters:
     ///   - text: The text to be processed.
     ///   - pdsURL: The URL of the Personal Data Server, defaulting to "https://bsky.social".
-    /// - Returns: An array of ``Facet`` objects representing the structured data elements found in the text.
+    /// - Returns: An array of ``Facet`` objects representing the structured data elements found
+    /// in the text.
     public static func parseFacets(from text: String, pdsURL: String = "https://bsky.social") async -> [Facet] {
         let facets = FacetsActor()
 

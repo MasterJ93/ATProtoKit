@@ -11,10 +11,12 @@ import Foundation
 extension String: Truncatable {
     /// Truncates the `String` to a certain length.
     ///
-    /// In the AT Protocol, certain fields can only have a maximum of a certain number of "graphenes," which is a group of
-    /// characters treated as one. In order to help prevent crashes, `ATProtoKit` will truncate a `String` to the maximum
-    /// number of graphenes. However, we will still call them "characters" since this is the more understood term.
-    /// - Parameter length: The maximum number of characters that the `String` can have before it truncates.
+    /// In the AT Protocol, certain fields can only have a maximum of a certain number of
+    /// "graphenes," which are a group of characters treated as one. In order to help prevent
+    /// crashes, `ATProtoKit` will truncate a `String` to the maximum number of graphenes.
+    /// However, we will still call them "characters" since this is the more understood term.
+    /// - Parameter length: The maximum number of characters that the `String` can have
+    /// before it truncates.
     /// - Returns: A new `String` that contains the maximum number of characters or less.
     func truncated(toLength length: Int) -> String {
         return String(self.prefix(length))
@@ -22,8 +24,10 @@ extension String: Truncatable {
 
     /// Transforms a string into one with a limited selection of characters.
     ///
-    /// Only the English alphabet in lowercase and the standard hyphen (-) are allowed to be used. Any uppercased characters will be lowercased.
-    /// Any characters that could be interpreted as hypens will be converted into standard hyphens. Any additional characters will be discarded.
+    /// Only the English alphabet in lowercase and the standard hyphen (-) are allowed to be used.
+    /// Any uppercased characters will be lowercased. Any characters that could be interpreted as
+    /// hypens will be converted into standard hyphens. Any additional characters will
+    /// be discarded.
     func transformToLowerASCIIAndHyphen() -> String {
         // Trim trailing spaces.
         let trimmedString = self.trimmingCharacters(in: .whitespacesAndNewlines)
@@ -74,9 +78,11 @@ extension String: Truncatable {
 extension Array: Truncatable {
     /// /// Truncates the number of items in an `Array` to a certain length.
     ///
-    /// In the AT Protocol, certain fields can only have a maximum of items in their `Array`. In order to help prevent crashes,
+    /// In the AT Protocol, certain fields can only have a maximum of items in their
+    /// `Array`. In order to help prevent crashes,
     /// `ATProtoKit` will truncate an`Array` to the maximum number of items.
-    /// - Parameter length: The maximum number of items that an `Array` can have before it truncates.
+    /// - Parameter length: The maximum number of items that an `Array` can
+    /// have before it truncates.
     /// - Returns: A new `Array` that contains the maximum number of items or less.
     func truncated(toLength length: Int) -> Array<Element> {
         return Array(self.prefix(length))
