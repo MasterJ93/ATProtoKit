@@ -10,9 +10,11 @@ import Foundation
 extension ATProtoAdmin {
     /// Disables a user account's ability to receive future invite codes as an administrator.
     ///  
-    /// - Important: This is an administrator task and as such, regular users won't be able to access this; if they attempt to do so, an error will occur.
-    /// 
-    /// - Note: According to the AT Protocol specifications: "Disable an account from receiving new invite codes, but does not invalidate existing codes."
+    /// - Important: This is an administrator task and as such, regular users won't be able to
+    /// access this; if they attempt to do so, an error will occur.
+    ///
+    /// - Note: According to the AT Protocol specifications: "Disable an account from receiving
+    /// new invite codes, but does not invalidate existing codes."
     ///
     /// - SeeAlso: This is based on the [`com.atproto.admin.disableAccountInvites`][github] lexicon.
     ///

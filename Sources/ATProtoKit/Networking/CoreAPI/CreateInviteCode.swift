@@ -10,7 +10,8 @@ import Foundation
 extension ATProtoKit {
     /// Creates an invite code.
     ///
-    /// - Note: If you need to create multiple invite codes at once, please use ``createInviteCodes(_:for:)`` instead.
+    /// - Note: If you need to create multiple invite codes at once, please use
+    /// ``createInviteCodes(_:for:)`` instead.
     ///
     /// - Note: According to the AT Protocol specifications: "Create an invite code."
     ///
@@ -20,8 +21,10 @@ extension ATProtoKit {
     ///
     /// - Parameters:
     ///   - codeCount: The number of invite codes to be created. Defaults to 1.
-    ///   - forAccount: The decentralized identifier (DIDs) of the user that can use the invite code. Optional.
-    /// - Returns: A `Result`, containing either a ``ServerCreateInviteCodeOutput`` if successful, or an `Error` if not.
+    ///   - forAccount: The decentralized identifier (DIDs) of the user that can use the
+    ///   invite code. Optional.
+    /// - Returns: A `Result`, containing either a ``ServerCreateInviteCodeOutput``
+    /// if successful, or an `Error` if not.
     public func createInviteCode(_ codeCount: Int = 1, for account: [String]) async throws -> Result<ServerCreateInviteCodeOutput, Error> {
         guard session != nil,
               let accessToken = session?.accessToken else {

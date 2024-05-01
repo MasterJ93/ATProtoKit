@@ -10,17 +10,20 @@ import Foundation
 extension ATProtoKit {
     /// Creates an App Password for the user's account.
     ///
-    /// App Passowrds are highly recommended to be used in your application (as opposed to their actual password) due to the restrictions an App Password has compared to the full account access
-    /// of the normal password.
-    /// 
+    /// App Passowrds are highly recommended to be used in your application (as opposed to their
+    /// actual password) due to the restrictions an App Password has compared to the full account
+    /// access of the normal password.
+    ///
     /// - Note: According to the AT Protocol specifications: "Create an App Password."
     ///
     /// - SeeAlso: This is based on the [`com.atproto.server.createAppPassword`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/server/createAppPassword.json
     ///
-    /// - Parameter passwordName: The name given to the App Password to help distingush it from others.
-    /// - Returns: A `Result`, either containing a ``ServerCreateAppPasswordOutput`` if successful, or an `Error` if not.
+    /// - Parameter passwordName: The name given to the App Password to help distingush it
+    /// from others.
+    /// - Returns: A `Result`, either containing a ``ServerCreateAppPasswordOutput``
+    /// if successful, or an `Error` if not.
     public func createAppPassword(named passwordName: String) async throws -> Result<ServerCreateAppPasswordOutput, Error> {
         guard session != nil,
               let accessToken = session?.accessToken else {

@@ -10,9 +10,11 @@ import Foundation
 extension ATProtoAdmin {
     /// Updates the email address of a user account as an administrator.
     /// 
-    /// - Important: This is an administrator task and as such, regular users won't be able to access this; if they attempt to do so, an error will occur.
-    /// 
-    /// - Note: According to the AT Protocol specifications: "Administrative action to update an account's email."
+    /// - Important: This is an administrator task and as such, regular users won't be able to
+    /// access this; if they attempt to do so, an error will occur.
+    ///
+    /// - Note: According to the AT Protocol specifications: "Administrative action to update an
+    /// account's email."
     ///
     /// - SeeAlso: This is based on the [`com.atproto.admin.updateAccountEmail`][github] lexicon.
     ///

@@ -10,8 +10,9 @@ import Foundation
 extension ATProtoAdmin {
     /// Gets details about a record as an administrator pr moderator.
     /// 
-    /// - Important: This is a moderator task and as such, regular users won't be able to access this; if they attempt to do so, an error will occur.
-    /// 
+    /// - Important: This is a moderator task and as such, regular users won't be able to access
+    /// this; if they attempt to do so, an error will occur.
+    ///
     /// - Note: According to the AT Protocol specifications: "Get details about a record."
     ///
     /// - SeeAlso: This is based on the [`tools.ozone.moderation.getRecord`][github] lexicon.
@@ -21,7 +22,8 @@ extension ATProtoAdmin {
     /// - Parameters:
     ///   - recordURI: The URI of the record.
     ///   - recordCID: The CID hash of the record. Optional.
-    /// - Returns: A `Result`, containing either an ``OzoneModerationRecordViewDetail`` if successful, or an `Error` if not.
+    /// - Returns: A `Result`, containing either an ``OzoneModerationRecordViewDetail``
+    /// if successful, or an `Error` if not.
     public func getRecord(_ recordURI: String, recordCID: String?) async throws -> Result<OzoneModerationRecordViewDetail, Error> {
         guard session != nil,
               let accessToken = session?.accessToken else {

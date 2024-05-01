@@ -10,11 +10,14 @@ import Foundation
 extension ATProtoKit {
     /// Sends a request to be verified with a code from the user's messaging app.
     /// 
-    /// It's the responsibility of the client to validate the phone number before calling this method, in order to avoid errors.
+    /// It's the responsibility of the client to validate the phone number before calling this
+    /// method, in order to avoid errors.
     ///
-    /// - Important: The lexicon associated with this model may be removed at any time. This may not work.
+    /// - Important: The lexicon associated with this model may be removed at any time.
+    /// This may not work.
     ///
-    /// - Note: According to the AT Protocol specifications: "Request a verification code to be sent to the supplied phone number."
+    /// - Note: According to the AT Protocol specifications: "Request a verification code to be
+    /// sent to the supplied phone number."
     ///
     /// - SeeAlso: This is based on the [`com.atproto.temp.requestPhoneVerification`][github] lexicon.
     ///

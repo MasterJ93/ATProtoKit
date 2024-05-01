@@ -7,9 +7,11 @@
 
 import Foundation
 
-/// The main data model definition for the output of listing all decentralized identifiers (DIDs), revisions, and commit CID hashes of given repositiories.
+/// The main data model definition for the output of listing all decentralized identifiers (DIDs),
+/// revisions, and commit CID hashes of given repositiories.
 ///
-/// - Note: According to the AT Protocol specifications: "Enumerates all the DID, rev, and commit CID for all repos hosted by this service. Does not require auth;
+/// - Note: According to the AT Protocol specifications: "Enumerates all the DID, rev, and commit
+/// CID for all repos hosted by this service. Does not require auth;
 /// implemented by PDS and Relay."
 ///
 /// - SeeAlso: This is based on the [`com.atproto.sync.listRepos`][github] lexicon.

@@ -10,8 +10,9 @@ import Foundation
 extension ATProtoKit {
     /// Retrieves information about the sign up queue location.
     /// 
-    /// - Important: The lexicon associated with this model may be removed at any time. This may not work.
-    /// 
+    /// - Important: The lexicon associated with this model may be removed at any time.
+    /// This may not work.
+    ///
     /// - Note: According to the AT Protocol specifications: "Check accounts location in signup queue."
     ///
     /// - SeeAlso: This is based on the [`com.atproto.temp.checkSignupQueue`][github] lexicon.
@@ -19,7 +20,8 @@ extension ATProtoKit {
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/temp/checkSignupQueue.json
     ///
     /// - Parameter query: The string used to search for the username.
-    /// - Returns: A `Result`, containing either a ``TempCheckSignupQueueOutput`` if successful, ot an `Error` if not.
+    /// - Returns: A `Result`, containing either a ``TempCheckSignupQueueOutput``
+    /// if successful, ot an `Error` if not.
     public func checkSignupQueue(for query: String) async throws -> Result<TempCheckSignupQueueOutput, Error> {
         guard let sessionURL = session?.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.temp.checkSignupQueue") else {

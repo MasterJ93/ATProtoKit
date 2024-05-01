@@ -10,8 +10,9 @@ import Foundation
 extension ATProtoAdmin {
     /// Get details about a repository as an administrator.
     /// 
-    /// - Important: This is an administrator task and as such, regular users won't be able to access this; if they attempt to do so, an error will occur.
-    /// 
+    /// - Important: This is an administrator task and as such, regular users won't be able to
+    /// access this; if they attempt to do so, an error will occur.
+    ///
     /// - Note: According to the AT Protocol specifications: "Get details about a repository."
     ///
     /// - SeeAlso: This is based on the [`tools.ozone.moderation.getRepo`][github] lexicon.
@@ -19,8 +20,9 @@ extension ATProtoAdmin {
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/tools/ozone/moderation/getRepo.json
     ///
     /// - Parameter repositoryDID: The decentralized identifier (DID) of the repository.
-    /// - Returns: A `Result`, containing either an ``OzoneModerationRepositoryViewDetail`` if successful, or an `Error` if not.
-    public func getRepository(_ repositoryDID: String) async throws -> Result<OzoneModerationRepositoryViewDetail, Error> {
+    /// - Returns: A `Result`, containing either an ``OzoneModerationRepositoryView``
+    /// if successful, or an `Error` if not.
+    public func getRepository(_ repositoryDID: String) async throws -> Result<OzoneModerationRepositoryView, Error> {
         guard session != nil,
               let accessToken = session?.accessToken else {
             return .failure(ATRequestPrepareError.missingActiveSession)
@@ -47,7 +49,7 @@ extension ATProtoAdmin {
                                                          contentTypeValue: nil,
                                                          authorizationValue: "Bearer \(accessToken)")
             let response = try await APIClientService.sendRequest(request,
-                                                                  decodeTo: OzoneModerationRepositoryViewDetail.self)
+                                                                  decodeTo: OzoneModerationRepositoryView.self)
 
             return .success(response)
         } catch {

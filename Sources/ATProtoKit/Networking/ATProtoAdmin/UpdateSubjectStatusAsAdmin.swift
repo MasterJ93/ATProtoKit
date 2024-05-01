@@ -10,9 +10,11 @@ import Foundation
 extension ATProtoAdmin {
     /// Updates a subject status of an account, record, or blob.
     /// 
-    /// - Important: This is an administrator task and as such, regular users won't be able to access this; if they attempt to do so, an error will occur.
-    /// 
-    /// - Note: According to the AT Protocol specifications: "Update the service-specific admin status of a subject (account, record, or blob)."
+    /// - Important: This is an administrator task and as such, regular users won't be able to
+    /// access this; if they attempt to do so, an error will occur.
+    ///
+    /// - Note: According to the AT Protocol specifications: "Update the service-specific admin
+    /// status of a subject (account, record, or blob)."
     ///
     /// - SeeAlso: This is based on the [`com.atproto.admin.updateSubjectStatus`][github] lexicon.
     ///

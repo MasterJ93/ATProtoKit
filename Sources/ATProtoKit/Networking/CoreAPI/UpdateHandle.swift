@@ -10,8 +10,10 @@ import Foundation
 extension ATProtoKit {
     /// Replaces the user's current handle with a new one.
     ///
-    /// - Note: According to the AT Protocol specifications: "Updates the current account's handle. Verifies handle validity, and updates did:plc document if necessary. Implemented by PDS, and requires auth."
-    /// 
+    /// - Note: According to the AT Protocol specifications: "Updates the current account's handle.
+    /// Verifies handle validity, and updates did:plc document if necessary. Implemented by PDS,
+    /// and requires auth."
+    ///
     /// - SeeAlso: This is based on the [`com.atproto.identity.updateHandle`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/identity/updateHandle.json

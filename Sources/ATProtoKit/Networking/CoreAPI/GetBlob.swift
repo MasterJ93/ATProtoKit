@@ -10,7 +10,9 @@ import Foundation
 extension ATProtoKit {
     /// Retrieves a blob from a given record.
     ///
-    /// - Note: According to the AT Protocol specifications: "Get a blob associated with a given account. Returns the full blob as originally uploaded. Does not require auth; implemented by PDS."
+    /// - Note: According to the AT Protocol specifications: "Get a blob associated with a given
+    /// account. Returns the full blob as originally uploaded. Does not require auth; implemented
+    /// by PDS."
     ///
     /// - SeeAlso: This is based on the [`com.atproto.sync.getBlob`][github] lexicon.
     ///

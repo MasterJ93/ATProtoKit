@@ -10,7 +10,8 @@ import Foundation
 extension ATProtoKit {
     /// Writes a record in the repository, which may replace a previous record.
     /// 
-    /// - Note: According to the AT Protocol specifications: "Write a repository record, creating or updating it as needed. Requires auth, implemented by PDS."
+    /// - Note: According to the AT Protocol specifications: "Write a repository record, creating
+    /// or updating it as needed. Requires auth, implemented by PDS."
     ///
     /// - SeeAlso: This is based on the [`com.atproto.repo.putRecord`][github] lexicon.
     ///
@@ -20,11 +21,13 @@ extension ATProtoKit {
     ///   - repositoryDID: The decentralized identifier (DID) or handle of the repository.
     ///   - collection: The Namespaced Identifier (NSID) of the record.
     ///   - recordKey: The record key of the collection.
-    ///   - shouldValidate: Indicates whether the record should be validated. Optional. Defaults to `true`.
+    ///   - shouldValidate: Indicates whether the record should be validated. Optional.
+    ///   Defaults to `true`.
     ///   - record: The record itself.
     ///   - swapRecord: Swaps the record in the server with the record contained in here. Optional.
     ///   - swapCommit: Swaps the commit in the server with the commit contained in here. Optional.
-    /// - Returns: A `Result`, containing either a ``StrongReference`` if successful, or an `Error` if not.
+    /// - Returns: A `Result`, containing either a ``StrongReference``
+    /// if successful, or an `Error` if not.
     public func putRecord(_ repositoryDID: String, collection: String, recordKey: String, shouldValidate: Bool? = true, record: UnknownType,
                           swapRecord: String? = nil, swapCommit: String? = nil) async throws -> Result<StrongReference, Error> {
         guard session != nil,

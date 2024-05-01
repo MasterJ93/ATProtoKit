@@ -10,8 +10,9 @@ import Foundation
 extension ATProtoAdmin {
     /// Deletes a communication template as an administrator or moderator.
     ///
-    /// - Important: This is a moderator task and as such, regular users won't be able to access this; if they attempt to do so, an error will occur.
-    /// 
+    /// - Important: This is a moderator task and as such, regular users won't be able to access
+    /// this; if they attempt to do so, an error will occur.
+    ///
     /// - Note: According to the AT Protocol specifications: "Delete a communication template."
     ///
     /// - SeeAlso: This is based on the [`tools.ozone.communication.deleteTemplate`][github] lexicon.

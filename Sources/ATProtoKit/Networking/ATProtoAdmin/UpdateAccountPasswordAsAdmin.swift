@@ -10,8 +10,9 @@ import Foundation
 extension ATProtoAdmin {
     /// Updates the password of a user account as an administrator.
     /// 
-    /// - Note: According to the AT Protocol specifications: "Update the password for a user account as an administrator."
-    /// 
+    /// - Note: According to the AT Protocol specifications: "Update the password for a user
+    /// account as an administrator."
+    ///
     /// - SeeAlso: This is based on the [`com.atproto.admin.updateAccountPassword`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/admin/updateAccountPassword.json

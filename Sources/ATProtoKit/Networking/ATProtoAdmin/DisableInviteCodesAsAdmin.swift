@@ -10,9 +10,11 @@ import Foundation
 extension ATProtoAdmin {
     /// Disables some or all of the invite codes for one or more user accounts as an administrator.
     /// 
-    /// - Important: This is an administrator task and as such, regular users won't be able to access this; if they attempt to do so, an error will occur.
-    /// 
-    /// - Note: According to the AT Protocol specifications: "Disable some set of codes and/or all codes associated with a set of users."
+    /// - Important: This is an administrator task and as such, regular users won't be able to
+    /// access this; if they attempt to do so, an error will occur.
+    ///
+    /// - Note: According to the AT Protocol specifications: "Disable some set of codes and/or
+    /// all codes associated with a set of users."
     ///
     /// - SeeAlso: This is based on the [`com.atproto.admin.disableInviteCodes`][github] lexicon.
     ///

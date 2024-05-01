@@ -10,10 +10,12 @@ import Foundation
 extension ATProtoAdmin {
     /// Gets details from multiple user accounts.
     /// 
-    /// - Important: This is an administrator task and as such, regular users won't be able to access this; if they attempt to do so, an error will occur.
-    /// 
-    /// - Note: If you need details for just one user account, it's better to simply use ``getAccountInfo(_:)`` instead.
-    /// 
+    /// - Important: This is an administrator task and as such, regular users won't be able to
+    /// access this; if they attempt to do so, an error will occur.
+    ///
+    /// - Note: If you need details for just one user account, it's better to simply use
+    /// ``getAccountInfo(_:)`` instead.
+    ///
     /// - Note: According to the AT Protocol specifications: "Get details about some accounts."
     ///
     /// - SeeAlso: This is based on the [`com.atproto.admin.getAccountInfos`][github] lexicon.
@@ -21,7 +23,8 @@ extension ATProtoAdmin {
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/admin/getAccountInfos.json
     ///
     /// - Parameter accountDIDs: An array of decentralized identifiers (DIDs) of user accounts.
-    /// - Returns: A `Result`, containing either an ``AdminGetInviteCodesOutput`` if successful, or an `Error` if not.
+    /// - Returns: A `Result`, containing either an ``AdminGetInviteCodesOutput``
+    /// if successful, or an `Error` if not.
     public func getAccountInfos(_ accountDIDs: [String]) async throws -> Result<AdminGetAccountInfosOutput, Error> {
         guard session != nil,
               let accessToken = session?.accessToken else {

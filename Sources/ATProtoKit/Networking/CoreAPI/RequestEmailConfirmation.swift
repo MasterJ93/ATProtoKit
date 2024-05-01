@@ -10,7 +10,8 @@ import Foundation
 extension ATProtoKit {
     /// Requests an email confirmation to verify the email belongs to the user.
     ///
-    /// - Note: According to the AT Protocol specifications: "Request an email with a code to confirm ownership of email."
+    /// - Note: According to the AT Protocol specifications: "Request an email with a code
+    /// to confirm ownership of email."
     ///
     /// - SeeAlso: This is based on the [`com.atproto.server.requestEmailConfirmation`][github] lexicon.
     ///

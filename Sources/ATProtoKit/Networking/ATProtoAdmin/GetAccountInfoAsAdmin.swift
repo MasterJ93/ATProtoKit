@@ -10,9 +10,11 @@ import Foundation
 extension ATProtoAdmin {
     /// Gets details about a user account.
     /// 
-    /// - Important: This is an administrator task and as such, regular users won't be able to access this; if they attempt to do so, an error will occur.
+    /// - Important: This is an administrator task and as such, regular users won't be able to
+    /// access this; if they attempt to do so, an error will occur.
     ///
-    /// - Note: If you need to get details of multiple user accounts, use ``getAccountInfos(_:)`` instead.
+    /// - Note: If you need to get details of multiple user accounts, use
+    /// ``getAccountInfos(_:)`` instead.
     ///
     /// - Note: According to the AT Protocol specifications: "Get details about an account."
     ///
@@ -21,7 +23,8 @@ extension ATProtoAdmin {
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/admin/getAccountInfo.json
     ///
     /// - Parameter accountDID: The decentralized identifier (DID) of the user account.
-    /// - Returns: A `Result`, containing either an ``AdminAccountView`` if successful, or an `Error` if not.
+    /// - Returns: A `Result`, containing either an ``AdminAccountView``
+    /// if successful, or an `Error` if not.
     public func getAccountInfo(_ accountDID: String) async throws -> Result<AdminAccountView, Error> {
         guard session != nil,
               let accessToken = session?.accessToken else {

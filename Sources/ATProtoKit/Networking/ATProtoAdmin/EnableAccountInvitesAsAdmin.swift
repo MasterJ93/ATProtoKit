@@ -12,9 +12,11 @@ extension ATProtoAdmin {
     /// 
     /// This only works if the user account had lost access to this ability.
     /// 
-    /// - Important: This is an administrator task and as such, regular users won't be able to access this; if they attempt to do so, an error will occur.
+    /// - Important: This is an administrator task and as such, regular users won't be able to
+    /// access this; if they attempt to do so, an error will occur.
     ///
-    /// - Note: According to the AT Protocol specifications: "Re-enable an account's ability to receive invite codes."
+    /// - Note: According to the AT Protocol specifications: "Re-enable an account's ability to
+    /// receive invite codes."
     ///
     /// - SeeAlso: This is based on the [`com.atproto.admin.enableAccountInvites`][github] lexicon.
     ///
@@ -22,7 +24,8 @@ extension ATProtoAdmin {
     ///
     /// - Parameters:
     ///   - accountDID: The decentralized identifier (DID) of the user's account.
-    ///   - note: A note as to why the user account is getting the ability to receive invite codes reinstated. Optional.
+    ///   - note: A note as to why the user account is getting the ability to receive invite
+    ///   codes reinstated. Optional.
     public func enableAccountInvites(for accountDID: String, note: String?) async throws {
         guard session != nil,
               let accessToken = session?.accessToken else {

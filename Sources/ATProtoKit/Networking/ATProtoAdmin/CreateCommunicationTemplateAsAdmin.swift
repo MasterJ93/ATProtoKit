@@ -10,9 +10,11 @@ import Foundation
 extension ATProtoAdmin {
     /// Creates a communication template for administrators and moderators.
     ///
-    /// - Important: This is a moderator task and as such, regular users won't be able to access this; if they attempt to do so, an error will occur.
-    /// 
-    /// - Note: According to the AT Protocol specifications: "Administrative action to create a new, re-usable communication (email for now) template."
+    /// - Important: This is a moderator task and as such, regular users won't be able to access
+    /// this; if they attempt to do so, an error will occur.
+    ///
+    /// - Note: According to the AT Protocol specifications: "Administrative action to create a
+    /// new, re-usable communication (email for now) template."
     ///
     /// - SeeAlso: This is based on the [`tools.ozone.communication.createTemplate`][github] lexicon.
     ///
@@ -22,8 +24,10 @@ extension ATProtoAdmin {
     ///   - name: The name of the template.
     ///   - contentMarkdown: A Markdown-formatted content of the communitcation template.
     ///   - subject: The subject line of the communication template.
-    ///   - createdBy: The decentralized identifier (DID) of the creator of the communication template. Optional.
-    /// - Returns: A `Result`, containing either ``OzoneCommunicationTemplateView`` if successful, or an `Error` if not.
+    ///   - createdBy: The decentralized identifier (DID) of the creator of the
+    ///   communication template. Optional.
+    /// - Returns: A `Result`, containing either ``OzoneCommunicationTemplateView``
+    /// if successful, or an `Error` if not.
     public func createCommunicationTemplate(named name: String, contentMarkdown: String, subject: String,
                                             createdBy: String?) async throws -> Result<OzoneCommunicationTemplateView, Error> {
         guard session != nil,

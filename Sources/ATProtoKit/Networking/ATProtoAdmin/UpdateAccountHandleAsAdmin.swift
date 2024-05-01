@@ -10,9 +10,11 @@ import Foundation
 extension ATProtoAdmin {
     /// Updates the handle of a user account as an administrator.
     /// 
-    /// - Note: Many of the parameter's descriptions are taken directly from the AT Protocol's specification.
-    /// 
-    /// - Note: According to the AT Protocol specifications: "Administrative action to update an account's handle."
+    /// - Note: Many of the parameter's descriptions are taken directly from the
+    /// AT Protocol's specification.
+    ///
+    /// - Note: According to the AT Protocol specifications: "Administrative action to update
+    /// an account's handle."
     ///
     /// - SeeAlso: This is based on the [`com.atproto.admin.updateAccountHandle`][github] lexicon.
     ///

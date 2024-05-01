@@ -10,7 +10,8 @@ import Foundation
 extension ATProtoKit {
     /// Applies creation, updates, and deletion transactions into the repository in batches.
     /// 
-    /// - Note: According to the AT Protocol specifications: "Apply a batch transaction of repository creates, updates, and deletes. Requires auth, implemented by PDS."
+    /// - Note: According to the AT Protocol specifications: "Apply a batch transaction of
+    /// repository creates, updates, and deletes. Requires auth, implemented by PDS."
     ///
     /// - SeeAlso: This is based on the [`com.atproto.repo.applyWrites`][github] lexicon.
     ///

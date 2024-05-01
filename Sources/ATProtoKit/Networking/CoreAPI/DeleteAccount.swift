@@ -12,7 +12,8 @@ extension ATProtoKit {
     /// 
     /// - Note: A request token is required before deleting the account.
     /// 
-    /// - Note: According to the AT Protocol specifications: "Delete an actor's account with a token and password. Can only be called after requesting a deletion token. Requires auth."
+    /// - Note: According to the AT Protocol specifications: "Delete an actor's account with a
+    /// token and password. Can only be called after requesting a deletion token. Requires auth."
     ///
     /// - SeeAlso: This is based on the [`com.atproto.server.deleteAccount`][github] lexicon.
     ///

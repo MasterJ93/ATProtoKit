@@ -99,7 +99,8 @@ public struct OzoneModerationEventViewDetail: Codable {
     /// The date and time the event view was created.
     @DateFormatting public var createdAt: Date
 
-    public init(id: Int, event: EventViewDetailUnion, subject: RepositoryViewUnion, subjectBlobs: [OzoneModerationBlobView], createdBy: String, createdAt: Date) {
+    public init(id: Int, event: EventViewDetailUnion, subject: RepositoryViewUnion, subjectBlobs: [OzoneModerationBlobView],
+                createdBy: String, createdAt: Date) {
         self.id = id
         self.event = event
         self.subject = subject

@@ -10,10 +10,12 @@ import Foundation
 extension ATProtoKit {
     /// Creates a record attached to a user account.
     ///  
-    /// - Warning: If you're using a lexicon that's not made by `com.atproto` or `app.bsky`, make sure you set `shouldValidate` to `false`. Failure to do so will result in an error that the
-    /// lexicon isn't found.
+    /// - Warning: If you're using a lexicon that's not made by `com.atproto` or `app.bsky`,
+    /// make sure you set `shouldValidate` to `false`. Failure to do so will result in an error
+    /// that the lexicon isn't found.
     ///
-    /// - Note: According to the AT Protocol specifications: "Create a single new repository record. Requires auth, implemented by PDS."
+    /// - Note: According to the AT Protocol specifications: "Create a single new repository
+    /// record. Requires auth, implemented by PDS."
     ///
     /// - SeeAlso: This is based on the [`com.atproto.repo.createRecord`][github] lexicon.
     ///
@@ -26,7 +28,8 @@ extension ATProtoKit {
     ///   - shouldValidate: ndicates whether the record should be validated. Optional. Defaults to `true`.
     ///   - record: The record itself.
     ///   - swapCommit: Swaps out an operation based on the CID. Optional.
-    /// - Returns: A `Result`, containing either a ``StrongReference`` if successful, and an `Error` if not.
+    /// - Returns: A `Result`, containing either a ``StrongReference``
+    /// if successful, and an `Error` if not.
     public func createRecord(repositoryDID: String, collection: String, recordKey: String? = nil, shouldValidate: Bool? = true, record: UnknownType,
                              swapCommit: String? = nil) async -> Result<StrongReference, Error> {
         guard session != nil,

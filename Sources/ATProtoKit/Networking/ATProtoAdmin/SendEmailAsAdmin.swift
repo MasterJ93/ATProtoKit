@@ -10,9 +10,11 @@ import Foundation
 extension ATProtoAdmin {
     /// Sends an email to the user's email address as an administrator.
     /// 
-    /// - Important: This is an administrator task and as such, regular users won't be able to access this; if they attempt to do so, an error will occur.
+    /// - Important: This is an administrator task and as such, regular users won't be able to
+    /// access this; if they attempt to do so, an error will occur.
     ///
-    /// - Note: According to the AT Protocol specifications: "Send email to a user's account email address."
+    /// - Note: According to the AT Protocol specifications: "Send email to a user's account
+    /// email address."
     ///
     /// - SeeAlso: This is based on the [`com.atproto.admin.sendEmail`][github] lexicon.
     ///
@@ -24,7 +26,8 @@ extension ATProtoAdmin {
     ///   - content: The content of the email.
     ///   - senderDID: The decentralized identifier (DID) of the sender.
     ///   - comment: Any additional comments viewable to other moderators and administrators.
-    /// - Returns: A `Result`, containing either an ``AdminSendEmailOutput`` if successful, or an `Error` if not.
+    /// - Returns: A `Result`, containing either an ``AdminSendEmailOutput``
+    /// if successful, or an `Error` if not.
     public func sendEmail(to recipientDID: String, withSubjectLine subjectLine: String?, content: String,
                           senderDID: String, comment: String?) async throws -> Result<AdminSendEmailOutput, Error> {
         guard session != nil,

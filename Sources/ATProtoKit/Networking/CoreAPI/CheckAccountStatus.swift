@@ -10,14 +10,16 @@ import Foundation
 extension ATProtoKit {
     /// Checks the status of the user's account.
     /// 
-    /// - Note: According to the AT Protocol specifications: "Returns the status of an account, especially as pertaining to import or recovery. Can be called many times over the course of an account migration.
-    /// Requires auth and can only be called pertaining to oneself."
+    /// - Note: According to the AT Protocol specifications: "Returns the status of an account,
+    /// especially as pertaining to import or recovery. Can be called many times over the course
+    /// of an account migration. Requires auth and can only be called pertaining to oneself."
     ///
     /// - SeeAlso: This is based on the [`com.atproto.server.checkAccountStatus`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/server/checkAccountStatus.json
     /// 
-    /// - Returns: A `Result`, containing either ``ServerCheckAccountStatusOutput`` if successful, or an `Error` if not.
+    /// - Returns: A `Result`, containing either ``ServerCheckAccountStatusOutput``
+    /// if successful, or an `Error` if not.
     public func checkAccountStatus() async throws -> Result<ServerCheckAccountStatusOutput, Error> {
         guard let sessionURL = session?.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.server.checkAccountStatus") else {

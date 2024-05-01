@@ -10,9 +10,11 @@ import Foundation
 extension ATProtoKit {
     /// Requests the server to delete the user's account via email.
     ///
-    /// - Warning: Doing this will permanently delete the user's account. Use caution when using this.
+    /// - Warning: Doing this will permanently delete the user's account. Use caution when
+    /// using this.
     ///
-    /// - Note: According to the AT Protocol specifications: "Initiate a user account deletion via email."
+    /// - Note: According to the AT Protocol specifications: "Initiate a user account deletion
+    /// via email."
     ///
     /// - SeeAlso: This is based on the [`com.atproto.server.requestAccountDelete`][github] lexicon.
     ///

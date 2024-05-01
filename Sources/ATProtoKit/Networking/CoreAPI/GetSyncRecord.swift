@@ -10,7 +10,8 @@ import Foundation
 extension ATProtoKit {
     /// Gets a record as a .car format.
     ///
-    /// - Note: According to the AT Protocol specifications: "Get data blocks needed to prove the existence or non-existence of record in the current version of repo. Does not require auth."
+    /// - Note: According to the AT Protocol specifications: "Get data blocks needed to prove the
+    /// existence or non-existence of record in the current version of repo. Does not require auth."
     ///
     /// - SeeAlso: This is based on the [`com.atproto.sync.getRecord`][github] lexicon.
     ///
@@ -19,7 +20,8 @@ extension ATProtoKit {
     /// - Parameters:
     ///   - recordQuery: The information required to get a record.
     ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `nil`.
-    /// - Returns: A `Result`, containing either a `Data` if successful, or an `Error` if not.
+    /// - Returns: A `Result`, containing either a `Data` object
+    /// if successful, or an `Error` if not.
     public func getSyncRecord(_ recordQuery: RecordQuery,
                                      pdsURL: String? = nil) async throws -> Result<Data, Error> {
         guard let sessionURL = pdsURL != nil ? pdsURL : session?.pdsURL,

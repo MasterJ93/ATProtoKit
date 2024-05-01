@@ -10,13 +10,15 @@ import Foundation
 extension ATProtoKit {
     /// Requests a token to be emailed to the user in order to update their email address.
     /// 
-    /// - Note: According to the AT Protocol specifications: "Request a token in order to update email."
+    /// - Note: According to the AT Protocol specifications: "Request a token in order to
+    /// update email."
     ///
     /// - SeeAlso: This is based on the [`com.atproto.server.requestEmailUpdate`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/server/requestEmailUpdate.json
     ///
-    /// - Returns: A `Result`, containing either a ``RequestEmailUpdateOutput`` if successful, or an `Error` if not.
+    /// - Returns: A `Result`, containing either a ``RequestEmailUpdateOutput``
+    /// if successful, or an `Error` if not.
     public func requestEmailUpdate() async throws -> Result<RequestEmailUpdateOutput, Error> {
         guard session != nil,
               let accessToken = session?.accessToken else {

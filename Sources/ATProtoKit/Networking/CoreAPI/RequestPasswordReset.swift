@@ -12,7 +12,8 @@ extension ATProtoKit {
     /// 
     /// - Note: This is resetting the main password, not the App Password.
     /// 
-    /// - Note: According to the AT Protocol specifications: "Initiate a user account password reset via email."
+    /// - Note: According to the AT Protocol specifications: "Initiate a user account password
+    /// reset via email."
     ///
     /// - SeeAlso: This is based on the [`com.atproto.server.requestPasswordReset`][github] lexicon.
     ///

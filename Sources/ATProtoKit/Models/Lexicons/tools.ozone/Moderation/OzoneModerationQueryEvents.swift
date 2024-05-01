@@ -9,7 +9,8 @@ import Foundation
 
 /// The main data model definition for listing all moderation events pertaining a subject.
 ///
-/// - Note: According to the AT Protocol specifications: "List moderation events related to a subject."
+/// - Note: According to the AT Protocol specifications: "List moderation events related
+/// to a subject."
 ///
 /// - SeeAlso: This is based on the [`tools.ozone.moderation.queryEvents`][github] lexicon.
 ///

@@ -10,11 +10,14 @@ import Foundation
 extension ATProtoAdmin {
     /// Gets the moderation statuses of records and repositories.
     /// 
-    /// - Important: This is an moderator task and as such, regular users won't be able to access this; if they attempt to do so, an error will occur.
-    /// 
-    /// - Note: Many of the parameter's descriptions are taken directly from the AT Protocol's specification.
+    /// - Important: This is an moderator task and as such, regular users won't be able to
+    /// access this; if they attempt to do so, an error will occur.
     ///
-    /// - Note: According to the AT Protocol specifications: "View moderation statuses of subjects (record or repo)."
+    /// - Note: Many of the parameter's descriptions are taken directly from the
+    /// AT Protocol's specification.
+    ///
+    /// - Note: According to the AT Protocol specifications: "View moderation statuses of subjects
+    /// (record or repo)."
     ///
     /// - SeeAlso: This is based on the [`tools.ozone.moderation.queryStatuses`][github] lexicon.
     ///
@@ -22,25 +25,38 @@ extension ATProtoAdmin {
     ///
     /// - Parameters:
     ///   - subject: The URI of the subject. Optional.
-    ///   - comment: A query that makes the list display events with comments containing the keywords used here. Optional.
-    ///   - reportedAfter: States that the moderator statuses reports displayed should be after a specified report date. Optional.
-    ///   - reportedBefore: States that the moderator statuses displayed should before a specified report date. Optional.
-    ///   - reviewedAfter: States that the moderator statuses displayed should be after a specified review date. Optional.
-    ///   - reviewedBefore: States that the moderator statuses displayed should be before a specified review date. Optional.
-    ///   - shouldIncludeMuted: Indicates whether muted subjects should be included in the results. Optional. Defaults to `false`.
+    ///   - comment: A query that makes the list display events with comments containing the
+    ///   keywords used here. Optional.
+    ///   - reportedAfter: States that the moderator statuses reports displayed should be after
+    ///   a specified report date. Optional.
+    ///   - reportedBefore: States that the moderator statuses displayed should before a specified
+    ///   report date. Optional.
+    ///   - reviewedAfter: States that the moderator statuses displayed should be after a specified
+    ///   review date. Optional.
+    ///   - reviewedBefore: States that the moderator statuses displayed should be before a specified
+    ///   review date. Optional.
+    ///   - shouldIncludeMuted: Indicates whether muted subjects should be included in the results.
+    ///   Optional. Defaults to `false`.
     ///   - isOnlyMuted: Indicates whether only muted subjects and reporters will be returned.
     ///   - reviewState: Specify when fetching subjects in a certain state. Optional.
     ///   - ignoreSubjects: An array of records and repositories to ignore. Optional.
-    ///   - lastReviewedBy: Specifies the decentralized identifier (DID) of the moderator whose reviewed statuses are queried. Optional.
+    ///   - lastReviewedBy: Specifies the decentralized identifier (DID) of the moderator whose
+    ///   reviewed statuses are queried. Optional.
     ///   - sortField: Sets the sort field of the queried array. Optional.
     ///   - sortDirection: Sets the sorting direction of the queried array. Optional.
-    ///   - isTakenDown: Indicates whether the queried array contains moderator statuses that have records and repositories that have been taken down. Optional.
-    ///   - isAppealed: Indicates whether the queried array contains moderator statuses that have been appealed. Optional.
+    ///   - isTakenDown: Indicates whether the queried array contains moderator statuses that have
+    ///   records and repositories that have been taken down. Optional.
+    ///   - isAppealed: Indicates whether the queried array contains moderator statuses that have
+    ///   been appealed. Optional.
     ///   - limit: The number of events that can be displayed at once. Optional. Defaults to `50`.
-    ///   - tags: An array of tags that makes the list display events that contains the added tags. Optional.
-    ///   - excludeTags: An array of tags that makes the list display events that doesn't contain the added tags. Optional.
-    ///   - cursor: The mark used to indicate the starting point for the next set of results. Optional.
-    /// - Returns: A `Result`, containing either an ``AdminQueryModerationStatusesOutput`` if successful, or an `Error` if not.
+    ///   - tags: An array of tags that makes the list display events that contains the
+    ///   added tags. Optional.
+    ///   - excludeTags: An array of tags that makes the list display events that doesn't contain
+    ///   the added tags. Optional.
+    ///   - cursor: The mark used to indicate the starting point for the next set of
+    ///   results. Optional.
+    /// - Returns: A `Result`, containing either an ``AdminQueryModerationStatusesOutput``
+    /// if successful, or an `Error` if not.
     public func queryStatuses(_ subject: String?, comment: String?, reportedAfter: Date?, reportedBefore: Date?, reviewedAfter: Date?,
                               reviewedBefore: Date?, shouldIncludeMuted: Bool? = false, isOnlyMuted: Bool?, reviewState: String?,
                               ignoreSubjects: [String]?, lastReviewedBy: String?, sortField: AdminQueryModerationStatusesSortField? = .lastReportedAt,

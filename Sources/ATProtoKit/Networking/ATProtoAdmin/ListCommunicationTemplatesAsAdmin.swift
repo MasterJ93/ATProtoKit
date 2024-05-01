@@ -10,15 +10,18 @@ import Foundation
 extension ATProtoAdmin {
     /// Retrieves a list of communication templates.
     /// 
-    /// - Important: This is a moderator task and as such, regular users won't be able to access this; if they attempt to do so, an error will occur.
-    /// 
-    /// - Note: According to the AT Protocol specifications: "Get list of all communication templates."
+    /// - Important: This is a moderator task and as such, regular users won't be able to
+    /// access this; if they attempt to do so, an error will occur.
+    ///
+    /// - Note: According to the AT Protocol specifications: "Get list of all
+    /// communication templates."
     ///
     /// - SeeAlso: This is based on the [`tools.ozone.communication.listTemplates`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/tools/ozone/communication/listTemplates.json
     ///
-    /// - Returns: A `Result`, containing either an ``CommunicationListTemplatesOutput`` if successful, or an `Error` if not.
+    /// - Returns: A `Result`, containing either an ``CommunicationListTemplatesOutput``
+    /// if successful, or an `Error` if not.
     public func listCommunicationTemplates() async throws -> Result<CommunicationListTemplatesOutput, Error> {
         guard session != nil,
               let accessToken = session?.accessToken else {

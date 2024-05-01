@@ -10,7 +10,8 @@ import Foundation
 extension ATProtoKit {
     /// Lists a collection's records within a respository.
     /// 
-    /// - Note: According to the AT Protocol specifications: "List a range of records in a repository, matching a specific collection. Does not require auth."
+    /// - Note: According to the AT Protocol specifications: "List a range of records in a
+    /// repository, matching a specific collection. Does not require auth."
     ///
     /// - SeeAlso: This is based on the [`com.atproto.repo.listRecords`][github] lexicon.
     ///
@@ -20,10 +21,12 @@ extension ATProtoKit {
     ///   - repositoryDID: The decentralized identifier (DID) or handle of the repository.
     ///   - collection: The Namespaced Identifier (NSID) of the repository.
     ///   - limit: The number of items that can be in the list. Optional. Defaults to `50`.
-    ///   - cursor: The mark used to indicate the starting point for the next set of result. Optional.
+    ///   - cursor: The mark used to indicate the starting point for the next set of
+    ///   result. Optional.
     ///   - isArrayReverse: Indicates whether the list of records is listed in reverse. Optional.
     ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `nil`.
-    /// - Returns: A `Result`, containing ``RepoListRecordsOutput`` if successful, or an `Error` if not.
+    /// - Returns: A `Result`, containing ``RepoListRecordsOutput``
+    /// if successful, or an `Error` if not.
     public func listRecords(from repositoryDID: String, collection: String, limit: Int? = 50, cursor: String? = nil, isArrayReverse: Bool? = nil,
                             pdsURL: String? = nil) async throws -> Result<RepoListRecordsOutput, Error> {
         guard let sessionURL = pdsURL != nil ? pdsURL : session?.pdsURL,

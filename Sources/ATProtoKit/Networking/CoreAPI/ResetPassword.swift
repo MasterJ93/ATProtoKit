@@ -12,7 +12,8 @@ extension ATProtoKit {
     /// 
     /// - Note: This doesn't reset the App Password.
     /// 
-    /// - Note: According to the AT Protocol specifications: "Reset a user account password using a token."
+    /// - Note: According to the AT Protocol specifications: "Reset a user account password using
+    /// a token."
     ///
     /// - SeeAlso: This is based on the [`com.atproto.server.resetPassword`][github] lexicon.
     ///

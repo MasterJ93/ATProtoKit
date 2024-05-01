@@ -19,7 +19,8 @@ class ATFirehoseStream: ATEventStreamConfiguration {
     public var sequencePosition: Int64?
     /// The mark used to indicate the starting point for the next set of results. Optional.
     public var cursor: Int64?
-    /// The configuration object that defines the behaviours and polices for a URL session in the event stream.
+    /// The configuration object that defines the behaviours and polices for a URL session in the
+    /// event stream.
     internal let urlSession: URLSession
     /// The configuration object that defines behavior and policies for a URL session.
     internal let urlSessionConfiguration: URLSessionConfiguration
@@ -33,7 +34,8 @@ class ATFirehoseStream: ATEventStreamConfiguration {
     ///   - namespacedIdentifiertURL: The Namespaced Identifier (NSID) of the endpoint.
     ///   - cursor: The number of the last successful message decoded. Optional.
     ///   - sequencePosition: The number of the last successful message decoded. Optional.
-    ///   - urlSessionConfiguration: The configuration object that defines the behaviours and polices for a URL session in the event stream. Defaults
+    ///   - urlSessionConfiguration: The configuration object that defines the behaviours and
+    ///   polices for a URL session in the event stream. Defaults
     ///   to `URLSessionConfiguration.default`.
     required init(relayURL: String, namespacedIdentifiertURL: String, cursor: Int64?, sequencePosition: Int64?,
                   urlSessionConfiguration: URLSessionConfiguration = .default, webSocketTask: URLSessionWebSocketTask) async throws {

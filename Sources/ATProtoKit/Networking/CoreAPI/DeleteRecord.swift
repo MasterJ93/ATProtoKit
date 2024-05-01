@@ -10,8 +10,9 @@ import Foundation
 extension ATProtoKit {
     /// Deletes a record attached to a user account..
     /// 
-    /// - Note: According to the AT Protocol specifications: "Delete a repository record, or ensure it doesn't exist. Requires auth, implemented by PDS."
-    ///  
+    /// - Note: According to the AT Protocol specifications: "Delete a repository record, or
+    /// ensure it doesn't exist. Requires auth, implemented by PDS."
+    ///
     /// - SeeAlso: This is based on the [`com.atproto.repo.deleteRecord`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/repo/deleteRecord.json
@@ -20,8 +21,10 @@ extension ATProtoKit {
     ///   - repositoryDID: The decentralized identifier (DID) or handle of the user account.
     ///   - collection: The Namespaced Identifier (NSID) of the record.
     ///   - recordKey: The record key of the record.
-    ///   - swapRecord: Swap the record on the server with this current record based on the CID of the record on the server.
-    ///   - swapCommit: Swap the commit on the server with this current commit based on the CID of the commit on the server.
+    ///   - swapRecord: Swap the record on the server with this current record based on the CID
+    ///   of the record on the server.
+    ///   - swapCommit: Swap the commit on the server with this current commit based on the CID
+    ///   of the commit on the server.
     public func deleteRecord(repositoryDID: String, collection: String, recordKey: String, swapRecord: String? = nil, swapCommit: String? = nil) async throws {
         guard session != nil,
               let accessToken = session?.accessToken else {

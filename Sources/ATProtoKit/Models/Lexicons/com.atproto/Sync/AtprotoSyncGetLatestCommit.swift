@@ -9,7 +9,8 @@ import Foundation
 
 /// The main data model definition for the output of getting a repository's latest commit CID.
 ///
-/// - Note: According to the AT Protocol specifications: "Get the current commit CID & revision of the specified repo. Does not require auth."
+/// - Note: According to the AT Protocol specifications: "Get the current commit CID & revision
+/// of the specified repo. Does not require auth."
 ///
 /// - SeeAlso: This is based on the [`com.atproto.sync.getLatestCommit`][github] lexicon.
 ///

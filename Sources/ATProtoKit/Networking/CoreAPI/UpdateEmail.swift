@@ -10,8 +10,9 @@ import Foundation
 extension ATProtoKit {
     /// Updates the email address associated with the user's account.
     ///  
-    /// - Important: If the email has already been confirmed, then `token` must be used. `token` can be retrieved by sending an email to the confirmed
-    /// email address using ``requestEmailUpdate()``.
+    /// - Important: If the email has already been confirmed, then `token` must be used.
+    /// `token` can be retrieved by sending an email to the confirmed email address
+    /// using ``requestEmailUpdate()``.
     ///
     /// - Note: According to the AT Protocol specifications: "Update an account's email."
     /// 
@@ -21,7 +22,8 @@ extension ATProtoKit {
     /// 
     /// - Parameters:
     ///   - email: The new email addtess the user wants to associate with their account.
-    ///   - isEmailAuthenticationFactorEnabled: Indicates whether Two-Factor Authentication (via email) is enabled. Optional.
+    ///   - isEmailAuthenticationFactorEnabled: Indicates whether
+    ///   Two-Factor Authentication (via email) is enabled. Optional.
     ///   - token: The token used to confirm the change. Optional.
     public func updateEmail(_ email: String, isEmailAuthenticationFactorEnabled: Bool? = nil, token: String? = nil) async throws {
         guard session != nil,

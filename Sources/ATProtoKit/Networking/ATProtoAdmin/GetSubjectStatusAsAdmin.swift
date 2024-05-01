@@ -10,9 +10,11 @@ import Foundation
 extension ATProtoAdmin {
     /// Gets the status of a subject as an administrator.
     /// 
-    /// - Important: This is an administrator task and as such, regular users won't be able to access this; if they attempt to do so, an error will occur.
-    /// 
-    /// - Note: According to the AT Protocol specifications: "Get the service-specific admin status of a subject (account, record, or blob)."
+    /// - Important: This is an administrator task and as such, regular users won't be able to
+    /// access this; if they attempt to do so, an error will occur.
+    ///
+    /// - Note: According to the AT Protocol specifications: "Get the service-specific admin
+    /// status of a subject (account, record, or blob)."
     ///
     /// - SeeAlso: This is based on the [`com.atproto.admin.getSubjectStatus`][github] lexicon.
     ///
@@ -22,7 +24,8 @@ extension ATProtoAdmin {
     ///   - subjectDID: The decentralized identifier (DID) of the subject.
     ///   - subjectURI: The URI of the subject.
     ///   - subjectBlobCIDHash: The CID hash of the blob for the subject.
-    /// - Returns: A `Result`, containing either an ``AdminGetSubjectStatusOutput`` if successful, or an `Error` if not.
+    /// - Returns: A `Result`, containing either an ``AdminGetSubjectStatusOutput``
+    /// if successful, or an `Error` if not.
     public func getSubjectStatus(_ subjectDID: String, subjectURI: String,
                                  subjectBlobCIDHash: String) async throws -> Result<AdminGetSubjectStatusOutput, Error> {
         guard session != nil,

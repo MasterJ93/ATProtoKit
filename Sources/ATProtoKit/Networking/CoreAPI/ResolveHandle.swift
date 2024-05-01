@@ -8,9 +8,11 @@
 import Foundation
 
 extension ATProtoKit {
-    /// Retrieves a decentralized identifier (DID) based on a given handle from a specified Personal Data Server (PDS).
+    /// Retrieves a decentralized identifier (DID) based on a given handle from a specified
+    /// Personal Data Server (PDS).
     ///
-    /// - Note: According to the AT Protocol specifications: "Resolves a handle (domain name) to a DID."
+    /// - Note: According to the AT Protocol specifications: "Resolves a handle (domain name)
+    /// to a DID."
     ///
     /// - SeeAlso: This is based on the [`com.atproto.identity.resolveHandle`][github] lexicon.
     ///
@@ -19,7 +21,8 @@ extension ATProtoKit {
     /// - Parameters:
     ///   - handle: The handle to resolve into a decentralized identifier (DID).
     ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `nil`.
-    /// - Returns: A `Result`, containing either a ``ResolveHandleOutput`` if successful, or an `Error` if not.
+    /// - Returns: A `Result`, containing either a ``ResolveHandleOutput``
+    /// if successful, or an `Error` if not.
     public func resolveHandle(from handle: String, pdsURL: String? = nil) async throws -> Result<ResolveHandleOutput, Error> {
         guard let sessionURL = pdsURL != nil ? pdsURL : session?.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.identity.resolveHandle") else {

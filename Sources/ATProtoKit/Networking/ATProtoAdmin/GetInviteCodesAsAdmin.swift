@@ -10,8 +10,9 @@ import Foundation
 extension ATProtoAdmin {
     /// Retrieves the invite codes from a user account.
     /// 
-    /// - Important: This is an administrator task and as such, regular users won't be able to access this; if they attempt to do so, an error will occur.
-    /// 
+    /// - Important: This is an administrator task and as such, regular users won't be able to
+    /// access this; if they attempt to do so, an error will occur.
+    ///
     /// - Note: According to the AT Protocol specifications: "Get an admin view of invite codes."
     ///
     /// - SeeAlso: This is based on the [`com.atproto.admin.getInviteCodes`][github] lexicon.
@@ -22,7 +23,8 @@ extension ATProtoAdmin {
     ///   - sort: The order the invite codes will be sorted by. Defaults to `.recent`.
     ///   - limit: The number of invite codes in the list. Defaults to `100`.
     ///   - cursor: The mark used to indicate the starting point for the next set of results. Optional.
-    /// - Returns: A `Result`, containing either an ``AdminGetInviteCodesOutput`` if successful, or an `Error` if not.
+    /// - Returns: A `Result`, containing either an ``AdminGetInviteCodesOutput``
+    /// if successful, or an `Error` if not.
     public func getInviteCodes(sortedBy sort: AdminGetInviteCodesSort = .recent, withLimitOf limit: Int = 100,
                                cursor: String?) async throws -> Result<AdminGetInviteCodesOutput, Error> {
         guard session != nil,

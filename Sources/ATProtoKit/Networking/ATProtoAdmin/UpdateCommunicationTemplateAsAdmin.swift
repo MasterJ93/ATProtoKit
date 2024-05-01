@@ -28,7 +28,8 @@ extension ATProtoKit {
     ///   - updatedBy: The decentralized identifier (DID) of the user who updated the
     ///   communication template. Optional.
     ///   - isDisabled: Indicates whether the communication template is disabled. Optional.
-    /// - Returns: A `Result`, containing either an ``OzoneCommunicationTemplateView`` if successful, or an `Error` if not.
+    /// - Returns: A `Result`, containing either an ``OzoneCommunicationTemplateView``
+    /// if successful, or an `Error` if not.
     public func updateCommunicationTemplate(_ id: String, name: String?, contentMarkdown: String?, subject: String?, updatedBy: String?,
                                             isDisabled: Bool?) async throws -> Result<OzoneCommunicationTemplateView, Error> {
         guard session != nil,

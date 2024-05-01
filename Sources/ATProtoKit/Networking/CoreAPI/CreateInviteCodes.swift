@@ -17,9 +17,11 @@ extension ATProtoKit {
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/server/createInviteCodes.json
     ///
     /// - Parameters:
-    ///   - codeCount: The number of invite codes to be created. Defaults to 1.
-    ///   - forAccounts: An array of decentralized identifiers (DIDs) that can use the invite codes.
-    /// - Returns: A `Result`, containing either a ``ServerCreateInviteCodesOutput`` if successful, or an `Error` if not.
+    ///   - codeCount: The number of invite codes to be created. Defaults to `1`.
+    ///   - forAccounts: An array of decentralized identifiers (DIDs) that can use the
+    ///   invite codes.
+    /// - Returns: A `Result`, containing either a ``ServerCreateInviteCodesOutput``
+    /// if successful, or an `Error` if not.
     public func createInviteCodes(_ codeCount: Int = 1, for accounts: [String]) async throws -> Result<ServerCreateInviteCodesOutput, Error> {
         guard session != nil,
               let accessToken = session?.accessToken else {

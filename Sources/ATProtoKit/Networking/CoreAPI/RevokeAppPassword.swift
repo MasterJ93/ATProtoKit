@@ -10,7 +10,8 @@ import Foundation
 extension ATProtoKit {
     /// Revokes an App Password from a user's account.
     /// 
-    /// - Note: According to the AT Protocol specifications: "Revoke an App Password by name."
+    /// - Note: According to the AT Protocol specifications: "Revoke an
+    /// App Password by name."
     ///
     /// - SeeAlso: This is based on the [`com.atproto.server.revokeAppPassword`][github] lexicon.
     ///

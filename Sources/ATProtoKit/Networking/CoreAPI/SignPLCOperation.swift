@@ -8,22 +8,28 @@
 import Foundation
 
 extension ATProtoKit {
-    /// Assigns a PLC task to modify specific values in the document of the requesting DID document.
+    /// Assigns a PLC task to modify specific values in the document of the requesting
+    /// DID document.
     ///
-    /// - Note: According to the AT Protocol specifications: "Signs a PLC operation to update some value(s) in the requesting DID's document."
+    /// - Note: According to the AT Protocol specifications: "Signs a PLC operation to update
+    /// some value(s) in the requesting DID's document."
     ///
     /// - SeeAlso: This is based on the [`com.atproto.identity.signPlcOperation`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/identity/signPlcOperation.json
     ///
     /// - Parameters:
-    ///   - token: A token received from ``ATProtoKit/ATProtoKit/requestPLCOperationSignature()``. Optional.
+    ///   - token: A token received from
+    ///   ``ATProtoKit/ATProtoKit/requestPLCOperationSignature()``. Optional.
     ///   - rotationKeys: The rotation keys recommended to be added in the DID document. Optional.
     ///   - alsoKnownAs: An array of aliases of the user account. Optional.
-    ///   - verificationMethods: A verification method recommeneded to be added in the DID document. Optional.
+    ///   - verificationMethods: A verification method recommeneded to be added in the
+    ///   DID document. Optional.
     ///   - service: The service endpoint recommended in the DID document. Optional.
-    /// - Returns: A `Result`, containing either an ``IdentitySignPLCOperationOutput`` if successful, ot an `Error` if not.
-    public func signPLCOperation(token: String, rotationKeys: [String]?, alsoKnownAs: [String]?, verificationMethods: VerificationMethod?, service: ATService?) async throws -> Result<IdentitySignPLCOperationOutput, Error> {
+    /// - Returns: A `Result`, containing either an ``IdentitySignPLCOperationOutput``
+    /// if successful, ot an `Error` if not.
+    public func signPLCOperation(token: String, rotationKeys: [String]?, alsoKnownAs: [String]?, verificationMethods: VerificationMethod?,
+                                 service: ATService?) async throws -> Result<IdentitySignPLCOperationOutput, Error> {
         guard session != nil,
               let accessToken = session?.accessToken else {
             return .failure(ATRequestPrepareError.missingActiveSession)

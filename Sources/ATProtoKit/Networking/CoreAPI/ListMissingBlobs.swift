@@ -10,7 +10,8 @@ import Foundation
 extension ATProtoKit {
     /// Lists any missing blobs attached to the user account.
     /// 
-    /// - Note: According to the AT Protocol specifications: "Returns a list of missing blobs for the requesting account. Intended to be used in the account migration flow."
+    /// - Note: According to the AT Protocol specifications: "Returns a list of missing blobs for
+    /// the requesting account. Intended to be used in the account migration flow."
     ///
     /// - SeeAlso: This is based on the [`com.atproto.repo.listMissingBlobs`][github] lexicon.
     ///
@@ -18,8 +19,10 @@ extension ATProtoKit {
     ///
     /// - Parameters:
     ///   - limit: The number of items that can be in the list. Optional. Defaults to `500`.
-    ///   - cursor: The mark used to indicate the starting point for the next set of result. Optional.
-    /// - Returns: A `Result`, containing either a ``RepoListMissingBlobsOutput`` if successful, or an `Error` if not.
+    ///   - cursor: The mark used to indicate the starting point for the next set of
+    ///   result. Optional.
+    /// - Returns: A `Result`, containing either a ``RepoListMissingBlobsOutput``
+    /// if successful, or an `Error` if not.
     public func listMissingBlobs(limit: Int? = 500, cursor: String? = nil) async throws -> Result<RepoListMissingBlobsOutput, Error> {
         guard session != nil,
               let accessToken = session?.accessToken else {

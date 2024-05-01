@@ -10,7 +10,9 @@ import Foundation
 extension ATProtoAdmin {
     /// Creates a report to send to moderators.
     /// 
-    /// - Note: According to the AT Protocol specifications: "Submit a moderation report regarding an atproto account or record. Implemented by moderation services (with PDS proxying), and requires auth."
+    /// - Note: According to the AT Protocol specifications: "Submit a moderation report regarding
+    /// an atproto account or record. Implemented by moderation services (with PDS proxying),
+    /// and requires auth."
     ///
     /// - SeeAlso: This is based on the [`com.atproto.moderation.createReport`][github] lexicon.
     ///
@@ -20,7 +22,8 @@ extension ATProtoAdmin {
     ///   - reasonType: The reason for the report.
     ///   - reason: Any additional context accompanying the report. Optional.
     ///   - subject: The responsible party being reported.
-    /// - Returns: A `Result`, containing either ``ModerationCreateReportOutput`` if successful, or an `Error` if not.
+    /// - Returns: A `Result`, containing either ``ModerationCreateReportOutput``
+    /// if successful, or an `Error` if not.
     public func createReport(with reasonType: ModerationReasonType, withContextof reason: String?,
                              subject: RepositoryReferencesUnion) async throws -> Result<ModerationCreateReportOutput, Error> {
         guard session != nil,

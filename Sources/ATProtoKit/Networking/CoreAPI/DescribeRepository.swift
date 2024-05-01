@@ -10,14 +10,16 @@ import Foundation
 extension ATProtoKit {
     /// Describes the repository.
     /// 
-    /// - Note: According to the AT Protocol specifications: "Get information about an account and repository, including the list of collections. Does not require auth."
+    /// - Note: According to the AT Protocol specifications: "Get information about an account
+    /// and repository, including the list of collections. Does not require auth."
     ///
     /// - SeeAlso: This is based on the [`com.atproto.repo.describeRepo`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/repo/describeRepo.json
     ///
     /// - Parameter repositoryDID: The decentralized identifier (DID) or handle of the repository.
-    /// - Returns: A `Result`, containing either a ``RepoDescribeRepoOutput`` if successful, ot an `Error` if not.
+    /// - Returns: A `Result`, containing either a ``RepoDescribeRepoOutput``
+    /// if successful, ot an `Error` if not.
     public func describeRepository(_ repositoryDID: String,
                                    pdsURL: String? = nil) async throws -> Result<RepoDescribeRepoOutput, Error> {
         guard let sessionURL = pdsURL != nil ? pdsURL : session?.pdsURL,

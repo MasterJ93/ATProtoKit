@@ -10,7 +10,8 @@ import Foundation
 extension ATProtoKit {
     /// Lists all of the App Passwords in a user's account.
     /// 
-    /// - Important: This won't show the actual App Passwords; it'll only display the names associated with the App Passwords.
+    /// - Important: This won't show the actual App Passwords; it'll only display the names
+    /// associated with the App Passwords.
     ///
     /// - Note: According to the AT Protocol specifications: "List all App Passwords."
     ///
@@ -18,7 +19,8 @@ extension ATProtoKit {
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/server/listAppPasswords.json
     ///
-    /// - Returns: A `Result`, containing either a ``ServerListAppPasswordsOutput`` if successful, or an `Error` if not.
+    /// - Returns: A `Result`, containing either a ``ServerListAppPasswordsOutput``
+    /// if successful, or an `Error` if not.
     public func listAppPasswords() async throws -> Result<ServerListAppPasswordsOutput, Error> {
         guard session != nil,
               let accessToken = session?.accessToken else {

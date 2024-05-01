@@ -10,16 +10,20 @@ import Foundation
 extension ATProtoKit {
     /// Retrieves the invite codes from the user's account.
     ///
-    /// - Note: According to the AT Protocol specifications: "Get all invite codes for the current account. Requires auth."
+    /// - Note: According to the AT Protocol specifications: "Get all invite codes for the current
+    /// account. Requires auth."
     ///
     /// - SeeAlso: This is based on the [`com.atproto.server.getAccountInviteCodes`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/server/getAccountInviteCodes.json
     ///
     /// - Parameters:
-    ///   - areUsedCodesIncluded: Indicates whether the invite codes that have already been used be included in the list. Optional. Defaults to `true`.
-    ///   - areEarnedCodesIncluded: Indicates whether the invite codes that the user earned should be included in the list. Optional. Defaults to `true`.
-    /// - Returns: A `Result`, containing either ``ServerGetAccountInviteCodesOutput`` if successful, and an `Error` if not.
+    ///   - areUsedCodesIncluded: Indicates whether the invite codes that have already been used
+    ///   be included in the list. Optional. Defaults to `true`.
+    ///   - areEarnedCodesIncluded: Indicates whether the invite codes that the user earned should
+    ///   be included in the list. Optional. Defaults to `true`.
+    /// - Returns: A `Result`, containing either ``ServerGetAccountInviteCodesOutput``
+    /// if successful, and an `Error` if not.
     public func getAccountInviteCodes(_ areUsedCodesIncluded: Bool = true,
                                       areEarnedCodesIncluded: Bool = true) async throws -> Result<ServerGetAccountInviteCodesOutput, Error> {
         guard session != nil,

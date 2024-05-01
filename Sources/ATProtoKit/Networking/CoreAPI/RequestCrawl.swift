@@ -10,8 +10,10 @@ import Foundation
 extension ATProtoKit {
     /// Requests the crawling service to begin crawling the repositories.
     /// 
-    /// - Note: According to the AT Protocol specifications: "Notify a crawling service of a recent update, and that crawling should resume. Intended use is after a gap between repo stream events caused the
-    /// crawling service to disconnect. Does not require auth; implemented by Relay."
+    /// - Note: According to the AT Protocol specifications: "Notify a crawling service of a recent
+    /// update, and that crawling should resume. Intended use is after a gap between repo
+    /// stream events caused the crawling service to disconnect. Does not require auth;
+    /// implemented by Relay."
     ///
     /// - SeeAlso: This is based on the [`com.atproto.sync.notifyOfUpdate`][github] lexicon.
     ///

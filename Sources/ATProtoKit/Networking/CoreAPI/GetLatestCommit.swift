@@ -10,7 +10,8 @@ import Foundation
 extension ATProtoKit {
     /// Gets a repository's latest commit CID.
     /// 
-    /// - Note: According to the AT Protocol specifications: "Get the current commit CID & revision of the specified repo. Does not require auth."
+    /// - Note: According to the AT Protocol specifications: "Get the current commit CID &
+    /// revision of the specified repo. Does not require auth."
     ///
     /// - SeeAlso: This is based on the [`com.atproto.sync.getLatestCommit`][github] lexicon.
     ///
@@ -19,7 +20,8 @@ extension ATProtoKit {
     /// - Parameters:
     ///   - repositoryDID: The decentralized identifier (DID) of the repository.
     ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `nil`.
-    /// - Returns: A `Result`, containing either a ``SyncGetBlocksOutput`` if successful, or an `Error` if not.
+    /// - Returns: A `Result`, containing either a ``SyncGetBlocksOutput``
+    /// if successful, or an `Error` if not.
     public func getLatestCommit(from repositoryDID: String, pdsURL: String? = nil) async throws -> Result<SyncGetLatestCommitOutput, Error> {
         guard let sessionURL = pdsURL != nil ? pdsURL : session?.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.sync.getLatestCommit") else {

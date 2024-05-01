@@ -21,19 +21,22 @@ public struct OzoneCommunicationTemplateView: Codable {
     public let name: String
     /// The subject of the message. Optional.
     ///
-    /// - Note: According to the AT Protocol specifications: "Subject of the message, used in emails."
+    /// - Note: According to the AT Protocol specifications: "Subject of the message, used
+    /// in emails."
     public var subject: String? = nil
     /// The content of the communication template. Optional.
     ///
     /// This may contain Markdown placeholders and variable placeholders.
     ///
-    /// - Note: According to the AT Protocol specifications: "Content of the template, can contain markdown and variable placeholders."
+    /// - Note: According to the AT Protocol specifications: "Content of the template, can contain
+    /// markdown and variable placeholders."
     public let contentMarkdown: String
     /// Indicates whether the communication template has been disabled.
     public let isDisabled: Bool
     /// The decentralized identifier (DID) of the user who last updated the communication template.
     ///
-    /// - Note: According to the AT Protocol specifications: "DID of the user who last updated the template."
+    /// - Note: According to the AT Protocol specifications: "DID of the user who last updated
+    /// the template."
     public let lastUpdatedBy: String
     /// The date and time the communication template was created.
     @DateFormatting public var createdAt: Date

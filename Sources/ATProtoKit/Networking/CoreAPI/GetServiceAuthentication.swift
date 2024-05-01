@@ -10,14 +10,16 @@ import Foundation
 extension ATProtoKit {
     /// Retrieves a token from a requested service.
     /// 
-    /// - Note: According to the AT Protocol specifications: "Get a signed token on behalf of the requesting DID for the requested service."
+    /// - Note: According to the AT Protocol specifications: "Get a signed token on behalf of
+    /// the requesting DID for the requested service."
     ///
     /// - SeeAlso: This is based on the [`com.atproto.server.getServiceAuth`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/server/getServiceAuth.json
     ///
     /// - Parameter serviceDID: The decentralized identifier (DID) of the service.
-    /// - Returns: A `Result`, containing either a ``ServerGetServiceAuthOutput`` if successful, or an `Error`if not.
+    /// - Returns: A `Result`, containing either a ``ServerGetServiceAuthOutput``
+    /// if successful, or an `Error`if not.
     public func getServiceAuthentication(from serviceDID: String) async throws -> Result<ServerGetServiceAuthOutput, Error> {
         guard session != nil,
               let accessToken = session?.accessToken else {
