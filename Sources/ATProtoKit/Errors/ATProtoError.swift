@@ -123,7 +123,7 @@ public enum ATAPIError: ATProtoError, Decodable {
 }
 
 /// An error type related to issues surrounding preparing a request to be sent.
-enum ATRequestPrepareError: ATProtoError {
+public enum ATRequestPrepareError: ATProtoError {
     /// The format of the object is incorrect.
     case invalidFormat
     /// The requestURL may be incorrect (either the endpoint itself or the URL of the
@@ -142,7 +142,7 @@ enum ATRequestPrepareError: ATProtoError {
 }
 
 /// An error type related to issues surrounding HTTP requests and responses.
-enum ATHTTPRequestError: ATProtoError {
+public enum ATHTTPRequestError: ATProtoError {
     /// Unable to encode the request body.
     case unableToEncodeRequestBody
     /// Failed to construct URL with the given parameters.
@@ -157,19 +157,19 @@ enum ATHTTPRequestError: ATProtoError {
 
 /// An error type specifically related to Bluesky (either before or after interacting with
 /// the service).
-enum ATBlueskyError: ATProtoError {
+public enum ATBlueskyError: ATProtoError {
     /// The image used is too large.
     case imageTooLarge
 }
 
 /// An error type related to issues surrounding
-enum ATEventStreamError: ATProtoError {
+public enum ATEventStreamError: ATProtoError {
     /// The endpoint URL used may not be correct.
     case invalidEndpoint
 }
 
 /// An error type related to ``ATImageProcessable``..
-enum ATImageProcessingError: ATProtoError {
+public enum ATImageProcessingError: ATProtoError {
     /// The image's file size can't be lowered any further to fit the target file size.
     case unableToResizeImage
 }
