@@ -237,7 +237,7 @@ public enum UnknownType: Codable {
                 array.append(value)
             } else if let nestedContainer = try? unkeyedContainer.nestedContainer(keyedBy: DynamicCodingKeys.self) {
                 array.append(try decodeNestedDictionary(container: nestedContainer))
-            } else if let nestedArrayContainer = try? unkeyedContainer.nestedUnkeyedContainer() {
+            } else if (try? unkeyedContainer.nestedUnkeyedContainer()) != nil {
                 array.append(try UnknownType.decodeNestedDictionary(container: container))
             } else {
                 throw DecodingError.dataCorruptedError(in: unkeyedContainer, debugDescription: "Could not decode array element.")
