@@ -10,7 +10,8 @@ import Foundation
 extension ATProtoKit {
     /// Lists notifications of the user account.
     /// 
-    /// - Note: According to the AT Protocol specifications: "Enumerate notifications for the requesting account. Requires auth."
+    /// - Note: According to the AT Protocol specifications: "Enumerate notifications for the
+    /// requesting account. Requires auth."
     ///
     /// - SeeAlso: This is based on the [`app.bsky.notification.listNotifications`][github] lexicon.
     ///
@@ -18,9 +19,12 @@ extension ATProtoKit {
     ///
     /// - Parameters:
     ///   - limit: The number of invite codes in the list. Optional. Defaults to `50`.
-    ///   - cursor: The mark used to indicate the starting point for the next set of results. Optional.
-    ///   - seenAt: The date and time the notification was seen. Defaults to the date and time the request was sent.
-    /// - Returns: A `Result`, containing either a ``NotificationListNotificationsOutput`` if successful, or an `Error` if not.
+    ///   - cursor: The mark used to indicate the starting point for the next set of
+    ///   results. Optional.
+    ///   - seenAt: The date and time the notification was seen. Defaults to the date and time the
+    ///   request was sent.
+    /// - Returns: A `Result`, containing either a ``NotificationListNotificationsOutput``
+    /// if successful, or an `Error` if not.
     public func listNotifications(withLimitOf limit: Int? = 50, cursor: String? = nil,
                                   seenAt: Date = Date.now) async throws -> Result<NotificationListNotificationsOutput, Error> {
         guard session != nil,

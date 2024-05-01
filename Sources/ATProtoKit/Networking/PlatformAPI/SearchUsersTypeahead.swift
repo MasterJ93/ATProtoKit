@@ -10,14 +10,19 @@ import Foundation
 extension ATProtoKit {
     /// Looks for user profiles (actors) matching the prefixed search term.
     ///
-    /// This will search for the display names, descriptions, and handles within the user profiles.
+    /// This will search for the display names, descriptions, and handles within the
+    /// user profiles.
     ///
     /// - Note: `viewerDID` will be ignored in public or unauthenticated queries.
     ///
-    /// - Bug: According to the AT Protocol specifications, this API call does not require authentication. However, there's an issue where it asks for authentication if there's no `accessToken`.
-    /// It's unknown whether this is an issue on the AT Protocol's end or `AKProtoKit`'s end. For now, use the `shouldAuthenticate` parameter when using this method.
+    /// - Bug: According to the AT Protocol specifications, this API call does not require
+    /// authentication. However, there's an issue where it asks for authentication if there's
+    /// no `accessToken`. It's unknown whether this is an issue on the AT Protocol's end or
+    /// `AKProtoKit`'s end. For now, use the `shouldAuthenticate` parameter when using
+    /// this method.
     ///
-    /// - Note: According to the AT Protocol specifications: "Find actor suggestions for a prefix search term. Expected use is for auto-completion during text field entry. Does not require auth."
+    /// - Note: According to the AT Protocol specifications: "Find actor suggestions for a prefix
+    /// search term. Expected use is for auto-completion during text field entry. Does not require auth."
     ///
     /// - SeeAlso: This is based on the [`app.bsky.actor.searchActorsTypeahead`][github] lexicon.
     ///
@@ -25,11 +30,14 @@ extension ATProtoKit {
     ///
     /// - Parameters:
     ///   - query: The string used against a list of actors.
-    ///   - limit: The number of suggested users to follow. Optional. Defaults to `50`. Can only choose between `1` and `100`.
+    ///   - limit: The number of suggested users to follow. Optional. Defaults to `50`. Can only
+    ///   choose between `1` and `100`.
     ///   - accessToken: The access token
     ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `nil`.
-    ///   - shouldAuthenticate: Indicates whether the method will use the access token when sending the request. Defaults to `false`.
-    /// - Returns: A `Result`, containing either ``ActorSearchActorsOutput`` if successful, and an `Error` if not.
+    ///   - shouldAuthenticate: Indicates whether the method will use the access token when
+    ///   sending the request. Defaults to `false`.
+    /// - Returns: A `Result`, containing either ``ActorSearchActorsOutput``
+    /// if successful, and an `Error` if not.
     public func searchUsersTypeahead(by query: String, limit: Int? = 10,
                                      pdsURL: String? = nil,
                                      shouldAuthenticate: Bool = false) async throws -> Result<ActorSearchActorsTypeaheadOutput, Error> {

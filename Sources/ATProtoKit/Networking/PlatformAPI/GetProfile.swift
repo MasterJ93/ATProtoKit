@@ -10,14 +10,18 @@ import Foundation
 extension ATProtoKit {
     /// Gets a detailed profile of a user.
     ///
-    /// If you need detailed information, make sure to set `shouldAuthenticate` to `true`. If `shouldAuthenticate` is `false`, then the details will be more limited.
+    /// If you need detailed information, make sure to set `shouldAuthenticate` to `true`. If
+    /// `shouldAuthenticate` is `false`, then the details will be more limited.
     ///
-    /// - Note: If your Personal Data Server's (PDS) URL is something other than `https://bsky.social` and you're not using authentication, be sure to change it if the normal URL isn't used
-    /// for unauthenticated API calls.\
+    /// - Note: If your Personal Data Server's (PDS) URL is something other than
+    /// `https://bsky.social` and you're not using authentication, be sure to change it if the
+    /// normal URL isn't used for unauthenticated API calls.\
     ///\
-    /// If you need profiles of several users, it's best to use ``getProfiles(_:pdsURL:shouldAuthenticate:)``.
+    /// If you need profiles of several users, it's best to use
+    /// ``getProfiles(_:pdsURL:shouldAuthenticate:)``.
     ///
-    /// - Note: According to the AT Protocol specifications: "Get detailed profile view of an actor. Does not require auth, but contains relevant metadata with auth."
+    /// - Note: According to the AT Protocol specifications: "Get detailed profile view of an
+    /// actor. Does not require auth, but contains relevant metadata with auth."
     ///
     /// - SeeAlso: This is based on the [`app.bsky.actor.getProfile`][github] lexicon.
     ///
@@ -26,8 +30,10 @@ extension ATProtoKit {
     /// - Parameters:
     ///   - actor: The handle or decentralized identifier (DID) of the user's account.
     ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `nil`.
-    ///   - shouldAuthenticate: Indicates whether the method will use the access token when sending the request. Defaults to `false`.
-    /// - Returns: A `Result`, containing `ActorGetProfileOutput` if successful, or an `Error` if not.
+    ///   - shouldAuthenticate: Indicates whether the method will use the access token when
+    ///   sending the request. Defaults to `false`.
+    /// - Returns: A `Result`, containing ``ActorGetProfileOutput``
+    /// if successful, or an `Error` if not.
     public func getProfile(_ actor: String,
                            pdsURL: String? = nil,
                            shouldAuthenticate: Bool = false) async throws -> Result<ActorGetProfileOutput, Error> {

@@ -10,7 +10,8 @@ import Foundation
 extension ATProtoKit {
     /// Unmutes a list of user accounts.
     ///
-    /// - Note: According to the AT Protocol specifications: "Unmutes the specified list of accounts. Requires auth."
+    /// - Note: According to the AT Protocol specifications: "Unmutes the specified list of
+    /// accounts. Requires auth."
     ///
     /// - SeeAlso: This is based on the [`app.bsky.graph.unmuteActorList`][github] lexicon.
     ///

@@ -10,20 +10,23 @@ import Foundation
 extension ATProtoKit {
     /// Gets a skeleton of suggested actors.
     /// 
-    /// - Note: According to the AT Protocol specifications: "Get a skeleton of suggested actors. Intended to be called and then hydrated through
+    /// - Note: According to the AT Protocol specifications: "Get a skeleton of suggested actors.
+    /// Intended to be called and then hydrated through
     /// app.bsky.actor.getSuggestions."
     /// 
-    /// - Important: This is an unspecced model, and as such, this is highly volatile and may change or be removed at any time. Use at your
-    /// own risk.
-    /// 
+    /// - Important: This is an unspecced model, and as such, this is highly volatile and may
+    /// change or be removed at any time. Use at your own risk.
+    ///
     /// - SeeAlso: This is based on the [`app.bsky.unspecced.getSuggestionsSkeleton`][github] lexicon.
     /// 
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/unspecced/getSuggestionsSkeleton.json
     /// 
     /// - Parameters:
     ///   - viewerDID: The decentralized identifier (DID) of the requesting account. Optional.
-    ///   - limit: - limit: The number of items the list will hold. Optional. Defaults to `50`. Can only be between `1` and `100`.
-    /// - Returns: A `Result`, containing either an ``UnspeccedGetSuggestionsSkeletonOutput`` if successful, or an `Error` if not.
+    ///   - limit: - limit: The number of items the list will hold. Optional. Defaults to `50`. Can
+    ///   only be between `1` and `100`.
+    /// - Returns: A `Result`, containing either an ``UnspeccedGetSuggestionsSkeletonOutput``
+    /// if successful, or an `Error` if not.
     public func getSuggestionsSkeleton(viewerDID: String?, limit: Int? = 50) async throws -> Result<UnspeccedGetSuggestionsSkeletonOutput, Error> {
         guard session != nil,
               let accessToken = session?.accessToken else {

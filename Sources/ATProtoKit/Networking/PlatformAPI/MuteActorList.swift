@@ -10,7 +10,8 @@ import Foundation
 extension ATProtoKit {
     /// Mutes a list of user accounts.
     /// 
-    /// - Note: According to the AT Protocol specifications: "Creates a mute relationship for the specified list of accounts. Mutes are private in Bluesky. Requires auth."
+    /// - Note: According to the AT Protocol specifications: "Creates a mute relationship for the
+    /// specified list of accounts. Mutes are private in Bluesky. Requires auth."
     ///
     /// - SeeAlso: This is based on the [`app.bsky.graph.muteActorList`][github] lexicon.
     ///

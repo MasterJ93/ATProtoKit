@@ -10,7 +10,8 @@ import Foundation
 extension ATProtoKit {
     /// Retrieves all accounts the user account is currently muting.
     /// 
-    /// - Note: According to the AT Protocol specifications: "Enumerates accounts that the requesting account (actor) currently has muted. Requires auth."
+    /// - Note: According to the AT Protocol specifications: "Enumerates accounts that the
+    /// requesting account (actor) currently has muted. Requires auth."
     ///
     /// - SeeAlso: This is based on the [`app.bsky.graph.getMutes`][github] lexicon.
     ///
@@ -18,8 +19,10 @@ extension ATProtoKit {
     ///
     /// - Parameters:
     ///   - limit: The number of items that can be in the list. Optional. Defaults to `50`.
-    ///   - cursor: The mark used to indicate the starting point for the next set of result. Optional.
-    /// - Returns: A `Result`, containing either a ``GraphGetMutesOutput`` if successful, or an `Error` if not.
+    ///   - cursor: The mark used to indicate the starting point for the next set of
+    ///   result. Optional.
+    /// - Returns: A `Result`, containing either a ``GraphGetMutesOutput``
+    /// if successful, or an `Error` if not.
     public func getMutes(limit: Int? = 50, cursor: String? = nil) async throws -> Result<GraphGetMutesOutput, Error> {
         guard session != nil,
               let accessToken = session?.accessToken else {

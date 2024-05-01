@@ -10,16 +10,19 @@ import Foundation
 extension ATProtoKit {
     /// Retrieves information about several feed generators.
     ///
-    /// - Note: If you need details about only one feed generator, it's best to use ``getFeedGenerator(_:)`` instead.
-    /// 
-    /// - Note: According to the AT Protocol specifications: "Get information about a list of feed generators."
+    /// - Note: If you need details about only one feed generator, it's best to use
+    /// ``getFeedGenerator(_:)`` instead.
+    ///
+    /// - Note: According to the AT Protocol specifications: "Get information about a list
+    /// of feed generators."
     ///
     /// - SeeAlso: This is based on the [`app.bsky.feed.getFeedGenerators`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/feed/getFeedGenerators.json
     ///
     /// - Parameter feedURIs: An array of URIs for feed generators.
-    /// - Returns: A `Result`, containing either a ``FeedGetFeedGeneratorOutput`` if successful, or an `Error` if not.
+    /// - Returns: A `Result`, containing either a ``FeedGetFeedGeneratorOutput``
+    /// if successful, or an `Error` if not.
     public func getFeedGenerators(_ feedURIs: [String]) async throws -> Result<FeedGetFeedGeneratorsOutput, Error> {
         guard session != nil,
               let accessToken = session?.accessToken else {

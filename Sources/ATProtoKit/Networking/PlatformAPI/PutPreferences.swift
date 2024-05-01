@@ -10,7 +10,8 @@ import Foundation
 extension ATProtoKit {
     /// Edits the preferences for the user.
     /// 
-    /// - Note: According to the AT Protocol specifications: "Set the private preferences attached to the account."
+    /// - Note: According to the AT Protocol specifications: "Set the private preferences
+    /// attached to the account."
     ///
     /// - SeeAlso: This is based on the [`app.bsky.actor.putPreferences`][github] lexicon.
     ///

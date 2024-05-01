@@ -10,7 +10,8 @@ import Foundation
 extension ATProtoKit {
     /// Retrieves an array of users who have reposted a given post.
     /// 
-    /// - Note: According to the AT Protocol specifications: "Get a list of reposts for a given post."
+    /// - Note: According to the AT Protocol specifications: "Get a list of reposts for a
+    /// given post."
     ///
     /// - SeeAlso: This is based on the [`app.bsky.feed.getRepostedBy`][github] lexicon.
     ///
@@ -20,8 +21,10 @@ extension ATProtoKit {
     ///   - postURI: The URI of the post record.
     ///   - postCID: The CID hasg of the post record. Optional.
     ///   - limit: The number of items that can be in the list. Optional. Defaults to `50`.
-    ///   - cursor: The mark used to indicate the starting point for the next set of result. Optional.
-    /// - Returns: A `Result`, containing either a ``FeedGetRepostedBy`` if successful, or an `Error` if not.
+    ///   - cursor: The mark used to indicate the starting point for the next set of
+    ///   result. Optional.
+    /// - Returns: A `Result`, containing either a ``FeedGetRepostedBy``
+    /// if successful, or an `Error` if not.
     public func getRepostedBy(_ postURI: String, postCID: String? = nil, limit: Int? = 50,
                               cursor: String? = nil) async throws -> Result<FeedGetRepostedBy, Error> {
         guard session != nil,

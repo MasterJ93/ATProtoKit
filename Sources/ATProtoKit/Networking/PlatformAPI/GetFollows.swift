@@ -10,17 +10,21 @@ import Foundation
 extension ATProtoKit {
     /// Gets all of the accounts the user account follows.
     /// 
-    /// - Note: According to the AT Protocol specifications: "Enumerates accounts which a specified account (actor) follows."
+    /// - Note: According to the AT Protocol specifications: "Enumerates accounts which a
+    /// specified account (actor) follows."
     ///
     /// - SeeAlso: This is based on the [`app.bsky.graph.getFollows`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/graph/getFollows.json
     ///
     /// - Parameters:
-    ///   - actorDID: The decentralized identifier (DID) or handle of the user account to search the user accounts they follow.
+    ///   - actorDID: The decentralized identifier (DID) or handle of the user account to
+    ///   search the user accounts they follow.
     ///   - limit: The number of items the list will hold. Optional. Defaults to `50`.
-    ///   - cursor: The mark used to indicate the starting point for the next set of result. Optional.
-    /// - Returns: A `Result`, containing either a ``GraphFollowsOutput`` if successful, or an `Error` if not.
+    ///   - cursor: The mark used to indicate the starting point for the next set of
+    ///   result. Optional.
+    /// - Returns: A `Result`, containing either a ``GraphFollowsOutput``
+    /// if successful, or an `Error` if not.
     public func getFollows(from actorDID: String, limit: Int? = 50, cursor: String? = nil) async throws -> Result<GraphFollowsOutput, Error> {
         guard session != nil,
               let accessToken = session?.accessToken else {

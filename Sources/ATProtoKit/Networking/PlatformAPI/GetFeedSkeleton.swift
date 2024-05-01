@@ -10,10 +10,12 @@ import Foundation
 extension ATProtoKit {
     /// Retrieves a skeleton for a feed generator.
     /// 
-    /// - Important: This method will only work with a PDS that's not owned by Bluesky (example: `https://bsky.social`).
+    /// - Important: This method will only work with a PDS that's not owned by Bluesky
+    /// (example: `https://bsky.social`).
     ///
-    /// - Note: According to the AT Protocol specifications: "Get a skeleton of a feed provided by a feed generator. Auth is optional, depending on provider requirements, and provides the DID of the requester.
-    /// Implemented by Feed Generator Service."
+    /// - Note: According to the AT Protocol specifications: "Get a skeleton of a feed provided
+    /// by a feed generator. Auth is optional, depending on provider requirements, and provides
+    /// the DID of the requester. Implemented by Feed Generator Service."
     ///
     /// - SeeAlso: This is based on the [`app.bsky.feed.getFeedSkeleton`][github] lexicon.
     ///
@@ -22,10 +24,12 @@ extension ATProtoKit {
     /// - Parameters:
     ///   - feedURI: The URI of the feed generator.
     ///   - limit: The number of items that can be in the list. Optional. Defaults to `50`.
-    ///   - cursor: The mark used to indicate the starting point for the next set of result. Optional.
+    ///   - cursor: The mark used to indicate the starting point for the next set of
+    ///   result. Optional.
     ///   - accessToken: The token used to authenticate the user. Optional.
     ///   - pdsURL: The URL of the Personal Data Server (PDS).
-    /// - Returns: A `Result`, containing either a ``FeedGetFeedSkeletonOutput`` if successful, or an `Error` if not.
+    /// - Returns: A `Result`, containing either a ``FeedGetFeedSkeletonOutput``
+    /// if successful, or an `Error` if not.
     public static func getFeedSkeleton(_ feedURI: String, limit: Int? = 50, cursor: String? = nil,
                                        pdsURL: String) async throws -> Result <FeedGetFeedSkeletonOutput, Error> {
         guard let requestURL = URL(string: "\(pdsURL)/xrpc/app.bsky.feed.getFeedSkeleton") else {

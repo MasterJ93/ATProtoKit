@@ -10,7 +10,8 @@ import Foundation
 extension ATProtoKit {
     /// Views a given feed generator.
     /// 
-    /// - Note: According to the AT Protocol specifications: "Get a hydrated feed from an actor's selected feed generator. Implemented by App View."
+    /// - Note: According to the AT Protocol specifications: "Get a hydrated feed from an actor's
+    /// selected feed generator. Implemented by App View."
     ///
     /// - SeeAlso: This is based on the [`app.bsky.feed.getFeed`][github] lexicon.
     ///
@@ -19,8 +20,10 @@ extension ATProtoKit {
     /// - Parameters:
     ///   - feedURI: The URI of the feed generator.
     ///   - limit: The number of items the list will hold. Optional. Defaults to `50`.
-    ///   - cursor: The mark used to indicate the starting point for the next set of result. Optional.
-    /// - Returns: A `Result`, containing either a ``FeedGetFeedOutput`` if successful, or an `Error` if not.
+    ///   - cursor: The mark used to indicate the starting point for the next set of
+    ///   result. Optional.
+    /// - Returns: A `Result`, containing either a ``FeedGetFeedOutput``
+    /// if successful, or an `Error` if not.
     public func getFeed(_ feedURI: String, limit: Int? = 50, cursor: String? = nil) async throws -> Result<FeedGetFeedOutput, Error> {
         guard session != nil,
               let accessToken = session?.accessToken else {

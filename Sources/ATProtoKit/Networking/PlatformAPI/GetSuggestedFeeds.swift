@@ -10,7 +10,8 @@ import Foundation
 extension ATProtoKit {
     /// Gets a list of feed generators suggested for the user account.
     /// 
-    /// - Note: According to the AT Protocol specifications: "Get a list of suggested feeds (feed generators) for the requesting account."
+    /// - Note: According to the AT Protocol specifications: "Get a list of suggested feeds
+    /// (feed generators) for the requesting account."
     ///
     /// - SeeAlso: This is based on the [`app.bsky.feed.getSuggestedFeeds`][github] lexicon.
     ///
@@ -18,8 +19,10 @@ extension ATProtoKit {
     ///
     /// - Parameters:
     ///   - limit: The number of items the list will hold. Optional. Defaults to `50`.
-    ///   - cursor: The mark used to indicate the starting point for the next set of result. Optional.
-    /// - Returns: A `Result`, containing either a ``FeedGetSuggestedFeedsOutput`` if successful, or an `Error` if not.
+    ///   - cursor: The mark used to indicate the starting point for the next set of
+    ///   result. Optional.
+    /// - Returns: A `Result`, containing either a ``FeedGetSuggestedFeedsOutput``
+    /// if successful, or an `Error` if not.
     public func getSuggestedFeeds(limit: Int? = 50, cursor: String? = nil) async throws -> Result<FeedGetSuggestedFeedsOutput, Error> {
         guard session != nil,
               let accessToken = session?.accessToken else {

@@ -13,8 +13,10 @@ extension ATProtoKit {
     /// - Parameters:
     ///   - strongReference: The URI of the record, which contains the `recordURI` and `cidHash`.
     ///   - createdAt: The date and time the like record was created. Defaults to `Date.now`.
-    ///   - shouldValidate: Indicates whether the record should be validated. Optional. Defaults to `true`.
-    /// - Returns: A `Result`, containing either a ``StrongReference`` if it's successful, or an `Error` if it's not.
+    ///   - shouldValidate: Indicates whether the record should be validated. Optional.
+    ///   Defaults to `true`.
+    /// - Returns: A `Result`, containing either a ``StrongReference``
+    /// if it's successful, or an `Error` if it's not.
     public func createLikeRecord(_ strongReference: StrongReference, createdAt: Date = Date.now,
                                  shouldValidate: Bool? = true) async throws -> Result<StrongReference, Error> {
 //        guard let sessionURL = session.pdsURL,

@@ -11,15 +11,18 @@ extension ATProtoKit {
     /// Creates a post record to the user's account.
     /// 
     /// - Parameters:
-    ///   - text: The text that's directly displayed in the post record. Current limit is 300 characters.
+    ///   - text: The text that's directly displayed in the post record. Current limit is
+    ///   300 characters.
     ///   - locales: The languages the text is written in. Current limit is 3 languages.
     ///   - replyTo: The post record that this record is replying to.
-    ///   - embed: The embed container attached to the post record. Current items include images, external links, other posts, lists, and post records with media.
+    ///   - embed: The embed container attached to the post record. Current items include
+    ///   images, external links, other posts, lists, and post records with media.
     ///   - labels: An array of labels made by the user.
     ///   - tags: An array of tags for the post record.
     ///   - creationDate: The date of the post record. Defaults to `Date.now`.
     ///   - recordKey: The record key of the collection. Optional.
-    ///   - shouldValidate: Indicates whether the record should be validated. Optional. Defaults to `true`.
+    ///   - shouldValidate: Indicates whether the record should be validated. Optional.
+    ///   Defaults to `true`.
     ///   - swapCommit: Swaps out an operation based on the CID. Optional.
     /// - Returns: A strong reference, which contains the newly-created record's URI and CID hash.
     public func createPostRecord(text: String, locales: [Locale] = [], replyTo: String? = nil, embed: EmbedIdentifier? = nil,
@@ -93,7 +96,8 @@ extension ATProtoKit {
     ///   - images: The ``ImageQuery`` that contains the image data. Current limit is 4 images.
     ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `nil`.
     ///   - accessToken: The access token used to authenticate to the user.
-    /// - Returns: An ``EmbedUnion``, which contains an array of ``EmbedImage``s for use in a record.
+    /// - Returns: An ``EmbedUnion``, which contains an array of ``EmbedImage``s for
+    /// use in a record.
     ///
     /// - Important: Each image can only be 1 MB in size.
     public func uploadImages(_ images: [ImageQuery], pdsURL: String = "https://bsky.social", accessToken: String) async throws -> EmbedUnion {
@@ -116,9 +120,11 @@ extension ATProtoKit {
         return .images(EmbedImages(images: embedImages))
     }
     
-    /// Scraps the website for the required information in order to attach to a record's embed at a later request.
+    /// Scraps the website for the required information in order to attach to a record's embed at a
+    /// later request.
     /// - Parameter url: The URL of the website
-    /// - Returns: An ``EmbedUnion`` which contains an ``EmbedExternal`` for use in a record.
+    /// - Returns: An ``EmbedUnion`` which contains an ``EmbedExternal`` for use
+    /// in a record.
     public func buildExternalEmbed(from url: URL) async throws -> EmbedUnion? {
 
         // Temporary comment until it's time to work on this part of the library.
@@ -128,8 +134,10 @@ extension ATProtoKit {
     }
 
     /// Grabs and validates a post record to attach to a record's embed at a later request.
-    /// - Parameter strongReference: An object that contains the record's `recordURI` (URI) and the `cidHash` (CID) .
-    /// - Returns: A strong reference, which contains a record's `recordURI` (URI) and the `cidHash` (CID) .
+    /// - Parameter strongReference: An object that contains the record's `recordURI` (URI) and
+    /// the `cidHash` (CID) .
+    /// - Returns: A strong reference, which contains a record's `recordURI` (URI) and the
+    /// `cidHash` (CID) .
     public func addQuotePostToEmbed(_ strongReference: StrongReference) async throws -> EmbedUnion {
         let record = try await ATProtoTools().fetchRecordForURI(strongReference.recordURI)
         let reference = StrongReference(recordURI: record.recordURI, cidHash: record.recordCID)
@@ -151,19 +159,23 @@ extension ATProtoKit {
     
     /// Represents the different types of content that can be embedded in a post record.
     ///
-    /// `EmbedIdentifier` provides a unified interface for specifying embeddable content, simplifying the process of attaching
-    /// images, external links, other post records, or media to a post. By abstracting the details of each embed type, it allows methods
-    /// like ``createPostRecord(text:locales:replyTo:embed:labels:tags:creationDate:recordKey:shouldValidate:swapCommit:)``
-    /// to handle the necessary operations (e.g., uploading, grabbing metadata, validation, etc.) behind the scenes, streamlining the embedding process.
+    /// `EmbedIdentifier` provides a unified interface for specifying embeddable content,
+    /// simplifying the process of attaching images, external links, other post records, or media
+    /// to a post. By abstracting the details of each embed type, it allows methods like
+    /// ``createPostRecord(text:locales:replyTo:embed:labels:tags:creationDate:recordKey:shouldValidate:swapCommit:)``
+    /// to handle the necessary operations (e.g., uploading, grabbing metadata, validation, etc.)
+    /// behind the scenes, streamlining the embedding process.
     public enum EmbedIdentifier {
         /// Represents a set of images to be embedded in the post.
-        /// - Parameter images: An array of `ImageQuery` objects, each containing the image data, metadata, and filenames of the image.
+        /// - Parameter images: An array of `ImageQuery` objects, each containing the image data,
+        /// metadata, and filenames of the image.
         case images(images: [ImageQuery])
         /// Represents an external link to be embedded in the post.
         /// - Parameter url: A `URL` pointing to the external content.
         case external(url: URL)
         /// Represents another post record that is to be embedded within the current post.
-        /// - Parameter strongReference: A `StrongReference` to the post record to be embedded, which contains a record's `recordURI` (URI) and the `cidHash` (CID) .
+        /// - Parameter strongReference: A `StrongReference` to the post record to be embedded,
+        /// which contains a record's `recordURI` (URI) and the `cidHash` (CID) .
         case record(strongReference: StrongReference)
         /// Represents a post record accompanied by media, to be embedded within the current post.
         /// - Parameters:

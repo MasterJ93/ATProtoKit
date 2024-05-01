@@ -10,13 +10,15 @@ import Foundation
 extension ATProtoKit {
     /// Unmutes a user account.
     /// 
-    /// - Note: According to the AT Protocol specifications: "Unmutes the specified account. Requires auth."
+    /// - Note: According to the AT Protocol specifications: "Unmutes the specified account.
+    /// Requires auth."
     ///
     /// - SeeAlso: This is based on the [`app.bsky.graph.unmuteActor`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/graph/unmuteActor.json
     ///
-    /// - Parameter actorDID: The decentralized identifier (DID) or handle of a user account.
+    /// - Parameter actorDID: The decentralized identifier (DID) or handle of a
+    /// user account.
     public func unmuteActor(_ actorDID: String) async throws {
         guard session != nil,
               let accessToken = session?.accessToken else {

@@ -10,10 +10,11 @@ import Foundation
 extension ATProtoKit {
     /// Retrieves the skeleton results of posts.
     /// 
-    /// - Important: This is an unspecced method, and as such, this is highly volatile and may change or be removed at any time. Use at your
-    /// own risk.
+    /// - Important: This is an unspecced method, and as such, this is highly volatile and may
+    /// change or be removed at any time. Use at your own risk.
     ///
-    /// - Note: According to the AT Protocol specifications: "Backend Posts search, returns only skeleton."
+    /// - Note: According to the AT Protocol specifications: "Backend Posts search, returns
+    /// only skeleton."
     ///
     /// - SeeAlso: This is based on the [`app.bsky.unspecced.searchPostsSkeleton`][github] lexicon.
     ///
@@ -22,17 +23,26 @@ extension ATProtoKit {
     /// - Parameters:
     ///   - searchQuery: The string used for searching the users.
     ///   - sortRanking: The ranking order for the results. Optional. Defaults to `.latest`.
-    ///   - sinceDate: The date and time of the results of posts created after this time. Optional.
-    ///   - untilDate: The date and time of the results of posts created before this time. Optional.
-    ///   - mentionIdentifier: The AT Identifier to filter posts that contains a given user. Optional.
-    ///   - author: Filters posts that were created by the author the AT Identifier resolves to. Optional.
+    ///   - sinceDate: The date and time of the results of posts created after this
+    ///   time. Optional.
+    ///   - untilDate: The date and time of the results of posts created before this
+    ///   time. Optional.
+    ///   - mentionIdentifier: The AT Identifier to filter posts that contains a given
+    ///   user. Optional.
+    ///   - author: Filters posts that were created by the author the AT Identifier
+    ///   resolves to. Optional.
     ///   - language: Filters posts that have a specific language. Optional.
-    ///   - domain: Filters result to posts containing the facet and embed links that point to a specific domain. Optional.
-    ///   - url: Filters result to posts containing facet and embed links that point to this URL. Optional.
+    ///   - domain: Filters result to posts containing the facet and embed links that point to
+    ///   a specific domain. Optional.
+    ///   - url: Filters result to posts containing facet and embed links that point to this
+    ///   URL. Optional.
     ///   - tags: An array of tags to be used against the results. Optional.
-    ///   - limit: The number of items that can be in the list. Optional. Defaults to `25`.
-    ///   - cursor: The mark used to indicate the starting point for the next set of result. Optional.
-    /// - Returns: A `Result`, containing either an ``UnspeccedSearchPostsSkeletonOutput`` if successful, or an `Error` if not.
+    ///   - limit: The number of items that can be in the list. Optional. Defaults
+    ///   to `25`.
+    ///   - cursor: The mark used to indicate the starting point for the next set of
+    ///   result. Optional.
+    /// - Returns: A `Result`, containing either an ``UnspeccedSearchPostsSkeletonOutput``
+    /// if successful, or an `Error` if not.
     public func searchPostsSkeleton(with searchQuery: String, sortRanking: UnspeccedSearchPostsSortRanking? = .latest, sinceDate: Date?, untilDate: Date?,
                                     mentionIdentifier: String? = nil, author: String? = nil, language: Locale?, domain: String?, url: String?,
                                     tags: [String]?, limit: Int? = 25, cursor: String? = nil,

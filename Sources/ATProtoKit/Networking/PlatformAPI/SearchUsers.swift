@@ -10,11 +10,16 @@ import Foundation
 extension ATProtoKit {
     /// Looks for user profiles (actors) matching the search term.
     /// 
-    /// This will search for the display names, descriptions, and handles within the user profiles. However, this API call can only return results of a matching handle. If you want search suggestion
-    ///  (where it returns results based on a partial term instead of the exact term), a different method is needed.
+    /// This will search for the display names, descriptions, and handles within the user profiles.
+    /// However, this API call can only return results of a matching handle. If you want search
+    /// suggestion (where it returns results based on a partial term instead of the exact term),
+    /// a different method is needed.
     ///
-    /// - Bug: According to the AT Protocol specifications, this API call does not require authentication. However, there's an issue where it asks for authentication if there's no `accessToken`.
-    /// It's unknown whether this is an issue on the AT Protocol's end or `AKProtoKit`'s end. For now, use the `shouldAuthenticate` parameter when using this method.
+    /// - Bug: According to the AT Protocol specifications, this API call does not require
+    /// authentication. However, there's an issue where it asks for authentication if there's
+    /// no `accessToken`. It's unknown whether this is an issue on the AT Protocol's end or
+    /// `AKProtoKit`'s end. For now, use the `shouldAuthenticate` parameter when
+    /// using this method.
     ///
     /// - Note: According to the AT Protocol specifications: "Find actors (profiles) matching search criteria. Does not require auth."
     ///
@@ -24,12 +29,16 @@ extension ATProtoKit {
     ///
     /// - Parameters:
     ///   - query: The string used against a list of actors.
-    ///   - limit: The number of suggested users to follow. Optional. Defaults to 25. Can only choose between 1 and 100.
-    ///   - cursor: The mark used to indicate the starting point for the next set of results. Optional.
+    ///   - limit: The number of suggested users to follow. Optional. Defaults to `25`.
+    ///   Can only choose between 1 and 100.
+    ///   - cursor: The mark used to indicate the starting point for the next set of
+    ///   results. Optional.
     ///   - accessToken: The access token
     ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `nil`.
-    ///   - shouldAuthenticate: Indicates whether the method will use the access token when sending the request. Defaults to `false`.
-    /// - Returns: A `Result`, containing either ``ActorSearchActorsOutput`` if successful, and an `Error` if not.
+    ///   - shouldAuthenticate: Indicates whether the method will use the access token
+    ///   when sending the request. Defaults to `false`.
+    /// - Returns: A `Result`, containing either ``ActorSearchActorsOutput``
+    /// if successful, and an `Error` if not.
     public func searchUsers(by query: String, limit: Int? = 25, cursor: String? = nil,
                             pdsURL: String? = nil,
                             shouldAuthenticate: Bool = false) async throws -> Result<ActorSearchActorsOutput, Error> {

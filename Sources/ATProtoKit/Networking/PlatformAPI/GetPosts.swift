@@ -10,18 +10,22 @@ import Foundation
 extension ATProtoKit {
     /// Retrieves an array of posts.
     ///
-    /// When `getPosts` is called, it will return a detailed view of each post, which is sometimes called "hydration."
+    /// When `getPosts` is called, it will return a detailed view of each post, which is sometimes
+    /// called "hydration."
     ///
-    /// - Note: Current maximum length for `postURIs` is 25 items. This library will cap the `Array` at that size if it does go above the limit.
+    /// - Note: Current maximum length for `postURIs` is 25 items. This library will cap the
+    /// `Array` at that size if it does go above the limit.
     ///
-    /// - Note: According to the AT Protocol specifications: "Gets post views for a specified list of posts (by AT-URI). This is sometimes referred to as 'hydrating' a 'feed skeleton'."
+    /// - Note: According to the AT Protocol specifications: "Gets post views for a specified list
+    /// of posts (by AT-URI). This is sometimes referred to as 'hydrating' a 'feed skeleton'."
     ///
     /// - SeeAlso: This is based on the [`app.bsky.feed.getPosts`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/feed/getPosts.json
     ///
     /// - Parameter postURIs: An array of URIs of post records.
-    /// - Returns: A `Result`, containing either a ``FeedGetPostsOutput`` if successful, or an `Error` if not.
+    /// - Returns: A `Result`, containing either a ``FeedGetPostsOutput``
+    /// if successful, or an `Error` if not.
     public func getPosts(_ postURIs: [String]) async throws -> Result<FeedGetPostsOutput, Error> {
         guard session != nil,
               let accessToken = session?.accessToken else {

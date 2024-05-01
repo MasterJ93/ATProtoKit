@@ -10,7 +10,8 @@ import Foundation
 extension ATProtoKit {
     /// Retrieves the public relationship between the two user accounts.
     /// 
-    /// - Note: According to the AT Protocol specifications: "Enumerates public relationships between one account, and a list of other accounts. Does not require auth."
+    /// - Note: According to the AT Protocol specifications: "Enumerates public relationships
+    /// between one account, and a list of other accounts. Does not require auth."
     ///
     /// - SeeAlso: This is based on the [`app.bsky.graph.getRelationships`][github] lexicon.
     ///
@@ -18,8 +19,11 @@ extension ATProtoKit {
     ///
     /// - Parameters:
     ///   - actorDID: The decentralized identifier (DID) of the primaty user account.
-    ///   - otherDIDs: An array of decentralized identifiers (DIDs) for the other user accounts that the primary user account may be related to. Optional. Current maximum item length is `30`.
-    /// - Returns: A `Result`, containing either a ``GraphGetRelationships`` if successful, or an `Error` if not.
+    ///   - otherDIDs: An array of decentralized identifiers (DIDs) for the other user accounts
+    ///   that the primary user account may be related to. Optional. Current maximum item length
+    ///   is `30`.
+    /// - Returns: A `Result`, containing either a ``GraphGetRelationships``
+    /// if successful, or an `Error` if not.
     public func getRelationships(between actorDID: String, and otherDIDs: [String]? = nil, maxLength: Int? = 50,
                                         pdsURL: String? = nil) async throws -> Result<GraphGetRelationships, Error> {
         guard let sessionURL = pdsURL != nil ? pdsURL : session?.pdsURL,

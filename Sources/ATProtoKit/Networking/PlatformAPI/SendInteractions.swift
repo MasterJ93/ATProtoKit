@@ -10,17 +10,19 @@ import Foundation
 extension ATProtoKit {
     /// Sends interactions to a feed generator.
     /// 
-    /// - Warning: This is a work in progress. This method may not work as expected. Please use this at your own risk.
-    /// 
-    /// - Note: According to the AT Protocol specifications: "end information about interactions with feed items back to the feed generator
-    /// that served them."
-    /// 
+    /// - Warning: This is a work in progress. This method may not work as expected.
+    /// Please use this at your own risk.
+    ///
+    /// - Note: According to the AT Protocol specifications: "end information about interactions
+    /// with feed items back to the feed generator that served them."
+    ///
     /// - SeeAlso: This is based on the [`app.bsky.feed.sendInteractions`][github] lexicon.
     /// 
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/feed/sendInteractions.json
     ///
     /// - Parameter interactions: An array of interactions.
-    /// - Returns: A `Result`, containing either a ``FeedSendInteractionsOutput`` if sucessful, or an `Error` if not.
+    /// - Returns: A `Result`, containing either a ``FeedSendInteractionsOutput``
+    /// if sucessful, or an `Error` if not.
     public func sendInteractions(_ interactions: [FeedInteraction]) async throws -> Result<FeedSendInteractionsOutput, Error>{
         guard session != nil,
               let accessToken = session?.accessToken else {

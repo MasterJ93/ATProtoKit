@@ -10,8 +10,9 @@ import Foundation
 extension ATProtoKit {
     /// Registers the user to receive push notifications from the server to the client.
     /// 
-    /// - Note: According to the AT Protocol specifications: "Register to receive push notifications, via a specified service, for the requesting account. Requires auth."
-    /// 
+    /// - Note: According to the AT Protocol specifications: "Register to receive push notifications,
+    /// via a specified service, for the requesting account. Requires auth."
+    ///
     /// - SeeAlso: This is based on the [`app.bsky.notification.registerPush`][github] lexicon.
     /// 
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/notification/registerPush.json

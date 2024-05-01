@@ -10,7 +10,8 @@ import Foundation
 extension ATProtoKit {
     /// Gets information about various labeler services.
     /// 
-    /// - Note: According to the AT Protocol specifications: "Get information about a list of labeler services."
+    /// - Note: According to the AT Protocol specifications: "Get information about a list of
+    /// labeler services."
     ///
     /// - SeeAlso: This is based on the [`app.bsky.labeler.getServices`][github] lexicon.
     ///
@@ -20,7 +21,8 @@ extension ATProtoKit {
     ///   - labelerDIDs: An array of decentralized identifiers (DIDs) of labeler services.
     ///   - isDetailed: Indicates whether the information is detailed. Optional.
     ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `nil`.
-    /// - Returns: A `Result`, containing either a ``LabelerGetServicesOutput`` if successful, or an `Error` if not.
+    /// - Returns: A `Result`, containing either a ``LabelerGetServicesOutput``
+    /// if successful, or an `Error` if not.
     public func getLabelerServices(labelerDIDs: [String], isDetailed: Bool? = nil,
                                           pdsURL: String? = nil) async throws -> Result<LabelerGetServicesOutput, Error> {
         guard let sessionURL = pdsURL != nil ? pdsURL : session?.pdsURL,

@@ -10,7 +10,8 @@ import Foundation
 extension ATProtoKit {
     /// Retireves recent posts and reposts from a given feed.
     /// 
-    /// - Note: According to the AT Protocol specifications: "Get a feed of recent posts from a list (posts and reposts from any actors on the list). Does not require auth."
+    /// - Note: According to the AT Protocol specifications: "Get a feed of recent posts from a
+    /// list (posts and reposts from any actors on the list). Does not require auth."
     ///
     /// - SeeAlso: This is based on the [`app.bsky.feed.getListFeed`][github] lexicon.
     ///
@@ -18,11 +19,13 @@ extension ATProtoKit {
     ///
     /// - Parameters:
     ///   - listURI: The URI of the feed.
-    ///   - limit: limit: The number of suggested users to follow. Optional. Defaults to `50`. Can only choose between `1` and `100`.
+    ///   - limit: limit: The number of suggested users to follow. Optional. Defaults to `50`.
+    ///   Can only choose between `1` and `100`.
     ///   - cursor: The mark used to indicate the starting point for the next set of results. Optional.
     ///   - accessToken: The access token of the user. Optional.
     ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `nil`.
-    /// - Returns: A `Result`, containing either an ``FeedGetListFeedOutput`` if succesful, or an `Error` if it's not.
+    /// - Returns: A `Result`, containing either an ``FeedGetListFeedOutput``
+    /// if succesful, or an `Error` if it's not.
     public func getListFeed(from listURI: String, limit: Int? = 50, cursor: String? = nil,
                                    accessToken: String? = nil,
                                    pdsURL: String? = nil) async throws -> Result<FeedGetListFeedOutput, Error> {

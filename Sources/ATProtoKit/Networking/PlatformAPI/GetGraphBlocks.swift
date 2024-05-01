@@ -10,7 +10,8 @@ import Foundation
 extension ATProtoKit {
     /// Gets all of the block records from the user account.
     /// 
-    /// - Note: According to the AT Protocol specifications: "Enumerates which accounts the requesting account is currently blocking. Requires auth."
+    /// - Note: According to the AT Protocol specifications: "Enumerates which accounts the
+    /// requesting account is currently blocking. Requires auth."
     ///
     /// - SeeAlso: This is based on the [`app.bsky.graph.getBlocks`][github] lexicon.
     ///
@@ -18,8 +19,10 @@ extension ATProtoKit {
     ///
     /// - Parameters:
     ///   - limit: The number of items the list will hold. Optional. Defaults to `50`.
-    ///   - cursor: The mark used to indicate the starting point for the next set of result. Optional.
-    /// - Returns: A `Result`, containing either a ``GraphGetBlocksOutput`` if successful, or an `Error` if not.
+    ///   - cursor: The mark used to indicate the starting point for the next set of
+    ///   result. Optional.
+    /// - Returns: A `Result`, containing either a ``GraphGetBlocksOutput``
+    /// if successful, or an `Error` if not.
     public func getGraphBlocks(limit: Int? = 50, cursor: String? = nil) async throws -> Result<GraphGetBlocksOutput, Error> {
         guard session != nil,
               let accessToken = session?.accessToken else {

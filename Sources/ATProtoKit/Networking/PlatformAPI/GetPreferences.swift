@@ -10,14 +10,15 @@ import Foundation
 extension ATProtoKit {
     /// Receive the preferences of a given user.
     /// 
-    /// - Note: According to the AT Protocol specifications: "Get private preferences attached to the current account. Expected use is synchronization between multiple devices, and import/export during
-    /// account migration. Requires auth."
+    /// - Note: According to the AT Protocol specifications: "Get private preferences attached
+    /// to the current account. Expected use is synchronization between multiple devices, and
+    /// import/export during account migration. Requires auth."
     ///
     /// - SeeAlso: This is based on the [`app.bsky.actor.getPreferences`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/actor/getPreferences.json
     ///
-    /// - Returns: A `Result`, containing either `ActorPreferences` if successful, or `Error` if not.
+    /// - Returns: A `Result`, containing either ``ActorPreferences`` if successful, or `Error` if not.
     public func getPreferences() async throws -> Result<ActorPreferences, Error> {
         guard session != nil,
               let accessToken = session?.accessToken else {
