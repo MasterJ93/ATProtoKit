@@ -195,6 +195,11 @@ public struct FeedReplyReference: Codable {
     /// - Note: If `parent` and `root` are identical, the post is a direct reply to the original
     /// post of the thread.
     public let parent: PostUnion
+    /// The author of the parent's post.
+    ///
+    /// - Note: According to the AT Protocol specifications: "When parent is a reply to another
+    /// post, this is the author of that post."
+    public let grandparentAuthor: ActorProfileViewBasic
 }
 
 /// A data model for a definition for a very stripped down version of a repost.
