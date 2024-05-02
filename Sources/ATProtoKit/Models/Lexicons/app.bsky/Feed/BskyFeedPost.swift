@@ -108,8 +108,9 @@ public struct FeedPost: ATRecordProtocol {
         // Truncate `tags` to 640 characters before encoding
         // `maxGraphemes`'s limit is 64, but `String.count` should respect that limit implictly
         // Then, truncate `tags` to 8 items before encoding
-        let truncatedTags = self.tags.map { $0.truncated(toLength: 640) }
-        try truncatedEncodeIfPresent(truncatedTags, withContainer: &container, forKey: .tags, upToLength: 8)
+        try truncatedEncodeIfPresent(
+            self.tags.map { $0.truncated(toLength: 640) },
+            withContainer: &container, forKey: .tags, upToLength: 8)
 
         try container.encode(self._createdAt, forKey: .createdAt)
     }

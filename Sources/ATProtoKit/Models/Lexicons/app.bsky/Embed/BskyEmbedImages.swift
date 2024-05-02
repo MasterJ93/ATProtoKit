@@ -98,13 +98,9 @@ public struct EmbedImagesView: Codable {
     /// The identifier of the lexicon.
     ///
     /// - Warning: The value must not change.
-    public private(set) var type: String = "app.bsky.embed.images#view"
+//    public let type: String = "app.bsky.embed.images#view"
     /// An array of images to be viewed.
     public let images: [ViewImage]
-
-    public init(images: [ViewImage]) {
-        self.images = images
-    }
 }
 
 /// A data model for a definition related to viewing an image.

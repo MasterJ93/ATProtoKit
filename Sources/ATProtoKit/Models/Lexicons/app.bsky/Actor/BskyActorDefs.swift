@@ -618,8 +618,9 @@ public struct InterestViewPreferences: Codable {
         // Truncate `tags` to 640 characters before encoding.
         // `maxGraphemes`'s limit is 64, but `String.count` should respect that limit implictly.
         // Then, truncate `tags` to 100 items before encoding.
-        let truncatedTags = self.tags.map { $0.truncated(toLength: 640) }
-        try truncatedEncode(truncatedTags, withContainer: &container, forKey: .tags, upToLength: 100)
+        try truncatedEncode(
+            self.tags.map { $0.truncated(toLength: 640) },
+            withContainer: &container, forKey: .tags, upToLength: 100)
     }
 
     enum CodingKeys: String, CodingKey {
