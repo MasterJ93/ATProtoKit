@@ -94,7 +94,7 @@ public class ATProtocolConfiguration: ProtocolConfiguration {
         do {
             let request = APIClientService.createRequest(forRequest: requestURL,
                                                          andMethod: .post)
-            let response = try await APIClientService.sendRequest(request,
+            var response = try await APIClientService.sendRequest(request,
                                                                   withEncodingBody: credentials,
                                                                   decodeTo: UserSession.self)
             response.pdsURL = self.pdsURL
@@ -162,7 +162,7 @@ public class ATProtocolConfiguration: ProtocolConfiguration {
                                                          acceptValue: nil,
                                                          contentTypeValue: nil,
                                                          authorizationValue: nil)
-            let response = try await APIClientService.sendRequest(request,
+            var response = try await APIClientService.sendRequest(request,
                                                                   withEncodingBody: requestBody,
                                                                   decodeTo: UserSession.self)
             response.pdsURL = self.pdsURL
@@ -233,7 +233,7 @@ public class ATProtocolConfiguration: ProtocolConfiguration {
                                                          andMethod: .post,
                                                          authorizationValue: "Bearer \(refreshToken)")
 
-            let response = try await APIClientService.sendRequest(request, decodeTo: UserSession.self)
+            var response = try await APIClientService.sendRequest(request, decodeTo: UserSession.self)
             response.pdsURL = self.pdsURL
 
             return .success(response)

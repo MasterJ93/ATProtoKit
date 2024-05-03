@@ -13,7 +13,7 @@ import Foundation
 /// decentralized identifier (DID), authentication tokens, and optional user information such
 /// as email. It also references the user's DID document, which contains crucial
 /// AT Protocol-specific information.
-public class UserSession: SessionProtocol {
+public struct UserSession: SessionProtocol {
     /// The user's handle within the AT Protocol.
     public private(set) var handle: String
     /// The decentralized identifier (DID), serving as a persistent and long-term account
