@@ -186,8 +186,6 @@ public class ATProtoKit: ATProtoKitConfiguration {
         LoggingSystem.bootstrap { label in
             ATLogHandler(subsystem: label, category: logCategory ?? "ATProtoKit")
         }
-        #else
-        LoggingSystem.bootstrap(StreamLogHandler.standardOutput)
         #endif
 
         logger = Logger(label: logIdentifier ?? "com.cjrriley.ATProtoKit")
@@ -270,8 +268,6 @@ public class ATProtoAdmin: ATProtoKitConfiguration {
         LoggingSystem.bootstrap { label in
             ATLogHandler(subsystem: label, category: logCategory ?? "ATProtoKit")
         }
-        #else
-        LoggingSystem.bootstrap(StreamLogHandler.standardOutput)
         #endif
 
         logger = Logger(label: logIdentifier ?? "com.cjrriley.ATProtoKit")
