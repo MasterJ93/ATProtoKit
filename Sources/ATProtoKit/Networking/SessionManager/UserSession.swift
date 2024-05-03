@@ -34,6 +34,7 @@ public struct UserSession: SessionProtocol {
     public private(set) var didDocument: DIDDocument?
     
     /// The URL of the Personal Data Server (PDS) associated with the user. Optional.
+    ///
     /// - Note: This is not included when initalizing `UserSession`. Instead, it's added
     /// after the successful initalizing.
     public var pdsURL: String?
@@ -67,7 +68,7 @@ public struct UserSession: SessionProtocol {
 
 
 /// Represents a DID document in the AT Protocol, containing crucial information fo
-///  AT Protocol functionality.
+/// AT Protocol functionality.
 ///
 /// The DID document includes the decentralized identifier (DID), verification methods, and
 /// service endpoints necessary for interacting with the AT Protocol ecosystem, such as
