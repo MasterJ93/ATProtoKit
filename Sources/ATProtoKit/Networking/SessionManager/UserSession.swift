@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Logging
 
 /// Represents an authenticated user session within the AT Protocol.
 ///
@@ -38,10 +39,12 @@ public struct UserSession: SessionProtocol {
     /// - Note: This is not included when initalizing `UserSession`. Instead, it's added
     /// after the successful initalizing.
     public var pdsURL: String?
-    
+    /// Specifies the logger that will be used for emitting log messages.
+    public var logger: Logger?
+
     /// Initializes a new user session with the specified details.
     public init(handle: String, sessionDID: String, email: String? = nil, isEmailConfirmed: Bool? = nil, isEmailAuthenticationFactorEnabled: Bool?,
-                accessToken: String, refreshToken: String, didDocument: DIDDocument? = nil, pdsURL: String? = nil) {
+                accessToken: String, refreshToken: String, didDocument: DIDDocument? = nil, pdsURL: String? = nil, logger: Logger? = nil) {
         self.handle = handle
         self.sessionDID = sessionDID
         self.email = email
@@ -51,6 +54,7 @@ public struct UserSession: SessionProtocol {
         self.refreshToken = refreshToken
         self.didDocument = didDocument
         self.pdsURL = pdsURL
+        self.logger = logger
     }
 
     enum CodingKeys: String, CodingKey {

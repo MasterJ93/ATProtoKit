@@ -17,7 +17,7 @@ public class ATProtocolConfiguration: ProtocolConfiguration {
     /// The URL of the Personal Data Server (PDS).
     public private(set) var pdsURL: String
     /// Specifies the logger that will be used for emitting log messages.
-    public private(set) var logger: Logger
+    public private(set) var logger: Logger?
     /// Specifies the identifier for managing log outputs. Optional. Defaults to the
     /// project's `CFBundleIdentifier`.
     public let logIdentifier: String?
@@ -60,7 +60,7 @@ public class ATProtocolConfiguration: ProtocolConfiguration {
         #endif
 
         logger = Logger(label: logIdentifier ?? "com.cjrriley.ATProtoKit")
-        logger.logLevel = logLevel ?? .info
+        logger?.logLevel = logLevel ?? .info
     }
     
     /// Attempts to authenticate the user into the server.
@@ -98,6 +98,10 @@ public class ATProtocolConfiguration: ProtocolConfiguration {
                                                                   withEncodingBody: credentials,
                                                                   decodeTo: UserSession.self)
             response.pdsURL = self.pdsURL
+
+            if self.logger != nil {
+                response.logger = self.logger
+            }
 
             return .success(response)
         } catch {
@@ -167,6 +171,10 @@ public class ATProtocolConfiguration: ProtocolConfiguration {
                                                                   decodeTo: UserSession.self)
             response.pdsURL = self.pdsURL
 
+            if self.logger != nil {
+                response.logger = self.logger
+            }
+
             return .success(response)
         } catch {
             return .failure(error)
@@ -232,9 +240,13 @@ public class ATProtocolConfiguration: ProtocolConfiguration {
             let request = APIClientService.createRequest(forRequest: requestURL,
                                                          andMethod: .post,
                                                          authorizationValue: "Bearer \(refreshToken)")
-
-            var response = try await APIClientService.sendRequest(request, decodeTo: UserSession.self)
+            var response = try await APIClientService.sendRequest(request,
+                                                                  decodeTo: UserSession.self)
             response.pdsURL = self.pdsURL
+
+            if self.logger != nil {
+                response.logger = self.logger
+            }
 
             return .success(response)
         } catch {
