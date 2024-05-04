@@ -8,6 +8,7 @@
 import Foundation
 
 extension ATProtoKit {
+
     /// Gets a skeleton of suggested actors.
     /// 
     /// - Note: According to the AT Protocol specifications: "Get a skeleton of suggested actors.

@@ -8,6 +8,7 @@
 import Foundation
 
 extension ATProtoKit {
+
     /// Retrieving a feed list by a user.
     /// 
     /// - Note: According to the AT Protocol specifications: "Get a list of feeds (feed generator

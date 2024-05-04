@@ -8,6 +8,7 @@
 import Foundation
 
 extension ATProtoKit {
+
     /// Creates an App Password for the user's account.
     ///
     /// App Passowrds are highly recommended to be used in your application (as opposed to their

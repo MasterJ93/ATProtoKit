@@ -8,6 +8,7 @@
 import Foundation
 
 extension ATProtoKit {
+
     /// Retrieves a decentralized identifier (DID) based on a given handle from a specified
     /// Personal Data Server (PDS).
     ///

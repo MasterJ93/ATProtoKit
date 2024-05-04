@@ -8,6 +8,7 @@
 import Foundation
 
 extension ATProtoKit {
+
     /// Sends interactions to a feed generator.
     /// 
     /// - Warning: This is a work in progress. This method may not work as expected.

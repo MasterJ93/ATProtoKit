@@ -8,6 +8,7 @@
 import Foundation
 
 extension ATProtoKit {
+
     /// Gets the user account's timeline.
     /// 
     /// - Note: As of now, the `algorithm` value only supports a reverse-chonological order, and

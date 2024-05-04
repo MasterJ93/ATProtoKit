@@ -8,6 +8,7 @@
 import Foundation
 
 extension ATProtoKit {
+
     /// Writes a record in the repository, which may replace a previous record.
     /// 
     /// - Note: According to the AT Protocol specifications: "Write a repository record, creating

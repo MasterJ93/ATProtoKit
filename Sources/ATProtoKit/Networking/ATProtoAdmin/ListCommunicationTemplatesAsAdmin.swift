@@ -8,6 +8,7 @@
 import Foundation
 
 extension ATProtoAdmin {
+
     /// Retrieves a list of communication templates.
     /// 
     /// - Important: This is a moderator task and as such, regular users won't be able to

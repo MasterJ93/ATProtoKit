@@ -10,22 +10,29 @@ import Logging
 
 /// Manages authentication and session operations for the a user account in the ATProtocol.
 public class ATProtocolConfiguration: ProtocolConfiguration {
+
     /// The user's handle identifier in their account.
     public private(set) var handle: String
+
     /// The app password of the user's account.
     public private(set) var appPassword: String
+
     /// The URL of the Personal Data Server (PDS).
     public private(set) var pdsURL: String
+
     /// Specifies the logger that will be used for emitting log messages.
     public private(set) var logger: Logger?
+
     /// Specifies the identifier for managing log outputs. Optional. Defaults to the
     /// project's `CFBundleIdentifier`.
     public let logIdentifier: String?
+
     /// Specifies the category name the logs in the logger within ATProtoKit will be in. Optional.
     /// Defaults to `ATProtoKit`.
     ///
     /// - Note: This property is ignored if you're using `StreamLogHandler`.
     public let logCategory: String?
+
     /// Specifies the highest level of logs that will be outputted. Optional. Defaults to `.info`.
     public let logLevel: Logger.Level?
 

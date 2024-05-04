@@ -17,13 +17,16 @@ import Logging
 /// }
 /// ```
 public protocol ATProtoKitConfiguration {
+
     /// Represents an authenticated user session within the AT Protocol. Optional.
     var session: UserSession? { get }
+
     /// Specifies the logger that will be used for emitting log messages. Optional.
     ///
     /// - Note: Be sure to create an instance inside the `init()` method. This is important so
     /// all log events are spread across the entire class.
     var logger: Logger? { get }
+
     /// Prepares an authorization value for API requests based on `session` and `pdsURL`.
     ///
     /// This determines whether the "Authorization" header will be included in the request payload.
@@ -50,6 +53,7 @@ public protocol ATProtoKitConfiguration {
 }
 
 extension ATProtoKitConfiguration {
+
     /// Prepares an authorization value for API requests based on `session` and `pdsURL`.
     ///
     /// This determines whether the "Authorization" header will be included in the request payload.
@@ -112,14 +116,17 @@ extension ATProtoKitConfiguration {
 /// }
 /// ```
 public class ATProtoKit: ATProtoKitConfiguration {
+
     /// Represents an authenticated user session within the AT Protocol. Optional.
     public let session: UserSession?
+
     /// An array of record lexicon structs created by Bluesky.
     ///
     /// If `canUseBlueskyRecords` is set to `false`, these will not be used.
     private let recordLexicons: [ATRecordProtocol.Type] = [
         FeedGenerator.self, FeedLike.self, FeedPost.self, FeedRepost.self, FeedThreadgate.self, GraphBlock.self, GraphFollow.self, GraphList.self, 
         GraphListBlock.self, GraphListItem.self, LabelerService.self]
+
     /// Specifies the logger that will be used for emitting log messages.
     public private(set) var logger: Logger?
 
@@ -189,8 +196,10 @@ public class ATProtoKit: ATProtoKitConfiguration {
 /// }
 /// ```
 public class ATProtoAdmin: ATProtoKitConfiguration {
+
     /// Represents an authenticated user session within the AT Protocol. Optional.
     public let session: UserSession?
+
     /// Specifies the logger that will be used for emitting log messages.
     public private(set) var logger: Logger?
 
@@ -208,5 +217,3 @@ public class ATProtoAdmin: ATProtoKitConfiguration {
         self.logger = session?.logger ?? logger
     }
 }
-
-

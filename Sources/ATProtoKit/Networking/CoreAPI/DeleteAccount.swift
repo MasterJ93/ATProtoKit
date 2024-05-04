@@ -8,6 +8,7 @@
 import Foundation
 
 extension ATProtoKit {
+
     /// Deletes a user account from the server.
     /// 
     /// - Note: A request token is required before deleting the account.

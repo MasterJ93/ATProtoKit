@@ -8,6 +8,7 @@
 import Foundation
 
 extension ATProtoKit {
+
     /// Retrieves the required information of a Personal Data Server's (PDS) DID document
     /// for migration.
     ///

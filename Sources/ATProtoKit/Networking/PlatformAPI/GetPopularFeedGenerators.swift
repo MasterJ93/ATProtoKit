@@ -8,6 +8,7 @@
 import Foundation
 
 extension ATProtoKit {
+
     /// Retrieves an array of globally popular feed generators.
     /// 
     /// - Important: This is an unspecced method, and as such, this is highly volatile and may

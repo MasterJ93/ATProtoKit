@@ -8,6 +8,7 @@
 import Foundation
 
 extension ATProtoKit {
+
     /// Receive the preferences of a given user.
     /// 
     /// - Note: According to the AT Protocol specifications: "Get private preferences attached

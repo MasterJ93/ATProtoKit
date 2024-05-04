@@ -8,6 +8,7 @@
 import Foundation
 
 extension ATProtoAdmin {
+
     /// Gets details about a moderation event.
     /// 
     /// - Important: This is a moderator task and as such, regular users won't be able to access

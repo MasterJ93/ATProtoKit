@@ -8,6 +8,7 @@
 import Foundation
 
 extension ATProtoAdmin {
+
     /// Updates a subject status of an account, record, or blob.
     /// 
     /// - Important: This is an administrator task and as such, regular users won't be able to

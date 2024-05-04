@@ -20,6 +20,7 @@ import Foundation
 /// when version 1.0 is launched or `ATProtoTools` is stabilized, whichever comes first.
 /// Until then, if a method is better suited elsewhere, it will be immediately moved.
 class ATProtoTools {
+
     /// Resolves the reply references to prepare them for a later post record request.
     ///
     /// - Parameter parentURI: The URI of the post record the current one is directly replying to.

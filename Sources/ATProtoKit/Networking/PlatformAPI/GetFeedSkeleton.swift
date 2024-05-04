@@ -8,6 +8,7 @@
 import Foundation
 
 extension ATProtoKit {
+
     /// Retrieves a skeleton for a feed generator.
     /// 
     /// - Important: This method will only work with a PDS that's not owned by Bluesky

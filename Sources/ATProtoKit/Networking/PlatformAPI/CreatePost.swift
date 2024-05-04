@@ -8,6 +8,7 @@
 import Foundation
 
 extension ATProtoKit {
+
     /// Creates a post record to the user's account.
     /// 
     /// - Parameters:
@@ -146,12 +147,6 @@ extension ATProtoKit {
         return .record(embedRecord)
     }
 
-    struct FeedPostRequestBody: Encodable {
-        let repo: String
-        let collection: String = "app.bsky.feed.post"
-        let record: FeedPost
-    }
-
     enum UploadError: Error {
         case badServerResponse
         case cannotParseResponse
@@ -166,17 +161,21 @@ extension ATProtoKit {
     /// to handle the necessary operations (e.g., uploading, grabbing metadata, validation, etc.)
     /// behind the scenes, streamlining the embedding process.
     public enum EmbedIdentifier {
+
         /// Represents a set of images to be embedded in the post.
         /// - Parameter images: An array of `ImageQuery` objects, each containing the image data,
         /// metadata, and filenames of the image.
         case images(images: [ImageQuery])
+
         /// Represents an external link to be embedded in the post.
         /// - Parameter url: A `URL` pointing to the external content.
         case external(url: URL)
+
         /// Represents another post record that is to be embedded within the current post.
         /// - Parameter strongReference: A `StrongReference` to the post record to be embedded,
         /// which contains a record's `recordURI` (URI) and the `cidHash` (CID) .
         case record(strongReference: StrongReference)
+
         /// Represents a post record accompanied by media, to be embedded within the current post.
         /// - Parameters:
         ///   - record: An `EmbedRecord`, representing the post to be embedded.

@@ -8,6 +8,7 @@
 import Foundation
 
 extension ATProtoKit {
+
     /// Reserves a signing key for the respository.
     /// 
     /// - Note: According to the AT Protocol specifications: "Reserve a repo signing key, for use

@@ -8,6 +8,7 @@
 import Foundation
 
 extension ATProtoKit {
+
     /// Gets all of the block records from the user account.
     /// 
     /// - Note: According to the AT Protocol specifications: "Enumerates which accounts the

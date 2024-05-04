@@ -8,6 +8,7 @@
 import Foundation
 
 extension ATProtoAdmin {
+
     /// Sends an email to the user's email address as an administrator.
     /// 
     /// - Important: This is an administrator task and as such, regular users won't be able to

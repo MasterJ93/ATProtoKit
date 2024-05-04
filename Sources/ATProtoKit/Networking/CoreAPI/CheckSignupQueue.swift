@@ -8,6 +8,7 @@
 import Foundation
 
 extension ATProtoKit {
+
     /// Retrieves information about the sign up queue location.
     /// 
     /// - Important: The lexicon associated with this model may be removed at any time.

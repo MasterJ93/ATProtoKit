@@ -8,6 +8,7 @@
 import Foundation
 
 extension ATProtoKit {
+
     /// Requests the server to delete the user's account via email.
     ///
     /// - Warning: Doing this will permanently delete the user's account. Use caution when

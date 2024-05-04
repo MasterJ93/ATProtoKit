@@ -8,6 +8,7 @@
 import Foundation
 
 extension ATProtoAdmin {
+
     /// Enacts on an action against a user's account as a moderator.
     ///
     /// - Important: This is a moderator task and as such, regular users won't be able to access

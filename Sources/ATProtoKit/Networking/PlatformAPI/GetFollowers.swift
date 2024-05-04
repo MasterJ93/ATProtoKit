@@ -8,6 +8,7 @@
 import Foundation
 
 extension ATProtoKit {
+
     /// Gets all of the user account's followers.
     /// 
     /// - Note: According to the AT Protocol specifications: "Enumerates accounts which follow

@@ -8,6 +8,7 @@
 import Foundation
 
 extension ATProtoKit {
+
     /// Gets information about a given feed generator.
     /// 
     /// - Note: According to the AT Protocol specifications: "Get information about a

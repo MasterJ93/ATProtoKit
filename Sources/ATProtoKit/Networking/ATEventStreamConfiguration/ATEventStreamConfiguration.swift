@@ -8,6 +8,7 @@
 import Foundation
 
 extension ATEventStreamConfiguration {
+
     /// Connects the client to the event stream.
     ///
     /// Normally, when connecting to the event stream, it will start from the first message the event stream gets. The client will always look at the last successful

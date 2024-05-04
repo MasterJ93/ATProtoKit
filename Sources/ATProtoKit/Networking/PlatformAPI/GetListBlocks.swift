@@ -8,6 +8,7 @@
 import Foundation
 
 extension ATProtoKit {
+
     /// Gets the moderator lists that the user account is blocking.
     /// 
     /// - Note: According to the AT Protocol specifications: "Get mod lists that the requesting

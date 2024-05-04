@@ -8,6 +8,7 @@
 import Foundation
 
 extension ATProtoKit {
+
     /// Searches for and validates a record from the repository.
     /// 
     /// - Note: According to the AT Protocol specifications: "Get a single record from a

@@ -8,6 +8,7 @@
 import Foundation
 
 extension ATProtoKit {
+
     /// Retrieves a token from a requested service.
     /// 
     /// - Note: According to the AT Protocol specifications: "Get a signed token on behalf of

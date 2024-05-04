@@ -8,6 +8,7 @@
 import Foundation
 
 extension ATProtoKit {
+
     /// Describes the repository.
     /// 
     /// - Note: According to the AT Protocol specifications: "Get information about an account

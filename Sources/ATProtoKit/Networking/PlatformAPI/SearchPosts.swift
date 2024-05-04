@@ -8,6 +8,7 @@
 import Foundation
 
 extension ATProtoKit {
+
     /// Retrieves the results of a search query.
     /// 
     /// - Note: According to the AT Protocol specifications: "Find posts matching search criteria,

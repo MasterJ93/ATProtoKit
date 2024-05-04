@@ -8,6 +8,7 @@
 import Foundation
 
 extension ATProtoKit {
+
     /// Gets information about various labeler services.
     /// 
     /// - Note: According to the AT Protocol specifications: "Get information about a list of
