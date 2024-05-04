@@ -7,6 +7,7 @@ Develop and manage client and server-side applications for the AT Protocol and B
         purpose: icon, 
         source: "atprotokit_logo", 
         alt: "A technology icon representing the ATProtoKit framework.")
+    @PageColor(blue)
 }
 
 ## Overview
@@ -44,8 +45,8 @@ Task {
     Add a tutorial named "Meet ATProtoKit".
 }
 
-- ``ATProtoAdmin``
 - ``ATProtoKit/ATProtoKit``
+- ``ATProtoAdmin``
 
 ### Authentication and Session Management
 
@@ -64,6 +65,9 @@ Task {
         Records Overview (Article)
         Creating Your Own Records (Article)
         Converting a Lexicon Into a Model-Method Pair (Article)
+        app.bsky
+        com.atproto
+        tools.ozone
 }
 
 ### Interacting With Users
@@ -92,3 +96,5 @@ Task {
 }
 
 ### Error Handling
+
+- ``ATProtoError``
