@@ -144,8 +144,14 @@ public struct FirehoseEventRepositoryOperation: Decodable {
 
     // Enums
     public enum Action: String, Decodable {
+        
+        /// A "Create" action.
         case create
+        
+        /// An "Update" action.
         case update
+
+        /// A "Delete" action.
         case delete
     }
 }
@@ -278,10 +284,10 @@ public struct FirehoseFrameTombstoneMessage: Decodable {
 /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/sync/subscribeRepos.json
 public struct FirehoseFrameInfoMessage: Decodable {
 
-    ///
+    /// The name of the event state.
     public let eventName: EventName
 
-    ///
+    /// The message of the event.
     public let message: String
 
     enum CodingKeys: String, CodingKey {
@@ -290,7 +296,10 @@ public struct FirehoseFrameInfoMessage: Decodable {
     }
 
     // Enums
+    /// An event state.
     public enum EventName: String, Decodable {
+
+        /// An outdated cursor.
         case outdatedCursor = "OutdatedCursor"
     }
 }
@@ -298,11 +307,25 @@ public struct FirehoseFrameInfoMessage: Decodable {
 // MARK: - Union type
 /// A reference containing the list of event messages.
 public enum FirehoseFrameMessageUnion: Decodable {
+
+    /// A "commit" event message.
     case commit(FirehoseFrameCommitMessage)
+
+    /// An "identity" event message.
     case identity(FirehoseFrameIdentityMessage)
+
+    /// A "handle" event message.
     case handle(FirehoseFrameHandleMessage)
+
+    /// A "migrate" event message.
     case migrate(FirehoseFrameMigrateMessage)
+
+    /// A "tombstone" event message.
     case tombstone(FirehoseFrameTombstoneMessage)
+
+    /// An "info" event message.
     case info(FirehoseFrameInfoMessage)
+
+    /// An "error" event message.
     case error(WebSocketFrameMessageError)
 }
