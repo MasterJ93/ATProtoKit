@@ -6,6 +6,7 @@ docc:
 	swift package --allow-writing-to-directory $(DOCC_DIR) \
 		generate-documentation --target $(DOCC_TARGET) \
 		--disable-indexing \
+		--include-extended-types \
 		--transform-for-static-hosting \
 		--output-path $(DOCC_DIR)
 
