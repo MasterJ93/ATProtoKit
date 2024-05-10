@@ -191,6 +191,9 @@ public enum ATEventStreamError: ATProtoError {
 
     /// The endpoint URL used may not be correct.
     case invalidEndpoint
+    
+    /// The data length is not sufficient.
+    case insufficientDataLength
 }
 
 /// An error type related to ``ATImageProcessable``..
