@@ -328,4 +328,38 @@ public enum FirehoseFrameMessageUnion: Decodable {
 
     /// An "error" event message.
     case error(WebSocketFrameMessageError)
+
+    public init(from decoder: any Decoder) throws {
+        let container = try decoder.singleValueContainer()
+        
+        if let value = try? container.decode(FirehoseFrameCommitMessage.self) {
+            self = .commit(value)
+        } else if let value = try? container.decode(FirehoseFrameIdentityMessage.self) {
+            self = .identity(value)
+        } else if let value = try? container.decode(FirehoseFrameHandleMessage.self) {
+            self = .handle(value)
+        } else if let value = try? container.decode(FirehoseFrameMigrateMessage.self) {
+            self = .migrate(value)
+        } else if let value = try? container.decode(FirehoseFrameTombstoneMessage.self) {
+            self = .tombstone(value)
+        } else if let value = try? container.decode(FirehoseFrameInfoMessage.self) {
+            self = .info(value)
+        } else if let value = try? container.decode(WebSocketFrameMessageError.self) {
+            self = .error(value)
+        } else {
+            throw DecodingError.typeMismatch(
+                FirehoseFrameMessageUnion.self, DecodingError.Context(
+                    codingPath: decoder.codingPath, debugDescription: "Unknown FirehoseFrameMessageUnion type"))
+        }
+    }
+
+    enum CodingKeys: CodingKey {
+        case commit
+        case identity
+        case handle
+        case migrate
+        case tombstone
+        case info
+        case error
+    }
 }
