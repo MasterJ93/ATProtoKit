@@ -196,6 +196,16 @@ public enum ATEventStreamError: ATProtoError {
     case insufficientDataLength
 }
 
+/// An error type containing WebSocket frames for error messages.
+public struct WebSocketFrameMessageError: Decodable, ATProtoError {
+    
+    /// The type of error given.
+    public let error: String
+    
+    /// The message contained with the error. Optional.
+    public let message: String?
+}
+
 /// An error type related to ``ATImageProcessable``..
 public enum ATImageProcessingError: ATProtoError {
 

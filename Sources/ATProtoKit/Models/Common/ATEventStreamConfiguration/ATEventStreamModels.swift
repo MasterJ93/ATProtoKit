@@ -128,13 +128,3 @@ public struct WebSocketFrameHeader: Decodable {
         case type = "t"
     }
 }
-
-/// An error type containing WebSocket frames for error messages.
-public struct WebSocketFrameMessageError: Decodable, ATProtoError {
-
-    /// The type of error given.
-    public let error: String
-
-    /// The message contained with the error. Optional.
-    public let message: String?
-}
