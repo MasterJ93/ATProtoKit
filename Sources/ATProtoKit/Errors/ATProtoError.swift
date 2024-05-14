@@ -206,6 +206,13 @@ public struct WebSocketFrameMessageError: Decodable, ATProtoError {
     public let message: String?
 }
 
+/// An error type related to CBOR processing issues.
+public enum CBORProcessingError: Error {
+    
+    /// The CBOR string can't be decoded.
+    case cannotDecode
+}
+
 /// An error type related to ``ATImageProcessable``..
 public enum ATImageProcessingError: ATProtoError {
 
