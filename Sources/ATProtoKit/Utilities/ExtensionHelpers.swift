@@ -127,3 +127,12 @@ extension UInt64 {
         return encoded
     }
 }
+
+// MARK: - Data Extension
+extension Data {
+    
+    /// Returns an array of `UInt8` objects.
+    var bytes: [UInt8] {
+        return [UInt8](self)
+    }
+}
