@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftCBOR
 
 extension ATEventStreamConfiguration {
 
@@ -20,8 +21,9 @@ extension ATEventStreamConfiguration {
     /// - If `cursor` is `0`, then the server will send the oldest message it has and continues the stream.
     ///
     /// - Parameter cursor: The mark used to indicate the starting point for the next set of results. Optional.
-    public func connect(cursor: Int64? = nil) async {
-        
+    public mutating func connect(cursor: Int64? = nil) async {
+        isConnected = true
+        await self.receiveMessages()
     }
 
     /// Disconnects the client from the event stream.
@@ -41,7 +43,18 @@ extension ATEventStreamConfiguration {
     ///   - cursor: The mark used to indicate the starting point for the next set of results. Optional.
     ///   - retry: The number of times the connection attempts can be retried.
     func reconnect(cursor: Int64?, retry: Int) async {
-
+        guard isConnected == false else {
+            print("Already connected. No need to reconnect.")
+            return
+        }
+        
+        let lastCursor: Int64 = sequencePosition ?? 0
+        
+        if lastCursor > 0 {
+            await fetchMissedMessages(fromSequence: lastCursor)
+        }
+        
+        
     }
 
     /// Receives decoded messages and manages the sequence number.
@@ -50,6 +63,26 @@ extension ATEventStreamConfiguration {
     ///
     /// [DAG_CBOR]: https://ipld.io/docs/codecs/known/dag-cbor/
     public func receiveMessages() async {
-
+        while isConnected {
+            do {
+                let message = try await webSocketTask.receive()
+                
+                switch message {
+                    case .string(let base64String):
+                        ATCBORManager().decodeCBOR(from: base64String)
+                    case .data(let data):
+                        let base64String = data.base64EncodedString()
+                        ATCBORManager().decodeCBOR(from: base64String)
+                    @unknown default:
+                        print("Received an unknown type of message.")
+                }
+            } catch {
+                print("Error receiving message: \(error)")
+            }
+        }
+    }
+    
+    public func fetchMissedMessages(fromSequence lastCursor: Int64) async {
+        
     }
 }

@@ -30,6 +30,9 @@ public protocol ATEventStreamConfiguration {
     /// When a message gets successfully decoded, this property is populated with the number.
     var sequencePosition: Int64? { get }
 
+    /// Indicates whether the event stream is connected.
+    var isConnected: Bool { get set }
+
     /// The mark used to indicate the starting point for the next set of results. Optional.
     ///
     /// - Note: According to the AT Protocol specifications: "The last known event seq number to
@@ -106,6 +109,12 @@ public protocol ATEventStreamConfiguration {
     ///
     /// [DAG_CBOR]: https://ipld.io/docs/codecs/known/dag-cbor/
     func receiveMessages() async
+
+    /// Receives decoded messages that were missed since the last disconnection.
+    /// 
+    /// - Parameter lastCursor: The last cursor number before ATProtoKit was disconnected
+    /// from the relay server.
+    func fetchMissedMessages(fromSequence lastCursor: Int64) async
 }
 
 public struct WebSocketFrameHeader: Decodable {
