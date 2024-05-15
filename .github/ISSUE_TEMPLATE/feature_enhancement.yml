@@ -1,6 +1,6 @@
-name: Feature Enchancement
-description: Suggest an enchancement to an existing feature for ATProtoKit.
-title: "[Feature Enchancement]: "
+name: Feature Enhancement
+description: Suggest an enhancement to an existing feature for ATProtoKit.
+title: "[Feature Enhancement]: "
 labels: ["enhancement"]
 body:
   - type: markdown
@@ -25,7 +25,7 @@ body:
       label: Considered Alternatives
       description: What alternative solutions did you consider and how did they fall short of your expectations?
   - type: dropdown
-    id: is-enchancement-breaking-change
+    id: is-enhancement-breaking-change
     attributes:
       label: Is this a breaking change?
       options:
