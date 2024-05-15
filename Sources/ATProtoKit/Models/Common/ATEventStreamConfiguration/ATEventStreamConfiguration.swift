@@ -13,7 +13,7 @@ import Foundation
 /// needed to manage connections in the AT Protocol's event streams. Some of these include directly
 /// managing the connection (opening, closing, and reconnecting), creating parameters for allowing
 /// and disallowing content, and handling sequences.
-public protocol ATEventStreamConfiguration {
+public protocol ATEventStreamConfiguration: AnyObject {
 
     /// The URL of the relay.
     ///
