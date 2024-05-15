@@ -12,10 +12,10 @@ jobs:
       contents: write
 
     steps:
-      - uses: actions/checkout@v3
-        with:
-          ref: main
-          fetch-depth: 0
+    - uses: actions/checkout@v3
+      with:
+        ref: main
+        fetch-depth: 0
 
 #      - name: Archive DocC
 #        run: |
@@ -26,20 +26,20 @@ jobs:
 #        uses: softprops/action-gh-release@v2.0.4
 #        with:            
 
-      - name: Generate DocC for Web
-        run: |
-          make docc
-          mv docs docc-website
+    - name: Generate DocC for Web
+      run: |
+        make docc
+        mv docs docc-website
 
-      - name: Move DocC website to docc branch
-        run: |
-          git fetch --all
-          git checkout docc
-          git rm -r docs/*
-          mv docc-website/* docs
-          rm -r docc-website
-          cp CNAME docs/CNAME
-          git add docs
-          DATE_MSG=$(date "+This website is current as of %b %d, %Y at %H:%M %Z")
-          git commit -m "Update DocC website" -m "$DATE_MSG"
-          git push origin docc
+    - name: Move DocC website to docc branch
+      run: |
+        git fetch --all
+        git checkout docc
+        git rm -r docs/*
+        mv docc-website/* docs
+        rm -r docc-website
+        cp CNAME docs/CNAME
+        git add docs
+        DATE_MSG=$(date "+This website is current as of %b %d, %Y at %H:%M %Z")
+        git commit -m "Update DocC website" -m "$DATE_MSG"
+        git push origin docc
