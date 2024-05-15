@@ -8,6 +8,7 @@
 import Foundation
 
 extension ATProtoKit {
+
     /// Views a given feed generator.
     /// 
     /// - Note: According to the AT Protocol specifications: "Get a hydrated feed from an actor's

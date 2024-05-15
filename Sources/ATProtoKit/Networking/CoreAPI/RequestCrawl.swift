@@ -8,6 +8,7 @@
 import Foundation
 
 extension ATProtoKit {
+
     /// Requests the crawling service to begin crawling the repositories.
     /// 
     /// - Note: According to the AT Protocol specifications: "Notify a crawling service of a recent

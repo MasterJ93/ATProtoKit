@@ -8,6 +8,7 @@
 import Foundation
 
 extension ATProtoKit {
+
     /// Retrieves the skeleton results of actors (users).
     ///  
     /// - Note: `viewerDID` will be ignored in public or unauthenticated queries.

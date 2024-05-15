@@ -8,6 +8,7 @@
 import Foundation
 
 extension ATProtoKit {
+
     /// Retrieves a blob from a given record.
     ///
     /// - Note: According to the AT Protocol specifications: "Get a blob associated with a given

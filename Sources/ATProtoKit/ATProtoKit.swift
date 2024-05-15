@@ -13,40 +13,20 @@ import Logging
 /// ```swift
 /// public init(session: UserSession? = nil, logIdentifier: String? = nil, logCategory: String?, logLevel: Logger.Level? = .info) {
 ///     self.session = session
-///     self.logIdentifier = logIdentifier ?? Bundle.main.bundleIdentifier ?? "com.cjrriley.ATProtoKit"
-///     self.logCategory = logCategory ?? "ATProtoKit"
-///     self.logLevel = logLevel
-///
-/// #if canImport(os)
-///     LoggingSystem.bootstrap { label in
-///         ATLogHandler(subsystem: label, category: logCategory ?? "ATProtoKit")
-///     }
-/// #else
-///     LoggingSystem.bootstrap(StreamLogHandler.standardOutput)
-/// #endif
-///
-///     logger = Logger(label: logIdentifier ?? "com.cjrriley.ATProtoKit")
-///     logger.logLevel = logLevel ?? .info
+///     self.logger = session?.logger ?? logger
 /// }
 /// ```
 public protocol ATProtoKitConfiguration {
+
     /// Represents an authenticated user session within the AT Protocol. Optional.
     var session: UserSession? { get }
-    /// Specifies the logger that will be used for emitting log messages.
+
+    /// Specifies the logger that will be used for emitting log messages. Optional.
     ///
-    /// - Note: Be sure to create an instance inside the `init()` method. This is important
-    var logger: Logger { get }
-    /// Specifies the identifier for managing log outputs. Optional.
-    ///
-    /// This should default to the bundle identifier if it's in an Apple
-    /// platform (`CFBundleIdentifier`).
-    var logIdentifier: String? { get }
-    /// Specifies the category name the logs in the logger within ATProtoKit will be in. Optional.
-    var logCategory: String? { get }
-    /// Specifies the highest level of logs that will be outputted. Optional.
-    ///
-    /// This should default to `.info`
-    var logLevel: Logger.Level? { get }
+    /// - Note: Be sure to create an instance inside the `init()` method. This is important so
+    /// all log events are spread across the entire class.
+    var logger: Logger? { get }
+
     /// Prepares an authorization value for API requests based on `session` and `pdsURL`.
     ///
     /// This determines whether the "Authorization" header will be included in the request payload.
@@ -73,6 +53,7 @@ public protocol ATProtoKitConfiguration {
 }
 
 extension ATProtoKitConfiguration {
+
     /// Prepares an authorization value for API requests based on `session` and `pdsURL`.
     ///
     /// This determines whether the "Authorization" header will be included in the request payload.
@@ -135,26 +116,19 @@ extension ATProtoKitConfiguration {
 /// }
 /// ```
 public class ATProtoKit: ATProtoKitConfiguration {
+
     /// Represents an authenticated user session within the AT Protocol. Optional.
     public let session: UserSession?
+
     /// An array of record lexicon structs created by Bluesky.
     ///
     /// If `canUseBlueskyRecords` is set to `false`, these will not be used.
     private let recordLexicons: [ATRecordProtocol.Type] = [
         FeedGenerator.self, FeedLike.self, FeedPost.self, FeedRepost.self, FeedThreadgate.self, GraphBlock.self, GraphFollow.self, GraphList.self, 
         GraphListBlock.self, GraphListItem.self, LabelerService.self]
+
     /// Specifies the logger that will be used for emitting log messages.
-    public private(set) var logger: Logger
-    /// Specifies the identifier for managing log outputs. Optional. Defaults to the
-    /// project's `CFBundleIdentifier`.
-    public let logIdentifier: String?
-    /// Specifies the category name the logs in the logger within ATProtoKit will be in. Optional.
-    /// Defaults to `ATProtoKit`.
-    ///
-    /// - Note: This property is ignored if you're using `StreamLogHandler`.
-    public let logCategory: String?
-    /// Specifies the highest level of logs that will be outputted. Optional. Defaults to `.info`.
-    public let logLevel: Logger.Level?
+    public private(set) var logger: Logger?
 
     /// Initializes a new instance of `ATProtoKit`.
     /// 
@@ -171,27 +145,13 @@ public class ATProtoKit: ATProtoKitConfiguration {
     ///   be in. Optional. Defaults to `ATProtoKit`.
     ///   - logLevel: Specifies the highest level of logs that will be outputted. Optional.
     ///   Defaults to `.info`.
-    public init(session: UserSession? = nil, canUseBlueskyRecords: Bool = true, logIdentifier: String? = nil, logCategory: String? = nil,
-                logLevel: Logger.Level? = .info) {
+    public init(session: UserSession? = nil, canUseBlueskyRecords: Bool = true, logger: Logger? = nil) {
         self.session = session
-        self.logIdentifier = logIdentifier ?? Bundle.main.bundleIdentifier ?? "com.cjrriley.ATProtoKit"
-        self.logCategory = logCategory ?? "ATProtoKit"
-        self.logLevel = logLevel
+        self.logger = session?.logger ?? logger
 
         if canUseBlueskyRecords {
             _ = ATRecordTypeRegistry(types: self.recordLexicons)
         }
-
-        #if canImport(os)
-        LoggingSystem.bootstrap { label in
-            ATLogHandler(subsystem: label, category: logCategory ?? "ATProtoKit")
-        }
-        #else
-        LoggingSystem.bootstrap(StreamLogHandler.standardOutput)
-        #endif
-
-        logger = Logger(label: logIdentifier ?? "com.cjrriley.ATProtoKit")
-        logger.logLevel = logLevel ?? .info
     }
 
     /// Determines the appropriate Personal Data Server (PDS) URL.
@@ -236,20 +196,12 @@ public class ATProtoKit: ATProtoKitConfiguration {
 /// }
 /// ```
 public class ATProtoAdmin: ATProtoKitConfiguration {
+
     /// Represents an authenticated user session within the AT Protocol. Optional.
     public let session: UserSession?
+
     /// Specifies the logger that will be used for emitting log messages.
-    public private(set) var logger: Logger
-    /// Specifies the identifier for managing log outputs. Optional. Defaults to the
-    /// project's `CFBundleIdentifier`.
-    public let logIdentifier: String?
-    /// Specifies the category name the logs in the logger within ATProtoKit will be in.
-    /// Optional. Defaults to `ATProtoKit`.
-    ///
-    /// - Note: This property is ignored if you're using `StreamLogHandler`.
-    public let logCategory: String?
-    /// Specifies the highest level of logs that will be outputted. Optional. Defaults to `.info`.
-    public let logLevel: Logger.Level?
+    public private(set) var logger: Logger?
 
     /// Initializes a new instance of `ATProtoAdmin`.
     /// - Parameters:
@@ -260,23 +212,8 @@ public class ATProtoAdmin: ATProtoKitConfiguration {
     ///   will be in. Optional. Defaults to `ATProtoKit`.
     ///   - logLevel: Specifies the highest level of logs that will be outputted. Optional.
     ///   Defaults to `.info`.
-    public init(session: UserSession? = nil, logIdentifier: String? = nil, logCategory: String? = nil, logLevel: Logger.Level? = .info) {
+    public init(session: UserSession? = nil, logger: Logger? = nil) {
         self.session = session
-        self.logIdentifier = logIdentifier ?? Bundle.main.bundleIdentifier ?? "com.cjrriley.ATProtoKit"
-        self.logCategory = logCategory ?? "ATProtoKit"
-        self.logLevel = logLevel
-
-        #if canImport(os)
-        LoggingSystem.bootstrap { label in
-            ATLogHandler(subsystem: label, category: logCategory ?? "ATProtoKit")
-        }
-        #else
-        LoggingSystem.bootstrap(StreamLogHandler.standardOutput)
-        #endif
-
-        logger = Logger(label: logIdentifier ?? "com.cjrriley.ATProtoKit")
-        logger.logLevel = logLevel ?? .info
+        self.logger = session?.logger ?? logger
     }
 }
-
-

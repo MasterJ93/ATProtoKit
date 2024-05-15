@@ -8,6 +8,7 @@
 import Foundation
 
 extension ATProtoKit {
+
     /// Finds relevant labels based on a given URI.
     ///
     /// `uriPatterns` will match with the boolean "OR". Each URI pattern can either have the `*`

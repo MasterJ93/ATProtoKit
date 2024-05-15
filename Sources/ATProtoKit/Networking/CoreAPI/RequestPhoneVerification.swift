@@ -8,6 +8,7 @@
 import Foundation
 
 extension ATProtoKit {
+
     /// Sends a request to be verified with a code from the user's messaging app.
     /// 
     /// It's the responsibility of the client to validate the phone number before calling this

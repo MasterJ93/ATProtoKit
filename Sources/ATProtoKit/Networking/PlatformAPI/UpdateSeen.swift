@@ -8,6 +8,7 @@
 import Foundation
 
 extension ATProtoKit {
+
     /// Updates the server of the user seeing the notification.
     /// 
     /// - Note: According to the AT Protocol specifications: "Notify server that the requesting

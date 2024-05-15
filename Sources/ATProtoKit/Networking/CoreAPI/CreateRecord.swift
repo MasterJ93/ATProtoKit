@@ -8,6 +8,7 @@
 import Foundation
 
 extension ATProtoKit {
+
     /// Creates a record attached to a user account.
     ///  
     /// - Warning: If you're using a lexicon that's not made by `com.atproto` or `app.bsky`,

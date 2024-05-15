@@ -8,6 +8,7 @@
 import Foundation
 
 extension ATProtoKit {
+
     /// Unmutes a user account.
     /// 
     /// - Note: According to the AT Protocol specifications: "Unmutes the specified account.

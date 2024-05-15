@@ -8,6 +8,7 @@
 import Foundation
 
 extension ATProtoKit {
+
     /// Revokes an App Password from a user's account.
     /// 
     /// - Note: According to the AT Protocol specifications: "Revoke an

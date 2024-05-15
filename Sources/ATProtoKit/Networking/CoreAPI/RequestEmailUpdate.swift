@@ -8,6 +8,7 @@
 import Foundation
 
 extension ATProtoKit {
+
     /// Requests a token to be emailed to the user in order to update their email address.
     /// 
     /// - Note: According to the AT Protocol specifications: "Request a token in order to

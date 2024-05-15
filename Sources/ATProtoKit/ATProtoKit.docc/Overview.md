@@ -7,11 +7,12 @@ Develop and manage client and server-side applications for the AT Protocol and B
         purpose: icon, 
         source: "atprotokit_logo", 
         alt: "A technology icon representing the ATProtoKit framework.")
+    @PageColor(blue)
 }
 
 ## Overview
 
-ATProtoKit is a Swift package designed for building applications and interacting with the AT Protocol and Bluesky. It provides all necessary client-side implementations to seamlessly interact with the AT Protocol, and fully integrates the diverse features of Bluesky. The library supports a wide range of functionalities, from data type validations (including NSID, DID, Record Key, AT-URI, TID, CID, and more) to data stream viewing, offering a robust toolset for developers at all skill levels.
+ATProtoKit is a Swift package designed for building applications and interacting with the AT Protocol (short for "Authenticated Transfer Protocol") and Bluesky. It provides all necessary client-side implementations to seamlessly interact with the AT Protocol, and fully integrates the diverse features of Bluesky. The library supports a wide range of functionalities, from data type validations (including NSID, DID, Record Key, AT-URI, TID, CID, and more) to data stream viewing, offering a robust toolset for developers at all skill levels.
 
 ATProtoKit aims to be easy enough to use for novice developers, while also being extendable and advanced enough for more experienced developers.
 
@@ -34,6 +35,11 @@ Task {
 }
 ```
 
+## What's New in ATProtoKit
+@Links(visualStyle: detailedGrid) {
+    - <doc:Getting-Started-with-ATProtoKit>
+}
+
 ## Topics
 
 ### Essentials
@@ -44,8 +50,8 @@ Task {
     Add a tutorial named "Meet ATProtoKit".
 }
 
-- ``ATProtoAdmin``
 - ``ATProtoKit/ATProtoKit``
+- ``ATProtoAdmin``
 
 ### Authentication and Session Management
 
@@ -64,6 +70,9 @@ Task {
         Records Overview (Article)
         Creating Your Own Records (Article)
         Converting a Lexicon Into a Model-Method Pair (Article)
+        app.bsky
+        com.atproto
+        tools.ozone
 }
 
 ### Interacting With Users
@@ -92,3 +101,5 @@ Task {
 }
 
 ### Error Handling
+
+- ``ATProtoError``

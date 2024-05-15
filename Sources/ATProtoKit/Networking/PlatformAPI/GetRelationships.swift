@@ -8,6 +8,7 @@
 import Foundation
 
 extension ATProtoKit {
+
     /// Retrieves the public relationship between the two user accounts.
     /// 
     /// - Note: According to the AT Protocol specifications: "Enumerates public relationships

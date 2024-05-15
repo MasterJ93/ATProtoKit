@@ -8,6 +8,7 @@
 import Foundation
 
 extension ATProtoKit {
+
     /// Deletes a like record.
     ///
     /// This can also be used to validate if a like record has been deleted.

@@ -8,6 +8,7 @@
 import Foundation
 
 extension ATProtoKit {
+
     /// Sends an email containing a way to reset the user's password.
     /// 
     /// - Note: This is resetting the main password, not the App Password.

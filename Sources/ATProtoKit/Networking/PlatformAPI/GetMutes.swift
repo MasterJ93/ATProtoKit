@@ -8,6 +8,7 @@
 import Foundation
 
 extension ATProtoKit {
+
     /// Retrieves all accounts the user account is currently muting.
     /// 
     /// - Note: According to the AT Protocol specifications: "Enumerates accounts that the

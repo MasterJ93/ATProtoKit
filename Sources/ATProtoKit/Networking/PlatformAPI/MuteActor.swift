@@ -8,6 +8,7 @@
 import Foundation
 
 extension ATProtoKit {
+
     /// Mutes a user account.
     /// 
     /// - Note: According to the AT Protocol specifications: "Creates a mute relationship for the

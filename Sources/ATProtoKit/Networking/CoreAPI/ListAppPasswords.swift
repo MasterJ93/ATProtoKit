@@ -8,6 +8,7 @@
 import Foundation
 
 extension ATProtoKit {
+
     /// Lists all of the App Passwords in a user's account.
     /// 
     /// - Important: This won't show the actual App Passwords; it'll only display the names

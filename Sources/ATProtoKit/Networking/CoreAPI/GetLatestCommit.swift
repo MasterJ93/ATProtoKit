@@ -8,6 +8,7 @@
 import Foundation
 
 extension ATProtoKit {
+
     /// Gets a repository's latest commit CID.
     /// 
     /// - Note: According to the AT Protocol specifications: "Get the current commit CID &

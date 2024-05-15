@@ -8,6 +8,7 @@
 import Foundation
 
 extension ATProtoKit {
+
     /// Notifies the crawling service to re-index or resume crawling.
     /// 
     /// - Note: If `crawlingHostname` and `pdsURL` are the same, then it's best not to give

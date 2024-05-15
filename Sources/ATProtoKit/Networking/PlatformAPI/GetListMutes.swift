@@ -8,6 +8,7 @@
 import Foundation
 
 extension ATProtoKit {
+
     /// Grabs the moderator list that the user account is currently muting.
     /// 
     /// - Note: According to the AT Protocol specifications: "Enumerates mod lists that the

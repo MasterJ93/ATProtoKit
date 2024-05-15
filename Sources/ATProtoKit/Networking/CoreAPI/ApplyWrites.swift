@@ -8,6 +8,7 @@
 import Foundation
 
 extension ATProtoKit {
+
     /// Applies creation, updates, and deletion transactions into the repository in batches.
     /// 
     /// - Note: According to the AT Protocol specifications: "Apply a batch transaction of

@@ -8,6 +8,7 @@
 import Foundation
 
 extension ATProtoKit {
+
     /// Edits the preferences for the user.
     /// 
     /// - Note: According to the AT Protocol specifications: "Set the private preferences

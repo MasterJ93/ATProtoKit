@@ -8,6 +8,7 @@
 import Foundation
 
 extension ATProtoKit {
+
     /// Gets a repository in a .car format.
     /// 
     /// - Note: According to the AT Protocol specifications: "Download a repository export as

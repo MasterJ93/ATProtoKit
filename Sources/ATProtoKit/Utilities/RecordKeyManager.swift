@@ -9,10 +9,13 @@ import Foundation
 
 /// A class for creating a validating Record Keys.
 class RecordKeyManager {
+
     /// The last timestamp recorded.
     private var lastTimestamp: UInt64 = UInt64(0)
+
     /// A number used for reducing the risk of collisions.
     private let clockIdentifier: UInt64
+
     /// A list of the valid characters in base32.
     private let base32Alphabet = "234567abcdefghijklmnopqrstuvwxyz"
 
@@ -87,12 +90,16 @@ class RecordKeyManager {
 
     /// Defines the type of Record Key being used.
     public enum RecordKeyType {
+
         /// Indicates the Record Key type as `tid`.
         case tid
+
         /// Indicates the Record Key type as `any`.
         case any
+
         /// The Record Key type is not known at this time.
         case unknown
+
         /// This is not a Record Key.
         ///
         /// You can perform some sort of error handling is this is selected.

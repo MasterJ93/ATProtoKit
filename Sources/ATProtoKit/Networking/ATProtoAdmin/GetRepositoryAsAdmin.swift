@@ -8,6 +8,7 @@
 import Foundation
 
 extension ATProtoAdmin {
+
     /// Get details about a repository as an administrator.
     /// 
     /// - Important: This is an administrator task and as such, regular users won't be able to

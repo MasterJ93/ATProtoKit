@@ -8,6 +8,7 @@
 import Foundation
 
 extension ATProtoKit {
+
     /// Gets a detailed profile of a user.
     ///
     /// If you need detailed information, make sure to set `shouldAuthenticate` to `true`. If

@@ -8,6 +8,7 @@
 import Foundation
 
 extension ATProtoAdmin {
+
     /// Disables a user account's ability to receive future invite codes as an administrator.
     ///  
     /// - Important: This is an administrator task and as such, regular users won't be able to

@@ -9,8 +9,10 @@ import Foundation
 
 /// A structure for custom date formatting to and from the ISO8601 format.
 struct CustomDateFormatter {
+
     /// A shared, singleton instance for global access.
     static let shared = CustomDateFormatter()
+
     /// The internal ISO8601DateFormatter instance.
     private let dateFormatter: ISO8601DateFormatter
 
@@ -77,6 +79,7 @@ struct CustomDateFormatter {
 /// ```
 @propertyWrapper
 public struct DateFormatting: Codable {
+
     /// The actual `Date` value being wrapped.
     public var wrappedValue: Date
 
@@ -146,8 +149,10 @@ public struct DateFormatting: Codable {
 /// ```
 @propertyWrapper
 public struct DateFormattingOptional: Codable {
+
     /// The optional `Date?` value being wrapped.
     public var wrappedValue: Date?
+
     /// Initializes the property with an optional `Date?` value.
     public init(wrappedValue: Date?) {
         self.wrappedValue = wrappedValue

@@ -8,6 +8,7 @@
 import Foundation
 
 extension ATProtoKit {
+
     /// Deactivates the user's account.
     ///
     /// - Note: If you don't add `deleteAfter`, make sure to use
