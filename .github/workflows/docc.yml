@@ -37,6 +37,7 @@ jobs:
         git fetch --all
         git checkout docc
         git rm -r docs/*
+        mkdir -p docs
         mv docc-website/* docs
         rm -r docc-website
         cp CNAME docs/CNAME
