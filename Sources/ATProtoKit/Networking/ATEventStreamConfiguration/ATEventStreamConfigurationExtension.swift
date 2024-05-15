@@ -21,8 +21,10 @@ extension ATEventStreamConfiguration {
     /// - If `cursor` is `0`, then the server will send the oldest message it has and continues the stream.
     ///
     /// - Parameter cursor: The mark used to indicate the starting point for the next set of results. Optional.
-    public mutating func connect(cursor: Int64? = nil) async {
-        isConnected = true
+    public func connect(cursor: Int64? = nil) async {
+        self.isConnected = true
+        self.webSocketTask.resume()
+
         await self.receiveMessages()
     }
 

@@ -10,6 +10,9 @@ import Foundation
 /// The base class for the AT Protocol's Firehose event stream.
 class ATFirehoseStream: ATEventStreamConfiguration {
 
+    /// Indicates whether the event stream is connected. Defaults to `false`.
+    internal var isConnected: Bool = false
+    
     /// The URL of the relay. Defaults to `wss://bsky.network`.
     public var relayURL: String = "wss://bsky.network"
 
@@ -56,8 +59,5 @@ class ATFirehoseStream: ATEventStreamConfiguration {
 
         guard let webSocketURL = URL(string: "\(relayURL)/xrpc/\(namespacedIdentifiertURL)") else { throw ATRequestPrepareError.invalidFormat }
         self.webSocketTask = urlSession.webSocketTask(with: webSocketURL)
-        webSocketTask.resume()
-
-        await self.connect()
     }
 }
