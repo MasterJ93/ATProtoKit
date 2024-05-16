@@ -43,9 +43,10 @@ public class ATCBORManager {
         
         do {
             let items = try decodeItems(from: data)
-            if let cborBlocks = extractCborBlocks(from: items) {
-                print("Decoded CBOR:", cborBlocks)
-            }
+//            if let cborBlocks = extractCborBlocks(from: items) {
+//                print("Decoded CBOR:", cborBlocks)
+//            }
+            print("Decoded CBOR: \(items)")
         } catch {
             print("Failed to decode CBOR: \(error)")
         }
@@ -66,18 +67,18 @@ public class ATCBORManager {
         return decoded
     }
     
-    /// <#Description#>
-    ///
-    /// - Parameter items: <#items description#>
-    /// - Returns: <#description#>
-    private func extractCborBlocks(from items: [CBOR]) -> [UInt8]? {
-        guard let payload = items.last,
-              let cborBlocks = payload["blocks"],
-              case .byteString(let array) = cborBlocks else {
-            return nil
-        }
-        return array
-    }
+//    /// Extracts a CBOR block for the purpose of decoding.
+//    ///
+//    /// - Parameter items: An array of `CBOR` objects.
+//    /// - Returns: An array of `UInt8` objects.
+//    private func extractCborBlocks(from items: [CBOR]) -> [UInt8]? {
+//        guard let payload = items.last,
+//              let cborBlocks = payload["blocks"],
+//              case .byteString(let array) = cborBlocks else {
+//            return nil
+//        }
+//        return array
+//    }
     
     /// A delegate that runs when a CBOR object is decoded.
     public typealias OnCarDecoded = (CarProgressStatusEvent) -> Void
