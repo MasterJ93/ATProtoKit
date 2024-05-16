@@ -21,7 +21,7 @@ extension ComAtprotoLexicon {
     /// A group of lexicons within the `com.atproto.moderation` namespace.
     public struct Moderation {}
 
-    /// A group of lexicons within the `com.atproto.repository` namespace.
+    /// A group of lexicons within the `com.atproto.repo` namespace.
     public struct Repository {}
 
     /// A group of lexicons within the `com.atproto.server` namespace.
