@@ -192,7 +192,7 @@ public struct CBORDecodedBlock {
     /// The decoded integer value.
     public let value: Int
     
-    /// The length of bytes that contributed to ``ATProtoKit/CBORBlock/value``.
+    /// The length of bytes that contributed to ``CBORDecodedBlock/value``.
     public let length: Int
 }
 
