@@ -9,24 +9,24 @@ import Foundation
 
 extension ComAtprotoLexicon {
 
-    ///
+    /// A group of lexicons within the `com.atproto.admin` namespace.
     public struct Admin {}
 
-    ///
+    /// A group of lexicons within the `com.atproto.identity` namespace.
     public struct Identity {}
 
-    ///
+    /// A group of lexicons within the `com.atproto.label` namespace.
     public struct Label {}
 
-    ///
+    /// A group of lexicons within the `com.atproto.moderation` namespace.
     public struct Moderation {}
 
-    ///
-    public struct Repo {}
+    /// A group of lexicons within the `com.atproto.repository` namespace.
+    public struct Repository {}
 
-    ///
+    /// A group of lexicons within the `com.atproto.server` namespace.
     public struct Server {}
 
-    ///
+    /// A group of lexicons within the `com.atproto.temp` namespace.
     public struct Temp {}
 }
