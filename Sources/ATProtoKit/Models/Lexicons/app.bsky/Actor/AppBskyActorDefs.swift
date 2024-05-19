@@ -126,7 +126,7 @@ extension AppBskyLexicon.Actor {
         public var viewer: ViewerStateDefinition?
 
         /// An array of labels created by the user. Optional.
-        public var labels: [Label]? = nil
+        public var labels: [Label]?
         
         public init(actorDID: String, actorHandle: String, displayName: String?, description: String?, avatarImageURL: URL?, associated: ProfileAssociatedDefinition?,
                     indexedAt: Date?, viewer: ViewerStateDefinition?, labels: [Label]?) {
@@ -321,10 +321,13 @@ extension AppBskyLexicon.Actor {
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/actor/defs.json
     public struct ProfileAssociatedDefinition: Codable {
+
         /// The number of lists associated with the user. Optional.
         public let lists: Int?
+
         /// The number of feed generators associated with the user. Optional.
         public let feedGenerators: Int?
+
         /// Indicates whether the user account is a labeler. Optional.
         public let isActorLabeler: Bool?
         
