@@ -48,7 +48,7 @@ extension AppBskyLexicon.Embed {
         public let type: String = "app.bsky.embed.record#view"
 
         /// The record of a specific type.
-        public let record: RecordViewUnion
+        public let record: ATUnion.RecordViewUnion
         
         enum CodingKeys: String, CodingKey {
             case type = "$type"

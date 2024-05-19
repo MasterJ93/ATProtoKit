@@ -390,9 +390,9 @@ extension AppBskyLexicon.Actor {
     public struct PreferencesDefinition: Codable {
 
         /// An array of different preferences the user can set.
-        public let preferences: [ActorPreferenceUnion]
-        
-        public init(preferences: [ActorPreferenceUnion]) {
+        public let preferences: [ATUnion.ActorPreferenceUnion]
+
+        public init(preferences: [ATUnion.ActorPreferenceUnion]) {
             self.preferences = preferences
         }
     }
