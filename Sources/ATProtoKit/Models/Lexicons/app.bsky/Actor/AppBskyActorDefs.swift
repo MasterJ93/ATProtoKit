@@ -353,7 +353,7 @@ extension AppBskyLexicon.Actor {
         public let isMuted: Bool?
 
         /// An array of lists that the subject account is muted by.
-        public let mutedByArray: GraphListViewBasic?
+        public let mutedByArray: AppBskyLexicon.Graph.ListViewBasicDefinition?
 
         /// Indicates whether the requesting account has been blocked by the subject
         /// account. Optional.
@@ -363,7 +363,7 @@ extension AppBskyLexicon.Actor {
         public let blockingURI: String?
 
         /// An array of the subject account's lists.
-        public let blockingByArray: GraphListViewBasic?
+        public let blockingByArray: AppBskyLexicon.Graph.ListViewBasicDefinition?
 
         /// A URI which indicates the user is following the requesting account.
         public let followingURI: String?
