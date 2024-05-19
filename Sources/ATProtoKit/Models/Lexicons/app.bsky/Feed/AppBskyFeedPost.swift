@@ -36,7 +36,7 @@ extension AppBskyLexicon.Feed {
         ///
         /// - Note: According to the AT Protocol specifications: "Annotations of text (mentions, URLs,
         /// hashtags, etc)"
-        public var facets: [Facet]?
+        public var facets: [AppBskyLexicon.RichText.Facet]?
         /// The references to posts when replying. Optional.
         public var reply: PostReplyReference?
         /// The embed of the post. Optional.
@@ -59,18 +59,18 @@ extension AppBskyLexicon.Feed {
         /// - Note: According to the AT Protocol specifications: "Additional hashtags, in addition to
         /// any included in post text and facets."
         ///
-        /// - Important: Current maximum length is 8 tags. Current maximum length of the tag name is
-        /// 64 characters. This library will automatically truncate the `Array`and `String`
+        /// - Important: Current maximum length is 8 tags. Current maximum length of the tag name
+        /// is 64 characters. This library will automatically truncate the `Array`and `String`
         /// respectively to the maximum length if it does go over the limit.
-        public var tags: [String]? = nil
+        public var tags: [String]?
         /// The date the post was created.
         ///
         /// - Note: According to the AT Protocol specifications: "Client-declared timestamp when this
         /// post was originally created."
         @DateFormatting public var createdAt: Date
         
-        public init(text: String, facets: [Facet]? = nil, reply: PostReplyReference? = nil, embed: EmbedUnion? = nil, languages: [String]? = nil,
-                    labels: FeedLabelUnion? = nil, tags: [String]? = nil, createdAt: Date) {
+        public init(text: String, facets: [AppBskyLexicon.RichText.Facet]?, reply: PostReplyReference?, embed: EmbedUnion?, languages: [String]?,
+                    labels: FeedLabelUnion?, tags: [String]?, createdAt: Date) {
             self.text = text
             self.facets = facets
             self.reply = reply
@@ -85,7 +85,7 @@ extension AppBskyLexicon.Feed {
             let container = try decoder.container(keyedBy: CodingKeys.self)
             
             self.text = try container.decode(String.self, forKey: .text)
-            self.facets = try container.decodeIfPresent([Facet].self, forKey: .facets)
+            self.facets = try container.decodeIfPresent([AppBskyLexicon.RichText.Facet].self, forKey: .facets)
             self.reply = try container.decodeIfPresent(PostReplyReference.self, forKey: .reply)
             self.embed = try container.decodeIfPresent(EmbedUnion.self, forKey: .embed)
             self.languages = try container.decodeIfPresent([String].self, forKey: .languages)
