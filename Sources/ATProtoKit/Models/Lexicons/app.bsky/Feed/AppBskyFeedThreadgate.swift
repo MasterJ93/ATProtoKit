@@ -32,12 +32,12 @@ extension AppBskyLexicon.Feed {
         public let post: String
 
         /// An array of rules used as an allowlist.
-        public let allow: [ThreadgateUnion]
+        public let allow: [ATUnion.ThreadgateUnion]
 
         /// The date and time of the creation of the threadgate.
         @DateFormatting public var createdAt: Date
 
-        public init(post: String, allow: [ThreadgateUnion], createdAt: Date) {
+        public init(post: String, allow: [ATUnion.ThreadgateUnion], createdAt: Date) {
             self.post = post
             self.allow = allow
             self._createdAt = DateFormatting(wrappedValue: createdAt)
@@ -47,7 +47,7 @@ extension AppBskyLexicon.Feed {
             let container = try decoder.container(keyedBy: CodingKeys.self)
 
             self.post = try container.decode(String.self, forKey: .post)
-            self.allow = try container.decode([ThreadgateUnion].self, forKey: .allow)
+            self.allow = try container.decode([ATUnion.ThreadgateUnion].self, forKey: .allow)
             self.createdAt = try container.decode(DateFormatting.self, forKey: .createdAt).wrappedValue
         }
 

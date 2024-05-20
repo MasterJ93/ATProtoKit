@@ -49,7 +49,7 @@ extension AppBskyLexicon.Embed {
 
         /// The record of a specific type.
         public let record: ATUnion.RecordViewUnion
-        
+
         enum CodingKeys: String, CodingKey {
             case type = "$type"
             case record
@@ -95,13 +95,13 @@ extension AppBskyLexicon.Embed {
         public let likeCount: Int?
 
         /// An array of embed views of various types.
-        public let embeds: [EmbedViewUnion]?
+        public let embeds: [ATUnion.EmbedViewUnion]?
 
         /// The date the record was last indexed.
         @DateFormatting public var indexedAt: Date
         
         public init(recordURI: String, cidHash: String, author: AppBskyLexicon.Actor.ProfileViewBasicDefinition, value: UnknownType, labels: [Label]?, replyCount: Int?,
-                    repostCount: Int?, likeCount: Int?, embeds: [EmbedViewUnion]?, indexedAt: Date) {
+                    repostCount: Int?, likeCount: Int?, embeds: [ATUnion.EmbedViewUnion]?, indexedAt: Date) {
             self.recordURI = recordURI
             self.cidHash = cidHash
             self.author = author
@@ -125,7 +125,7 @@ extension AppBskyLexicon.Embed {
             self.replyCount = try container.decodeIfPresent(Int.self, forKey: .replyCount)
             self.repostCount = try container.decodeIfPresent(Int.self, forKey: .repostCount)
             self.likeCount = try container.decodeIfPresent(Int.self, forKey: .likeCount)
-            self.embeds = try container.decodeIfPresent([EmbedViewUnion].self, forKey: .embeds)
+            self.embeds = try container.decodeIfPresent([ATUnion.EmbedViewUnion].self, forKey: .embeds)
             self.indexedAt = try container.decode(DateFormatting.self, forKey: .indexedAt).wrappedValue
         }
         

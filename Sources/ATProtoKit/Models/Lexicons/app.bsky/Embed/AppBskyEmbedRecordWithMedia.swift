@@ -29,7 +29,7 @@ extension AppBskyLexicon.Embed {
         public let record: RecordDefinition
 
         /// The media of a specific type.
-        public let media: MediaUnion
+        public let media: ATUnion.MediaUnion
 
         enum CodingKeys: String, CodingKey {
             case type = "$type"
@@ -55,7 +55,7 @@ extension AppBskyLexicon.Embed {
         public let record: EmbedRecordView
 
         /// The embedded media.
-        public let media: MediaViewUnion
+        public let media: ATUnion.MediaViewUnion
 
         enum CodingKeys: String, CodingKey {
             case type = "$type"

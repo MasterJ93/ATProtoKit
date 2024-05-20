@@ -12,24 +12,34 @@ public struct ATUnion {
 
     /// A reference containing the list of preferences.
     public enum ActorPreferenceUnion: Codable {
+
         /// The "Adult Content" preference.
         case adultContent(AppBskyLexicon.Actor.AdultContentPreferencesDefinition)
+
         /// The "Content Label" preference.
         case contentLabel(AppBskyLexicon.Actor.ContentLabelPreferencesDefinition)
+
         /// Version 2 of the "Saved Feeds" preference.
         case savedFeedsVersion2(AppBskyLexicon.Actor.SavedFeedPreferencesVersion2Definition)
+
         /// The "Saved Feeds" preference.
         case savedFeeds(AppBskyLexicon.Actor.SavedFeedsPreferencesDefinition)
+
         /// The "Personal Details" preference.
         case personalDetails(AppBskyLexicon.Actor.PersonalDetailsPreferencesDefinition)
+
         /// The "Feed View" preference.
         case feedView(AppBskyLexicon.Actor.FeedViewPreferencesDefinition)
+
         /// The "Thread View" preference.
         case threadView(AppBskyLexicon.Actor.ThreadViewPreferencesDefinition)
+
         /// The "Interest View" preference.
         case interestViewPreferences(AppBskyLexicon.Actor.InterestViewPreferencesDefinition)
+
         /// The "Muted Words" preference.
         case mutedWordsPreferences(AppBskyLexicon.Actor.MutedWordsPreferencesDefinition)
+
         /// The Hidden Posts" preference.
         case hiddenPostsPreferences(AppBskyLexicon.Actor.HiddenPostsPreferencesDefinition)
 
@@ -95,16 +105,22 @@ public struct ATUnion {
 
     /// A reference containing the list of the status of a record.
     public enum RecordViewUnion: Codable {
+
         /// A normal record type.
         case viewRecord(AppBskyLexicon.Embed.ViewRecord)
+
         /// A record that may not have been found.
         case viewNotFound(AppBskyLexicon.Embed.ViewNotFound)
+
         /// A record that may have been blocked.
         case viewBlocked(AppBskyLexicon.Embed.ViewBlocked)
+
         /// A generator view.
         case generatorView(AppBskyLexicon.Feed.GeneratorViewDefinition)
+
         /// A list view.
         case listView(AppBskyLexicon.Graph.ListViewDefinition)
+
         /// A labeler view.
         case labelerView(AppBskyLexicon.Labeler.LabelerViewDefinition)
 
@@ -152,8 +168,10 @@ public struct ATUnion {
 
     /// A reference containing the list of the types of compatible media.
     public enum MediaUnion: Codable {
+
         /// An image that will be embedded.
         case embedImages(AppBskyLexicon.Embed.ImagesDefinition)
+
         /// An external link that will be embedded.
         case embedExternal(AppBskyLexicon.Embed.ExternalDefinition)
 
@@ -185,8 +203,10 @@ public struct ATUnion {
 
     /// A reference containing the list of the types of compatible media that can be viewed.
     public enum MediaViewUnion: Codable {
+
         /// An image that's been embedded.
         case embedImagesView(AppBskyLexicon.Embed.ImagesView)
+
         /// An external link that's been embedded.
         case embedExternalView(AppBskyLexicon.Embed.ExternalView)
 
@@ -218,12 +238,16 @@ public struct ATUnion {
 
     /// A reference containing the list of the types of embeds.
     public enum EmbedViewUnion: Codable {
+
         /// The view of an external embed.
         case embedExternalView(AppBskyLexicon.Embed.ExternalView)
+
         /// The view of an image embed.
         case embedImagesView(AppBskyLexicon.Embed.ImagesView)
+
         /// The view of a record embed.
         case embedRecordView(AppBskyLexicon.Embed.RecordView)
+
         /// The view of a record embed alongside an embed of some compatible media.
         case embedRecordWithMediaView(AppBskyLexicon.Embed.RecordWithMediaView)
 
@@ -235,7 +259,7 @@ public struct ATUnion {
             } else if let value = try? container.decode(AppBskyLexicon.Embed.ImagesView.self) {
                 self = .embedImagesView(value)
             } else if let value = try? container.decode(AppBskyLexicon.Embed.RecordView.self) {
-                print("EmbedView.embedRecordView is about to be read.")
+//                print("EmbedView.embedRecordView is about to be read.")
                 self = .embedRecordView(value)
             } else if let value = try? container.decode(AppBskyLexicon.Embed.RecordWithMediaView.self) {
                 self = .embedRecordWithMediaView(value)
@@ -264,10 +288,13 @@ public struct ATUnion {
 
     /// A reference containing the list of the states of a post.
     public enum PostUnion: Codable {
+
         /// The view of a post.
         case postView(AppBskyLexicon.Feed.PostViewDefinition)
+
         /// The view of a post that may not have been found.
         case notFoundPost(AppBskyLexicon.Feed.NotFoundPostDefinition)
+
         /// The view of a post that's been blocked by the post author.
         case blockedPost(AppBskyLexicon.Feed.BlockedPostDefinition)
 
@@ -303,10 +330,13 @@ public struct ATUnion {
 
     /// A reference containing the list of the states of a post.
     public indirect enum ThreadPostUnion: Codable {
+
         /// The view of a post thread.
         case threadViewPost(AppBskyLexicon.Feed.ThreadViewPostDefinition)
+
         /// The view of a post that may not have been found.
         case notFoundPost(AppBskyLexicon.Feed.NotFoundPostDefinition)
+
         /// The view of a post that's been blocked by the post author.
         case blockedPost(AppBskyLexicon.Feed.BlockedPostDefinition)
 
@@ -342,10 +372,13 @@ public struct ATUnion {
 
     /// A reference containing the list of the state of a post thread.
     public enum FeedGetPostThreadUnion: Codable {
+
         /// A post thread.
         case threadViewPost(AppBskyLexicon.Feed.ThreadViewPostDefinition)
+
         /// The post thread wasn't found.
         case notFoundPost(AppBskyLexicon.Feed.NotFoundPostDefinition)
+
         /// The post thread was made by someone who blocked the user account.
         case blockedPost(AppBskyLexicon.Feed.BlockedPostDefinition)
 
@@ -379,8 +412,58 @@ public struct ATUnion {
         }
     }
 
+    /// A reference containing the list of types of embeds.
+    public enum EmbedUnion: Codable {
+
+        /// An image embed.
+        case images(AppBskyLexicon.Embed.ImagesDefinition)
+
+        /// An external embed.
+        case external(AppBskyLexicon.Embed.ExternalDefinition)
+
+        /// A record embed.
+        case record(AppBskyLexicon.Embed.RecordDefinition)
+
+        /// A embed with both a record and some compatible media.
+        case recordWithMedia(AppBskyLexicon.Embed.RecordWithMediaDefinition)
+
+        public init(from decoder: Decoder) throws {
+            let container = try decoder.singleValueContainer()
+
+            if let imagesValue = try? container.decode(AppBskyLexicon.Embed.ImagesDefinition.self) {
+                self = .images(imagesValue)
+            } else if let externalValue = try? container.decode(AppBskyLexicon.Embed.ExternalDefinition.self) {
+                self = .external(externalValue)
+            } else if let recordValue = try? container.decode(AppBskyLexicon.Embed.RecordDefinition.self) {
+                self = .record(recordValue)
+            } else if let recordWithMediaValue = try? container.decode(AppBskyLexicon.Embed.RecordWithMediaDefinition.self) {
+                self = .recordWithMedia(recordWithMediaValue)
+            } else {
+                throw DecodingError.typeMismatch(
+                    EmbedUnion.self, DecodingError.Context(
+                        codingPath: decoder.codingPath, debugDescription: "Unknown EmbedUnion type"))
+            }
+        }
+
+        public func encode(to encoder: Encoder) throws {
+            var container = encoder.singleValueContainer()
+
+            switch self {
+                case .images(let imagesValue):
+                    try container.encode(imagesValue)
+                case .external(let externalValue):
+                    try container.encode(externalValue)
+                case .record(let recordValue):
+                    try container.encode(recordValue)
+                case .recordWithMedia(let recordWithMediaValue):
+                    try container.encode(recordWithMediaValue)
+            }
+        }
+    }
+
     /// A reference containing the list of user-defined labels.
     public enum FeedLabelUnion: Codable {
+
         /// An array of user-defined labels.
         case selfLabels(SelfLabels)
 
@@ -405,9 +488,55 @@ public struct ATUnion {
         }
     }
 
+    /// A reference containing the list of thread rules for a post.
+    public enum ThreadgateUnion: Codable {
+
+        /// The rule which states that anyone who the user account has mentioned can interact.
+        case mentionRule(AppBskyLexicon.Feed.FeedThreadgateListRule)
+
+        /// The rule which states that anyone the user account is following can interact.
+        case followingRule(AppBskyLexicon.Feed.FeedThreadgateFollowingRule)
+
+        /// The rule which states that anyone within a list can interact.
+        case listRule(AppBskyLexicon.Feed.FeedThreadgateListRule)
+
+        public init(from decoder: Decoder) throws {
+            let container = try decoder.singleValueContainer()
+
+            if let value = try? container.decode(AppBskyLexicon.Feed.FeedThreadgateListRule.self) {
+                self = .mentionRule(value)
+            } else if let value = try? container.decode(AppBskyLexicon.Feed.FeedThreadgateFollowingRule.self) {
+                self = .followingRule(value)
+            } else if let value = try? container.decode(AppBskyLexicon.Feed.FeedThreadgateListRule.self) {
+                self = .listRule(value)
+            } else {
+                throw DecodingError.typeMismatch(
+                    EmbedViewUnion.self, DecodingError.Context(
+                        codingPath: decoder.codingPath, debugDescription: "Unknown ThreadgateUnion type"))
+            }
+        }
+
+        public func encode(to encoder: Encoder) throws {
+            var container = encoder.singleValueContainer()
+
+            switch self {
+                case .mentionRule(let embedView):
+                    try container.encode(embedView)
+                case .followingRule(let embedView):
+                    try container.encode(embedView)
+                case .listRule(let embedView):
+                    try container.encode(embedView)
+            }
+        }
+    }
+
     /// A reference containing the list of relationships of multiple user accounts.
     public enum GraphRelationshipUnion: Codable {
+
+        /// The relationship between two user accounts.
         case relationship(AppBskyLexicon.Graph.RelationshipDefinition)
+
+        /// Indicates the user account is not found.
         case notFoundActor(AppBskyLexicon.Graph.NotFoundActorDefinition)
 
         public init(from decoder: Decoder) throws {
@@ -438,8 +567,10 @@ public struct ATUnion {
 
     /// A reference containing the list of labeler views.
     public enum LabelerViewUnion: Codable {
+
         /// A labeler view.
         case labelerView(AppBskyLexicon.Labeler.LabelerViewDefinition)
+
         /// A detailed view of a labeler.
         case labelerViewDetailed(AppBskyLexicon.Labeler.LabelerViewDetailedDefinition)
 
@@ -471,10 +602,13 @@ public struct ATUnion {
 
     /// A reference containing the list of feature types.
     public enum FeatureUnion: Codable {
+
         /// The Mention feature.
         case mention(AppBskyLexicon.RichText.Mention)
+
         /// The Link feature.
         case link(AppBskyLexicon.RichText.Link)
+
         /// The Tag feature.
         case tag(AppBskyLexicon.RichText.Tag)
 
@@ -512,6 +646,8 @@ public struct ATUnion {
 
     /// A reference containing the list of message embeds.
     public enum MessageEmbedUnion: Codable {
+
+        /// A record within the embed.
         case record(AppBskyLexicon.Embed.RecordDefinition)
 
         public init(from decoder: any Decoder) throws {
@@ -538,7 +674,11 @@ public struct ATUnion {
 
     /// A reference containing the list of messages.
     public enum MessageViewUnion: Codable {
+
+        /// A message view.
         case messageView(ChatBskyLexicon.Conversation.MessageView)
+
+        /// A deleted message view.
         case deletedMessageView(ChatBskyLexicon.Conversation.DeleteMessageView)
 
         public init(from decoder: any Decoder) throws {
@@ -569,9 +709,17 @@ public struct ATUnion {
 
     /// A reference containing the list of message logs.
     public enum MessageLogsUnion: Codable {
+
+        /// A log entry for beginning the coversation.
         case logBeginConversation(ChatBskyLexicon.Conversation.LogBeginConversation)
+
+        /// A log entry for leaving the conversation.
         case logLeaveConversation(ChatBskyLexicon.Conversation.LogLeaveConversation)
+
+        /// A log entry for creating a message.
         case logCreateMessage(ChatBskyLexicon.Conversation.LogCreateMessage)
+
+        /// A log entry for deleting a message.
         case logDeleteMessage(ChatBskyLexicon.Conversation.LogDeleteMessage)
 
         public init(from decoder: any Decoder) throws {
@@ -607,4 +755,373 @@ public struct ATUnion {
             }
         }
     }
+
+    /// A reference containing the list of event views.
+    public enum AdminEventViewUnion: Codable {
+
+        /// A takedown event.
+        case moderationEventTakedown(OzoneModerationEventTakedown)
+
+        /// A reverse takedown event.
+        case moderationEventReverseTakedown(OzoneModerationEventReverseTakedown)
+
+        /// A comment event.
+        case moderationEventComment(OzoneModerationEventComment)
+
+        /// A report event.
+        case moderationEventReport(OzoneModerationEventReport)
+
+        /// A label event.
+        case moderationEventLabel(OzoneModerationEventLabel)
+
+        /// An acknowledgement event.
+        case moderationEventAcknowledge(OzoneModerationEventAcknowledge)
+
+        /// An escalation event.
+        case moderationEventEscalate(OzoneModerationEventEscalate)
+
+        /// A mute event.
+        case moderationEventMute(OzoneModerationEventMute)
+
+        /// An unmute event.
+        case moderationEventUnmute(OzoneModerationEventUnmute)
+
+        /// A mute reporter event.
+        case moderationEventMuteReporter(OzoneModerationEventMuteReporter)
+
+        /// An unmute reporter event.
+        case moderationEventUnmuteReporter(OzoneModerationEventUnmuteReporter)
+
+        /// An email event.
+        case moderationEventEmail(OzoneModerationEventEmail)
+
+        /// A resolve appeal event.
+        case moderationEventResolveAppeal(OzoneModerationEventResolveAppeal)
+
+        /// A diversion event.
+        case moderationEventDivert(OzoneModerationEventDivert)
+
+        public init(from decoder: Decoder) throws {
+            let container = try decoder.singleValueContainer()
+
+            if let value = try? container.decode(OzoneModerationEventTakedown.self) {
+                self = .moderationEventTakedown(value)
+            } else if let value = try? container.decode(OzoneModerationEventReverseTakedown.self) {
+                self = .moderationEventReverseTakedown(value)
+            } else if let value = try? container.decode(OzoneModerationEventComment.self) {
+                self = .moderationEventComment(value)
+            } else if let value = try? container.decode(OzoneModerationEventReport.self) {
+                self = .moderationEventReport(value)
+            } else if let value = try? container.decode(OzoneModerationEventLabel.self) {
+                self = .moderationEventLabel(value)
+            } else if let value = try? container.decode(OzoneModerationEventAcknowledge.self) {
+                self = .moderationEventAcknowledge(value)
+            } else if let value = try? container.decode(OzoneModerationEventEscalate.self) {
+                self = .moderationEventEscalate(value)
+            } else if let value = try? container.decode(OzoneModerationEventMute.self) {
+                self = .moderationEventMute(value)
+            } else if let value = try? container.decode(OzoneModerationEventUnmute.self) {
+                self = .moderationEventUnmute(value)
+            } else if let value = try? container.decode(OzoneModerationEventMuteReporter.self) {
+                self = .moderationEventMuteReporter(value)
+            } else if let value = try? container.decode(OzoneModerationEventUnmuteReporter.self) {
+                self = .moderationEventUnmuteReporter(value)
+            } else if let value = try? container.decode(OzoneModerationEventEmail.self) {
+                self = .moderationEventEmail(value)
+            } else if let value = try? container.decode(OzoneModerationEventResolveAppeal.self) {
+                self = .moderationEventResolveAppeal(value)
+            } else if let value = try? container.decode(OzoneModerationEventDivert.self) {
+                self = .moderationEventDivert(value)
+            } else {
+                throw DecodingError.typeMismatch(
+                    AdminEventViewUnion.self, DecodingError.Context(
+                        codingPath: decoder.codingPath, debugDescription: "Unknown EventViewUnion type"))
+            }
+        }
+
+        public func encode(to encoder: Encoder) throws {
+            var container = encoder.singleValueContainer()
+
+            switch self {
+                case .moderationEventTakedown(let moderationEventTakedown):
+                    try container.encode(moderationEventTakedown)
+                case .moderationEventReverseTakedown(let moderationEventReverseTakedown):
+                    try container.encode(moderationEventReverseTakedown)
+                case .moderationEventComment(let moderationEventComment):
+                    try container.encode(moderationEventComment)
+                case .moderationEventReport(let moderationEventReport):
+                    try container.encode(moderationEventReport)
+                case .moderationEventLabel(let moderationEventLabel):
+                    try container.encode(moderationEventLabel)
+                case .moderationEventAcknowledge(let moderationEventAcknowledge):
+                    try container.encode(moderationEventAcknowledge)
+                case .moderationEventEscalate(let moderationEventEscalate):
+                    try container.encode(moderationEventEscalate)
+                case .moderationEventMute(let moderationEventMute):
+                    try container.encode(moderationEventMute)
+                case .moderationEventUnmute(let moderationEventUnmute):
+                    try container.encode(moderationEventUnmute)
+                case .moderationEventMuteReporter(let moderationEventMuteReporter):
+                    try container.encode(moderationEventMuteReporter)
+                case .moderationEventUnmuteReporter(let moderationEventUnmuteReporter):
+                    try container.encode(moderationEventUnmuteReporter)
+                case .moderationEventEmail(let moderationEventEmail):
+                    try container.encode(moderationEventEmail)
+                case .moderationEventResolveAppeal(let moderationEventResolveAppeal):
+                    try container.encode(moderationEventResolveAppeal)
+                case .moderationEventDivert(let moderationEventDivert):
+                    try container.encode(moderationEventDivert)
+            }
+        }
+    }
+
+    // Create the custom init and encode methods.
+    /// A reference containing the list of repository references.
+    public enum RepositoryReferencesUnion: Codable {
+
+        /// A repository reference.
+        case repositoryReference(AdminRepositoryReference)
+
+        /// A strong reference.
+        case strongReference(StrongReference)
+
+        public init(from decoder: Decoder) throws {
+            let container = try decoder.singleValueContainer()
+
+            if let value = try? container.decode(AdminRepositoryReference.self) {
+                self = .repositoryReference(value)
+            } else if let value = try? container.decode(StrongReference.self) {
+                self = .strongReference(value)
+            } else {
+                throw DecodingError.typeMismatch(
+                    ActorPreferenceUnion.self, DecodingError.Context(
+                        codingPath: decoder.codingPath, debugDescription: "Unknown RepositoryReferencesUnion type"))
+            }
+        }
+
+        public func encode(to encoder: Encoder) throws {
+            var container = encoder.singleValueContainer()
+
+            switch self {
+                case .repositoryReference(let repositoryReference):
+                    try container.encode(repositoryReference)
+                case .strongReference(let strongReference):
+                    try container.encode(strongReference)
+            }
+        }
+    }
+
+    // Create the custom init and encode methods.
+    /// A reference containing the list of moderator events.
+    public enum EventViewDetailUnion: Codable {
+
+        /// A takedown event.
+        case moderationEventTakedown(OzoneModerationEventTakedown)
+
+        /// A reverse takedown event.
+        case moderationEventReverseTakedown(OzoneModerationEventReverseTakedown)
+
+        /// A comment event.
+        case moderationEventComment(OzoneModerationEventComment)
+
+        /// A report event.
+        case moderationEventReport(OzoneModerationEventReport)
+
+        /// A label event.
+        case moderationEventLabel(OzoneModerationEventLabel)
+
+        /// An acknowledgment event.
+        case moderationEventAcknowledge(OzoneModerationEventAcknowledge)
+
+        /// An escalation event.
+        case moderationEventEscalate(OzoneModerationEventEscalate)
+
+        /// A mute event.
+        case moderationEventMute(OzoneModerationEventMute)
+
+        /// A resolve appeal event.
+        case moderationEventResolveAppeal(OzoneModerationEventResolveAppeal)
+
+        public init(from decoder: Decoder) throws {
+            let container = try decoder.singleValueContainer()
+
+            if let value = try? container.decode(OzoneModerationEventTakedown.self) {
+                self = .moderationEventTakedown(value)
+            } else if let value = try? container.decode(OzoneModerationEventReverseTakedown.self) {
+                self = .moderationEventReverseTakedown(value)
+            } else if let value = try? container.decode(OzoneModerationEventComment.self) {
+                self = .moderationEventComment(value)
+            } else if let value = try? container.decode(OzoneModerationEventReport.self) {
+                self = .moderationEventReport(value)
+            } else if let value = try? container.decode(OzoneModerationEventLabel.self) {
+                self = .moderationEventLabel(value)
+            } else if let value = try? container.decode(OzoneModerationEventAcknowledge.self) {
+                self = .moderationEventAcknowledge(value)
+            } else if let value = try? container.decode(OzoneModerationEventEscalate.self) {
+                self = .moderationEventEscalate(value)
+            } else if let value = try? container.decode(OzoneModerationEventMute.self) {
+                self = .moderationEventMute(value)
+            } else if let value = try? container.decode(OzoneModerationEventResolveAppeal.self) {
+                self = .moderationEventResolveAppeal(value)
+            } else {
+                throw DecodingError.typeMismatch(
+                    ActorPreferenceUnion.self, DecodingError.Context(
+                        codingPath: decoder.codingPath, debugDescription: "Unknown EventViewDetailUnion type"))
+            }
+        }
+
+        public func encode(to encoder: Encoder) throws {
+            var container = encoder.singleValueContainer()
+
+            switch self {
+                case .moderationEventTakedown(let moderationEventTakedown):
+                    try container.encode(moderationEventTakedown)
+                case .moderationEventReverseTakedown(let moderationEventDetail):
+                    try container.encode(moderationEventDetail)
+                case .moderationEventComment(let moderationEventComment):
+                    try container.encode(moderationEventComment)
+                case .moderationEventReport(let moderationEventReport):
+                    try container.encode(moderationEventReport)
+                case .moderationEventLabel(let moderationEventLabel):
+                    try container.encode(moderationEventLabel)
+                case .moderationEventAcknowledge(let moderationEventAcknowledge):
+                    try container.encode(moderationEventAcknowledge)
+                case .moderationEventEscalate(let moderationEventEscalate):
+                    try container.encode(moderationEventEscalate)
+                case .moderationEventMute(let moderationEventMute):
+                    try container.encode(moderationEventMute)
+                case .moderationEventResolveAppeal(let moderationEventResolveAppeal):
+                    try container.encode(moderationEventResolveAppeal)
+            }
+        }
+    }
+
+    // Create the custom init and encode methods.
+    /// A reference containing the list of the types of repository or record views.
+    public enum RepositoryViewUnion: Codable {
+
+        /// A normal repository view.
+        case repositoryView(AdminReportView)
+
+        /// A repository view that may not have been found.
+        case repositoryViewNotFound(OzoneModerationRepositoryViewNotFound)
+
+        /// A normal record.
+        case recordView(OzoneModerationRecordView)
+
+        /// A record view that may not have been found.
+        case recordViewNotFound(OzoneModerationRecordViewNotFound)
+
+        public init(from decoder: Decoder) throws {
+            let container = try decoder.singleValueContainer()
+
+            if let value = try? container.decode(AdminReportView.self) {
+                self = .repositoryView(value)
+            } else if let value = try? container.decode(OzoneModerationRepositoryViewNotFound.self) {
+                self = .repositoryViewNotFound(value)
+            } else if let value = try? container.decode(OzoneModerationRecordView.self) {
+                self = .recordView(value)
+            } else if let value = try? container.decode(OzoneModerationRecordViewNotFound.self) {
+                self = .recordViewNotFound(value)
+            } else {
+                throw DecodingError.typeMismatch(
+                    ActorPreferenceUnion.self, DecodingError.Context(
+                        codingPath: decoder.codingPath, debugDescription: "Unknown RepositoryViewUnion type"))
+            }
+        }
+
+        public func encode(to encoder: Encoder) throws {
+            var container = encoder.singleValueContainer()
+
+            switch self {
+                case .repositoryView(let repositoryView):
+                    try container.encode(repositoryView)
+                case .repositoryViewNotFound(let repositoryViewNotFound):
+                    try container.encode(repositoryViewNotFound)
+                case .recordView(let recordView):
+                    try container.encode(recordView)
+                case .recordViewNotFound(let recordViewNotFound):
+                    try container.encode(recordViewNotFound)
+            }
+        }
+    }
+
+    /// A reference containing the list of the types of media details.
+    public enum MediaDetailUnion: Codable {
+
+        /// The details for an image.
+        case mediaImageDetails(OzoneModerationMediaImageDetails)
+
+        /// The details for a video.
+        case mediaVideoDetails(OzoneModerationMediaVideoDetails)
+
+        public init(from decoder: Decoder) throws {
+            let container = try decoder.singleValueContainer()
+
+            if let value = try? container.decode(OzoneModerationMediaImageDetails.self) {
+                self = .mediaImageDetails(value)
+            } else if let value = try? container.decode(OzoneModerationMediaVideoDetails.self) {
+                self = .mediaVideoDetails(value)
+            } else {
+                throw DecodingError.typeMismatch(
+                    ActorPreferenceUnion.self, DecodingError.Context(
+                        codingPath: decoder.codingPath, debugDescription: "Unknown MediaDetailUnion type"))
+            }
+        }
+
+        public func encode(to encoder: Encoder) throws {
+            var container = encoder.singleValueContainer()
+
+            switch self {
+                case .mediaImageDetails(let mediaImageDetails):
+                    try container.encode(mediaImageDetails)
+                case .mediaVideoDetails(let mediaVideoDetails):
+                    try container.encode(mediaVideoDetails)
+            }
+        }
+    }
+
+    /// A reference containing the list of write operations.
+    public enum ApplyWritesUnion: Codable {
+
+        /// A "Create" write operation.
+        case create(RepoApplyWritesCreate)
+
+        /// An "Update" write operation.
+        case update(RepoApplyWritesUpdate)
+
+        /// A "Delete" write operation.
+        case delete(RepoApplyWritesDelete)
+
+        public init(from decoder: Decoder) throws {
+            let container = try decoder.singleValueContainer()
+
+            if let value = try? container.decode(RepoApplyWritesCreate.self) {
+                self = .create(value)
+            } else if let value = try? container.decode(RepoApplyWritesUpdate.self) {
+                self = .update(value)
+            } else if let value = try? container.decode(RepoApplyWritesDelete.self) {
+                self = .delete(value)
+            } else {
+                throw DecodingError.typeMismatch(
+                    EmbedViewUnion.self, DecodingError.Context(
+                        codingPath: decoder.codingPath, debugDescription: "Unknown ApplyWritesUnion type"))
+            }
+        }
+
+        public func encode(to encoder: Encoder) throws {
+            var container = encoder.singleValueContainer()
+
+            switch self {
+                case .create(let embedView):
+                    try container.encode(embedView)
+                case .update(let embedView):
+                    try container.encode(embedView)
+                case .delete(let embedView):
+                    try container.encode(embedView)
+            }
+        }
+    }
+
+    
 }

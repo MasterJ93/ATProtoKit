@@ -29,7 +29,7 @@ extension AppBskyLexicon.Feed {
         public let record: UnknownType
 
         /// An embed view of a specific type. Optional.
-        public var embed: EmbedViewUnion?
+        public var embed: ATUnion.EmbedViewUnion?
 
         /// The number of replies in the post. Optional.
         public var replyCount: Int?
@@ -52,7 +52,7 @@ extension AppBskyLexicon.Feed {
         /// The ruleset of who can reply to the post. Optional.
         public var threadgate: ThreadgateViewDefinition?
 
-        public init(postURI: String, cidHash: String, author: AppBskyLexicon.Actor.ProfileViewBasicDefinition, record: UnknownType, embed: EmbedViewUnion?, replyCount: Int?,
+        public init(postURI: String, cidHash: String, author: AppBskyLexicon.Actor.ProfileViewBasicDefinition, record: UnknownType, embed: ATUnion.EmbedViewUnion?, replyCount: Int?,
                     repostCount: Int?, likeCount: Int?, indexedAt: Date, viewer: ViewerStateDefinition?, labels: [Label]?, threadgate: ThreadgateViewDefinition?) {
             self.postURI = postURI
             self.cidHash = cidHash
@@ -75,7 +75,7 @@ extension AppBskyLexicon.Feed {
             self.cidHash = try container.decode(String.self, forKey: .cidHash)
             self.author = try container.decode(AppBskyLexicon.Actor.ProfileViewBasicDefinition.self, forKey: .author)
             self.record = try container.decode(UnknownType.self, forKey: .record)
-            self.embed = try container.decodeIfPresent(EmbedViewUnion.self, forKey: .embed)
+            self.embed = try container.decodeIfPresent(ATUnion.EmbedViewUnion.self, forKey: .embed)
             self.replyCount = try container.decodeIfPresent(Int.self, forKey: .replyCount)
             self.repostCount = try container.decodeIfPresent(Int.self, forKey: .repostCount)
             self.likeCount = try container.decodeIfPresent(Int.self, forKey: .likeCount)
@@ -211,14 +211,14 @@ extension AppBskyLexicon.Feed {
     public struct ReplyReferenceDefinition: Codable {
 
         /// The original post of the thread.
-        public let root: PostUnion
+        public let root: ATUnion.PostUnion
 
         // TODO: Fix up the note's message.
         /// The direct post that the user's post is replying to.
         ///
         /// - Note: If `parent` and `root` are identical, the post is a direct reply to the
         /// original post of the thread.
-        public let parent: PostUnion
+        public let parent: ATUnion.PostUnion
 
         /// The author of the parent's post.
         ///
@@ -276,10 +276,10 @@ extension AppBskyLexicon.Feed {
         public let post: PostViewDefinition
 
         /// The direct post that the user's post is replying to. Optional.
-        public var parent: ThreadPostUnion?
+        public var parent: ATUnion.ThreadPostUnion?
 
         /// An array of posts of various types. Optional.
-        public var replies: [ThreadPostUnion]?
+        public var replies: [ATUnion.ThreadPostUnion]?
     }
 
     /// A data model for a definition of a post that may not have been found.

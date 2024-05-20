@@ -16,6 +16,7 @@ extension AppBskyLexicon.Actor {
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/actor/searchActorsTypeahead.json
     public struct ActorSearchActorsTypeaheadOutput: Codable {
+
         /// An array of actors.
         public let actors: [ActorProfileViewBasic]
     }

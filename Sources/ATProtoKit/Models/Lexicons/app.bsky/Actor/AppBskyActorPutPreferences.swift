@@ -17,7 +17,7 @@ extension AppBskyLexicon.Actor {
         public let type: String = "app.bsky.actor.putPreferences"
 
         /// A list of preferences by the user.
-        public let preferences: [ActorPreferenceUnion]
+        public let preferences: [ATUnion.ActorPreferenceUnion]
         
         enum CodingKeys: String, CodingKey {
             case type = "$type"
