@@ -14,7 +14,7 @@ extension ChatBskyLexicon.Conversation {
     /// - SeeAlso: This is based on the [`chat.bsky.convo.defs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/chat/bsky/convo/defs.json
-    public struct MessageReference: Codable {
+    public struct MessageReferenceDefinition: Codable {
 
         /// The decentralized identifier (DID) of the message.
         public let messageDID: String
@@ -22,9 +22,13 @@ extension ChatBskyLexicon.Conversation {
         /// The ID of the message.
         public let messageID: String
 
+        /// The ID of the conversation.
+        public let conversationID: String
+
         enum CodingKeys: String, CodingKey {
             case messageDID = "did"
             case messageID = "messageId"
+            case conversationID = "convoId"
         }
     }
 
@@ -33,10 +37,7 @@ extension ChatBskyLexicon.Conversation {
     /// - SeeAlso: This is based on the [`chat.bsky.convo.defs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/chat/bsky/convo/defs.json
-    public struct Message: Codable {
-        
-        /// The ID of the message. Optional.
-        public let messageID: String?
+    public struct MessageInputDefinition: Codable {
 
         /// The message text itself.
         ///
@@ -55,7 +56,6 @@ extension ChatBskyLexicon.Conversation {
         public func encode(to encoder: any Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
 
-            try container.encodeIfPresent(self.messageID, forKey: .messageID)
             // Truncate `tags` to 10000 characters before encoding
             // `maxGraphemes`'s limit is 1000, but `String.count` should respect that limit implictly
             try truncatedEncode(self.text, withContainer: &container, forKey: .text, upToLength: 1_000)
@@ -64,7 +64,6 @@ extension ChatBskyLexicon.Conversation {
         }
 
         enum CodingKeys: String, CodingKey {
-            case messageID = "id"
             case text
             case facets
             case embeds = "embed"
@@ -76,7 +75,7 @@ extension ChatBskyLexicon.Conversation {
     /// - SeeAlso: This is based on the [`chat.bsky.convo.defs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/chat/bsky/convo/defs.json
-    public struct MessageView: Codable {
+    public struct MessageViewDefinition: Codable {
 
         /// The ID of the message. Optional.
         public let messageID: String?
@@ -156,8 +155,8 @@ extension ChatBskyLexicon.Conversation {
     /// - SeeAlso: This is based on the [`chat.bsky.convo.defs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/chat/bsky/convo/defs.json
-    public struct DeleteMessageView: Codable {
-        
+    public struct DeleteMessageViewDefinition: Codable {
+
         /// The ID of the message. Optional.
         public let messageID: String?
 
@@ -208,8 +207,8 @@ extension ChatBskyLexicon.Conversation {
     /// - SeeAlso: This is based on the [`chat.bsky.convo.defs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/chat/bsky/convo/defs.json
-    public struct MessageViewSender: Codable {
-        
+    public struct MessageViewSenderDefinition: Codable {
+
         /// The decentralized identifier (DID) of the message.
         public let messageDID: String
 
@@ -223,7 +222,7 @@ extension ChatBskyLexicon.Conversation {
     /// - SeeAlso: This is based on the [`chat.bsky.convo.defs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/chat/bsky/convo/defs.json
-    public struct ConversationView: Codable {
+    public struct ConversationViewDefinition: Codable {
 
         /// The ID of the conversation.
         public let conversationID: String
@@ -258,7 +257,7 @@ extension ChatBskyLexicon.Conversation {
     /// - SeeAlso: This is based on the [`chat.bsky.convo.defs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/chat/bsky/convo/defs.json
-    public struct LogBeginConversation: Codable {
+    public struct LogBeginConversationDefinition: Codable {
 
         /// The revision of the log.
         public let revision: String
@@ -277,7 +276,7 @@ extension ChatBskyLexicon.Conversation {
     /// - SeeAlso: This is based on the [`chat.bsky.convo.defs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/chat/bsky/convo/defs.json
-    public struct LogLeaveConversation: Codable {
+    public struct LogLeaveConversationDefinition: Codable {
 
         /// The revision of the log.
         public let revision: String
@@ -296,7 +295,7 @@ extension ChatBskyLexicon.Conversation {
     /// - SeeAlso: This is based on the [`chat.bsky.convo.defs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/chat/bsky/convo/defs.json
-    public struct LogCreateMessage: Codable {
+    public struct LogCreateMessageDefinition: Codable {
 
         /// The revision of the log.
         public let revision: String
@@ -319,7 +318,7 @@ extension ChatBskyLexicon.Conversation {
     /// - SeeAlso: This is based on the [`chat.bsky.convo.defs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/chat/bsky/convo/defs.json
-    public struct LogDeleteMessage: Codable {
+    public struct LogDeleteMessageDefinition: Codable {
 
         /// The revision of the log.
         public let revision: String

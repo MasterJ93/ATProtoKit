@@ -20,7 +20,7 @@ extension ChatBskyLexicon.Conversation {
         public let cursor: String
 
         /// An array of conversations.
-        public let conversations: [ConversationView]
+        public let conversations: [ConversationViewDefinition]
 
         enum CodingKeys: String, CodingKey {
             case cursor

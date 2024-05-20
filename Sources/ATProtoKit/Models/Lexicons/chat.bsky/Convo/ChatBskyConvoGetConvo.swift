@@ -17,7 +17,7 @@ extension ChatBskyLexicon.Conversation {
     public struct GetConversationOutput: Codable {
 
         /// The conversation itself.
-        public let conversation: ConversationView
+        public let conversation: ConversationViewDefinition
 
         enum CodingKeys: String, CodingKey {
             case conversation = "convo"

@@ -32,7 +32,7 @@ extension ChatBskyLexicon.Conversation {
     public struct MuteConversationOutput: Codable {
         
         /// The conversation itself.
-        public let conversation: [ConversationView]
+        public let conversation: [ConversationViewDefinition]
 
         enum CodingKeys: String, CodingKey {
             case conversation = "convo"

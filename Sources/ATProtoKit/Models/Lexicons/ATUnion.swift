@@ -676,17 +676,17 @@ public struct ATUnion {
     public enum MessageViewUnion: Codable {
 
         /// A message view.
-        case messageView(ChatBskyLexicon.Conversation.MessageView)
+        case messageView(ChatBskyLexicon.Conversation.MessageViewDefinition)
 
         /// A deleted message view.
-        case deletedMessageView(ChatBskyLexicon.Conversation.DeleteMessageView)
+        case deletedMessageView(ChatBskyLexicon.Conversation.DeleteMessageViewDefinition)
 
         public init(from decoder: any Decoder) throws {
             let container = try decoder.singleValueContainer()
 
-            if let value = try? container.decode(ChatBskyLexicon.Conversation.MessageView.self) {
+            if let value = try? container.decode(ChatBskyLexicon.Conversation.MessageViewDefinition.self) {
                 self = .messageView(value)
-            } else if let value = try? container.decode(ChatBskyLexicon.Conversation.DeleteMessageView.self) {
+            } else if let value = try? container.decode(ChatBskyLexicon.Conversation.DeleteMessageViewDefinition.self) {
                 self = .deletedMessageView(value)
             } else {
                 throw DecodingError.typeMismatch(
@@ -711,27 +711,27 @@ public struct ATUnion {
     public enum MessageLogsUnion: Codable {
 
         /// A log entry for beginning the coversation.
-        case logBeginConversation(ChatBskyLexicon.Conversation.LogBeginConversation)
+        case logBeginConversation(ChatBskyLexicon.Conversation.LogBeginConversationDefinition)
 
         /// A log entry for leaving the conversation.
-        case logLeaveConversation(ChatBskyLexicon.Conversation.LogLeaveConversation)
+        case logLeaveConversation(ChatBskyLexicon.Conversation.LogLeaveConversationDefinition)
 
         /// A log entry for creating a message.
-        case logCreateMessage(ChatBskyLexicon.Conversation.LogCreateMessage)
+        case logCreateMessage(ChatBskyLexicon.Conversation.LogCreateMessageDefinition)
 
         /// A log entry for deleting a message.
-        case logDeleteMessage(ChatBskyLexicon.Conversation.LogDeleteMessage)
+        case logDeleteMessage(ChatBskyLexicon.Conversation.LogDeleteMessageDefinition)
 
         public init(from decoder: any Decoder) throws {
             let container = try decoder.singleValueContainer()
 
-            if let value = try? container.decode(ChatBskyLexicon.Conversation.LogBeginConversation.self) {
+            if let value = try? container.decode(ChatBskyLexicon.Conversation.LogBeginConversationDefinition.self) {
                 self = .logBeginConversation(value)
-            } else if let value = try? container.decode(ChatBskyLexicon.Conversation.LogLeaveConversation.self) {
+            } else if let value = try? container.decode(ChatBskyLexicon.Conversation.LogLeaveConversationDefinition.self) {
                 self = .logLeaveConversation(value)
-            } else if let value = try? container.decode(ChatBskyLexicon.Conversation.LogCreateMessage.self) {
+            } else if let value = try? container.decode(ChatBskyLexicon.Conversation.LogCreateMessageDefinition.self) {
                 self = .logCreateMessage(value)
-            } else if let value = try? container.decode(ChatBskyLexicon.Conversation.LogDeleteMessage.self) {
+            } else if let value = try? container.decode(ChatBskyLexicon.Conversation.LogDeleteMessageDefinition.self) {
                 self = .logDeleteMessage(value)
             } else {
                 throw DecodingError.typeMismatch(
@@ -871,6 +871,47 @@ public struct ATUnion {
                     try container.encode(moderationEventResolveAppeal)
                 case .moderationEventDivert(let moderationEventDivert):
                     try container.encode(moderationEventDivert)
+            }
+        }
+    }
+
+    /// A reference containing the list of repository references.
+    public enum AdminGetSubjectStatusUnion: Codable {
+
+        /// A repository reference.
+        case repositoryReference(AdminRepositoryReference)
+
+        /// A strong reference.
+        case strongReference(StrongReference)
+        /// A repository blob reference.
+        case repoBlobReference(AdminRepoBlobReference)
+
+        public init(from decoder: Decoder) throws {
+            let container = try decoder.singleValueContainer()
+
+            if let value = try? container.decode(AdminRepositoryReference.self) {
+                self = .repositoryReference(value)
+            } else if let value = try? container.decode(StrongReference.self) {
+                self = .strongReference(value)
+            } else if let value = try? container.decode(AdminRepoBlobReference.self) {
+                self = .repoBlobReference(value)
+            } else {
+                throw DecodingError.typeMismatch(
+                    AdminEventViewUnion.self, DecodingError.Context(
+                        codingPath: decoder.codingPath, debugDescription: "UnknownAdminGetSubjectStatusUnion type"))
+            }
+        }
+
+        public func encode(to encoder: Encoder) throws {
+            var container = encoder.singleValueContainer()
+
+            switch self {
+                case .repositoryReference(let repositoryReference):
+                    try container.encode(repositoryReference)
+                case .strongReference(let strongReference):
+                    try container.encode(strongReference)
+                case .repoBlobReference(let repoBlobReference):
+                    try container.encode(repoBlobReference)
             }
         }
     }

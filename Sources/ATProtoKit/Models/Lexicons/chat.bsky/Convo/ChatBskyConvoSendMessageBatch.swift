@@ -18,6 +18,12 @@ extension ChatBskyLexicon.Conversation {
 
         /// An array of messages.
         public let items: [MessageBatchItem]
+
+        public func encode(to encoder: any Encoder) throws {
+            var container = encoder.container(keyedBy: CodingKeys.self)
+
+            try truncatedEncode(self.items, withContainer: &container, forKey: .items, upToLength: 100)
+        }
     }
 
     /// The data model definition for the output of sending a message batch.
@@ -28,7 +34,7 @@ extension ChatBskyLexicon.Conversation {
     public struct SendMessageBatchOutput: Codable {
 
         /// An array of message views.
-        public let items: [MessageView]
+        public let items: [MessageViewDefinition]
     }
 
     /// A message batch object.
@@ -42,7 +48,7 @@ extension ChatBskyLexicon.Conversation {
         public let conversationID: String
 
         /// The message text itself.
-        public let message: Message
+        public let message: MessageInputDefinition
 
         enum CodingKeys: String, CodingKey {
             case conversationID = "convoId"

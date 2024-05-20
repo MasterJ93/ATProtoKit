@@ -36,6 +36,6 @@ extension ChatBskyLexicon.Conversation {
     public struct UpdateReadOutput: Codable {
 
         /// The conversation itself.
-        public let conversationView: ConversationView
+        public let conversationView: ConversationViewDefinition
     }
 }
