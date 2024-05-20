@@ -27,6 +27,9 @@ extension ComAtprotoLexicon {
     /// A group of lexicons within the `com.atproto.server` namespace.
     public struct Server {}
 
+    /// A group of lexicons within the `com.atproto.sync` namespace.
+    public struct Sync {}
+
     /// A group of lexicons within the `com.atproto.temp` namespace.
     public struct Temp {}
 }
