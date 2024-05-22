@@ -417,4 +417,7 @@ _TBD..._
     ```
     - If there’s a `return` statement in the `do-catch` block, or if the query method is in there, the request and response methods should be beside each other.
     - If any additional method calls are being made, put them beside `createRequest()` and `sendRequest()` if they're strongly related to them.
-        
+- In documentation, when referring to the following, you _must_ write them out exactly as shown:
+    - decentralized identifier (DID)
+    - content identifer (CID)
+    - Namespaced Identifier (NSID)
