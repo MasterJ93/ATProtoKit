@@ -91,7 +91,14 @@ public struct ATRecordTypeRegistry {
     /// `struct` that was found if there's a match.
     public static var recordRegistry = [String: ATRecordProtocol.Type]()
 
+    /// Indicates whether any Bluesky-related `ATRecordProtocol`-conforming `struct`s have been
+    /// added to ``recordRegistry``. Defaults to `false`.
+    ///
+    /// - Warning: Don't touch this property; this should only be used for ``ATProtoKit``.
+    public static var areBlueskyRecordsRegistered = false
+
     /// Initializes the registry with an array of record types.
+    ///
     /// - Parameter types: An array of ``ATRecordProtocol``-conforming `struct`s.
     public init(types: [ATRecordProtocol.Type]) {
         for type in types {

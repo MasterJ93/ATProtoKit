@@ -135,6 +135,7 @@ public class ATProtoKit: ATProtoKitConfiguration {
     /// This will also handle some of the logging-related setup. The identifier will either be your
     /// project's `CFBundleIdentifier` or an identifier named
     /// `com.cjrriley.ATProtoKit`. However, you can manually override this.
+    /// 
     /// - Parameters:
     ///   - session: The authenticated user session within the AT Protocol. Optional.
     ///   - canUseBlueskyRecords: Indicates whether Bluesky's lexicons should be used.
@@ -149,8 +150,9 @@ public class ATProtoKit: ATProtoKitConfiguration {
         self.session = session
         self.logger = session?.logger ?? logger
 
-        if canUseBlueskyRecords {
+        if canUseBlueskyRecords && !ATRecordTypeRegistry.areBlueskyRecordsRegistered {
             _ = ATRecordTypeRegistry(types: self.recordLexicons)
+            ATRecordTypeRegistry.areBlueskyRecordsRegistered = false
         }
     }
 

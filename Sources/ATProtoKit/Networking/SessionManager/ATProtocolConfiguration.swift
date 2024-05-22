@@ -82,6 +82,7 @@ public class ATProtocolConfiguration: ProtocolConfiguration {
     /// - SeeAlso: This is based on the [`com.atproto.server.createSession`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/server/createSession.json
+    ///
     /// - Parameter authenticationFactorToken: A token used for
     /// Two-Factor Authentication. Optional.
     /// - Returns: A `Result` containing ``UserSession`` on success or an `Error` on failure.
