@@ -9,7 +9,7 @@ import Foundation
 
 extension AppBskyLexicon.Unspecced {
 
-    /// The main data model definition for the output of retrieving the skeleton results of actors (users).
+    /// An output model for retrieving the skeleton results of actors (users).
     ///
     /// - Important: This is an unspecced model, and as such, this is highly volatile and may
     /// change or be removed at any time. Use at your own risk.

@@ -9,7 +9,7 @@ import Foundation
 
 extension ComAtprotoLexicon.Repository {
 
-    /// The main data model definition for the output of describing the repository.
+    /// An output model for describing the repository.
     ///
     /// - Note: According to the AT Protocol specifications: "Get information about an account
     /// and repository, including the list of collections. Does not require auth."

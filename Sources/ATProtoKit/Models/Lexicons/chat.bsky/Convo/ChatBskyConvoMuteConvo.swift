@@ -9,7 +9,7 @@ import Foundation
 
 extension ChatBskyLexicon.Conversation {
 
-    /// The request body data model definition for muting a conversation.
+    /// A request body model for muting a conversation.
     ///
     /// - SeeAlso: This is based on the [`chat.bsky.convo.muteConvo`][github] lexicon.
     ///
@@ -24,13 +24,13 @@ extension ChatBskyLexicon.Conversation {
         }
     }
 
-    /// The data model definition for the output of muting a conversation.
+    /// An output model for muting a conversation.
     ///
     /// - SeeAlso: This is based on the [`chat.bsky.convo.muteConvo`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/chat/bsky/convo/muteConvo.json
     public struct MuteConversationOutput: Codable {
-        
+
         /// The conversation itself.
         public let conversation: [ConversationViewDefinition]
 

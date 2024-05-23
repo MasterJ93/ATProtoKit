@@ -9,7 +9,7 @@ import Foundation
 
 extension AppBskyLexicon.Unspecced {
 
-    /// The main data model definition for the output of getting tagged suggestions.
+    /// An output model for getting tagged suggestions.
     ///
     /// - Note: According to the AT Protocol specifications: "Get a list of suggestions (feeds
     /// and users) tagged with categories."

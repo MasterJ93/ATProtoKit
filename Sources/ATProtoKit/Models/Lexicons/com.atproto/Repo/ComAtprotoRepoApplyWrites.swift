@@ -9,7 +9,7 @@ import Foundation
 
 extension ComAtprotoLexicon.Repository {
 
-    /// The main data model definition for applying batch CRUD transactions.
+    /// A request body model for applying batch CRUD transactions.
     ///
     /// - Note: According to the AT Protocol specifications: "Apply a batch transaction of
     /// repository creates, updates, and deletes. Requires auth, implemented by PDS."

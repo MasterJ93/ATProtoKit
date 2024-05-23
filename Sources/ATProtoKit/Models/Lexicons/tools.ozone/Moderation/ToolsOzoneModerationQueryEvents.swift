@@ -9,7 +9,7 @@ import Foundation
 
 extension ToolsOzoneLexicon.Moderation {
 
-    /// The main data model definition for listing all moderation events pertaining a subject.
+    /// An output model for listing all moderation events pertaining a subject.
     ///
     /// - Note: According to the AT Protocol specifications: "List moderation events related
     /// to a subject."
@@ -17,7 +17,7 @@ extension ToolsOzoneLexicon.Moderation {
     /// - SeeAlso: This is based on the [`tools.ozone.moderation.queryEvents`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/tools/ozone/moderation/queryEvents.json
-    public struct EventsOutput: Codable {
+    public struct QueryEventsOutput: Codable {
 
         /// The mark used to indicate the starting point for the next set of results. Optional.
         public let cursor: String?

@@ -9,7 +9,7 @@ import Foundation
 
 extension ComAtprotoLexicon.Server {
 
-    /// A data model definition of the of listing App Passwords.
+    /// An output model for listing App Passwords.
     ///
     /// - Note: According to the AT Protocol specifications: "List all App Passwords."
     ///
@@ -22,7 +22,7 @@ extension ComAtprotoLexicon.Server {
         public let passwords: [AppPassword]
     }
 
-    /// A data model definition of App Password information.
+    /// An App Password.
     ///
     /// - SeeAlso: This is based on the [`com.atproto.server.listAppPasswords`][github] lexicon.
     ///

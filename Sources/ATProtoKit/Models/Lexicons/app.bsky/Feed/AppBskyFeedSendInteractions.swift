@@ -23,7 +23,7 @@ extension AppBskyLexicon.Feed {
         public let interactions: [InteractionDefinition]
     }
 
-    /// The output model definition for sending interactions to a feed generator.
+    /// An output model for sending interactions to a feed generator.
     ///
     /// - SeeAlso: This is based on the [`app.bsky.feed.sendInteractions`][github] lexicon.
     ///

@@ -9,8 +9,7 @@ import Foundation
 
 extension ComAtprotoLexicon.Admin {
 
-    /// The main data model definition for updating a subject status of an account, record,
-    /// or blob.
+    /// A request body model for updating a subject status of an account, record, or blob.
     ///
     /// - Note: According to the AT Protocol specifications: "Update the service-specific
     /// admin status of a subject (account, record, or blob)."
@@ -18,7 +17,7 @@ extension ComAtprotoLexicon.Admin {
     /// - SeeAlso: This is based on the [`com.atproto.admin.updateSubjectStatus`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/admin/updateSubjectStatus.json
-    public struct AdminUpdateSubjectStatus: Codable {
+    public struct AdminUpdateSubjectStatusRequestBody: Codable {
 
         /// The subject associated with the subject status.
         public let subject: AdminGetSubjectStatusUnion
@@ -27,8 +26,7 @@ extension ComAtprotoLexicon.Admin {
         public let takedown: AdminStatusAttributes?
     }
 
-    /// A data model definition for the output of updating a subject status of an account, record,
-    /// or blob.
+    /// An output model for updating a subject status of an account, record, or blob.
     ///
     /// - Note: According to the AT Protocol specifications: "Update the service-specific admin
     /// status of a subject (account, record, or blob)."

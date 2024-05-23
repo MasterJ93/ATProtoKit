@@ -15,7 +15,7 @@ extension AppBskyLexicon.Actor {
     /// - SeeAlso: This is based on the [`app.bsky.actor.searchActors`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/actor/searchActors.json
-    public struct ActorSearchActorsOutput: Codable {
+    public struct SearchActorsOutput: Codable {
 
         /// The mark used to indicate the starting point for the next set of results. Optional.
         public let cursor: String

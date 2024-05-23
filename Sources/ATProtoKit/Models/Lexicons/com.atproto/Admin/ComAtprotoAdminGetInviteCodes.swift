@@ -9,7 +9,7 @@ import Foundation
 
 extension ComAtprotoLexicon.Admin {
 
-    /// A data model definition for the output of getting the invite codes from a user account.
+    /// An output model for getting the invite codes from a user account.
     ///
     /// - Note: According to the AT Protocol specifications: "Get an admin view of invite codes."
     ///

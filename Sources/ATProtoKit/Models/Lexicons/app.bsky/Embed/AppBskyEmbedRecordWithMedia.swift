@@ -9,7 +9,7 @@ import Foundation
 
 extension AppBskyLexicon.Embed {
 
-    /// The main data model definition for a record embedded with some form of compatible media.
+    /// A definition model for a record embedded with some form of compatible media.
     ///
     /// - Note: According to the AT Protocol specifications: "A representation of a record
     /// embedded in a Bluesky record (eg, a post), alongside other compatible embeds. For example,
@@ -37,7 +37,7 @@ extension AppBskyLexicon.Embed {
             case media
         }
     }
-    
+
     // MARK: -
     /// A data model for a definition which contains an embedded record and embedded media.
     ///

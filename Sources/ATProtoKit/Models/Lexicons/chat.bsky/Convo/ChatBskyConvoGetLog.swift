@@ -9,7 +9,7 @@ import Foundation
 
 extension ChatBskyLexicon.Conversation {
 
-    /// The data model definition for the output of getting logs.
+    /// An output model for getting logs.
     ///
     /// - SeeAlso: This is based on the [`chat.bsky.convo.getLog`][github] lexicon.
     ///

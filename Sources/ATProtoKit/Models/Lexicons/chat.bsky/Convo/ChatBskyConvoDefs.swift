@@ -9,7 +9,7 @@ import Foundation
 
 extension ChatBskyLexicon.Conversation {
 
-    /// The main data model definition for a messafe reference.
+    /// A definition model for a message reference.
     ///
     /// - SeeAlso: This is based on the [`chat.bsky.convo.defs`][github] lexicon.
     ///
@@ -32,7 +32,7 @@ extension ChatBskyLexicon.Conversation {
         }
     }
 
-    /// The main data model definition for a message.
+    /// A definition model for a message.
     ///
     /// - SeeAlso: This is based on the [`chat.bsky.convo.defs`][github] lexicon.
     ///
@@ -70,7 +70,7 @@ extension ChatBskyLexicon.Conversation {
         }
     }
 
-    /// The main data model definition for a message view.
+    /// A definition model for a message view.
     ///
     /// - SeeAlso: This is based on the [`chat.bsky.convo.defs`][github] lexicon.
     ///
@@ -103,7 +103,8 @@ extension ChatBskyLexicon.Conversation {
         /// The date and time the message was seen.
         @DateFormatting public var seenAt: Date
 
-        public init(messageID: String?, revision: String, text: String, facets: [AppBskyLexicon.RichText.Facet]?, embeds: [ATUnion.MessageEmbedUnion]?, sender: String, seenAt: Date) {
+        public init(messageID: String?, revision: String, text: String, facets: [AppBskyLexicon.RichText.Facet]?,
+                    embeds: [ATUnion.MessageEmbedUnion]?, sender: String, seenAt: Date) {
             self.messageID = messageID
             self.revision = revision
             self.text = text
@@ -150,7 +151,7 @@ extension ChatBskyLexicon.Conversation {
         }
     }
 
-    /// The main data model definition for a deleted message view.
+    /// A definition model for a deleted message view.
     ///
     /// - SeeAlso: This is based on the [`chat.bsky.convo.defs`][github] lexicon.
     ///
@@ -202,7 +203,7 @@ extension ChatBskyLexicon.Conversation {
         }
     }
 
-    /// The main data model definition for the message view's sender.
+    /// A definition model for the message view's sender.
     ///
     /// - SeeAlso: This is based on the [`chat.bsky.convo.defs`][github] lexicon.
     ///
@@ -217,7 +218,7 @@ extension ChatBskyLexicon.Conversation {
         }
     }
 
-    /// The main data model definition for a conversation view.
+    /// A definition model for a conversation view.
     ///
     /// - SeeAlso: This is based on the [`chat.bsky.convo.defs`][github] lexicon.
     ///
@@ -252,7 +253,7 @@ extension ChatBskyLexicon.Conversation {
         }
     }
 
-    /// The main data model definition for a log for beginning the coversation.
+    /// A definition model for a log for beginning the coversation.
     ///
     /// - SeeAlso: This is based on the [`chat.bsky.convo.defs`][github] lexicon.
     ///
@@ -271,7 +272,7 @@ extension ChatBskyLexicon.Conversation {
         }
     }
 
-    /// The main data model definition for a log for leaving the conversation.
+    /// A definition model for a log for leaving the conversation.
     ///
     /// - SeeAlso: This is based on the [`chat.bsky.convo.defs`][github] lexicon.
     ///
@@ -290,7 +291,7 @@ extension ChatBskyLexicon.Conversation {
         }
     }
 
-    /// The main data model definition for a log for creating a message.
+    /// A definition model for a log for creating a message.
     ///
     /// - SeeAlso: This is based on the [`chat.bsky.convo.defs`][github] lexicon.
     ///
@@ -313,7 +314,7 @@ extension ChatBskyLexicon.Conversation {
         }
     }
 
-    /// The main data model definition for a log for deleting a message.
+    /// A definition model for a log for deleting a message.
     ///
     /// - SeeAlso: This is based on the [`chat.bsky.convo.defs`][github] lexicon.
     ///

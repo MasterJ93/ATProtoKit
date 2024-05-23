@@ -9,7 +9,7 @@ import Foundation
 
 extension AppBskyLexicon.Feed {
 
-    /// The main data model definition for the output of the results of the post search query.
+    /// An output model for the results of the post search query.
     ///
     /// - Note: According to the AT Protocol specifications: "Find posts matching search criteria,
     /// returning views of those posts."

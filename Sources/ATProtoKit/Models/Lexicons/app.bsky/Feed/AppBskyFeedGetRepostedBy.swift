@@ -9,8 +9,7 @@ import Foundation
 
 extension AppBskyLexicon.Feed {
 
-    /// The main data model definition for the output of retrieving an array of users who have
-    /// reposted the given post.
+    /// An output model for retrieving an array of users who have reposted the given post.
     ///
     /// - Note: According to the AT Protocol specifications: "Get a list of reposts for a
     /// given post."
@@ -31,7 +30,7 @@ extension AppBskyLexicon.Feed {
 
         /// An array of user accounts who reported the post record.
         public let repostedBy: [AppBskyLexicon.Actor.ProfileViewDefinition]
-        
+
         enum CodingKeys:String, CodingKey {
             case postURI = "uri"
             case postCID = "cid"

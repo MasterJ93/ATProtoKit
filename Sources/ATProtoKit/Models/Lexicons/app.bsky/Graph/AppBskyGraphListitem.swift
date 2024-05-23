@@ -9,7 +9,7 @@ import Foundation
 
 extension AppBskyLexicon.Graph {
 
-    /// The main data model definition for a list item record.
+    /// A record model for a list item.
     ///
     /// - Note: According to the AT Protocol specifications: "Record representing an account's
     /// inclusion on a specific list. The AppView will ignore duplicate listitem records."

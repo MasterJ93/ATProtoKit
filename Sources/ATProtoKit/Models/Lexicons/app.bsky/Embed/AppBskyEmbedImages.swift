@@ -9,7 +9,7 @@ import Foundation
 
 extension AppBskyLexicon.Embed {
 
-    /// The main data model definition for image embeds.
+    /// A definition model for image embeds.
     ///
     /// - Note: According to the AT Protocol specifications: "A set of images embedded in a Bluesky
     /// record (eg, a post)."
@@ -28,17 +28,17 @@ extension AppBskyLexicon.Embed {
         ///
         ///- Note: Current maximum upload count is 4 images.
         public let images: [Image]
-        
+
         public init(images: [Image]) {
             self.images = images
         }
-        
+
         enum CodingKeys: String, CodingKey {
             case type = "$type"
             case images
         }
     }
-    
+
     // MARK: -
     /// A data model for an external definition.
     ///
@@ -61,20 +61,20 @@ extension AppBskyLexicon.Embed {
 
         /// The aspect ratio of the image. Optional.
         public let aspectRatio: AspectRatio?
-        
+
         public init(image: UploadBlobOutput, altText: String, aspectRatio: AspectRatio?) {
             self.image = image
             self.altText = altText
             self.aspectRatio = aspectRatio
         }
-        
+
         enum CodingKeys: String, CodingKey {
             case image
             case altText = "alt"
             case aspectRatio
         }
     }
-    
+
     /// A data model for the aspect ratio definition.
     ///
     /// - Note: From the AT Protocol specification: "width:height represents an aspect ratio.
@@ -90,13 +90,13 @@ extension AppBskyLexicon.Embed {
 
         /// The height of the image.
         public let height: Int
-        
+
         public init(width: Int, height: Int) {
             self.width = width
             self.height = height
         }
     }
-    
+
     /// A data model for the embed images definition.
     ///
     /// - SeeAlso: This is based on the [`app.bsky.embed.images`][github] lexicon.
@@ -111,7 +111,7 @@ extension AppBskyLexicon.Embed {
         /// An array of images to be viewed.
         public let images: [ViewImage]
     }
-    
+
     /// A data model for a definition related to viewing an image.
     ///
     /// - SeeAlso: This is based on the [`app.bsky.embed.images`][github] lexicon.
@@ -140,14 +140,14 @@ extension AppBskyLexicon.Embed {
 
         /// The aspect ratio of the image. Optional.
         public let aspectRatio: AspectRatio?
-        
+
         public init(thumbnailImageURL: URL, fullSizeImageURL: URL, altText: String, aspectRatio: AspectRatio?) {
             self.thumbnailImageURL = thumbnailImageURL
             self.fullSizeImageURL = fullSizeImageURL
             self.altText = altText
             self.aspectRatio = aspectRatio
         }
-        
+
         enum CodingKeys: String, CodingKey {
             case thumbnailImageURL = "thumb"
             case fullSizeImageURL = "fullsize"
@@ -155,5 +155,4 @@ extension AppBskyLexicon.Embed {
             case aspectRatio
         }
     }
-
 }

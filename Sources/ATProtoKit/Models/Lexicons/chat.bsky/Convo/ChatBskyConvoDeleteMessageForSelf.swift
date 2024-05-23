@@ -9,7 +9,7 @@ import Foundation
 
 extension ChatBskyLexicon.Conversation {
 
-    /// The request body data model definition for a message reference.
+    /// A request body model for a message reference.
     ///
     /// - SeeAlso: This is based on the [`chat.bsky.convo.deleteMessageForSelf`][github] lexicon.
     ///

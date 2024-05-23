@@ -9,8 +9,8 @@ import Foundation
 
 extension ComAtprotoLexicon.Sync {
 
-    /// The main data model definition for the output of listing all decentralized identifiers
-    /// (DIDs), revisions, and commit CID hashes of given repositiories.
+    /// An output model for isting all decentralized identifiers (DIDs), revisions, and
+    /// commit CID hashes of given repositiories.
     ///
     /// - Note: According to the AT Protocol specifications: "Enumerates all the DID, rev, and
     /// commit CID for all repos hosted by this service. Does not require auth;

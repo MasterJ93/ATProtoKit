@@ -9,7 +9,7 @@ import Foundation
 
 extension ComAtprotoLexicon.Server {
 
-    /// A data model definition for the output of getting the invite codes of the user's account.
+    /// An output model for getting the invite codes of the user's account.
     ///
     /// - SeeAlso: This is based on the [`com.atproto.server.getAccountInviteCodes`][github] lexicon.
     ///

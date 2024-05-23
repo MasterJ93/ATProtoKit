@@ -9,7 +9,7 @@ import Foundation
 
 extension AppBskyLexicon.Notification {
 
-    /// The main data model definition for updating the server of the user seeing the notification.
+    /// A request body model for updating the server of the user seeing the notification.
     ///
     /// - Note: According to the AT Protocol specifications: "Notify server that the requesting
     /// account has seen notifications. Requires auth."
@@ -17,7 +17,7 @@ extension AppBskyLexicon.Notification {
     /// - SeeAlso: This is based on the [`app.bsky.notification.updateSeen`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/notification/updateSeen.json
-    public struct NotificationUpdateSeen: Codable {
+    public struct NotificationUpdateSeenRequestBody: Codable {
 
         /// The date and time the notification was seen by the user account.
         @DateFormatting public var seenAt: Date

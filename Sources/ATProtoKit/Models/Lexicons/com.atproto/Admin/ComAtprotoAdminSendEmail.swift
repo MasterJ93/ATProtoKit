@@ -9,7 +9,7 @@ import Foundation
 
 extension ComAtprotoLexicon.Admin {
 
-    /// The main data model definition for sending an email to a user.
+    /// A request body model for sending an email to a user.
     ///
     /// - Note: According to the AT Protocol specifications: "Send email to a user's account
     /// email address."

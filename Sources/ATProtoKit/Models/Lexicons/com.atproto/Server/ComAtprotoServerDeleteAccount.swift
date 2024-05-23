@@ -9,7 +9,7 @@ import Foundation
 
 extension ComAtprotoLexicon.Server {
 
-    /// The main data model definition for deleting an account.
+    /// A request body model for deleting an account.
     ///
     /// - Note: According to the AT Protocol specifications: "Delete an actor's account with a
     /// token and password. Can only be called after requesting a deletion token. Requires auth."

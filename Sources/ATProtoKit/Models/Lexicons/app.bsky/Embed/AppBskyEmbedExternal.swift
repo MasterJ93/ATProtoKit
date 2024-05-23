@@ -9,7 +9,7 @@ import Foundation
 
 extension AppBskyLexicon.Embed {
 
-    /// The main data model definition for external embeds.
+    /// A definition model for external embeds.
     ///
     /// - Note: According to the AT Protocol specifications: "A representation of some externally
     /// linked content (eg, a URL and 'card'), embedded in a Bluesky record (eg, a post)."
@@ -26,12 +26,13 @@ extension AppBskyLexicon.Embed {
 
         /// The external content needed to be embeeded.
         public let external: External
-        
+
         enum CodingKeys: String, CodingKey {
             case type = "$type"
             case external
         }
     }
+
     // MARK: -
     /// A data model for an external definition.
     ///
@@ -54,7 +55,7 @@ extension AppBskyLexicon.Embed {
         /// - Warning: The image size can't be higher than 1 MB. Failure to do so will result in
         /// the image failing to upload.
         public let thumbnailImage: UploadBlobOutput?
-        
+
         enum CodingKeys: String, CodingKey {
             case embedURI = "uri"
             case title
@@ -62,7 +63,7 @@ extension AppBskyLexicon.Embed {
             case thumbnailImage = "thumb"
         }
     }
-    
+
     /// A data model for an external view definition.
     ///
     /// - SeeAlso: This is based on the [`app.bsky.embed.external`][github] lexicon.
@@ -74,16 +75,16 @@ extension AppBskyLexicon.Embed {
         ///
         /// - Warning: The value must not change.
         public let type: String = "app.bsky.embed.external#view"
-        
+
         /// The external content embedded in a post.
         public let external: ViewExternal
-        
+
         enum CodingKeys: String, CodingKey {
             case type = "$type"
             case external
         }
     }
-    
+
     /// A data model for a definition for the external content.
     public struct ViewExternal: Codable {
 
@@ -98,7 +99,7 @@ extension AppBskyLexicon.Embed {
 
         /// The thumbnail image URL of the external content.
         public let thumbnailImageURL: URL?
-        
+
         enum CodingKeys: String, CodingKey {
             case embedURI = "uri"
             case title

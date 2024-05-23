@@ -9,7 +9,7 @@ import Foundation
 
 extension ChatBskyLexicon.Conversation {
 
-    /// The data model definition for the output of getting a conversation for members.
+    /// An output model for getting a conversation for members.
     ///
     /// - SeeAlso: This is based on the [`chat.bsky.convo.getConvoForMembers`][github] lexicon.
     ///

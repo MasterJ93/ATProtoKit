@@ -9,7 +9,7 @@ import Foundation
 
 extension ComAtprotoLexicon.Identity {
 
-    /// The main data model definition for the output of validating a PLC operation.
+    /// An output model for validating a PLC operation.
     ///
     /// - Note: According to the AT Protocol specifications: "Validates a PLC operation to ensure
     /// that it doesn't violate a service's constraints or get the identity into a bad state, then

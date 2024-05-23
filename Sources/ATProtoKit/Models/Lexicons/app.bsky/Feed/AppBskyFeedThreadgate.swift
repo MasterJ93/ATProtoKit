@@ -9,7 +9,7 @@ import Foundation
 
 extension AppBskyLexicon.Feed {
 
-    /// The main data model definition for a threadgate record.
+    /// A record model for a threadgate.
     ///
     /// - Note: According to the AT Protocol specifications: "Record defining interaction gating rules
     /// for a thread (aka, reply controls). The record key (rkey) of the threadgate record must match

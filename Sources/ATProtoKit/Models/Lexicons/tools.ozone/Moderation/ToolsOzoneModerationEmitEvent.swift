@@ -9,14 +9,14 @@ import Foundation
 
 extension ToolsOzoneLexicon.Moderation {
 
-    /// The main data model definition for enacting on an action against a user's account.
+    /// A request body model for enacting on an action against a user's account.
     ///
     /// - Note: According to the AT Protocol specifications: "Take a moderation action on an actor."
     ///
     /// - SeeAlso: This is based on the [`tools.ozone.moderation.emitEvent`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/tools/ozone/moderation/emitEvent.json
-    public struct EmitEvent: Codable {
+    public struct EmitEventRequestBody: Codable {
 
         /// The type of event the moderator is taking,
         public let event: ATUnion.AdminEventViewUnion

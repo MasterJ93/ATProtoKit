@@ -9,7 +9,7 @@ import Foundation
 
 extension AppBskyLexicon.Graph {
 
-    /// The main data model definition for a blocking list record.
+    /// A record model for a blocking list.
     ///
     /// - Note: According to the AT Protocol specifications: "Record representing a block
     /// relationship against an entire [...] list of accounts (actors)."

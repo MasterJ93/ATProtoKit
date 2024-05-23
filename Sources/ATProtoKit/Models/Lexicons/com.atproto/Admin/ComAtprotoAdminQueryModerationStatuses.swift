@@ -9,8 +9,7 @@ import Foundation
 
 extension ComAtprotoLexicon.Admin {
 
-    /// A data model definition for the output of listing all of moderation statuses of records
-    /// and repositories.
+    /// An output model for listing all of moderation statuses of records and repositories.
     ///
     /// - Note: According to the AT Protocol specifications: "View moderation statuses of
     /// subjects (record or repo)."

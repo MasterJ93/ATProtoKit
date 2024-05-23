@@ -9,7 +9,7 @@ import Foundation
 
 extension AppBskyLexicon.Feed {
 
-    /// The main data model definition for the output of viewing the selected feed generator.
+    /// An output model for viewing the selected feed generator.
     ///
     /// - Note: According to the AT Protocol specifications: "Get a hydrated feed from an actor's
     /// selected feed generator. Implemented by App View."

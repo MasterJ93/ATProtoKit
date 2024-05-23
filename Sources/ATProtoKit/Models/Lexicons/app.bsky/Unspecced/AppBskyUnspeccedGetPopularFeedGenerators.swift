@@ -9,7 +9,7 @@ import Foundation
 
 extension AppBskyLexicon.Unspecced {
 
-    /// The main data model definition for the output of globally popular feed generators.
+    /// An output model for globally popular feed generators.
     ///
     /// - Note: According to the AT Protocol specifications: "An unspecced view of globally
     /// popular feed generators."

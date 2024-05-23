@@ -8,6 +8,7 @@
 import Foundation
 
 extension AppBskyLexicon.Actor {
+
     /// An output data model definition for the output of getting preferences.
     ///
     /// - Note: According to the AT Protocol specifications: "Get private preferences attached to
@@ -18,6 +19,7 @@ extension AppBskyLexicon.Actor {
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/actor/getPreferences.json
     public struct GetPreferencesOutput: Codable {
+
         /// The list of preferences in the user's account.
         public let preference: PreferencesDefinition
     }

@@ -9,7 +9,7 @@ import Foundation
 
 extension AppBskyLexicon.Feed {
 
-    /// The main data model definition for the output of retrieving a feed list by a user.
+    /// An output model for the output of retrieving a feed list by a user.
     ///
     /// - Note: According to the AT Protocol specifications: "Get a list of feeds (feed generator
     /// records) created by the actor (in the actor's repo)."

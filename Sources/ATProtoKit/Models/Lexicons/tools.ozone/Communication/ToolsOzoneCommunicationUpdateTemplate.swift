@@ -9,7 +9,7 @@ import Foundation
 
 extension ToolsOzoneLexicon.Communication {
 
-    /// The request body data model definition for updating a communication template.
+    /// A request body model for updating a communication template.
     ///
     /// - Note: According to the AT Protocol specifications: "Administrative action to update an
     /// existing communication template. Allows passing partial fields to patch specific

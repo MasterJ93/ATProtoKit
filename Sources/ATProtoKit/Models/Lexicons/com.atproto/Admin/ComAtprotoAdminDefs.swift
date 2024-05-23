@@ -9,7 +9,7 @@ import Foundation
 
 extension ComAtprotoLexicon.Admin {
 
-    /// The main data model definition for admin status attributes.
+    /// A definition model for  admin status attributes.
     ///
     /// - SeeAlso: This is based on the [`com.atproto.admin.defs`][github] lexicon.
     ///
@@ -28,7 +28,7 @@ extension ComAtprotoLexicon.Admin {
         }
     }
 
-    /// A data model for a report view definition.
+    /// A definition model for a report view.
     ///
     /// - SeeAlso: This is based on the [`com.atproto.admin.defs`][github] lexicon.
     ///
@@ -59,8 +59,8 @@ extension ComAtprotoLexicon.Admin {
         /// An array of action IDs that relate to resolutions.
         public let resolvedByActionIDs: [Int]
 
-        public init(id: Int, reasonType: ModerationReasonType, comment: String?, subjectRepoHandle: String?, subject: ATUnion.RepositoryReferencesUnion, reportedBy: String, createdAt: Date,
-                    resolvedByActionIDs: [Int]) {
+        public init(id: Int, reasonType: ModerationReasonType, comment: String?, subjectRepoHandle: String?, subject: ATUnion.RepositoryReferencesUnion,
+                    reportedBy: String, createdAt: Date, resolvedByActionIDs: [Int]) {
             self.id = id
             self.reasonType = reasonType
             self.comment = comment
@@ -109,7 +109,7 @@ extension ComAtprotoLexicon.Admin {
         }
     }
 
-    /// A data model for a detailed report view definition.
+    /// A definition model for a detailed report view.
     ///
     /// - SeeAlso: This is based on the [`com.atproto.admin.defs`][github] lexicon.
     ///
@@ -152,8 +152,9 @@ extension ComAtprotoLexicon.Admin {
         /// An array of resolved actions made in relation to the report.
         public let resolvedByActions: [OzoneModerationEventView]
 
-        public init(id: Int, reasonType: ModerationReasonType, comment: String? = nil, subject: ATUnion.RepositoryViewUnion, subjectStatus: OzoneSubjectStatusView? = nil,
-                    reportedBy: String, createdAt: Date, resolvedByActions: [OzoneModerationEventView]) {
+        public init(id: Int, reasonType: ModerationReasonType, comment: String? = nil, subject: ATUnion.RepositoryViewUnion,
+                    subjectStatus: OzoneSubjectStatusView? = nil, reportedBy: String, createdAt: Date,
+                    resolvedByActions: [OzoneModerationEventView]) {
             self.id = id
             self.reasonType = reasonType
             self.comment = comment
@@ -202,7 +203,7 @@ extension ComAtprotoLexicon.Admin {
         }
     }
 
-    /// A data model for a definition of an account view.
+    /// A definition model for an account view.
     ///
     /// - SeeAlso: This is based on the [`com.atproto.admin.defs`][github] lexicon.
     ///
@@ -303,7 +304,7 @@ extension ComAtprotoLexicon.Admin {
         }
     }
 
-    /// A data model for a definition of a repository reference.
+    /// A definition model for a repository reference.
     ///
     /// - SeeAlso: This is based on the [`com.atproto.admin.defs`][github] lexicon.
     ///
@@ -318,7 +319,7 @@ extension ComAtprotoLexicon.Admin {
         }
     }
 
-    /// A data model for a blob reference definition.
+    /// A definition model for a blob reference.
     ///
     /// - SeeAlso: This is based on the [`com.atproto.admin.defs`][github] lexicon.
     ///

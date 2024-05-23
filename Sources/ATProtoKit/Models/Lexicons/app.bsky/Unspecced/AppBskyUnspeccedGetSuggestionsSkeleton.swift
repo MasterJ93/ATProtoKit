@@ -9,7 +9,7 @@ import Foundation
 
 extension AppBskyLexicon.Unspecced {
 
-    /// The main data model definition for getting a skeleton of suggestion of actors.
+    /// An output model for getting a skeleton of suggestion of actors.
     ///
     /// - Note: According to the AT Protocol specifications: "Get a skeleton of suggested actors.
     /// Intended to be called and then hydrated through app.bsky.actor.getSuggestions."

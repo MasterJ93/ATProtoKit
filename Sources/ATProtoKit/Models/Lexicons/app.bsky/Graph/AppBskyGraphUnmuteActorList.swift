@@ -9,7 +9,7 @@ import Foundation
 
 extension AppBskyLexicon.Graph {
 
-    /// The main data model definition for unmuting a list of user accounts.
+    /// A request body model for unmuting a list of user accounts.
     ///
     /// - Note: According to the AT Protocol specifications: "Unmutes the specified list of
     /// accounts. Requires auth."

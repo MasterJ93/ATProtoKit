@@ -9,7 +9,7 @@ import Foundation
 
 extension ComAtprotoLexicon.Server {
 
-    /// A data model definition for the output of requesting to update the user's email address.
+    /// An output model for requesting to update the user's email address.
     ///
     /// - Note: According to the AT Protocol specifications: "Request a token in order to
     /// update email."

@@ -9,7 +9,7 @@ import Foundation
 
 extension ChatBskyLexicon.Moderation {
 
-    /// The data model definition for the output of getting the message context.
+    /// An output model for getting the message context.
     ///
     /// - SeeAlso: This is based on the [`chat.bsky.moderation.getMessageContext`][github] lexicon.
     ///

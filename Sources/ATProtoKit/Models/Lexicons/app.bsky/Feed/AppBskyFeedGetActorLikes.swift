@@ -9,7 +9,7 @@ import Foundation
 
 extension AppBskyLexicon.Feed {
 
-    /// The main data model definition for the output of seeing all of a user account's likes.
+    /// An output model for seeing all of a user account's likes.
     ///
     /// - Note: According to the AT Protocol specifications: "Get a list of posts liked by an actor.
     /// Does not require auth."

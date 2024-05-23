@@ -9,7 +9,7 @@ import Foundation
 
 extension AppBskyLexicon.Graph {
 
-    /// The request body data model definition for muting a user account.
+    /// A request body model formuting a user account.
     ///
     /// - Note: According to the AT Protocol specifications: "Creates a mute relationship for the
     /// specified account. Mutes are private in Bluesky. Requires auth."

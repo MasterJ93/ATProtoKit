@@ -9,7 +9,7 @@ import Foundation
 
 extension ComAtprotoLexicon.Server {
 
-    /// The request body data model definition for activating an account.
+    /// A request body model for activating an account.
     ///
     /// - Note: According to the AT Protocol specifications: "Activates a currently deactivated
     /// account. Used to finalize account migration after the account's repo is imported and

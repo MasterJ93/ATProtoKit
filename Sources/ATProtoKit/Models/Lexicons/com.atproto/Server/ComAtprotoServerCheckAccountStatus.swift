@@ -9,7 +9,7 @@ import Foundation
 
 extension ComAtprotoLexicon.Server {
 
-    /// A data model definition for the output of checking the user's account status.
+    /// An output model for checking the user's account status.
     ///
     /// - Note: According to the AT Protocol specifications: "Returns the status of an account,
     /// especially as pertaining to import or recovery. Can be called many times over the course

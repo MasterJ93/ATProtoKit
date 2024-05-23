@@ -9,7 +9,7 @@ import Foundation
 
 extension ComAtprotoLexicon.Label {
 
-    /// The main data model definition for a label.
+    /// A definition model for a label.
     ///
     /// - Note: According to the AT Protocol specifications: "Metadata tag on an atproto resource
     /// (eg, repo or record)."
@@ -133,7 +133,7 @@ extension ComAtprotoLexicon.Label {
         }
     }
 
-    /// A data model for a definition for an array of self-defined labels.
+    /// A definition model for an array of self-defined labels.
     ///
     /// - SeeAlso: This is based on the [`com.atproto.label.defs`][github] lexicon.
     ///
@@ -175,7 +175,7 @@ extension ComAtprotoLexicon.Label {
         }
     }
 
-    /// A data model for a definition for a user-defined label.
+    /// A definition model for a user-defined label.
     ///
     /// - Note: According to the AT Protocol specifications: "Metadata tag on an atproto record,
     /// published by the author within the record. Note that schemas should use #selfLabels,
@@ -207,7 +207,7 @@ extension ComAtprotoLexicon.Label {
         }
     }
 
-    /// A data model definition for labeler-created labels.
+    /// A definition model for labeler-created labels.
     ///
     /// - Note: According to the AT Protocol specifications: "Declares a label value and its expected
     /// interpertations and behaviors."
@@ -321,7 +321,7 @@ extension ComAtprotoLexicon.Label {
         }
     }
 
-    /// A data model definition for a localized description of a label.
+    /// A definition model for a localized description of a label.
     ///
     /// - Note: According to the AT Protocol specifications: "Strings which describe the label in
     /// the UI, localized into a specific language."

@@ -9,7 +9,7 @@ import Foundation
 
 extension ComAtprotoLexicon.Sync {
 
-    /// The main data model definition for the output of getting a blob.
+    /// A request body model for getting a blob.
     ///
     /// - Note: According to the AT Protocol specifications: "Get a blob associated with a
     /// given account. Returns the full blob as originally uploaded. Does not require auth;

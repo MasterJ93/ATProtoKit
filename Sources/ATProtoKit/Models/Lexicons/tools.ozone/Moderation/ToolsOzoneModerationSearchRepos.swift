@@ -9,7 +9,7 @@ import Foundation
 
 extension ToolsOzoneLexicon.Moderation {
 
-    /// The output model definition for searching for repositories as an administrator or moderator.
+    /// An output model for searching for repositories as an administrator or moderator.
     ///
     /// - Note: According to the AT Protocol specifications: "Find repositories based on a
     /// search term."

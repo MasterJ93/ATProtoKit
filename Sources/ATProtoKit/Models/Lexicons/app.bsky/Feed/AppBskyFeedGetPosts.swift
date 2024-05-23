@@ -9,7 +9,7 @@ import Foundation
 
 extension AppBskyLexicon.Feed {
 
-    /// The main data model definition for the output of getting a hydrated array of posts.
+    /// An output model for getting a hydrated array of posts.
     ///
     /// - Note: According to the AT Protocol specifications: "Gets post views for a specified list
     /// of posts (by AT-URI). This is sometimes referred to as 'hydrating'

@@ -38,7 +38,6 @@ extension AppBskyLexicon.RichText {
         }
 
         public func encode(to encoder: Encoder) throws {
-
             var container = encoder.container(keyedBy: CodingKeys.self)
 
             try container.encode(self.index, forKey: .index)
@@ -78,12 +77,14 @@ extension AppBskyLexicon.RichText {
 
         public init(from decoder: Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
+
             self.byteStart = try container.decode(Int.self, forKey: .byteStart)
             self.byteEnd = try container.decode(Int.self, forKey: .byteEnd)
         }
 
         public func encode(to encoder: Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
+
             try container.encode(self.byteStart, forKey: .byteStart)
             try container.encode(self.byteEnd, forKey: .byteEnd)
         }
@@ -106,7 +107,6 @@ extension AppBskyLexicon.RichText {
         /// - Warning: The value must not change.
         static var type: String { get }
     }
-
 
     /// A data model for the Mention feature definition.
     ///
@@ -150,7 +150,6 @@ extension AppBskyLexicon.RichText {
             case did
         }
     }
-
 
     /// A data model for the Link feature definition.
     ///
@@ -210,7 +209,7 @@ extension AppBskyLexicon.RichText {
         /// - Warning: The value must not change.
         public static var type: String = "app.bsky.richtext.facet#tag"
 
-        /// The
+        /// The name of the tag.
         public let tag: String
 
         public init(tag: String) {

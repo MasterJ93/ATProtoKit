@@ -9,7 +9,7 @@ import Foundation
 
 extension AppBskyLexicon.Actor {
 
-    /// A data model for a basic profile view definition.
+    /// A definition model for a basic profile view.
     ///
     /// - SeeAlso: This is based on the [`app.bsky.actor.defs`][github] lexicon.
     ///
@@ -89,7 +89,7 @@ extension AppBskyLexicon.Actor {
         }
     }
 
-    /// A data model for a profile view definition.
+    /// A definition model for a profile view.
     ///
     /// - SeeAlso: This is based on the [`app.bsky.actor.defs`][github] lexicon.
     ///
@@ -188,7 +188,7 @@ extension AppBskyLexicon.Actor {
         }
     }
 
-    /// A data model for a detailed profile view definition.
+    /// A definition model for a detailed profile view.
     ///
     /// - SeeAlso: This is based on the [`app.bsky.actor.defs`][github] lexicon.
     ///
@@ -314,8 +314,8 @@ extension AppBskyLexicon.Actor {
             case labels
         }
     }
-    
-    /// A data model definition for an actor's associated profile.
+
+    /// A definition model for an actor's associated profile.
     ///
     /// - SeeAlso: This is based on the [`app.bsky.actor.defs`][github] lexicon.
     ///
@@ -337,7 +337,7 @@ extension AppBskyLexicon.Actor {
             case isActorLabeler = "labeler"
         }
     }
-    
+
     /// A data model for an actor viewer state definition.
     ///
     /// - Note: From the AT Protocol specification: "Metadata about the requesting account's
@@ -370,7 +370,7 @@ extension AppBskyLexicon.Actor {
 
         /// A URI which indicates the user is being followed by the requesting account.
         public let followedByURI: String?
-        
+
         enum CodingKeys: String, CodingKey {
             case isMuted = "muted"
             case mutedByArray = "mutedByList"
@@ -381,8 +381,8 @@ extension AppBskyLexicon.Actor {
             case followedByURI = "followedBy"
         }
     }
-    
-    /// A data model for a preferences definition.
+
+    /// A definition model for preferences.
     ///
     /// - SeeAlso: This is based on the [`app.bsky.actor.defs`][github] lexicon.
     ///
@@ -396,8 +396,8 @@ extension AppBskyLexicon.Actor {
             self.preferences = preferences
         }
     }
-    
-    /// A data model for an "Adult Content" preference definition.
+
+    /// A definition model for an "Adult Content" preference.
     ///
     /// - SeeAlso: This is based on the [`app.bsky.actor.defs`][github] lexicon.
     ///
@@ -408,21 +408,22 @@ extension AppBskyLexicon.Actor {
         ///
         /// - Warning: The value must not change.
         public let type: String = "app.bsky.actor.defs#adultContentPref"
+
         /// Indicates whether the user will be able to see adult content in their feed. Set to
         /// `false` by default.
         public var isAdultContentEnabled: Bool = false
-        
+
         public init(isAdultContentEnabled: Bool) {
             self.isAdultContentEnabled = isAdultContentEnabled
         }
-        
+
         enum CodingKeys: String, CodingKey {
             case type = "$type"
             case isAdultContentEnabled = "enabled"
         }
     }
-    
-    /// A data model for a "Content Label" preference definition.
+
+    /// A definition model for a "Content Label" preference.
     ///
     /// - SeeAlso: This is based on the [`app.bsky.actor.defs`][github] lexicon.
     ///
@@ -447,12 +448,13 @@ extension AppBskyLexicon.Actor {
 
         /// Indicates the visibility of the label's content.
         public let visibility: Visibility
-        
+
         public init(labelerDID: String?, label: String, visibility: Visibility) {
             self.labelerDID = labelerDID
             self.label = label
             self.visibility = visibility
         }
+
         /// Determines how visible a label's content is.
         public enum Visibility: String, Codable {
 
@@ -468,7 +470,7 @@ extension AppBskyLexicon.Actor {
             /// Indicates the content is fully invisible by the user.
             case hide = "hide"
         }
-        
+
         enum CodingKeys: String, CodingKey {
             case type = "$type"
             case labelerDID = "labelerDid"
@@ -476,17 +478,17 @@ extension AppBskyLexicon.Actor {
             case visibility
         }
     }
-    
-    /// The data model for a saved feed.
+
+    /// A definition model for a saved feed.
     ///
     /// - SeeAlso: This is based on the [`app.bsky.actor.defs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/actor/defs.json
     public struct SavedFeed: Codable {
         
-        ///
+        /// The ID for the saved feed.
         public let feedID: String
-        
+
         /// The type of feed generator is.
         ///
         /// This is usually referring to the location of the feed in context to the
@@ -498,7 +500,6 @@ extension AppBskyLexicon.Actor {
 
         /// Indicated whether the saved feed generator is pinned.
         public let isPinned: Bool
-
 
         /// The type of feed generator.
         ///
@@ -516,7 +517,7 @@ extension AppBskyLexicon.Actor {
             /// user account's timeline.
             case timeline
         }
-        
+
         enum CodingKeys: String, CodingKey {
             case feedID = "id"
             case type
@@ -525,18 +526,18 @@ extension AppBskyLexicon.Actor {
         }
     }
 
-    /// A data model for version 2 of a "Saved Feeds" preference definition.
+    /// A definition model for version 2 of a "Saved Feeds" preference.
     ///
     /// - SeeAlso: This is based on the [`app.bsky.actor.defs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/actor/defs.json
     public struct SavedFeedPreferencesVersion2Definition: Codable {
-        
+
         /// An array of saved feed generators.
         public let items: SavedFeed
     }
 
-    /// A data model for a "Saved Feeds" preference definition.
+    /// A definition model for a "Saved Feeds" preference.
     ///
     /// - SeeAlso: This is based on the [`app.bsky.actor.defs`][github] lexicon.
     ///
@@ -557,13 +558,13 @@ extension AppBskyLexicon.Actor {
         // TODO: Find out more about what this does.
         /// The index number of the timeline for the list of feeds. Optional.
         public var timelineIndex: Int?
-        
+
         public init(pinned: [String], saved: [String], timelineIndex: Int?) {
             self.pinned = pinned
             self.saved = saved
             self.timelineIndex = timelineIndex
         }
-        
+
         enum CodingKeys: String, CodingKey {
             case type = "$type"
             case pinned
@@ -571,8 +572,8 @@ extension AppBskyLexicon.Actor {
             case timelineIndex
         }
     }
-    
-    /// A data model for a "Personal Details" preference definition.
+
+    /// A definition model for a "Personal Details" preference.
     ///
     /// - SeeAlso: This is based on the [`app.bsky.actor.defs`][github] lexicon.
     ///
@@ -588,30 +589,30 @@ extension AppBskyLexicon.Actor {
         ///
         /// - Note: From the AT Protocol specification: "The birth date of account owner."
         @DateFormattingOptional public var birthDate: Date?
-        
+
         public init(birthDate: Date) {
             self._birthDate = DateFormattingOptional(wrappedValue: birthDate)
         }
-        
+
         public init(from decoder: Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
-            
+
             self.birthDate = try container.decodeIfPresent(DateFormattingOptional.self, forKey: .birthDate)?.wrappedValue
         }
-        
+
         public func encode(to encoder: Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
-            
+
             try container.encodeIfPresent(self._birthDate, forKey: .birthDate)
         }
-        
+
         enum CodingKeys: String, CodingKey {
             case type = "$type"
             case birthDate
         }
     }
-    
-    /// A data model for a "Feed View" preference definition.
+
+    /// A definition model for a "Feed View" preference.
     ///
     /// - SeeAlso: This is based on the [`app.bsky.actor.defs`][github] lexicon.
     ///
@@ -656,7 +657,7 @@ extension AppBskyLexicon.Actor {
         ///
         /// - Note: From the AT Protocol specification: "Hide quote posts in the feed."
         public let areQuotePostsHidden: Bool?
-        
+
         enum CodingKeys: String, CodingKey {
             case type = "$type"
             case feedURI = "feed"
@@ -667,8 +668,8 @@ extension AppBskyLexicon.Actor {
             case areQuotePostsHidden = "hideQuotePosts"
         }
     }
-    
-    /// A data model for a "Thread View" preference definition.
+
+    /// A definition model for a "Thread View" preference.
     ///
     /// - SeeAlso: This is based on the [`app.bsky.actor.defs`][github] lexicon.
     ///
@@ -690,7 +691,7 @@ extension AppBskyLexicon.Actor {
         /// - Note: From the AT Protocol specification: "Show followed users at the top of
         /// all replies."
         public let areFollowedUsersPrioritized: Bool?
-        
+
         /// The sorting mode for a thread.
         public enum SortingMode: String, Codable {
 
@@ -707,15 +708,15 @@ extension AppBskyLexicon.Actor {
             /// Indicates the thread will be completely random.
             case random = "random"
         }
-        
+
         enum CodingKeys: String, CodingKey {
             case type = "$type"
             case sortingMode = "sort"
             case areFollowedUsersPrioritized = "prioritizeFollowedUsers"
         }
     }
-    
-    /// A data model for an "Interest View" preference definition.
+
+    /// A definition model for an "Interest View" preference.
     ///
     /// - SeeAlso: This is based on the [`app.bsky.actor.defs`][github] lexicon.
     ///
@@ -735,20 +736,20 @@ extension AppBskyLexicon.Actor {
         /// - Important: Current maximum limit is 100 tags. Current maximum length for each tag
         /// name is 64 characters.
         public let tags: [String]
-        
+
         public init(tags: [String]) {
             self.tags = tags
         }
-        
+
         public init(from decoder: Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
-            
+
             self.tags = try container.decode([String].self, forKey: .tags)
         }
-        
+
         public func encode(to encoder: Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
-            
+
             // Truncate `tags` to 640 characters before encoding.
             // `maxGraphemes`'s limit is 64, but `String.count` should respect that limit implictly.
             // Then, truncate `tags` to 100 items before encoding.
@@ -756,37 +757,37 @@ extension AppBskyLexicon.Actor {
                 self.tags.map { $0.truncated(toLength: 640) },
                 withContainer: &container, forKey: .tags, upToLength: 100)
         }
-        
+
         enum CodingKeys: String, CodingKey {
             case type = "$type"
             case tags
         }
     }
-    
-    /// A data model for a definition of the muted word's target.
+
+    /// A definition model for the muted word's target.
     ///
     /// - SeeAlso: This is based on the [`app.bsky.actor.defs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/actor/defs.json
     public enum MutedWordTarget: Codable {
-        
+
         /// Indicates the muted word is within the content itself.
         case content
-        
+
         /// Indicates the muted word is a tag.
         case tag
-        
+
         /// Indicates the muted word is located at an unknown area.
         ///
         /// This case shouldn't be used. If it does appear, then Bluesky may have updated
         /// something that ATProtoKit doesn't yet recognize.
         case other(String)
-        
+
         public init(from decoder: Decoder) throws {
             let container = try decoder.singleValueContainer()
 
             let value = try container.decode(String.self)
-            
+
             switch value {
                 case "content":
                     self = .content
@@ -796,7 +797,7 @@ extension AppBskyLexicon.Actor {
                     self = .other(value)
             }
         }
-        
+
         public func encode(to encoder: Encoder) throws {
             var container = encoder.singleValueContainer()
             switch self {
@@ -812,8 +813,8 @@ extension AppBskyLexicon.Actor {
             }
         }
     }
-    
-    /// A data model for a muted word definition.
+
+    /// A definition model for a muted word.
     ///
     /// - Note: According to the AT Protocol specifications: "A word that the account owner
     /// has muted."
@@ -822,41 +823,41 @@ extension AppBskyLexicon.Actor {
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/actor/defs.json
     public struct MutedWord: Codable {
-        
+
         /// The word to mute.
         public let value: String
 
         /// An array of intended targets for the muted word.
         public let targets: [MutedWordTarget]
-        
+
         public init(value: String, targets: [MutedWordTarget]) {
             self.value = value
             self.targets = targets
         }
-        
+
         public init(from decoder: Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
-            
+
             self.value = try container.decode(String.self, forKey: .value)
             self.targets = try container.decode([MutedWordTarget].self, forKey: .targets)
         }
-        
+
         public func encode(to encoder: Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
-            
+
             // Truncate `value` to 1000 characters before decoding
             // `maxGraphemes`'s limit is 100, but `String.count` should respect that limit
             try truncatedEncode(self.value, withContainer: &container, forKey: .value, upToLength: 1000)
             try container.encode(self.targets, forKey: .targets)
         }
-        
+
         enum CodingKeys: CodingKey {
             case value
             case targets
         }
     }
-    
-    /// A data model for a "Muted Words" preference definition.
+
+    /// A definition model for a "Muted Words" preference.
     ///
     /// - SeeAlso: This is based on the [`app.bsky.actor.defs`][github] lexicon.
     ///
@@ -873,14 +874,14 @@ extension AppBskyLexicon.Actor {
         /// - Note: According to the AT Protocol specifications: "A list of words the account
         /// owner has muted."
         public let mutedItems: [MutedWord]
-        
+
         enum CodingKeys: String, CodingKey {
             case type = "$type"
             case mutedItems = "items"
         }
     }
-    
-    /// A data model for a "Hidden Posts" preference definition.
+
+    /// A definition model for a "Hidden Posts" preference.
     ///
     /// - SeeAlso: This is based on the [`app.bsky.actor.defs`][github] lexicon.
     ///
@@ -897,14 +898,14 @@ extension AppBskyLexicon.Actor {
         /// - Note: According to the AT Protocol specifications: "A list of URIs of posts the
         /// account owner has hidden."
         public let items: [String]
-        
+
         enum CodingKeys: String, CodingKey {
             case type = "$type"
             case items
         }
     }
-    
-    /// A data model for a "Labelers" preference definition.
+
+    /// A definition model for  a "Labelers" preference.
     ///
     /// - SeeAlso: This is based on the [`app.bsky.actor.defs`][github] lexicon.
     ///
@@ -914,8 +915,8 @@ extension AppBskyLexicon.Actor {
         /// An array of labeler items.
         public let labelers: [String]
     }
-    
-    /// A data model definition for a labeler item.
+
+    /// A definition model for a labeler item.
     ///
     /// - SeeAlso: This is based on the [`app.bsky.actor.defs`][github] lexicon.
     ///
@@ -924,7 +925,7 @@ extension AppBskyLexicon.Actor {
 
         /// The decentralized identifier (DID) of the labeler.
         public let labelerDID: String
-        
+
         enum CodingKeys: String, CodingKey {
             case labelerDID = "did"
         }

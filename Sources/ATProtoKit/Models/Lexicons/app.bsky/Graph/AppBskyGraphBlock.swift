@@ -9,7 +9,7 @@ import Foundation
 
 extension AppBskyLexicon.Graph {
 
-    /// The main data model definition for a block record.
+    /// A record model for a block.
     ///
     /// - Note: According to the AT Protocol specifications: "Record declaring a 'block'
     /// relationship against another account. NOTE: blocks are public in Bluesky; see

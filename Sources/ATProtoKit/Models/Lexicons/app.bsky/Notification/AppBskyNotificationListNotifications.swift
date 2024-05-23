@@ -9,7 +9,7 @@ import Foundation
 
 extension AppBskyLexicon.Notification {
 
-    /// The main data model definition for the output of listing notifications.
+    /// An output model for listing notifications.
     ///
     /// - Note: According to the AT Protocol specifications: "Enumerate notifications for the
     /// requesting account. Requires auth."

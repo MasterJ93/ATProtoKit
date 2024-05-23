@@ -9,7 +9,7 @@ import Foundation
 
 extension ComAtprotoLexicon.Server {
 
-    /// The request body data model definition for updating the user's email address.
+    /// A request body model for updating the user's email address.
     ///
     /// - Note: According to the AT Protocol specifications: "Update an account's email."
     ///

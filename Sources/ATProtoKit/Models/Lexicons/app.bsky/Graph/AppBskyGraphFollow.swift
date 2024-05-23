@@ -8,7 +8,8 @@
 import Foundation
 
 extension AppBskyLexicon.Graph {
-    /// The main data model definition for a follow record.
+
+    /// A record model for a follow.
     ///
     /// - Note: According to the AT Protocol specifications: "Record declaring a social 'follow'
     /// relationship of another account. Duplicate follows will be ignored by the AppView."

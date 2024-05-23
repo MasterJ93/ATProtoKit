@@ -9,14 +9,14 @@ import Foundation
 
 extension ComAtprotoLexicon.Server {
 
-    /// The main data model definition for creating invite codes.
+    /// A request body model for creating invite codes.
     ///
     /// - Note: According to the AT Protocol specifications: "Create invite codes."
     ///
     /// - SeeAlso: This is based on the [`com.atproto.server.createInviteCodes`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/server/createInviteCodes.json
-    public struct CreateInviteCodes: Codable {
+    public struct CreateInviteCodesRequestBody: Codable {
 
         /// The number of invite codes to create. Defaults to 1.
         public var codeCount: Int = 1
@@ -34,7 +34,7 @@ extension ComAtprotoLexicon.Server {
         public let forAccounts: [String]?
     }
 
-    /// A data model definition of the output for creating invite codes.
+    /// An output model for creating invite codes.
     ///
     /// - SeeAlso: This is based on the [`com.atproto.server.createInviteCodes`][github] lexicon.
     ///
@@ -45,8 +45,7 @@ extension ComAtprotoLexicon.Server {
         public let codes: [ServerAccountCodes]
     }
 
-    /// A data model definition of the server invite codes generated from
-    /// ``ServerCreateInviteCodes``.
+    /// The server invite codes generated from ``ServerCreateInviteCodes``.
     ///
     /// - SeeAlso: This is based on the [`com.atproto.server.createInviteCodes`][github] lexicon.
     ///

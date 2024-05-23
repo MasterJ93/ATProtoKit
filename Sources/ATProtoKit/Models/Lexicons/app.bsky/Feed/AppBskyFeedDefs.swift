@@ -9,7 +9,7 @@ import Foundation
 
 extension AppBskyLexicon.Feed {
 
-    /// A data model for a post view definition.
+    /// A definition model for a post view.
     ///
     /// - SeeAlso: This is based on the [`app.bsky.feed.defs`][github] lexicon.
     ///
@@ -52,8 +52,9 @@ extension AppBskyLexicon.Feed {
         /// The ruleset of who can reply to the post. Optional.
         public var threadgate: ThreadgateViewDefinition?
 
-        public init(postURI: String, cidHash: String, author: AppBskyLexicon.Actor.ProfileViewBasicDefinition, record: UnknownType, embed: ATUnion.EmbedViewUnion?, replyCount: Int?,
-                    repostCount: Int?, likeCount: Int?, indexedAt: Date, viewer: ViewerStateDefinition?, labels: [Label]?, threadgate: ThreadgateViewDefinition?) {
+        public init(postURI: String, cidHash: String, author: AppBskyLexicon.Actor.ProfileViewBasicDefinition, record: UnknownType,
+                    embed: ATUnion.EmbedViewUnion?, replyCount: Int?, repostCount: Int?, likeCount: Int?, indexedAt: Date, viewer: ViewerStateDefinition?,
+                    labels: [Label]?, threadgate: ThreadgateViewDefinition?) {
             self.postURI = postURI
             self.cidHash = cidHash
             self.author = author
@@ -70,7 +71,7 @@ extension AppBskyLexicon.Feed {
 
         public init(from decoder: Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
-            
+
             self.postURI = try container.decode(String.self, forKey: .postURI)
             self.cidHash = try container.decode(String.self, forKey: .cidHash)
             self.author = try container.decode(AppBskyLexicon.Actor.ProfileViewBasicDefinition.self, forKey: .author)
@@ -87,7 +88,7 @@ extension AppBskyLexicon.Feed {
 
         public func encode(to encoder: Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
-            
+
             try container.encode(self.postURI, forKey: .postURI)
             try container.encode(self.cidHash, forKey: .cidHash)
             try container.encode(self.author, forKey: .author)
@@ -118,7 +119,7 @@ extension AppBskyLexicon.Feed {
         }
     }
 
-    /// A data model for a viewer state definition.
+    /// A definition model for a viewer state.
     ///
     /// - Note: According to the AT Protocol specifications: "Metadata about the requesting
     /// account's relationship with the subject content. Only has meaningful content for
@@ -145,7 +146,7 @@ extension AppBskyLexicon.Feed {
         }
     }
 
-    /// A data model for a definition of a feed's view.
+    /// A definition model for a feed's view.
     ///
     /// - SeeAlso: This is based on the [`app.bsky.feed.defs`][github] lexicon.
     ///
@@ -203,7 +204,7 @@ extension AppBskyLexicon.Feed {
         }
     }
 
-    /// A data model for a reply reference definition.
+    /// A definition model for a reply reference.
     ///
     /// - SeeAlso: This is based on the [`app.bsky.feed.defs`][github] lexicon.
     ///
@@ -227,7 +228,7 @@ extension AppBskyLexicon.Feed {
         public let grandparentAuthor: AppBskyLexicon.Actor.ProfileViewBasicDefinition
     }
 
-    /// A data model for a definition for a very stripped down version of a repost.
+    /// A definition model for a very stripped down version of a repost.
     ///
     /// - SeeAlso: This is based on the [`app.bsky.feed.defs`][github] lexicon.
     ///
@@ -265,7 +266,7 @@ extension AppBskyLexicon.Feed {
         }
     }
 
-    /// A data model for a definition of a hydrated version of a repost.
+    /// A definition model for a hydrated version of a repost.
     ///
     /// - SeeAlso: This is based on the [`app.bsky.feed.defs`][github] lexicon.
     ///
@@ -282,7 +283,7 @@ extension AppBskyLexicon.Feed {
         public var replies: [ATUnion.ThreadPostUnion]?
     }
 
-    /// A data model for a definition of a post that may not have been found.
+    /// A definition model for a post that may not have been found.
     ///
     /// - SeeAlso: This is based on the [`app.bsky.feed.defs`][github] lexicon.
     ///
@@ -293,7 +294,7 @@ extension AppBskyLexicon.Feed {
         public let feedURI: String
 
         /// Indicates whether the post wasn't found. Defaults to `true`.
-        public private(set) var isNotFound: Bool = true
+        public private(set) var isNotFound: Bool
 
         public init(feedURI: String, isNotFound: Bool = true) {
             self.feedURI = feedURI
@@ -313,7 +314,7 @@ extension AppBskyLexicon.Feed {
         }
     }
 
-    /// A data model for a definition of a post that may have been blocked.
+    /// A definition model for a post that may have been blocked.
     ///
     /// - SeeAlso: This is based on the [`app.bsky.feed.defs`][github] lexicon.
     ///
@@ -350,7 +351,7 @@ extension AppBskyLexicon.Feed {
         }
     }
 
-    /// The data model of a blocked author definition.
+    /// A definition model for a blocked author.
     ///
     /// - SeeAlso: This is based on the [`app.bsky.feed.defs`][github] lexicon.
     ///
@@ -369,7 +370,7 @@ extension AppBskyLexicon.Feed {
         }
     }
 
-    /// The data model of a feed generator definition.
+    /// A definition model for a feed geneator.
     ///
     /// - SeeAlso: This is based on the [`app.bsky.feed.defs`][github] lexicon.
     ///
@@ -497,7 +498,7 @@ extension AppBskyLexicon.Feed {
         }
     }
 
-    /// The data model of a definition for the viewer's state of the feed generator.
+    /// A definition model for the viewer's state of the feed generator.
     ///
     /// - SeeAlso: This is based on the [`app.bsky.feed.defs`][github] lexicon.
     ///
@@ -512,7 +513,11 @@ extension AppBskyLexicon.Feed {
         }
     }
 
-    /// The data model of a feed's skeleton
+    /// A definition model for a feed's skeleton.
+    ///
+    /// - SeeAlso: This is based on the [`app.bsky.feed.defs`][github] lexicon.
+    ///
+    /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/feed/defs.json
     public struct SkeletonFeedPostDefinition: Codable {
 
         /// The URI of the post in the feed generator.
@@ -530,7 +535,7 @@ extension AppBskyLexicon.Feed {
         }
     }
 
-    /// The data model of a definition for a respost in a feed generator.
+    /// A definition model for a repost in a feed generator.
     ///
     /// - SeeAlso: This is based on the [`app.bsky.feed.defs`][github] lexicon.
     ///
@@ -547,7 +552,7 @@ extension AppBskyLexicon.Feed {
         }
     }
 
-    /// The data model of a feed threadgate view definition.
+    /// A definition model for  a feed threadgate view.
     ///
     /// - SeeAlso: This is based on the [`app.bsky.feed.defs`][github] lexicon.
     ///
@@ -575,7 +580,7 @@ extension AppBskyLexicon.Feed {
         }
     }
 
-    /// The main data model definition for an interaction for an item in a feed generator.
+    /// A definition model for an interaction for an item in a feed generator.
     ///
     /// - SeeAlso: This is based on the [`app.bsky.feed.defs`][github] lexicon.
     ///
@@ -625,7 +630,7 @@ extension AppBskyLexicon.Feed {
         }
     }
 
-    /// A data model definition for an interaction event.
+    /// A definition model for an interaction event.
     ///
     /// - SeeAlso: This is based on the [`app.bsky.feed.defs`][github] lexicon.
     ///

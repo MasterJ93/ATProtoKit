@@ -9,7 +9,7 @@ import Foundation
 
 extension ToolsOzoneLexicon.Communication {
 
-    /// A data model definition for a communication template.
+    /// A definition model for a communication template.
     ///
     /// - SeeAlso: This is based on the [`tools.ozone.communication.defs`][github] lexicon.
     ///

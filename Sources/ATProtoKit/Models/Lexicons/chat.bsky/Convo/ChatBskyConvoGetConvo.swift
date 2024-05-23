@@ -9,7 +9,7 @@ import Foundation
 
 extension ChatBskyLexicon.Conversation {
 
-    /// The data model definition for the output of a message reference.
+    /// An output model for a message reference.
     ///
     /// - SeeAlso: This is based on the [`chat.bsky.convo.getConvo`][github] lexicon.
     ///

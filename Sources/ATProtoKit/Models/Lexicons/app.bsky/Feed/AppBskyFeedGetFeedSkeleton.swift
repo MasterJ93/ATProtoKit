@@ -9,7 +9,7 @@ import Foundation
 
 extension AppBskyLexicon.Feed {
 
-    /// The main data model definition for the output of getting a skeleton for a feed generator.
+    /// An output model for getting a skeleton for a feed generator.
     ///
     /// - Note: According to the AT Protocol specifications: "Get a skeleton of a feed provided
     /// by a feed generator. Auth is optional, depending on provider requirements, and provides the

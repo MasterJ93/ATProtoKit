@@ -9,7 +9,7 @@ import Foundation
 
 extension ComAtprotoLexicon.Admin {
 
-    /// A data model definition for the output of getting the status of a subject as an administrator.
+    /// An output model for getting the status of a subject as an administrator.
     ///
     /// - Note: According to the AT Protocol specifications: "Get the service-specific admin status of
     /// a subject (account, record, or blob)."

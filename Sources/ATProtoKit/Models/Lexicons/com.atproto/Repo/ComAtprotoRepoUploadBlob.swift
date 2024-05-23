@@ -11,10 +11,13 @@ extension ComAtprotoLexicon.Repository {
 
     /// The main data model definition for the image's query.
     public struct ImageQuery: Encodable {
+
         /// The data of the image.
         public let imageData: Data
+
         /// The file name of the image.
         public let fileName: String
+
         /// The alt text of the image,
         public let altText: String?
 
@@ -25,7 +28,7 @@ extension ComAtprotoLexicon.Repository {
         }
     }
 
-    /// The request body data model definition for uploading a blob.
+    /// A request body model for uploading a blob.
     ///
     /// - Note: According to the AT Protocol specifications: "Upload a new blob, to be referenced
     /// from a repository record. The blob will be deleted if it is not referenced within a time

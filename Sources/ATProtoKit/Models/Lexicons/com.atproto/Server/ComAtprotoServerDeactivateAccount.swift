@@ -9,7 +9,7 @@ import Foundation
 
 extension ComAtprotoLexicon.Server {
 
-    /// The main data model definition for deactivating an account.
+    /// A request body model for deactivating an account.
     ///
     /// - Note: According to the AT Protocol specifications: "Deactivates a currently
     /// active account. Stops serving of repo, and future writes to repo until reactivated.
@@ -19,7 +19,8 @@ extension ComAtprotoLexicon.Server {
     /// - SeeAlso: This is based on the [`com.atproto.server.deactivateAccount`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/server/deactivateAccount.json
-    public struct DeactivateAccount: Codable {
+    public struct DeactivateAccountRequestBody: Codable {
+
         /// The date and time of when the server should delete the account.
         ///
         /// - Note: According to the AT Protocol specifications: "A recommendation to server as

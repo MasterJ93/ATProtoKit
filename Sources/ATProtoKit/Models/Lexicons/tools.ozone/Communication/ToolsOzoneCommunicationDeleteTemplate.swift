@@ -9,7 +9,7 @@ import Foundation
 
 extension ToolsOzoneLexicon.Communication {
 
-    /// The main data model definition for deleting a communication template as an administrator.
+    /// A request body model for deleting a communication template as an administrator.
     ///
     /// - Note: According to the AT Protocol specifications: "Delete a communication template."
     ///

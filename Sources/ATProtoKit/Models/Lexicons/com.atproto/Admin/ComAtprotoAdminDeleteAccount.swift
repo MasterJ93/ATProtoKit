@@ -9,7 +9,7 @@ import Foundation
 
 extension ComAtprotoLexicon.Admin {
 
-    /// The main data model definition for deleting a user's account as an administrator.
+    /// A request body model for deleting a user's account as an administrator.
     ///
     /// - Note: According to the AT Protocol specifications: "Delete a user account as
     /// an administrator."
@@ -17,7 +17,7 @@ extension ComAtprotoLexicon.Admin {
     /// - SeeAlso: This is based on the [`com.atproto.admin.deleteAccount`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/admin/deleteAccount.json
-    public struct DeleteAccount: Codable {
+    public struct DeleteAccountRequestBody: Codable {
 
         /// The decentralized identifier (DID) of the account to be deleted.
         public let accountDID: String

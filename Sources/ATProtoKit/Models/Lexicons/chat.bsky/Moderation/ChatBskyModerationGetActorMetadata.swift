@@ -8,8 +8,8 @@
 import Foundation
 
 extension ChatBskyLexicon.Moderation {
-    
-    /// The data model definition for the output of getting the user account's metadata.
+
+    /// An output model for getting the user account's metadata.
     ///
     /// - SeeAlso: This is based on the [`chat.bsky.moderation.getActorMetadata`][github] lexicon.
     ///

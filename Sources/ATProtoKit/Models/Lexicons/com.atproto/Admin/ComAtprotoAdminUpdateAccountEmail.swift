@@ -9,8 +9,7 @@ import Foundation
 
 extension ComAtprotoLexicon.Admin {
 
-    /// The main data model definition for updating the email address of a user account as
-    /// an administrator.
+    /// A request body model for updating the email address of a user account as an administrator.
     ///
     /// - Note: According to the AT Protocol specifications: "Administrative action to update an
     /// account's email."
@@ -19,8 +18,10 @@ extension ComAtprotoLexicon.Admin {
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/admin/updateAccountEmail.json
     public struct AdminUpdateAccountEmailRequestBody: Codable {
+
         /// The decentralized identifier (DID) of the account.
         public let accountDID: String
+
         /// The new email account the user wants to change to.
         public let accountEmail: String
 

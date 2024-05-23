@@ -9,7 +9,7 @@ import Foundation
 
 extension ToolsOzoneLexicon.Moderation {
 
-    /// A data model for a moderation event view definition.
+    /// A definition model for a moderation event view.
     ///
     /// - SeeAlso: This is based on the [`com.atproto.admin.defs`][github] lexicon.
     ///
@@ -90,7 +90,7 @@ extension ToolsOzoneLexicon.Moderation {
         }
     }
 
-    /// A data model for a detailed moderation event view definition.
+    /// A definition model for a detailed moderation event view
     ///
     /// - SeeAlso: This is based on the [`com.atproto.admin.defs`][github] lexicon.
     ///
@@ -157,7 +157,7 @@ extension ToolsOzoneLexicon.Moderation {
         }
     }
 
-    /// A data model for a subject's status view definition.
+    /// A definition model for a subject's status view.
     ///
     /// - SeeAlso: This is based on the [`com.atproto.admin.defs`][github] lexicon.
     ///
@@ -324,7 +324,7 @@ extension ToolsOzoneLexicon.Moderation {
         }
     }
 
-    /// A data model for the subject review state definition.
+    /// A definition model for  the subject review state.
     ///
     /// - SeeAlso: This is based on the [`com.atproto.admin.defs`][github] lexicon.
     ///
@@ -357,7 +357,7 @@ extension ToolsOzoneLexicon.Moderation {
         case reviewNone
     }
 
-    /// A data model for an event takedown definition.
+    /// A definition model for an event takedown.
     ///
     /// - SeeAlso: This is based on the [`com.atproto.admin.defs`][github] lexicon.
     ///
@@ -377,7 +377,7 @@ extension ToolsOzoneLexicon.Moderation {
         public let durationInHours: Int?
     }
 
-    /// A data model for a reverse takedown event definition.
+    /// A definition model for a reverse takedown event.
     ///
     /// - Note: According to the AT Protocol specifications: "Revert take down action on
     /// a subject."
@@ -394,7 +394,7 @@ extension ToolsOzoneLexicon.Moderation {
         public let comment: String?
     }
 
-    /// A data model for a definition of an resolved appeal event.
+    /// A definition model for an resolved appeal event.
     ///
     /// - Note: According to the AT Protocol specifications: "Resolve appeal on a subject."
     ///
@@ -409,7 +409,7 @@ extension ToolsOzoneLexicon.Moderation {
         public let comment: String?
     }
 
-    /// A data model for a definition of a comment event.
+    /// A definition model for a comment event.
     ///
     /// - Note: According to the AT Protocol specifications: "Add a comment to a subject."
     ///
@@ -432,7 +432,7 @@ extension ToolsOzoneLexicon.Moderation {
         }
     }
 
-    /// A data model for a report event definition.
+    /// A definition model for a report event.
     ///
     /// - Note: According to the AT Protocol specifications: "Report a subject."
     ///
@@ -455,7 +455,7 @@ extension ToolsOzoneLexicon.Moderation {
         public let reportType: ModerationReasonType
     }
 
-    /// A data model for a label event definition.
+    /// A definition model for a label event.
     ///
     /// - Note: According to the AT Protocol specifications: "Apply/Negate labels on a subject"
     ///
@@ -480,7 +480,7 @@ extension ToolsOzoneLexicon.Moderation {
         }
     }
 
-    /// A data model for a definition of an acknowledgement event.
+    /// A definition model for an acknowledgement event.
     ///
     /// - SeeAlso: This is based on the [`com.atproto.admin.defs`][github] lexicon.
     ///
@@ -491,7 +491,7 @@ extension ToolsOzoneLexicon.Moderation {
         public var comment: String?
     }
 
-    /// A data model for a definition of an escalation event.
+    /// A definition model for an acknowledgement event.
     ///
     /// - SeeAlso: This is based on the [`com.atproto.admin.defs`][github] lexicon.
     ///
@@ -502,7 +502,7 @@ extension ToolsOzoneLexicon.Moderation {
         public var comment: String?
     }
 
-    /// A data model for a definition of a mute event.
+    /// A definition model for a definition of a mute event.
     ///
     /// - Note: According to the AT Protocol specifications: "Mute incoming reports on a subject."
     ///
@@ -521,7 +521,7 @@ extension ToolsOzoneLexicon.Moderation {
         public let durationInHours: Int
     }
 
-    /// A data model for an unmute event definition.
+    /// A definition model for an unmute event definition.
     ///
     /// - Note: According to the AT Protocol specifications: "Unmute action on a subject."
     ///
@@ -537,7 +537,7 @@ extension ToolsOzoneLexicon.Moderation {
         public var comment: String?
     }
 
-    /// A data model definition for a mute reporter event.
+    /// A definition model for a mute reporter event.
     ///
     /// - Note: According to the AT Protocol specifications: "Mute incoming reports from
     /// an account."
@@ -557,7 +557,7 @@ extension ToolsOzoneLexicon.Moderation {
         public let comment: String?
     }
 
-    /// A data model definition for an unmute reporter event.
+    /// A definition model for an unmute reporter event.
     ///
     /// - Note: According to the AT Protocol specifications: "Unmute incoming reports
     /// from an account."
@@ -574,7 +574,7 @@ extension ToolsOzoneLexicon.Moderation {
         public let comment: String?
     }
 
-    /// A data model for a definition of an email event.
+    /// A definition model for an email event.
     ///
     /// - Note: According to the AT Protocol specifications: "Keep a log of outgoing email to a user."
     ///
@@ -602,7 +602,7 @@ extension ToolsOzoneLexicon.Moderation {
         public var comment: String?
     }
 
-    /// A data model for a definition of a diversion event.
+    /// A definition model for a diversion event.
     ///
     /// - Note: According to the AT Protocol specifications: "Divert a record's blobs to a
     /// 3rd party service for further scanning/tagging"
@@ -616,7 +616,7 @@ extension ToolsOzoneLexicon.Moderation {
         public let comment: String?
     }
 
-    /// A data model for a tag event definition.
+    /// A definition model for a tag event definition.
     ///
     /// - Note: According to the AT Protocol specifications: "Add/Remove a tag on a subject."
     ///
@@ -648,7 +648,7 @@ extension ToolsOzoneLexicon.Moderation {
         public let comment: String?
     }
 
-    /// A data model for a definition of a repository view.
+    /// A definition model for a repository view.
     ///
     /// - SeeAlso: This is based on the [`com.atproto.admin.defs`][github] lexicon.
     ///
@@ -742,7 +742,7 @@ extension ToolsOzoneLexicon.Moderation {
         }
     }
 
-    /// A data model for a definition of a detailed repository view.
+    /// A definition model for a detailed repository view.
     ///
     /// - SeeAlso: This is based on the [`com.atproto.admin.defs`][github] lexicon.
     ///
@@ -858,7 +858,7 @@ extension ToolsOzoneLexicon.Moderation {
         }
     }
 
-    /// A data model for a definition of a respository view that may not have been found.
+    /// A definition model for a respository view that may not have been found.
     ///
     /// - SeeAlso: This is based on the [`com.atproto.admin.defs`][github] lexicon.
     ///
@@ -873,7 +873,7 @@ extension ToolsOzoneLexicon.Moderation {
         }
     }
 
-    /// A data model for the definition of a record view.
+    /// A definition model for a record view.
     ///
     /// - SeeAlso: This is based on the [`com.atproto.admin.defs`][github] lexicon.
     ///
@@ -965,7 +965,7 @@ extension ToolsOzoneLexicon.Moderation {
         }
     }
 
-    /// A data model for a definition a detailed view of a record.
+    /// A definition model for a detailed view of a record.
     ///
     /// - SeeAlso: This is based on the [`com.atproto.admin.defs`][github] lexicon.
     ///
@@ -1064,7 +1064,7 @@ extension ToolsOzoneLexicon.Moderation {
         }
     }
 
-    /// A data model for a definition of a record that may not have been found.
+    /// A definition model for a record that may not have been found.
     ///
     /// - SeeAlso: This is based on the [`com.atproto.admin.defs`][github] lexicon.
     ///
@@ -1079,7 +1079,7 @@ extension ToolsOzoneLexicon.Moderation {
         }
     }
 
-    /// A data model of a definition for moderation.
+    /// A definition model for moderation.
     ///
     /// - Important: The item associated with this struct is undocumented in the AT Protocol specifications. The documentation here is based on:\
     ///   \* **For items with some inferable context from property names or references**: its best interpretation, though not with full certainty.\
@@ -1102,7 +1102,7 @@ extension ToolsOzoneLexicon.Moderation {
         public var subjectStatus: OzoneSubjectStatusView?
     }
 
-    /// A data model of a definition for a detailed moderation.
+    /// A definition model for a detailed moderation.
     ///
     /// - Important: The item associated with this struct is undocumented in the AT Protocol specifications. The documentation here is based on:\
     ///   \* **For items with some inferable context from property names or references**: its best interpretation, though not with full certainty.\
@@ -1125,7 +1125,7 @@ extension ToolsOzoneLexicon.Moderation {
         public var subjectStatus: OzoneSubjectStatusView?
     }
 
-    /// The data model for a definition of a blob view.
+    /// A definition model for a blob view.
     ///
     /// - SeeAlso: This is based on the [`com.atproto.admin.defs`][github] lexicon.
     ///
@@ -1191,7 +1191,7 @@ extension ToolsOzoneLexicon.Moderation {
         }
     }
 
-    /// A data model for a definition of details for an image.
+    /// A definition model for details for an image.
     ///
     /// - SeeAlso: This is based on the [`com.atproto.admin.defs`][github] lexicon.
     ///
@@ -1205,7 +1205,7 @@ extension ToolsOzoneLexicon.Moderation {
         public let height: Int
     }
 
-    /// A data model for a definition of details for a video.
+    /// A definition model for details for a video.
     ///
     /// - SeeAlso: This is based on the [`com.atproto.admin.defs`][github] lexicon.
     ///

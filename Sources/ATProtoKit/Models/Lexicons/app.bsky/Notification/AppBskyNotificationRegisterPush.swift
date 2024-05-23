@@ -9,7 +9,7 @@ import Foundation
 
 extension AppBskyLexicon.Notification {
 
-    /// The main data model definition for registering push notifications.
+    /// An output model for registering push notifications.
     ///
     /// - Note: According to the AT Protocol specifications: "Register to receive
     /// push notifications, via a specified service, for the requesting account.

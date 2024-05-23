@@ -9,7 +9,7 @@ import Foundation
 
 extension ComAtprotoLexicon.Sync {
 
-    /// The main data model definition for the output of a user account's blob CID hashes.
+    /// An output model for a user account's blob CID hashes.
     ///
     /// - Note: According to the AT Protocol specifications: "List blob CIDs for an account, since
     /// some repo revision. Does not require auth; implemented by PDS."

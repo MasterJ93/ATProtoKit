@@ -9,8 +9,7 @@ import Foundation
 
 extension AppBskyLexicon.Graph {
 
-    /// The main data model definition for the output of retrieving the lists created by the
-    /// user account.
+    /// An output model for retrieving the lists created by the user account.
     ///
     /// - Note: According to the AT Protocol specifications: "Enumerates the lists created by a
     /// specified account (actor)."

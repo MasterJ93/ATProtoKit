@@ -9,8 +9,7 @@ import Foundation
 
 extension AppBskyLexicon.Feed {
 
-    /// The main data model definition for the output of getting information about a given
-    /// feed generator.
+    /// An output model for getting information about a given feed generator.
     ///
     /// - Note: According to the AT Protocol specifications: "Get information about a feed
     /// generator. Implemented by AppView."

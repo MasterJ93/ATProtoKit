@@ -9,7 +9,7 @@ import Foundation
 
 extension AppBskyLexicon.Labeler {
 
-    /// The main data model definition for the output of the labeler service information.
+    /// An output model for the labeler service information.
     ///
     /// - Note: According to the AT Protocol specifications: "Get information about a list of
     /// labeler services."

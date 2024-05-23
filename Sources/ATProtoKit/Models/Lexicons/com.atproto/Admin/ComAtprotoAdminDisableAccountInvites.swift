@@ -9,8 +9,7 @@ import Foundation
 
 extension ComAtprotoLexicon.Admin {
 
-    /// The main data model definition for disabling a user account's ability to receive new
-    /// invite codes.
+    /// A request body model for disabling a user account's ability to receive new invite codes.
     ///
     /// - Note: According to the AT Protocol specifications: "Disable an account from receiving new
     /// invite codes, but does not invalidate existing codes."
@@ -18,7 +17,7 @@ extension ComAtprotoLexicon.Admin {
     /// - SeeAlso: This is based on the [`com.atproto.admin.disableAccountInvites`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/admin/disableAccountInvites.json
-    public struct DisableAccountInvites: Codable {
+    public struct DisableAccountInvitesRequestBody: Codable {
 
         /// The decentralized identifier (DID) of the user account.
         public let accountDID: String

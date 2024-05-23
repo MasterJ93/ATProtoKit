@@ -9,7 +9,7 @@ import Foundation
 
 extension ComAtprotoLexicon.Identity {
 
-    /// The request body data model definition for requesting a signed PLC operation.
+    /// A request body model for requesting a signed PLC operation.
     ///
     /// - Note: According to the AT Protocol specifications: "Request an email with a code to in
     /// order to request a signed PLC operation. Requires Auth."

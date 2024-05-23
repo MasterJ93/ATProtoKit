@@ -9,8 +9,7 @@ import Foundation
 
 extension AppBskyLexicon.Graph {
 
-    /// The main data model definition for the output for grabbing all of the accounts the user
-    /// account follows.
+    /// An output model for for grabbing all of the accounts the user account follows.
     ///
     /// - Note: According to the AT Protocol specifications: "Enumerates accounts which a specified
     /// account (actor) follows."

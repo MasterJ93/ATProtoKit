@@ -9,7 +9,7 @@ import Foundation
 
 extension AppBskyLexicon.Feed {
 
-    /// The main data model definition for the output of getting the user account's timeline.
+    /// An output model for getting the user account's timeline.
     ///
     /// - Note: According to the AT Protocol specifications: "Get a view of the requesting account's
     /// home timeline. This is expected to be some form of reverse-chronological feed."

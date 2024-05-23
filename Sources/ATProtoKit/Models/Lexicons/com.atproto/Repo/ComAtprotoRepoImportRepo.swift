@@ -9,7 +9,7 @@ import Foundation
 
 extension ComAtprotoLexicon.Repository {
 
-    /// The main data model definition for importing a CAR file.
+    /// A request body model for importing a CAR file.
     ///
     /// - Note: According to the AT Protocol specifications: "Import a repo in the form of a
     /// CAR file. Requires Content-Length HTTP header to be set."

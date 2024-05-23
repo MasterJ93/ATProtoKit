@@ -9,7 +9,7 @@ import Foundation
 
 extension ComAtprotoLexicon.Moderation {
 
-    /// A data model for the definition of the moderator's reason for reporting.
+    /// A definition model for the moderator's reason for reporting.
     ///
     /// - SeeAlso: This is based on the [`com.atproto.moderation.defs`][github] lexicon.
     ///

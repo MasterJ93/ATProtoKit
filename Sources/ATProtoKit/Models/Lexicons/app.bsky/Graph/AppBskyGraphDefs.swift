@@ -9,7 +9,7 @@ import Foundation
 
 extension AppBskyLexicon.Graph {
 
-    /// A data model for a basic list view definition.
+    /// A definition model for a basic list view.
     ///
     /// - SeeAlso: This is based on the [`app.bsky.graph.defs`][github] lexicon.
     ///
@@ -69,7 +69,6 @@ extension AppBskyLexicon.Graph {
             try container.encode(self.actorURI, forKey: .actorURI)
             try container.encode(self.cidHash, forKey: .cidHash)
             try container.encode(self.name, forKey: .name)
-            //
             try truncatedEncode(self.name, withContainer: &container, forKey: .name, upToLength: 64)
             try container.encode(self.purpose, forKey: .purpose)
             try container.encodeIfPresent(self.avatarImageURL, forKey: .avatarImageURL)
@@ -88,7 +87,7 @@ extension AppBskyLexicon.Graph {
         }
     }
 
-    /// A data model for a definition of the view of a user list.
+    /// A definition model for the view of a user list.
     ///
     /// - SeeAlso: This is based on the [`app.bsky.graph.defs`][github] lexicon.
     ///
@@ -193,7 +192,7 @@ extension AppBskyLexicon.Graph {
         }
     }
 
-    /// A data model for the definition of an item with in a user list.
+    /// A definition model for an item with in a user list.
     ///
     /// - SeeAlso: This is based on the [`app.bsky.graph.defs`][github] lexicon.
     ///
@@ -212,7 +211,7 @@ extension AppBskyLexicon.Graph {
         }
     }
 
-    /// A data model of the definition of the user list's purpose.
+    /// A definition model for the user list's purpose.
     ///
     /// - SeeAlso: This is based on the [`app.bsky.graph.defs`][github] lexicon.
     ///
@@ -230,8 +229,7 @@ extension AppBskyLexicon.Graph {
         case curatelist = "app.bsky.graph.defs#curatelist"
     }
 
-
-    /// A data model of a definition for a viewer's state of a user list.
+    /// A definition model for a viewer's state of a user list.
     ///
     /// - SeeAlso: This is based on the [`app.bsky.graph.defs`][github] lexicon.
     ///
@@ -250,7 +248,7 @@ extension AppBskyLexicon.Graph {
         }
     }
 
-    /// A data model for a definition of a user that may not have been found in the user list.
+    /// A definition model for a user that may not have been found in the user list.
     ///
     /// - SeeAlso: This is based on the [`app.bsky.graph.defs`][github] lexicon.
     ///
@@ -259,8 +257,8 @@ extension AppBskyLexicon.Graph {
 
         /// The URI of the user.
         ///
-        /// - Note: According to the AT Protocol specifications: "indicates that a handle or DID could
-        /// not be resolved",
+        /// - Note: According to the AT Protocol specifications: "indicates that a handle or DID
+        /// could not be resolved".
         public let actorURI: String
 
         /// Indicates whether the user is not found.
@@ -272,7 +270,7 @@ extension AppBskyLexicon.Graph {
         }
     }
 
-    /// A data model for the graph relationship definition.
+    /// A definition model for a graph relationship between two user accounts.
     ///
     /// - Note: According to the AT Protocol specifications: "lists the bi-directional graph
     /// relationships between one actor (not indicated in the object), and the target actors (the DID

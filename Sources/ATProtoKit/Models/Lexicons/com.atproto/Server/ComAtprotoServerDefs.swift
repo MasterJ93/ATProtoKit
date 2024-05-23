@@ -9,7 +9,7 @@ import Foundation
 
 extension ComAtprotoLexicon.Server {
 
-    /// The main data model definition for a server invite code.
+    /// A definition model for a server invite code.
     ///
     /// - SeeAlso: This is based on the [`com.atproto.server.defs`][github] lexicon.
     ///
@@ -82,7 +82,7 @@ extension ComAtprotoLexicon.Server {
         }
     }
 
-    /// A data model for a definition for the invite code's use.
+    /// A definition model for the invite code's use.
     ///
     /// - SeeAlso: This is based on the [`com.atproto.server.defs`][github] lexicon.
     ///
@@ -91,7 +91,7 @@ extension ComAtprotoLexicon.Server {
 
         /// Who used the invite code.
         public let usedBy: String
-        
+
         /// The date and time the service code was used.
         @DateFormatting public var usedAt: Date
 

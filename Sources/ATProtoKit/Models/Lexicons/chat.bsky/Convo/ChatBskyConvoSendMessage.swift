@@ -9,7 +9,7 @@ import Foundation
 
 extension ChatBskyLexicon.Conversation {
 
-    /// The request body data model definition for sending a message.
+    /// A request body model for sending a message.
     ///
     /// - SeeAlso: This is based on the [`chat.bsky.convo.sendMessage`][github] lexicon.
     ///

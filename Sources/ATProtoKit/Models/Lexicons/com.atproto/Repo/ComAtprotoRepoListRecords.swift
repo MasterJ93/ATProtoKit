@@ -9,7 +9,7 @@ import Foundation
 
 extension ComAtprotoLexicon.Repository {
 
-    /// The main data model definition for the output of listing records.
+    /// An output model for listing records.
     ///
     /// - Note: According to the AT Protocol specifications: "List a range of records in a
     /// repository, matching a specific collection. Does not require auth."

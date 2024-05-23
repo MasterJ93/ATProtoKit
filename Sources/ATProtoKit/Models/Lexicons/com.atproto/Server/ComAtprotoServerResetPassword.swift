@@ -9,7 +9,7 @@ import Foundation
 
 extension ComAtprotoLexicon.Server {
 
-    /// The main data model definition for resetting a password.
+    /// A request body model for resetting a password.
     ///
     /// - Note: According to the AT Protocol specifications: "Reset a user account password using a token."
     ///

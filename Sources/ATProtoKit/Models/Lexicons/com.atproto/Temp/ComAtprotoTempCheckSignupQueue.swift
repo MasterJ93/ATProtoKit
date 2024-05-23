@@ -10,8 +10,7 @@ import Foundation
 
 extension ComAtprotoLexicon.Temp {
 
-    /// The main data model definition for the output of retrieving information about the
-    /// sign up queue.
+    /// An output model for etrieving information about the sign up queue.
     ///
     /// - Important: The lexicon associated with this model may be removed at any time. This may
     /// not work.

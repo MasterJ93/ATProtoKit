@@ -9,8 +9,7 @@ import Foundation
 
 extension ComAtprotoLexicon.Admin {
 
-    /// The main data model definition for giving the user account access to receive invite
-    /// codes again.
+    /// A request body model for giving the user account access to receive invite codes again.
     ///
     /// - Note: According to the AT Protocol specifications: "Re-enable an account's ability to
     /// receive invite codes."

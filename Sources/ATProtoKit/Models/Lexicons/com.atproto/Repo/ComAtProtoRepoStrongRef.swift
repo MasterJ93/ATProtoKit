@@ -9,7 +9,7 @@ import Foundation
 
 extension ComAtprotoLexicon.Repository {
 
-    /// The main data model definition for a strong reference.
+    /// A main data model definition for a strong reference.
     ///
     /// - Note: According to the AT Protocol specifications: "A URI with a
     /// content-hash fingerprint."

@@ -9,8 +9,7 @@ import Foundation
 
 extension AppBskyLexicon.Feed {
 
-    /// The main data model definition for the output of seeing the user account's posts
-    /// and reposts.
+    /// An output model for seeing the user account's posts and reposts.
     ///
     /// - Note: According to the AT Protocol specifications: "Get a view of an actor's
     /// 'author feed' (post and reposts by the author). Does not require auth."
@@ -26,7 +25,7 @@ extension AppBskyLexicon.Feed {
         /// An array of like records.
         public let feed: [FeedViewPostDefinition]
     }
-    
+
     /// Indicates the kind of combinations of posts and reposts for the feed's array.
     ///
     /// - Note: According to the AT Protocol specifications: "Combinations of post/repost types to

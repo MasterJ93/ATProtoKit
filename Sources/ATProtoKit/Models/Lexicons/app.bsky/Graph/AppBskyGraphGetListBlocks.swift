@@ -9,8 +9,7 @@ import Foundation
 
 extension AppBskyLexicon.Graph {
 
-    /// The main data model definition for the output of getting the moderator lists that the user
-    /// account is blocking.
+    /// An output model for getting the moderator lists that the user account is blocking.
     ///
     /// - Note: According to the AT Protocol specifications: "Get mod lists that the requesting
     /// account (actor) is blocking. Requires auth."

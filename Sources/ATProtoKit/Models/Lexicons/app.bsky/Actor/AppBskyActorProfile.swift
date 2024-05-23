@@ -8,7 +8,7 @@
 import Foundation
 
 extension AppBskyLexicon.Actor {
-    
+
     /// The main data model definition for an actor.
     ///
     /// - Note: According to the AT Protocol specifications: "A declaration of a Bluesky

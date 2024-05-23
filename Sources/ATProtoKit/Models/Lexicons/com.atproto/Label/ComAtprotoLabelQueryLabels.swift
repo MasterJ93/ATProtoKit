@@ -9,8 +9,7 @@ import Foundation
 
 extension ComAtprotoLexicon.Label {
 
-    /// The main data model definition for the output of finding relevant labels based on a
-    /// given URI.
+    /// An output model for inding relevant labels based on a given URI.
     ///
     /// - Note: According to the AT Protocol specifications: "Find labels relevant to the provided
     /// AT-URI patterns. Public endpoint for moderation services, though may return different or

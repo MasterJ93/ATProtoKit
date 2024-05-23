@@ -9,7 +9,7 @@ import Foundation
 
 extension ChatBskyLexicon.Conversation {
 
-    /// The request body data model definition for unmuting a conversation.
+    /// A request body model for unmuting a conversation.
     ///
     /// - SeeAlso: This is based on the [`chat.bsky.convo.unmuteConvo`][github] lexicon.
     ///
@@ -24,7 +24,7 @@ extension ChatBskyLexicon.Conversation {
         }
     }
 
-    /// The data model definition for the output of unmuting a conversation.
+    /// An output model for unmuting a conversation.
     ///
     /// - SeeAlso: This is based on the [`chat.bsky.convo.unmuteConvo`][github] lexicon.
     ///

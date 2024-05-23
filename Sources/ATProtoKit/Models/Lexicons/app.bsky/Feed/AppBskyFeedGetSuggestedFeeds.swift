@@ -9,8 +9,7 @@ import Foundation
 
 extension AppBskyLexicon.Feed {
 
-    /// The main data model definition for the output of getting a list of feed generators
-    /// suggested for the user account.
+    /// An output model for getting a list of feed generators suggested for the user account.
     ///
     /// - Note: According to the AT Protocol specifications: "Get a list of suggested feeds
     /// (feed generators) for the requesting account."

@@ -9,7 +9,7 @@ import Foundation
 
 extension ComAtprotoLexicon.Admin {
 
-    /// A data model definition for the output of retrieving an array of user accounts.
+    /// An output model for retrieving an array of user accounts.
     ///
     /// - Note: According to the AT Protocol specifications: "Get details about some accounts."
     ///

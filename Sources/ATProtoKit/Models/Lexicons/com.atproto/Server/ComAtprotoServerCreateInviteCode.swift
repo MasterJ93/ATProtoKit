@@ -9,7 +9,7 @@ import Foundation
 
 extension ComAtprotoLexicon.Server {
 
-    /// The main data model definition for creating an invite code.
+    /// A request body model for creating an invite code.
     ///
     /// - Note: According to the AT Protocol specifications: "Create invite code."
     ///
@@ -31,7 +31,7 @@ extension ComAtprotoLexicon.Server {
         public let forAccount: [String]?
     }
 
-    /// A data model definition of the output for creating an invite code.
+    /// An output model for creating an invite code.
     ///
     /// - SeeAlso: This is based on the [`com.atproto.server.createInviteCode`][github] lexicon.
     ///

@@ -9,7 +9,7 @@ import Foundation
 
 extension ChatBskyLexicon.Conversation {
     
-    /// The request body data model definition for leaving a conversation.
+    /// A request body model for leaving a conversation.
     ///
     /// - SeeAlso: This is based on the [`chat.bsky.convo.leaveConvo`][github] lexicon.
     ///
@@ -24,7 +24,7 @@ extension ChatBskyLexicon.Conversation {
         }
     }
 
-    /// The data model definition for the output of leaving a conversation.
+    /// An output model for leaving a conversation.
     ///
     /// - SeeAlso: This is based on the [`chat.bsky.convo.leaveConvo`][github] lexicon.
     ///

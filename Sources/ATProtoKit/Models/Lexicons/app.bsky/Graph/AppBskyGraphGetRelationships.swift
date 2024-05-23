@@ -9,8 +9,7 @@ import Foundation
 
 extension AppBskyLexicon.Graph {
 
-    /// The main data model definition for the output of the public relationship between two
-    /// user accounts.
+    /// An output model for the public relationship between two user accounts.
     ///
     /// - Note: According to the AT Protocol specifications: "Enumerates public relationships between
     /// one account, and a list of other accounts. Does not require auth."

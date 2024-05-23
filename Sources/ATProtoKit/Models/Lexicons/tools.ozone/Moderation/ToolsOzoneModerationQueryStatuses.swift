@@ -9,7 +9,7 @@ import Foundation
 
 extension ToolsOzoneLexicon.Moderation {
 
-    /// The main data model definition for listing all moderation events pertaining a subject.
+    /// An output model for listing all moderation events pertaining a subject.
     ///
     /// - Note: According to the AT Protocol specifications: "View moderation statuses of subjects
     /// (record or repo)."
@@ -21,7 +21,7 @@ extension ToolsOzoneLexicon.Moderation {
 
         /// The mark used to indicate the starting point for the next set of results. Optional.
         public let cursor: String?
-        
+
         /// An array of subject status views.
         public let subjectStatuses: [OzoneSubjectStatusView]
     }

@@ -9,7 +9,7 @@ import Foundation
 
 extension ComAtprotoLexicon.Server {
 
-    /// The main data model of a definition for confirming emails.
+    /// A request body model for confirming emails.
     ///
     /// - Note: According to the AT Protocol specifications: "Confirm an email using a token from com.atproto.server.requestEmailConfirmation."
     ///

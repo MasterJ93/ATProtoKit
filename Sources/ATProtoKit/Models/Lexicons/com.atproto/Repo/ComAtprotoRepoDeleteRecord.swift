@@ -9,7 +9,7 @@ import Foundation
 
 extension ComAtprotoLexicon.Repository {
 
-    /// The main data model definition for deleting a record.
+    /// A request body model for deleting a record.
     ///
     /// - Note: According to the AT Protocol specifications: "Delete a repository record, or ensure
     /// it doesn't exist. Requires auth, implemented by PDS."

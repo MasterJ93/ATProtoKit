@@ -9,7 +9,7 @@ import Foundation
 
 extension ComAtprotoLexicon.Server {
 
-    /// The main data model definition for reversing signing keys.
+    /// A request body model for reversing signing keys.
     ///
     /// - Note: According to the AT Protocol specifications: "Reserve a repo signing key, for
     /// use with account creation. Necessary so that a DID PLC update operation can be constructed
@@ -30,7 +30,7 @@ extension ComAtprotoLexicon.Server {
         }
     }
 
-    /// A data model definition for the output of reversing a signing keys.
+    /// An output model for reversing signing keys.
     ///
     /// - SeeAlso: This is based on the [`com.atproto.server.reserveSigningKey`][github] lexicon.
     ///

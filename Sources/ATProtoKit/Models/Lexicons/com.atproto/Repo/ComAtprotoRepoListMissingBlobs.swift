@@ -9,8 +9,7 @@ import Foundation
 
 extension ComAtprotoLexicon.Repository {
 
-    /// The main data model definition for the output of listing any missing blobs attached to the
-    /// user account.
+    /// An output model for listing any missing blobs attached to the user account.
     ///
     /// - Note: According to the AT Protocol specifications: "Returns a list of missing blobs for
     /// the requesting account. Intended to be used in the account migration flow."

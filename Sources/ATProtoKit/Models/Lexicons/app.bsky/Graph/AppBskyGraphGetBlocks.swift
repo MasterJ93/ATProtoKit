@@ -9,8 +9,7 @@ import Foundation
 
 extension AppBskyLexicon.Graph {
 
-    /// The main data model definition for the output of getting all of the users that have been
-    /// blocked by the user account.
+    /// An output model for getting all of the users that have been blocked by the user account.
     ///
     /// - Note: According to the AT Protocol specifications: "Enumerates which accounts the
     /// requesting account is currently blocking. Requires auth."

@@ -9,7 +9,7 @@ import Foundation
 
 extension AppBskyLexicon.Unspecced {
 
-    /// A data model definition for a skeleton search post.
+    /// A definition model for a skeleton search post.
     ///
     /// - Important: This is an unspecced model, and as such, this is highly volatile and may
     /// change or be removed at any time. Use at your own risk.
@@ -27,7 +27,7 @@ extension AppBskyLexicon.Unspecced {
         }
     }
 
-    /// A data model definition for a skeleton search post.
+    /// A definition model for a skeleton search post.
     ///
     /// - Important: This is an unspecced model, and as such, this is highly volatile and may
     /// change or be removed at any time. Use at your own risk.

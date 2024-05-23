@@ -9,8 +9,7 @@ import Foundation
 
 extension ChatBskyLexicon.Moderation {
 
-    /// The request body data model definition for updating the user account's access to
-    /// direct messages.
+    /// A request body model for updating the user account's access to direct messages.
     ///
     /// - SeeAlso: This is based on the [`hat.bsky.moderation.updateActorAccess`][github] lexicon.
     ///

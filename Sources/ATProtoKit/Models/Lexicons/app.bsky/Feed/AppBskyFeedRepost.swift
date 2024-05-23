@@ -39,6 +39,7 @@ extension AppBskyLexicon.Feed {
 
         public init(from decoder: Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
+
             self.subject = try container.decode(StrongReference.self, forKey: .subject)
             self.createdAt = try container.decode(DateFormatting.self, forKey: .createdAt).wrappedValue
         }
@@ -56,5 +57,4 @@ extension AppBskyLexicon.Feed {
             case createdAt
         }
     }
-
 }

@@ -9,7 +9,7 @@ import Foundation
 
 extension AppBskyLexicon.Graph {
 
-    /// The main data model definition for a list record.
+    /// A record model for a list.
     ///
     /// - Note: According to the AT Protocol specifications: "Record representing a list of
     /// accounts (actors). Scope includes both moderation-oriented lists and

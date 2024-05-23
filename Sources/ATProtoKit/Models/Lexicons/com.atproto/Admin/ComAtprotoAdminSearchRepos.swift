@@ -9,7 +9,7 @@ import Foundation
 
 extension ComAtprotoLexicon.Admin {
 
-    /// The main data model definition for the output of searching repositories.
+    /// An output model for searching repositories.
     ///
     /// - Note: According to the AT Protocol specifications: "Find repositories based on a
     /// search term."

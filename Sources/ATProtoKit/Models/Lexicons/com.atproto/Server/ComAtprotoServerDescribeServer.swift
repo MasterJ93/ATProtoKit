@@ -9,7 +9,7 @@ import Foundation
 
 extension ComAtprotoLexicon.Server {
 
-    /// A data model definition for the output of retrieving a description of the server.
+    /// An output model for retrieving a description of the server.
     ///
     /// - Note: According to the AT Protocol specifications: "Describes the server's account
     /// creation requirements and capabilities. Implemented by PDS."
@@ -61,7 +61,7 @@ extension ComAtprotoLexicon.Server {
         }
     }
 
-    /// A data model definition of service policy URLs.
+    /// A data model of service policy URLs.
     ///
     /// - Note: According to the AT Protocol specifications: "Describes the server's account
     /// creation requirements and capabilities. Implemented by PDS."

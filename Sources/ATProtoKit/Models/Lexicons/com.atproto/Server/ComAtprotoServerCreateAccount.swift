@@ -9,7 +9,7 @@ import Foundation
 
 extension ComAtprotoLexicon.Server {
 
-    /// The main data model definition for creating an account.
+    /// A request body model for creating an account.
     ///
     /// - Note: According to the AT Protocol specifications: "Create an account. Implemented
     /// by PDS."

@@ -9,8 +9,7 @@ import Foundation
 
 extension ComAtprotoLexicon.Admin {
 
-    /// The main data model definition for updating the handle of a user account as
-    /// an administrator.
+    /// A request body model for updating the handle of a user account as an administrator.
     ///
     /// - Note: According to the AT Protocol specifications: "Update the password for a
     /// user account as an administrator."

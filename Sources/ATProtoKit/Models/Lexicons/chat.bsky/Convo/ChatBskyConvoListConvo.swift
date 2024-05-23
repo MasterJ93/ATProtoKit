@@ -9,7 +9,7 @@ import Foundation
 
 extension ChatBskyLexicon.Conversation {
 
-    /// The data model definition for the output of listing a conversation.
+    /// An output model for listing a conversation.
     ///
     /// - SeeAlso: This is based on the [`chat.bsky.convo.listConvos`][github] lexicon.
     ///

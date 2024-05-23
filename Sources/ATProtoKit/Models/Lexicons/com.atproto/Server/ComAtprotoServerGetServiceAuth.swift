@@ -9,7 +9,7 @@ import Foundation
 
 extension ComAtprotoLexicon.Server {
 
-    /// A data model definition for the output of getting the signed token for the service.
+    /// An output model for getting the signed token for the service.
     ///
     /// - Note: According to the AT Protocol specifications: "Get a signed token on behalf of the
     /// requesting DID for the requested service."

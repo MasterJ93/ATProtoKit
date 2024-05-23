@@ -9,7 +9,7 @@ import Foundation
 
 extension AppBskyLexicon.Graph {
 
-    /// The main data model definition for the output of grabbing the list view.
+    /// An output model for grabbing the list view.
     ///
     /// - Note: According to the AT Protocol specifications: "Gets a 'view' (with additional context)
     /// of a specified list."

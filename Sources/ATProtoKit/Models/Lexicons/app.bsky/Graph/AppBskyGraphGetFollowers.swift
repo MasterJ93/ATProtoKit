@@ -9,7 +9,7 @@ import Foundation
 
 extension AppBskyLexicon.Graph {
 
-    /// The main data model definition for the output of getting all of the user account's followers.
+    /// An output model for getting all of the user account's followers.
     ///
     /// - Note: According to the AT Protocol specifications: "Enumerates accounts which follow a
     /// specified account (actor)."

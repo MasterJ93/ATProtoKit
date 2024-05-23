@@ -9,7 +9,7 @@ import Foundation
 
 extension ChatBskyLexicon.Actor {
 
-    /// The main data model definition for a Bluesky chat account.
+    /// A record model for a Bluesky chat account.
     ///
     /// - Note: According to the AT Protocol specifications: "A declaration of a Bluesky
     /// chat account."

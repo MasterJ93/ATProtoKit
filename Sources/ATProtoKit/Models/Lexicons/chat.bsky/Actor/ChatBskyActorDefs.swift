@@ -9,13 +9,13 @@ import Foundation
 
 extension ChatBskyLexicon.Actor {
 
-    /// The main data model for a basic profile view definition.
+    /// A definition model for a basic profile view.
     ///
     /// - SeeAlso: This is based on the [`chat.bsky.actor.defs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/chat/bsky/actor/defs.json
     public struct ProfileViewBasicDefinition: Codable {
-        
+
         /// The decentralized identifier (DID) of the user.
         public let actorDID: String
 

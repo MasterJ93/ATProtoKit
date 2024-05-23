@@ -34,7 +34,7 @@ extension AppBskyLexicon.Feed {
         ///
         /// This is the date where the user "liked" a post.
         @DateFormatting public var createdAt: Date
-        
+
         public init(subject: StrongReference, createdAt: Date) {
             self.subject = subject
             self._createdAt = DateFormatting(wrappedValue: createdAt)

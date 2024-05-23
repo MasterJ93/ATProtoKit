@@ -9,7 +9,7 @@ import Foundation
 
 extension ComAtprotoLexicon.Repository {
 
-    /// The main data model definition for creating a record.
+    /// A request body model for creating a record.
     ///
     /// - Note: According to the AT Protocol specifications: "Create a single new repository record
     ///  Requires auth, implemented by PDS."

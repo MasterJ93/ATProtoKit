@@ -9,7 +9,7 @@ import Foundation
 
 extension ChatBskyLexicon.Conversation {
 
-    /// The request body data model definition for sending a message batch.
+    /// A request body model for sending a message batch.
     ///
     /// - SeeAlso: This is based on the [`chat.bsky.convo.sendMessageBatch`][github] lexicon.
     ///
@@ -26,7 +26,7 @@ extension ChatBskyLexicon.Conversation {
         }
     }
 
-    /// The data model definition for the output of sending a message batch.
+    /// An output model for sending a message batch.
     ///
     /// - SeeAlso: This is based on the [`chat.bsky.convo.sendMessageBatch`][github] lexicon.
     ///

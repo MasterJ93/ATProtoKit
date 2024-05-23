@@ -9,7 +9,7 @@ import Foundation
 
 extension AppBskyLexicon.Unspecced {
 
-    /// The main data model definition for the output of retrieving the skeleton results of posts.
+    /// An output model for retrieving the skeleton results of posts.
     ///
     /// - Important: This is an unspecced model, and as such, this is highly volatile and may
     /// change or be removed at any time. Use at your own risk.

@@ -9,7 +9,7 @@ import Foundation
 
 extension AppBskyLexicon.Embed {
 
-    /// The main data model definition for record embeds.
+    /// A definition model for record embeds.
     ///
     /// - Note: According to the AT Protocol specifications: "A representation of a record embedded
     /// in a Bluesky record (eg, a post). For example, a quote-post, or sharing a
@@ -27,13 +27,13 @@ extension AppBskyLexicon.Embed {
 
         /// The strong reference of the record.
         public let record: StrongReference
-        
+
         enum CodingKeys: String, CodingKey {
             case type = "$type"
             case record
         }
     }
-    
+
     // MARK: -
     /// A data model for a view definition.
     ///
@@ -55,7 +55,7 @@ extension AppBskyLexicon.Embed {
             case record
         }
     }
-    
+
     /// A data model for a record definition in an embed.
     ///
     /// - SeeAlso: This is based on the [`app.bsky.embed.record`][github] lexicon.
@@ -99,9 +99,9 @@ extension AppBskyLexicon.Embed {
 
         /// The date the record was last indexed.
         @DateFormatting public var indexedAt: Date
-        
-        public init(recordURI: String, cidHash: String, author: AppBskyLexicon.Actor.ProfileViewBasicDefinition, value: UnknownType, labels: [Label]?, replyCount: Int?,
-                    repostCount: Int?, likeCount: Int?, embeds: [ATUnion.EmbedViewUnion]?, indexedAt: Date) {
+
+        public init(recordURI: String, cidHash: String, author: AppBskyLexicon.Actor.ProfileViewBasicDefinition, value: UnknownType, labels: [Label]?,
+                    replyCount: Int?, repostCount: Int?, likeCount: Int?, embeds: [ATUnion.EmbedViewUnion]?, indexedAt: Date) {
             self.recordURI = recordURI
             self.cidHash = cidHash
             self.author = author
@@ -113,10 +113,10 @@ extension AppBskyLexicon.Embed {
             self.embeds = embeds
             self._indexedAt = DateFormatting(wrappedValue: indexedAt)
         }
-        
+
         public init(from decoder: any Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
-            
+
             self.recordURI = try container.decode(String.self, forKey: .recordURI)
             self.cidHash = try container.decode(String.self, forKey: .cidHash)
             self.author = try container.decode(AppBskyLexicon.Actor.ProfileViewBasicDefinition.self, forKey: .author)
@@ -128,10 +128,10 @@ extension AppBskyLexicon.Embed {
             self.embeds = try container.decodeIfPresent([ATUnion.EmbedViewUnion].self, forKey: .embeds)
             self.indexedAt = try container.decode(DateFormatting.self, forKey: .indexedAt).wrappedValue
         }
-        
+
         public func encode(to encoder: any Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
-            
+
             try container.encode(self.recordURI, forKey: .recordURI)
             try container.encode(self.cidHash, forKey: .cidHash)
             try container.encode(self.author, forKey: .author)
@@ -143,7 +143,7 @@ extension AppBskyLexicon.Embed {
             try container.encodeIfPresent(self.embeds, forKey: .embeds)
             try container.encode(self._indexedAt, forKey: .indexedAt)
         }
-        
+
         enum CodingKeys: String, CodingKey {
             case type = "$type"
             case recordURI = "uri"
@@ -158,7 +158,7 @@ extension AppBskyLexicon.Embed {
             case indexedAt
         }
     }
-    
+
     /// A data model for a definition of a record that was unable to be found.
     ///
     /// - SeeAlso: This is based on the [`app.bsky.embed.record`][github] lexicon.
@@ -171,13 +171,13 @@ extension AppBskyLexicon.Embed {
 
         /// Indicates whether the record was found.
         public let isRecordNotFound: Bool
-        
+
         enum CodingKeys: String, CodingKey {
             case recordURI = "uri"
             case isRecordNotFound = "notFound"
         }
     }
-    
+
     /// A data model for a definition of a record that has been blocked.
     ///
     /// - SeeAlso: This is based on the [`app.bsky.embed.record`][github] lexicon.
@@ -193,7 +193,7 @@ extension AppBskyLexicon.Embed {
 
         /// The author of the record.
         public let recordAuthor: FeedBlockedAuthor
-        
+
         enum CodingKeys: String, CodingKey {
             case recordURI = "uri"
             case isRecordBlocked = "blocked"

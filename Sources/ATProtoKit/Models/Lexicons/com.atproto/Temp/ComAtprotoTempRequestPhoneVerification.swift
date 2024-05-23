@@ -9,7 +9,7 @@ import Foundation
 
 extension ComAtprotoLexicon.Temp {
 
-    /// The main data model definition for requesting a text code from a phone number.
+    /// A request body model for requesting a text code from a phone number.
     ///
     /// - Important: The lexicon associated with this model may be removed at any time. This may
     /// not work.
@@ -20,7 +20,7 @@ extension ComAtprotoLexicon.Temp {
     /// - SeeAlso: This is based on the [`com.atproto.temp.requestPhoneVerification`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/temp/requestPhoneVerification.json
-    public struct RequestPhoneVerification: Codable {
+    public struct RequestPhoneVerificationRequestBody: Codable {
 
         /// The user's mobile phone number.
         public let phoneNumber: String

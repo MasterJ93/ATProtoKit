@@ -8,8 +8,8 @@
 import Foundation
 
 extension ComAtprotoLexicon.Server {
-    
-    /// The request body data model definition for creating an App Password.
+
+    /// A request body model for creating an App Password.
     ///
     /// - Note: According to the AT Protocol specifications: "Create an App Password."
     ///
@@ -25,7 +25,7 @@ extension ComAtprotoLexicon.Server {
         public let name: String
     }
 
-    /// A data model definition for creating an App Password.
+    /// An output model for creating an App Password.
     ///
     /// - Note: According to the AT Protocol specifications: "Create an App Password."
     ///

@@ -9,7 +9,7 @@ import Foundation
 
 extension ComAtprotoLexicon.Identity {
 
-    /// The main data model definition for signing a PLC operation to a DID document.
+    /// A request body model for signing a PLC operation to a DID document.
     ///
     /// - Note: According to the AT Protocol specifications: "Signs a PLC operation to update some
     /// value(s) in the requesting DID's document."
@@ -39,7 +39,7 @@ extension ComAtprotoLexicon.Identity {
         public let service: ATService?
     }
 
-    /// The main data model definition for the output of signing a PLC operation to a DID document.
+    /// An output model for signing a PLC operation to a DID document.
     ///
     /// - Note: According to the AT Protocol specifications: "Signs a PLC operation to update some
     /// value(s) in the requesting DID's document."

@@ -9,7 +9,7 @@ import Foundation
 
 extension AppBskyLexicon.Feed {
 
-    /// The main data model definition for a feed generator record.
+    /// A record model for a feed generator record.
     ///
     /// - Note: According to the AT Protocol specifications: "Record declaring of the existence of
     /// a feed generator, and containing metadata about it. The record can exist in

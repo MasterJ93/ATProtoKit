@@ -9,7 +9,7 @@ import Foundation
 
 extension ComAtprotoLexicon.Identity {
 
-    /// A data model that represents the output of resolving handles.
+    /// An output model for esolving handles.
     ///
     /// - SeeAlso: This is based on the [`com.atproto.identity.resolveHandle`][github] lexicon.
     ///

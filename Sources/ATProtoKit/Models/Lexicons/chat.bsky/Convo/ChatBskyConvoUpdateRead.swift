@@ -9,7 +9,7 @@ import Foundation
 
 extension ChatBskyLexicon.Conversation {
 
-    /// The request body data model definition for updating the conversation to mark it as read.
+    /// A request body model for updating the conversation to mark it as read.
     ///
     /// - SeeAlso: This is based on the [`chat.bsky.convo.updateRead`][github] lexicon.
     ///
@@ -28,7 +28,7 @@ extension ChatBskyLexicon.Conversation {
         }
     }
 
-    /// The main data model definition for the output of updating the conversation to mark it as read.
+    /// An output model for updating the conversation to mark it as read.
     ///
     /// - SeeAlso: This is based on the [`chat.bsky.convo.updateRead`][github] lexicon.
     ///

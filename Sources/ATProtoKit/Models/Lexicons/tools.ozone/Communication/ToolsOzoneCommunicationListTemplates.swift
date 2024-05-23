@@ -9,7 +9,7 @@ import Foundation
 
 extension ToolsOzoneLexicon.Communication {
 
-    /// The output definition for retrieves a list of communication templates.
+    /// An output model for retrieves a list of communication templates.
     ///
     /// - Note: According to the AT Protocol specifications: "Get list of all
     /// communication templates."

@@ -9,8 +9,7 @@ import Foundation
 
 extension AppBskyLexicon.Graph {
 
-    /// The main data model definition for the output of retrieving all accounts the user account
-    /// is currently muting.
+    /// An output model for retrieving all accounts the user account is currently muting.
     ///
     /// - Note: According to the AT Protocol specifications: "Enumerates accounts that the
     /// requesting account (actor) currently has muted. Requires auth."
@@ -18,7 +17,7 @@ extension AppBskyLexicon.Graph {
     /// - SeeAlso: This is based on the [`app.bsky.graph.getMutes`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/graph/getMutes.json
-    public struct GraphGetMutesOutput: Codable {
+    public struct GetMutesOutput: Codable {
 
         /// The mark used to indicate the starting point for the next set of results. Optional.
         public let cursor: String?

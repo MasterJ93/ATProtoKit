@@ -9,8 +9,7 @@ import Foundation
 
 extension AppBskyLexicon.Graph {
 
-    /// The main data model definition for the output of grabbing the moderator list that the user
-    /// account is currently muting.
+    /// An output model for grabbing the moderator list that the user account is currently muting.
     ///
     /// - Note: According to the AT Protocol specifications: "Enumerates mod lists that the requesting
     /// account (actor) currently has muted. Requires auth."

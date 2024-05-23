@@ -9,7 +9,7 @@ import Foundation
 
 extension AppBskyLexicon.Labeler {
 
-    /// A data model definition for a labeler view.
+    /// A definition model for a labeler view.
     ///
     /// - SeeAlso: This is based on the [`app.bsky.labeler.defs`][github] lexicon.
     ///
@@ -86,7 +86,7 @@ extension AppBskyLexicon.Labeler {
         }
     }
 
-    /// A data model definition for a detailed labeler view.
+    /// A definition model for a detailed labeler view.
     ///
     /// - SeeAlso: This is based on the [`app.bsky.labeler.defs`][github] lexicon.
     ///
@@ -117,7 +117,8 @@ extension AppBskyLexicon.Labeler {
         /// An array of labels. Optional.
         public let labels: [Label]?
 
-        public init(labelerURI: String, labelerCIDHash: String, creator: AppBskyLexicon.Actor.ProfileViewDefinition, policies: LabelerPolicies, likeCount: Int?, viewer: LabelerViewerState?, indexedAt: Date, labels: [Label]?) {
+        public init(labelerURI: String, labelerCIDHash: String, creator: AppBskyLexicon.Actor.ProfileViewDefinition, policies: LabelerPolicies,
+                    likeCount: Int?, viewer: LabelerViewerState?, indexedAt: Date, labels: [Label]?) {
             self.labelerURI = labelerURI
             self.labelerCIDHash = labelerCIDHash
             self.creator = creator
@@ -170,7 +171,7 @@ extension AppBskyLexicon.Labeler {
         }
     }
 
-    /// A data model definition for a user account's view state for the labeler.
+    /// A definition model for a user account's view state for the labeler.
     ///
     /// - SeeAlso: This is based on the [`app.bsky.labeler.defs`][github] lexicon.
     ///
@@ -181,7 +182,7 @@ extension AppBskyLexicon.Labeler {
         public let like: String
     }
 
-    /// A data model definition for a labeler's policies.
+    /// A definition model for a labeler's policies.
     ///
     /// - SeeAlso: This is based on the [`app.bsky.labeler.defs`][github] lexicon.
     ///

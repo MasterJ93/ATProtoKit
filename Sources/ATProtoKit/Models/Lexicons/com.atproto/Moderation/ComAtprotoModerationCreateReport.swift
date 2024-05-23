@@ -9,7 +9,7 @@ import Foundation
 
 extension ComAtprotoLexicon.Moderation {
 
-    /// The main data model definition for creating a report.
+    /// A request body model for creating a report.
     ///
     /// - Note: According to the AT Protocol specifications: "Submit a moderation report regarding
     /// an atproto account or record. Implemented by moderation services (with PDS proxying), and
@@ -42,7 +42,7 @@ extension ComAtprotoLexicon.Moderation {
         public let subject: RepositoryReferencesUnion
     }
 
-    /// A data model definition for the output of creating a report.
+    /// An output model for creating a report.
     ///
     /// - SeeAlso: This is based on the [`com.atproto.moderation.createReport`][github] lexicon.
     ///

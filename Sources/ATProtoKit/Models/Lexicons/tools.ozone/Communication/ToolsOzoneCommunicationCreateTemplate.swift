@@ -9,7 +9,7 @@ import Foundation
 
 extension ToolsOzoneLexicon.Communication {
 
-    /// The request body data model definition for creating a communication template.
+    /// A request body model for creating a communication template.
     ///
     /// - Note: According to the AT Protocol specifications: "Administrative action to create a
     /// new, re-usable communication (email for now) template."

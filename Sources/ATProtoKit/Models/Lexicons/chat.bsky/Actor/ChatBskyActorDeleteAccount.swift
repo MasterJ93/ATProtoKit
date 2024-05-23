@@ -9,7 +9,7 @@ import Foundation
 
 extension ChatBskyLexicon.Actor {
 
-    /// The request body data model definition for deleting an account.
+    /// A request body model for deleting an account.
     ///
     /// - SeeAlso: This is based on the [`chat.bsky.actor.deleteAccount`][github] lexicon.
     ///

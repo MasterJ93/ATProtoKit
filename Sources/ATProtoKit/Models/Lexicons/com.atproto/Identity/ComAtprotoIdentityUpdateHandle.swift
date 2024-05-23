@@ -9,7 +9,7 @@ import Foundation
 
 extension ComAtprotoLexicon.Identity {
 
-    /// The main data model definition for updating a handle.
+    /// A request body model for updating a handle.
     ///
     /// - Note: According to the AT Protocol specifications: "Updates the current account's handle.
     /// Verifies handle validity, and updates did:plc document if necessary. Implemented by PDS,
@@ -18,7 +18,7 @@ extension ComAtprotoLexicon.Identity {
     /// - SeeAlso: This is based on the [`com.atproto.identity.updateHandle`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/identity/updateHandle.json
-    public struct UpdateHandleQuery: Encodable {
+    public struct UpdateHandleRequestBody: Encodable {
 
         /// The handle the user would like to change to.
         ///

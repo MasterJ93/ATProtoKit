@@ -9,7 +9,7 @@ import Foundation
 
 extension AppBskyLexicon.Graph {
 
-    /// The main data model definition for muting a list.
+    /// A request body model formuting a list.
     ///
     /// - Note: According to the AT Protocol specifications: "Creates a mute relationship for the
     /// specified list of accounts. Mutes are private in Bluesky. Requires auth."
