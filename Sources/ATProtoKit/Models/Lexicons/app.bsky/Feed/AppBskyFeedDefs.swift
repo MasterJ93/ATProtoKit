@@ -419,8 +419,8 @@ extension AppBskyLexicon.Feed {
         /// The last time the feed generator was indexed.
         @DateFormatting public var indexedAt: Date
 
-        public init(feedURI: String, cidHash: String, feedDID: String, creator: AppBskyLexicon.Actor.ProfileViewDefinition, displayName: String, description: String?,
-                    descriptionFacets: [Facet]?, avatarImageURL: URL?, likeCount: Int?, canAcceptInteractions: Bool?, labels: [Label]?,
+        public init(feedURI: String, cidHash: String, feedDID: String, creator: AppBskyLexicon.Actor.ProfileViewDefinition, displayName: String,
+                    description: String?, descriptionFacets: [Facet]?, avatarImageURL: URL?, likeCount: Int?, canAcceptInteractions: Bool?, labels: [Label]?,
                     viewer: GeneratorViewerStateDefinition?, indexedAt: Date) {
             self.feedURI = feedURI
             self.cidHash = cidHash

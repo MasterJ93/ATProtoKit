@@ -130,8 +130,8 @@ extension AppBskyLexicon.Graph {
         /// The late time the user list was indexed.
         @DateFormatting public var indexedAt: Date
 
-        public init(listURI: String, cidHash: String, creator: AppBskyLexicon.Actor.ProfileViewDefinition, name: String, purpose: ListPurpose, description: String?,
-                    descriptionFacets: [Facet]?, avatarImageURL: URL?, viewer: ListViewerStateDefinition?, indexedAt: Date) {
+        public init(listURI: String, cidHash: String, creator: AppBskyLexicon.Actor.ProfileViewDefinition, name: String, purpose: ListPurpose,
+                    description: String?, descriptionFacets: [Facet]?, avatarImageURL: URL?, viewer: ListViewerStateDefinition?, indexedAt: Date) {
             self.listURI = listURI
             self.cidHash = cidHash
             self.creator = creator

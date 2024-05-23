@@ -37,7 +37,8 @@ extension AppBskyLexicon.Labeler {
         /// An array of labels. Optional.
         public let labels: [Label]?
 
-        public init(labelerURI: String, labelerCIDHash: String, creator: AppBskyLexicon.Actor.ProfileViewDefinition, likeCount: Int?, viewer: LabelerViewerStateDefinition?, indexedAt: Date, labels: [Label]?) {
+        public init(labelerURI: String, labelerCIDHash: String, creator: AppBskyLexicon.Actor.ProfileViewDefinition, likeCount: Int?,
+                    viewer: LabelerViewerStateDefinition?, indexedAt: Date, labels: [Label]?) {
             self.labelerURI = labelerURI
             self.labelerCIDHash = labelerCIDHash
             self.creator = creator

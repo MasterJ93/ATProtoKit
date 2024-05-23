@@ -154,29 +154,5 @@ extension AppBskyLexicon.Feed {
         /// - Note: If `parent` and `root` are identical, the post is a direct reply to the original
         /// post of the thread.
         public let parent: StrongReference
-
-        public init(root: StrongReference, parent: StrongReference) {
-            self.root = root
-            self.parent = parent
-        }
-
-        public init(from decoder: Decoder) throws {
-            let container = try decoder.container(keyedBy: CodingKeys.self)
-
-            self.root = try container.decode(StrongReference.self, forKey: .root)
-            self.parent = try container.decode(StrongReference.self, forKey: .parent)
-        }
-
-        public func encode(to encoder: Encoder) throws {
-            var container = encoder.container(keyedBy: CodingKeys.self)
-
-            try container.encode(self.root, forKey: .root)
-            try container.encode(self.parent, forKey: .parent)
-        }
-
-        enum CodingKeys: CodingKey {
-            case root
-            case parent
-        }
     }
 }

@@ -46,7 +46,9 @@ extension ChatBskyLexicon.Actor {
         /// cannot actively participate in converations"
         public let isChatDisabled: Bool?
 
-        public init(actorDID: String, actorHandle: String, displayName: String?, avatarImageURL: URL?, associated: AppBskyLexicon.Actor.ProfileAssociatedDefinition?, viewer: [AppBskyLexicon.Actor.ViewerStateDefinition]?, labels: [Label]?, isChatDisabled: Bool?) {
+        public init(actorDID: String, actorHandle: String, displayName: String?, avatarImageURL: URL?,
+                    associated: AppBskyLexicon.Actor.ProfileAssociatedDefinition?, viewer: [AppBskyLexicon.Actor.ViewerStateDefinition]?,
+                    labels: [Label]?, isChatDisabled: Bool?) {
             self.actorDID = actorDID
             self.actorHandle = actorHandle
             self.displayName = displayName

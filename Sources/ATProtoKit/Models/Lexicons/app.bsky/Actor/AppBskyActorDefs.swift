@@ -128,8 +128,8 @@ extension AppBskyLexicon.Actor {
         /// An array of labels created by the user. Optional.
         public var labels: [Label]?
         
-        public init(actorDID: String, actorHandle: String, displayName: String?, description: String?, avatarImageURL: URL?, associated: ProfileAssociatedDefinition?,
-                    indexedAt: Date?, viewer: ViewerStateDefinition?, labels: [Label]?) {
+        public init(actorDID: String, actorHandle: String, displayName: String?, description: String?, avatarImageURL: URL?,
+                    associated: ProfileAssociatedDefinition?, indexedAt: Date?, viewer: ViewerStateDefinition?, labels: [Label]?) {
             self.actorDID = actorDID
             self.actorHandle = actorHandle
             self.displayName = displayName
@@ -240,7 +240,8 @@ extension AppBskyLexicon.Actor {
         public var labels: [Label]?
         
         public init(actorDID: String, actorHandle: String, displayName: String?, description: String?, avatarImageURL: URL?, bannerImageURL: URL?,
-                    followerCount: Int?, followCount: Int?, postCount: Int?, associated: ProfileAssociatedDefinition?, indexedAt: Date?, viewer: ViewerStateDefinition?, labels: [Label]?) {
+                    followerCount: Int?, followCount: Int?, postCount: Int?, associated: ProfileAssociatedDefinition?, indexedAt: Date?,
+                    viewer: ViewerStateDefinition?, labels: [Label]?) {
             self.actorDID = actorDID
             self.actorHandle = actorHandle
             self.displayName = displayName
@@ -338,7 +339,7 @@ extension AppBskyLexicon.Actor {
         }
     }
 
-    /// A data model for an actor viewer state definition.
+    /// A definition model for an actor viewer state.
     ///
     /// - Note: From the AT Protocol specification: "Metadata about the requesting account's
     /// relationship with the subject account. Only has meaningful content for authed requests."
