@@ -23,7 +23,7 @@ extension ToolsOzoneLexicon.Moderation {
         public let cursor: String?
 
         /// An array of repository views.
-        public let repositories: [OzoneModerationRepositoryView]
+        public let repositories: [ToolsOzoneLexicon.Moderation.RepositoryViewDefinition]
 
         enum CodingKeys: String, CodingKey {
             case cursor

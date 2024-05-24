@@ -39,7 +39,7 @@ extension AppBskyLexicon.Actor {
         /// to posts from account. AKA, 'profile picture'"
         ///
         /// - Note: Only JPEGs and PNGs are accepted.
-        public let avatarBlob: BlobContainer?
+        public let avatarBlob: ComAtprotoLexicon.Repository.BlobContainer?
 
         /// The banner image URL of the profile. Optional.
         ///
@@ -47,12 +47,12 @@ extension AppBskyLexicon.Actor {
         /// display behind profile view."
         ///
         /// - Note: Only JPEGs and PNGs are accepted.
-        public let bannerBlob: BlobContainer?
+        public let bannerBlob: ComAtprotoLexicon.Repository.BlobContainer?
 
         /// An array of user-defined labels. Optional.
         ///
         /// - Note: According to the AT Protocol specifications: "Self-label values, specific to
         /// the Bluesky application, on the overall account."
-        public let labels: [SelfLabels]
+        public let labels: [ComAtprotoLexicon.Label.SelfLabelsDefinition]
     }
 }

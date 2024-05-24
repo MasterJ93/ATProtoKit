@@ -35,10 +35,10 @@ extension AppBskyLexicon.Labeler {
         @DateFormatting public var indexedAt: Date
 
         /// An array of labels. Optional.
-        public let labels: [Label]?
+        public let labels: [ComAtprotoLexicon.Label.LabelDefinition]?
 
         public init(labelerURI: String, labelerCIDHash: String, creator: AppBskyLexicon.Actor.ProfileViewDefinition, likeCount: Int?,
-                    viewer: LabelerViewerStateDefinition?, indexedAt: Date, labels: [Label]?) {
+                    viewer: LabelerViewerStateDefinition?, indexedAt: Date, labels: [ComAtprotoLexicon.Label.LabelDefinition]?) {
             self.labelerURI = labelerURI
             self.labelerCIDHash = labelerCIDHash
             self.creator = creator
@@ -57,7 +57,7 @@ extension AppBskyLexicon.Labeler {
             self.likeCount = try container.decodeIfPresent(Int.self, forKey: .likeCount)
             self.viewer = try container.decodeIfPresent(LabelerViewerStateDefinition.self, forKey: .viewer)
             self.indexedAt = try container.decode(DateFormatting.self, forKey: .indexedAt).wrappedValue
-            self.labels = try container.decodeIfPresent([Label].self, forKey: .labels)
+            self.labels = try container.decodeIfPresent([ComAtprotoLexicon.Label.LabelDefinition].self, forKey: .labels)
         }
 
         public func encode(to encoder: any Encoder) throws {
@@ -116,10 +116,10 @@ extension AppBskyLexicon.Labeler {
         @DateFormatting public var indexedAt: Date
 
         /// An array of labels. Optional.
-        public let labels: [Label]?
+        public let labels: [ComAtprotoLexicon.Label.LabelDefinition]?
 
         public init(labelerURI: String, labelerCIDHash: String, creator: AppBskyLexicon.Actor.ProfileViewDefinition, policies: LabelerPolicies,
-                    likeCount: Int?, viewer: LabelerViewerState?, indexedAt: Date, labels: [Label]?) {
+                    likeCount: Int?, viewer: LabelerViewerState?, indexedAt: Date, labels: [ComAtprotoLexicon.Label.LabelDefinition]?) {
             self.labelerURI = labelerURI
             self.labelerCIDHash = labelerCIDHash
             self.creator = creator
@@ -140,7 +140,7 @@ extension AppBskyLexicon.Labeler {
             self.likeCount = try container.decodeIfPresent(Int.self, forKey: .likeCount)
             self.viewer = try container.decodeIfPresent(LabelerViewerState.self, forKey: .viewer)
             self.indexedAt = try container.decode(DateFormatting.self, forKey: .indexedAt).wrappedValue
-            self.labels = try container.decodeIfPresent([Label].self, forKey: .labels)
+            self.labels = try container.decodeIfPresent([ComAtprotoLexicon.Label.LabelDefinition].self, forKey: .labels)
         }
 
         public func encode(to encoder: any Encoder) throws {
@@ -195,7 +195,7 @@ extension AppBskyLexicon.Labeler {
         /// - Note: According to the AT Protocol specifications: "The label values which this labeler
         /// publishes. May include global
         /// or custom labels."
-        public let labelValues: [LabelValueDefinition]
+        public let labelValues: [ComAtprotoLexicon.Label.LabelValueDefinition]
 
         /// An array of labeler-created labels.
         ///
@@ -204,6 +204,6 @@ extension AppBskyLexicon.Labeler {
         /// - Note: According to the AT Protocol specifications: "Label values created by this labeler
         /// and scoped exclusively to it. Labels defined here will override global label definitions
         /// for this labeler."
-        public let labelValueDefinitions: [LabelValueDefinition]
+        public let labelValueDefinitions: [ComAtprotoLexicon.Label.LabelValueDefinition]
     }
 }

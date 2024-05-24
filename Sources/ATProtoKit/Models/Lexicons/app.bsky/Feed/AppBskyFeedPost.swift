@@ -39,7 +39,7 @@ extension AppBskyLexicon.Feed {
         public var facets: [AppBskyLexicon.RichText.Facet]?
 
         /// The references to posts when replying. Optional.
-        public var reply: PostReplyReference?
+        public var reply: ReplyReference?
 
         /// The embed of the post. Optional.
         public var embed: ATUnion.EmbedUnion?
@@ -75,7 +75,7 @@ extension AppBskyLexicon.Feed {
         /// post was originally created."
         @DateFormatting public var createdAt: Date
 
-        public init(text: String, facets: [AppBskyLexicon.RichText.Facet]?, reply: PostReplyReference?, embed: ATUnion.EmbedUnion?, languages: [String]?,
+        public init(text: String, facets: [AppBskyLexicon.RichText.Facet]?, reply: ReplyReference?, embed: ATUnion.EmbedUnion?, languages: [String]?,
                     labels: ATUnion.FeedLabelUnion?, tags: [String]?, createdAt: Date) {
             self.text = text
             self.facets = facets
@@ -92,7 +92,7 @@ extension AppBskyLexicon.Feed {
 
             self.text = try container.decode(String.self, forKey: .text)
             self.facets = try container.decodeIfPresent([AppBskyLexicon.RichText.Facet].self, forKey: .facets)
-            self.reply = try container.decodeIfPresent(PostReplyReference.self, forKey: .reply)
+            self.reply = try container.decodeIfPresent(ReplyReference.self, forKey: .reply)
             self.embed = try container.decodeIfPresent(ATUnion.EmbedUnion.self, forKey: .embed)
             self.languages = try container.decodeIfPresent([String].self, forKey: .languages)
             self.labels = try container.decodeIfPresent(ATUnion.FeedLabelUnion.self, forKey: .labels)
@@ -136,23 +136,23 @@ extension AppBskyLexicon.Feed {
             case tags
             case createdAt
         }
-    }
 
-    // MARK: -
-    /// A data model for a reply reference definition.
-    ///
-    /// - SeeAlso: This is based on the [`app.bsky.feed.post`][github] lexicon.
-    ///
-    /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/feed/post.json
-    public struct PostReplyReference: Codable {
-
-        /// The original post of the thread.
-        public let root: StrongReference
-
-        /// The direct post that the user's post is replying to.
+        // Enums
+        /// A data model for a reply reference definition.
         ///
-        /// - Note: If `parent` and `root` are identical, the post is a direct reply to the original
-        /// post of the thread.
-        public let parent: StrongReference
+        /// - SeeAlso: This is based on the [`app.bsky.feed.post`][github] lexicon.
+        ///
+        /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/feed/post.json
+        public struct ReplyReference: Codable {
+
+            /// The original post of the thread.
+            public let root: StrongReference
+
+            /// The direct post that the user's post is replying to.
+            ///
+            /// - Note: If `parent` and `root` are identical, the post is a direct reply to the original
+            /// post of the thread.
+            public let parent: StrongReference
+        }
     }
 }

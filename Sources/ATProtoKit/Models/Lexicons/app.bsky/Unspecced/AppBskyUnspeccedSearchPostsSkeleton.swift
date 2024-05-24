@@ -9,6 +9,31 @@ import Foundation
 
 extension AppBskyLexicon.Unspecced {
 
+    /// The main data model for retrieving the skeleton results of posts.
+    ///
+    /// - SeeAlso: This is based on the [`app.bsky.unspecced.searchPostsSkeleton`][github] lexicon.
+    ///
+    /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/unspecced/searchPostsSkeleton.json
+    public struct SearchPostsSkeleton: Codable {
+
+        /// Determines the ranking order for the search results.
+        ///
+        /// - Note: According to the AT Protocol specifications: "Specifies the ranking order
+        /// of results."
+        ///
+        /// - SeeAlso: This is based on the [`app.bsky.unspecced.searchPostsSkeleton`][github] lexicon.
+        ///
+        /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/unspecced/searchPostsSkeleton.json
+        public enum Sort: String {
+
+            /// Indicates the results will be sorted by the top posts.
+            case top
+
+            /// Indicates the results will be sorted by the latest posts.
+            case latest
+        }
+    }
+
     /// An output model for retrieving the skeleton results of posts.
     ///
     /// - Important: This is an unspecced model, and as such, this is highly volatile and may
@@ -37,22 +62,5 @@ extension AppBskyLexicon.Unspecced {
 
         /// An array of posts.
         public let posts: [SkeletonSearchPostDefinition]
-    }
-
-    /// Determines the ranking order for the search results.
-    ///
-    /// - Note: According to the AT Protocol specifications: "Specifies the ranking order
-    /// of results."
-    ///
-    /// - SeeAlso: This is based on the [`app.bsky.unspecced.searchPostsSkeleton`][github] lexicon.
-    ///
-    /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/unspecced/searchPostsSkeleton.json
-    public enum SearchPostsSortRanking: String {
-
-        /// Indicates the results will be sorted by the top posts.
-        case top
-
-        /// Indicates the results will be sorted by the latest posts.
-        case latest
     }
 }

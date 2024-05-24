@@ -21,6 +21,6 @@ extension ComAtprotoLexicon.Label {
     public struct QueryLabelsOutput: Codable {
 
         /// An array of labels.
-        public let labels: [Label]
+        public let labels: [ComAtprotoLexicon.Label.LabelDefinition]
     }
 }

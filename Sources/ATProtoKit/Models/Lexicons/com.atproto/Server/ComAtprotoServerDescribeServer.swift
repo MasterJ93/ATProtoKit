@@ -9,6 +9,43 @@ import Foundation
 
 extension ComAtprotoLexicon.Server {
 
+    /// A data model for etrieving a description of the server.
+    public struct DescribeServer: Codable {
+
+        /// A data model of service policy URLs.
+        ///
+        /// - Note: According to the AT Protocol specifications: "Describes the server's account
+        /// creation requirements and capabilities. Implemented by PDS."
+        ///
+        /// - SeeAlso: This is based on the [`com.atproto.server.describeServer`][github] lexicon.
+        ///
+        /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/server/describeServer.json
+        public struct ServicePolicyURLs: Codable {
+
+            /// The URL for the server's Privacy Policy. Optional.
+            public let privacyPolicyURL: URL?
+
+            /// The URL for the server's Terms of Service. Optional.
+            public let termsOfServiceURL: URL?
+
+            enum CodingKeys: String, CodingKey {
+                case privacyPolicyURL = "privacyPolicy"
+                case termsOfServiceURL = "termsOfService"
+            }
+        }
+
+        /// A data model definition of the server's contact information.
+        ///
+        /// - SeeAlso: This is based on the [`com.atproto.server.describeServer`][github] lexicon.
+        ///
+        /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/server/describeServer.json
+        public struct ContactInformation: Codable {
+
+            /// The email address users can use to contact the server owner.
+            public let email: String
+        }
+    }
+
     /// An output model for retrieving a description of the server.
     ///
     /// - Note: According to the AT Protocol specifications: "Describes the server's account
@@ -41,12 +78,12 @@ extension ComAtprotoLexicon.Server {
         ///
         /// - Note: According to the AT Protocol specifications: "URLs of service
         /// policy documents."
-        public let servicePolicyURLs: ServicePolicyURLs
+        public let servicePolicyURLs: DescribeServer.ServicePolicyURLs
 
         /// The contact information for the server.
         ///
         /// - Note: According to the AT Protocol specifications: "Contact information."
-        public let contactInformation: ContactInformation
+        public let contactInformation: DescribeServer.ContactInformation
 
         /// The decentralized identifier (DID) of the server.
         public let serverDID: String
@@ -59,38 +96,5 @@ extension ComAtprotoLexicon.Server {
             case contactInformation = "contact"
             case serverDID = "did"
         }
-    }
-
-    /// A data model of service policy URLs.
-    ///
-    /// - Note: According to the AT Protocol specifications: "Describes the server's account
-    /// creation requirements and capabilities. Implemented by PDS."
-    ///
-    /// - SeeAlso: This is based on the [`com.atproto.server.describeServer`][github] lexicon.
-    ///
-    /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/server/describeServer.json
-    public struct ServicePolicyURLs: Codable {
-
-        /// The URL for the server's Privacy Policy. Optional.
-        public let privacyPolicyURL: URL?
-
-        /// The URL for the server's Terms of Service. Optional.
-        public let termsOfServiceURL: URL?
-
-        enum CodingKeys: String, CodingKey {
-            case privacyPolicyURL = "privacyPolicy"
-            case termsOfServiceURL = "termsOfService"
-        }
-    }
-
-    /// A data model definition of the server's contact information.
-    ///
-    /// - SeeAlso: This is based on the [`com.atproto.server.describeServer`][github] lexicon.
-    ///
-    /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/server/describeServer.json
-    public struct ContactInformation: Codable {
-
-        /// The email address users can use to contact the server owner.
-        public let email: String
     }
 }

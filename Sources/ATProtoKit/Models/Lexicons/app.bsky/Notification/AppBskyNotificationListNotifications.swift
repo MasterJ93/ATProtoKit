@@ -61,10 +61,10 @@ extension AppBskyLexicon.Notification {
         @DateFormatting public var indexedAt: Date
 
         /// An array of labels. Optional.
-        public let labels: [Label]?
+        public let labels: [ComAtprotoLexicon.Label.LabelDefinition]?
 
         public init(notificationURI: String, notificationCID: String, notificationAuthor: String, notificationReason: Reason, reasonSubjectURI: String,
-                    record: UnknownType, isRead: Bool, indexedAt: Date, labels: [Label]) {
+                    record: UnknownType, isRead: Bool, indexedAt: Date, labels: [ComAtprotoLexicon.Label.LabelDefinition]) {
             self.notificationURI = notificationURI
             self.notificationCID = notificationCID
             self.notificationAuthor = notificationAuthor
@@ -87,7 +87,7 @@ extension AppBskyLexicon.Notification {
             self.record = try container.decode(UnknownType.self, forKey: .record)
             self.isRead = try container.decode(Bool.self, forKey: .isRead)
             self.indexedAt = try container.decode(DateFormatting.self, forKey: .indexedAt).wrappedValue
-            self.labels = try container.decodeIfPresent([Label].self, forKey: .labels)
+            self.labels = try container.decodeIfPresent([ComAtprotoLexicon.Label.LabelDefinition].self, forKey: .labels)
         }
 
         public func encode(to encoder: any Encoder) throws {

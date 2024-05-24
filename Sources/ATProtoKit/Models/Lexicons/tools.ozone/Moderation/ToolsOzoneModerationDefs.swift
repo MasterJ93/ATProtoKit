@@ -107,7 +107,7 @@ extension ToolsOzoneLexicon.Moderation {
         public let subject: RepositoryViewUnion
 
         /// An array of blobs for a moderator to look at.
-        public let subjectBlobs: [OzoneModerationBlobView]
+        public let subjectBlobs: [ToolsOzoneLexicon.Moderation.BlobViewDefinition]
 
         /// The creator of the event view.
         public let createdBy: String
@@ -115,7 +115,7 @@ extension ToolsOzoneLexicon.Moderation {
         /// The date and time the event view was created.
         @DateFormatting public var createdAt: Date
 
-        public init(id: Int, event: EventViewDetailUnion, subject: RepositoryViewUnion, subjectBlobs: [OzoneModerationBlobView],
+        public init(id: Int, event: EventViewDetailUnion, subject: RepositoryViewUnion, subjectBlobs: [ToolsOzoneLexicon.Moderation.BlobViewDefinition],
                     createdBy: String, createdAt: Date) {
             self.id = id
             self.event = event
@@ -131,7 +131,7 @@ extension ToolsOzoneLexicon.Moderation {
             self.id = try container.decode(Int.self, forKey: .id)
             self.event = try container.decode(EventViewDetailUnion.self, forKey: .event)
             self.subject = try container.decode(RepositoryViewUnion.self, forKey: .subject)
-            self.subjectBlobs = try container.decode([OzoneModerationBlobView].self, forKey: .subjectBlobs)
+            self.subjectBlobs = try container.decode([ToolsOzoneLexicon.Moderation.BlobViewDefinition].self, forKey: .subjectBlobs)
             self.createdBy = try container.decode(String.self, forKey: .createdBy)
             self.createdAt = try container.decode(DateFormatting.self, forKey: .createdAt).wrappedValue
         }
@@ -189,7 +189,7 @@ extension ToolsOzoneLexicon.Moderation {
         @DateFormatting public var createdAt: Date
 
         /// The review status of the subject.
-        public let reviewState: OzoneSubjectReviewState
+        public let reviewState: ToolsOzoneLexicon.Moderation.SubjectReviewStateDefinition
 
         /// Any additional comments written about the subject. Optional.
         public var comment: String?
@@ -233,9 +233,9 @@ extension ToolsOzoneLexicon.Moderation {
         public var tags: [String]?
 
         public init(id: Int, subject: RepositoryReferencesUnion, subjectBlobCIDHashes: [String]?, subjectRepoHandle: String?, updatedAt: Date, createdAt: Date,
-                    reviewState: OzoneSubjectReviewState, comment: String?, muteUntil: Date?, muteReportingUntil: Date?, lastReviewedBy: String?,
-                    lastReviewedAt: Date?, lastReportedAt: Date?, lastAppealedAt: Date?, isTakenDown: Bool?, wasAppealed: Bool?, suspendUntil: Date?,
-                    tags: [String]?) {
+                    reviewState: ToolsOzoneLexicon.Moderation.SubjectReviewStateDefinition, comment: String?, muteUntil: Date?, muteReportingUntil: Date?,
+                    lastReviewedBy: String?, lastReviewedAt: Date?, lastReportedAt: Date?, lastAppealedAt: Date?, isTakenDown: Bool?, wasAppealed: Bool?,
+                    suspendUntil: Date?, tags: [String]?) {
             self.id = id
             self.subject = subject
             self.subjectBlobCIDHashes = subjectBlobCIDHashes
@@ -265,7 +265,7 @@ extension ToolsOzoneLexicon.Moderation {
             self.subjectRepoHandle = try container.decodeIfPresent(String.self, forKey: .subjectRepoHandle)
             self.updatedAt = try container.decode(DateFormatting.self, forKey: .updatedAt).wrappedValue
             self.createdAt = try container.decode(DateFormatting.self, forKey: .createdAt).wrappedValue
-            self.reviewState = try container.decode(OzoneSubjectReviewState.self, forKey: .reviewState)
+            self.reviewState = try container.decode(ToolsOzoneLexicon.Moderation.SubjectReviewStateDefinition.self, forKey: .reviewState)
             self.comment = try container.decodeIfPresent(String.self, forKey: .comment)
             self.muteUntil = try container.decodeIfPresent(DateFormattingOptional.self, forKey: .muteUntil)?.wrappedValue
             self.muteReportingUntil = try container.decodeIfPresent(DateFormattingOptional.self, forKey: .muteReportingUntil)?.wrappedValue
@@ -452,7 +452,7 @@ extension ToolsOzoneLexicon.Moderation {
         public let isReporterMuted: Bool?
 
         /// The type of report.
-        public let reportType: ModerationReasonType
+        public let reportType: ComAtprotoLexicon.Moderation.ReasonTypeDefinition
     }
 
     /// A definition model for a label event.
@@ -677,7 +677,7 @@ extension ToolsOzoneLexicon.Moderation {
         @DateFormatting public var indexedAt: Date
 
         /// The moderation status of the user.
-        public let moderation: OzoneModeration
+        public let moderation: ToolsOzoneLexicon.Moderation.ModerationDefinition
 
         /// The invite code used by the user to sign up. Optional.
         public var invitedBy: ServerInviteCode?
@@ -688,8 +688,9 @@ extension ToolsOzoneLexicon.Moderation {
         /// The note of the invite. Optional.
         public var inviteNote: String?
 
-        public init(actorDID: String, handle: String, email: String? = nil, relatedRecords: UnknownType, indexedAt: Date, moderation: OzoneModeration,
-                    invitedBy: ServerInviteCode? = nil, areInvitesDisabled: Bool? = nil, inviteNote: String? = nil) {
+        public init(actorDID: String, handle: String, email: String? = nil, relatedRecords: UnknownType, indexedAt: Date,
+                    moderation: ToolsOzoneLexicon.Moderation.ModerationDefinition, invitedBy: ServerInviteCode? = nil, areInvitesDisabled: Bool? = nil,
+                    inviteNote: String? = nil) {
             self.actorDID = actorDID
             self.handle = handle
             self.email = email
@@ -709,7 +710,7 @@ extension ToolsOzoneLexicon.Moderation {
             self.email = try container.decodeIfPresent(String.self, forKey: .email)
             self.relatedRecords = try container.decode(UnknownType.self, forKey: .relatedRecords)
             self.indexedAt = try container.decode(DateFormatting.self, forKey: .indexedAt).wrappedValue
-            self.moderation = try container.decode(OzoneModeration.self, forKey: .moderation)
+            self.moderation = try container.decode(ToolsOzoneLexicon.Moderation.ModerationDefinition.self, forKey: .moderation)
             self.invitedBy = try container.decodeIfPresent(ServerInviteCode.self, forKey: .invitedBy)
             self.areInvitesDisabled = try container.decodeIfPresent(Bool.self, forKey: .areInvitesDisabled)
             self.inviteNote = try container.decodeIfPresent(String.self, forKey: .inviteNote)
@@ -771,16 +772,16 @@ extension ToolsOzoneLexicon.Moderation {
         @DateFormatting public var indexedAt: Date
 
         /// The detailed moderation status of the user.
-        public let moderation: OzoneModerationDetail
+        public let moderation: ToolsOzoneLexicon.Moderation.ModerationDetailDefinition
 
         /// An array of labels associated with the user. Optional.
-        public var labels: [Label]?
+        public var labels: [ComAtprotoLexicon.Label.LabelDefinition]?
 
         /// The invite code used by the user to sign up. Optional.
-        public var invitedBy: ServerInviteCode?
+        public let invitedBy: ComAtprotoLexicon.Server.InviteCodeDefinition?
 
         /// An array of invite codes held by the user. Optional.
-        public var invites: [ServerInviteCode]?
+        public var invites: [ComAtprotoLexicon.Server.InviteCodeDefinition]?
 
         /// Indicates whether the invite codes held by the user are diabled. Optional.
         public var areInvitesDisabled: Bool?
@@ -791,9 +792,10 @@ extension ToolsOzoneLexicon.Moderation {
         /// The date and time the email of the user was confirmed. Optional.
         @DateFormattingOptional public var emailConfirmedAt: Date?
 
-        public init(actorDID: String, handle: String, email: String?, relatedRecords: UnknownType, indexedAt: Date, moderation: OzoneModerationDetail,
-                    labels: [Label]?, invitedBy: ServerInviteCode?, invites: [ServerInviteCode]?, areInvitesDisabled: Bool?, inviteNote: String?,
-                    emailConfirmedAt: Date? = nil) {
+        public init(actorDID: String, handle: String, email: String?, relatedRecords: UnknownType, indexedAt: Date,
+                    moderation: ToolsOzoneLexicon.Moderation.ModerationDetailDefinition, labels: [ComAtprotoLexicon.Label.LabelDefinition]?,
+                    invitedBy: ComAtprotoLexicon.Server.InviteCodeDefinition?, invites: [ComAtprotoLexicon.Server.InviteCodeDefinition]?,
+                    areInvitesDisabled: Bool?, inviteNote: String?, emailConfirmedAt: Date? = nil) {
             self.actorDID = actorDID
             self.handle = handle
             self.email = email
@@ -816,10 +818,10 @@ extension ToolsOzoneLexicon.Moderation {
             self.email = try container.decodeIfPresent(String.self, forKey: .email)
             self.relatedRecords = try container.decode(UnknownType.self, forKey: .relatedRecords)
             self.indexedAt = try container.decode(DateFormatting.self, forKey: .indexedAt).wrappedValue
-            self.moderation = try container.decode(OzoneModerationDetail.self, forKey: .moderation)
-            self.labels = try container.decodeIfPresent([Label].self, forKey: .labels)
-            self.invitedBy = try container.decodeIfPresent(ServerInviteCode.self, forKey: .invitedBy)
-            self.invites = try container.decodeIfPresent([ServerInviteCode].self, forKey: .invites)
+            self.moderation = try container.decode(ToolsOzoneLexicon.Moderation.ModerationDetailDefinition.self, forKey: .moderation)
+            self.labels = try container.decodeIfPresent([ComAtprotoLexicon.Label.LabelDefinition].self, forKey: .labels)
+            self.invitedBy = try container.decodeIfPresent(ComAtprotoLexicon.Server.InviteCodeDefinition.self, forKey: .invitedBy)
+            self.invites = try container.decodeIfPresent([ComAtprotoLexicon.Server.InviteCodeDefinition].self, forKey: .invites)
             self.areInvitesDisabled = try container.decodeIfPresent(Bool.self, forKey: .areInvitesDisabled)
             self.inviteNote = try container.decodeIfPresent(String.self, forKey: .inviteNote)
             self.emailConfirmedAt = try container.decodeIfPresent(DateFormattingOptional.self, forKey: .emailConfirmedAt)?.wrappedValue
@@ -908,7 +910,7 @@ extension ToolsOzoneLexicon.Moderation {
         ///   \* **For items without enough context for even an educated guess**: a direct acknowledgment of their undocumented status.\
         ///   \
         ///   Clarifications from Bluesky are needed in order to fully understand this item.
-        public let moderation: OzoneModeration
+        public let moderation: ToolsOzoneLexicon.Moderation.ModerationDefinition
 
         /// The repository view of the record.
         ///
@@ -917,10 +919,10 @@ extension ToolsOzoneLexicon.Moderation {
         ///   \* **For items without enough context for even an educated guess**: a direct acknowledgment of their undocumented status.\
         ///   \
         ///   Clarifications from Bluesky are needed in order to fully understand this item.
-        public let repository: OzoneModerationRepositoryView
+        public let repository: ToolsOzoneLexicon.Moderation.RepositoryViewDefinition
 
         public init(recordURI: String, cidHash: String, value: UnknownType, blobCIDHashes: [String], indexedAt: Date,
-                    moderation: OzoneModeration, repository: OzoneModerationRepositoryView) {
+                    moderation: ToolsOzoneLexicon.Moderation.ModerationDefinition, repository: ToolsOzoneLexicon.Moderation.RepositoryViewDefinition) {
             self.recordURI = recordURI
             self.cidHash = cidHash
             self.value = value
@@ -938,8 +940,8 @@ extension ToolsOzoneLexicon.Moderation {
             self.value = try container.decode(UnknownType.self, forKey: .value)
             self.blobCIDHashes = try container.decode([String].self, forKey: .blobCIDHashes)
             self.indexedAt = try container.decode(DateFormatting.self, forKey: .indexedAt).wrappedValue
-            self.moderation = try container.decode(OzoneModeration.self, forKey: .moderation)
-            self.repository = try container.decode(OzoneModerationRepositoryView.self, forKey: .repository)
+            self.moderation = try container.decode(ToolsOzoneLexicon.Moderation.ModerationDefinition.self, forKey: .moderation)
+            self.repository = try container.decode(ToolsOzoneLexicon.Moderation.RepositoryViewDefinition.self, forKey: .repository)
         }
 
         public func encode(to encoder: Encoder) throws {
@@ -988,10 +990,10 @@ extension ToolsOzoneLexicon.Moderation {
         public let value: String
 
         /// An array of CID hashes for blobs.
-        public let blobs: [OzoneModerationBlobView]
+        public let blobs: [ToolsOzoneLexicon.Moderation.BlobViewDefinition]
 
         /// An array of labels attached to the record. Optional.
-        public var labels: [Label]?
+        public var labels: [ComAtprotoLexicon.Label.LabelDefinition]?
 
         /// The date and time the record is indexed.
         @DateFormatting public var indexedAt: Date
@@ -1003,7 +1005,7 @@ extension ToolsOzoneLexicon.Moderation {
         ///   \* **For items without enough context for even an educated guess**: a direct acknowledgment of their undocumented status.\
         ///   \
         ///   Clarifications from Bluesky are needed in order to fully understand this item.
-        public let moderation: OzoneModerationDetail
+        public let moderation: ToolsOzoneLexicon.Moderation.ModerationDetailDefinition
 
         /// The repository view of the record.
         ///
@@ -1012,10 +1014,12 @@ extension ToolsOzoneLexicon.Moderation {
         ///   \* **For items without enough context for even an educated guess**: a direct acknowledgment of their undocumented status.\
         ///   \
         ///   Clarifications from Bluesky are needed in order to fully understand this item.
-        public let repository: OzoneModerationRepositoryView
+        public let repository: ToolsOzoneLexicon.Moderation.RepositoryViewDefinition
 
-        public init(recordURI: String, cidHash: String, value: String, blobs: [OzoneModerationBlobView], labels: [Label]? = nil, indexedAt: Date,
-                    moderation: OzoneModerationDetail, repository: OzoneModerationRepositoryView) {
+        public init(recordURI: String, cidHash: String, value: String, blobs: [ToolsOzoneLexicon.Moderation.BlobViewDefinition],
+                    labels: [ComAtprotoLexicon.Label.LabelDefinition]? = nil, indexedAt: Date,
+                    moderation: ToolsOzoneLexicon.Moderation.ModerationDetailDefinition,
+                    repository: ToolsOzoneLexicon.Moderation.RepositoryViewDefinition) {
             self.recordURI = recordURI
             self.cidHash = cidHash
             self.value = value
@@ -1032,11 +1036,11 @@ extension ToolsOzoneLexicon.Moderation {
             self.recordURI = try container.decode(String.self, forKey: .recordURI)
             self.cidHash = try container.decode(String.self, forKey: .cidHash)
             self.value = try container.decode(String.self, forKey: .value)
-            self.blobs = try container.decode([OzoneModerationBlobView].self, forKey: .blobs)
-            self.labels = try container.decodeIfPresent([Label].self, forKey: .labels)
+            self.blobs = try container.decode([ToolsOzoneLexicon.Moderation.BlobViewDefinition].self, forKey: .blobs)
+            self.labels = try container.decodeIfPresent([ComAtprotoLexicon.Label.LabelDefinition].self, forKey: .labels)
             self.indexedAt = try container.decode(DateFormatting.self, forKey: .indexedAt).wrappedValue
-            self.moderation = try container.decode(OzoneModerationDetail.self, forKey: .moderation)
-            self.repository = try container.decode(OzoneModerationRepositoryView.self, forKey: .repository)
+            self.moderation = try container.decode(ToolsOzoneLexicon.Moderation.ModerationDetailDefinition.self, forKey: .moderation)
+            self.repository = try container.decode(ToolsOzoneLexicon.Moderation.RepositoryViewDefinition.self, forKey: .repository)
         }
 
         public func encode(to encoder: Encoder) throws {
@@ -1099,7 +1103,7 @@ extension ToolsOzoneLexicon.Moderation {
         ///   \* **For items without enough context for even an educated guess**: a direct acknowledgment of their undocumented status.\
         ///   \
         ///   Clarifications from Bluesky are needed in order to fully understand this item.
-        public var subjectStatus: OzoneSubjectStatusView?
+        public let subjectStatus: ToolsOzoneLexicon.Moderation.SubjectStatusViewDefinition
     }
 
     /// A definition model for a detailed moderation.
@@ -1122,7 +1126,7 @@ extension ToolsOzoneLexicon.Moderation {
         ///   \* **For items without enough context for even an educated guess**: a direct acknowledgment of their undocumented status.\
         ///   \
         ///   Clarifications from Bluesky are needed in order to fully understand this item.
-        public var subjectStatus: OzoneSubjectStatusView?
+        public var subjectStatus: ToolsOzoneLexicon.Moderation.SubjectStatusViewDefinition?
     }
 
     /// A definition model for a blob view.
@@ -1148,9 +1152,10 @@ extension ToolsOzoneLexicon.Moderation {
         public let details: MediaDetailUnion
 
         /// The status of the subject.
-        public let moderation: OzoneModeration
+        public let moderation: ToolsOzoneLexicon.Moderation.ModerationDefinition
 
-        public init(cidHash: String, mimeType: String, size: Int, createdAt: Date, details: MediaDetailUnion, moderation: OzoneModeration) {
+        public init(cidHash: String, mimeType: String, size: Int, createdAt: Date, details: MediaDetailUnion,
+                    moderation: ToolsOzoneLexicon.Moderation.ModerationDefinition) {
             self.cidHash = cidHash
             self.mimeType = mimeType
             self.size = size
@@ -1167,7 +1172,7 @@ extension ToolsOzoneLexicon.Moderation {
             self.size = try container.decode(Int.self, forKey: .size)
             self.createdAt = try container.decode(DateFormatting.self, forKey: .createdAt).wrappedValue
             self.details = try container.decode(MediaDetailUnion.self, forKey: .details)
-            self.moderation = try container.decode(OzoneModeration.self, forKey: .moderation)
+            self.moderation = try container.decode(ToolsOzoneLexicon.Moderation.ModerationDefinition.self, forKey: .moderation)
         }
 
         public func encode(to encoder: Encoder) throws {

@@ -47,14 +47,14 @@ extension AppBskyLexicon.Feed {
         public var viewer: ViewerStateDefinition?
 
         /// An array of labels attached to the post. Optional.
-        public var labels: [Label]?
+        public var labels: [ComAtprotoLexicon.Label.LabelDefinition]?
 
         /// The ruleset of who can reply to the post. Optional.
         public var threadgate: ThreadgateViewDefinition?
 
         public init(postURI: String, cidHash: String, author: AppBskyLexicon.Actor.ProfileViewBasicDefinition, record: UnknownType,
                     embed: ATUnion.EmbedViewUnion?, replyCount: Int?, repostCount: Int?, likeCount: Int?, indexedAt: Date, viewer: ViewerStateDefinition?,
-                    labels: [Label]?, threadgate: ThreadgateViewDefinition?) {
+                    labels: [ComAtprotoLexicon.Label.LabelDefinition]?, threadgate: ThreadgateViewDefinition?) {
             self.postURI = postURI
             self.cidHash = cidHash
             self.author = author
@@ -82,7 +82,7 @@ extension AppBskyLexicon.Feed {
             self.likeCount = try container.decodeIfPresent(Int.self, forKey: .likeCount)
             self.indexedAt = try container.decode(DateFormatting.self, forKey: .indexedAt).wrappedValue
             self.viewer = try container.decodeIfPresent(ViewerStateDefinition.self, forKey: .viewer)
-            self.labels = try container.decodeIfPresent([Label].self, forKey: .labels)
+            self.labels = try container.decodeIfPresent([ComAtprotoLexicon.Label.LabelDefinition].self, forKey: .labels)
             self.threadgate = try container.decodeIfPresent(ThreadgateViewDefinition.self, forKey: .threadgate)
         }
 

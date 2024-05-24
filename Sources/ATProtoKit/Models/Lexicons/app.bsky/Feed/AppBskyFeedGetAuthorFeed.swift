@@ -9,6 +9,29 @@ import Foundation
 
 extension AppBskyLexicon.Feed {
 
+    /// The main data model seeing the user account's posts and reposts.
+    public struct GetAuthorFeed: Codable {
+
+        /// Indicates the kind of combinations of posts and reposts for the feed's array.
+        ///
+        /// - Note: According to the AT Protocol specifications: "Combinations of post/repost types to
+        /// include in response."
+        public enum GetAuthorFeedFilter: String {
+
+            /// Indicates the array of feeds will contain posts with replies.
+            case postsWithReplies = "posts_with_replies"
+
+            /// Indicates the array of feeds will contain posts with no replies.
+            case postsWithNoReplies = "posts_no_replies"
+
+            /// Indicates the array of feeds will contain posts with media.
+            case postsWithMedia = "posts_with_media"
+
+            /// Indicates the array of feeds will contain posts that are threads.
+            case postAndAuthorThreads = "posts_and_author_threads"
+        }
+    }
+
     /// An output model for seeing the user account's posts and reposts.
     ///
     /// - Note: According to the AT Protocol specifications: "Get a view of an actor's
@@ -24,24 +47,5 @@ extension AppBskyLexicon.Feed {
 
         /// An array of like records.
         public let feed: [FeedViewPostDefinition]
-    }
-
-    /// Indicates the kind of combinations of posts and reposts for the feed's array.
-    ///
-    /// - Note: According to the AT Protocol specifications: "Combinations of post/repost types to
-    /// include in response."
-    public enum GetAuthorFeedFilter: String {
-
-        /// Indicates the array of feeds will contain posts with replies.
-        case postsWithReplies = "posts_with_replies"
-
-        /// Indicates the array of feeds will contain posts with no replies.
-        case postsWithNoReplies = "posts_no_replies"
-
-        /// Indicates the array of feeds will contain posts with media.
-        case postsWithMedia = "posts_with_media"
-
-        /// Indicates the array of feeds will contain posts that are threads.
-        case postAndAuthorThreads = "posts_and_author_threads"
     }
 }

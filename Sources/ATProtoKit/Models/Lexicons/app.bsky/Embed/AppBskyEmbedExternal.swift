@@ -31,80 +31,80 @@ extension AppBskyLexicon.Embed {
             case type = "$type"
             case external
         }
-    }
 
-    // MARK: -
-    /// A data model for an external definition.
-    ///
-    /// - SeeAlso: This is based on the [`app.bsky.embed.external`][github] lexicon.
-    ///
-    /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/embed/external.json
-    public struct External: Codable {
-
-        /// The URI of the external content.
-        public let embedURI: String
-
-        /// The title of the external content.
-        public let title: String
-
-        /// The description of the external content.
-        public let description: String
-
-        /// The thumbnail image of the external content.
+        // Enums
+        /// An external embed object.
         ///
-        /// - Warning: The image size can't be higher than 1 MB. Failure to do so will result in
-        /// the image failing to upload.
-        public let thumbnailImage: UploadBlobOutput?
-
-        enum CodingKeys: String, CodingKey {
-            case embedURI = "uri"
-            case title
-            case description
-            case thumbnailImage = "thumb"
-        }
-    }
-
-    /// A data model for an external view definition.
-    ///
-    /// - SeeAlso: This is based on the [`app.bsky.embed.external`][github] lexicon.
-    ///
-    /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/embed/external.json
-    public struct ExternalView: Codable {
-
-        /// The identifier of the lexicon.
+        /// - SeeAlso: This is based on the [`app.bsky.embed.external`][github] lexicon.
         ///
-        /// - Warning: The value must not change.
-        public let type: String = "app.bsky.embed.external#view"
+        /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/embed/external.json
+        public struct External: Codable {
 
-        /// The external content embedded in a post.
-        public let external: ViewExternal
+            /// The URI of the external content.
+            public let embedURI: String
 
-        enum CodingKeys: String, CodingKey {
-            case type = "$type"
-            case external
+            /// The title of the external content.
+            public let title: String
+
+            /// The description of the external content.
+            public let description: String
+
+            /// The thumbnail image of the external content.
+            ///
+            /// - Warning: The image size can't be higher than 1 MB. Failure to do so will result
+            /// in the image failing to upload.
+            public let thumbnailImage: ComAtprotoLexicon.Repository.UploadBlobOutput?
+
+            enum CodingKeys: String, CodingKey {
+                case embedURI = "uri"
+                case title
+                case description
+                case thumbnailImage = "thumb"
+            }
         }
-    }
 
-    /// A data model for a definition for the external content.
-    public struct ViewExternal: Codable {
+        /// A data model for an external view definition.
+        ///
+        /// - SeeAlso: This is based on the [`app.bsky.embed.external`][github] lexicon.
+        ///
+        /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/embed/external.json
+        public struct View: Codable {
 
-        /// The URI of the external content.
-        public let embedURI: String
+            /// The identifier of the lexicon.
+            ///
+            /// - Warning: The value must not change.
+            public let type: String = "app.bsky.embed.external#view"
 
-        /// The title of the external content.
-        public let title: String
+            /// The external content embedded in a post.
+            public let external: ViewExternal
 
-        /// The description of the external content.
-        public let description: String
+            enum CodingKeys: String, CodingKey {
+                case type = "$type"
+                case external
+            }
+        }
 
-        /// The thumbnail image URL of the external content.
-        public let thumbnailImageURL: URL?
+        /// A data model for a definition for the external content.
+        public struct ViewExternal: Codable {
 
-        enum CodingKeys: String, CodingKey {
-            case embedURI = "uri"
-            case title
-            case description
-            case thumbnailImageURL = "thumb"
+            /// The URI of the external content.
+            public let embedURI: String
+
+            /// The title of the external content.
+            public let title: String
+
+            /// The description of the external content.
+            public let description: String
+
+            /// The thumbnail image URL of the external content.
+            public let thumbnailImageURL: URL?
+
+            enum CodingKeys: String, CodingKey {
+                case embedURI = "uri"
+                case title
+                case description
+                case thumbnailImageURL = "thumb"
+            }
         }
     }
 }

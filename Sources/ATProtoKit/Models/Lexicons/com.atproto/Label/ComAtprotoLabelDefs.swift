@@ -151,16 +151,16 @@ extension ComAtprotoLexicon.Label {
         /// - SeeAlso: This is based on the [`com.atproto.label.defs`][github] lexicon.
         ///
         /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/label/defs.json
-        public let values: [SelfLabel]
+        public let values: [SelfLabelDefinition]
 
-        public init(values: [SelfLabel]) {
+        public init(values: [SelfLabelDefinition]) {
             self.values = values
         }
 
         public init(from decoder: Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
 
-            self.values = try container.decode([SelfLabel].self, forKey: .values)
+            self.values = try container.decode([SelfLabelDefinition].self, forKey: .values)
         }
 
         public func encode(to encoder: Encoder) throws {

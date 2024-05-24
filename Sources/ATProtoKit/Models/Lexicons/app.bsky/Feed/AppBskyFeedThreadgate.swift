@@ -65,26 +65,27 @@ extension AppBskyLexicon.Feed {
             case allow
             case createdAt
         }
-    }
 
-    /// A rule that indicates whether users that the post author mentions can reply to the post.
-    ///
-    /// - Note: According to the AT Protocol specifications: "Allow replies from actors mentioned
-    /// in your post."
-    public struct FeedThreadgateMentionRule: Codable {}
+        // Enums
+        /// A rule that indicates whether users that the post author mentions can reply to the post.
+        ///
+        /// - Note: According to the AT Protocol specifications: "Allow replies from actors mentioned
+        /// in your post."
+        public struct MentionRule: Codable {}
 
-    /// A rule that indicates whether users that the post author is following can reply to the post.
-    ///
-    /// - Note: According to the AT Protocol specifications: "Allow replies from actors you follow."
-    public struct FeedThreadgateFollowingRule: Codable {}
+        /// A rule that indicates whether users that the post author is following can reply to the post.
+        ///
+        /// - Note: According to the AT Protocol specifications: "Allow replies from actors you follow."
+        public struct FollowingRule: Codable {}
 
-    /// A rule that indicates whether users that are on a specific list made by the post author can
-    /// reply to the post.
-    ///
-    /// - Note: According to the AT Protocol specifications: "Allow replies from actors on a list."
-    public struct FeedThreadgateListRule: Codable {
+        /// A rule that indicates whether users that are on a specific list made by the post author can
+        /// reply to the post.
+        ///
+        /// - Note: According to the AT Protocol specifications: "Allow replies from actors on a list."
+        public struct ListRule: Codable {
 
-        /// The list itself.
-        public let list: String
+            /// The list itself.
+            public let list: String
+        }
     }
 }

@@ -36,31 +36,31 @@ extension AppBskyLexicon.Embed {
             case record
             case media
         }
-    }
 
-    // MARK: -
-    /// A data model for a definition which contains an embedded record and embedded media.
-    ///
-    /// - SeeAlso: This is based on the [`app.bsky.embed.recordWithMedia`][github] lexicon.
-    ///
-    /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/embed/recordWithMedia.json
-    public struct RecordWithMediaView: Codable {
-
-        /// The identifier of the lexicon.
+        // Enums
+        /// A data model for a definition which contains an embedded record and embedded media.
         ///
-        /// - Warning: The value must not change.
-        public let type: String = "app.bsky.embed.recordWithMedia#view"
+        /// - SeeAlso: This is based on the [`app.bsky.embed.recordWithMedia`][github] lexicon.
+        ///
+        /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/embed/recordWithMedia.json
+        public struct RecordWithMediaView: Codable {
 
-        /// The embeded record.
-        public let record: EmbedRecordView
+            /// The identifier of the lexicon.
+            ///
+            /// - Warning: The value must not change.
+            public let type: String = "app.bsky.embed.recordWithMedia#view"
 
-        /// The embedded media.
-        public let media: ATUnion.MediaViewUnion
+            /// The embeded record.
+            public let record: AppBskyLexicon.Embed.RecordDefinition.View
 
-        enum CodingKeys: String, CodingKey {
-            case type = "$type"
-            case record
-            case media
+            /// The embedded media.
+            public let media: ATUnion.MediaViewUnion
+
+            enum CodingKeys: String, CodingKey {
+                case type = "$type"
+                case record
+                case media
+            }
         }
     }
 }

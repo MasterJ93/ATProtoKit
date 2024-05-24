@@ -35,6 +35,7 @@ extension AppBskyLexicon.Feed {
             case links
         }
 
+        // Enums
         /// A data model definiion for the feed generator.
         public struct Feed: Codable {
 

@@ -29,28 +29,29 @@ extension ComAtprotoLexicon.Sync {
 
         enum CodingKeys: String, CodingKey {
             case cursor
-            case repositories = "repos"
+            case repositories = "repo"
         }
-    }
 
-    /// A data model definition for a repository.
-    public struct Repository: Codable {
+        // Enums
+        /// A data model definition for a repository.
+        public struct Repository: Codable {
 
-        /// The decentralized identifier (DID) of the repository.
-        public let repositoryDID: String
+            /// The decentralized identifier (DID) of the repository.
+            public let repositoryDID: String
 
-        /// The commit CID hash of the repository.
-        ///
-        /// - Note: According to the AT Protocol specifications: "Current repo commit CID."
-        public let commitCID: String
+            /// The commit CID hash of the repository.
+            ///
+            /// - Note: According to the AT Protocol specifications: "Current repo commit CID."
+            public let commitCID: String
 
-        /// The repository's revision.
-        public let revision: String
+            /// The repository's revision.
+            public let revision: String
 
-        enum CodingKeys: String, CodingKey {
-            case repositoryDID = "did"
-            case commitCID = "head"
-            case revision = "rev"
+            enum CodingKeys: String, CodingKey {
+                case repositoryDID = "did"
+                case commitCID = "head"
+                case revision = "rev"
+            }
         }
     }
 }

@@ -38,7 +38,7 @@ extension ChatBskyLexicon.Actor {
         public let viewer: [AppBskyLexicon.Actor.ViewerStateDefinition]?
 
         /// An array of labels created by the user. Optional.
-        public let labels: [Label]?
+        public let labels: [ComAtprotoLexicon.Label.LabelDefinition]?
 
         /// Indicates whether the user account can no longer be a part of the conversations. Optional.
         ///
@@ -48,7 +48,7 @@ extension ChatBskyLexicon.Actor {
 
         public init(actorDID: String, actorHandle: String, displayName: String?, avatarImageURL: URL?,
                     associated: AppBskyLexicon.Actor.ProfileAssociatedDefinition?, viewer: [AppBskyLexicon.Actor.ViewerStateDefinition]?,
-                    labels: [Label]?, isChatDisabled: Bool?) {
+                    labels: [ComAtprotoLexicon.Label.LabelDefinition]?, isChatDisabled: Bool?) {
             self.actorDID = actorDID
             self.actorHandle = actorHandle
             self.displayName = displayName
@@ -68,7 +68,7 @@ extension ChatBskyLexicon.Actor {
             self.avatarImageURL = try container.decodeIfPresent(URL.self, forKey: .avatarImageURL)
             self.associated = try container.decodeIfPresent(AppBskyLexicon.Actor.ProfileAssociatedDefinition.self, forKey: .associated)
             self.viewer = try container.decodeIfPresent([AppBskyLexicon.Actor.ViewerStateDefinition].self, forKey: .viewer)
-            self.labels = try container.decodeIfPresent([Label].self, forKey: .labels)
+            self.labels = try container.decodeIfPresent([ComAtprotoLexicon.Label.LabelDefinition].self, forKey: .labels)
             self.isChatDisabled = try container.decodeIfPresent(Bool.self, forKey: .isChatDisabled)
         }
 

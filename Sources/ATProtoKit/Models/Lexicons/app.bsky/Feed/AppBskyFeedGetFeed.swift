@@ -23,6 +23,6 @@ extension AppBskyLexicon.Feed {
         public let cursor: String?
 
         /// An array of posts in the feed.
-        public let feed: [FeedViewPostDefinition]
+        public let feed: [ViewerStateDefinition]
     }
 }

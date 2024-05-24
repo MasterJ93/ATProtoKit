@@ -9,6 +9,20 @@ import Foundation
 
 extension ComAtprotoLexicon.Repository {
 
+    /// The main data model for a record blob.
+    public struct ListMissingBlobs: Codable {
+
+        /// A data model definition for a record blob.
+        public struct RecordBlob: Codable {
+
+            /// The CID hash of the record.
+            public let recordCID: String
+
+            /// The URI of the record.
+            public let recordURI: String
+        }
+    }
+
     /// An output model for listing any missing blobs attached to the user account.
     ///
     /// - Note: According to the AT Protocol specifications: "Returns a list of missing blobs for
@@ -21,15 +35,5 @@ extension ComAtprotoLexicon.Repository {
 
         /// An array of blobs.
         public let blobs: [RecordBlob]
-    }
-
-    /// A data model definition for a record blob.
-    public struct RecordBlob: Codable {
-
-        /// The CID hash of the record.
-        public let recordCID: String
-
-        /// The URI of the record.
-        public let recordURI: String
     }
 }

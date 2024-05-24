@@ -33,6 +33,5 @@ extension AppBskyLexicon.Feed {
         /// - Note: According to the AT Protocol specifications: "Indicates whether the
         /// feed generator service is compatible with the record declaration."
         public let isValid: Bool
-        
     }
 }

@@ -9,6 +9,24 @@ import Foundation
 
 extension ComAtprotoLexicon.Admin {
 
+    /// The main data model for getting the invite codes from a user account.
+    ///
+    /// - SeeAlso: This is based on the [`com.atproto.admin.getInviteCodes`][github] lexicon.
+    ///
+    /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/admin/getInviteCodes.json
+    public struct GetInviteCodes: Codable {
+
+        /// Sorts the invite codes by a particular order.
+        public enum Sort {
+
+            /// Sorts the invite codes by the most recently made.
+            case recent
+
+            /// Sorts the invite codes by the number of times it's been used.
+            case usage
+        }
+    }
+
     /// An output model for getting the invite codes from a user account.
     ///
     /// - Note: According to the AT Protocol specifications: "Get an admin view of invite codes."
@@ -22,16 +40,6 @@ extension ComAtprotoLexicon.Admin {
         public let cursor: String?
 
         /// An array of invite codes.
-        public let codes: [ServerInviteCode]
-    }
-
-    /// Sorts the invite codes by a particular order.
-    public enum GetInviteCodesSort {
-
-        /// Sorts the invite codes by the most recently made.
-        case recent
-
-        /// Sorts the invite codes by the number of times it's been used.
-        case usage
+        public let codes: [ComAtprotoLexicon.Server.InviteCodeDefinition]
     }
 }

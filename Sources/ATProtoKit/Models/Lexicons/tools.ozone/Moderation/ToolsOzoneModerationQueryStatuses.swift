@@ -23,6 +23,6 @@ extension ToolsOzoneLexicon.Moderation {
         public let cursor: String?
 
         /// An array of subject status views.
-        public let subjectStatuses: [OzoneSubjectStatusView]
+        public let subjectStatuses: [ToolsOzoneLexicon.Moderation.SubjectStatusViewDefinition]
     }
 }

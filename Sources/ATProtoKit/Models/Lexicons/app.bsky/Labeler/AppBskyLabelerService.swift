@@ -28,12 +28,12 @@ extension AppBskyLexicon.Labeler {
         public let policies: LabelerPolicies
 
         /// An array of labels the labeler uses. Optional.
-        public let labels: [SelfLabels]?
+        public let labels: [ComAtprotoLexicon.Label.SelfLabelDefinition]?
 
         /// The date and time the labeler service was created.
         @DateFormatting public var createdAt: Date
 
-        public init(policies: LabelerPolicies, labels: [SelfLabels], createdAt: Date) {
+        public init(policies: LabelerPolicies, labels: [ComAtprotoLexicon.Label.SelfLabelDefinition], createdAt: Date) {
             self.policies = policies
             self.labels = labels
             self._createdAt = DateFormatting(wrappedValue: createdAt)
@@ -43,7 +43,7 @@ extension AppBskyLexicon.Labeler {
             let container = try decoder.container(keyedBy: CodingKeys.self)
 
             self.policies = try container.decode(LabelerPolicies.self, forKey: .policies)
-            self.labels = try container.decode([SelfLabels].self, forKey: .labels)
+            self.labels = try container.decode([ComAtprotoLexicon.Label.SelfLabelDefinition].self, forKey: .labels)
             self.createdAt = try container.decode(DateFormatting.self, forKey: .createdAt).wrappedValue
         }
 

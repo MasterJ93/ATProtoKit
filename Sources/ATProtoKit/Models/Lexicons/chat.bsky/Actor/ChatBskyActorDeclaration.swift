@@ -31,6 +31,7 @@ extension ChatBskyLexicon.Actor {
             case allowIncoming
         }
 
+        // Enums
         /// A rule that states who can message the user account.
         public enum AllIncoming: Codable {
 

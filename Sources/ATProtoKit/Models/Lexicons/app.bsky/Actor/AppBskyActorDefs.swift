@@ -38,10 +38,10 @@ extension AppBskyLexicon.Actor {
         public let viewer: ViewerStateDefinition?
 
         /// An array of labels created by the user. Optional.
-        public let labels: [Label]?
-        
+        public let labels: [ComAtprotoLexicon.Label.LabelDefinition]?
+
         public init(actorDID: String, actorHandle: String, displayName: String?, avatarImageURL: URL?, associated: ProfileAssociatedDefinition?,
-                    viewer: ViewerStateDefinition?, labels: [Label]?) {
+                    viewer: ViewerStateDefinition?, labels: [ComAtprotoLexicon.Label.LabelDefinition]?) {
             self.actorDID = actorDID
             self.actorHandle = actorHandle
             self.displayName = displayName
@@ -60,7 +60,7 @@ extension AppBskyLexicon.Actor {
             self.avatarImageURL = try container.decodeIfPresent(URL.self, forKey: .avatarImageURL)
             self.associated = try container.decodeIfPresent(ProfileAssociatedDefinition.self, forKey: .associated)
             self.viewer = try container.decodeIfPresent(ViewerStateDefinition.self, forKey: .viewer)
-            self.labels = try container.decodeIfPresent([Label].self, forKey: .labels)
+            self.labels = try container.decodeIfPresent([ComAtprotoLexicon.Label.LabelDefinition].self, forKey: .labels)
         }
         
         public func encode(to encoder: Encoder) throws {
@@ -126,10 +126,11 @@ extension AppBskyLexicon.Actor {
         public var viewer: ViewerStateDefinition?
 
         /// An array of labels created by the user. Optional.
-        public var labels: [Label]?
-        
+        public var labels: [ComAtprotoLexicon.Label.LabelDefinition]?
+
         public init(actorDID: String, actorHandle: String, displayName: String?, description: String?, avatarImageURL: URL?,
-                    associated: ProfileAssociatedDefinition?, indexedAt: Date?, viewer: ViewerStateDefinition?, labels: [Label]?) {
+                    associated: ProfileAssociatedDefinition?, indexedAt: Date?, viewer: ViewerStateDefinition?,
+                    labels: [ComAtprotoLexicon.Label.LabelDefinition]?) {
             self.actorDID = actorDID
             self.actorHandle = actorHandle
             self.displayName = displayName
@@ -152,7 +153,7 @@ extension AppBskyLexicon.Actor {
             self.associated = try container.decodeIfPresent(ProfileAssociatedDefinition.self, forKey: .associated)
             self.indexedAt = try container.decodeIfPresent(DateFormattingOptional.self, forKey: .indexedAt)?.wrappedValue
             self.viewer = try container.decodeIfPresent(ViewerStateDefinition.self, forKey: .viewer)
-            self.labels = try container.decodeIfPresent([Label].self, forKey: .labels)
+            self.labels = try container.decodeIfPresent([ComAtprotoLexicon.Label.LabelDefinition].self, forKey: .labels)
         }
         
         public func encode(to encoder: Encoder) throws {
@@ -237,11 +238,11 @@ extension AppBskyLexicon.Actor {
         public var viewer: ViewerStateDefinition?
 
         /// An array of labels created by the user. Optional.
-        public var labels: [Label]?
-        
+        public var labels: [ComAtprotoLexicon.Label.LabelDefinition]?
+
         public init(actorDID: String, actorHandle: String, displayName: String?, description: String?, avatarImageURL: URL?, bannerImageURL: URL?,
                     followerCount: Int?, followCount: Int?, postCount: Int?, associated: ProfileAssociatedDefinition?, indexedAt: Date?,
-                    viewer: ViewerStateDefinition?, labels: [Label]?) {
+                    viewer: ViewerStateDefinition?, labels: [ComAtprotoLexicon.Label.LabelDefinition]?) {
             self.actorDID = actorDID
             self.actorHandle = actorHandle
             self.displayName = displayName
@@ -272,7 +273,7 @@ extension AppBskyLexicon.Actor {
             self.associated = try container.decodeIfPresent(ProfileAssociatedDefinition.self, forKey: .associated)
             self.indexedAt = try container.decodeIfPresent(DateFormattingOptional.self, forKey: .indexedAt)?.wrappedValue
             self.viewer = try container.decodeIfPresent(ViewerStateDefinition.self, forKey: .viewer)
-            self.labels = try container.decodeIfPresent([Label].self, forKey: .labels)
+            self.labels = try container.decodeIfPresent([ComAtprotoLexicon.Label.LabelDefinition].self, forKey: .labels)
         }
         
         public func encode(to encoder: Encoder) throws {

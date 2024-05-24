@@ -9,6 +9,32 @@ import Foundation
 
 extension ChatBskyLexicon.Conversation {
 
+    /// The main data model for sending a message batch.
+    ///
+    /// - SeeAlso: This is based on the [`chat.bsky.convo.sendMessageBatch`][github] lexicon.
+    ///
+    /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/chat/bsky/convo/sendMessageBatch.json
+    public struct SendMessageBatch: Codable {
+        /// A message batch object.
+        ///
+        /// - SeeAlso: This is based on the [`chat.bsky.convo.sendMessageBatch`][github] lexicon.
+        ///
+        /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/chat/bsky/convo/sendMessageBatch.json
+        public struct MessageBatchItem: Codable {
+
+            /// The ID of the conversation.
+            public let conversationID: String
+
+            /// The message text itself.
+            public let message: MessageInputDefinition
+
+            enum CodingKeys: String, CodingKey {
+                case conversationID = "convoId"
+                case message
+            }
+        }
+    }
+
     /// A request body model for sending a message batch.
     ///
     /// - SeeAlso: This is based on the [`chat.bsky.convo.sendMessageBatch`][github] lexicon.
@@ -17,7 +43,7 @@ extension ChatBskyLexicon.Conversation {
     public struct SendMessageBatchRequestBody: Codable {
 
         /// An array of messages.
-        public let items: [MessageBatchItem]
+        public let items: [SendMessageBatch.MessageBatchItem]
 
         public func encode(to encoder: any Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
@@ -35,24 +61,5 @@ extension ChatBskyLexicon.Conversation {
 
         /// An array of message views.
         public let items: [MessageViewDefinition]
-    }
-
-    /// A message batch object.
-    ///
-    /// - SeeAlso: This is based on the [`chat.bsky.convo.sendMessageBatch`][github] lexicon.
-    ///
-    /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/chat/bsky/convo/sendMessageBatch.json
-    public struct MessageBatchItem: Codable {
-
-        /// The ID of the conversation.
-        public let conversationID: String
-
-        /// The message text itself.
-        public let message: MessageInputDefinition
-
-        enum CodingKeys: String, CodingKey {
-            case conversationID = "convoId"
-            case message
-        }
     }
 }

@@ -23,6 +23,6 @@ extension AppBskyLexicon.Graph {
         public let cursor: String?
 
         /// An array of lists the user account is muting.
-        public let lists: [GraphListView]
+        public let lists: [AppBskyLexicon.Graph.ListViewDefinition]
     }
 }
