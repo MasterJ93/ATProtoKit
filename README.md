@@ -123,12 +123,14 @@ To use ATProtoKit in your apps, your app should target the specific version numb
 - **watchOS** 8 or later.
 - **visionOS** 1 or later.
 
+You can also use this project for any programs you make using Swift and running on **Docker**.
+
 > [!WARNING]
 > As of right now, Linux support is theoretically possible, but not guaranteed to be tested. The plan is to make it fully compatible with Linux by version 1.0, though this is not a required goal to get there. For other platforms (such as Android), this is also not tested, but should be theoretically possible. While it’s not a goal to make it fully compatible, contributions and feedback on the matter are welcomed.
 
 
-## Contributions and Feedback
-While this project will change significantly, early feedback, issues, and contributions are highly welcomed and encouraged. If you'd like to contribute to this project, please be sure to read both the [API Guidelines](https://github.com/MasterJ93/ATProtoKit/blob/main/API_GUIDELINES.md) as well as the [Contributor Guidelines](https://github.com/MasterJ93/ATProtoKit/blob/main/CONTRIBUTING.md) before submitting a pull request.
+## Submitting Contributions and Feedback
+While this project will change significantly, feedback, issues, and contributions are highly welcomed and encouraged. If you'd like to contribute to this project, please be sure to read both the [API Guidelines](https://github.com/MasterJ93/ATProtoKit/blob/main/API_GUIDELINES.md) as well as the [Contributor Guidelines](https://github.com/MasterJ93/ATProtoKit/blob/main/CONTRIBUTING.md) before submitting a pull request. Any issues (such as bug reports or feedback) can be submitted in the [Issues](https://github.com/MasterJ93/ATProtoKit/issues) tab. Finally, if there are any security vulnerabilities, please read [SECURITY.md](https://github.com/MasterJ93/ATProtoKit/blob/main/SECURITY.md) for how to report it.
 
 If you have any questions, you can ask me on Bluesky ([@cjrriley.com](https://bsky.app/profile/cjrriley.com)). And while you're at it, give me a follow! I'm also active on the [Blueksy API Touchers](https://discord.gg/3srmDsHSZJ) Discord server.
 
