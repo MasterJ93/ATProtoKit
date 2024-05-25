@@ -4,13 +4,13 @@ Thank you for supporting `ATProtoKit`. Right now, it's just me at the moment, bu
 
 ## List of Contributors
 - Christopher Jr Riley
--   GitHub: MasterJ93
--   Bluesky: @cjrriley.com
--   Email: chrisjr@cjrriley.com
+  - GitHub: MasterJ93
+  - Bluesky: @cjrriley.com
+  - Email: chrisjr@cjrriley.com
 - Keisuke Chinone
--   GitHub: KC-2001MS
--   Bluesky: @iroiro-work.bsky.social
--   Email: iroiro.work1234@gmail.com
+  - GitHub: KC-2001MS
+  - Bluesky: @iroiro-work.bsky.social
+  - Email: iroiro.work1234@gmail.com
 
 ## Security Contributions
 If you've submitted any security contributions and they've been resolved, your name will be listed in here, along with:
