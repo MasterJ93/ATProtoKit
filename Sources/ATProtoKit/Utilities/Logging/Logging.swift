@@ -5,51 +5,51 @@
 //  Created by Christopher Jr Riley on 2024-04-04.
 //
 
-// Choose the logging library based on the
-// platform we are working with
 #if os(macOS) || os(iOS) || os(tvOS) || os(watchOS) || os(visionOS)
 // If the platform is based on an Apple-product
 // then we will use the default-provided Apple logger
+// for processing the SDK logs
 import os
 #endif
-// This library will be used regardless for the log levels
 import Logging
 
-// Define the ATLogHandler
-// The log handler will automatically choose
-// the correct logging library based on the framework
+/// The ATLogHandler is a handler class that dyanmically switches between the
+/// cross-platform compatible SwiftLogger framework for multiplatform use and
+/// for use on Apple-based OSs.
 struct ATLogHandler: LogHandler {
-    // Subsystem is the component within the ATProto
-    // Library that will be logged
+    // Component
     public let subsystem: String
-    // The category is a meta-data field for the log to
-    // help provide more context in-line
+    // Category Metadata Field
     public let category: String
-    // The default log level, if not provided
+    // INFO will be the default log level
     public var logLevel: Logging.Logger.Level = .info
+    // Metadata for the specific log msg, consisting of keys and values
     public var metadata: Logging.Logger.Metadata = [:]
 #if os(macOS) || os(iOS) || os(tvOS) || os(watchOS) || os(visionOS)
-    // if on an apple platform, we will use the default lib
-    private var appleLogger: os.Logger
+    private var logger: os.Logger
 #else
-    // Otherwise, use the cross-platform logging lib
-    private var appleLogger: Logging.StreamLogHandler
+    private var logger: Logging.StreamLogHandler
 #endif
 
-    // Init the Logger Library
+    /// Initialization of the ATLogHandler
+    /// - Parameters:
+    ///    - subSystem: The subsystem component in which the logs are applicable.
+    ///    - category: The categorty that the log applies to. Most of the time this can be nil and will default to ATProtoKit.
     init(subsystem: String, category: String? = nil) {
         self.subsystem = subsystem
         self.category = category ?? "ATProtoKit"
 #if os(macOS) || os(iOS) || os(tvOS) || os(watchOS) || os(visionOS)
         // Using the apple logger built-into the Apple OSs
-        self.appleLogger = Logger(subsystem: subsystem, category: category ?? "ATProtoKit")
+        self.logger = Logger(subsystem: subsystem, category: category ?? "ATProtoKit")
 #else
         // Otherwise, use the cross-platform logging lib
-        self.appleLogger = Logging.StreamLogHandler(label: "\(subsystem) \(category ?? "ATProtoKit")")
+        self.logger = Logging.StreamLogHandler(label: "\(subsystem) \(category ?? "ATProtoKit")")
 #endif
     }
 
-    // The logger override function that will actually do the mapping
+    /// The Log function will perform the mapping betweent the StreamLogHandler from the SwiftLogger
+    /// library for cross-platform logging and the Apple logger from Apple's OS frameworks for when an Apple
+    /// OS is chosen as the target.
     public func log(level: Logging.Logger.Level,
                     message: Logging.Logger.Message,
                     metadata explicitMetadata: Logging.Logger.Metadata?,
@@ -68,32 +68,37 @@ struct ATLogHandler: LogHandler {
         let logMsgPrefix = "\(allMetadata) [\(source)]"
         // Map the loglevels to match what the apple logger would expect
         switch level {
+            // Given the log status, pass in the formatted string that should
+            // closely resemble what the StreamLogHandler format so that logs
+            // will hopefully resemble each other despite being on different
+            // platforms
             case .trace:
-                appleLogger.trace("\(logMsgPrefix) \(message, privacy: .auto)")
+                logger.trace("\(logMsgPrefix) \(message, privacy: .auto)")
             case .debug:
-                appleLogger.debug("\(logMsgPrefix) \(message, privacy: .auto)")
+                logger.debug("\(logMsgPrefix) \(message, privacy: .auto)")
             case .info:
-                appleLogger.info("\(logMsgPrefix) \(message, privacy: .auto)")
+                logger.info("\(logMsgPrefix) \(message, privacy: .auto)")
             case .notice:
-                appleLogger.notice("\(logMsgPrefix) \(message, privacy: .auto)")
+                logger.notice("\(logMsgPrefix) \(message, privacy: .auto)")
             case .warning:
-                appleLogger.warning("\(logMsgPrefix) \(message, privacy: .auto)")
+                logger.warning("\(logMsgPrefix) \(message, privacy: .auto)")
             case .error:
-                appleLogger.error("\(logMsgPrefix) \(message, privacy: .auto)")
+                logger.error("\(logMsgPrefix) \(message, privacy: .auto)")
             case .critical:
-                appleLogger.critical("\(logMsgPrefix) \(message, privacy: .auto)")
+                logger.critical("\(logMsgPrefix) \(message, privacy: .auto)")
         }
 #else
         // if logging on other platforms, pass down the log details to the standard logger
-        appleLogger.log(level: level, message: "\(message, privacy: .auto)", metadata: allMetadata, source: source, file: file, function: function, line: line)
+        logger.log(level: level, message: "\(message, privacy: .auto)", metadata: allMetadata, source: source, file: file, function: function, line: line)
 #endif
     }
 
-    // Required to extend the protocol
+    /// Obtain or set a particular metadata key for the standard metadata for the handler.
+    /// - Parameters:
+    ///  - key: The metadata key whos value is to be obtained or inserted
+    /// - Returns: A `Logging.Logger.Metadata.Value` that contains the configured value for a given metadata key.
     subscript(metadataKey key: String) -> Logging.Logger.Metadata.Value? {
         get { metadata[key] }
         set { metadata[key] = newValue }
     }
 }
-
-//#endif
