@@ -8,6 +8,7 @@
 import Foundation
 
 extension ATProtoKit {
+
     /// Gets a list of feed generators suggested for the user account.
     /// 
     /// - Note: According to the AT Protocol specifications: "Get a list of suggested feeds

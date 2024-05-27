@@ -8,6 +8,7 @@
 import Foundation
 
 extension ATProtoAdmin {
+
     /// Turns on the ability for the user account to receive invite codes again.
     /// 
     /// This only works if the user account had lost access to this ability.

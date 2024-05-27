@@ -8,6 +8,7 @@
 import Foundation
 
 extension ATProtoAdmin {
+
     /// Gets the status of a subject as an administrator.
     /// 
     /// - Important: This is an administrator task and as such, regular users won't be able to

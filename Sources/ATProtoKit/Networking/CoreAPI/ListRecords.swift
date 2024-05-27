@@ -8,6 +8,7 @@
 import Foundation
 
 extension ATProtoKit {
+
     /// Lists a collection's records within a respository.
     /// 
     /// - Note: According to the AT Protocol specifications: "List a range of records in a

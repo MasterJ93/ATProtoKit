@@ -8,6 +8,7 @@
 import Foundation
 
 extension ATProtoKit {
+
     /// Confirms an email by the user using the token that was sent to the user's email inbox.
     /// 
     /// The token in the email comes from the result of ``requestEmailConfirmation()``.

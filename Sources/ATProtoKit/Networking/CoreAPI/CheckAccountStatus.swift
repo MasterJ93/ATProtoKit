@@ -8,6 +8,7 @@
 import Foundation
 
 extension ATProtoKit {
+
     /// Checks the status of the user's account.
     /// 
     /// - Note: According to the AT Protocol specifications: "Returns the status of an account,

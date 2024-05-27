@@ -8,6 +8,7 @@
 import Foundation
 
 extension ATProtoKit {
+
     /// Retrieves all of the user account's likes.
     /// 
     /// - Note: Despite the fact that the documentation in the AT Protocol specifications say that

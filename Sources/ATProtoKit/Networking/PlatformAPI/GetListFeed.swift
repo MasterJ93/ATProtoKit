@@ -8,6 +8,7 @@
 import Foundation
 
 extension ATProtoKit {
+
     /// Retireves recent posts and reposts from a given feed.
     /// 
     /// - Note: According to the AT Protocol specifications: "Get a feed of recent posts from a

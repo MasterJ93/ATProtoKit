@@ -8,6 +8,7 @@
 import Foundation
 
 extension ATProtoKit {
+
     /// Activates the user's account.
     /// 
     /// - Note: According to the AT Protocol specifications: "Activates a currently deactivated

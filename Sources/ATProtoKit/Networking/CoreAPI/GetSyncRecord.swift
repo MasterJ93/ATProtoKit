@@ -8,6 +8,7 @@
 import Foundation
 
 extension ATProtoKit {
+
     /// Gets a record as a .car format.
     ///
     /// - Note: According to the AT Protocol specifications: "Get data blocks needed to prove the

@@ -8,6 +8,7 @@
 import Foundation
 
 extension ATProtoKit {
+
     /// Replaces the user's current handle with a new one.
     ///
     /// - Note: According to the AT Protocol specifications: "Updates the current account's handle.

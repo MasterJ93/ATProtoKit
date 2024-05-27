@@ -8,6 +8,7 @@
 import Foundation
 
 extension ATProtoKit {
+
     /// Looks for user profiles (actors) matching the search term.
     /// 
     /// This will search for the display names, descriptions, and handles within the user profiles.

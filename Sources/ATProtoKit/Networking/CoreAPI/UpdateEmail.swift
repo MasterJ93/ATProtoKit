@@ -8,6 +8,7 @@
 import Foundation
 
 extension ATProtoKit {
+
     /// Updates the email address associated with the user's account.
     ///  
     /// - Important: If the email has already been confirmed, then `token` must be used.

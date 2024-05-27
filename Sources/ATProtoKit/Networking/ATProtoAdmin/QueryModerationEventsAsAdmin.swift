@@ -8,6 +8,7 @@
 import Foundation
 
 extension ATProtoAdmin {
+
     /// List all moderator events pertaining a subject.
     /// 
     /// - Important: This is an moderator task and as such, regular users won't be able to access

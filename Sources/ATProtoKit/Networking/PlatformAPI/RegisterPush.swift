@@ -8,6 +8,7 @@
 import Foundation
 
 extension ATProtoKit {
+
     /// Registers the user to receive push notifications from the server to the client.
     /// 
     /// - Note: According to the AT Protocol specifications: "Register to receive push notifications,

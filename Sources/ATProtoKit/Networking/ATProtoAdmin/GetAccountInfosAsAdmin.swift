@@ -8,6 +8,7 @@
 import Foundation
 
 extension ATProtoAdmin {
+
     /// Gets details from multiple user accounts.
     /// 
     /// - Important: This is an administrator task and as such, regular users won't be able to

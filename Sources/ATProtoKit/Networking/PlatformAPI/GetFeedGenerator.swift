@@ -8,6 +8,7 @@
 import Foundation
 
 extension ATProtoKit {
+
     /// Retrieves information about a given feed generator.
     /// 
     /// - Note: If you need information about multiple feed generators, it's best to use

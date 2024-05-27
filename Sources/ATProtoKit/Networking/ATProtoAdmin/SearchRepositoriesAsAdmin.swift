@@ -8,6 +8,7 @@
 import Foundation
 
 extension ATProtoAdmin {
+
     /// Searches for repositories as an administrator or moderator.
     ///
     /// - Important: This is a moderator task and as such, regular users won't be able to

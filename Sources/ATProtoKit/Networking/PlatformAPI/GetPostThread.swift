@@ -8,6 +8,7 @@
 import Foundation
 
 extension ATProtoKit {
+
     /// Retrieves a post thread.
     /// 
     /// - Note: According to the AT Protocol specifications: "Get posts in a thread. Does not

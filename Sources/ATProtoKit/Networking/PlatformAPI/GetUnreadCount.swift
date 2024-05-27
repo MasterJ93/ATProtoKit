@@ -8,6 +8,7 @@
 import Foundation
 
 extension ATProtoKit {
+
     /// Counts the number of unread notifications.
     /// 
     /// - Note: According to the AT Protocol specifications: "Count the number of unread

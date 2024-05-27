@@ -8,6 +8,7 @@
 import Foundation
 
 extension ATProtoKit {
+
     /// Validates a PLC operation.
     ///
     /// - Note: According to the AT Protocol specifications: "Validates a PLC operation to ensure

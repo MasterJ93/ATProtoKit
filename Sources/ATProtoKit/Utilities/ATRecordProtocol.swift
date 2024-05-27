@@ -50,8 +50,10 @@ import Foundation
 /// - Warning: All record types _must_ conform to this protocol. ATProtoKit will not be able to
 /// hold onto any `struct`s that don't conform to this protocol.
 public protocol ATRecordProtocol: Codable {
+
     /// The Namespaced Identifier (NSID) of the record.
     static var type: String { get }
+
     /// Creates a new instance by decoding from the given decoder.
     ///
     /// This initializer mirrors the one from `Decodable`, but is needed to help make the
@@ -78,6 +80,7 @@ public protocol ATRecordProtocol: Codable {
 /// - Warning: All record types _must_ conform to ``ATRecordProtocol``. Failure to do so may
 /// result in an error.
 public struct ATRecordTypeRegistry {
+
     /// The registry itself.
     ///
     /// Stores a mapping from NSID strings to corresponding record types.
@@ -144,8 +147,10 @@ public struct ATRecordTypeRegistry {
 /// within the dictionary of ``ATRecordTypeRegistry/recordRegistry``  can be used to potentially
 /// decode and encode the JSON object.
 public enum UnknownType: Codable {
+
     /// Represents a decoded ``ATRecordProtocol``-conforming `struct`.
     case record(ATRecordProtocol)
+
     /// Represents an unknown type.
     ///
     /// When this is used, the JSON object is converted to `[String: Any]` object. It's your

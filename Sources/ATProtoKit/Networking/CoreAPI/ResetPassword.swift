@@ -8,6 +8,7 @@
 import Foundation
 
 extension ATProtoKit {
+
     /// Resets the user's account password.
     /// 
     /// - Note: This doesn't reset the App Password.

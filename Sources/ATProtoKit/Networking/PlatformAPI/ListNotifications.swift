@@ -8,6 +8,7 @@
 import Foundation
 
 extension ATProtoKit {
+
     /// Lists notifications of the user account.
     /// 
     /// - Note: According to the AT Protocol specifications: "Enumerate notifications for the

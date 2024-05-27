@@ -8,6 +8,7 @@
 import Foundation
 
 extension ATProtoKit {
+
     /// Retrieves the user account's posts and reposts.
     ///
     /// - Note: Despite the fact that the documentation in the AT Protocol specifications

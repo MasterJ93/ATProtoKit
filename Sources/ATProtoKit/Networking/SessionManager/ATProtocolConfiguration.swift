@@ -6,16 +6,36 @@
 //
 
 import Foundation
+import Logging
 
 /// Manages authentication and session operations for the a user account in the ATProtocol.
 public class ATProtocolConfiguration: ProtocolConfiguration {
+
     /// The user's handle identifier in their account.
     public private(set) var handle: String
+
     /// The app password of the user's account.
     public private(set) var appPassword: String
+
     /// The URL of the Personal Data Server (PDS).
     public private(set) var pdsURL: String
-    
+
+    /// Specifies the logger that will be used for emitting log messages.
+    public private(set) var logger: Logger?
+
+    /// Specifies the identifier for managing log outputs. Optional. Defaults to the
+    /// project's `CFBundleIdentifier`.
+    public let logIdentifier: String?
+
+    /// Specifies the category name the logs in the logger within ATProtoKit will be in. Optional.
+    /// Defaults to `ATProtoKit`.
+    ///
+    /// - Note: This property is ignored if you're using `StreamLogHandler`.
+    public let logCategory: String?
+
+    /// Specifies the highest level of logs that will be outputted. Optional. Defaults to `.info`.
+    public let logLevel: Logger.Level?
+
     /// Initializes a new instance of `ATProtocolConfiguration`, which assembles a new session
     /// for the user account.
     ///
@@ -23,10 +43,31 @@ public class ATProtocolConfiguration: ProtocolConfiguration {
     ///   - handle: The user's handle identifier in their account.
     ///   - appPassword: The app password of the user's account.
     ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `nil`.
-    public init(handle: String, appPassword: String, pdsURL: String = "https://bsky.social") {
+    ///   - logIdentifier: Specifies the identifier for managing log outputs. Optional. Defaults
+    ///   to the project's `CFBundleIdentifier`.
+    ///   - logCategory: Specifies the category name the logs in the logger within ATProtoKit will
+    ///   be in. Optional. Defaults to `ATProtoKit`.
+    ///   - logLevel: Specifies the highest level of logs that will be outputted. Optional.
+    ///   Defaults to `.info`.
+    public init(handle: String, appPassword: String, pdsURL: String = "https://bsky.social", logIdentifier: String? = nil, logCategory: String? = nil,
+                logLevel: Logger.Level? = .info) {
         self.handle = handle
         self.appPassword = appPassword
         self.pdsURL = !pdsURL.isEmpty ? pdsURL : "https://bsky.social"
+        self.logIdentifier = logIdentifier ?? Bundle.main.bundleIdentifier ?? "com.cjrriley.ATProtoKit"
+        self.logCategory = logCategory ?? "ATProtoKit"
+        self.logLevel = logLevel
+
+        #if canImport(os)
+        LoggingSystem.bootstrap { label in
+            ATLogHandler(subsystem: label, category: logCategory ?? "ATProtoKit")
+        }
+        #else
+        LoggingSystem.bootstrap(StreamLogHandler.standardOutput)
+        #endif
+
+        logger = Logger(label: logIdentifier ?? "com.cjrriley.ATProtoKit")
+        logger?.logLevel = logLevel ?? .info
     }
     
     /// Attempts to authenticate the user into the server.
@@ -60,10 +101,14 @@ public class ATProtocolConfiguration: ProtocolConfiguration {
         do {
             let request = APIClientService.createRequest(forRequest: requestURL,
                                                          andMethod: .post)
-            let response = try await APIClientService.sendRequest(request,
+            var response = try await APIClientService.sendRequest(request,
                                                                   withEncodingBody: credentials,
                                                                   decodeTo: UserSession.self)
             response.pdsURL = self.pdsURL
+
+            if self.logger != nil {
+                response.logger = self.logger
+            }
 
             return .success(response)
         } catch {
@@ -128,10 +173,14 @@ public class ATProtocolConfiguration: ProtocolConfiguration {
                                                          acceptValue: nil,
                                                          contentTypeValue: nil,
                                                          authorizationValue: nil)
-            let response = try await APIClientService.sendRequest(request,
+            var response = try await APIClientService.sendRequest(request,
                                                                   withEncodingBody: requestBody,
                                                                   decodeTo: UserSession.self)
             response.pdsURL = self.pdsURL
+
+            if self.logger != nil {
+                response.logger = self.logger
+            }
 
             return .success(response)
         } catch {
@@ -198,9 +247,13 @@ public class ATProtocolConfiguration: ProtocolConfiguration {
             let request = APIClientService.createRequest(forRequest: requestURL,
                                                          andMethod: .post,
                                                          authorizationValue: "Bearer \(refreshToken)")
-
-            let response = try await APIClientService.sendRequest(request, decodeTo: UserSession.self)
+            var response = try await APIClientService.sendRequest(request,
+                                                                  decodeTo: UserSession.self)
             response.pdsURL = self.pdsURL
+
+            if self.logger != nil {
+                response.logger = self.logger
+            }
 
             return .success(response)
         } catch {

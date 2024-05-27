@@ -8,6 +8,7 @@
 import Foundation
 
 extension ATProtoKit {
+
     /// Retrieves the invite codes from the user's account.
     ///
     /// - Note: According to the AT Protocol specifications: "Get all invite codes for the current

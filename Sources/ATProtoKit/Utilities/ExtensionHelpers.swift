@@ -9,6 +9,7 @@ import Foundation
 
 // MARK: - String Extension
 extension String: Truncatable {
+
     /// Truncates the `String` to a certain length.
     ///
     /// In the AT Protocol, certain fields can only have a maximum of a certain number of
@@ -76,6 +77,7 @@ extension String: Truncatable {
 
 // MARK: - Array Extension
 extension Array: Truncatable {
+
     /// /// Truncates the number of items in an `Array` to a certain length.
     ///
     /// In the AT Protocol, certain fields can only have a maximum of items in their
@@ -91,6 +93,7 @@ extension Array: Truncatable {
 
 // MARK: - Encodable Extension
 extension Encodable {
+
     /// Converts an object into a JSON object.
     ///
     /// - Returns: A JSON object.
@@ -101,6 +104,7 @@ extension Encodable {
 
 // MARK: - UInt64 Extension
 extension UInt64 {
+
     /// Converts a `UInt64` to a Base32-sortable string, according to the
     /// AT Protocol specifications.
     ///
@@ -121,5 +125,14 @@ extension UInt64 {
         }
 
         return encoded
+    }
+}
+
+// MARK: - Data Extension
+extension Data {
+    
+    /// Returns an array of `UInt8` objects.
+    var bytes: [UInt8] {
+        return [UInt8](self)
     }
 }

@@ -12,21 +12,29 @@ import Logging
 /// The base class for the AT Protocol's Firehose event stream.
 class ATFirehoseStream: ATEventStreamConfiguration {
     private var logger = Logger(label: "ATFirehoseStream")
+    /// Indicates whether the event stream is connected. Defaults to `false`.
+    internal var isConnected: Bool = false
     /// The URL of the relay. Defaults to `wss://bsky.network`.
     public var relayURL: String = "wss://bsky.network"
+
     /// The URL of the endpoint. Defaults to `com.atproto.sync.subscribeRepos`.
     internal var namespacedIdentifiertURL: String = "com.atproto.sync.subscribeRepos"
+
     /// The number of the last successful message decoded. Optional.
     ///
     /// When a message gets successfully decoded, this property is populated with the number.
     public var sequencePosition: Int64?
+
     /// The mark used to indicate the starting point for the next set of results. Optional.
     public var cursor: Int64?
+
     /// The configuration object that defines the behaviours and polices for a URL session in the
     /// event stream.
     internal let urlSession: URLSession
+
     /// The configuration object that defines behavior and policies for a URL session.
     internal let urlSessionConfiguration: URLSessionConfiguration
+
     /// The URL session task that communicates over the WebSockets protocol standard.
     internal var webSocketTask: URLSessionWebSocketTask
 

@@ -1,7 +1,7 @@
-name: Feature Request
-description: Suggest an idea for ATProtoKit.
-title: "[Feature Request]: "
-labels: ["new feature"]
+name: Feature Enhancement
+description: Suggest an enhancement to an existing feature for ATProtoKit.
+title: "[Feature Enhancement]: "
+labels: ["enhancement"]
 body:
   - type: markdown
     attributes:
@@ -11,7 +11,7 @@ body:
     id: summary
     attributes:
       label: Summary
-      description: Summarize the feature in one or two sentences.
+      description: Summarize the enchancement in one or two sentences.
   - type: textarea
     id: pain-points
     attributes:
@@ -25,7 +25,7 @@ body:
       label: Considered Alternatives
       description: What alternative solutions did you consider and how did they fall short of your expectations?
   - type: dropdown
-    id: is-feature-breaking-change
+    id: is-enhancement-breaking-change
     attributes:
       label: Is this a breaking change?
       options:
@@ -33,11 +33,6 @@ body:
         - 'No'
     validations:
       required: true
-  - type: textarea
-    id: library-examples
-    attributes:
-      label: Library Examples
-      description: Are there any libraries that have similar features to what you're thinking of? If so, write them down here.
   - type: textarea
     id: additional-context
     attributes:

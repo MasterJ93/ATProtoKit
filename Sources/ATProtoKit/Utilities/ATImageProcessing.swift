@@ -9,6 +9,7 @@ import Foundation
 
 #if canImport(UIKit)
 import UIKit
+
 /// A type for `UIImage` on platforms where `UIKit` is available (iOS, iPadOS, tvOS, watchOS,
 /// visionOS, Mac Catalyst).
 ///
@@ -19,6 +20,7 @@ public typealias ATImage = UIImage
 #elseif canImport(AppKit)
 import AppKit
 import ImageIO
+
 /// A type for `NSImage` on platforms where `AppKit` is available (macOS).
 ///
 /// `ATImage` is a type alias that gives a unified way of handling images for preparation for
@@ -26,12 +28,6 @@ import ImageIO
 /// `NSImage`, giving `ATImageProcessable` more breathing room for implementation.
 public typealias ATImage = NSImage
 #endif
-
-protocol ImageProtocol {
-    func toData() -> Data?
-    static func stripEXIF(from data: Data) -> Data?
-    func loadImageData(from imagePath: String) -> Self?
-}
 
 /// Provides a standardized approach to processing images for uploading to servers that interact
 /// with the AT Protocol.
@@ -98,6 +94,7 @@ protocol ImageProtocol {
 /// }
 /// ```
 public protocol ATImageProcessable {
+
     /// Processes an image to be suitable for the AT Protocol servers.
     ///
     /// It's required for the image to be less than 1MB (1,000,000 bytes). This method will shrink
@@ -111,6 +108,7 @@ public protocol ATImageProcessable {
     /// - Returns: An ``ImageQuery``, which combines the image itself in a `Data` format and
     /// the alt text.
     func convertToImageQuery(imagePath: String, altText: String?, targetFileSize: Int) -> ImageQuery?
+
     /// Removes all EXIF and GPS metadata from the image.
     ///
     /// This method should ideally be before

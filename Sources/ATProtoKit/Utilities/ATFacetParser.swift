@@ -9,8 +9,10 @@ import Foundation
 
 /// A utility class designed for parsing various elements like mentions, URLs, and hashtags from text.
 public class ATFacetParser {
+
     /// Manages a collection of ``Facet`` objects, providing thread-safe append operations.
     actor FacetsActor {
+
         /// The collection of ``Facet`` objects.
         var facets = [Facet]()
         

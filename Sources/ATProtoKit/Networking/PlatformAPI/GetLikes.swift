@@ -8,6 +8,7 @@
 import Foundation
 
 extension ATProtoKit {
+
     /// Retrieves like records of a specific subject.
     /// 
     /// - Note: According to the AT Protocol specifications: "Get like records which reference a

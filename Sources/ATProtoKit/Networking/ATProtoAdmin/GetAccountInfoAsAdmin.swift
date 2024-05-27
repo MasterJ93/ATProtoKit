@@ -8,6 +8,7 @@
 import Foundation
 
 extension ATProtoAdmin {
+
     /// Gets details about a user account.
     /// 
     /// - Important: This is an administrator task and as such, regular users won't be able to

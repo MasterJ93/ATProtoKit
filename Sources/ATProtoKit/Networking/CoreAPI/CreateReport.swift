@@ -8,6 +8,7 @@
 import Foundation
 
 extension ATProtoAdmin {
+
     /// Creates a report to send to moderators.
     /// 
     /// - Note: According to the AT Protocol specifications: "Submit a moderation report regarding

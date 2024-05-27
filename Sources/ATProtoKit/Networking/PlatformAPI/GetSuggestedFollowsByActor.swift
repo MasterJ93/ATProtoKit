@@ -8,6 +8,7 @@
 import Foundation
 
 extension ATProtoKit {
+
     /// Gets the list of user accounts that requesting user account is suggested to follow.
     /// 
     /// - Note: According to the AT Protocol specifications: "Enumerates follows similar to

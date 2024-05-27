@@ -8,6 +8,7 @@
 import Foundation
 
 extension ATProtoKit {
+
     /// Creates an invite code.
     ///
     /// - Note: If you need to create multiple invite codes at once, please use

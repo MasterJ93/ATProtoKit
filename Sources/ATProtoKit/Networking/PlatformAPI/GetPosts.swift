@@ -8,6 +8,7 @@
 import Foundation
 
 extension ATProtoKit {
+
     /// Retrieves an array of posts.
     ///
     /// When `getPosts` is called, it will return a detailed view of each post, which is sometimes

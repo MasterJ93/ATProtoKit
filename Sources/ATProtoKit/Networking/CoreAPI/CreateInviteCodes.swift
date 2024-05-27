@@ -8,6 +8,7 @@
 import Foundation
 
 extension ATProtoKit {
+
     /// Creates several invite codes.
     /// 
     /// - Note: According to the AT Protocol specifications: "Create invite codes."

@@ -8,6 +8,7 @@
 import Foundation
 
 extension ATProtoKit {
+
     /// Retrieves the skeleton results of posts.
     /// 
     /// - Important: This is an unspecced method, and as such, this is highly volatile and may

@@ -8,6 +8,7 @@
 import Foundation
 
 extension ATProtoAdmin {
+
     /// Gets the moderation statuses of records and repositories.
     /// 
     /// - Important: This is an moderator task and as such, regular users won't be able to

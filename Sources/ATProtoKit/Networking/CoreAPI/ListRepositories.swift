@@ -8,6 +8,7 @@
 import Foundation
 
 extension ATProtoKit {
+
     /// Lists all decentralized identifiers (DIDs), revisions, and commit CID hashes for all of the
     /// outputted repositiories.
     ///

@@ -8,6 +8,7 @@
 import Foundation
 
 extension ATProtoKit {
+
     /// Describes the server instance in the AT Protocol.
     /// 
     /// - Note: According to the AT Protocol specifications: "Describes the server's account
