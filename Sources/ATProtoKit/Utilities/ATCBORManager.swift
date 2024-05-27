@@ -7,9 +7,11 @@
 
 import Foundation
 import SwiftCBOR
+import Logging
 
 /// A class that handles CBOR-related objects.
 public class ATCBORManager {
+    private var logger = Logger(label: "ATCBORManager")
     
     /// The length of bytes for a CID according to CAR v1.
     private let cidByteLength: Int = 36
@@ -36,8 +38,9 @@ public class ATCBORManager {
     ///
     /// - Parameter base64String: The CBOR string to be decoded.
     func decodeCBOR(from base64String: String) {
+        logger.trace("In decodeCBOR()")
         guard let data = Data(base64Encoded: base64String) else {
-            print("Invalid Base64 string")
+            logger.error("Invalid Base64 string")
             return
         }
         
@@ -46,10 +49,11 @@ public class ATCBORManager {
 //            if let cborBlocks = extractCborBlocks(from: items) {
 //                print("Decoded CBOR:", cborBlocks)
 //            }
-            print("Decoded CBOR: \(items)")
+            logger.debug("Decoded CBOR", metadata: ["size": "\(items.count)", "items": "\(items)"])
         } catch {
-            print("Failed to decode CBOR: \(error)")
+            logger.error("Failed to decode CBOR", metadata: ["error": "\(error)"])
         }
+        logger.trace("Exiting decodeCBOR()")
     }
     
     /// Decodes individual items from the CBOR string.
@@ -60,10 +64,13 @@ public class ATCBORManager {
     /// - Parameter data: The CBOR string to be decoded.
     /// - Returns: An array of `CBOR` objects.
     private func decodeItems(from data: Data) throws -> [CBOR] {
+        logger.trace("In decodeItems()")
         guard let decoded = try CBOR.decodeMultipleItems(data.bytes, options: CBOROptions(useStringKeys: false, forbidNonStringMapKeys: true)) else {
+            logger.error("Failed to decode CBOR items", metadata: ["size": "\(data.count)"])
             throw CBORProcessingError.cannotDecode
         }
-        
+        logger.debug("Decoded CBOR items", metadata: ["size": "\(decoded.count)"])
+        logger.trace("Exiting decodeItems()")
         return decoded
     }
     
@@ -120,9 +127,12 @@ public class ATCBORManager {
     /// - Returns: A subset of the data if the length is valid.
     /// - Throws: An error if the data length is not sufficient.
     func scanData(data: Data, length: Int) throws -> Data {
+        logger.trace("In scanData()")
         guard data.count >= length else {
+            logger.error("Error while scanning data", metadata: ["error": "\(ATEventStreamError.insufficientDataLength)"])
             throw ATEventStreamError.insufficientDataLength
         }
+        logger.trace("Exiting scanData()")
         return data.subdata(in: 0..<length)
     }
 
@@ -132,9 +142,11 @@ public class ATCBORManager {
     /// - Returns: A ``CBORDecodedBlock``, containing the decoded value and the length of
     /// the processed data.
     func decodeWebSocketData(_ data: Data) -> CBORDecodedBlock? {
+        logger.trace("In decodeWebSocketData()")
         var index = 0
         var result = [UInt8]()
         
+        logger.debug("Decoding web socket data", metadata: ["size": "\(data.count)"])
         while index < data.count {
             let byte = data[index]
             result.append(byte)
@@ -146,9 +158,11 @@ public class ATCBORManager {
         
         if result.isEmpty {
             // TODO: Add error handling.
+            logger.error("Error while decoding web socket data", metadata: ["error": "result is empty"])
             return nil
         }
 
+        logger.trace("Exiting decodeWebSocketData()")
         return CBORDecodedBlock(value: decode(result), length: result.count)
     }
     
@@ -158,9 +172,11 @@ public class ATCBORManager {
     /// - Returns: A ``CBORDecodedBlock`` containing the decoded value and the length of
     /// the processed data.
     public func decodeReader(from bytes: [UInt8]) -> CBORDecodedBlock {
+        logger.trace("In decodeReader()")
         var index = 0
         var result = [UInt8]()
         
+        logger.debug("Decoding data block", metadata: ["size": "\(bytes.count)"])
         while index < bytes.count {
             let byte = bytes[index]
             result.append(byte)
@@ -170,6 +186,7 @@ public class ATCBORManager {
             }
         }
         
+        logger.trace("Exiting decodeReader()")
         return CBORDecodedBlock(value: decode(result), length: result.count)
     }
     
@@ -178,11 +195,14 @@ public class ATCBORManager {
     /// - Parameter bytes: The bytes to decode.
     /// - Returns: The decoded integer.
     public func decode(_ bytes: [UInt8]) -> Int {
+        logger.trace("In decode()")
         var result = 0
+        logger.debug("Decoding LEB128", metadata: ["size": "\(bytes.count)"])
         for (i, byte) in bytes.enumerated() {
             let element = Int(byte & 0x7F)
             result += element << (i * 7)
         }
+        logger.trace("Exiting decode()")
         return result
     }
 }
