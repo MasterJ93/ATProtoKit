@@ -57,14 +57,11 @@ public class ATProtocolConfiguration: ProtocolConfiguration {
         self.logIdentifier = logIdentifier ?? Bundle.main.bundleIdentifier ?? "com.cjrriley.ATProtoKit"
         self.logCategory = logCategory ?? "ATProtoKit"
         self.logLevel = logLevel
-
-        #if canImport(os)
+        
+        // Create the logger and bootstrap it for use in the library
         LoggingSystem.bootstrap { label in
             ATLogHandler(subsystem: label, category: logCategory ?? "ATProtoKit")
         }
-        #else
-        LoggingSystem.bootstrap(StreamLogHandler.standardOutput)
-        #endif
 
         logger = Logger(label: logIdentifier ?? "com.cjrriley.ATProtoKit")
         logger?.logLevel = logLevel ?? .info
@@ -88,10 +85,14 @@ public class ATProtocolConfiguration: ProtocolConfiguration {
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issye. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func authenticate(authenticationFactorToken: String? = nil) async throws -> Result<UserSession, Error> {
+        logger?.trace("In authenticate()")
+        
         guard let requestURL = URL(string: "\(self.pdsURL)/xrpc/com.atproto.server.createSession") else {
+            logger?.error("Error while authenticating with the server", metadata: ["error": "\(ATRequestPrepareError.invalidRequestURL)"])
             return .failure(ATRequestPrepareError.invalidRequestURL)
         }
 
+        logger?.debug("Setting the session credentials")
         let credentials = SessionCredentials(
             identifier: handle,
             password: appPassword,
@@ -101,6 +102,8 @@ public class ATProtocolConfiguration: ProtocolConfiguration {
         do {
             let request = APIClientService.createRequest(forRequest: requestURL,
                                                          andMethod: .post)
+            
+            logger?.debug("Authenticating with the server.", metadata: ["requestURL": "\(requestURL)"])
             var response = try await APIClientService.sendRequest(request,
                                                                   withEncodingBody: credentials,
                                                                   decodeTo: UserSession.self)
@@ -109,11 +112,16 @@ public class ATProtocolConfiguration: ProtocolConfiguration {
             if self.logger != nil {
                 response.logger = self.logger
             }
-
+            
+            logger?.debug("Authentication successful")
+            logger?.trace("Exiting authenticate()")
             return .success(response)
         } catch {
+            logger?.error("Authentication request failed with error.", metadata: ["error": "\(error)"])
+            logger?.trace("Exiting authenticate()")
             return .failure(error)
         }
+        
     }
     
     /// Creates an a new account for the user.
@@ -151,10 +159,13 @@ public class ATProtocolConfiguration: ProtocolConfiguration {
     public func createAccount(email: String? = nil, handle: String, existingDID: String? = nil, inviteCode: String? = nil,
                               verificationCode: String? = nil, verificationPhone: String? = nil, password: String? = nil, recoveryKey: String? = nil,
                               plcOp: UnknownType? = nil) async throws -> Result<UserSession, Error> {
+        logger?.trace("In createAccount()")
         guard let requestURL = URL(string: "\(self.pdsURL)/xrpc/com.atproto.server.createAccount") else {
+            logger?.error("Error while creating account", metadata: ["error": "\(ATRequestPrepareError.invalidRequestURL)"])
             return .failure(ATRequestPrepareError.invalidRequestURL)
         }
-
+        
+        logger?.debug("Setting the account creation request body")
         let requestBody = ServerCreateAccount(
             email: email,
             handle: handle,
@@ -173,6 +184,8 @@ public class ATProtocolConfiguration: ProtocolConfiguration {
                                                          acceptValue: nil,
                                                          contentTypeValue: nil,
                                                          authorizationValue: nil)
+            
+            logger?.debug("Crreating user account", metadata: ["handle": "\(handle)"])
             var response = try await APIClientService.sendRequest(request,
                                                                   withEncodingBody: requestBody,
                                                                   decodeTo: UserSession.self)
@@ -181,9 +194,13 @@ public class ATProtocolConfiguration: ProtocolConfiguration {
             if self.logger != nil {
                 response.logger = self.logger
             }
-
+            
+            logger?.debug("User account creation successful", metadata: ["handle": "\(handle)"])
+            logger?.trace("Exiting createAccount()")
             return .success(response)
         } catch {
+            logger?.error("Account creation failed with error.", metadata: ["error": "\(error)"])
+            logger?.trace("Exiting createAccount()")
             return .failure(error)
         }
     }
@@ -204,8 +221,10 @@ public class ATProtocolConfiguration: ProtocolConfiguration {
     /// if successful, or an `Error` if not.
     public func getSession(by accessToken: String,
                            pdsURL: String? = nil) async throws -> Result<SessionResponse, Error> {
+        logger?.trace("In getSession()")
         guard let sessionURL = pdsURL != nil ? pdsURL : self.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.server.getSession") else {
+            logger?.error("Error while obtaining session", metadata: ["error": "\(ATRequestPrepareError.invalidRequestURL)"])
             return .failure(ATRequestPrepareError.invalidRequestURL)
         }
 
@@ -213,11 +232,16 @@ public class ATProtocolConfiguration: ProtocolConfiguration {
             let request = APIClientService.createRequest(forRequest: requestURL,
                                                          andMethod: .get,
                                                          authorizationValue: "Bearer \(accessToken)")
+            logger?.debug("Obtaining the session")
             let response = try await APIClientService.sendRequest(request,
                                                                   decodeTo: SessionResponse.self)
 
+            logger?.debug("Session obtained successfully")
+            logger?.trace("Exiting getSession()")
             return .success(response)
         } catch {
+            logger?.error("Error while obtaining session", metadata: ["error": "\(error)"])
+            logger?.trace("Exiting getSession()")
             return .failure(error)
         }
     }
@@ -238,8 +262,10 @@ public class ATProtocolConfiguration: ProtocolConfiguration {
     /// if successful, or an `Error` if not.
     public func refreshSession(using refreshToken: String,
                                pdsURL: String? = nil) async throws -> Result<UserSession, Error> {
+        logger?.info("In refreshSession()")
         guard let sessionURL = pdsURL != nil ? pdsURL : self.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.server.refreshSession") else {
+            logger?.error("Error while refreshing the session", metadata: ["error": "\(ATRequestPrepareError.invalidRequestURL)"])
             return .failure(ATRequestPrepareError.invalidRequestURL)
         }
 
@@ -247,6 +273,7 @@ public class ATProtocolConfiguration: ProtocolConfiguration {
             let request = APIClientService.createRequest(forRequest: requestURL,
                                                          andMethod: .post,
                                                          authorizationValue: "Bearer \(refreshToken)")
+            logger?.debug("Refreshing the session")
             var response = try await APIClientService.sendRequest(request,
                                                                   decodeTo: UserSession.self)
             response.pdsURL = self.pdsURL
@@ -255,8 +282,12 @@ public class ATProtocolConfiguration: ProtocolConfiguration {
                 response.logger = self.logger
             }
 
+            logger?.debug("Session refreshed successfully")
+            logger?.trace("Exiting refreshSession()")
             return .success(response)
         } catch {
+            logger?.error("Error while refreshing the session", metadata: ["error": "\(error)"])
+            logger?.trace("Exiting refreshSession()")
             return .failure(error)
         }
     }
@@ -275,8 +306,10 @@ public class ATProtocolConfiguration: ProtocolConfiguration {
     ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `nil`.
     public func deleteSession(using accessToken: String,
                               pdsURL: String? = nil) async throws {
+        logger?.trace("In deleteSession()")
         guard let sessionURL = pdsURL != nil ? pdsURL : self.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.server.deleteSession") else {
+            logger?.error("Error while deleting the session", metadata: ["error": "\(ATRequestPrepareError.invalidRequestURL)"])
             throw ATRequestPrepareError.invalidRequestURL
         }
 
@@ -284,10 +317,11 @@ public class ATProtocolConfiguration: ProtocolConfiguration {
             let request = APIClientService.createRequest(forRequest: requestURL,
                                                          andMethod: .post,
                                                          authorizationValue: "Bearer \(accessToken)")
-
+            logger?.debug("Deleting the session")
             _ = try await APIClientService.sendRequest(request,
                                                        withEncodingBody: nil)
         } catch {
+            logger?.error("Error while deleting the session", metadata: ["error": "\(error)"])
             throw error
         }
     }
