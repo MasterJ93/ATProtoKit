@@ -6,12 +6,11 @@
 //
 
 import Foundation
-
 import Logging
 
 /// The base class for the AT Protocol's Firehose event stream.
 class ATFirehoseStream: ATEventStreamConfiguration {
-    private var logger = Logger(label: "ATFirehoseStream")
+    internal var logger = Logger(label: "ATFirehoseStream")
     /// Indicates whether the event stream is connected. Defaults to `false`.
     internal var isConnected: Bool = false
     /// The URL of the relay. Defaults to `wss://bsky.network`.
@@ -50,6 +49,7 @@ class ATFirehoseStream: ATEventStreamConfiguration {
     ///   to `URLSessionConfiguration.default`.
     required init(relayURL: String, namespacedIdentifiertURL: String, cursor: Int64?, sequencePosition: Int64?,
                   urlSessionConfiguration: URLSessionConfiguration = .default, webSocketTask: URLSessionWebSocketTask) async throws {
+        logger.trace("In init()")
         logger.trace("Initializing the ATEventStreamConfiguration")
         self.relayURL = relayURL
         self.namespacedIdentifiertURL = namespacedIdentifiertURL
@@ -65,10 +65,8 @@ class ATFirehoseStream: ATEventStreamConfiguration {
             throw ATRequestPrepareError.invalidFormat
         }
         
-        logger.debug("Running the websocket task")
+        logger.debug("Creating the websocket task")
         self.webSocketTask = urlSession.webSocketTask(with: webSocketURL)
-        webSocketTask.resume()
-        
-        await self.connect()
+        logger.trace("Exiting init()")
     }
 }
