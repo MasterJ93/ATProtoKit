@@ -58,12 +58,27 @@ extension ATProtoAdmin {
     ///   results. Optional.
     /// - Returns: A `Result`, containing either an ``AdminQueryModerationStatusesOutput``
     /// if successful, or an `Error` if not.
-    public func queryStatuses(_ subject: String?, comment: String?, reportedAfter: Date?, reportedBefore: Date?, reviewedAfter: Date?,
-                              reviewedBefore: Date?, shouldIncludeMuted: Bool? = false, isOnlyMuted: Bool?, reviewState: String?,
-                              ignoreSubjects: [String]?, lastReviewedBy: String?, sortField: AdminQueryModerationStatusesSortField? = .lastReportedAt,
-                              sortDirection: AdminQueryModerationStatusesSortDirection? = .descending, isTakenDown: Bool?,
-                              isAppealed: Bool?, limit: Int? = 50, tags: [String]?, excludeTags: [String]?,
-                              cursor: String?) async throws -> Result<AdminQueryModerationStatusesOutput, Error> {
+    public func queryStatuses(
+        _ subject: String?,
+        comment: String?,
+        reportedAfter: Date?,
+        reportedBefore: Date?,
+        reviewedAfter: Date?,
+        reviewedBefore: Date?,
+        shouldIncludeMuted: Bool? = false,
+        isOnlyMuted: Bool?,
+        reviewState: String?,
+        ignoreSubjects: [String]?,
+        lastReviewedBy: String?,
+        sortField: AdminQueryModerationStatusesSortField? = .lastReportedAt,
+        sortDirection: AdminQueryModerationStatusesSortDirection? = .descending,
+        isTakenDown: Bool?,
+        isAppealed: Bool?,
+        limit: Int? = 50,
+        tags: [String]?,
+        excludeTags: [String]?,
+        cursor: String?
+    ) async throws -> Result<AdminQueryModerationStatusesOutput, Error> {
         guard session != nil,
               let accessToken = session?.accessToken else {
             return .failure(ATRequestPrepareError.missingActiveSession)

@@ -28,7 +28,10 @@ extension ATProtoKit {
     ///   only be between `1` and `100`.
     /// - Returns: A `Result`, containing either an ``UnspeccedGetSuggestionsSkeletonOutput``
     /// if successful, or an `Error` if not.
-    public func getSuggestionsSkeleton(viewerDID: String?, limit: Int? = 50) async throws -> Result<UnspeccedGetSuggestionsSkeletonOutput, Error> {
+    public func getSuggestionsSkeleton(
+        viewerDID: String?,
+        limit: Int? = 50
+    ) async throws -> Result<UnspeccedGetSuggestionsSkeletonOutput, Error> {
         guard session != nil,
               let accessToken = session?.accessToken else {
             return .failure(ATRequestPrepareError.missingActiveSession)

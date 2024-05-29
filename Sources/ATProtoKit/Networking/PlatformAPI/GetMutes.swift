@@ -24,7 +24,10 @@ extension ATProtoKit {
     ///   result. Optional.
     /// - Returns: A `Result`, containing either a ``GraphGetMutesOutput``
     /// if successful, or an `Error` if not.
-    public func getMutes(limit: Int? = 50, cursor: String? = nil) async throws -> Result<GraphGetMutesOutput, Error> {
+    public func getMutes(
+        limit: Int? = 50,
+        cursor: String? = nil
+    ) async throws -> Result<GraphGetMutesOutput, Error> {
         guard session != nil,
               let accessToken = session?.accessToken else {
             return .failure(ATRequestPrepareError.missingActiveSession)

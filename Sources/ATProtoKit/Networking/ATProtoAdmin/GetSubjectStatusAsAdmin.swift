@@ -27,8 +27,11 @@ extension ATProtoAdmin {
     ///   - subjectBlobCIDHash: The CID hash of the blob for the subject.
     /// - Returns: A `Result`, containing either an ``AdminGetSubjectStatusOutput``
     /// if successful, or an `Error` if not.
-    public func getSubjectStatus(_ subjectDID: String, subjectURI: String,
-                                 subjectBlobCIDHash: String) async throws -> Result<AdminGetSubjectStatusOutput, Error> {
+    public func getSubjectStatus(
+        _ subjectDID: String,
+        subjectURI: String,
+        subjectBlobCIDHash: String
+    ) async throws -> Result<AdminGetSubjectStatusOutput, Error> {
         guard session != nil,
               let accessToken = session?.accessToken else {
             return .failure(ATRequestPrepareError.missingActiveSession)

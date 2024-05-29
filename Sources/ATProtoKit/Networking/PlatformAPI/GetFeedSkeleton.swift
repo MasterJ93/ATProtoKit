@@ -31,8 +31,12 @@ extension ATProtoKit {
     ///   - pdsURL: The URL of the Personal Data Server (PDS).
     /// - Returns: A `Result`, containing either a ``FeedGetFeedSkeletonOutput``
     /// if successful, or an `Error` if not.
-    public static func getFeedSkeleton(_ feedURI: String, limit: Int? = 50, cursor: String? = nil,
-                                       pdsURL: String) async throws -> Result <FeedGetFeedSkeletonOutput, Error> {
+    public static func getFeedSkeleton(
+        _ feedURI: String,
+        limit: Int? = 50,
+        cursor: String? = nil,
+        pdsURL: String
+    ) async throws -> Result <FeedGetFeedSkeletonOutput, Error> {
         guard let requestURL = URL(string: "\(pdsURL)/xrpc/app.bsky.feed.getFeedSkeleton") else {
             return .failure(ATRequestPrepareError.invalidRequestURL)
         }

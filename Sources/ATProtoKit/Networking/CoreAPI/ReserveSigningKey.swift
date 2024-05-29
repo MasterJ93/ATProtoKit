@@ -25,7 +25,10 @@ extension ATProtoKit {
     ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `nil`.
     /// - Returns: A `Result`, containing either a ``ServerReserveSigningKeyOutput``
     /// if successful, or an `Error` if not.
-    public func reserveSigningKey(_ repositoryDID: String, pdsURL: String? = nil) async throws -> Result<ServerReserveSigningKeyOutput, Error> {
+    public func reserveSigningKey(
+        _ repositoryDID: String,
+        pdsURL: String? = nil
+    ) async throws -> Result<ServerReserveSigningKeyOutput, Error> {
         guard let sessionURL = pdsURL != nil ? pdsURL : determinePDSURL(customPDSURL: pdsURL),
               let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.server.reserveSigningKey") else {
             return .failure(ATRequestPrepareError.invalidRequestURL)

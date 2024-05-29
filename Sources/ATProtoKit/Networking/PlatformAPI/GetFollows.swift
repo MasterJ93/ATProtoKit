@@ -26,7 +26,11 @@ extension ATProtoKit {
     ///   result. Optional.
     /// - Returns: A `Result`, containing either a ``GraphFollowsOutput``
     /// if successful, or an `Error` if not.
-    public func getFollows(from actorDID: String, limit: Int? = 50, cursor: String? = nil) async throws -> Result<GraphFollowsOutput, Error> {
+    public func getFollows(
+        from actorDID: String,
+        limit: Int? = 50,
+        cursor: String? = nil
+    ) async throws -> Result<GraphFollowsOutput, Error> {
         guard session != nil,
               let accessToken = session?.accessToken else {
             return .failure(ATRequestPrepareError.missingActiveSession)

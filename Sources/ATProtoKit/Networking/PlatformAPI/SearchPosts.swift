@@ -41,9 +41,20 @@ extension ATProtoKit {
     ///   results. Optional.
     /// - Returns: A `Result`, containing either an ``FeedSearchPostsOutput``
     /// if succesful, or an `Error` if it's not.
-    public func searchPosts(with searchQuery: String, sortRanking: FeedSearchPostsSortRanking? = .latest, sinceDate: Date?, untilDate: Date?,
-                            mentionIdentifier: String? = nil, author: String? = nil, language: Locale?, domain: String?, url: String?, tags: [String]?,
-                            limit: Int? = 25, cursor: String? = nil) async throws -> Result<FeedSearchPostsOutput, Error> {
+    public func searchPosts(
+        with searchQuery: String,
+        sortRanking: FeedSearchPostsSortRanking? = .latest,
+        sinceDate: Date?,
+        untilDate: Date?,
+        mentionIdentifier: String? = nil,
+        author: String? = nil,
+        language: Locale?,
+        domain: String?,
+        url: String?,
+        tags: [String]?,
+        limit: Int? = 25,
+        cursor: String? = nil
+    ) async throws -> Result<FeedSearchPostsOutput, Error> {
         guard session != nil,
               let accessToken = session?.accessToken else {
             return .failure(ATRequestPrepareError.missingActiveSession)

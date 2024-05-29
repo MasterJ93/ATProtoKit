@@ -28,8 +28,14 @@ extension ATProtoKit {
     ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `nil`.
     /// - Returns: A `Result`, containing ``RepoListRecordsOutput``
     /// if successful, or an `Error` if not.
-    public func listRecords(from repositoryDID: String, collection: String, limit: Int? = 50, cursor: String? = nil, isArrayReverse: Bool? = nil,
-                            pdsURL: String? = nil) async throws -> Result<RepoListRecordsOutput, Error> {
+    public func listRecords(
+        from repositoryDID: String,
+        collection: String,
+        limit: Int? = 50,
+        cursor: String? = nil,
+        isArrayReverse: Bool? = nil,
+        pdsURL: String? = nil
+    ) async throws -> Result<RepoListRecordsOutput, Error> {
         guard let sessionURL = pdsURL != nil ? pdsURL : session?.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.repo.listRecords") else {
             return .failure(ATRequestPrepareError.invalidRequestURL)

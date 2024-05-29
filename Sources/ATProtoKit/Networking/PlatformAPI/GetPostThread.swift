@@ -28,9 +28,13 @@ extension ATProtoKit {
     ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `nil`.
     /// - Returns: A `Result`, containing either a ``FeedGetPostThreadOutput``
     /// if successful, or an `Error` if not.
-    public func getPostThread(from postURI: String, depth: Int? = 6, parentHeight: Int? = 80,
-                              pdsURL: String? = nil,
-                              shouldAuthenticate: Bool = false) async throws -> Result<FeedGetPostThreadOutput, Error> {
+    public func getPostThread(
+        from postURI: String,
+        depth: Int? = 6,
+        parentHeight: Int? = 80,
+        pdsURL: String? = nil,
+        shouldAuthenticate: Bool = false
+    ) async throws -> Result<FeedGetPostThreadOutput, Error> {
         let authorizationValue = prepareAuthorizationValue(
             methodPDSURL: pdsURL,
             shouldAuthenticate: shouldAuthenticate,

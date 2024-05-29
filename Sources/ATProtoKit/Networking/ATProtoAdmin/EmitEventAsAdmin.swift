@@ -29,8 +29,12 @@ extension ATProtoAdmin {
     ///   - createdBy: The decentralized identifier (DID) of the moderator taking this action.
     /// - Returns: A `Result`, containing either an ``OzoneModerationEventView`` if successful,
     /// or an `Error` if not.
-    public func emitEvent(_ event: AdminEventViewUnion, subject: RepositoryReferencesUnion, subjectBlobCIDHashes: [String]?,
-                          createdBy: String) async throws -> Result<OzoneModerationEventView, Error> {
+    public func emitEvent(
+        _ event: AdminEventViewUnion,
+        subject: RepositoryReferencesUnion,
+        subjectBlobCIDHashes: [String]?,
+        createdBy: String
+    ) async throws -> Result<OzoneModerationEventView, Error> {
         guard session != nil,
               let accessToken = session?.accessToken else {
             return .failure(ATRequestPrepareError.missingActiveSession)

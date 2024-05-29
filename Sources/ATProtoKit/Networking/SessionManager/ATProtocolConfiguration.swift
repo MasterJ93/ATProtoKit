@@ -49,8 +49,13 @@ public class ATProtocolConfiguration: ProtocolConfiguration {
     ///   be in. Optional. Defaults to `ATProtoKit`.
     ///   - logLevel: Specifies the highest level of logs that will be outputted. Optional.
     ///   Defaults to `.info`.
-    public init(handle: String, appPassword: String, pdsURL: String = "https://bsky.social", logIdentifier: String? = nil, logCategory: String? = nil,
-                logLevel: Logger.Level? = .info) {
+    public init(
+        handle: String,
+        appPassword: String,
+        pdsURL: String = "https://bsky.social",
+        logIdentifier: String? = nil,
+        logCategory: String? = nil,
+        logLevel: Logger.Level? = .info) {
         self.handle = handle
         self.appPassword = appPassword
         self.pdsURL = !pdsURL.isEmpty ? pdsURL : "https://bsky.social"
@@ -149,9 +154,17 @@ public class ATProtocolConfiguration: ProtocolConfiguration {
     ///   account to this instance. Optional.
     /// - Returns: A `Result`, containing either a ``UserSession``
     /// if successful, or an `Error` if not.
-    public func createAccount(email: String? = nil, handle: String, existingDID: String? = nil, inviteCode: String? = nil,
-                              verificationCode: String? = nil, verificationPhone: String? = nil, password: String? = nil, recoveryKey: String? = nil,
-                              plcOp: UnknownType? = nil) async throws -> Result<UserSession, Error> {
+    public func createAccount(
+        email: String? = nil,
+        handle: String,
+        existingDID: String? = nil,
+        inviteCode: String? = nil,
+        verificationCode: String? = nil,
+        verificationPhone: String? = nil,
+        password: String? = nil,
+        recoveryKey: String? = nil,
+        plcOp: UnknownType? = nil
+    ) async throws -> Result<UserSession, Error> {
         guard let requestURL = URL(string: "\(self.pdsURL)/xrpc/com.atproto.server.createAccount") else {
             return .failure(ATRequestPrepareError.invalidRequestURL)
         }
@@ -203,8 +216,10 @@ public class ATProtocolConfiguration: ProtocolConfiguration {
     ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `nil`.
     /// - Returns: Returns: A `Result` containing either ``SessionResponse``
     /// if successful, or an `Error` if not.
-    public func getSession(by accessToken: String,
-                           pdsURL: String? = nil) async throws -> Result<SessionResponse, Error> {
+    public func getSession(
+        by accessToken: String,
+        pdsURL: String? = nil
+    ) async throws -> Result<SessionResponse, Error> {
         guard let sessionURL = pdsURL != nil ? pdsURL : self.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.server.getSession") else {
             return .failure(ATRequestPrepareError.invalidRequestURL)
@@ -237,8 +252,10 @@ public class ATProtocolConfiguration: ProtocolConfiguration {
     ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `nil`.
     /// - Returns: A `Result`, containing either a ``UserSession``
     /// if successful, or an `Error` if not.
-    public func refreshSession(using refreshToken: String,
-                               pdsURL: String? = nil) async throws -> Result<UserSession, Error> {
+    public func refreshSession(
+        using refreshToken: String,
+        pdsURL: String? = nil
+    ) async throws -> Result<UserSession, Error> {
         guard let sessionURL = pdsURL != nil ? pdsURL : self.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.server.refreshSession") else {
             return .failure(ATRequestPrepareError.invalidRequestURL)
@@ -274,8 +291,10 @@ public class ATProtocolConfiguration: ProtocolConfiguration {
     /// - Parameters:
     ///   - accessToken: The access token for the session.
     ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `nil`.
-    public func deleteSession(using accessToken: String,
-                              pdsURL: String? = nil) async throws {
+    public func deleteSession(
+        using accessToken: String,
+        pdsURL: String? = nil
+    ) async throws {
         guard let sessionURL = pdsURL != nil ? pdsURL : self.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.server.deleteSession") else {
             throw ATRequestPrepareError.invalidRequestURL

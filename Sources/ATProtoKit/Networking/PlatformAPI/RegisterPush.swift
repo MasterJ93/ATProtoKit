@@ -23,7 +23,12 @@ extension ATProtoKit {
     ///   - token: The token of the service.
     ///   - platform: The platform of the client.
     ///   - appID: The identifier of the client.
-    public func registerPush(serviceDID: String, token: String, platform: RegisterPushRequest.Platform, appID: String) async throws {
+    public func registerPush(
+        serviceDID: String,
+        token: String,
+        platform: RegisterPushRequest.Platform,
+        appID: String
+    ) async throws {
         guard session != nil,
               let accessToken = session?.accessToken else {
             throw ATRequestPrepareError.missingActiveSession

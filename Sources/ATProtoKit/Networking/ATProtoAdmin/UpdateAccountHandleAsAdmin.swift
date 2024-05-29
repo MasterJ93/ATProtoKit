@@ -24,7 +24,10 @@ extension ATProtoAdmin {
     /// - Parameters:
     ///   - accountDID: The decentralized identifier (DID) of the user account.
     ///   - newAccountHandle: The new handle for the user account.
-    public func updateAccountHandle(for accountDID: String, newAccountHandle: String) async throws {
+    public func updateAccountHandle(
+        for accountDID: String,
+        newAccountHandle: String
+    ) async throws {
         guard session != nil,
               let accessToken = session?.accessToken else {
             throw ATRequestPrepareError.missingActiveSession

@@ -28,7 +28,10 @@ extension ATProtoKit {
     /// - Parameters:
     ///   - email: The email address to confirm.
     ///   - token: The token used to confirm the email address.
-    public func confirmEmail(_ email: String, token: String) async throws {
+    public func confirmEmail(
+        _ email: String,
+        token: String
+    ) async throws {
         guard session != nil,
               let accessToken = session?.accessToken else {
             throw ATRequestPrepareError.missingActiveSession

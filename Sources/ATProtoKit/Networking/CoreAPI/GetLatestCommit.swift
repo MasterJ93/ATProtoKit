@@ -23,7 +23,10 @@ extension ATProtoKit {
     ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `nil`.
     /// - Returns: A `Result`, containing either a ``SyncGetBlocksOutput``
     /// if successful, or an `Error` if not.
-    public func getLatestCommit(from repositoryDID: String, pdsURL: String? = nil) async throws -> Result<SyncGetLatestCommitOutput, Error> {
+    public func getLatestCommit(
+        from repositoryDID: String,
+        pdsURL: String? = nil
+    ) async throws -> Result<SyncGetLatestCommitOutput, Error> {
         guard let sessionURL = pdsURL != nil ? pdsURL : session?.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.sync.getLatestCommit") else {
             return .failure(ATRequestPrepareError.invalidRequestURL)

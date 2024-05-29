@@ -25,8 +25,10 @@ extension ATProtoKit {
     ///   be included in the list. Optional. Defaults to `true`.
     /// - Returns: A `Result`, containing either ``ServerGetAccountInviteCodesOutput``
     /// if successful, and an `Error` if not.
-    public func getAccountInviteCodes(_ areUsedCodesIncluded: Bool = true,
-                                      areEarnedCodesIncluded: Bool = true) async throws -> Result<ServerGetAccountInviteCodesOutput, Error> {
+    public func getAccountInviteCodes(
+        _ areUsedCodesIncluded: Bool = true,
+        areEarnedCodesIncluded: Bool = true
+    ) async throws -> Result<ServerGetAccountInviteCodesOutput, Error> {
         guard session != nil,
               let accessToken = session?.accessToken else {
             return .failure(ATRequestPrepareError.missingActiveSession)

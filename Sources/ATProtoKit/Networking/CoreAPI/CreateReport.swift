@@ -25,8 +25,11 @@ extension ATProtoAdmin {
     ///   - subject: The responsible party being reported.
     /// - Returns: A `Result`, containing either ``ModerationCreateReportOutput``
     /// if successful, or an `Error` if not.
-    public func createReport(with reasonType: ModerationReasonType, withContextof reason: String?,
-                             subject: RepositoryReferencesUnion) async throws -> Result<ModerationCreateReportOutput, Error> {
+    public func createReport(
+        with reasonType: ModerationReasonType,
+        withContextof reason: String?,
+        subject: RepositoryReferencesUnion
+    ) async throws -> Result<ModerationCreateReportOutput, Error> {
         guard session != nil,
               let accessToken = session?.accessToken else {
             return .failure(ATRequestPrepareError.missingActiveSession)

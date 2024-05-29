@@ -54,12 +54,24 @@ extension ATProtoAdmin {
     ///   of results. Optional.
     /// - Returns: A `Result`, containing either an ``ModerationQueryEventsOutput``
     /// if successful, or an `Error` if not.
-    public func queryEvents(_ eventTypes: [String]? = nil, createdBy: String? = nil,
-                            sortDirection: AdminQueryModerationEventSortDirection? = .descending, createdAfter: Date? = nil, createdBefore: Date? = nil,
-                            subject: String? = nil, canIncludeAllUserRecords: Bool? = false, limit: Int? = 50, doesHaveComment: Bool? = nil,
-                            comment: String? = nil, addedLabels: [String]? = nil,
-                            removedLabels: [String]? = nil, addedTags: [String]? = nil, removedTags: [String]? = nil, reportTypes: [String]? = nil,
-                            cursor: String? = nil) async throws -> Result<ModerationQueryEventsOutput, Error> {
+    public func queryEvents(
+        _ eventTypes: [String]? = nil,
+        createdBy: String? = nil,
+        sortDirection: AdminQueryModerationEventSortDirection? = .descending,
+        createdAfter: Date? = nil,
+        createdBefore: Date? = nil,
+        subject: String? = nil,
+        canIncludeAllUserRecords: Bool? = false,
+        limit: Int? = 50,
+        doesHaveComment: Bool? = nil,
+        comment: String? = nil,
+        addedLabels: [String]? = nil,
+        removedLabels: [String]? = nil,
+        addedTags: [String]? = nil,
+        removedTags: [String]? = nil,
+        reportTypes: [String]? = nil,
+        cursor: String? = nil
+    ) async throws -> Result<ModerationQueryEventsOutput, Error> {
         guard session != nil,
               let accessToken = session?.accessToken else {
             return .failure(ATRequestPrepareError.missingActiveSession)

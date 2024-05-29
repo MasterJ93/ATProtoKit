@@ -26,7 +26,13 @@ extension ATProtoKit {
     ///   of the record on the server.
     ///   - swapCommit: Swap the commit on the server with this current commit based on the CID
     ///   of the commit on the server.
-    public func deleteRecord(repositoryDID: String, collection: String, recordKey: String, swapRecord: String? = nil, swapCommit: String? = nil) async throws {
+    public func deleteRecord(
+        repositoryDID: String,
+        collection: String,
+        recordKey: String,
+        swapRecord: String? = nil,
+        swapCommit: String? = nil
+    ) async throws {
         guard session != nil,
               let accessToken = session?.accessToken else {
             throw ATRequestPrepareError.missingActiveSession

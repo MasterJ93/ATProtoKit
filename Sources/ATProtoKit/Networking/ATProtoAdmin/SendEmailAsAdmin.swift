@@ -29,8 +29,13 @@ extension ATProtoAdmin {
     ///   - comment: Any additional comments viewable to other moderators and administrators.
     /// - Returns: A `Result`, containing either an ``AdminSendEmailOutput``
     /// if successful, or an `Error` if not.
-    public func sendEmail(to recipientDID: String, withSubjectLine subjectLine: String?, content: String,
-                          senderDID: String, comment: String?) async throws -> Result<AdminSendEmailOutput, Error> {
+    public func sendEmail(
+        to recipientDID: String,
+        withSubjectLine subjectLine: String?,
+        content: String,
+        senderDID: String,
+        comment: String?
+    ) async throws -> Result<AdminSendEmailOutput, Error> {
         guard session != nil,
               let accessToken = session?.accessToken else {
             return .failure(ATRequestPrepareError.missingActiveSession)

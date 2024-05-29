@@ -26,8 +26,12 @@ extension ATProtoKit {
     ///   result. Optional.
     /// - Returns: A `Result`, containing either a ``FeedGetLikesOutput``
     /// if successful, or an `Error` if not.
-    public func getLikes(from recordURI: String, recordCID: String? = nil, limit: Int? = 50,
-                         cursor: String? = nil) async throws -> Result<FeedGetLikesOutput, Error> {
+    public func getLikes(
+        from recordURI: String,
+        recordCID: String? = nil,
+        limit: Int? = 50,
+        cursor: String? = nil
+    ) async throws -> Result<FeedGetLikesOutput, Error> {
         guard session != nil,
               let accessToken = session?.accessToken else {
             return .failure(ATRequestPrepareError.missingActiveSession)

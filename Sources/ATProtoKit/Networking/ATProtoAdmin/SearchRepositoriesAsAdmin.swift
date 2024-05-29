@@ -28,8 +28,11 @@ extension ATProtoAdmin {
     ///   results. Optional.
     /// - Returns: A `Result`, containing either an ``AdminSearchReposOutput``
     /// if successful, or an `Error` if not.
-    public func searchRepositories(_ query: String?, withLimitOf limit: Int? = 50,
-                                   cursor: String?) async throws -> Result<AdminSearchReposOutput, Error> {
+    public func searchRepositories(
+        _ query: String?,
+        withLimitOf limit: Int? = 50,
+        cursor: String?
+    ) async throws -> Result<AdminSearchReposOutput, Error> {
         guard session != nil,
               let accessToken = session?.accessToken else {
             return .failure(ATRequestPrepareError.missingActiveSession)

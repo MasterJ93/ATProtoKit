@@ -31,8 +31,12 @@ extension ATProtoKit {
     ///   result. Optional.
     /// - Returns: A `Result`, containing either a ``FeedGetAuthorFeedOutput``
     /// if successful, or an `Error` if not.
-    public func getAuthorFeed(by actorDID: String, limit: Int? = 50, cursor: String? = nil, postFilter:
-                              FeedGetAuthorFeedFilter? = .postsWithReplies) async throws -> Result<FeedGetAuthorFeedOutput, Error> {
+    public func getAuthorFeed(
+        by actorDID: String,
+        limit: Int? = 50,
+        cursor: String? = nil,
+        postFilter: FeedGetAuthorFeedFilter? = .postsWithReplies
+    ) async throws -> Result<FeedGetAuthorFeedOutput, Error> {
         guard session != nil,
               let accessToken = session?.accessToken else {
             return .failure(ATRequestPrepareError.missingActiveSession)

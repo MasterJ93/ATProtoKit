@@ -31,7 +31,11 @@ extension ATProtoKit {
     ///   - cursor: The mark used to indicate the starting point for the next set of result. Optional.
     /// - Returns: A `Result`, containing either a ``FeedGetTimelineOutput``
     /// if successful, or an `Error` if not.
-    public func getTimeline(using algorithm: String? = nil, limit: Int? = 50, cursor: String? = nil) async throws -> Result<FeedGetTimelineOutput, Error> {
+    public func getTimeline(
+        using algorithm: String? = nil,
+        limit: Int? = 50,
+        cursor: String? = nil
+    ) async throws -> Result<FeedGetTimelineOutput, Error> {
         guard session != nil,
               let accessToken = session?.accessToken else {
             return .failure(ATRequestPrepareError.missingActiveSession)

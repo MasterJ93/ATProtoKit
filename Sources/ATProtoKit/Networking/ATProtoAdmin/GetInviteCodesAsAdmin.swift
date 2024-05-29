@@ -26,8 +26,10 @@ extension ATProtoAdmin {
     ///   - cursor: The mark used to indicate the starting point for the next set of results. Optional.
     /// - Returns: A `Result`, containing either an ``AdminGetInviteCodesOutput``
     /// if successful, or an `Error` if not.
-    public func getInviteCodes(sortedBy sort: AdminGetInviteCodesSort = .recent, withLimitOf limit: Int = 100,
-                               cursor: String?) async throws -> Result<AdminGetInviteCodesOutput, Error> {
+    public func getInviteCodes(
+        sortedBy sort: AdminGetInviteCodesSort = .recent,
+        withLimitOf limit: Int = 100,
+        cursor: String?) async throws -> Result<AdminGetInviteCodesOutput, Error> {
         guard session != nil,
               let accessToken = session?.accessToken else {
             return .failure(ATRequestPrepareError.missingActiveSession)

@@ -31,8 +31,14 @@ extension ATProtoKit {
     ///   - isDisabled: Indicates whether the communication template is disabled. Optional.
     /// - Returns: A `Result`, containing either an ``OzoneCommunicationTemplateView``
     /// if successful, or an `Error` if not.
-    public func updateCommunicationTemplate(_ id: String, name: String?, contentMarkdown: String?, subject: String?, updatedBy: String?,
-                                            isDisabled: Bool?) async throws -> Result<OzoneCommunicationTemplateView, Error> {
+    public func updateCommunicationTemplate(
+        _ id: String,
+        name: String?,
+        contentMarkdown: String?,
+        subject: String?,
+        updatedBy: String?,
+        isDisabled: Bool?
+    ) async throws -> Result<OzoneCommunicationTemplateView, Error> {
         guard session != nil,
               let accessToken = session?.accessToken else {
             return .failure(ATRequestPrepareError.missingActiveSession)

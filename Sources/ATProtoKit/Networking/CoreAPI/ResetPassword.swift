@@ -24,8 +24,11 @@ extension ATProtoKit {
     ///   - token: The token used to reset the password.
     ///   - newPassword: The new password for the user's account.
     ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `nil`.
-    public func resetPassword(using token: String, newPassword: String,
-                              pdsURL: String? = nil) async throws {
+    public func resetPassword(
+        using token: String,
+        newPassword: String,
+        pdsURL: String? = nil
+    ) async throws {
         guard let sessionURL = pdsURL != nil ? pdsURL : session?.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.server.resetPassword") else {
             throw ATRequestPrepareError.invalidRequestURL

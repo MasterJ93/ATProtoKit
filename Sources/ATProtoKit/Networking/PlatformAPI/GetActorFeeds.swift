@@ -25,7 +25,11 @@ extension ATProtoKit {
     ///   result. Optional.
     /// - Returns: A `Result`, containing either a ``FeedGetActorFeedsOutput``
     /// if successful, or an `Error` if not.
-    public func getActorFeeds(by actorDID: String, limit: Int? = 50, cursor: String? = nil) async throws -> Result<FeedGetActorFeedsOutput, Error> {
+    public func getActorFeeds(
+        by actorDID: String,
+        limit: Int? = 50,
+        cursor: String? = nil
+    ) async throws -> Result<FeedGetActorFeedsOutput, Error> {
         guard session != nil,
               let accessToken = session?.accessToken else {
             return .failure(ATRequestPrepareError.missingActiveSession)

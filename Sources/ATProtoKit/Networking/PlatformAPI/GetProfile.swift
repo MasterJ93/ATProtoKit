@@ -35,9 +35,11 @@ extension ATProtoKit {
     ///   sending the request. Defaults to `false`.
     /// - Returns: A `Result`, containing ``ActorGetProfileOutput``
     /// if successful, or an `Error` if not.
-    public func getProfile(_ actor: String,
-                           pdsURL: String? = nil,
-                           shouldAuthenticate: Bool = false) async throws -> Result<ActorGetProfileOutput, Error> {
+    public func getProfile(
+        _ actor: String,
+        pdsURL: String? = nil,
+        shouldAuthenticate: Bool = false
+    ) async throws -> Result<ActorGetProfileOutput, Error> {
         let authorizationValue = prepareAuthorizationValue(
             methodPDSURL: pdsURL,
             shouldAuthenticate: shouldAuthenticate,

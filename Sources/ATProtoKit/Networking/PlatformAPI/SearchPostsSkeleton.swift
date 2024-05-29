@@ -44,10 +44,21 @@ extension ATProtoKit {
     ///   result. Optional.
     /// - Returns: A `Result`, containing either an ``UnspeccedSearchPostsSkeletonOutput``
     /// if successful, or an `Error` if not.
-    public func searchPostsSkeleton(with searchQuery: String, sortRanking: UnspeccedSearchPostsSortRanking? = .latest, sinceDate: Date?, untilDate: Date?,
-                                    mentionIdentifier: String? = nil, author: String? = nil, language: Locale?, domain: String?, url: String?,
-                                    tags: [String]?, limit: Int? = 25, cursor: String? = nil,
-                                    pdsURL: String? = nil) async throws -> Result<UnspeccedSearchPostsSkeletonOutput, Error> {
+    public func searchPostsSkeleton(
+        with searchQuery: String,
+        sortRanking: UnspeccedSearchPostsSortRanking? = .latest,
+        sinceDate: Date?,
+        untilDate: Date?,
+        mentionIdentifier: String? = nil,
+        author: String? = nil,
+        language: Locale?,
+        domain: String?,
+        url: String?,
+        tags: [String]?,
+        limit: Int? = 25,
+        cursor: String? = nil,
+        pdsURL: String? = nil
+    ) async throws -> Result<UnspeccedSearchPostsSkeletonOutput, Error> {
         guard let sessionURL = pdsURL != nil ? pdsURL : session?.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/app.bsky.unspecced.searchPostsSkeleton") else {
             return .failure(ATRequestPrepareError.invalidRequestURL)

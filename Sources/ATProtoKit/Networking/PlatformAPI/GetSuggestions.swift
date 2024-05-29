@@ -25,7 +25,10 @@ extension ATProtoKit {
     ///   results. Optional.
     /// - Returns: A `Result`, containing either an ``ActorGetSuggestionsOutput``
     /// if succesful, or an `Error` if it's not.
-    public func getSuggestions(limit: Int? = 50, cursor: String? = nil) async throws -> Result<ActorGetSuggestionsOutput, Error> {
+    public func getSuggestions(
+        limit: Int? = 50,
+        cursor: String? = nil
+    ) async throws -> Result<ActorGetSuggestionsOutput, Error> {
         guard session != nil,
               let accessToken = session?.accessToken else {
             return .failure(ATRequestPrepareError.missingActiveSession)

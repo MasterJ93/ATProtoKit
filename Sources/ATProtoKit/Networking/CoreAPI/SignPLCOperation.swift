@@ -29,8 +29,13 @@ extension ATProtoKit {
     ///   - service: The service endpoint recommended in the DID document. Optional.
     /// - Returns: A `Result`, containing either an ``IdentitySignPLCOperationOutput``
     /// if successful, ot an `Error` if not.
-    public func signPLCOperation(token: String, rotationKeys: [String]?, alsoKnownAs: [String]?, verificationMethods: VerificationMethod?,
-                                 service: ATService?) async throws -> Result<IdentitySignPLCOperationOutput, Error> {
+    public func signPLCOperation(
+        token: String,
+        rotationKeys: [String]?,
+        alsoKnownAs: [String]?,
+        verificationMethods: VerificationMethod?,
+        service: ATService?
+    ) async throws -> Result<IdentitySignPLCOperationOutput, Error> {
         guard session != nil,
               let accessToken = session?.accessToken else {
             return .failure(ATRequestPrepareError.missingActiveSession)

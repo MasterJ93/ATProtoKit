@@ -31,8 +31,14 @@ extension ATProtoKit {
     ///   - swapCommit: Swaps out an operation based on the CID. Optional.
     /// - Returns: A `Result`, containing either a ``StrongReference``
     /// if successful, and an `Error` if not.
-    public func createRecord(repositoryDID: String, collection: String, recordKey: String? = nil, shouldValidate: Bool? = true, record: UnknownType,
-                             swapCommit: String? = nil) async -> Result<StrongReference, Error> {
+    public func createRecord(
+        repositoryDID: String,
+        collection: String,
+        recordKey: String? = nil,
+        shouldValidate: Bool? = true,
+        record: UnknownType,
+        swapCommit: String? = nil
+    ) async -> Result<StrongReference, Error> {
         guard session != nil,
               let accessToken = session?.accessToken else {
             return .failure(ATRequestPrepareError.missingActiveSession)

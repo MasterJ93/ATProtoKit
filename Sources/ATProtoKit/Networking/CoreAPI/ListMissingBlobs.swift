@@ -24,7 +24,10 @@ extension ATProtoKit {
     ///   result. Optional.
     /// - Returns: A `Result`, containing either a ``RepoListMissingBlobsOutput``
     /// if successful, or an `Error` if not.
-    public func listMissingBlobs(limit: Int? = 500, cursor: String? = nil) async throws -> Result<RepoListMissingBlobsOutput, Error> {
+    public func listMissingBlobs(
+        limit: Int? = 500,
+        cursor: String? = nil
+    ) async throws -> Result<RepoListMissingBlobsOutput, Error> {
         guard session != nil,
               let accessToken = session?.accessToken else {
             return .failure(ATRequestPrepareError.missingActiveSession)

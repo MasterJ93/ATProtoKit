@@ -27,9 +27,13 @@ extension ATProtoKit {
     ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `nil`.
     /// - Returns: A `Result`, containing either an ``FeedGetListFeedOutput``
     /// if succesful, or an `Error` if it's not.
-    public func getListFeed(from listURI: String, limit: Int? = 50, cursor: String? = nil,
-                                   accessToken: String? = nil,
-                                   pdsURL: String? = nil) async throws -> Result<FeedGetListFeedOutput, Error> {
+    public func getListFeed(
+        from listURI: String,
+        limit: Int? = 50,
+        cursor: String? = nil,
+        accessToken: String? = nil,
+        pdsURL: String? = nil
+    ) async throws -> Result<FeedGetListFeedOutput, Error> {
         guard let sessionURL = pdsURL != nil ? pdsURL : session?.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/app.bsky.feed.getListFeed") else {
             return .failure(ATRequestPrepareError.invalidRequestURL)

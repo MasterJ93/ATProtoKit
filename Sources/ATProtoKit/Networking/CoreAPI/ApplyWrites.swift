@@ -23,7 +23,12 @@ extension ATProtoKit {
     ///   - shouldValidate: Indicates whether the operation should be validated. Optional. Defaults to `true`.
     ///   - writes: The write operation itself.
     ///   - swapCommit: Swaps out an operation based on the CID. Optional.
-    public func applyWrites(_ repositoryDID: String, shouldValidate: Bool? = true, writes: [ApplyWritesUnion], swapCommit: String?) async throws {
+    public func applyWrites(
+        _ repositoryDID: String,
+        shouldValidate: Bool? = true,
+        writes: [ApplyWritesUnion],
+        swapCommit: String?
+    ) async throws {
         guard session != nil,
               let accessToken = session?.accessToken else {
             throw ATRequestPrepareError.missingActiveSession

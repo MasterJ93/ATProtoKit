@@ -29,8 +29,15 @@ extension ATProtoKit {
     ///   - swapCommit: Swaps the commit in the server with the commit contained in here. Optional.
     /// - Returns: A `Result`, containing either a ``StrongReference``
     /// if successful, or an `Error` if not.
-    public func putRecord(_ repositoryDID: String, collection: String, recordKey: String, shouldValidate: Bool? = true, record: UnknownType,
-                          swapRecord: String? = nil, swapCommit: String? = nil) async throws -> Result<StrongReference, Error> {
+    public func putRecord(
+        _ repositoryDID: String,
+        collection: String,
+        recordKey: String,
+        shouldValidate: Bool? = true,
+        record: UnknownType,
+        swapRecord: String? = nil,
+        swapCommit: String? = nil
+    ) async throws -> Result<StrongReference, Error> {
         guard session != nil,
               let accessToken = session?.accessToken else {
             return .failure(ATRequestPrepareError.missingActiveSession)

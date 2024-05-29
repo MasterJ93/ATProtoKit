@@ -24,8 +24,10 @@ extension ATProtoAdmin {
     /// - Parameters:
     ///   - subject: The subject associated with the subject status.
     ///   - takedown: The status attributes of the subject. Optional.
-    public func updateSubjectStatusAsAdmin(_ subject: AdminGetSubjectStatusUnion,
-                                           takedown: AdminStatusAttributes?) async throws -> Result<AdminUpdateSubjectStatusOutput, Error> {
+    public func updateSubjectStatusAsAdmin(
+        _ subject: AdminGetSubjectStatusUnion,
+        takedown: AdminStatusAttributes?
+    ) async throws -> Result<AdminUpdateSubjectStatusOutput, Error> {
         guard session != nil,
               let accessToken = session?.accessToken else {
             return .failure(ATRequestPrepareError.missingActiveSession)

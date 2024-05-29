@@ -22,7 +22,9 @@ extension ATProtoKit {
     /// time the request was sent.
     /// - Returns: A `Result`, containing either a ``NotificationGetUnreadCountOutput``
     /// if successful, or an `Error` if not.
-    public func getUnreadCount(seenAt: Date = Date.now) async throws -> Result<NotificationGetUnreadCountOutput, Error> {
+    public func getUnreadCount(
+        seenAt: Date = Date.now
+    ) async throws -> Result<NotificationGetUnreadCountOutput, Error> {
         guard session != nil,
               let accessToken = session?.accessToken else {
             return .failure(ATRequestPrepareError.missingActiveSession)

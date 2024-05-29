@@ -24,7 +24,10 @@ extension ATProtoAdmin {
     /// - Parameters:
     ///   - codes: The invite codes to disable.
     ///   - accountDIDs: The decentralized identifiers (DIDs) of the user accounts.
-    public func disableInviteCodes(codes: [String], accountDIDs: [String]) async throws {
+    public func disableInviteCodes(
+        codes: [String],
+        accountDIDs: [String]
+    ) async throws {
         guard session != nil,
               let accessToken = session?.accessToken else {
             throw ATRequestPrepareError.missingActiveSession

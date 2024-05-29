@@ -24,7 +24,10 @@ extension ATProtoKit {
     ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `nil`.
     /// - Returns: A `Result`, containing either a ``ResolveHandleOutput``
     /// if successful, or an `Error` if not.
-    public func resolveHandle(from handle: String, pdsURL: String? = nil) async throws -> Result<ResolveHandleOutput, Error> {
+    public func resolveHandle(
+        from handle: String,
+        pdsURL: String? = nil
+    ) async throws -> Result<ResolveHandleOutput, Error> {
         guard let sessionURL = pdsURL != nil ? pdsURL : session?.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.identity.resolveHandle") else {
             return .failure(ATRequestPrepareError.invalidRequestURL)

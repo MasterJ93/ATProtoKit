@@ -30,8 +30,14 @@ extension ATProtoKit {
     ///   result. Optional.
     /// - Returns: A `Result`, containing either an ``UnspeccedSearchActorsSkeletonOutput``
     /// if successful, or an `Error` if not.
-    public func searchActorsSkeleton(_ query: String, viewerDID: String? = nil, canTypeAhead: Bool?, limit: Int? = 25, cursor: String? = nil,
-                                     pdsURL: String? = nil) async throws -> Result<UnspeccedSearchActorsSkeletonOutput, Error> {
+    public func searchActorsSkeleton(
+        _ query: String,
+        viewerDID: String? = nil,
+        canTypeAhead: Bool?,
+        limit: Int? = 25,
+        cursor: String? = nil,
+        pdsURL: String? = nil
+    ) async throws -> Result<UnspeccedSearchActorsSkeletonOutput, Error> {
         guard let sessionURL = pdsURL != nil ? pdsURL : session?.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/app.bsky.unspecced.searchActorsSkeleton") else {
             return .failure(ATRequestPrepareError.invalidRequestURL)

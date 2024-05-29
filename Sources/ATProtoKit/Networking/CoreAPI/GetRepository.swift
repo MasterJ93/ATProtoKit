@@ -25,8 +25,11 @@ extension ATProtoKit {
     ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `nil`.
     /// - Returns: A `Result`, containing either a `Data` object
     /// if successful, or an `Error` if not.
-    public func getRepository(_ repositoryDID: String, sinceRevision: String? = nil,
-                              pdsURL: String? = nil) async throws -> Result<Data, Error> {
+    public func getRepository(
+        _ repositoryDID: String,
+        sinceRevision: String? = nil,
+        pdsURL: String? = nil
+    ) async throws -> Result<Data, Error> {
         guard let sessionURL = pdsURL != nil ? pdsURL : session?.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.sync.getRepo") else {
             return .failure(ATRequestPrepareError.invalidRequestURL)

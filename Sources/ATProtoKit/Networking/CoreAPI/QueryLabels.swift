@@ -34,9 +34,14 @@ extension ATProtoKit {
     ///   sending the request. Defaults to `false`.
     /// - Returns: A `Result`, containing either a ``LabelQueryLabelsOutput``
     /// if successful, or an `Error` if not.
-    public func queryLabels(uriPatterns: [String], sources: [String]?, limit: Int? = 50, cursor: String? = nil,
-                            pdsURL: String? = nil,
-                            shouldAuthenticate: Bool = false) async throws -> Result<LabelQueryLabelsOutput, Error> {
+    public func queryLabels(
+        uriPatterns: [String],
+        sources: [String]?,
+        limit: Int? = 50,
+        cursor: String? = nil,
+        pdsURL: String? = nil,
+        shouldAuthenticate: Bool = false
+    ) async throws -> Result<LabelQueryLabelsOutput, Error> {
         let authorizationValue = prepareAuthorizationValue(
             methodPDSURL: pdsURL,
             shouldAuthenticate: shouldAuthenticate,

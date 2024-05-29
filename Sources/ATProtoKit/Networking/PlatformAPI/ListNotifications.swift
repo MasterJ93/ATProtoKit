@@ -26,8 +26,11 @@ extension ATProtoKit {
     ///   request was sent.
     /// - Returns: A `Result`, containing either a ``NotificationListNotificationsOutput``
     /// if successful, or an `Error` if not.
-    public func listNotifications(withLimitOf limit: Int? = 50, cursor: String? = nil,
-                                  seenAt: Date = Date.now) async throws -> Result<NotificationListNotificationsOutput, Error> {
+    public func listNotifications(
+        withLimitOf limit: Int? = 50,
+        cursor: String? = nil,
+        seenAt: Date = Date.now
+    ) async throws -> Result<NotificationListNotificationsOutput, Error> {
         guard session != nil,
               let accessToken = session?.accessToken else {
             return .failure(ATRequestPrepareError.missingActiveSession)

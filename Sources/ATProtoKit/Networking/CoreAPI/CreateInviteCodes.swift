@@ -23,7 +23,10 @@ extension ATProtoKit {
     ///   invite codes.
     /// - Returns: A `Result`, containing either a ``ServerCreateInviteCodesOutput``
     /// if successful, or an `Error` if not.
-    public func createInviteCodes(_ codeCount: Int = 1, for accounts: [String]) async throws -> Result<ServerCreateInviteCodesOutput, Error> {
+    public func createInviteCodes(
+        _ codeCount: Int = 1,
+        for accounts: [String]
+    ) async throws -> Result<ServerCreateInviteCodesOutput, Error> {
         guard session != nil,
               let accessToken = session?.accessToken else {
             return .failure(ATRequestPrepareError.missingActiveSession)

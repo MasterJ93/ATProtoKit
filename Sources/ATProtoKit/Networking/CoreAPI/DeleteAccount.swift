@@ -24,7 +24,11 @@ extension ATProtoKit {
     ///   - accountDID: The decentralized identifier (DID) of the user account to be deleted.
     ///   - password: The password of the user account.
     ///   - token: A token to confirm the deletion of the account.
-    public func deleteAccount(_ accountDID: String, password: String, token: String) async throws {
+    public func deleteAccount(
+        _ accountDID: String,
+        password: String,
+        token: String
+    ) async throws {
         guard session != nil,
               let accessToken = session?.accessToken else {
             throw ATRequestPrepareError.missingActiveSession

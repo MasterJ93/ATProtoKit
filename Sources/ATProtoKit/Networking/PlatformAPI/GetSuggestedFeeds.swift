@@ -24,7 +24,10 @@ extension ATProtoKit {
     ///   result. Optional.
     /// - Returns: A `Result`, containing either a ``FeedGetSuggestedFeedsOutput``
     /// if successful, or an `Error` if not.
-    public func getSuggestedFeeds(limit: Int? = 50, cursor: String? = nil) async throws -> Result<FeedGetSuggestedFeedsOutput, Error> {
+    public func getSuggestedFeeds(
+        limit: Int? = 50,
+        cursor: String? = nil
+    ) async throws -> Result<FeedGetSuggestedFeedsOutput, Error> {
         guard session != nil,
               let accessToken = session?.accessToken else {
             return .failure(ATRequestPrepareError.missingActiveSession)

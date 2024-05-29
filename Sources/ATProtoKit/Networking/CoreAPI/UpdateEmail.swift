@@ -26,7 +26,11 @@ extension ATProtoKit {
     ///   - isEmailAuthenticationFactorEnabled: Indicates whether
     ///   Two-Factor Authentication (via email) is enabled. Optional.
     ///   - token: The token used to confirm the change. Optional.
-    public func updateEmail(_ email: String, isEmailAuthenticationFactorEnabled: Bool? = nil, token: String? = nil) async throws {
+    public func updateEmail(
+        _ email: String,
+        isEmailAuthenticationFactorEnabled: Bool? = nil,
+        token: String? = nil
+    ) async throws {
         guard session != nil,
               let accessToken = session?.accessToken else {
             throw ATRequestPrepareError.missingActiveSession

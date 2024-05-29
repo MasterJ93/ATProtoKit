@@ -21,7 +21,10 @@ extension ATProtoKit {
     ///
     /// - Parameter blobQuery: An object containing the `accountDID` and `cidHash` of the blob.
     /// - Returns: A `Result` containing `Data` on success or `Error` on failure.
-    public static func getBlob(from blobQuery: BlobQuery, pdsURL: String? = "https://bsky.social") async -> Result<Data, Error> {
+    public static func getBlob(
+        from blobQuery: BlobQuery,
+        pdsURL: String? = "https://bsky.social"
+    ) async -> Result<Data, Error> {
         guard let sessionURL = pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.sync.getBlob") else {
             return .failure(ATRequestPrepareError.invalidRequestURL)

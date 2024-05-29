@@ -25,7 +25,10 @@ extension ATProtoAdmin {
     ///   - recordCID: The CID hash of the record. Optional.
     /// - Returns: A `Result`, containing either an ``OzoneModerationRecordViewDetail``
     /// if successful, or an `Error` if not.
-    public func getRecord(_ recordURI: String, recordCID: String?) async throws -> Result<OzoneModerationRecordViewDetail, Error> {
+    public func getRecord(
+        _ recordURI: String,
+        recordCID: String?
+    ) async throws -> Result<OzoneModerationRecordViewDetail, Error> {
         guard session != nil,
               let accessToken = session?.accessToken else {
             return .failure(ATRequestPrepareError.missingActiveSession)

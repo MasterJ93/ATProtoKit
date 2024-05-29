@@ -21,8 +21,10 @@ extension ATProtoKit {
     /// - Parameter repositoryDID: The decentralized identifier (DID) or handle of the repository.
     /// - Returns: A `Result`, containing either a ``RepoDescribeRepoOutput``
     /// if successful, ot an `Error` if not.
-    public func describeRepository(_ repositoryDID: String,
-                                   pdsURL: String? = nil) async throws -> Result<RepoDescribeRepoOutput, Error> {
+    public func describeRepository(
+        _ repositoryDID: String,
+        pdsURL: String? = nil
+    ) async throws -> Result<RepoDescribeRepoOutput, Error> {
         guard let sessionURL = pdsURL != nil ? pdsURL : session?.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.repo.describeRepo") else {
             return .failure(ATRequestPrepareError.invalidRequestURL)

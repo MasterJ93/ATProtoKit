@@ -39,9 +39,12 @@ extension ATProtoKit {
     ///   sending the request. Defaults to `false`.
     /// - Returns: A `Result`, containing either ``ActorSearchActorsOutput``
     /// if successful, and an `Error` if not.
-    public func searchUsersTypeahead(by query: String, limit: Int? = 10,
-                                     pdsURL: String? = nil,
-                                     shouldAuthenticate: Bool = false) async throws -> Result<ActorSearchActorsTypeaheadOutput, Error> {
+    public func searchUsersTypeahead(
+        by query: String,
+        limit: Int? = 10,
+        pdsURL: String? = nil,
+        shouldAuthenticate: Bool = false
+    ) async throws -> Result<ActorSearchActorsTypeaheadOutput, Error> {
         let authorizationValue = prepareAuthorizationValue(
             methodPDSURL: pdsURL,
             shouldAuthenticate: shouldAuthenticate,
