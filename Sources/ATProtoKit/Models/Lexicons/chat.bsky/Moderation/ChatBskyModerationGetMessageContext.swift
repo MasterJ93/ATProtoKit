@@ -17,6 +17,6 @@ extension ChatBskyLexicon.Moderation {
     public struct GetMessageContextOutput: Codable {
 
         /// An array of messages.
-        public let messages: [ATUnion.MessageViewUnion]
+        public let messages: [ATUnion.GetMessageContextOutputMessagesUnion]
     }
 }

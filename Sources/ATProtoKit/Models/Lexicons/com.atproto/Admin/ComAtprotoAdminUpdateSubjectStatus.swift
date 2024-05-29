@@ -20,7 +20,7 @@ extension ComAtprotoLexicon.Admin {
     public struct AdminUpdateSubjectStatusRequestBody: Codable {
 
         /// The subject associated with the subject status.
-        public let subject: AdminGetSubjectStatusUnion
+        public let subject: ATUnion.AdminUpdateSubjectStatusUnion
 
         /// The status attributes of the subject. Optional.
         public let takedown: AdminStatusAttributes?
@@ -37,7 +37,7 @@ extension ComAtprotoLexicon.Admin {
     public struct AdminUpdateSubjectStatusOutput: Codable {
 
         /// The subject associated with the subject status.
-        public let subject: AdminGetSubjectStatusUnion
+        public let subject: ATUnion.AdminUpdateSubjectStatusUnion
 
         /// The status attributes of the subject. Optional.
         public let takedown: AdminStatusAttributes?

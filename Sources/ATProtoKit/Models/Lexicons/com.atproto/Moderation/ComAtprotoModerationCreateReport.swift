@@ -39,7 +39,7 @@ extension ComAtprotoLexicon.Moderation {
         ///   \* **For items without enough context for even an educated guess**: a direct acknowledgment of their undocumented status.\
         ///   \
         ///   Clarifications from Bluesky are needed in order to fully understand this item.
-        public let subject: RepositoryReferencesUnion
+        public let subject: ATUnion.CreateReportSubjectUnion
     }
 
     /// An output model for creating a report.
@@ -65,7 +65,7 @@ extension ComAtprotoLexicon.Moderation {
         ///   \* **For items without enough context for even an educated guess**: a direct acknowledgment of their undocumented status.\
         ///   \
         ///   Clarifications from Bluesky are needed in order to fully understand this item.
-        public let subject: RepositoryReferencesUnion
+        public let subject: ATUnion.CreateReportSubjectUnion
 
         /// The decentralized identifier (DID) of the user who created the report.
         public let reportedBy: String
@@ -73,7 +73,7 @@ extension ComAtprotoLexicon.Moderation {
         /// The date and time the report was created.
         @DateFormatting public var createdAt: Date
 
-        public init(id: Int, reasonType: ModerationReasonType, reason: String?, subject: RepositoryReferencesUnion, reportedBy: String, createdAt: Date) {
+        public init(id: Int, reasonType: ModerationReasonType, reason: String?, subject: ATUnion.CreateReportSubjectUnion, reportedBy: String, createdAt: Date) {
             self.id = id
             self.reasonType = reasonType
             self.reason = reason
@@ -88,7 +88,7 @@ extension ComAtprotoLexicon.Moderation {
             self.id = try container.decode(Int.self, forKey: .id)
             self.reasonType = try container.decode(ModerationReasonType.self, forKey: .reasonType)
             self.reason = try container.decodeIfPresent(String.self, forKey: .reason)
-            self.subject = try container.decode(RepositoryReferencesUnion.self, forKey: .subject)
+            self.subject = try container.decode(ATUnion.CreateReportSubjectUnion.self, forKey: .subject)
             self.reportedBy = try container.decode(String.self, forKey: .reportedBy)
             self.createdAt = try container.decode(DateFormatting.self, forKey: .createdAt).wrappedValue
         }

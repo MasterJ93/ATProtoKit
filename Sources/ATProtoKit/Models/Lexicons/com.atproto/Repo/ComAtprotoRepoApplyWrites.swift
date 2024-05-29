@@ -32,7 +32,7 @@ extension ComAtprotoLexicon.Repository {
         public let shouldValidate: Bool?
 
         /// The write operation itself.
-        public let writes: [ApplyWritesUnion]?
+        public let writes: [ATUnion.ApplyWritesUnion]?
 
         /// Swaps out an operation based on the CID. Optional.
         ///

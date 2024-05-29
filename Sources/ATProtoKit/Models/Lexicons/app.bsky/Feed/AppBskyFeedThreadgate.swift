@@ -66,7 +66,6 @@ extension AppBskyLexicon.Feed {
             case createdAt
         }
 
-        // Enums
         /// A rule that indicates whether users that the post author mentions can reply to the post.
         ///
         /// - Note: According to the AT Protocol specifications: "Allow replies from actors mentioned

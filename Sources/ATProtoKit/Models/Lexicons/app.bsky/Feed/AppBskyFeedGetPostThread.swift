@@ -20,6 +20,6 @@ extension AppBskyLexicon.Feed {
     public struct GetPostThreadOutput: Codable {
 
         /// The post thread itself.
-        public let thread: ATUnion.FeedGetPostThreadUnion
+        public let thread: ATUnion.GetPostThreadOutputThreadUnion
     }
 }

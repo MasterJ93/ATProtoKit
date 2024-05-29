@@ -36,6 +36,6 @@ extension ToolsOzoneLexicon.Moderation {
         public let cursor: String?
 
         /// An array of moderator events.
-        public let events: [ToolsOzoneLexicon.Moderation.EventViewDefinition]
+        public let events: [ToolsOzoneLexicon.Moderation.ModerationEventViewDefinition]
     }
 }

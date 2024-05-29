@@ -51,7 +51,7 @@ extension ChatBskyLexicon.Conversation {
         public let facets: [AppBskyLexicon.RichText.Facet]?
 
         /// An array of embeds for the message. Optional.
-        public let embeds: [ATUnion.MessageEmbedUnion]?
+        public let embeds: [ATUnion.MessageInputEmbedUnion]?
 
         public func encode(to encoder: any Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
@@ -95,7 +95,7 @@ extension ChatBskyLexicon.Conversation {
         public let facets: [AppBskyLexicon.RichText.Facet]?
 
         /// An array of embeds for the message. Optional.
-        public let embeds: [ATUnion.MessageEmbedUnion]?
+        public let embeds: [ATUnion.MessageViewEmbedUnion]?
 
         /// The sender of the message.
         public let sender: String
@@ -104,7 +104,7 @@ extension ChatBskyLexicon.Conversation {
         @DateFormatting public var seenAt: Date
 
         public init(messageID: String?, revision: String, text: String, facets: [AppBskyLexicon.RichText.Facet]?,
-                    embeds: [ATUnion.MessageEmbedUnion]?, sender: String, seenAt: Date) {
+                    embeds: [ATUnion.MessageViewEmbedUnion]?, sender: String, seenAt: Date) {
             self.messageID = messageID
             self.revision = revision
             self.text = text
@@ -121,7 +121,7 @@ extension ChatBskyLexicon.Conversation {
             self.revision = try container.decode(String.self, forKey: .revision)
             self.text = try container.decode(String.self, forKey: .text)
             self.facets = try container.decodeIfPresent([AppBskyLexicon.RichText.Facet].self, forKey: .facets)
-            self.embeds = try container.decodeIfPresent([ATUnion.MessageEmbedUnion].self, forKey: .embeds)
+            self.embeds = try container.decodeIfPresent([ATUnion.MessageViewEmbedUnion].self, forKey: .embeds)
             self.sender = try container.decode(String.self, forKey: .sender)
             self.seenAt = try container.decode(DateFormatting.self, forKey: .seenAt).wrappedValue
         }
@@ -235,7 +235,7 @@ extension ChatBskyLexicon.Conversation {
         public let members: [ChatBskyLexicon.Actor.ProfileViewBasicDefinition]
 
         /// The last message in the conversation. Optional.
-        public let lastMessage: ATUnion.MessageViewUnion?
+        public let lastMessage: ATUnion.ConversationViewLastMessageUnion?
 
         /// Indicates whether the conversation is muted.
         public let isMuted: Bool
@@ -305,7 +305,7 @@ extension ChatBskyLexicon.Conversation {
         public let conversationID: String
 
         /// The message itself.
-        public let message: ATUnion.MessageViewUnion
+        public let message: ATUnion.LogCreateMessageUnion
 
         enum CodingKeys: String, CodingKey {
             case revision = "rev"
@@ -328,7 +328,7 @@ extension ChatBskyLexicon.Conversation {
         public let conversationID: String
 
         /// The message itself.
-        public let message: ATUnion.MessageViewUnion
+        public let message: ATUnion.LogDeleteMessageUnion
 
         enum CodingKeys: String, CodingKey {
             case revision = "rev"

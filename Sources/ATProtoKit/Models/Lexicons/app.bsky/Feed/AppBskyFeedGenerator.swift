@@ -53,13 +53,13 @@ extension AppBskyLexicon.Feed {
         public let canAcceptInteractions: Bool?
 
         /// An array of labels created by the user. Optional.
-        public let labels: [SelfLabels]?
+        public let labels: ATUnion.GeneratorLabelsUnion?
 
         /// The date and time the feed was created.
         @DateFormatting public var createdAt: Date
 
         public init(feedDID: String, displayName: String, description: String?, descriptionFacets: [Facet]?, avatarImageURL: URL?,
-                    canAcceptInteractions: Bool?, labels: [SelfLabels]?, createdAt: Date) {
+                    canAcceptInteractions: Bool?, labels: ATUnion.GeneratorLabelsUnion?, createdAt: Date) {
             self.feedDID = feedDID
             self.displayName = displayName
             self.description = description
@@ -79,7 +79,7 @@ extension AppBskyLexicon.Feed {
             self.descriptionFacets = try container.decodeIfPresent([Facet].self, forKey: .descriptionFacets)
             self.avatarImageURL = try container.decodeIfPresent(URL.self, forKey: .avatarImageURL)
             self.canAcceptInteractions = try container.decodeIfPresent(Bool.self, forKey: .canAcceptInteractions)
-            self.labels = try container.decodeIfPresent([SelfLabels].self, forKey: .labels)
+            self.labels = try container.decodeIfPresent(ATUnion.GeneratorLabelsUnion.self, forKey: .labels)
             self.createdAt = try container.decode(DateFormatting.self, forKey: .createdAt).wrappedValue
         }
 

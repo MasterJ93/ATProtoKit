@@ -47,13 +47,13 @@ extension AppBskyLexicon.Graph {
         public let avatarImage: ComAtprotoLexicon.Repository.UploadBlobOutput?
 
         /// The user-defined labels for the list. Optional.
-        public let labels: ComAtprotoLexicon.Label.SelfLabelsDefinition
+        public let labels: ATUnion.ListLabelsUnion
 
         /// The date and time the list was created.
         @DateFormatting public var createdAt: Date
 
         public init(name: String, purpose: ListPurpose, description: String?, descriptionFacets: [Facet]?,
-                    avatarImage: ComAtprotoLexicon.Repository.UploadBlobOutput?, labels: ComAtprotoLexicon.Label.SelfLabelsDefinition, createdAt: Date) {
+                    avatarImage: ComAtprotoLexicon.Repository.UploadBlobOutput?, labels: ATUnion.ListLabelsUnion, createdAt: Date) {
             self.name = name
             self.purpose = purpose
             self.description = description
@@ -71,7 +71,7 @@ extension AppBskyLexicon.Graph {
             self.description = try container.decodeIfPresent(String.self, forKey: .description)
             self.descriptionFacets = try container.decodeIfPresent([Facet].self, forKey: .descriptionFacets)
             self.avatarImage = try container.decodeIfPresent(ComAtprotoLexicon.Repository.UploadBlobOutput.self, forKey: .avatarImage)
-            self.labels = try container.decode(ComAtprotoLexicon.Label.SelfLabelsDefinition.self, forKey: .labels)
+            self.labels = try container.decode(ATUnion.ListLabelsUnion.self, forKey: .labels)
             self.createdAt = try container.decode(DateFormatting.self, forKey: .createdAt).wrappedValue
         }
 

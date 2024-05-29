@@ -19,10 +19,10 @@ extension ToolsOzoneLexicon.Moderation {
     public struct EmitEventRequestBody: Codable {
 
         /// The type of event the moderator is taking,
-        public let event: ATUnion.AdminEventViewUnion
+        public let event: ATUnion.EmitEventUnion
 
         /// The type of repository reference.
-        public let subject: RepositoryReferencesUnion
+        public let subject: ATUnion.EmitEventSubjectUnion
 
         /// An array of CID hashes related to blobs for the moderator's event view. Optional.
         public let subjectBlobCIDHashes: [String]?

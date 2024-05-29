@@ -29,7 +29,7 @@ extension AppBskyLexicon.Embed {
         public let record: RecordDefinition
 
         /// The media of a specific type.
-        public let media: ATUnion.MediaUnion
+        public let media: ATUnion.RecordWithMediaUnion
 
         enum CodingKeys: String, CodingKey {
             case type = "$type"
@@ -43,7 +43,7 @@ extension AppBskyLexicon.Embed {
         /// - SeeAlso: This is based on the [`app.bsky.embed.recordWithMedia`][github] lexicon.
         ///
         /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/embed/recordWithMedia.json
-        public struct RecordWithMediaView: Codable {
+        public struct View: Codable {
 
             /// The identifier of the lexicon.
             ///

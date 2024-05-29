@@ -161,7 +161,7 @@ extension AppBskyLexicon.Feed {
 
         // TODO: Check to see if this is correct.
         /// The user who reposted the post. Optional.
-        public var reason: ReasonRepostDefinition?
+        public var reason: ATUnion.ReasonRepostUnion?
 
         /// The feed generator's context. Optional
         ///
@@ -169,7 +169,7 @@ extension AppBskyLexicon.Feed {
         /// feed generator that may be passed back alongside interactions."
         public let feedContext: String?
 
-        public init(post: PostViewDefinition, reply: ReplyReferenceDefinition?, reason: ReasonRepostDefinition?, feedContext: String?) {
+        public init(post: PostViewDefinition, reply: ReplyReferenceDefinition?, reason: ATUnion.ReasonRepostUnion?, feedContext: String?) {
             self.post = post
             self.reply = reply
             self.reason = reason
@@ -181,7 +181,7 @@ extension AppBskyLexicon.Feed {
 
             self.post = try container.decode(PostViewDefinition.self, forKey: .post)
             self.reply = try container.decodeIfPresent(ReplyReferenceDefinition.self, forKey: .reply)
-            self.reason = try container.decodeIfPresent(ReasonRepostDefinition.self, forKey: .reason)
+            self.reason = try container.decodeIfPresent(ATUnion.ReasonRepostUnion.self, forKey: .reason)
             self.feedContext = try container.decodeIfPresent(String.self, forKey: .feedContext)
         }
 
@@ -212,14 +212,14 @@ extension AppBskyLexicon.Feed {
     public struct ReplyReferenceDefinition: Codable {
 
         /// The original post of the thread.
-        public let root: ATUnion.PostUnion
+        public let root: ATUnion.ReplyReferenceRootUnion
 
         // TODO: Fix up the note's message.
         /// The direct post that the user's post is replying to.
         ///
         /// - Note: If `parent` and `root` are identical, the post is a direct reply to the
         /// original post of the thread.
-        public let parent: ATUnion.PostUnion
+        public let parent: ATUnion.ReplyReferenceParentUnion
 
         /// The author of the parent's post.
         ///
@@ -277,10 +277,10 @@ extension AppBskyLexicon.Feed {
         public let post: PostViewDefinition
 
         /// The direct post that the user's post is replying to. Optional.
-        public var parent: ATUnion.ThreadPostUnion?
+        public let parent: ATUnion.ThreadViewPostParentUnion?
 
         /// An array of posts of various types. Optional.
-        public var replies: [ATUnion.ThreadPostUnion]?
+        public var replies: [ATUnion.ThreadViewPostRepliesUnion]?
     }
 
     /// A definition model for a post that may not have been found.
@@ -527,7 +527,7 @@ extension AppBskyLexicon.Feed {
         public let postURI: String
 
         /// The indication that the post was a repost. Optional.
-        public var reason: SkeletonReasonRepostDefinition?
+        public var reason: ATUnion.SkeletonReasonRepostUnion?
 
         enum CodingKeys: String, CodingKey {
             case postURI = "post"
@@ -591,7 +591,7 @@ extension AppBskyLexicon.Feed {
         public let item: String?
 
         /// The interaction event of the feed generator. Optional.
-        public let event: InteractionEventDefinition?
+        public let event: Event?
 
         /// The feed generator's context. Optional.
         ///
@@ -599,7 +599,7 @@ extension AppBskyLexicon.Feed {
         /// orginally supplied by the feed generator on getFeedSkeleton."
         public let feedContext: String?
 
-        public init(item: String, event: InteractionEventDefinition, feedContext: String) {
+        public init(item: String, event: Event, feedContext: String) {
             self.item = item
             self.event = event
             self.feedContext = feedContext
@@ -609,7 +609,7 @@ extension AppBskyLexicon.Feed {
             let container = try decoder.container(keyedBy: CodingKeys.self)
 
             self.item = try container.decode(String.self, forKey: .item)
-            self.event = try container.decode(InteractionEventDefinition.self, forKey: .event)
+            self.event = try container.decode(Event.self, forKey: .event)
             self.feedContext = try container.decode(String.self, forKey: .feedContext)
         }
 
@@ -628,79 +628,80 @@ extension AppBskyLexicon.Feed {
             case event
             case feedContext
         }
-    }
 
-    /// A definition model for an interaction event.
-    ///
-    /// - SeeAlso: This is based on the [`app.bsky.feed.defs`][github] lexicon.
-    ///
-    /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/feed/defs.json
-    public enum InteractionEventDefinition: Codable {
-
-        /// Indicates the feed generator should request less content similar to the feed's item.
+        // Enums
+        /// A definition model for an interaction event.
         ///
-        /// - Note: According to the AT Protocol specifications: "Request that less content like the
-        /// given feed item be shown in the feed."
-        case requestLess
-
-        /// Indicates the feed generator should request more content similar to the feed's item.
+        /// - SeeAlso: This is based on the [`app.bsky.feed.defs`][github] lexicon.
         ///
-        /// - Note: According to the AT Protocol specifications: "Request that more content like the
-        /// given feed item be shown in the feed."
-        case requestMore
+        /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/feed/defs.json
+        public enum Event: Codable {
 
-        /// Indicates the feed generator clicked on the feed's item.
-        ///
-        /// - Note: According to the AT Protocol specifications: "User clicked through to the
-        /// feed item."
-        case clickthroughItem
+            /// Indicates the feed generator should request less content similar to the feed's item.
+            ///
+            /// - Note: According to the AT Protocol specifications: "Request that less content like the
+            /// given feed item be shown in the feed."
+            case requestLess
 
-        /// Indicates the user clicked on the author of the feed's item.
-        ///
-        /// - Note: According to the AT Protocol specifications: "User clicked through to the author
-        /// of the feed item."
-        case clickthroughAuthor
+            /// Indicates the feed generator should request more content similar to the feed's item.
+            ///
+            /// - Note: According to the AT Protocol specifications: "Request that more content like the
+            /// given feed item be shown in the feed."
+            case requestMore
 
-        /// Indicates the user clicked on the reposter of the feed's item.
-        ///
-        /// - Note: According to the AT Protocol specifications: "User clicked through to the reposter
-        /// of the feed item."
-        case clickthroughReposter
+            /// Indicates the feed generator clicked on the feed's item.
+            ///
+            /// - Note: According to the AT Protocol specifications: "User clicked through to the
+            /// feed item."
+            case clickthroughItem
 
-        /// Indicates the user clicked on the embedded content of the feed's item.
-        ///
-        /// - Note: According to the AT Protocol specifications: "User clicked through to the embedded
-        /// content of the feed item."
-        case clickthroughEmbed
+            /// Indicates the user clicked on the author of the feed's item.
+            ///
+            /// - Note: According to the AT Protocol specifications: "User clicked through to the author
+            /// of the feed item."
+            case clickthroughAuthor
 
-        /// Indicates the user has viewed the item in the feed.
-        ///
-        /// - Note: According to the AT Protocol specifications: "Feed item was seen by user."
-        case interactionSeen
+            /// Indicates the user clicked on the reposter of the feed's item.
+            ///
+            /// - Note: According to the AT Protocol specifications: "User clicked through to the reposter
+            /// of the feed item."
+            case clickthroughReposter
 
-        /// Indicates the user has liked the item of the feed.
-        ///
-        /// - Note: According to the AT Protocol specifications: "User liked the feed item."
-        case interactionLike
+            /// Indicates the user clicked on the embedded content of the feed's item.
+            ///
+            /// - Note: According to the AT Protocol specifications: "User clicked through to the embedded
+            /// content of the feed item."
+            case clickthroughEmbed
 
-        /// Indicates the user has reposted the item of the feed.
-        ///
-        /// - Note: According to the AT Protocol specifications: "User reposted the feed item."
-        case interactionRepost
+            /// Indicates the user has viewed the item in the feed.
+            ///
+            /// - Note: According to the AT Protocol specifications: "Feed item was seen by user."
+            case interactionSeen
 
-        /// Indicates the user has replied to the item of the feed.
-        ///
-        /// - Note: According to the AT Protocol specifications: "User replied to the feed item."
-        case interactionReply
+            /// Indicates the user has liked the item of the feed.
+            ///
+            /// - Note: According to the AT Protocol specifications: "User liked the feed item."
+            case interactionLike
 
-        /// Indicates the user has quote posted the feed's item.
-        ///
-        /// - Note: According to the AT Protocol specifications: "User quoted the feed item."
-        case interactionQuote
+            /// Indicates the user has reposted the item of the feed.
+            ///
+            /// - Note: According to the AT Protocol specifications: "User reposted the feed item."
+            case interactionRepost
 
-        /// Indicates the user has shared the feed's item.
-        ///
-        /// - Note: According to the AT Protocol specifications: "User shared the feed item."
-        case interactionShare
+            /// Indicates the user has replied to the item of the feed.
+            ///
+            /// - Note: According to the AT Protocol specifications: "User replied to the feed item."
+            case interactionReply
+
+            /// Indicates the user has quote posted the feed's item.
+            ///
+            /// - Note: According to the AT Protocol specifications: "User quoted the feed item."
+            case interactionQuote
+
+            /// Indicates the user has shared the feed's item.
+            ///
+            /// - Note: According to the AT Protocol specifications: "User shared the feed item."
+            case interactionShare
+        }
     }
 }

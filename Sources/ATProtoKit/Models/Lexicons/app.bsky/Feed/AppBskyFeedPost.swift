@@ -42,7 +42,7 @@ extension AppBskyLexicon.Feed {
         public var reply: ReplyReference?
 
         /// The embed of the post. Optional.
-        public var embed: ATUnion.EmbedUnion?
+        public var embed: ATUnion.PostEmbedUnion?
 
         /// An array of languages the post text contains. Optional.
         ///
@@ -57,7 +57,7 @@ extension AppBskyLexicon.Feed {
         ///
         /// - Note: According to the AT Protocol specifications: "Self-label values for this post.
         /// Effectively content warnings."
-        public var labels: ATUnion.FeedLabelUnion?
+        public var labels: ATUnion.PostSelfLabelsUnion?
 
         /// An array of user-defined tags. Optional.
         ///
@@ -75,8 +75,8 @@ extension AppBskyLexicon.Feed {
         /// post was originally created."
         @DateFormatting public var createdAt: Date
 
-        public init(text: String, facets: [AppBskyLexicon.RichText.Facet]?, reply: ReplyReference?, embed: ATUnion.EmbedUnion?, languages: [String]?,
-                    labels: ATUnion.FeedLabelUnion?, tags: [String]?, createdAt: Date) {
+        public init(text: String, facets: [AppBskyLexicon.RichText.Facet]?, reply: ReplyReference?, embed: ATUnion.PostEmbedUnion?, languages: [String]?,
+                    labels: ATUnion.PostSelfLabelsUnion?, tags: [String]?, createdAt: Date) {
             self.text = text
             self.facets = facets
             self.reply = reply
@@ -93,9 +93,9 @@ extension AppBskyLexicon.Feed {
             self.text = try container.decode(String.self, forKey: .text)
             self.facets = try container.decodeIfPresent([AppBskyLexicon.RichText.Facet].self, forKey: .facets)
             self.reply = try container.decodeIfPresent(ReplyReference.self, forKey: .reply)
-            self.embed = try container.decodeIfPresent(ATUnion.EmbedUnion.self, forKey: .embed)
+            self.embed = try container.decodeIfPresent(ATUnion.PostEmbedUnion.self, forKey: .embed)
             self.languages = try container.decodeIfPresent([String].self, forKey: .languages)
-            self.labels = try container.decodeIfPresent(ATUnion.FeedLabelUnion.self, forKey: .labels)
+            self.labels = try container.decodeIfPresent(ATUnion.PostSelfLabelsUnion.self, forKey: .labels)
             self.tags = try container.decodeIfPresent([String].self, forKey: .tags)
             self.createdAt = try container.decode(DateFormatting.self, forKey: .createdAt).wrappedValue
         }

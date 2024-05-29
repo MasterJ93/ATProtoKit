@@ -14,16 +14,16 @@ extension ToolsOzoneLexicon.Moderation {
     /// - SeeAlso: This is based on the [`com.atproto.admin.defs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/tools/ozone/moderation/defs.json
-    public struct EventViewDefinition: Codable {
+    public struct ModerationEventViewDefinition: Codable {
 
         /// The ID of the moderator's event view.
         public let id: Int
 
         /// The type of the moderator's event view.
-        public let event: AdminEventViewUnion
+        public let event: ATUnion.ModerationEventViewUnion
 
         /// The subject reference of the moderator's event view.
-        public let subject: RepositoryReferencesUnion
+        public let subject: ATUnion.ModerationEventViewSubjectUnion
 
         /// An array of CID hashes related to blobs for the moderator's event view.
         public let subjectBlobCIDHashes: [String]
@@ -40,7 +40,7 @@ extension ToolsOzoneLexicon.Moderation {
         /// The subject handle of the event view. Optional.
         public var subjectHandle: String?
 
-        public init(id: Int, event: AdminEventViewUnion, subject: RepositoryReferencesUnion, subjectBlobCIDHashes: [String], createdBy: String,
+        public init(id: Int, event: ATUnion.ModerationEventViewUnion, subject: ATUnion.ModerationEventViewSubjectUnion, subjectBlobCIDHashes: [String], createdBy: String,
                     createdAt: Date, creatorHandle: String?, subjectHandle: String?) {
             self.id = id
             self.event = event
@@ -56,8 +56,8 @@ extension ToolsOzoneLexicon.Moderation {
             let container = try decoder.container(keyedBy: CodingKeys.self)
 
             self.id = try container.decode(Int.self, forKey: .id)
-            self.event = try container.decode(AdminEventViewUnion.self, forKey: .event)
-            self.subject = try container.decode(RepositoryReferencesUnion.self, forKey: .subject)
+            self.event = try container.decode(ATUnion.ModerationEventViewUnion.self, forKey: .event)
+            self.subject = try container.decode(ATUnion.ModerationEventViewSubjectUnion.self, forKey: .subject)
             self.subjectBlobCIDHashes = try container.decode([String].self, forKey: .subjectBlobCIDHashes)
             self.createdBy = try container.decode(String.self, forKey: .createdBy)
             self.createdAt = try container.decode(DateFormatting.self, forKey: .createdAt).wrappedValue
@@ -101,10 +101,10 @@ extension ToolsOzoneLexicon.Moderation {
         public let id: Int
 
         /// The type of the moderator's event view.
-        public let event: EventViewDetailUnion
+        public let event: ATUnion.ModerationEventViewDetailUnion
 
         /// The subject reference of the moderator's event view.
-        public let subject: RepositoryViewUnion
+        public let subject: ATUnion.ModerationEventViewDetailSubjectUnion
 
         /// An array of blobs for a moderator to look at.
         public let subjectBlobs: [ToolsOzoneLexicon.Moderation.BlobViewDefinition]
@@ -115,7 +115,7 @@ extension ToolsOzoneLexicon.Moderation {
         /// The date and time the event view was created.
         @DateFormatting public var createdAt: Date
 
-        public init(id: Int, event: EventViewDetailUnion, subject: RepositoryViewUnion, subjectBlobs: [ToolsOzoneLexicon.Moderation.BlobViewDefinition],
+        public init(id: Int, event: ATUnion.ModerationEventViewDetailUnion, subject: ATUnion.ModerationEventViewDetailSubjectUnion, subjectBlobs: [ToolsOzoneLexicon.Moderation.BlobViewDefinition],
                     createdBy: String, createdAt: Date) {
             self.id = id
             self.event = event
@@ -129,8 +129,8 @@ extension ToolsOzoneLexicon.Moderation {
             let container = try decoder.container(keyedBy: CodingKeys.self)
 
             self.id = try container.decode(Int.self, forKey: .id)
-            self.event = try container.decode(EventViewDetailUnion.self, forKey: .event)
-            self.subject = try container.decode(RepositoryViewUnion.self, forKey: .subject)
+            self.event = try container.decode(ATUnion.ModerationEventViewDetailUnion.self, forKey: .event)
+            self.subject = try container.decode(ATUnion.ModerationEventViewDetailSubjectUnion.self, forKey: .subject)
             self.subjectBlobs = try container.decode([ToolsOzoneLexicon.Moderation.BlobViewDefinition].self, forKey: .subjectBlobs)
             self.createdBy = try container.decode(String.self, forKey: .createdBy)
             self.createdAt = try container.decode(DateFormatting.self, forKey: .createdAt).wrappedValue
@@ -168,7 +168,7 @@ extension ToolsOzoneLexicon.Moderation {
         public let id: Int
 
         /// The subject reference of the status view.
-        public let subject: RepositoryReferencesUnion
+        public let subject: ATUnion.SubjectStatusViewSubjectUnion
 
         /// An array of CID hashes related to blobs. Optional.
         public var subjectBlobCIDHashes: [String]?
@@ -232,7 +232,7 @@ extension ToolsOzoneLexicon.Moderation {
         /// An array of tags. Optional.
         public var tags: [String]?
 
-        public init(id: Int, subject: RepositoryReferencesUnion, subjectBlobCIDHashes: [String]?, subjectRepoHandle: String?, updatedAt: Date, createdAt: Date,
+        public init(id: Int, subject: ATUnion.SubjectStatusViewSubjectUnion, subjectBlobCIDHashes: [String]?, subjectRepoHandle: String?, updatedAt: Date, createdAt: Date,
                     reviewState: ToolsOzoneLexicon.Moderation.SubjectReviewStateDefinition, comment: String?, muteUntil: Date?, muteReportingUntil: Date?,
                     lastReviewedBy: String?, lastReviewedAt: Date?, lastReportedAt: Date?, lastAppealedAt: Date?, isTakenDown: Bool?, wasAppealed: Bool?,
                     suspendUntil: Date?, tags: [String]?) {
@@ -260,7 +260,7 @@ extension ToolsOzoneLexicon.Moderation {
             let container = try decoder.container(keyedBy: CodingKeys.self)
 
             self.id = try container.decode(Int.self, forKey: .id)
-            self.subject = try container.decode(RepositoryReferencesUnion.self, forKey: .subject)
+            self.subject = try container.decode(ATUnion.SubjectStatusViewSubjectUnion.self, forKey: .subject)
             self.subjectBlobCIDHashes = try container.decodeIfPresent([String].self, forKey: .subjectBlobCIDHashes)
             self.subjectRepoHandle = try container.decodeIfPresent(String.self, forKey: .subjectRepoHandle)
             self.updatedAt = try container.decode(DateFormatting.self, forKey: .updatedAt).wrappedValue
@@ -1149,12 +1149,12 @@ extension ToolsOzoneLexicon.Moderation {
         @DateFormatting public var createdAt: Date
 
         /// The type of media in the blob.
-        public let details: MediaDetailUnion
+        public let details: ATUnion.BlobViewDetailUnion
 
         /// The status of the subject.
         public let moderation: ToolsOzoneLexicon.Moderation.ModerationDefinition
 
-        public init(cidHash: String, mimeType: String, size: Int, createdAt: Date, details: MediaDetailUnion,
+        public init(cidHash: String, mimeType: String, size: Int, createdAt: Date, details: ATUnion.BlobViewDetailUnion,
                     moderation: ToolsOzoneLexicon.Moderation.ModerationDefinition) {
             self.cidHash = cidHash
             self.mimeType = mimeType
@@ -1171,7 +1171,7 @@ extension ToolsOzoneLexicon.Moderation {
             self.mimeType = try container.decode(String.self, forKey: .mimeType)
             self.size = try container.decode(Int.self, forKey: .size)
             self.createdAt = try container.decode(DateFormatting.self, forKey: .createdAt).wrappedValue
-            self.details = try container.decode(MediaDetailUnion.self, forKey: .details)
+            self.details = try container.decode(ATUnion.BlobViewDetailUnion.self, forKey: .details)
             self.moderation = try container.decode(ToolsOzoneLexicon.Moderation.ModerationDefinition.self, forKey: .moderation)
         }
 

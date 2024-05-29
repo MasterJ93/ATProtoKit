@@ -23,6 +23,6 @@ extension AppBskyLexicon.Graph {
         public let actor: String?
 
         /// The metadata containing the relationship between mutliple user accounts.
-        public let relationships: [GraphRelationshipUnion]
+        public let relationships: [ATUnion.GetRelationshipsOutputRelationshipUnion]
     }
 }
