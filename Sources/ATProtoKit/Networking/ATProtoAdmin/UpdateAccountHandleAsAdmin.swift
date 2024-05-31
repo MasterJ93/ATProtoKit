@@ -38,7 +38,7 @@ extension ATProtoAdmin {
             throw ATRequestPrepareError.invalidRequestURL
         }
 
-        let requestBody = AdminUpdateAccountHandle(
+        let requestBody = ComAtprotoLexicon.Admin.UpdateAccountHandleRequestBody(
             accountDID: accountDID,
             accountHandle: newAccountHandle
         )

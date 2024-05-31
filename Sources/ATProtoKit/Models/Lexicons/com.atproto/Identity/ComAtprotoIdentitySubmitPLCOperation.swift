@@ -18,7 +18,7 @@ extension ComAtprotoLexicon.Identity {
     /// - SeeAlso: This is based on the [`com.atproto.identity.submitPlcOperation`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/identity/submitPlcOperation.json
-    public struct SubmitPLCOperationOutput: Codable {
+    public struct SubmitPLCOperationRequestBody: Codable {
 
         /// The operation itself.
         public let operation: UnknownType

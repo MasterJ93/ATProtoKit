@@ -43,7 +43,7 @@ extension ATProtoKit {
             throw ATRequestPrepareError.invalidRequestURL
         }
 
-        let requestBody = RepoDeleteRecord(
+        let requestBody = ComAtprotoLexicon.Repository.DeleteRecordRequestBody(
             repositoryDID: repositoryDID,
             collection: collection,
             recordKey: recordKey,

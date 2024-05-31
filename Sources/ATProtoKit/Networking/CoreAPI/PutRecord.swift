@@ -27,7 +27,7 @@ extension ATProtoKit {
     ///   - record: The record itself.
     ///   - swapRecord: Swaps the record in the server with the record contained in here. Optional.
     ///   - swapCommit: Swaps the commit in the server with the commit contained in here. Optional.
-    /// - Returns: A `Result`, containing either a ``StrongReference``
+    /// - Returns: A `Result`, containing either a ``ComAtprotoLexicon/Repository/StrongReference``
     /// if successful, or an `Error` if not.
     public func putRecord(
         _ repositoryDID: String,
@@ -37,7 +37,7 @@ extension ATProtoKit {
         record: UnknownType,
         swapRecord: String? = nil,
         swapCommit: String? = nil
-    ) async throws -> Result<StrongReference, Error> {
+    ) async throws -> Result<ComAtprotoLexicon.Repository.StrongReference, Error> {
         guard session != nil,
               let accessToken = session?.accessToken else {
             return .failure(ATRequestPrepareError.missingActiveSession)
@@ -48,7 +48,7 @@ extension ATProtoKit {
             return .failure(ATRequestPrepareError.invalidRequestURL)
         }
 
-        let requestBody = RepoPutRecord(
+        let requestBody = ComAtprotoLexicon.Repository.PutRecordRequestBody(
             repositoryDID: repositoryDID,
             collection: collection,
             recordKey: recordKey,
@@ -66,7 +66,7 @@ extension ATProtoKit {
                                                          authorizationValue: "Bearer \(accessToken)")
             let response = try await APIClientService.sendRequest(request,
                                                                   withEncodingBody: requestBody,
-                                                                  decodeTo: StrongReference.self)
+                                                                  decodeTo: ComAtprotoLexicon.Repository.StrongReference.self)
 
             return .success(response)
         } catch {

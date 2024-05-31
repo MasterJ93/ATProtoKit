@@ -30,7 +30,7 @@ extension ATProtoKit {
             throw ATRequestPrepareError.invalidRequestURL
         }
 
-        let requestBody = GraphUnmuteActorList(
+        let requestBody = AppBskyLexicon.Graph.UnmuteActorListRequestBody(
             listURI: listURI
         )
 

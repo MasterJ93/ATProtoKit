@@ -27,14 +27,14 @@ extension ATProtoAdmin {
     ///   - subjectBlobCIDHashes: An array of CID hashes related to blobs for the moderator's
     ///   event view. Optional.
     ///   - createdBy: The decentralized identifier (DID) of the moderator taking this action.
-    /// - Returns: A `Result`, containing either an ``OzoneModerationEventView`` if successful,
+    /// - Returns: A `Result`, containing either an ``ToolsOzoneLexicon/Moderation/ModerationEventViewDefinition`` if successful,
     /// or an `Error` if not.
     public func emitEvent(
-        _ event: AdminEventViewUnion,
-        subject: RepositoryReferencesUnion,
+        _ event: ATUnion.EmitEventUnion,
+        subject: ATUnion.EmitEventSubjectUnion,
         subjectBlobCIDHashes: [String]?,
         createdBy: String
-    ) async throws -> Result<OzoneModerationEventView, Error> {
+    ) async throws -> Result<ToolsOzoneLexicon.Moderation.ModerationEventViewDefinition, Error> {
         guard session != nil,
               let accessToken = session?.accessToken else {
             return .failure(ATRequestPrepareError.missingActiveSession)
@@ -45,7 +45,7 @@ extension ATProtoAdmin {
             return .failure(ATRequestPrepareError.invalidRequestURL)
         }
 
-        let requestBody = ModerationEmitEvent(
+        let requestBody = ToolsOzoneLexicon.Moderation.EmitEventRequestBody(
             event: event,
             subject: subject,
             subjectBlobCIDHashes: subjectBlobCIDHashes,
@@ -60,7 +60,7 @@ extension ATProtoAdmin {
                                                          authorizationValue: "Bearer \(accessToken)")
             let response = try await APIClientService.sendRequest(request,
                                                                   withEncodingBody: requestBody,
-                                                                  decodeTo: OzoneModerationEventView.self)
+                                                                  decodeTo: ToolsOzoneLexicon.Moderation.ModerationEventViewDefinition.self)
 
             return .success(response)
         } catch {

@@ -21,12 +21,12 @@ extension ATProtoKit {
     ///   - codeCount: The number of invite codes to be created. Defaults to `1`.
     ///   - forAccounts: An array of decentralized identifiers (DIDs) that can use the
     ///   invite codes.
-    /// - Returns: A `Result`, containing either a ``ServerCreateInviteCodesOutput``
+    /// - Returns: A `Result`, containing either a ``ComAtprotoLexicon/Server/CreateInviteCodesOutput``
     /// if successful, or an `Error` if not.
     public func createInviteCodes(
         _ codeCount: Int = 1,
         for accounts: [String]
-    ) async throws -> Result<ServerCreateInviteCodesOutput, Error> {
+    ) async throws -> Result<ComAtprotoLexicon.Server.CreateInviteCodesOutput, Error> {
         guard session != nil,
               let accessToken = session?.accessToken else {
             return .failure(ATRequestPrepareError.missingActiveSession)
@@ -51,7 +51,7 @@ extension ATProtoKit {
                                                          authorizationValue: "Bearer \(accessToken)")
             let response = try await APIClientService.sendRequest(request,
                                                                   withEncodingBody: requestBody,
-                                                                  decodeTo: ServerCreateInviteCodesOutput.self)
+                                                                  decodeTo: ComAtprotoLexicon.Server.CreateInviteCodesOutput.self)
 
             return .success(response)
         } catch {

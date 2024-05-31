@@ -29,7 +29,7 @@ extension ATProtoKit {
     ///   - updatedBy: The decentralized identifier (DID) of the user who updated the
     ///   communication template. Optional.
     ///   - isDisabled: Indicates whether the communication template is disabled. Optional.
-    /// - Returns: A `Result`, containing either an ``OzoneCommunicationTemplateView``
+    /// - Returns: A `Result`, containing either an ``ToolsOzoneLexicon/Communication/TemplateViewDefinition``
     /// if successful, or an `Error` if not.
     public func updateCommunicationTemplate(
         _ id: String,
@@ -38,7 +38,7 @@ extension ATProtoKit {
         subject: String?,
         updatedBy: String?,
         isDisabled: Bool?
-    ) async throws -> Result<OzoneCommunicationTemplateView, Error> {
+    ) async throws -> Result<ToolsOzoneLexicon.Communication.TemplateViewDefinition, Error> {
         guard session != nil,
               let accessToken = session?.accessToken else {
             return .failure(ATRequestPrepareError.missingActiveSession)
@@ -49,7 +49,7 @@ extension ATProtoKit {
             return .failure(ATRequestPrepareError.invalidRequestURL)
         }
 
-        let requestBody = CommunicationUpdateTemplate(
+        let requestBody = ToolsOzoneLexicon.Communication.UpdateTemplateRequestBody(
             id: id,
             name: name,
             contentMarkdown: contentMarkdown,
@@ -66,7 +66,7 @@ extension ATProtoKit {
                                                          authorizationValue: "Bearer \(accessToken)")
             let response = try await APIClientService.sendRequest(request,
                                                                   withEncodingBody: requestBody,
-                                                                  decodeTo: OzoneCommunicationTemplateView.self)
+                                                                  decodeTo: ToolsOzoneLexicon.Communication.TemplateViewDefinition.self)
 
             return .success(response)
         } catch {

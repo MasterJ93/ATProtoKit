@@ -23,13 +23,13 @@ extension ATProtoKit {
     ///   their followers.
     ///   - limit: The number of items the list will hold. Optional. Defaults to `50`.
     ///   - cursor: The mark used to indicate the starting point for the next set of result. Optional.
-    /// - Returns: A `Result`, containing either a ``GraphGetFollowersOutput``
+    /// - Returns: A `Result`, containing either a ``AppBskyLexicon/Graph/GetFollowersOutput``
     /// if successful, or an `Error` if not.
     public func getFollowers(
         by actorDID: String,
         limit: Int? = 50,
         cursor: String? = nil
-    ) async throws -> Result<GraphGetFollowersOutput, Error> {
+    ) async throws -> Result<AppBskyLexicon.Graph.GetFollowersOutput, Error> {
         guard session != nil,
               let accessToken = session?.accessToken else {
             return .failure(ATRequestPrepareError.missingActiveSession)
@@ -67,7 +67,7 @@ extension ATProtoKit {
                                                          contentTypeValue: nil,
                                                          authorizationValue: "Bearer \(accessToken)")
             let response = try await APIClientService.sendRequest(request,
-                                                                  decodeTo: GraphGetFollowersOutput.self)
+                                                                  decodeTo: AppBskyLexicon.Graph.GetFollowersOutput.self)
 
             return .success(response)
         } catch {

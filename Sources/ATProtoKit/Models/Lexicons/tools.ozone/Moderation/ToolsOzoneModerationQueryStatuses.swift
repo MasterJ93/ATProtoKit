@@ -9,6 +9,28 @@ import Foundation
 
 extension ToolsOzoneLexicon.Moderation {
 
+    public struct QueryStatuses: Codable {
+
+        /// Indicates the sorting field for the moderation status array.
+        public enum SortField: Codable {
+
+        /// Indicates the moderation status array will be sorted by the last reported user.
+        case lastReportedAt
+
+        /// Indicates the moderation status array will be sorted by the last reviwed user.
+        case lastReviewedAt
+        }
+
+        public enum SortDirection: String, Codable {
+
+            /// Indicates the moderation events will be sorted in ascending order.
+            case ascending = "asc"
+
+            /// Indicates the moderation events will be sorted in descending order.
+            case descending = "desc"
+        }
+    }
+
     /// An output model for listing all moderation events pertaining a subject.
     ///
     /// - Note: According to the AT Protocol specifications: "View moderation statuses of subjects

@@ -28,7 +28,7 @@ extension ATProtoKit {
     ///   - limit: The number of items that can be in the list. Optional. Defaults to `25`.
     ///   - cursor: The mark used to indicate the starting point for the next set of
     ///   result. Optional.
-    /// - Returns: A `Result`, containing either an ``UnspeccedSearchActorsSkeletonOutput``
+    /// - Returns: A `Result`, containing either an ``AppBskyLexicon/Unspecced/SearchActorsSkeletonOutput``
     /// if successful, or an `Error` if not.
     public func searchActorsSkeleton(
         _ query: String,
@@ -37,7 +37,7 @@ extension ATProtoKit {
         limit: Int? = 25,
         cursor: String? = nil,
         pdsURL: String? = nil
-    ) async throws -> Result<UnspeccedSearchActorsSkeletonOutput, Error> {
+    ) async throws -> Result<AppBskyLexicon.Unspecced.SearchActorsSkeletonOutput, Error> {
         guard let sessionURL = pdsURL != nil ? pdsURL : session?.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/app.bsky.unspecced.searchActorsSkeleton") else {
             return .failure(ATRequestPrepareError.invalidRequestURL)
@@ -78,7 +78,7 @@ extension ATProtoKit {
                                                          contentTypeValue: nil,
                                                          authorizationValue: nil)
             let response = try await APIClientService.sendRequest(request,
-                                                                  decodeTo: UnspeccedSearchActorsSkeletonOutput.self)
+                                                                  decodeTo: AppBskyLexicon.Unspecced.SearchActorsSkeletonOutput.self)
 
             return .success(response)
         } catch {

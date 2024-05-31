@@ -34,7 +34,7 @@ extension ATProtoKit {
             throw ATRequestPrepareError.invalidRequestURL
         }
 
-        let requestBody = ServerResetPassword(
+        let requestBody = ComAtprotoLexicon.Server.ResetPasswordRequestBody(
             token: token,
             newPassword: newPassword
         )

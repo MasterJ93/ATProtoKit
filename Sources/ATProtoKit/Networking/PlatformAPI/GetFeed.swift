@@ -23,13 +23,13 @@ extension ATProtoKit {
     ///   - limit: The number of items the list will hold. Optional. Defaults to `50`.
     ///   - cursor: The mark used to indicate the starting point for the next set of
     ///   result. Optional.
-    /// - Returns: A `Result`, containing either a ``FeedGetFeedOutput``
+    /// - Returns: A `Result`, containing either a ``AppBskyLexicon/Feed/GetFeedOutput``
     /// if successful, or an `Error` if not.
     public func getFeed(
         _ feedURI: String,
         limit: Int? = 50,
         cursor: String? = nil
-    ) async throws -> Result<FeedGetFeedOutput, Error> {
+    ) async throws -> Result<AppBskyLexicon.Feed.GetFeedOutput, Error> {
         guard session != nil,
               let accessToken = session?.accessToken else {
             return .failure(ATRequestPrepareError.missingActiveSession)
@@ -67,7 +67,7 @@ extension ATProtoKit {
                                                          contentTypeValue: nil,
                                                          authorizationValue: "Bearer \(accessToken)")
             let response = try await APIClientService.sendRequest(request,
-                                                                  decodeTo: FeedGetFeedOutput.self)
+                                                                  decodeTo: AppBskyLexicon.Feed.GetFeedOutput.self)
 
             return .success(response)
         } catch {

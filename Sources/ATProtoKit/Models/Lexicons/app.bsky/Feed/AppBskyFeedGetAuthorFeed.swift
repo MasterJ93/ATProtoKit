@@ -16,7 +16,7 @@ extension AppBskyLexicon.Feed {
         ///
         /// - Note: According to the AT Protocol specifications: "Combinations of post/repost types to
         /// include in response."
-        public enum GetAuthorFeedFilter: String {
+        public enum Filter: String {
 
             /// Indicates the array of feeds will contain posts with replies.
             case postsWithReplies = "posts_with_replies"

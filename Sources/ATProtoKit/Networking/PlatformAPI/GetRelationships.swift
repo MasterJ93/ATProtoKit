@@ -23,14 +23,14 @@ extension ATProtoKit {
     ///   - otherDIDs: An array of decentralized identifiers (DIDs) for the other user accounts
     ///   that the primary user account may be related to. Optional. Current maximum item length
     ///   is `30`.
-    /// - Returns: A `Result`, containing either a ``GraphGetRelationships``
+    /// - Returns: A `Result`, containing either a ``AppBskyLexicon/Graph/GetRelationshipsOutput``
     /// if successful, or an `Error` if not.
     public func getRelationships(
         between actorDID: String,
         and otherDIDs: [String]? = nil,
         maxLength: Int? = 50,
         pdsURL: String? = nil
-    ) async throws -> Result<GraphGetRelationships, Error> {
+    ) async throws -> Result<AppBskyLexicon.Graph.GetRelationshipsOutput, Error> {
         guard let sessionURL = pdsURL != nil ? pdsURL : session?.pdsURL,
             let requestURL = URL(string: "\(sessionURL)/xrpc/app.bsky.graph.getRelationships") else {
             return .failure(ATRequestPrepareError.invalidRequestURL)
@@ -59,7 +59,7 @@ extension ATProtoKit {
                                                          contentTypeValue: nil,
                                                          authorizationValue: nil)
             let response = try await APIClientService.sendRequest(request,
-                                                                  decodeTo: GraphGetRelationships.self)
+                                                                  decodeTo: AppBskyLexicon.Graph.GetRelationshipsOutput.self)
 
             return .success(response)
         } catch {

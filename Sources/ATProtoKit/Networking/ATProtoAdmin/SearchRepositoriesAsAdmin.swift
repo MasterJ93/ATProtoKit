@@ -26,13 +26,13 @@ extension ATProtoAdmin {
     ///   choose between `1` and `100`.
     ///   - cursor: The mark used to indicate the starting point for the next set of
     ///   results. Optional.
-    /// - Returns: A `Result`, containing either an ``AdminSearchReposOutput``
+    /// - Returns: A `Result`, containing either an ``ComAtprotoLexicon/Admin/SearchRepositoriesOutput``
     /// if successful, or an `Error` if not.
     public func searchRepositories(
         _ query: String?,
         withLimitOf limit: Int? = 50,
         cursor: String?
-    ) async throws -> Result<AdminSearchReposOutput, Error> {
+    ) async throws -> Result<ComAtprotoLexicon.Admin.SearchRepositoriesOutput, Error> {
         guard session != nil,
               let accessToken = session?.accessToken else {
             return .failure(ATRequestPrepareError.missingActiveSession)
@@ -72,7 +72,7 @@ extension ATProtoAdmin {
                                                          contentTypeValue: nil,
                                                          authorizationValue: "Bearer \(accessToken)")
             let response = try await APIClientService.sendRequest(request,
-                                                                  decodeTo: AdminSearchReposOutput.self)
+                                                                  decodeTo: ComAtprotoLexicon.Admin.SearchRepositoriesOutput.self)
 
             return .success(response)
         } catch {

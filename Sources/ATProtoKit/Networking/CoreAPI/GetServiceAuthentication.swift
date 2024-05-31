@@ -19,9 +19,9 @@ extension ATProtoKit {
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/server/getServiceAuth.json
     ///
     /// - Parameter serviceDID: The decentralized identifier (DID) of the service.
-    /// - Returns: A `Result`, containing either a ``ServerGetServiceAuthOutput``
+    /// - Returns: A `Result`, containing either a ``ComAtprotoLexicon/Server/GetServiceAuthOutput``
     /// if successful, or an `Error`if not.
-    public func getServiceAuthentication(from serviceDID: String) async throws -> Result<ServerGetServiceAuthOutput, Error> {
+    public func getServiceAuthentication(from serviceDID: String) async throws -> Result<ComAtprotoLexicon.Server.GetServiceAuthOutput, Error> {
         guard session != nil,
               let accessToken = session?.accessToken else {
             return .failure(ATRequestPrepareError.missingActiveSession)
@@ -50,7 +50,7 @@ extension ATProtoKit {
                                                          contentTypeValue: nil,
                                                          authorizationValue: "Bearer \(accessToken)")
             let response = try await APIClientService.sendRequest(request,
-                                                                  decodeTo: ServerGetServiceAuthOutput.self)
+                                                                  decodeTo: ComAtprotoLexicon.Server.GetServiceAuthOutput.self)
 
             return .success(response)
         } catch {

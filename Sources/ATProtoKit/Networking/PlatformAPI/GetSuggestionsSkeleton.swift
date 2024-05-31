@@ -26,12 +26,12 @@ extension ATProtoKit {
     ///   - viewerDID: The decentralized identifier (DID) of the requesting account. Optional.
     ///   - limit: - limit: The number of items the list will hold. Optional. Defaults to `50`. Can
     ///   only be between `1` and `100`.
-    /// - Returns: A `Result`, containing either an ``UnspeccedGetSuggestionsSkeletonOutput``
+    /// - Returns: A `Result`, containing either an ``AppBskyLexicon/Unspecced/GetSuggestionsSkeletonOutput``
     /// if successful, or an `Error` if not.
     public func getSuggestionsSkeleton(
         viewerDID: String?,
         limit: Int? = 50
-    ) async throws -> Result<UnspeccedGetSuggestionsSkeletonOutput, Error> {
+    ) async throws -> Result<AppBskyLexicon.Unspecced.GetSuggestionsSkeletonOutput, Error> {
         guard session != nil,
               let accessToken = session?.accessToken else {
             return .failure(ATRequestPrepareError.missingActiveSession)
@@ -67,7 +67,7 @@ extension ATProtoKit {
                                                          contentTypeValue: nil,
                                                          authorizationValue: "Bearer \(accessToken)")
             let response = try await APIClientService.sendRequest(request,
-                                                                  decodeTo: UnspeccedGetSuggestionsSkeletonOutput.self)
+                                                                  decodeTo: AppBskyLexicon.Unspecced.GetSuggestionsSkeletonOutput.self)
 
             return .success(response)
         } catch {

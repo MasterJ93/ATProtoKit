@@ -35,13 +35,13 @@ extension ATProtoKit {
     ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `nil`.
     ///   - shouldAuthenticate: Indicates whether the method will use the access token when
     ///   sending the request. Defaults to `false`.
-    /// - Returns: A `Result`, containing ``ActorGetProfileOutput``
+    /// - Returns: A `Result`, containing ``AppBskyLexicon/Actor/GetProfilesOutput``
     /// if successful, or an `Error` if not.
     public func getProfiles(
         _ actors: [String],
         pdsURL: String? = nil,
         shouldAuthenticate: Bool = false
-    ) async throws -> Result<ActorGetProfilesOutput, Error> {
+    ) async throws -> Result<AppBskyLexicon.Actor.GetProfilesOutput, Error> {
         let authorizationValue = prepareAuthorizationValue(
             methodPDSURL: pdsURL,
             shouldAuthenticate: shouldAuthenticate,
@@ -71,10 +71,10 @@ extension ATProtoKit {
                                                          andMethod: .get,
                                                          contentTypeValue: nil,
                                                          authorizationValue: authorizationValue)
-            let actorProfileViewsDetailedResult = try await APIClientService.sendRequest(request,
-                                                                                         decodeTo: ActorGetProfilesOutput.self)
+            let result = try await APIClientService.sendRequest(request,
+                                                                decodeTo: AppBskyLexicon.Actor.GetProfilesOutput.self)
 
-            return .success(actorProfileViewsDetailedResult)
+            return .success(result)
         } catch {
             return .failure(error)
         }

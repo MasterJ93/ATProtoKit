@@ -26,7 +26,7 @@ extension ATProtoKit {
     public func applyWrites(
         _ repositoryDID: String,
         shouldValidate: Bool? = true,
-        writes: [ApplyWritesUnion],
+        writes: [ATUnion.ApplyWritesUnion],
         swapCommit: String?
     ) async throws {
         guard session != nil,
@@ -39,7 +39,7 @@ extension ATProtoKit {
             throw ATRequestPrepareError.invalidRequestURL
         }
 
-        let requestBody = RepoApplyWrites(
+        let requestBody = ComAtprotoLexicon.Repository.ApplyWritesRequestBody(
             repositoryDID: repositoryDID,
             shouldValidate: shouldValidate,
             writes: writes,

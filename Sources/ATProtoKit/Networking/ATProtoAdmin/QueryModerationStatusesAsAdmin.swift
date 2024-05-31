@@ -56,7 +56,7 @@ extension ATProtoAdmin {
     ///   the added tags. Optional.
     ///   - cursor: The mark used to indicate the starting point for the next set of
     ///   results. Optional.
-    /// - Returns: A `Result`, containing either an ``AdminQueryModerationStatusesOutput``
+    /// - Returns: A `Result`, containing either an ``ToolsOzoneLexicon/Moderation/QueryStatusesOutput``
     /// if successful, or an `Error` if not.
     public func queryStatuses(
         _ subject: String?,
@@ -70,15 +70,15 @@ extension ATProtoAdmin {
         reviewState: String?,
         ignoreSubjects: [String]?,
         lastReviewedBy: String?,
-        sortField: AdminQueryModerationStatusesSortField? = .lastReportedAt,
-        sortDirection: AdminQueryModerationStatusesSortDirection? = .descending,
+        sortField: ToolsOzoneLexicon.Moderation.QueryStatuses.SortField? = .lastReportedAt,
+        sortDirection: ToolsOzoneLexicon.Moderation.QueryStatuses.SortDirection? = .descending,
         isTakenDown: Bool?,
         isAppealed: Bool?,
         limit: Int? = 50,
         tags: [String]?,
         excludeTags: [String]?,
         cursor: String?
-    ) async throws -> Result<AdminQueryModerationStatusesOutput, Error> {
+    ) async throws -> Result<ToolsOzoneLexicon.Moderation.QueryStatusesOutput, Error> {
         guard session != nil,
               let accessToken = session?.accessToken else {
             return .failure(ATRequestPrepareError.missingActiveSession)
@@ -192,7 +192,7 @@ extension ATProtoAdmin {
                                                          contentTypeValue: nil,
                                                          authorizationValue: "Bearer \(accessToken)")
             let response = try await APIClientService.sendRequest(request,
-                                                                  decodeTo: AdminQueryModerationStatusesOutput.self)
+                                                                  decodeTo: ToolsOzoneLexicon.Moderation.QueryStatusesOutput.self)
 
             return .success(response)
         } catch {

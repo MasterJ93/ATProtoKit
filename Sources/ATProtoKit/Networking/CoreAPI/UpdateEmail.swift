@@ -40,7 +40,7 @@ extension ATProtoKit {
             throw ATRequestPrepareError.invalidRequestURL
         }
 
-        let requestBody = ServerUpdateEmail(
+        let requestBody = ComAtprotoLexicon.Server.UpdateEmailRequestBody(
             email: email,
             isEmailAuthenticationFactorEnabled: isEmailAuthenticationFactorEnabled,
             token: token

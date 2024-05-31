@@ -20,9 +20,9 @@ extension ATProtoKit {
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/server/listAppPasswords.json
     ///
-    /// - Returns: A `Result`, containing either a ``ServerListAppPasswordsOutput``
+    /// - Returns: A `Result`, containing either a ``ComAtprotoLexicon/Server/ListAppPasswordsOutput``
     /// if successful, or an `Error` if not.
-    public func listAppPasswords() async throws -> Result<ServerListAppPasswordsOutput, Error> {
+    public func listAppPasswords() async throws -> Result<ComAtprotoLexicon.Server.ListAppPasswordsOutput, Error> {
         guard session != nil,
               let accessToken = session?.accessToken else {
             return .failure(ATRequestPrepareError.missingActiveSession)
@@ -40,7 +40,7 @@ extension ATProtoKit {
                                                          contentTypeValue: nil,
                                                          authorizationValue: "Bearer \(accessToken)")
             let response = try await APIClientService.sendRequest(request,
-                                                                  decodeTo: ServerListAppPasswordsOutput.self)
+                                                                  decodeTo: ComAtprotoLexicon.Server.ListAppPasswordsOutput.self)
 
             return .success(response)
         } catch {

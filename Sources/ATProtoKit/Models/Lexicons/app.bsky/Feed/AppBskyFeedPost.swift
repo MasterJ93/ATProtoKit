@@ -146,13 +146,13 @@ extension AppBskyLexicon.Feed {
         public struct ReplyReference: Codable {
 
             /// The original post of the thread.
-            public let root: StrongReference
+            public let root: ComAtprotoLexicon.Repository.StrongReference
 
             /// The direct post that the user's post is replying to.
             ///
             /// - Note: If `parent` and `root` are identical, the post is a direct reply to the original
             /// post of the thread.
-            public let parent: StrongReference
+            public let parent: ComAtprotoLexicon.Repository.StrongReference
         }
     }
 }

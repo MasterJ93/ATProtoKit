@@ -40,10 +40,6 @@ extension ATProtoKit {
         }
 
         var queryItems = [(String, String)]()
-//        let queryItems = [
-//            ("did", blobQuery.accountDID),
-//            ("cid", blobQuery.cidHash)
-//        ]
 
         queryItems.append(("did", repositoryDID))
         queryItems += repositoryCIDHashes.map { ("cids", $0) }

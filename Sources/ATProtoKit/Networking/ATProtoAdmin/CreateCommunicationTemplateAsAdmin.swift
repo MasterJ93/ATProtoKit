@@ -45,7 +45,7 @@ extension ATProtoAdmin {
             return .failure(ATRequestPrepareError.invalidRequestURL)
         }
 
-        let requestBody = CommunicationCreateTemplate(
+        let requestBody = ToolsOzoneLexicon.Communication.CreateTemplateRequestBody(
             name: name,
             contentMarkdown: contentMarkdown,
             subject: subject,

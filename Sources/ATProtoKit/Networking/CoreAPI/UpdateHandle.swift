@@ -20,7 +20,7 @@ extension ATProtoKit {
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/identity/updateHandle.json
     ///
     /// - Parameter handle: The object which conains the user's new handle.
-    public func updateHandle(_ handle: UpdateHandleQuery) async throws {
+    public func updateHandle(_ handle: String) async throws {
         guard session != nil,
               let accessToken = session?.accessToken else {
             throw ATRequestPrepareError.missingActiveSession
@@ -31,13 +31,17 @@ extension ATProtoKit {
             throw ATRequestPrepareError.invalidRequestURL
         }
 
+        let requestBody = ComAtprotoLexicon.Identity.UpdateHandleRequestBody(
+            handle: handle
+        )
+
         do {
             let request = APIClientService.createRequest(forRequest: requestURL,
                                                          andMethod: .post,
                                                          authorizationValue: "Bearer \(accessToken)")
 
             try await APIClientService.sendRequest(request,
-                                                   withEncodingBody: handle)
+                                                   withEncodingBody: requestBody)
         } catch {
             throw error
         }

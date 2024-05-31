@@ -17,7 +17,7 @@ extension ComAtprotoLexicon.Admin {
     /// - SeeAlso: This is based on the [`com.atproto.admin.searchRepos`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/admin/searchRepos.json
-    public struct AdminSearchReposOutput: Codable {
+    public struct SearchRepositoriesOutput: Codable {
 
         /// The mark used to indicate the starting point for the next set of results. Optional.
         public let cursor: String?

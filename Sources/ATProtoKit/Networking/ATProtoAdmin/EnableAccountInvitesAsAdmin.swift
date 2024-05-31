@@ -41,7 +41,7 @@ extension ATProtoAdmin {
             throw ATRequestPrepareError.invalidRequestURL
         }
 
-        let requestBody = AdminEnableAccountInvites(
+        let requestBody = ComAtprotoLexicon.Admin.EnableAccountInvitesRequestBody(
             accountDID: accountDID,
             note: note
         )

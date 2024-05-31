@@ -35,7 +35,7 @@ extension ATProtoKit {
             throw ATRequestPrepareError.invalidRequestURL
         }
 
-        let requestBody = RepoImportRepo(
+        let requestBody = ComAtprotoLexicon.Repository.ImportRepositoryRequestBody(
             repository: repositoryData
         )
 

@@ -29,14 +29,14 @@ extension ATProtoKit {
     ///   - limit: The number of items the list will hold. Optional. Defaults to `50`.
     ///   - cursor: The mark used to indicate the starting point for the next set of
     ///   result. Optional.
-    /// - Returns: A `Result`, containing either a ``FeedGetAuthorFeedOutput``
+    /// - Returns: A `Result`, containing either a ``AppBskyLexicon/Feed/GetAuthorFeedOutput``
     /// if successful, or an `Error` if not.
     public func getAuthorFeed(
         by actorDID: String,
         limit: Int? = 50,
         cursor: String? = nil,
-        postFilter: FeedGetAuthorFeedFilter? = .postsWithReplies
-    ) async throws -> Result<FeedGetAuthorFeedOutput, Error> {
+        postFilter: AppBskyLexicon.Feed.GetAuthorFeed.Filter? = .postsWithReplies
+    ) async throws -> Result<AppBskyLexicon.Feed.GetAuthorFeedOutput, Error> {
         guard session != nil,
               let accessToken = session?.accessToken else {
             return .failure(ATRequestPrepareError.missingActiveSession)
@@ -78,7 +78,7 @@ extension ATProtoKit {
                                                          contentTypeValue: nil,
                                                          authorizationValue: "Bearer \(accessToken)")
             let response = try await APIClientService.sendRequest(request,
-                                                                  decodeTo: FeedGetAuthorFeedOutput.self)
+                                                                  decodeTo: AppBskyLexicon.Feed.GetAuthorFeedOutput.self)
 
             return .success(response)
         } catch {

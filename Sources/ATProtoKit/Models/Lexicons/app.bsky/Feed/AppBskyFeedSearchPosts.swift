@@ -9,6 +9,27 @@ import Foundation
 
 extension AppBskyLexicon.Feed {
 
+    /// The main data model definition for the results of the post search query.
+    public struct SearchPosts: Codable {
+
+        /// Determines the ranking order for the search results.
+        ///
+        /// - Note: According to the AT Protocol specifications: "Specifies the ranking order
+        /// of results."
+        ///
+        /// - SeeAlso: This is based on the [`app.bsky.feed.searchPosts`][github] lexicon.
+        ///
+        /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/feed/searchPosts.json
+        public enum SortRanking: String {
+
+            /// Indicates the results will be sorted by the top posts.
+            case top
+
+            /// Indicates the results will be sorted by the latest posts.
+            case latest
+        }
+    }
+
     /// An output model for the results of the post search query.
     ///
     /// - Note: According to the AT Protocol specifications: "Find posts matching search criteria,
@@ -33,22 +54,5 @@ extension AppBskyLexicon.Feed {
 
         /// An array of post records in the results.
         public let posts: [PostViewDefinition]
-    }
-
-    /// Determines the ranking order for the search results.
-    ///
-    /// - Note: According to the AT Protocol specifications: "Specifies the ranking order
-    /// of results."
-    ///
-    /// - SeeAlso: This is based on the [`app.bsky.feed.searchPosts`][github] lexicon.
-    ///
-    /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/feed/searchPosts.json
-    public enum SortRanking: String {
-
-        /// Indicates the results will be sorted by the top posts.
-        case top
-
-        /// Indicates the results will be sorted by the latest posts.
-        case latest
     }
 }

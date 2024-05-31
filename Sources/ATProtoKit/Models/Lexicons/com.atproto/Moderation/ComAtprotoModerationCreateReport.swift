@@ -24,7 +24,7 @@ extension ComAtprotoLexicon.Moderation {
         ///
         /// - Note: According to the AT Protocol specifications: "Indicates the broad category of
         /// violation the report is for."
-        public let reasonType: ModerationReasonType
+        public let reasonType: ComAtprotoLexicon.Moderation.ReasonTypeDefinition
 
         /// Any clarifying comments accompanying the report. Optional.
         ///

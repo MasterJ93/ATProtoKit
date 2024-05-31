@@ -31,7 +31,7 @@ extension ATProtoKit {
             throw ATRequestPrepareError.invalidRequestURL
         }
 
-        let requestBody = TempRequestPhoneVerification(
+        let requestBody = ComAtprotoLexicon.Temp.RequestPhoneVerificationRequestBody(
             phoneNumber: phoneNumber
         )
 

@@ -20,11 +20,11 @@ extension ATProtoKit {
     ///
     /// - Parameter seenAt: The date and time the notifications were seen. Defaults to the date and
     /// time the request was sent.
-    /// - Returns: A `Result`, containing either a ``NotificationGetUnreadCountOutput``
+    /// - Returns: A `Result`, containing either a ``AppBskyLexicon/Notification/GetUnreadCountOutput``
     /// if successful, or an `Error` if not.
     public func getUnreadCount(
         seenAt: Date = Date.now
-    ) async throws -> Result<NotificationGetUnreadCountOutput, Error> {
+    ) async throws -> Result<AppBskyLexicon.Notification.GetUnreadCountOutput, Error> {
         guard session != nil,
               let accessToken = session?.accessToken else {
             return .failure(ATRequestPrepareError.missingActiveSession)
@@ -55,7 +55,7 @@ extension ATProtoKit {
                                                          contentTypeValue: nil,
                                                          authorizationValue: "Bearer \(accessToken)")
             let response = try await APIClientService.sendRequest(request,
-                                                                  decodeTo: NotificationGetUnreadCountOutput.self)
+                                                                  decodeTo: AppBskyLexicon.Notification.GetUnreadCountOutput.self)
 
             return .success(response)
         } catch {

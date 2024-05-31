@@ -35,7 +35,7 @@ extension ATProtoKit {
             throw ATRequestPrepareError.invalidRequestURL
         }
 
-        let requestBody = ServerDeactivateAccount(
+        let requestBody = ComAtprotoLexicon.Server.DeactivateAccountRequestBody(
             deleteAfter: date
         )
 

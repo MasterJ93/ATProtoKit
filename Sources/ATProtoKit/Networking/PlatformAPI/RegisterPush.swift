@@ -26,7 +26,7 @@ extension ATProtoKit {
     public func registerPush(
         serviceDID: String,
         token: String,
-        platform: RegisterPushRequest.Platform,
+        platform: AppBskyLexicon.Notification.RegisterPush.Platform,
         appID: String
     ) async throws {
         guard session != nil,
@@ -39,7 +39,7 @@ extension ATProtoKit {
             throw ATRequestPrepareError.invalidRequestURL
         }
 
-        let requestBody = RegisterPushRequest(
+        let requestBody = AppBskyLexicon.Notification.RegisterPushRequestBody(
             serviceDID: serviceDID,
             token: token,
             platform: platform,

@@ -134,7 +134,7 @@ public class APIClientService {
     ///   - imageData: The data of the blob to upload.
     /// - Returns: A `BlobContainer` instance with the upload result.
     public static func uploadBlob(pdsURL: String = "https://bsky.social", accessToken: String, filename: String,
-                                  imageData: Data) async throws -> BlobContainer {
+                                  imageData: Data) async throws -> ComAtprotoLexicon.Repository.BlobContainer {
          guard let requestURL = URL(string: "\(pdsURL)/xrpc/com.atproto.repo.uploadBlob") else {
              throw ATRequestPrepareError.invalidRequestURL
          }
@@ -150,7 +150,7 @@ public class APIClientService {
             request.httpBody = imageData
 
             let response = try await sendRequest(request,
-                                                 decodeTo: BlobContainer.self)
+                                                 decodeTo: ComAtprotoLexicon.Repository.BlobContainer.self)
 
             return response
         } catch {

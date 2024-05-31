@@ -42,7 +42,7 @@ extension ATProtoKit {
             throw ATRequestPrepareError.invalidRequestURL
         }
 
-        let requestBody = ServerConfirmEmail(
+        let requestBody = ComAtprotoLexicon.Server.ConfirmEmailRequestBody(
             email: email,
             token: token
         )

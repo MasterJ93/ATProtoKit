@@ -25,7 +25,7 @@ extension ComAtprotoLexicon.Sync {
     ///
     /// [notifyOfUpdate]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/sync/notifyOfUpdate.json
     /// [requestCrawl]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/sync/requestCrawl.json
-    public struct SyncCrawler: Codable {
+    public struct Crawler: Codable {
 
         /// The hostname that the crawling service resides in.
         ///

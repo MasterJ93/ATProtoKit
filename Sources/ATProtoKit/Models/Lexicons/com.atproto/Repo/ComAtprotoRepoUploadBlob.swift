@@ -60,7 +60,7 @@ extension ComAtprotoLexicon.Repository {
         public let type: String?
 
         /// The strong reference of the blob.
-        public let reference: BlobReference
+        public let reference: ComAtprotoLexicon.Repository.BlobReference
 
         /// The the MIME type.
         ///

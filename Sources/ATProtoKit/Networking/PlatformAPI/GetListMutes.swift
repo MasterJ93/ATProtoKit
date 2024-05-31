@@ -22,12 +22,12 @@ extension ATProtoKit {
     ///   - limit: The number of items that can be in the list. Optional. Defaults to `50`.
     ///   - cursor: The mark used to indicate the starting point for the next set of
     ///   result. Optional.
-    /// - Returns: A `Result`, containing either a ``GraphGetListMutesOutput``
+    /// - Returns: A `Result`, containing either a ``AppBskyLexicon/Graph/GetListMutesOutput``
     /// if successful, or an `Error` if not.
     public func getListMutes(
         limit: Int? = 50,
         cursor: String? = nil
-    ) async throws -> Result<GraphGetListMutesOutput, Error> {
+    ) async throws -> Result<AppBskyLexicon.Graph.GetListMutesOutput, Error> {
         guard session != nil,
               let accessToken = session?.accessToken else {
             return .failure(ATRequestPrepareError.missingActiveSession)
@@ -63,7 +63,7 @@ extension ATProtoKit {
                                                          contentTypeValue: nil,
                                                          authorizationValue: "Bearer \(accessToken)")
             let response = try await APIClientService.sendRequest(request,
-                                                                  decodeTo: GraphGetListMutesOutput.self)
+                                                                  decodeTo: AppBskyLexicon.Graph.GetListMutesOutput.self)
 
             return .success(response)
         } catch {

@@ -25,7 +25,7 @@ extension ATProtoKit {
     ///   - cursor: The mark used to indicate the starting point for the next set of
     ///   results. Optional.
     ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `nil`.
-    /// - Returns: A `Result`, containing either a ``SyncListBlobsOutput``
+    /// - Returns: A `Result`, containing either a ``ComAtprotoLexicon/Sync/ListBlobsOutput``
     /// if successful, or an `Error` if not.
     public func listBlobs(
         from repositoryDID: String,
@@ -33,7 +33,7 @@ extension ATProtoKit {
         limit: Int? = 500,
         cursor: String? = nil,
         pdsURL: String? = nil
-    ) async throws -> Result<SyncListBlobsOutput, Error> {
+    ) async throws -> Result<ComAtprotoLexicon.Sync.ListBlobsOutput, Error> {
         guard let sessionURL = pdsURL != nil ? pdsURL : session?.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.sync.listBlobs") else {
             return .failure(ATRequestPrepareError.invalidRequestURL)
@@ -70,7 +70,7 @@ extension ATProtoKit {
                                                          contentTypeValue: nil,
                                                          authorizationValue: nil)
             let response = try await APIClientService.sendRequest(request,
-                                                                  decodeTo: SyncListBlobsOutput.self)
+                                                                  decodeTo: ComAtprotoLexicon.Sync.ListBlobsOutput.self)
 
             return .success(response)
         } catch {

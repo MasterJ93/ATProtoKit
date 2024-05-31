@@ -17,7 +17,7 @@ extension AppBskyLexicon.Feed {
     /// - SeeAlso: This is based on the [`app.bsky.feed.getFeedGenerator`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/feed/getFeedGenerator.json
-    public struct FeedGetFeedGeneratorOutput: Codable {
+    public struct GetFeedGeneratorOutput: Codable {
 
         /// The general information about the feed generator.
         public let view: GeneratorViewDefinition

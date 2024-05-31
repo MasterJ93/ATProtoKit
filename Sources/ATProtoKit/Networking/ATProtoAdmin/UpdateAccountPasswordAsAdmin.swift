@@ -35,7 +35,7 @@ extension ATProtoAdmin {
             throw ATRequestPrepareError.invalidRequestURL
         }
 
-        let requestBody = AdminUpdateAccountPassword(
+        let requestBody = ComAtprotoLexicon.Admin.UpdateAccountPasswordRequestBody(
             accountDID: accountDID,
             newPassword: newPassword
         )

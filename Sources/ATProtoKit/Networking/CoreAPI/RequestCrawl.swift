@@ -38,7 +38,7 @@ extension ATProtoKit {
             throw ATRequestPrepareError.invalidHostnameURL
         }
 
-        let requestBody = SyncCrawler(
+        let requestBody = ComAtprotoLexicon.Sync.Crawler(
             crawlingHostname: finalhostnameURL
         )
 

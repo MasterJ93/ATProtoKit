@@ -32,7 +32,7 @@ extension ATProtoKit {
             throw ATRequestPrepareError.invalidRequestURL
         }
 
-        let requestBody = ServerRequestPasswordReset(
+        let requestBody = ComAtprotoLexicon.Server.RequestPasswordResetRequestBody(
             email: email
         )
 

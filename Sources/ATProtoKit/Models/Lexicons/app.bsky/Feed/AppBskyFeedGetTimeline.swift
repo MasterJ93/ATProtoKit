@@ -17,7 +17,7 @@ extension AppBskyLexicon.Feed {
     /// - SeeAlso: This is based on the [`app.bsky.feed.getTimeline`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/feed/getTimeline.json
-    public struct FeedGetTimelineOutput: Codable {
+    public struct GetTimelineOutput: Codable {
 
         /// The mark used to indicate the starting point for the next set of results. Optional.
         public let cursor: String?

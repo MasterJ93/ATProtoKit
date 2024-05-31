@@ -26,7 +26,7 @@ extension AppBskyLexicon.Embed {
         public let type: String = "app.bsky.embed.record"
 
         /// The strong reference of the record.
-        public let record: StrongReference
+        public let record: ComAtprotoLexicon.Repository.StrongReference
 
         enum CodingKeys: String, CodingKey {
             case type = "$type"
