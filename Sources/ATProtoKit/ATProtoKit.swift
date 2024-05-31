@@ -124,8 +124,10 @@ public class ATProtoKit: ATProtoKitConfiguration {
     ///
     /// If `canUseBlueskyRecords` is set to `false`, these will not be used.
     private let recordLexicons: [ATRecordProtocol.Type] = [
-        FeedGenerator.self, FeedLike.self, FeedPost.self, FeedRepost.self, FeedThreadgate.self, GraphBlock.self, GraphFollow.self, GraphList.self, 
-        GraphListBlock.self, GraphListItem.self, LabelerService.self]
+        AppBskyLexicon.Feed.GeneratorRecord.self, AppBskyLexicon.Feed.LikeRecord.self, AppBskyLexicon.Feed.PostRecord.self,
+        AppBskyLexicon.Feed.RepostRecord.self, AppBskyLexicon.Feed.ThreadgateRecord.self, AppBskyLexicon.Graph.BlockRecord.self,
+        AppBskyLexicon.Graph.FollowRecord.self, AppBskyLexicon.Graph.ListRecord.self, AppBskyLexicon.Graph.ListBlockRecord.self,
+        AppBskyLexicon.Graph.ListItemRecord.self, AppBskyLexicon.Labeler.ServiceRecord.self]
 
     /// Specifies the logger that will be used for emitting log messages.
     public private(set) var logger: Logger?
