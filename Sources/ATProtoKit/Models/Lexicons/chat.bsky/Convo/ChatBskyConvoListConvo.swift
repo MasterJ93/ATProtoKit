@@ -9,12 +9,12 @@ import Foundation
 
 extension ChatBskyLexicon.Conversation {
 
-    /// An output model for listing a conversation.
+    /// An output model for listing various conversations.
     ///
     /// - SeeAlso: This is based on the [`chat.bsky.convo.listConvos`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/chat/bsky/convo/listConvos.json
-    public struct ListConversationOutput: Codable {
+    public struct ListConversationsOutput: Codable {
 
         /// The mark used to indicate the starting point for the next set of results. Optional.
         public let cursor: String
