@@ -21,9 +21,9 @@ extension ATProtoAdmin {
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/tools/ozone/moderation/getRepo.json
     ///
     /// - Parameter repositoryDID: The decentralized identifier (DID) of the repository.
-    /// - Returns: A `Result`, containing either an ``OzoneModerationRepositoryView``
+    /// - Returns: A `Result`, containing either an ``ToolsOzoneLexicon/Moderation/RepositoryViewDefinition``
     /// if successful, or an `Error` if not.
-    public func getRepository(_ repositoryDID: String) async throws -> Result<OzoneModerationRepositoryView, Error> {
+    public func getRepository(_ repositoryDID: String) async throws -> Result<ToolsOzoneLexicon.Moderation.RepositoryViewDetailDefinition, Error> {
         guard session != nil,
               let accessToken = session?.accessToken else {
             return .failure(ATRequestPrepareError.missingActiveSession)
@@ -50,7 +50,7 @@ extension ATProtoAdmin {
                                                          contentTypeValue: nil,
                                                          authorizationValue: "Bearer \(accessToken)")
             let response = try await APIClientService.sendRequest(request,
-                                                                  decodeTo: OzoneModerationRepositoryView.self)
+                                                                  decodeTo: ToolsOzoneLexicon.Moderation.RepositoryViewDetailDefinition.self)
 
             return .success(response)
         } catch {

@@ -29,9 +29,13 @@ extension ATProtoKit {
     ///   - limit: The number of items the list will hold. Optional. Defaults to `50`. Can only be
     ///   between `1` and `100`.
     ///   - cursor: The mark used to indicate the starting point for the next set of result. Optional.
-    /// - Returns: A `Result`, containing either a ``FeedGetTimelineOutput``
+    /// - Returns: A `Result`, containing either a ``AppBskyLexicon/Feed/GetTimelineOutput``
     /// if successful, or an `Error` if not.
-    public func getTimeline(using algorithm: String? = nil, limit: Int? = 50, cursor: String? = nil) async throws -> Result<FeedGetTimelineOutput, Error> {
+    public func getTimeline(
+        using algorithm: String? = nil,
+        limit: Int? = 50,
+        cursor: String? = nil
+    ) async throws -> Result<AppBskyLexicon.Feed.GetTimelineOutput, Error> {
         guard session != nil,
               let accessToken = session?.accessToken else {
             return .failure(ATRequestPrepareError.missingActiveSession)
@@ -70,7 +74,7 @@ extension ATProtoKit {
                                                          contentTypeValue: nil,
                                                          authorizationValue: "Bearer \(accessToken)")
             let response = try await APIClientService.sendRequest(request,
-                                                                  decodeTo: FeedGetTimelineOutput.self)
+                                                                  decodeTo: AppBskyLexicon.Feed.GetTimelineOutput.self)
 
             return .success(response)
         } catch {

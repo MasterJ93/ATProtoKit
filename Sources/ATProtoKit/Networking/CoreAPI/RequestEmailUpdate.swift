@@ -18,9 +18,9 @@ extension ATProtoKit {
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/server/requestEmailUpdate.json
     ///
-    /// - Returns: A `Result`, containing either a ``RequestEmailUpdateOutput``
+    /// - Returns: A `Result`, containing either a ``ComAtprotoLexicon/Server/RequestEmailUpdateOutput``
     /// if successful, or an `Error` if not.
-    public func requestEmailUpdate() async throws -> Result<RequestEmailUpdateOutput, Error> {
+    public func requestEmailUpdate() async throws -> Result<ComAtprotoLexicon.Server.RequestEmailUpdateOutput, Error> {
         guard session != nil,
               let accessToken = session?.accessToken else {
             return .failure(ATRequestPrepareError.missingActiveSession)
@@ -38,7 +38,7 @@ extension ATProtoKit {
                                                          contentTypeValue: nil,
                                                          authorizationValue: "Bearer \(accessToken)")
             let response = try await APIClientService.sendRequest(request,
-                                                                  decodeTo: RequestEmailUpdateOutput.self)
+                                                                  decodeTo: ComAtprotoLexicon.Server.RequestEmailUpdateOutput.self)
 
             return .success(response)
         } catch {

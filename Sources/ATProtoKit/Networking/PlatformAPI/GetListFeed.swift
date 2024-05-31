@@ -25,11 +25,15 @@ extension ATProtoKit {
     ///   - cursor: The mark used to indicate the starting point for the next set of results. Optional.
     ///   - accessToken: The access token of the user. Optional.
     ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `nil`.
-    /// - Returns: A `Result`, containing either an ``FeedGetListFeedOutput``
+    /// - Returns: A `Result`, containing either an ``AppBskyLexicon/Feed/GetListFeedOutput``
     /// if succesful, or an `Error` if it's not.
-    public func getListFeed(from listURI: String, limit: Int? = 50, cursor: String? = nil,
-                                   accessToken: String? = nil,
-                                   pdsURL: String? = nil) async throws -> Result<FeedGetListFeedOutput, Error> {
+    public func getListFeed(
+        from listURI: String,
+        limit: Int? = 50,
+        cursor: String? = nil,
+        accessToken: String? = nil,
+        pdsURL: String? = nil
+    ) async throws -> Result<AppBskyLexicon.Feed.GetListFeedOutput, Error> {
         guard let sessionURL = pdsURL != nil ? pdsURL : session?.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/app.bsky.feed.getListFeed") else {
             return .failure(ATRequestPrepareError.invalidRequestURL)
@@ -62,7 +66,7 @@ extension ATProtoKit {
                                                          contentTypeValue: nil,
                                                          authorizationValue: nil)
             let response = try await APIClientService.sendRequest(request,
-                                                                  decodeTo: FeedGetListFeedOutput.self)
+                                                                  decodeTo: AppBskyLexicon.Feed.GetListFeedOutput.self)
 
             return .success(response)
         } catch {

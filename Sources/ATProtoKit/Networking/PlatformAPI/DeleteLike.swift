@@ -24,12 +24,12 @@ extension ATProtoKit {
             throw ATRequestPrepareError.invalidRequestURL
         }
 
-        var likeRecord: RecordQuery? = nil
+        var likeRecord: ATProtoTools.RecordQuery? = nil
         try await resolveRecordIdentifierToQuery(record, sessionURL, &likeRecord)
 
         let requestBody = likeRecord
 
-        guard let repositoryDID = requestBody?.repo,
+        guard let repositoryDID = requestBody?.repository,
               let likeCollection = requestBody?.collection,
               let likeRecordKey = requestBody?.recordKey else {
             throw ATRequestPrepareError.invalidRecord
@@ -39,15 +39,16 @@ extension ATProtoKit {
     }
 
     fileprivate func resolveRecordIdentifierToQuery(_ record: RecordIdentifier, _ sessionURL: String,
-                                                    _ likeRecord: inout RecordQuery?) async throws {
+                                                    _ likeRecord: inout ATProtoTools.RecordQuery?) async throws {
         switch record {
             case .recordQuery(let recordQuery):
                 // Perform the fetch and validation based on recordQuery.
-                let output = try await ATProtoKit().getRepositoryRecord(from: recordQuery, pdsURL: sessionURL)
+                let output = try await self.getRepositoryRecord(from: recordQuery.repository, collection: recordQuery.collection,
+                                                                recordKey: recordQuery.recordKey, recordCID: recordQuery.recordCID, pdsURL: sessionURL)
 
                 switch output {
                     case .success(let result):
-                        let recordURI = "at://\(recordQuery.repo)/\(recordQuery.collection)/\(recordQuery.recordKey)"
+                        let recordURI = "at://\(recordQuery.repository)/\(recordQuery.collection)/\(recordQuery.recordKey)"
                         guard result.recordURI == recordURI else {
                             throw ATRequestPrepareError.invalidRecord
                         }
@@ -60,7 +61,8 @@ extension ATProtoKit {
             case .recordURI(let recordURI):
                 // Perform the fetch and validation based on the parsed URI.
                 let parsedURI = try ATProtoTools().parseURI(recordURI)
-                let output = try await ATProtoKit().getRepositoryRecord(from: parsedURI, pdsURL: sessionURL)
+                let output = try await self.getRepositoryRecord(from: parsedURI.repository, collection: parsedURI.collection,
+                                                                recordKey: parsedURI.recordKey, recordCID: parsedURI.recordCID, pdsURL: sessionURL)
 
                 switch output {
                     case .success(let result):
@@ -83,7 +85,7 @@ extension ATProtoKit {
     public enum RecordIdentifier {
         /// The record object itself.
         /// - Parameter recordQuery: the record object.
-        case recordQuery(recordQuery: RecordQuery)
+        case recordQuery(recordQuery: ATProtoTools.RecordQuery)
         /// The URI of the record.
         case recordURI(atURI: String)
     }

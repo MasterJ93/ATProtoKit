@@ -30,7 +30,7 @@ extension ATProtoKit {
             throw ATRequestPrepareError.invalidRequestURL
         }
 
-        let requestBody = ServerRevokeAppPassword(
+        let requestBody = ComAtprotoLexicon.Server.RevokeAppPasswordRequestBody(
             appPasswordName: appPasswordName
         )
 

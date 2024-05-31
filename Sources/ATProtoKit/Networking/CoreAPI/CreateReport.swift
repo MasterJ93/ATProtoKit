@@ -23,10 +23,13 @@ extension ATProtoAdmin {
     ///   - reasonType: The reason for the report.
     ///   - reason: Any additional context accompanying the report. Optional.
     ///   - subject: The responsible party being reported.
-    /// - Returns: A `Result`, containing either ``ModerationCreateReportOutput``
+    /// - Returns: A `Result`, containing either ``ComAtprotoLexicon/Moderation/CreateReportOutput``
     /// if successful, or an `Error` if not.
-    public func createReport(with reasonType: ModerationReasonType, withContextof reason: String?,
-                             subject: RepositoryReferencesUnion) async throws -> Result<ModerationCreateReportOutput, Error> {
+    public func createReport(
+        with reasonType: ComAtprotoLexicon.Moderation.ReasonTypeDefinition,
+        withContextof reason: String?,
+        subject: ATUnion.CreateReportSubjectUnion
+    ) async throws -> Result<ComAtprotoLexicon.Moderation.CreateReportOutput, Error> {
         guard session != nil,
               let accessToken = session?.accessToken else {
             return .failure(ATRequestPrepareError.missingActiveSession)
@@ -37,7 +40,7 @@ extension ATProtoAdmin {
             return .failure(ATRequestPrepareError.invalidRequestURL)
         }
 
-        let requestBody = ModerationCreateReport(
+        let requestBody = ComAtprotoLexicon.Moderation.CreateReportRequestBody(
             reasonType: reasonType,
             reason: reason,
             subject: subject
@@ -51,7 +54,7 @@ extension ATProtoAdmin {
                                                          authorizationValue: "Bearer \(accessToken)")
             let response = try await APIClientService.sendRequest(request,
                                                                   withEncodingBody: requestBody,
-                                                                  decodeTo: ModerationCreateReportOutput.self)
+                                                                  decodeTo: ComAtprotoLexicon.Moderation.CreateReportOutput.self)
 
             return .success(response)
         } catch {

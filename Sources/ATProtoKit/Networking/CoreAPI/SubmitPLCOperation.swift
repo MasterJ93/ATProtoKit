@@ -20,15 +20,13 @@ extension ATProtoKit {
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/identity/submitPlcOperation.json
     ///
     /// - Parameter operation:
-    /// - Returns: A `Result`, containing either an ``IdentitySignPLCOperationOutput``
-    /// if successful, or an `Error` if not.
-    public func submitPLCOperation(_ operation: UnknownType) async throws -> Result<IdentitySignPLCOperation, Error> {
+    public func submitPLCOperation(_ operation: UnknownType) async throws {
         guard let sessionURL = session?.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.identity.identitySubmitPLCOperation") else {
-            return .failure(ATRequestPrepareError.invalidRequestURL)
+            throw ATRequestPrepareError.invalidRequestURL
         }
 
-        let requestBody = IdentitySignPLCOperationOutput(
+        let requestBody = ComAtprotoLexicon.Identity.SubmitPLCOperationRequestBody(
             operation: operation
         )
 
@@ -38,13 +36,10 @@ extension ATProtoKit {
                                                          acceptValue: "application/json",
                                                          contentTypeValue: nil,
                                                          authorizationValue: nil)
-            let response = try await APIClientService.sendRequest(request,
-                                                                  withEncodingBody: requestBody,
-                                                                  decodeTo: IdentitySignPLCOperation.self)
-
-            return .success(response)
+            try await APIClientService.sendRequest(request,
+                                                   withEncodingBody: requestBody)
         } catch {
-            return .failure(error)
+            throw error
         }
     }
 }

@@ -22,9 +22,12 @@ extension ATProtoKit {
     ///   - limit: The number of items that can be in the list. Optional. Defaults to `500`.
     ///   - cursor: The mark used to indicate the starting point for the next set of
     ///   result. Optional.
-    /// - Returns: A `Result`, containing either a ``RepoListMissingBlobsOutput``
+    /// - Returns: A `Result`, containing either a ``ComAtprotoLexicon/Repository/ListMissingBlobsOutput``
     /// if successful, or an `Error` if not.
-    public func listMissingBlobs(limit: Int? = 500, cursor: String? = nil) async throws -> Result<RepoListMissingBlobsOutput, Error> {
+    public func listMissingBlobs(
+        limit: Int? = 500,
+        cursor: String? = nil
+    ) async throws -> Result<ComAtprotoLexicon.Repository.ListMissingBlobsOutput, Error> {
         guard session != nil,
               let accessToken = session?.accessToken else {
             return .failure(ATRequestPrepareError.missingActiveSession)
@@ -60,7 +63,7 @@ extension ATProtoKit {
                                                          contentTypeValue: nil,
                                                          authorizationValue: "Bearer \(accessToken)")
             let response = try await APIClientService.sendRequest(request,
-                                                                  decodeTo: RepoListMissingBlobsOutput.self)
+                                                                  decodeTo: ComAtprotoLexicon.Repository.ListMissingBlobsOutput.self)
 
             return .success(response)
         } catch {

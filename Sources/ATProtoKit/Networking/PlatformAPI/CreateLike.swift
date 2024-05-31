@@ -18,16 +18,14 @@ extension ATProtoKit {
     ///   Defaults to `true`.
     /// - Returns: A `Result`, containing either a ``StrongReference``
     /// if it's successful, or an `Error` if it's not.
-    public func createLikeRecord(_ strongReference: StrongReference, createdAt: Date = Date.now,
-                                 shouldValidate: Bool? = true) async throws -> Result<StrongReference, Error> {
-//        guard let sessionURL = session.pdsURL,
-//              let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.repo.createRecord") else {
-//            throw NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"])
-//        }
-
+    public func createLikeRecord(
+        _ strongReference: ComAtprotoLexicon.Repository.StrongReference,
+        createdAt: Date = Date.now,
+        shouldValidate: Bool? = true
+    ) async throws -> Result<ComAtprotoLexicon.Repository.StrongReference, Error> {
         guard let session else { return .failure(ATRequestPrepareError.missingActiveSession) }
 
-        let likeRecord = FeedLike(
+        let likeRecord = AppBskyLexicon.Feed.LikeRecord(
             subject: strongReference,
             createdAt: createdAt
         )
@@ -49,6 +47,6 @@ extension ATProtoKit {
         /// - Warning: The value must not change.
         let collection: String = "app.bsky.feed.like"
         /// The like record itself.
-        let record: FeedLike
+        let record: AppBskyLexicon.Feed.LikeRecord
     }
 }

@@ -24,7 +24,10 @@ extension ATProtoAdmin {
     /// - Parameters:
     ///   - accountDID: The decentralized identifier (DID) of the user account.
     ///   - note: A note on why the account will lose the ability to get new invite codes.
-    public func disableAccountInvites(for accountDID: String, note: String?) async throws {
+    public func disableAccountInvites(
+        for accountDID: String,
+        note: String?
+    ) async throws {
         guard session != nil,
               let accessToken = session?.accessToken else {
             throw ATRequestPrepareError.missingActiveSession
@@ -35,7 +38,7 @@ extension ATProtoAdmin {
             throw ATRequestPrepareError.invalidRequestURL
         }
 
-        let requestBody = AdminDisableAccountInvites(
+        let requestBody = ComAtprotoLexicon.Admin.DisableAccountInvitesRequestBody(
             accountDID: accountDID,
             note: note
         )

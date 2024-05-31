@@ -38,11 +38,15 @@ extension ATProtoKit {
     ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `nil`.
     ///   - shouldAuthenticate: Indicates whether the method will use the access token
     ///   when sending the request. Defaults to `false`.
-    /// - Returns: A `Result`, containing either ``ActorSearchActorsOutput``
+    /// - Returns: A `Result`, containing either ``AppBskyLexicon/Actor/SearchActorsOutput``
     /// if successful, and an `Error` if not.
-    public func searchUsers(by query: String, limit: Int? = 25, cursor: String? = nil,
-                            pdsURL: String? = nil,
-                            shouldAuthenticate: Bool = false) async throws -> Result<ActorSearchActorsOutput, Error> {
+    public func searchUsers(
+        by query: String,
+        limit: Int? = 25,
+        cursor: String? = nil,
+        pdsURL: String? = nil,
+        shouldAuthenticate: Bool = false
+    ) async throws -> Result<AppBskyLexicon.Actor.SearchActorsOutput, Error> {
         let authorizationValue = prepareAuthorizationValue(
             methodPDSURL: pdsURL,
             shouldAuthenticate: shouldAuthenticate,
@@ -80,7 +84,7 @@ extension ATProtoKit {
                                                          acceptValue: "application/json",
                                                          authorizationValue: authorizationValue)
             let response = try await APIClientService.sendRequest(request,
-                                                                  decodeTo: ActorSearchActorsOutput.self)
+                                                                  decodeTo: AppBskyLexicon.Actor.SearchActorsOutput.self)
 
             return .success(response)
         } catch {

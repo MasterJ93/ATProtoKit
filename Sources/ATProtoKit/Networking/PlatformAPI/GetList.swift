@@ -23,9 +23,13 @@ extension ATProtoKit {
     ///   - limit: The number of items that can be in the list. Optional. Defaults to `50`.
     ///   - cursor: The mark used to indicate the starting point for the next set of
     ///   result. Optional.
-    /// - Returns: A `Result`, containing either a ``GraphGetListOutput``
+    /// - Returns: A `Result`, containing either a ``AppBskyLexicon/Graph/GetListOutput``
     /// if successful, or an `Error` if not.
-    public func getList(from listURI: String, limit: Int? = 50, cursor: String? = nil) async throws -> Result<GraphGetListOutput, Error> {
+    public func getList(
+        from listURI: String,
+        limit: Int? = 50,
+        cursor: String? = nil
+    ) async throws -> Result<AppBskyLexicon.Graph.GetListOutput, Error> {
         guard session != nil,
               let accessToken = session?.accessToken else {
             return .failure(ATRequestPrepareError.missingActiveSession)
@@ -63,7 +67,7 @@ extension ATProtoKit {
                                                          contentTypeValue: nil,
                                                          authorizationValue: "Bearer \(accessToken)")
             let response = try await APIClientService.sendRequest(request,
-                                                                  decodeTo: GraphGetListOutput.self)
+                                                                  decodeTo: AppBskyLexicon.Graph.GetListOutput.self)
 
             return .success(response)
         } catch {

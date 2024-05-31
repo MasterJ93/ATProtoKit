@@ -24,7 +24,10 @@ extension ATProtoAdmin {
     /// - Parameters:
     ///   - accountDID: The decentralized identifier (DID) of the user account.
     ///   - newEmail: The new email address the user wants to change to.
-    public func updateAccountEmail(for accountDID: String, newEmail: String) async throws {
+    public func updateAccountEmail(
+        for accountDID: String,
+        newEmail: String
+    ) async throws {
         guard session != nil,
               let accessToken = session?.accessToken else {
             throw ATRequestPrepareError.missingActiveSession
@@ -35,7 +38,7 @@ extension ATProtoAdmin {
             throw ATRequestPrepareError.invalidRequestURL
         }
 
-        let requestBody = AdminUpdateAccountEmail(
+        let requestBody = ComAtprotoLexicon.Admin.UpdateAccountEmailRequestBody(
             accountDID: accountDID,
             accountEmail: newEmail
         )

@@ -26,9 +26,18 @@ extension ATProtoKit {
     ///   Defaults to `true`.
     ///   - swapCommit: Swaps out an operation based on the CID. Optional.
     /// - Returns: A strong reference, which contains the newly-created record's URI and CID hash.
-    public func createPostRecord(text: String, locales: [Locale] = [], replyTo: String? = nil, embed: EmbedIdentifier? = nil,
-                                 labels: FeedLabelUnion? = nil, tags: [String]? = nil, creationDate: Date = Date.now, recordKey: String? = nil,
-                                 shouldValidate: Bool? = true, swapCommit: String? = nil) async -> Result<StrongReference, Error> {
+    public func createPostRecord(
+        text: String,
+        locales: [Locale] = [],
+        replyTo: String? = nil,
+        embed: EmbedIdentifier? = nil,
+        labels: ATUnion.PostSelfLabelsUnion? = nil,
+        tags: [String]? = nil,
+        creationDate: Date = Date.now,
+        recordKey: String? = nil,
+        shouldValidate: Bool? = true,
+        swapCommit: String? = nil
+    ) async -> Result<ComAtprotoLexicon.Repository.StrongReference, Error> {
 
         guard let session else {
             return .failure(ATRequestPrepareError.missingActiveSession)
@@ -38,7 +47,7 @@ extension ATProtoKit {
             return .failure(ATRequestPrepareError.invalidPDS)
         }
         // Replies
-        var resolvedReplyTo: ReplyReference? = nil
+        var resolvedReplyTo: AppBskyLexicon.Feed.PostRecord.ReplyReference? = nil
         if let replyURI = replyTo {
             do {
                 resolvedReplyTo = try await ATProtoTools().resolveReplyReferences(parentURI: replyURI)
@@ -51,7 +60,7 @@ extension ATProtoKit {
         let localeIdentifiers = locales.isEmpty ? nil : locales.map { $0.identifier }
 
         // Embed
-        var resolvedEmbed: EmbedUnion? = nil
+        var resolvedEmbed: ATUnion.PostEmbedUnion? = nil
         if let embedUnion = embed {
             do {
                 switch embedUnion {
@@ -71,7 +80,7 @@ extension ATProtoKit {
         }
 
         // Compiling all parts of the post into one.
-        let postRecord = FeedPost(
+        let postRecord = AppBskyLexicon.Feed.PostRecord(
             text: text,
             facets: await ATFacetParser.parseFacets(from: text, pdsURL: session.accessToken),
             reply: resolvedReplyTo,
@@ -101,8 +110,9 @@ extension ATProtoKit {
     /// use in a record.
     ///
     /// - Important: Each image can only be 1 MB in size.
-    public func uploadImages(_ images: [ImageQuery], pdsURL: String = "https://bsky.social", accessToken: String) async throws -> EmbedUnion {
-        var embedImages = [EmbedImage]()
+    public func uploadImages(_ images: [ComAtprotoLexicon.Repository.ImageQuery], pdsURL: String = "https://bsky.social",
+                             accessToken: String) async throws -> ATUnion.PostEmbedUnion {
+        var embedImages = [AppBskyLexicon.Embed.ImagesDefinition.Image]()
 
         for image in images {
             // Check if the image is too large.
@@ -114,11 +124,11 @@ extension ATProtoKit {
             let blobReference = try await APIClientService.uploadBlob(pdsURL: pdsURL, accessToken: accessToken, filename: image.fileName,
                                                                       imageData: image.imageData)
 
-            let embedImage = EmbedImage(image: blobReference.blob, altText: image.altText ?? "", aspectRatio: nil)
+            let embedImage = AppBskyLexicon.Embed.ImagesDefinition.Image(image: blobReference.blob, altText: image.altText ?? "", aspectRatio: nil)
             embedImages.append(embedImage)
         }
 
-        return .images(EmbedImages(images: embedImages))
+        return .images(AppBskyLexicon.Embed.ImagesDefinition(images: embedImages))
     }
     
     /// Scraps the website for the required information in order to attach to a record's embed at a
@@ -126,7 +136,7 @@ extension ATProtoKit {
     /// - Parameter url: The URL of the website
     /// - Returns: An ``EmbedUnion`` which contains an ``EmbedExternal`` for use
     /// in a record.
-    public func buildExternalEmbed(from url: URL) async throws -> EmbedUnion? {
+    public func buildExternalEmbed(from url: URL) async throws -> ATUnion.PostEmbedUnion? {
 
         // Temporary comment until it's time to work on this part of the library.
 //        let external = EmbedExternal(external: External(embedURI: "", title: "", description: "", thumbnailImage: UploadBlobOutput(type: <#T##String?#>, reference: <#T##BlobReference#>, mimeType: <#T##String#>, size: <#T##Int#>)))
@@ -139,10 +149,10 @@ extension ATProtoKit {
     /// the `cidHash` (CID) .
     /// - Returns: A strong reference, which contains a record's `recordURI` (URI) and the
     /// `cidHash` (CID) .
-    public func addQuotePostToEmbed(_ strongReference: StrongReference) async throws -> EmbedUnion {
+    public func addQuotePostToEmbed(_ strongReference: ComAtprotoLexicon.Repository.StrongReference) async throws -> ATUnion.PostEmbedUnion {
         let record = try await ATProtoTools().fetchRecordForURI(strongReference.recordURI)
-        let reference = StrongReference(recordURI: record.recordURI, cidHash: record.recordCID)
-        let embedRecord = EmbedRecord(record: reference)
+        let reference = ComAtprotoLexicon.Repository.StrongReference(recordURI: record.recordURI, cidHash: record.recordCID)
+        let embedRecord = AppBskyLexicon.Embed.RecordDefinition(record: reference)
 
         return .record(embedRecord)
     }
@@ -165,7 +175,7 @@ extension ATProtoKit {
         /// Represents a set of images to be embedded in the post.
         /// - Parameter images: An array of `ImageQuery` objects, each containing the image data,
         /// metadata, and filenames of the image.
-        case images(images: [ImageQuery])
+        case images(images: [ComAtprotoLexicon.Repository.ImageQuery])
 
         /// Represents an external link to be embedded in the post.
         /// - Parameter url: A `URL` pointing to the external content.
@@ -174,12 +184,12 @@ extension ATProtoKit {
         /// Represents another post record that is to be embedded within the current post.
         /// - Parameter strongReference: A `StrongReference` to the post record to be embedded,
         /// which contains a record's `recordURI` (URI) and the `cidHash` (CID) .
-        case record(strongReference: StrongReference)
+        case record(strongReference: ComAtprotoLexicon.Repository.StrongReference)
 
         /// Represents a post record accompanied by media, to be embedded within the current post.
         /// - Parameters:
         ///   - record: An `EmbedRecord`, representing the post to be embedded.
         ///   - media: A `MediaUnion`, representing the media content associated with the post.
-        case recordWithMedia(record: EmbedRecord, media: MediaUnion)
+        case recordWithMedia(record: AppBskyLexicon.Embed.RecordDefinition, media: ATUnion.RecordWithMediaUnion)
     }
 }

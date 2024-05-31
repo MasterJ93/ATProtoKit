@@ -39,11 +39,22 @@ extension ATProtoKit {
     ///   Can only choose between `1` and `100`.
     ///   - cursor: The mark used to indicate the starting point for the next set of
     ///   results. Optional.
-    /// - Returns: A `Result`, containing either an ``FeedSearchPostsOutput``
+    /// - Returns: A `Result`, containing either an ``AppBskyLexicon/Feed/SearchPostsOutput``
     /// if succesful, or an `Error` if it's not.
-    public func searchPosts(with searchQuery: String, sortRanking: FeedSearchPostsSortRanking? = .latest, sinceDate: Date?, untilDate: Date?,
-                            mentionIdentifier: String? = nil, author: String? = nil, language: Locale?, domain: String?, url: String?, tags: [String]?,
-                            limit: Int? = 25, cursor: String? = nil) async throws -> Result<FeedSearchPostsOutput, Error> {
+    public func searchPosts(
+        with searchQuery: String,
+        sortRanking: AppBskyLexicon.Feed.SearchPosts.SortRanking? = .latest,
+        sinceDate: Date?,
+        untilDate: Date?,
+        mentionIdentifier: String? = nil,
+        author: String? = nil,
+        language: Locale?,
+        domain: String?,
+        url: String?,
+        tags: [String]?,
+        limit: Int? = 25,
+        cursor: String? = nil
+    ) async throws -> Result<AppBskyLexicon.Feed.SearchPostsOutput, Error> {
         guard session != nil,
               let accessToken = session?.accessToken else {
             return .failure(ATRequestPrepareError.missingActiveSession)
@@ -117,7 +128,7 @@ extension ATProtoKit {
                                                          contentTypeValue: nil,
                                                          authorizationValue: "Bearer \(accessToken)")
             let response = try await APIClientService.sendRequest(request,
-                                                                  decodeTo: FeedSearchPostsOutput.self)
+                                                                  decodeTo: AppBskyLexicon.Feed.SearchPostsOutput.self)
 
             return .success(response)
         } catch {

@@ -19,9 +19,9 @@ extension ATProtoKit {
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/server/describeServer.json
     ///
     /// - Parameter pdsURL: The URL of the Personal Data Server (PDS). Defaults to `nil`.
-    /// - Returns: A `Result`, containing either a ``ServerDescribeServerOutput``
+    /// - Returns: A `Result`, containing either a ``ComAtprotoLexicon/Server/DescribeServerOutput``
     /// if successful, or an `Error` if not.
-    public func describeServer(_ pdsURL: String? = nil) async throws -> Result<ServerDescribeServerOutput, Error> {
+    public func describeServer(_ pdsURL: String? = nil) async throws -> Result<ComAtprotoLexicon.Server.DescribeServerOutput, Error> {
         guard let sessionURL = pdsURL != nil ? pdsURL : session?.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.server.describeServer") else {
             return .failure(ATRequestPrepareError.invalidRequestURL)
@@ -34,7 +34,7 @@ extension ATProtoKit {
                                                          contentTypeValue: nil,
                                                          authorizationValue: nil)
             let response = try await APIClientService.sendRequest(request,
-                                                                  decodeTo: ServerDescribeServerOutput.self)
+                                                                  decodeTo: ComAtprotoLexicon.Server.DescribeServerOutput.self)
 
             return .success(response)
         } catch {

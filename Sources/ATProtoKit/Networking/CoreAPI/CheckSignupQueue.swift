@@ -21,9 +21,9 @@ extension ATProtoKit {
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/temp/checkSignupQueue.json
     ///
     /// - Parameter query: The string used to search for the username.
-    /// - Returns: A `Result`, containing either a ``TempCheckSignupQueueOutput``
+    /// - Returns: A `Result`, containing either a ``ComAtprotoLexicon/Temp/CheckSignupQueueOutput``
     /// if successful, ot an `Error` if not.
-    public func checkSignupQueue(for query: String) async throws -> Result<TempCheckSignupQueueOutput, Error> {
+    public func checkSignupQueue(for query: String) async throws -> Result<ComAtprotoLexicon.Temp.CheckSignupQueueOutput, Error> {
         guard let sessionURL = session?.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.temp.checkSignupQueue") else {
             return .failure(ATRequestPrepareError.invalidRequestURL)
@@ -47,7 +47,7 @@ extension ATProtoKit {
                                                          contentTypeValue: "application/json",
                                                          authorizationValue: nil)
             let response = try await APIClientService.sendRequest(request,
-                                                                  decodeTo: TempCheckSignupQueueOutput.self)
+                                                                  decodeTo: ComAtprotoLexicon.Temp.CheckSignupQueueOutput.self)
 
             return .success(response)
         } catch {
