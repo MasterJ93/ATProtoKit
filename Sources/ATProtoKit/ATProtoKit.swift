@@ -248,6 +248,9 @@ public class ATProtoBluesky: ATProtoKitConfiguration {
 ///
 /// This class requires you to first create an instance of ``ATProtoKit/ATProtoKit``. The class
 /// will import the session, Bluesky records, and logging information from the instance.
+///
+/// - Important: Please use an App Password in ``ATProtocolConfiguration`` that has chatting
+/// privileges. Failure to do so will result in an error.
 public class ATProtoBlueskyChat: ATProtoKitConfiguration {
 
     /// Represents an authenticated user session within the AT Protocol. Optional.
