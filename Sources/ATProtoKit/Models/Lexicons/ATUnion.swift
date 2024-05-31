@@ -893,14 +893,14 @@ public struct ATUnion {
         case messageView(ChatBskyLexicon.Conversation.MessageViewDefinition)
 
         /// A deleted message view.
-        case deletedMessageView(ChatBskyLexicon.Conversation.DeleteMessageViewDefinition)
+        case deletedMessageView(ChatBskyLexicon.Conversation.DeletedMessageViewDefinition)
 
         public init(from decoder: any Decoder) throws {
             let container = try decoder.singleValueContainer()
 
             if let value = try? container.decode(ChatBskyLexicon.Conversation.MessageViewDefinition.self) {
                 self = .messageView(value)
-            } else if let value = try? container.decode(ChatBskyLexicon.Conversation.DeleteMessageViewDefinition.self) {
+            } else if let value = try? container.decode(ChatBskyLexicon.Conversation.DeletedMessageViewDefinition.self) {
                 self = .deletedMessageView(value)
             } else {
                 throw DecodingError.typeMismatch(
@@ -928,14 +928,14 @@ public struct ATUnion {
         case messageView(ChatBskyLexicon.Conversation.MessageViewDefinition)
 
         /// A deleted message view.
-        case deletedMessageView(ChatBskyLexicon.Conversation.DeleteMessageViewDefinition)
+        case deletedMessageView(ChatBskyLexicon.Conversation.DeletedMessageViewDefinition)
 
         public init(from decoder: any Decoder) throws {
             let container = try decoder.singleValueContainer()
 
             if let value = try? container.decode(ChatBskyLexicon.Conversation.MessageViewDefinition.self) {
                 self = .messageView(value)
-            } else if let value = try? container.decode(ChatBskyLexicon.Conversation.DeleteMessageViewDefinition.self) {
+            } else if let value = try? container.decode(ChatBskyLexicon.Conversation.DeletedMessageViewDefinition.self) {
                 self = .deletedMessageView(value)
             } else {
                 throw DecodingError.typeMismatch(
@@ -963,14 +963,14 @@ public struct ATUnion {
         case messageView(ChatBskyLexicon.Conversation.MessageViewDefinition)
 
         /// A deleted message view.
-        case deletedMessageView(ChatBskyLexicon.Conversation.DeleteMessageViewDefinition)
+        case deletedMessageView(ChatBskyLexicon.Conversation.DeletedMessageViewDefinition)
 
         public init(from decoder: any Decoder) throws {
             let container = try decoder.singleValueContainer()
 
             if let value = try? container.decode(ChatBskyLexicon.Conversation.MessageViewDefinition.self) {
                 self = .messageView(value)
-            } else if let value = try? container.decode(ChatBskyLexicon.Conversation.DeleteMessageViewDefinition.self) {
+            } else if let value = try? container.decode(ChatBskyLexicon.Conversation.DeletedMessageViewDefinition.self) {
                 self = .deletedMessageView(value)
             } else {
                 throw DecodingError.typeMismatch(
@@ -1047,14 +1047,14 @@ public struct ATUnion {
         case messageView(ChatBskyLexicon.Conversation.MessageViewDefinition)
 
         /// A deleted message view.
-        case deletedMessageView(ChatBskyLexicon.Conversation.DeleteMessageViewDefinition)
+        case deletedMessageView(ChatBskyLexicon.Conversation.DeletedMessageViewDefinition)
 
         public init(from decoder: any Decoder) throws {
             let container = try decoder.singleValueContainer()
 
             if let value = try? container.decode(ChatBskyLexicon.Conversation.MessageViewDefinition.self) {
                 self = .messageView(value)
-            } else if let value = try? container.decode(ChatBskyLexicon.Conversation.DeleteMessageViewDefinition.self) {
+            } else if let value = try? container.decode(ChatBskyLexicon.Conversation.DeletedMessageViewDefinition.self) {
                 self = .deletedMessageView(value)
             } else {
                 throw DecodingError.typeMismatch(
@@ -1082,14 +1082,14 @@ public struct ATUnion {
         case messageView(ChatBskyLexicon.Conversation.MessageViewDefinition)
 
         /// A deleted message view.
-        case deletedMessageView(ChatBskyLexicon.Conversation.DeleteMessageViewDefinition)
+        case deletedMessageView(ChatBskyLexicon.Conversation.DeletedMessageViewDefinition)
 
         public init(from decoder: any Decoder) throws {
             let container = try decoder.singleValueContainer()
 
             if let value = try? container.decode(ChatBskyLexicon.Conversation.MessageViewDefinition.self) {
                 self = .messageView(value)
-            } else if let value = try? container.decode(ChatBskyLexicon.Conversation.DeleteMessageViewDefinition.self) {
+            } else if let value = try? container.decode(ChatBskyLexicon.Conversation.DeletedMessageViewDefinition.self) {
                 self = .deletedMessageView(value)
             } else {
                 throw DecodingError.typeMismatch(

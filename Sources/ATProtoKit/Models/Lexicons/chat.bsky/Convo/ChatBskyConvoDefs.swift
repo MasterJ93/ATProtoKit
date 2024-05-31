@@ -156,7 +156,7 @@ extension ChatBskyLexicon.Conversation {
     /// - SeeAlso: This is based on the [`chat.bsky.convo.defs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/chat/bsky/convo/defs.json
-    public struct DeleteMessageViewDefinition: Codable {
+    public struct DeletedMessageViewDefinition: Codable {
 
         /// The ID of the message. Optional.
         public let messageID: String?

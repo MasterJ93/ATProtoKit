@@ -9,7 +9,7 @@ import Foundation
 
 extension ChatBskyLexicon.Conversation {
 
-    /// A request body model for a message reference.
+    /// A request body model for deleting a message only from the user account's end.
     ///
     /// - SeeAlso: This is based on the [`chat.bsky.convo.deleteMessageForSelf`][github] lexicon.
     ///
@@ -20,7 +20,7 @@ extension ChatBskyLexicon.Conversation {
         public let conversationID: String
 
         /// The ID of the message.
-        public let messageID: DeleteMessageViewDefinition
+        public let messageID: String
 
         enum CodingKeys: String, CodingKey {
             case conversationID = "convoID"
