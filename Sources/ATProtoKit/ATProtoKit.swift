@@ -224,8 +224,6 @@ public class ATProtoAdmin: ATProtoKitConfiguration {
 public class ATProtoBluesky: ATProtoKitConfiguration {
     
     /// Represents an authenticated user session within the AT Protocol. Optional.
-    ///
-    /// - Warning: This is not in use.
     public private(set) var session: UserSession?
 
     /// Specifies the logger that will be used for emitting log messages.
@@ -240,8 +238,8 @@ public class ATProtoBluesky: ATProtoKitConfiguration {
     ///   - logger: Specifies the identifier for managing log outputs. Optional.
     ///   Defaults to the project's `CFBundleIdentifier`.
     public init(atProtoKitInstance: ATProtoKit, logger: Logger? = nil) {
-        self.session = nil
         self.atProtoKitInstance = atProtoKitInstance
+        self.session = self.atProtoKitInstance.session ?? nil
         self.logger = self.atProtoKitInstance.session?.logger ?? logger
     }
 }
@@ -253,8 +251,6 @@ public class ATProtoBluesky: ATProtoKitConfiguration {
 public class ATProtoBlueskyChat: ATProtoKitConfiguration {
 
     /// Represents an authenticated user session within the AT Protocol. Optional.
-    ///
-    /// - Warning: This is not in use.
     public private(set) var session: UserSession?
 
     /// Specifies the logger that will be used for emitting log messages.
@@ -270,6 +266,7 @@ public class ATProtoBlueskyChat: ATProtoKitConfiguration {
     ///   Defaults to the project's `CFBundleIdentifier`.
     public init(atProtoKitInstance: ATProtoKit, logger: Logger? = nil) {
         self.atProtoKitInstance = atProtoKitInstance
+        self.session = self.atProtoKitInstance.session ?? nil
         self.logger = self.atProtoKitInstance.session?.logger ?? logger
     }
 }
