@@ -20,7 +20,7 @@ extension ChatBskyLexicon.Conversation {
         public let conversationID: String
 
         /// The ID of the message.
-        public let messageID: String
+        public let messageID: String?
 
         enum CodingKeys: String, CodingKey {
             case conversationID = "convoId"
