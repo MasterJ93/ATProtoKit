@@ -862,12 +862,12 @@ public struct ATUnion {
     public enum MessageViewEmbedUnion: Codable {
 
         /// A record within the embed.
-        case record(AppBskyLexicon.Embed.RecordDefinition)
+        case record(AppBskyLexicon.Embed.RecordDefinition.View)
 
         public init(from decoder: any Decoder) throws {
             let container = try decoder.singleValueContainer()
 
-            if let value = try? container.decode(AppBskyLexicon.Embed.RecordDefinition.self) {
+            if let value = try? container.decode(AppBskyLexicon.Embed.RecordDefinition.View.self) {
                 self = .record(value)
             } else {
                 throw DecodingError.typeMismatch(
