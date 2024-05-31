@@ -25,10 +25,13 @@ extension ATProtoAdmin {
     ///   - subjectDID: The decentralized identifier (DID) of the subject.
     ///   - subjectURI: The URI of the subject.
     ///   - subjectBlobCIDHash: The CID hash of the blob for the subject.
-    /// - Returns: A `Result`, containing either an ``AdminGetSubjectStatusOutput``
+    /// - Returns: A `Result`, containing either an ``ComAtprotoLexicon/Admin/GetSubjectStatusOutput``
     /// if successful, or an `Error` if not.
-    public func getSubjectStatus(_ subjectDID: String, subjectURI: String,
-                                 subjectBlobCIDHash: String) async throws -> Result<AdminGetSubjectStatusOutput, Error> {
+    public func getSubjectStatus(
+        _ subjectDID: String,
+        subjectURI: String,
+        subjectBlobCIDHash: String
+    ) async throws -> Result<ComAtprotoLexicon.Admin.GetSubjectStatusOutput, Error> {
         guard session != nil,
               let accessToken = session?.accessToken else {
             return .failure(ATRequestPrepareError.missingActiveSession)
@@ -59,7 +62,7 @@ extension ATProtoAdmin {
                                                          contentTypeValue: nil,
                                                          authorizationValue: "Bearer \(accessToken)")
             let response = try await APIClientService.sendRequest(request,
-                                                                  decodeTo: AdminGetSubjectStatusOutput.self)
+                                                                  decodeTo: ComAtprotoLexicon.Admin.GetSubjectStatusOutput.self)
 
             return .success(response)
         } catch {

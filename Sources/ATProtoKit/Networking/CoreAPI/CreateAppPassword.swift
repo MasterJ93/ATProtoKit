@@ -23,9 +23,9 @@ extension ATProtoKit {
     ///
     /// - Parameter passwordName: The name given to the App Password to help distingush it
     /// from others.
-    /// - Returns: A `Result`, either containing a ``ServerCreateAppPasswordOutput``
+    /// - Returns: A `Result`, either containing a ``ComAtprotoLexicon/Server/CreateAppPasswordOutput``
     /// if successful, or an `Error` if not.
-    public func createAppPassword(named passwordName: String) async throws -> Result<ServerCreateAppPasswordOutput, Error> {
+    public func createAppPassword(named passwordName: String) async throws -> Result<ComAtprotoLexicon.Server.CreateAppPasswordOutput, Error> {
         guard session != nil,
               let accessToken = session?.accessToken else {
             return .failure(ATRequestPrepareError.missingActiveSession)
@@ -36,7 +36,7 @@ extension ATProtoKit {
             return .failure(ATRequestPrepareError.invalidRequestURL)
         }
 
-        let requestBody = ServerCreateAppPassword(
+        let requestBody = ComAtprotoLexicon.Server.CreateAppPasswordRequestBody(
             name: passwordName
         )
 
@@ -48,7 +48,7 @@ extension ATProtoKit {
                                                          authorizationValue: "Bearer \(accessToken)")
             let response = try await APIClientService.sendRequest(request,
                                                                   withEncodingBody: requestBody,
-                                                                  decodeTo: ServerCreateAppPasswordOutput.self)
+                                                                  decodeTo: ComAtprotoLexicon.Server.CreateAppPasswordOutput.self)
 
             return .success(response)
         } catch {

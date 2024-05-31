@@ -19,7 +19,7 @@ extension String: Truncatable {
     /// - Parameter length: The maximum number of characters that the `String` can have
     /// before it truncates.
     /// - Returns: A new `String` that contains the maximum number of characters or less.
-    func truncated(toLength length: Int) -> String {
+    public func truncated(toLength length: Int) -> String {
         return String(self.prefix(length))
     }
 
@@ -29,7 +29,7 @@ extension String: Truncatable {
     /// Any uppercased characters will be lowercased. Any characters that could be interpreted as
     /// hypens will be converted into standard hyphens. Any additional characters will
     /// be discarded.
-    func transformToLowerASCIIAndHyphen() -> String {
+    public func transformToLowerASCIIAndHyphen() -> String {
         // Trim trailing spaces.
         let trimmedString = self.trimmingCharacters(in: .whitespacesAndNewlines)
 
@@ -86,7 +86,7 @@ extension Array: Truncatable {
     /// - Parameter length: The maximum number of items that an `Array` can
     /// have before it truncates.
     /// - Returns: A new `Array` that contains the maximum number of items or less.
-    func truncated(toLength length: Int) -> Array<Element> {
+    public func truncated(toLength length: Int) -> Array<Element> {
         return Array(self.prefix(length))
     }
 }
@@ -97,7 +97,7 @@ extension Encodable {
     /// Converts an object into a JSON object.
     ///
     /// - Returns: A JSON object.
-    func toJsonData() throws -> Data? {
+    public func toJsonData() throws -> Data? {
         return try JSONEncoder().encode(self)
     }
 }
@@ -112,7 +112,7 @@ extension UInt64 {
     /// the characters `234567abcdefghijklmnopqrstuvwxyz` and is 13 characters in length.
     ///
     /// - Returns: A `String` that's encoded in a Base32-sortable format.
-    func toBase32Sortable() -> String {
+    public func toBase32Sortable() -> String {
         let base32Characters = "234567abcdefghijklmnopqrstuvwxyz"
         var number = self
         var encoded = ""
@@ -132,7 +132,7 @@ extension UInt64 {
 extension Data {
     
     /// Returns an array of `UInt8` objects.
-    var bytes: [UInt8] {
+    public var bytes: [UInt8] {
         return [UInt8](self)
     }
 }

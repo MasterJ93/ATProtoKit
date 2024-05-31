@@ -21,9 +21,9 @@ extension ATProtoAdmin {
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/tools/ozone/communication/listTemplates.json
     ///
-    /// - Returns: A `Result`, containing either an ``CommunicationListTemplatesOutput``
+    /// - Returns: A `Result`, containing either an ``ToolsOzoneLexicon/Communication/ListTemplatesOutput``
     /// if successful, or an `Error` if not.
-    public func listCommunicationTemplates() async throws -> Result<CommunicationListTemplatesOutput, Error> {
+    public func listCommunicationTemplates() async throws -> Result<ToolsOzoneLexicon.Communication.ListTemplatesOutput, Error> {
         guard session != nil,
               let accessToken = session?.accessToken else {
             return .failure(ATRequestPrepareError.missingActiveSession)
@@ -41,7 +41,7 @@ extension ATProtoAdmin {
                                                          contentTypeValue: nil,
                                                          authorizationValue: "Bearer \(accessToken)")
             let response = try await APIClientService.sendRequest(request,
-                                                                  decodeTo: CommunicationListTemplatesOutput.self)
+                                                                  decodeTo: ToolsOzoneLexicon.Communication.ListTemplatesOutput.self)
 
             return .success(response)
         } catch {

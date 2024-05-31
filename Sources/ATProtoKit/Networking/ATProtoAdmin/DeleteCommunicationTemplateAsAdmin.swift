@@ -32,7 +32,7 @@ extension ATProtoAdmin {
             throw ATRequestPrepareError.invalidRequestURL
         }
 
-        let requestBody = CommunicationDeleteTemplate(
+        let requestBody = ToolsOzoneLexicon.Communication.DeleteTemplateRequestBody(
             id: id
         )
 

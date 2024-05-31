@@ -27,10 +27,14 @@ extension ATProtoAdmin {
     ///   - subject: The subject line of the communication template.
     ///   - createdBy: The decentralized identifier (DID) of the creator of the
     ///   communication template. Optional.
-    /// - Returns: A `Result`, containing either ``OzoneCommunicationTemplateView``
+    /// - Returns: A `Result`, containing either ``ToolsOzoneLexicon/Communication/TemplateViewDefinition``
     /// if successful, or an `Error` if not.
-    public func createCommunicationTemplate(named name: String, contentMarkdown: String, subject: String,
-                                            createdBy: String?) async throws -> Result<OzoneCommunicationTemplateView, Error> {
+    public func createCommunicationTemplate(
+        named name: String,
+        contentMarkdown: String,
+        subject: String,
+        createdBy: String?
+    ) async throws -> Result<ToolsOzoneLexicon.Communication.TemplateViewDefinition, Error> {
         guard session != nil,
               let accessToken = session?.accessToken else {
             return .failure(ATRequestPrepareError.missingActiveSession)
@@ -41,7 +45,7 @@ extension ATProtoAdmin {
             return .failure(ATRequestPrepareError.invalidRequestURL)
         }
 
-        let requestBody = CommunicationCreateTemplate(
+        let requestBody = ToolsOzoneLexicon.Communication.CreateTemplateRequestBody(
             name: name,
             contentMarkdown: contentMarkdown,
             subject: subject,
@@ -56,7 +60,7 @@ extension ATProtoAdmin {
                                                          authorizationValue: "Bearer \(accessToken)")
             let response = try await APIClientService.sendRequest(request,
                                                                   withEncodingBody: requestBody,
-                                                                  decodeTo: OzoneCommunicationTemplateView.self)
+                                                                  decodeTo: ToolsOzoneLexicon.Communication.TemplateViewDefinition.self)
 
             return .success(response)
         } catch {

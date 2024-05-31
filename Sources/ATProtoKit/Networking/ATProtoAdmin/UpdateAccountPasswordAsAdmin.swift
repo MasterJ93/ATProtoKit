@@ -21,7 +21,10 @@ extension ATProtoAdmin {
     /// - Parameters:
     ///   - accountDID: The decentralized identifier (DID) of the user account.
     ///   - newPassword: The new password for the user account.
-    public func updateAccountPassword(for accountDID: String, newPassword: String) async throws {
+    public func updateAccountPassword(
+        for accountDID: String,
+        newPassword: String
+    ) async throws {
         guard session != nil,
               let accessToken = session?.accessToken else {
             throw ATRequestPrepareError.missingActiveSession
@@ -32,7 +35,7 @@ extension ATProtoAdmin {
             throw ATRequestPrepareError.invalidRequestURL
         }
 
-        let requestBody = AdminUpdateAccountPassword(
+        let requestBody = ComAtprotoLexicon.Admin.UpdateAccountPasswordRequestBody(
             accountDID: accountDID,
             newPassword: newPassword
         )

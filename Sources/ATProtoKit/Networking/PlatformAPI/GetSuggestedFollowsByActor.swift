@@ -21,9 +21,9 @@ extension ATProtoKit {
     ///
     /// - Parameter actorDID: The decentralized identifier (DID) or handle of the user account
     /// that the suggestions are based on.
-    /// - Returns: A `Result`, containing either a ``GraphGetSuggestedFollowsByActorOutput``
+    /// - Returns: A `Result`, containing either a ``AppBskyLexicon/Graph/GetSuggestedFollowsByActorOutput``
     /// if successful, or an `Error` if not.
-    public func getSuggestedFollowsByActor(_ actorDID: String) async throws -> Result<GraphGetSuggestedFollowsByActorOutput, Error> {
+    public func getSuggestedFollowsByActor(_ actorDID: String) async throws -> Result<AppBskyLexicon.Graph.GetSuggestedFollowsByActorOutput, Error> {
         guard session != nil,
               let accessToken = session?.accessToken else {
             return .failure(ATRequestPrepareError.missingActiveSession)
@@ -53,7 +53,7 @@ extension ATProtoKit {
                                                          contentTypeValue: nil,
                                                          authorizationValue: "Bearer \(accessToken)")
             let response = try await APIClientService.sendRequest(request,
-                                                                  decodeTo: GraphGetSuggestedFollowsByActorOutput.self)
+                                                                  decodeTo: AppBskyLexicon.Graph.GetSuggestedFollowsByActorOutput.self)
 
             return .success(response)
         } catch {

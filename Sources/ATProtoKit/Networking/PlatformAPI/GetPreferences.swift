@@ -19,8 +19,8 @@ extension ATProtoKit {
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/actor/getPreferences.json
     ///
-    /// - Returns: A `Result`, containing either ``ActorPreferences`` if successful, or `Error` if not.
-    public func getPreferences() async throws -> Result<ActorPreferences, Error> {
+    /// - Returns: A `Result`, containing either ``AppBskyLexicon/Actor/GetPreferencesOutput`` if successful, or `Error` if not.
+    public func getPreferences() async throws -> Result<AppBskyLexicon.Actor.GetPreferencesOutput, Error> {
         guard session != nil,
               let accessToken = session?.accessToken else {
             return .failure(ATRequestPrepareError.missingActiveSession)
@@ -38,7 +38,7 @@ extension ATProtoKit {
                                                          contentTypeValue: nil,
                                                          authorizationValue: "Bearer \(accessToken)")
             let response = try await APIClientService.sendRequest(request,
-                                                                  decodeTo: ActorPreferences.self)
+                                                                  decodeTo: AppBskyLexicon.Actor.GetPreferencesOutput.self)
 
             return .success(response)
         } catch(let error) {

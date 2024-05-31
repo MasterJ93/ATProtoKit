@@ -23,14 +23,16 @@ extension ATProtoKit {
     /// - Parameters:
     ///   - email: The email associated with the user's account.
     ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `nil`.
-    public func requestPasswordReset(_ email: String,
-                                     pdsURL: String? = nil) async throws {
+    public func requestPasswordReset(
+        _ email: String,
+        pdsURL: String? = nil
+    ) async throws {
         guard let sessionURL = pdsURL != nil ? pdsURL : session?.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.server.requestPasswordReset") else {
             throw ATRequestPrepareError.invalidRequestURL
         }
 
-        let requestBody = ServerRequestPasswordReset(
+        let requestBody = ComAtprotoLexicon.Server.RequestPasswordResetRequestBody(
             email: email
         )
 

@@ -29,10 +29,16 @@ extension ATProtoKit {
     ///   - shouldValidate: ndicates whether the record should be validated. Optional. Defaults to `true`.
     ///   - record: The record itself.
     ///   - swapCommit: Swaps out an operation based on the CID. Optional.
-    /// - Returns: A `Result`, containing either a ``StrongReference``
+    /// - Returns: A `Result`, containing either a ``ComAtprotoLexicon/Repository/StrongReference``
     /// if successful, and an `Error` if not.
-    public func createRecord(repositoryDID: String, collection: String, recordKey: String? = nil, shouldValidate: Bool? = true, record: UnknownType,
-                             swapCommit: String? = nil) async -> Result<StrongReference, Error> {
+    public func createRecord(
+        repositoryDID: String,
+        collection: String,
+        recordKey: String? = nil,
+        shouldValidate: Bool? = true,
+        record: UnknownType,
+        swapCommit: String? = nil
+    ) async -> Result<ComAtprotoLexicon.Repository.StrongReference, Error> {
         guard session != nil,
               let accessToken = session?.accessToken else {
             return .failure(ATRequestPrepareError.missingActiveSession)
@@ -43,7 +49,7 @@ extension ATProtoKit {
             return .failure(ATRequestPrepareError.invalidRequestURL)
         }
         
-        let requestBody = RepoCreateRecord(
+        let requestBody = ComAtprotoLexicon.Repository.CreateRecordRequestBody(
             repositoryDID: repositoryDID,
             collection: collection,
             recordKey: recordKey,
@@ -60,7 +66,7 @@ extension ATProtoKit {
                                                          authorizationValue: "Bearer \(accessToken)")
             let response = try await APIClientService.sendRequest(request,
                                                                   withEncodingBody: requestBody,
-                                                                  decodeTo: StrongReference.self)
+                                                                  decodeTo: ComAtprotoLexicon.Repository.StrongReference.self)
 
             return .success(response)
         } catch {

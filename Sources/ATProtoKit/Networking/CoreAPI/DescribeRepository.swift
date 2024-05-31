@@ -19,10 +19,12 @@ extension ATProtoKit {
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/repo/describeRepo.json
     ///
     /// - Parameter repositoryDID: The decentralized identifier (DID) or handle of the repository.
-    /// - Returns: A `Result`, containing either a ``RepoDescribeRepoOutput``
+    /// - Returns: A `Result`, containing either a ``ComAtprotoLexicon/Repository/DescribeRepositoryOutput``
     /// if successful, ot an `Error` if not.
-    public func describeRepository(_ repositoryDID: String,
-                                   pdsURL: String? = nil) async throws -> Result<RepoDescribeRepoOutput, Error> {
+    public func describeRepository(
+        _ repositoryDID: String,
+        pdsURL: String? = nil
+    ) async throws -> Result<ComAtprotoLexicon.Repository.DescribeRepositoryOutput, Error> {
         guard let sessionURL = pdsURL != nil ? pdsURL : session?.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.repo.describeRepo") else {
             return .failure(ATRequestPrepareError.invalidRequestURL)
@@ -46,7 +48,7 @@ extension ATProtoKit {
                                                          contentTypeValue: nil,
                                                          authorizationValue: nil)
             let response = try await APIClientService.sendRequest(request,
-                                                                  decodeTo: RepoDescribeRepoOutput.self)
+                                                                  decodeTo: ComAtprotoLexicon.Repository.DescribeRepositoryOutput.self)
 
             return .success(response)
         } catch {

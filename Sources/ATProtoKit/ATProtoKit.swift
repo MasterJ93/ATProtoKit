@@ -124,8 +124,10 @@ public class ATProtoKit: ATProtoKitConfiguration {
     ///
     /// If `canUseBlueskyRecords` is set to `false`, these will not be used.
     private let recordLexicons: [ATRecordProtocol.Type] = [
-        FeedGenerator.self, FeedLike.self, FeedPost.self, FeedRepost.self, FeedThreadgate.self, GraphBlock.self, GraphFollow.self, GraphList.self, 
-        GraphListBlock.self, GraphListItem.self, LabelerService.self]
+        AppBskyLexicon.Feed.GeneratorRecord.self, AppBskyLexicon.Feed.LikeRecord.self, AppBskyLexicon.Feed.PostRecord.self,
+        AppBskyLexicon.Feed.RepostRecord.self, AppBskyLexicon.Feed.ThreadgateRecord.self, AppBskyLexicon.Graph.BlockRecord.self,
+        AppBskyLexicon.Graph.FollowRecord.self, AppBskyLexicon.Graph.ListRecord.self, AppBskyLexicon.Graph.ListBlockRecord.self,
+        AppBskyLexicon.Graph.ListItemRecord.self, AppBskyLexicon.Labeler.ServiceRecord.self, ChatBskyLexicon.Actor.DeclarationRecord.self]
 
     /// Specifies the logger that will be used for emitting log messages.
     public private(set) var logger: Logger?
@@ -135,22 +137,20 @@ public class ATProtoKit: ATProtoKitConfiguration {
     /// This will also handle some of the logging-related setup. The identifier will either be your
     /// project's `CFBundleIdentifier` or an identifier named
     /// `com.cjrriley.ATProtoKit`. However, you can manually override this.
+    /// 
     /// - Parameters:
     ///   - session: The authenticated user session within the AT Protocol. Optional.
     ///   - canUseBlueskyRecords: Indicates whether Bluesky's lexicons should be used.
     ///   Defaults to `true`.
-    ///   - logIdentifier: Specifies the identifier for managing log outputs. Optional. Defaults
+    ///   - logger: Specifies the identifier for managing log outputs. Optional. Defaults
     ///   to the project's `CFBundleIdentifier`.
-    ///   - logCategory: Specifies the category name the logs in the logger within ATProtoKit will
-    ///   be in. Optional. Defaults to `ATProtoKit`.
-    ///   - logLevel: Specifies the highest level of logs that will be outputted. Optional.
-    ///   Defaults to `.info`.
     public init(session: UserSession? = nil, canUseBlueskyRecords: Bool = true, logger: Logger? = nil) {
         self.session = session
         self.logger = session?.logger ?? logger
 
-        if canUseBlueskyRecords {
+        if canUseBlueskyRecords && !ATRecordTypeRegistry.areBlueskyRecordsRegistered {
             _ = ATRecordTypeRegistry(types: self.recordLexicons)
+            ATRecordTypeRegistry.areBlueskyRecordsRegistered = false
         }
     }
 
@@ -206,14 +206,70 @@ public class ATProtoAdmin: ATProtoKitConfiguration {
     /// Initializes a new instance of `ATProtoAdmin`.
     /// - Parameters:
     ///   - session: The authenticated user session within the AT Protocol.
-    ///   - logIdentifier: Specifies the identifier for managing log outputs. Optional.
+    ///   - logger: Specifies the identifier for managing log outputs. Optional.
     ///   Defaults to the project's `CFBundleIdentifier`.
-    ///   - logCategory: Specifies the category name the logs in the logger within ATProtoKit
-    ///   will be in. Optional. Defaults to `ATProtoKit`.
-    ///   - logLevel: Specifies the highest level of logs that will be outputted. Optional.
-    ///   Defaults to `.info`.
     public init(session: UserSession? = nil, logger: Logger? = nil) {
         self.session = session
         self.logger = session?.logger ?? logger
+    }
+}
+
+/// The base class that handles all direct Bluesky-related functionality of the ATProtoKit
+/// API library.
+///
+/// This class requires you to first create an instance of ``ATProtoKit/ATProtoKit``. The class
+/// will import the session, Bluesky records, and logging information from the instance.
+///
+/// With some exceptions, the main functionality includes adding, putting, and deleting a record.
+public class ATProtoBluesky: ATProtoKitConfiguration {
+    
+    /// Represents an authenticated user session within the AT Protocol. Optional.
+    public private(set) var session: UserSession?
+
+    /// Specifies the logger that will be used for emitting log messages.
+    public private(set) var logger: Logger?
+
+    /// Represents the instance of ``ATProtoKit/ATProtoKit``.
+    private let atProtoKitInstance: ATProtoKit
+
+    /// Initializes a new instance of `ATProtoBluesky`.
+    /// - Parameters:
+    ///   - atProtoKitInstance: Represents the instance of ``ATProtoKit/ATProtoKit``.
+    ///   - logger: Specifies the identifier for managing log outputs. Optional.
+    ///   Defaults to the project's `CFBundleIdentifier`.
+    public init(atProtoKitInstance: ATProtoKit, logger: Logger? = nil) {
+        self.atProtoKitInstance = atProtoKitInstance
+        self.session = self.atProtoKitInstance.session ?? nil
+        self.logger = self.atProtoKitInstance.session?.logger ?? logger
+    }
+}
+
+/// The base class that handles the the Bluesky chat functionality of the ATProtoKit API library.
+///
+/// This class requires you to first create an instance of ``ATProtoKit/ATProtoKit``. The class
+/// will import the session, Bluesky records, and logging information from the instance.
+///
+/// - Important: Please use an App Password in ``ATProtocolConfiguration`` that has chatting
+/// privileges. Failure to do so will result in an error.
+public class ATProtoBlueskyChat: ATProtoKitConfiguration {
+
+    /// Represents an authenticated user session within the AT Protocol. Optional.
+    public private(set) var session: UserSession?
+
+    /// Specifies the logger that will be used for emitting log messages.
+    public private(set) var logger: Logger?
+
+    /// Represents the instance of ``ATProtoKit/ATProtoKit``.
+    private let atProtoKitInstance: ATProtoKit
+
+    /// Initializes a new instance of `ATProtoBlueskyChat`.
+    /// - Parameters:
+    ///   - atProtoKitInstance: Represents the instance of ``ATProtoKit/ATProtoKit``.
+    ///   - logger: Specifies the identifier for managing log outputs. Optional.
+    ///   Defaults to the project's `CFBundleIdentifier`.
+    public init(atProtoKitInstance: ATProtoKit, logger: Logger? = nil) {
+        self.atProtoKitInstance = atProtoKitInstance
+        self.session = self.atProtoKitInstance.session ?? nil
+        self.logger = self.atProtoKitInstance.session?.logger ?? logger
     }
 }

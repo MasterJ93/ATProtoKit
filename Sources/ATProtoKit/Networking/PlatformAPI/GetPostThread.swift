@@ -26,11 +26,15 @@ extension ATProtoKit {
     ///   Optional. Defaults to `80`. Can be between `0` and `1000`.
     ///   - accessToken: The token used to authenticate the user. Optional.
     ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `nil`.
-    /// - Returns: A `Result`, containing either a ``FeedGetPostThreadOutput``
+    /// - Returns: A `Result`, containing either a ``AppBskyLexicon/Feed/GetPostThreadOutput``
     /// if successful, or an `Error` if not.
-    public func getPostThread(from postURI: String, depth: Int? = 6, parentHeight: Int? = 80,
-                              pdsURL: String? = nil,
-                              shouldAuthenticate: Bool = false) async throws -> Result<FeedGetPostThreadOutput, Error> {
+    public func getPostThread(
+        from postURI: String,
+        depth: Int? = 6,
+        parentHeight: Int? = 80,
+        pdsURL: String? = nil,
+        shouldAuthenticate: Bool = false
+    ) async throws -> Result<AppBskyLexicon.Feed.GetPostThreadOutput, Error> {
         let authorizationValue = prepareAuthorizationValue(
             methodPDSURL: pdsURL,
             shouldAuthenticate: shouldAuthenticate,
@@ -70,7 +74,7 @@ extension ATProtoKit {
                                                          contentTypeValue: nil,
                                                          authorizationValue: authorizationValue)
             let response = try await APIClientService.sendRequest(request,
-                                                                  decodeTo: FeedGetPostThreadOutput.self)
+                                                                  decodeTo: AppBskyLexicon.Feed.GetPostThreadOutput.self)
 
             return .success(response)
         } catch {

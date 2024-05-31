@@ -27,10 +27,15 @@ extension ATProtoKit {
     ///   - verificationMethods: A verification method recommeneded to be added in the
     ///   DID document. Optional.
     ///   - service: The service endpoint recommended in the DID document. Optional.
-    /// - Returns: A `Result`, containing either an ``IdentitySignPLCOperationOutput``
+    /// - Returns: A `Result`, containing either an ``ComAtprotoLexicon/Identity/SignPLCOperationOutput``
     /// if successful, ot an `Error` if not.
-    public func signPLCOperation(token: String, rotationKeys: [String]?, alsoKnownAs: [String]?, verificationMethods: VerificationMethod?,
-                                 service: ATService?) async throws -> Result<IdentitySignPLCOperationOutput, Error> {
+    public func signPLCOperation(
+        token: String,
+        rotationKeys: [String]?,
+        alsoKnownAs: [String]?,
+        verificationMethods: VerificationMethod?,
+        service: ATService?
+    ) async throws -> Result<ComAtprotoLexicon.Identity.SignPLCOperationOutput, Error> {
         guard session != nil,
               let accessToken = session?.accessToken else {
             return .failure(ATRequestPrepareError.missingActiveSession)
@@ -41,7 +46,7 @@ extension ATProtoKit {
             return .failure(ATRequestPrepareError.invalidRequestURL)
         }
 
-        let requestBody = IdentitySignPLCOperation(
+        let requestBody = ComAtprotoLexicon.Identity.SignPLCOperationRequestBody(
             token: token,
             rotationKeys: rotationKeys,
             alsoKnownAs: alsoKnownAs,
@@ -57,7 +62,7 @@ extension ATProtoKit {
                                                          authorizationValue: "Bearer \(accessToken)")
             let response = try await APIClientService.sendRequest(request,
                                                                   withEncodingBody: requestBody,
-                                                                  decodeTo: IdentitySignPLCOperationOutput.self)
+                                                                  decodeTo: ComAtprotoLexicon.Identity.SignPLCOperationOutput.self)
 
             return .success(response)
         } catch {

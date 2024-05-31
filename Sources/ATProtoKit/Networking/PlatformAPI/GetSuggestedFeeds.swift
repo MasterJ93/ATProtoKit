@@ -22,9 +22,12 @@ extension ATProtoKit {
     ///   - limit: The number of items the list will hold. Optional. Defaults to `50`.
     ///   - cursor: The mark used to indicate the starting point for the next set of
     ///   result. Optional.
-    /// - Returns: A `Result`, containing either a ``FeedGetSuggestedFeedsOutput``
+    /// - Returns: A `Result`, containing either a ``AppBskyLexicon/Feed/GetSuggestedFeedsOutput``
     /// if successful, or an `Error` if not.
-    public func getSuggestedFeeds(limit: Int? = 50, cursor: String? = nil) async throws -> Result<FeedGetSuggestedFeedsOutput, Error> {
+    public func getSuggestedFeeds(
+        limit: Int? = 50,
+        cursor: String? = nil
+    ) async throws -> Result<AppBskyLexicon.Feed.GetSuggestedFeedsOutput, Error> {
         guard session != nil,
               let accessToken = session?.accessToken else {
             return .failure(ATRequestPrepareError.missingActiveSession)
@@ -60,7 +63,7 @@ extension ATProtoKit {
                                                          contentTypeValue: nil,
                                                          authorizationValue: "Bearer \(accessToken)")
             let response = try await APIClientService.sendRequest(request,
-                                                                  decodeTo: FeedGetSuggestedFeedsOutput.self)
+                                                                  decodeTo: AppBskyLexicon.Feed.GetSuggestedFeedsOutput.self)
 
             return .success(response)
         } catch {

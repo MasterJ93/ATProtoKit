@@ -19,9 +19,9 @@ extension ATProtoKit {
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/server/checkAccountStatus.json
     /// 
-    /// - Returns: A `Result`, containing either ``ServerCheckAccountStatusOutput``
+    /// - Returns: A `Result`, containing either ``ComAtprotoLexicon/Server/CheckAccountStatusOutput``
     /// if successful, or an `Error` if not.
-    public func checkAccountStatus() async throws -> Result<ServerCheckAccountStatusOutput, Error> {
+    public func checkAccountStatus() async throws -> Result<ComAtprotoLexicon.Server.CheckAccountStatusOutput, Error> {
         guard let sessionURL = session?.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.server.checkAccountStatus") else {
             return .failure(ATRequestPrepareError.invalidRequestURL)
@@ -33,7 +33,7 @@ extension ATProtoKit {
                                                          contentTypeValue: nil,
                                                          authorizationValue: nil)
             let response = try await APIClientService.sendRequest(request,
-                                                                  decodeTo: ServerCheckAccountStatusOutput.self)
+                                                                  decodeTo: ComAtprotoLexicon.Server.CheckAccountStatusOutput.self)
 
             return .success(response)
         } catch {

@@ -22,9 +22,11 @@ extension ATProtoKit {
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/feed/sendInteractions.json
     ///
     /// - Parameter interactions: An array of interactions.
-    /// - Returns: A `Result`, containing either a ``FeedSendInteractionsOutput``
+    /// - Returns: A `Result`, containing either a ``AppBskyLexicon/Feed/SendInteractionsOutput``
     /// if sucessful, or an `Error` if not.
-    public func sendInteractions(_ interactions: [FeedInteraction]) async throws -> Result<FeedSendInteractionsOutput, Error>{
+    public func sendInteractions(
+        _ interactions: [AppBskyLexicon.Feed.InteractionDefinition]
+    ) async throws -> Result<AppBskyLexicon.Feed.SendInteractionsOutput, Error>{
         guard session != nil,
               let accessToken = session?.accessToken else {
             return .failure(ATRequestPrepareError.missingActiveSession)
@@ -35,7 +37,7 @@ extension ATProtoKit {
             return .failure(ATRequestPrepareError.invalidRequestURL)
         }
 
-        let requestBody = FeedSendInteractions(
+        let requestBody = AppBskyLexicon.Feed.SendInteractionsRequestBody(
             interactions: interactions
         )
 
@@ -47,7 +49,7 @@ extension ATProtoKit {
                                                          authorizationValue: "Bearer \(accessToken)")
             let response = try await APIClientService.sendRequest(request,
                                                                   withEncodingBody: requestBody,
-                                                                  decodeTo: FeedSendInteractionsOutput.self)
+                                                                  decodeTo: AppBskyLexicon.Feed.SendInteractionsOutput.self)
 
             return .success(response)
         } catch {
