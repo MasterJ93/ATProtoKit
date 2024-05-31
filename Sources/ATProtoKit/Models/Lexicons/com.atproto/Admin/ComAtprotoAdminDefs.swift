@@ -57,10 +57,10 @@ extension ComAtprotoLexicon.Admin {
         @DateFormatting public var indexedAt: Date
 
         /// The invite code used by the user to sign up. Optional.
-        public var invitedBy: ServerInviteCode?
+        public var invitedBy: ComAtprotoLexicon.Server.InviteCodeDefinition?
 
         /// An array of invite codes held by the user. Optional.
-        public var invites: [ServerInviteCode]?
+        public var invites: [ComAtprotoLexicon.Server.InviteCodeDefinition]?
 
         /// Indicates whether the invite codes held by the user are diabled. Optional.
         public var areInvitesDisabled: Bool?
@@ -71,8 +71,9 @@ extension ComAtprotoLexicon.Admin {
         /// Any notes related to inviting the user. Optional.
         public var inviteNote: String?
 
-        public init(actorDID: String, handle: String, email: String?, relatedRecords: [UnknownType]?, indexedAt: Date, invitedBy: ServerInviteCode?,
-                    invites: [ServerInviteCode]?, areInvitesDisabled: Bool?, emailConfirmedAt: Date? = nil, inviteNote: String?) {
+        public init(actorDID: String, handle: String, email: String?, relatedRecords: [UnknownType]?, indexedAt: Date,
+                    invitedBy: ComAtprotoLexicon.Server.InviteCodeDefinition?,
+                    invites: [ComAtprotoLexicon.Server.InviteCodeDefinition]?, areInvitesDisabled: Bool?, emailConfirmedAt: Date? = nil, inviteNote: String?) {
             self.actorDID = actorDID
             self.handle = handle
             self.email = email
@@ -93,8 +94,8 @@ extension ComAtprotoLexicon.Admin {
             self.email = try container.decodeIfPresent(String.self, forKey: .email)
             self.relatedRecords = try container.decodeIfPresent([UnknownType].self, forKey: .relatedRecords)
             self.indexedAt = try container.decode(DateFormatting.self, forKey: .indexedAt).wrappedValue
-            self.invitedBy = try container.decodeIfPresent(ServerInviteCode.self, forKey: .invitedBy)
-            self.invites = try container.decodeIfPresent([ServerInviteCode].self, forKey: .invites)
+            self.invitedBy = try container.decodeIfPresent(ComAtprotoLexicon.Server.InviteCodeDefinition.self, forKey: .invitedBy)
+            self.invites = try container.decodeIfPresent([ComAtprotoLexicon.Server.InviteCodeDefinition].self, forKey: .invites)
             self.areInvitesDisabled = try container.decodeIfPresent(Bool.self, forKey: .areInvitesDisabled)
             self.emailConfirmedAt = try container.decodeIfPresent(DateFormattingOptional.self, forKey: .emailConfirmedAt)?.wrappedValue
             self.inviteNote = try container.decodeIfPresent(String.self, forKey: .inviteNote)

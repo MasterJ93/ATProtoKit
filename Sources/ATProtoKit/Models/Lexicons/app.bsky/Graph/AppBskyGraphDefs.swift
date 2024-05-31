@@ -119,7 +119,7 @@ extension AppBskyLexicon.Graph {
         public var description: String?
 
         /// An array of facets contained in the post's text. Optional.
-        public var descriptionFacets: [Facet]?
+        public var descriptionFacets: [AppBskyLexicon.RichText.Facet]?
 
         /// The avatar image URL of the user list. Optional.
         public var avatarImageURL: URL?
@@ -131,7 +131,8 @@ extension AppBskyLexicon.Graph {
         @DateFormatting public var indexedAt: Date
 
         public init(listURI: String, cidHash: String, creator: AppBskyLexicon.Actor.ProfileViewDefinition, name: String, purpose: ListPurpose,
-                    description: String?, descriptionFacets: [Facet]?, avatarImageURL: URL?, viewer: ListViewerStateDefinition?, indexedAt: Date) {
+                    description: String?, descriptionFacets: [AppBskyLexicon.RichText.Facet]?, avatarImageURL: URL?,
+                    viewer: ListViewerStateDefinition?, indexedAt: Date) {
             self.listURI = listURI
             self.cidHash = cidHash
             self.creator = creator
@@ -153,7 +154,7 @@ extension AppBskyLexicon.Graph {
             self.name = try container.decode(String.self, forKey: .name)
             self.purpose = try container.decode(ListPurpose.self, forKey: .purpose)
             self.description = try container.decodeIfPresent(String.self, forKey: .description)
-            self.descriptionFacets = try container.decodeIfPresent([Facet].self, forKey: .descriptionFacets)
+            self.descriptionFacets = try container.decodeIfPresent([AppBskyLexicon.RichText.Facet].self, forKey: .descriptionFacets)
             self.avatarImageURL = try container.decodeIfPresent(URL.self, forKey: .avatarImageURL)
             self.viewer = try container.decodeIfPresent(ListViewerStateDefinition.self, forKey: .viewer)
             self.indexedAt = try container.decode(DateFormatting.self, forKey: .indexedAt).wrappedValue

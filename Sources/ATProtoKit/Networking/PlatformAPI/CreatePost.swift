@@ -110,7 +110,8 @@ extension ATProtoKit {
     /// use in a record.
     ///
     /// - Important: Each image can only be 1 MB in size.
-    public func uploadImages(_ images: [ImageQuery], pdsURL: String = "https://bsky.social", accessToken: String) async throws -> ATUnion.PostEmbedUnion {
+    public func uploadImages(_ images: [ComAtprotoLexicon.Repository.ImageQuery], pdsURL: String = "https://bsky.social",
+                             accessToken: String) async throws -> ATUnion.PostEmbedUnion {
         var embedImages = [AppBskyLexicon.Embed.ImagesDefinition.Image]()
 
         for image in images {
@@ -174,7 +175,7 @@ extension ATProtoKit {
         /// Represents a set of images to be embedded in the post.
         /// - Parameter images: An array of `ImageQuery` objects, each containing the image data,
         /// metadata, and filenames of the image.
-        case images(images: [ImageQuery])
+        case images(images: [ComAtprotoLexicon.Repository.ImageQuery])
 
         /// Represents an external link to be embedded in the post.
         /// - Parameter url: A `URL` pointing to the external content.

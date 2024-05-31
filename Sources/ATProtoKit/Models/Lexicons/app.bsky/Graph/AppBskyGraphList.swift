@@ -41,7 +41,7 @@ extension AppBskyLexicon.Graph {
         public let description: String?
 
         /// An array of facets contained within the description. Optional.
-        public let descriptionFacets: [Facet]?
+        public let descriptionFacets: [AppBskyLexicon.RichText.Facet]?
 
         /// The avatar image of the list. Optional.
         public let avatarImage: ComAtprotoLexicon.Repository.UploadBlobOutput?
@@ -52,7 +52,7 @@ extension AppBskyLexicon.Graph {
         /// The date and time the list was created.
         @DateFormatting public var createdAt: Date
 
-        public init(name: String, purpose: ListPurpose, description: String?, descriptionFacets: [Facet]?,
+        public init(name: String, purpose: ListPurpose, description: String?, descriptionFacets: [AppBskyLexicon.RichText.Facet]?,
                     avatarImage: ComAtprotoLexicon.Repository.UploadBlobOutput?, labels: ATUnion.ListLabelsUnion, createdAt: Date) {
             self.name = name
             self.purpose = purpose
@@ -69,7 +69,7 @@ extension AppBskyLexicon.Graph {
             self.name = try container.decode(String.self, forKey: .name)
             self.purpose = try container.decode(ListPurpose.self, forKey: .purpose)
             self.description = try container.decodeIfPresent(String.self, forKey: .description)
-            self.descriptionFacets = try container.decodeIfPresent([Facet].self, forKey: .descriptionFacets)
+            self.descriptionFacets = try container.decodeIfPresent([AppBskyLexicon.RichText.Facet].self, forKey: .descriptionFacets)
             self.avatarImage = try container.decodeIfPresent(ComAtprotoLexicon.Repository.UploadBlobOutput.self, forKey: .avatarImage)
             self.labels = try container.decode(ATUnion.ListLabelsUnion.self, forKey: .labels)
             self.createdAt = try container.decode(DateFormatting.self, forKey: .createdAt).wrappedValue

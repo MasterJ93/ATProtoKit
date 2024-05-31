@@ -41,7 +41,7 @@ extension ATProtoKit {
         }
 
         // Make sure the number isn't lower than one.
-        let requestBody = ServerCreateInviteCode(
+        let requestBody = ComAtprotoLexicon.Server.CreateInviteCodeRequestBody(
             useCount: codeCount > 0 ? codeCount : 1,
             forAccount: account
         )

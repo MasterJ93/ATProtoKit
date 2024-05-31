@@ -396,7 +396,7 @@ extension AppBskyLexicon.Feed {
         public var description: String?
 
         /// An array of the facets within the feed generator's description.
-        public let descriptionFacets: [Facet]?
+        public let descriptionFacets: [AppBskyLexicon.RichText.Facet]?
 
         /// The avatar image URL of the feed generator.
         public var avatarImageURL: URL?
@@ -411,7 +411,7 @@ extension AppBskyLexicon.Feed {
         public let canAcceptInteractions: Bool?
 
         /// An array of labels. Optional.
-        public let labels: [Label]?
+        public let labels: [ComAtprotoLexicon.Label.LabelDefinition]?
 
         /// The viewer's state for the feed generator.
         public var viewer: GeneratorViewerStateDefinition?
@@ -420,7 +420,8 @@ extension AppBskyLexicon.Feed {
         @DateFormatting public var indexedAt: Date
 
         public init(feedURI: String, cidHash: String, feedDID: String, creator: AppBskyLexicon.Actor.ProfileViewDefinition, displayName: String,
-                    description: String?, descriptionFacets: [Facet]?, avatarImageURL: URL?, likeCount: Int?, canAcceptInteractions: Bool?, labels: [Label]?,
+                    description: String?, descriptionFacets: [AppBskyLexicon.RichText.Facet]?, avatarImageURL: URL?, likeCount: Int?,
+                    canAcceptInteractions: Bool?, labels: [ComAtprotoLexicon.Label.LabelDefinition]?,
                     viewer: GeneratorViewerStateDefinition?, indexedAt: Date) {
             self.feedURI = feedURI
             self.cidHash = cidHash
@@ -446,11 +447,11 @@ extension AppBskyLexicon.Feed {
             self.creator = try container.decode(AppBskyLexicon.Actor.ProfileViewDefinition.self, forKey: .creator)
             self.displayName = try container.decode(String.self, forKey: .displayName)
             self.description = try container.decodeIfPresent(String.self, forKey: .description)
-            self.descriptionFacets = try container.decodeIfPresent([Facet].self, forKey: .descriptionFacets)
+            self.descriptionFacets = try container.decodeIfPresent([AppBskyLexicon.RichText.Facet].self, forKey: .descriptionFacets)
             self.avatarImageURL = try container.decodeIfPresent(URL.self, forKey: .avatarImageURL)
             self.likeCount = try container.decodeIfPresent(Int.self, forKey: .likeCount)
             self.canAcceptInteractions = try container.decodeIfPresent(Bool.self, forKey: .canAcceptInteractions)
-            self.labels = try container.decodeIfPresent([Label].self, forKey: .labels)
+            self.labels = try container.decodeIfPresent([ComAtprotoLexicon.Label.LabelDefinition].self, forKey: .labels)
             self.viewer = try container.decodeIfPresent(GeneratorViewerStateDefinition.self, forKey: .viewer)
             self.indexedAt = try container.decode(DateFormatting.self, forKey: .indexedAt).wrappedValue
         }
@@ -570,7 +571,7 @@ extension AppBskyLexicon.Feed {
 
         // TODO: Make sure this is correct.
         /// An array of user lists.
-        public let lists: [GraphListViewBasic]
+        public let lists: [AppBskyLexicon.Graph.ListViewBasicDefinition]
 
         enum CodingKeys: String, CodingKey {
             case threadgateURI = "uri"

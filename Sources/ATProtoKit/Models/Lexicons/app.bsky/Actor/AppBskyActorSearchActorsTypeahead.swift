@@ -18,6 +18,6 @@ extension AppBskyLexicon.Actor {
     public struct SearchActorsTypeaheadOutput: Codable {
 
         /// An array of actors.
-        public let actors: [ActorProfileViewBasic]
+        public let actors: [ProfileViewBasicDefinition]
     }
 }

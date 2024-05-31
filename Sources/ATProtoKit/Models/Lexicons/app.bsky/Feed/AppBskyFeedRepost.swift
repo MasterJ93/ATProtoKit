@@ -25,14 +25,14 @@ extension AppBskyLexicon.Feed {
         public static private(set) var type: String = "app.bsky.feed.repost"
 
         /// The strong reference of the repost record.
-        public let subject: StrongReference
+        public let subject: ComAtprotoLexicon.Repository.StrongReference
 
         /// The date the like record was created.
         ///
         /// This is the date where the user "liked" a post.
         @DateFormatting public var createdAt: Date
 
-        public init(subject: StrongReference, createdAt: Date) {
+        public init(subject: ComAtprotoLexicon.Repository.StrongReference, createdAt: Date) {
             self.subject = subject
             self._createdAt = DateFormatting(wrappedValue: createdAt)
         }
@@ -40,7 +40,7 @@ extension AppBskyLexicon.Feed {
         public init(from decoder: Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
 
-            self.subject = try container.decode(StrongReference.self, forKey: .subject)
+            self.subject = try container.decode(ComAtprotoLexicon.Repository.StrongReference.self, forKey: .subject)
             self.createdAt = try container.decode(DateFormatting.self, forKey: .createdAt).wrappedValue
         }
 

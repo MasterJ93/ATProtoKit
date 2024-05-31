@@ -53,7 +53,7 @@ extension ComAtprotoLexicon.Moderation {
         public let id: Int
 
         /// The reason for the report.
-        public let reasonType: ModerationReasonType
+        public let reasonType: ComAtprotoLexicon.Moderation.ReasonTypeDefinition
 
         /// The reason for the report. Optional.
         public let reason: String?
@@ -73,7 +73,8 @@ extension ComAtprotoLexicon.Moderation {
         /// The date and time the report was created.
         @DateFormatting public var createdAt: Date
 
-        public init(id: Int, reasonType: ModerationReasonType, reason: String?, subject: ATUnion.CreateReportSubjectUnion, reportedBy: String, createdAt: Date) {
+        public init(id: Int, reasonType: ComAtprotoLexicon.Moderation.ReasonTypeDefinition, reason: String?, subject: ATUnion.CreateReportSubjectUnion,
+                    reportedBy: String, createdAt: Date) {
             self.id = id
             self.reasonType = reasonType
             self.reason = reason
@@ -86,7 +87,7 @@ extension ComAtprotoLexicon.Moderation {
             let container = try decoder.container(keyedBy: CodingKeys.self)
 
             self.id = try container.decode(Int.self, forKey: .id)
-            self.reasonType = try container.decode(ModerationReasonType.self, forKey: .reasonType)
+            self.reasonType = try container.decode(ComAtprotoLexicon.Moderation.ReasonTypeDefinition.self, forKey: .reasonType)
             self.reason = try container.decodeIfPresent(String.self, forKey: .reason)
             self.subject = try container.decode(ATUnion.CreateReportSubjectUnion.self, forKey: .subject)
             self.reportedBy = try container.decode(String.self, forKey: .reportedBy)

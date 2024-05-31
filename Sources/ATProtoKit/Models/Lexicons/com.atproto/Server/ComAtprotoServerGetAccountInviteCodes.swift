@@ -17,6 +17,6 @@ extension ComAtprotoLexicon.Server {
     public struct GetAccountInviteCodesOutput: Codable {
 
         /// An array of the user's invite codes.
-        public let code: [ServerInviteCode]
+        public let code: [ComAtprotoLexicon.Server.InviteCodeDefinition]
     }
 }

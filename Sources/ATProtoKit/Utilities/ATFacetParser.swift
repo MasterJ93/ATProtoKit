@@ -176,7 +176,7 @@ public class ATFacetParser {
 
                                 let mentionFacet = AppBskyLexicon.RichText.Facet(
                                     index: AppBskyLexicon.RichText.Facet.ByteSlice(byteStart: start, byteEnd: end),
-                                    features: [.mention(Mention(did: resolveHandleOutput.handleDID))])
+                                    features: [.mention(AppBskyLexicon.RichText.Facet.Mention(did: resolveHandleOutput.handleDID))])
 
                                 await facets.append(mentionFacet)
                             case .failure(let error):
@@ -199,7 +199,7 @@ public class ATFacetParser {
                        let end = link["end"] as? Int {
                         let linkFacet = AppBskyLexicon.RichText.Facet(
                             index: AppBskyLexicon.RichText.Facet.ByteSlice(byteStart: start, byteEnd: end),
-                            features: [.link(Link(uri: url))]
+                            features: [.link(AppBskyLexicon.RichText.Facet.Link(uri: url))]
                         )
 
                         await facets.append(linkFacet)
@@ -218,7 +218,7 @@ public class ATFacetParser {
                        let end = hashtag["end"] as? Int {
                         let hashTagFacet = AppBskyLexicon.RichText.Facet(
                             index: AppBskyLexicon.RichText.Facet.ByteSlice(byteStart: start, byteEnd: end),
-                            features: [.tag(Tag(tag: tag))]
+                            features: [.tag(AppBskyLexicon.RichText.Facet.Tag(tag: tag))]
                         )
 
                         await facets.append(hashTagFacet)

@@ -19,6 +19,6 @@ extension ComAtprotoLexicon.Admin {
     public struct GetAccountInfosOutput: Codable {
 
         /// An array of user account information.
-        public let infos: [AdminAccountView]
+        public let infos: [AccountViewDefinition]
     }
 }

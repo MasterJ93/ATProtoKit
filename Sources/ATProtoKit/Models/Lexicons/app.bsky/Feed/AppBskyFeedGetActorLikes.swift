@@ -23,6 +23,6 @@ extension AppBskyLexicon.Feed {
         public let cursor: String?
 
         /// An array of like records.
-        public let feed: [FeedViewPost]
+        public let feed: [AppBskyLexicon.Feed.FeedViewPostDefinition]
     }
 }

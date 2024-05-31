@@ -255,7 +255,7 @@ extension ComAtprotoLexicon.Label {
         public let isAdultOnly: Bool?
 
         /// An array of localized strings for the label. Optional.
-        public let locales: [LabelValueDefinitionStrings]
+        public let locales: [LabelValueDefinitionStringsDefinition]
 
         public func encode(to encoder: any Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)

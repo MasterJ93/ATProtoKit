@@ -110,7 +110,7 @@ extension AppBskyLexicon.Labeler {
         public let likeCount: Int?
 
         /// The viewer state of the labeler. Optional.
-        public let viewer: LabelerViewerState?
+        public let viewer: AppBskyLexicon.Labeler.LabelerViewerStateDefinition?
 
         /// The date and time the labeler was last indexed.
         @DateFormatting public var indexedAt: Date
@@ -119,7 +119,8 @@ extension AppBskyLexicon.Labeler {
         public let labels: [ComAtprotoLexicon.Label.LabelDefinition]?
 
         public init(labelerURI: String, labelerCIDHash: String, creator: AppBskyLexicon.Actor.ProfileViewDefinition, policies: LabelerPolicies,
-                    likeCount: Int?, viewer: LabelerViewerState?, indexedAt: Date, labels: [ComAtprotoLexicon.Label.LabelDefinition]?) {
+                    likeCount: Int?, viewer: AppBskyLexicon.Labeler.LabelerViewerStateDefinition?, indexedAt: Date,
+                    labels: [ComAtprotoLexicon.Label.LabelDefinition]?) {
             self.labelerURI = labelerURI
             self.labelerCIDHash = labelerCIDHash
             self.creator = creator
@@ -138,7 +139,7 @@ extension AppBskyLexicon.Labeler {
             self.creator = try container.decode(AppBskyLexicon.Actor.ProfileViewDefinition.self, forKey: .creator)
             self.policies = try container.decode(LabelerPolicies.self, forKey: .policies)
             self.likeCount = try container.decodeIfPresent(Int.self, forKey: .likeCount)
-            self.viewer = try container.decodeIfPresent(LabelerViewerState.self, forKey: .viewer)
+            self.viewer = try container.decodeIfPresent(AppBskyLexicon.Labeler.LabelerViewerStateDefinition.self, forKey: .viewer)
             self.indexedAt = try container.decode(DateFormatting.self, forKey: .indexedAt).wrappedValue
             self.labels = try container.decodeIfPresent([ComAtprotoLexicon.Label.LabelDefinition].self, forKey: .labels)
         }

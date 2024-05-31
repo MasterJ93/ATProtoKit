@@ -1117,7 +1117,7 @@ public struct ATUnion {
         case repositoryReference(ComAtprotoLexicon.Admin.RepositoryReferenceDefinition)
 
         /// A strong reference.
-        case strongReference(StrongReference)
+        case strongReference(ComAtprotoLexicon.Repository.StrongReference)
 
         /// A repository blob reference.
         case repositoryBlobReference(ComAtprotoLexicon.Admin.RepositoryBlobReferenceDefinition)
@@ -1127,7 +1127,7 @@ public struct ATUnion {
 
             if let value = try? container.decode(ComAtprotoLexicon.Admin.RepositoryReferenceDefinition.self) {
                 self = .repositoryReference(value)
-            } else if let value = try? container.decode(StrongReference.self) {
+            } else if let value = try? container.decode(ComAtprotoLexicon.Repository.StrongReference.self) {
                 self = .strongReference(value)
             } else if let value = try? container.decode(ComAtprotoLexicon.Admin.RepositoryBlobReferenceDefinition.self) {
                 self = .repositoryBlobReference(value)
@@ -1159,7 +1159,7 @@ public struct ATUnion {
         case repositoryReference(ComAtprotoLexicon.Admin.RepositoryReferenceDefinition)
 
         /// A strong reference.
-        case strongReference(StrongReference)
+        case strongReference(ComAtprotoLexicon.Repository.StrongReference)
 
         /// A repository blob reference.
         case repositoryBlobReference(ComAtprotoLexicon.Admin.RepositoryBlobReferenceDefinition)
@@ -1169,7 +1169,7 @@ public struct ATUnion {
 
             if let value = try? container.decode(ComAtprotoLexicon.Admin.RepositoryReferenceDefinition.self) {
                 self = .repositoryReference(value)
-            } else if let value = try? container.decode(StrongReference.self) {
+            } else if let value = try? container.decode(ComAtprotoLexicon.Repository.StrongReference.self) {
                 self = .strongReference(value)
             } else if let value = try? container.decode(ComAtprotoLexicon.Admin.RepositoryBlobReferenceDefinition.self) {
                 self = .repositoryBlobReference(value)
@@ -1233,22 +1233,22 @@ public struct ATUnion {
     public enum ApplyWritesUnion: Codable {
 
         /// A "Create" write operation.
-        case create(RepoApplyWritesCreate)
+        case create(ComAtprotoLexicon.Repository.ApplyWrites.Create)
 
         /// An "Update" write operation.
-        case update(RepoApplyWritesUpdate)
+        case update(ComAtprotoLexicon.Repository.ApplyWrites.Update)
 
         /// A "Delete" write operation.
-        case delete(RepoApplyWritesDelete)
+        case delete(ComAtprotoLexicon.Repository.ApplyWrites.Delete)
 
         public init(from decoder: Decoder) throws {
             let container = try decoder.singleValueContainer()
 
-            if let value = try? container.decode(RepoApplyWritesCreate.self) {
+            if let value = try? container.decode(ComAtprotoLexicon.Repository.ApplyWrites.Create.self) {
                 self = .create(value)
-            } else if let value = try? container.decode(RepoApplyWritesUpdate.self) {
+            } else if let value = try? container.decode(ComAtprotoLexicon.Repository.ApplyWrites.Update.self) {
                 self = .update(value)
-            } else if let value = try? container.decode(RepoApplyWritesDelete.self) {
+            } else if let value = try? container.decode(ComAtprotoLexicon.Repository.ApplyWrites.Delete.self) {
                 self = .delete(value)
             } else {
                 throw DecodingError.typeMismatch(

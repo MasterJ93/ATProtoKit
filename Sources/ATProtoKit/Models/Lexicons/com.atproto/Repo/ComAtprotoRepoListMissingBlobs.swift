@@ -34,6 +34,6 @@ extension ComAtprotoLexicon.Repository {
     public struct ListMissingBlobsOutput: Codable {
 
         /// An array of blobs.
-        public let blobs: [RecordBlob]
+        public let blobs: [ComAtprotoLexicon.Repository.ListMissingBlobs.RecordBlob]
     }
 }

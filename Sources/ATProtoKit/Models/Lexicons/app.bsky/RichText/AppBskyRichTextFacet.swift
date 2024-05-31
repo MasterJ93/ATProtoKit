@@ -23,9 +23,9 @@ extension AppBskyLexicon.RichText {
         public let index: ByteSlice
 
         /// The facet's feature type.
-        public let features: [FeatureUnion]
+        public let features: [ATUnion.FacetFeatureUnion]
 
-        public init(index: ByteSlice, features: [FeatureUnion]) {
+        public init(index: ByteSlice, features: [ATUnion.FacetFeatureUnion]) {
             self.index = index
             self.features = features
         }
@@ -34,7 +34,7 @@ extension AppBskyLexicon.RichText {
             let container = try decoder.container(keyedBy: CodingKeys.self)
 
             self.index = try container.decode(ByteSlice.self, forKey: .index)
-            self.features = try container.decode([FeatureUnion].self, forKey: .features)
+            self.features = try container.decode([ATUnion.FacetFeatureUnion].self, forKey: .features)
         }
 
         public func encode(to encoder: Encoder) throws {

@@ -41,7 +41,7 @@ extension AppBskyLexicon.Feed {
         public let description: String?
 
         /// An array of the facets within the feed generator's description. Optional.
-        public let descriptionFacets: [Facet]?
+        public let descriptionFacets: [AppBskyLexicon.RichText.Facet]?
 
         /// The URL of the avatar image. Optional.
         public let avatarImageURL: URL?
@@ -58,7 +58,7 @@ extension AppBskyLexicon.Feed {
         /// The date and time the feed was created.
         @DateFormatting public var createdAt: Date
 
-        public init(feedDID: String, displayName: String, description: String?, descriptionFacets: [Facet]?, avatarImageURL: URL?,
+        public init(feedDID: String, displayName: String, description: String?, descriptionFacets: [AppBskyLexicon.RichText.Facet]?, avatarImageURL: URL?,
                     canAcceptInteractions: Bool?, labels: ATUnion.GeneratorLabelsUnion?, createdAt: Date) {
             self.feedDID = feedDID
             self.displayName = displayName
@@ -76,7 +76,7 @@ extension AppBskyLexicon.Feed {
             self.feedDID = try container.decode(String.self, forKey: .feedDID)
             self.displayName = try container.decode(String.self, forKey: .displayName)
             self.description = try container.decodeIfPresent(String.self, forKey: .description)
-            self.descriptionFacets = try container.decodeIfPresent([Facet].self, forKey: .descriptionFacets)
+            self.descriptionFacets = try container.decodeIfPresent([AppBskyLexicon.RichText.Facet].self, forKey: .descriptionFacets)
             self.avatarImageURL = try container.decodeIfPresent(URL.self, forKey: .avatarImageURL)
             self.canAcceptInteractions = try container.decodeIfPresent(Bool.self, forKey: .canAcceptInteractions)
             self.labels = try container.decodeIfPresent(ATUnion.GeneratorLabelsUnion.self, forKey: .labels)

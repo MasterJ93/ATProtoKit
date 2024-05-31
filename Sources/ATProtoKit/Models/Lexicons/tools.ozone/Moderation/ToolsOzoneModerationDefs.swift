@@ -680,7 +680,7 @@ extension ToolsOzoneLexicon.Moderation {
         public let moderation: ToolsOzoneLexicon.Moderation.ModerationDefinition
 
         /// The invite code used by the user to sign up. Optional.
-        public var invitedBy: ServerInviteCode?
+        public var invitedBy: ComAtprotoLexicon.Server.InviteCodeDefinition?
 
         /// Indicates whether the invite codes held by the user are diabled. Optional.
         public var areInvitesDisabled: Bool?
@@ -689,7 +689,7 @@ extension ToolsOzoneLexicon.Moderation {
         public var inviteNote: String?
 
         public init(actorDID: String, handle: String, email: String? = nil, relatedRecords: UnknownType, indexedAt: Date,
-                    moderation: ToolsOzoneLexicon.Moderation.ModerationDefinition, invitedBy: ServerInviteCode? = nil, areInvitesDisabled: Bool? = nil,
+                    moderation: ToolsOzoneLexicon.Moderation.ModerationDefinition, invitedBy: ComAtprotoLexicon.Server.InviteCodeDefinition? = nil, areInvitesDisabled: Bool? = nil,
                     inviteNote: String? = nil) {
             self.actorDID = actorDID
             self.handle = handle
@@ -711,7 +711,7 @@ extension ToolsOzoneLexicon.Moderation {
             self.relatedRecords = try container.decode(UnknownType.self, forKey: .relatedRecords)
             self.indexedAt = try container.decode(DateFormatting.self, forKey: .indexedAt).wrappedValue
             self.moderation = try container.decode(ToolsOzoneLexicon.Moderation.ModerationDefinition.self, forKey: .moderation)
-            self.invitedBy = try container.decodeIfPresent(ServerInviteCode.self, forKey: .invitedBy)
+            self.invitedBy = try container.decodeIfPresent(ComAtprotoLexicon.Server.InviteCodeDefinition.self, forKey: .invitedBy)
             self.areInvitesDisabled = try container.decodeIfPresent(Bool.self, forKey: .areInvitesDisabled)
             self.inviteNote = try container.decodeIfPresent(String.self, forKey: .inviteNote)
         }

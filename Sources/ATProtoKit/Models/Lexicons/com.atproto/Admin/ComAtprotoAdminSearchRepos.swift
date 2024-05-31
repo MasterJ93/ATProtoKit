@@ -23,6 +23,11 @@ extension ComAtprotoLexicon.Admin {
         public let cursor: String?
 
         /// An array of repositories.
-        public let repos: OzoneModerationRepositoryView
+        public let repositories: ToolsOzoneLexicon.Moderation.RepositoryViewDefinition
+
+        enum CodingKeys: String, CodingKey {
+            case cursor
+            case repositories = "repos"
+        }
     }
 }

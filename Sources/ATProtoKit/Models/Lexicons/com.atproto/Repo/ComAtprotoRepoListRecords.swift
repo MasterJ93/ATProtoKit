@@ -23,6 +23,6 @@ extension ComAtprotoLexicon.Repository {
         public let cursor: String?
 
         /// An array of records.
-        public let records: [RecordOutput]
+        public let records: [ComAtprotoLexicon.Repository.GetRecordOutput]
     }
 }

@@ -107,7 +107,7 @@ public protocol ATImageProcessable {
     ///   - targetFileSize: The size (in bytes) the file needs to be.
     /// - Returns: An ``ImageQuery``, which combines the image itself in a `Data` format and
     /// the alt text.
-    func convertToImageQuery(imagePath: String, altText: String?, targetFileSize: Int) -> ImageQuery?
+    func convertToImageQuery(imagePath: String, altText: String?, targetFileSize: Int) -> ComAtprotoLexicon.Repository.ImageQuery?
 
     /// Removes all EXIF and GPS metadata from the image.
     ///
@@ -118,7 +118,7 @@ public protocol ATImageProcessable {
 }
 
 public extension ATImageProcessable {
-    func convertToImageQuery(imagePath: String, altText: String?, targetFileSize: Int = 1_000_000) -> ImageQuery? {
+    func convertToImageQuery(imagePath: String, altText: String?, targetFileSize: Int = 1_000_000) -> ComAtprotoLexicon.Repository.ImageQuery? {
         guard let image = NSImage(contentsOfFile: imagePath) else {
             print("Image could not be loaded.")
             return nil
@@ -166,7 +166,7 @@ public extension ATImageProcessable {
         }
 
         if let imageData {
-            return ImageQuery(imageData: imageData, fileName: filename, altText: altText)
+            return ComAtprotoLexicon.Repository.ImageQuery(imageData: imageData, fileName: filename, altText: altText)
         }
 
         return nil

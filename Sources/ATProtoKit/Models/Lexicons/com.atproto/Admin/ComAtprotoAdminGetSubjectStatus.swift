@@ -23,6 +23,6 @@ extension ComAtprotoLexicon.Admin {
         public let subject: ATUnion.AdminGetSubjectStatusUnion
 
         /// The attributes of the takedown event.
-        public let takedown: AdminStatusAttributes
+        public let takedown: StatusAttributesDefinition
     }
 }

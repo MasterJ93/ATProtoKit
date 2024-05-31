@@ -98,7 +98,7 @@ public class ATProtocolConfiguration: ProtocolConfiguration {
             return .failure(ATRequestPrepareError.invalidRequestURL)
         }
 
-        let credentials = SessionCredentials(
+        let credentials = ComAtprotoLexicon.Server.CreateSessionRequestBody(
             identifier: handle,
             password: appPassword,
             authenticationFactorToken: authenticationFactorToken
@@ -169,7 +169,7 @@ public class ATProtocolConfiguration: ProtocolConfiguration {
             return .failure(ATRequestPrepareError.invalidRequestURL)
         }
 
-        let requestBody = ServerCreateAccount(
+        let requestBody = ComAtprotoLexicon.Server.CreateAccountRequestBody(
             email: email,
             handle: handle,
             existingDID: existingDID,
