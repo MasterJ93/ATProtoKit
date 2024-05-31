@@ -11,6 +11,9 @@ extension ATProtoBlueskyChat {
 
     /// Retrieves the message context as a moderator.
     /// 
+    /// - Important: This is a moderator task and as such, regular users won't be able to access
+    /// this; if they attempt to do so, an error will occur.
+    ///
     /// - SeeAlso: This is based on the [`chat.bsky.moderation.getMessageContext`][github] lexicon.
     /// 
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/chat/bsky/moderation/getMessageContext.json
