@@ -42,6 +42,7 @@ extension ATProtoBlueskyChat {
                                                          contentTypeValue: "application/json",
                                                          authorizationValue: "Bearer \(accessToken)")
             let response = try await APIClientService.sendRequest(request,
+                                                                  withEncodingBody: requestBody,
                                                                   decodeTo: ChatBskyLexicon.Conversation.SendMessageBatchOutput.self)
 
             return .success(response)
