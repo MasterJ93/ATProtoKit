@@ -15,6 +15,7 @@ extension ChatBskyLexicon.Conversation {
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/chat/bsky/convo/sendMessageBatch.json
     public struct SendMessageBatch: Codable {
+
         /// A message batch object.
         ///
         /// - SeeAlso: This is based on the [`chat.bsky.convo.sendMessageBatch`][github] lexicon.
