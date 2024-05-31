@@ -37,7 +37,7 @@ extension ATProtoBlueskyChat {
             let request = APIClientService.createRequest(forRequest: requestURL,
                                                          andMethod: .get,
                                                          acceptValue: "application/json",
-                                                         contentTypeValue: nil,
+                                                         contentTypeValue: "application/json",
                                                          authorizationValue: "Bearer \(accessToken)")
             let response = try await APIClientService.sendRequest(request,
                                                                   decodeTo: ChatBskyLexicon.Conversation.MuteConversationOutput.self)
