@@ -11,7 +11,7 @@ extension ATProtoBlueskyChat {
 
     /// Exports the user's account data.
     ///
-    /// - SeeAlso: This is based on the [`app.bsky.graph.unmuteActorList`][github] lexicon.
+    /// - SeeAlso: This is based on the [`chat.bsky.actor.exportAccountData`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/chat/bsky/actor/exportAccountData.json
     ///
