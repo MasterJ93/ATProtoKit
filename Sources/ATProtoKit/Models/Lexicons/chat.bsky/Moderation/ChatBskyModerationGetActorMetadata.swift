@@ -44,13 +44,13 @@ extension ChatBskyLexicon.Moderation {
     public struct GetActorMetadataOutput: Codable {
 
         /// The metadata that reflects the past day.
-        public let dayMetadata: String
+        public let dayMetadata: GetActorMetadata.Metadata
 
         /// The metadata that reflects the past month.
-        public let monthMetadata: String
+        public let monthMetadata: GetActorMetadata.Metadata
 
         /// The metadata that reflects the entire lifetime of the user account.
-        public let allMetadata: String
+        public let allMetadata: GetActorMetadata.Metadata
 
         enum CodingKeys: String, CodingKey {
             case dayMetadata = "day"
