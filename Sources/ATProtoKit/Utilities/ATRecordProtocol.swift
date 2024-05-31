@@ -135,9 +135,9 @@ public struct ATRecordTypeRegistry {
 ///
 /// Within the ``ATRecordProtocol``-conforming `struct`, any properties that are of type
 /// `unknown` as dictated by the lexicon the `struct`conforms to _must_ of this type. For example,
-/// here's the basic structure for ``ATNotification``:
+/// here's the basic structure for ``AppBskyLexicon/Notification/Notification``:
 /// ```swift
-/// public struct ATNotification: Codable {
+/// public struct Notification: Codable {
 ///     public let notificationURI: String
 ///     public let notificationCID: String
 ///     public let notificationAuthor: String

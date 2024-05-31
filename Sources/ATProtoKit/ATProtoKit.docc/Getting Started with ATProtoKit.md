@@ -64,4 +64,4 @@ To create a post, use the ``ATProtoKit/ATProtoKit/createPostRecord(text:locales:
 let postResult = await atProto.createPostRecord(text: "Hello Bluesky!")
 ```
 
-You should see the post in your Bluesky account once you run this code. When the method successfully completes, you'll receive a ``StrongReference`` object that contains the URI of the record (``StrongReference/recordURI``) and the content identifier hash of the record (``StrongReference/cidHash``).
+You should see the post in your Bluesky account once you run this code. When the method successfully completes, you'll receive a ``ComAtprotoLexicon/Repository/StrongReference`` object that contains the URI of the record (``ComAtprotoLexicon/Repository/StrongReference/recordURI``) and the content identifier hash of the record (``ComAtprotoLexicon/Repository/StrongReference/cidHash``).
