@@ -10,11 +10,16 @@ import Foundation
 extension ATProtoBlueskyChat {
 
     /// Retrieves messages from a conversation.
-    ///
+    /// 
     /// - SeeAlso: This is based on the [`chat.bsky.convo.getMessages`][github] lexicon.
-    ///
+    /// 
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/chat/bsky/convo/getMessages.json
-    ///
+    /// 
+    /// - Parameters:
+    ///   - conversationID: The ID of the conversation.
+    ///   - limit: The number of items that can be in the list. Optional. Defaults to `50`.
+    /// - Returns: A `Result`, containing either a ``ChatBskyLexicon/Conversation/GetMessagesOutput``
+    /// if successful, or an `Error` if not.
     public func getMessages(
         from conversationID: String,
         limit: Int? = 50

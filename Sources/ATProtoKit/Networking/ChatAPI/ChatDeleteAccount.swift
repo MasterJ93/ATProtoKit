@@ -16,7 +16,6 @@ extension ATProtoBlueskyChat {
     /// - SeeAlso: This is based on the [`chat.bsky.actor.deleteAccount`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/chat/bsky/actor/deleteAccount.json
-    ///
     public func deleteAccount() async throws {
         guard session != nil,
               let accessToken = session?.accessToken else {
