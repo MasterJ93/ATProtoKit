@@ -58,6 +58,7 @@ Task {
 ### Authentication and Session Management
 
 - ``ATProtoKit/ATProtoKitConfiguration``
+- ``ATProtocolConfiguration``
 - ``UserSession``
  
  @Comment {
@@ -71,6 +72,8 @@ Task {
 - ``ChatBskyLexicon``
 - ``ComAtprotoLexicon``
 - ``ToolsOzoneLexicon``
+- ``ATRecordProtocol``
+- ``ATRecordTypeRegistry``
 
 @Comment {
     The following should be added:
@@ -86,6 +89,8 @@ Task {
 }
 
 ### Data Streams
+
+- ``ATCBORManager``
 
 @Comment {
     The following should be added:
