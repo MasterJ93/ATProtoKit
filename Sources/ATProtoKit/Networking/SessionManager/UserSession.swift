@@ -42,7 +42,13 @@ public struct UserSession: SessionProtocol {
     /// information. Optional.
     public private(set) var didDocument: DIDDocument?
     
-    
+    /// Indicates whether the user account is active. Optional.
+    public var isActive: Bool?
+
+    /// Indicates the possible reason for why the user account is inactive. Optional.
+    public var status: UserAccountStatus?
+
+
     /// The URL of the Personal Data Server (PDS) associated with the user. Optional.
     ///
     /// - Note: This is not included when initalizing `UserSession`. Instead, it's added
@@ -54,7 +60,8 @@ public struct UserSession: SessionProtocol {
 
     /// Initializes a new user session with the specified details.
     public init(handle: String, sessionDID: String, email: String? = nil, isEmailConfirmed: Bool? = nil, isEmailAuthenticationFactorEnabled: Bool?,
-                accessToken: String, refreshToken: String, didDocument: DIDDocument? = nil, pdsURL: String? = nil, logger: Logger? = nil) {
+                accessToken: String, refreshToken: String, didDocument: DIDDocument? = nil, isActive: Bool?, status: UserAccountStatus?,
+                pdsURL: String? = nil, logger: Logger? = nil) {
         self.handle = handle
         self.sessionDID = sessionDID
         self.email = email
@@ -63,6 +70,8 @@ public struct UserSession: SessionProtocol {
         self.accessToken = accessToken
         self.refreshToken = refreshToken
         self.didDocument = didDocument
+        self.isActive = isActive
+        self.status = status
         self.pdsURL = pdsURL
         self.logger = logger
     }
@@ -76,6 +85,8 @@ public struct UserSession: SessionProtocol {
         case accessToken = "accessJwt"
         case refreshToken = "refreshJwt"
         case didDocument = "didDoc"
+        case isActive = "active"
+        case status
         case pdsURL
     }
 }
@@ -148,4 +159,21 @@ public struct ATService: Codable {
 
     /// The endpoint URL for the service, specifying the location of the service.
     public var serviceEndpoint: URL
+}
+
+/// Indicates the status of the user account if it's inactivate.
+///
+/// - Note: According to the AT Protocol specifications: "If active=false, this optional field
+/// indicates a possible reason for why the account is not active. If active=false and no status
+/// is supplied, then the host makes no claim for why the repository is no longer being hosted."
+public enum UserAccountStatus: String, Codable {
+
+    /// Indicates the user account is inactive due to a takedown.
+    case takedown
+
+    /// Indicates the user account is inactivate due to a suspension.
+    case suspended
+
+    /// Indicates the user account is inactivate due to a deactivation.
+    case deactivated
 }

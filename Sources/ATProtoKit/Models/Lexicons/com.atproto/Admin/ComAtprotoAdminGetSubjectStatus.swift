@@ -22,7 +22,10 @@ extension ComAtprotoLexicon.Admin {
         /// The subject itself.
         public let subject: ATUnion.AdminGetSubjectStatusUnion
 
-        /// The attributes of the takedown event.
-        public let takedown: StatusAttributesDefinition
+        /// The attributes of the takedown event. Optional.
+        public let takedown: StatusAttributesDefinition?
+
+        /// The attributes of the deactivation event. Optional.
+        public let deactivated: StatusAttributesDefinition?
     }
 }

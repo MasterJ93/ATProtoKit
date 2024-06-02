@@ -688,9 +688,12 @@ extension ToolsOzoneLexicon.Moderation {
         /// The note of the invite. Optional.
         public var inviteNote: String?
 
+        /// The date and time a status has been deactivated.
+        @DateFormattingOptional public var deactivatedAt: Date?
+
         public init(actorDID: String, handle: String, email: String? = nil, relatedRecords: UnknownType, indexedAt: Date,
                     moderation: ToolsOzoneLexicon.Moderation.ModerationDefinition, invitedBy: ComAtprotoLexicon.Server.InviteCodeDefinition? = nil,
-                    areInvitesDisabled: Bool? = nil, inviteNote: String? = nil) {
+                    areInvitesDisabled: Bool? = nil, inviteNote: String? = nil, deactivatedAt: Date?) {
             self.actorDID = actorDID
             self.handle = handle
             self.email = email
@@ -700,6 +703,7 @@ extension ToolsOzoneLexicon.Moderation {
             self.invitedBy = invitedBy
             self.areInvitesDisabled = areInvitesDisabled
             self.inviteNote = inviteNote
+            self._deactivatedAt = DateFormattingOptional(wrappedValue: deactivatedAt)
         }
 
         public init(from decoder: Decoder) throws {
@@ -714,6 +718,7 @@ extension ToolsOzoneLexicon.Moderation {
             self.invitedBy = try container.decodeIfPresent(ComAtprotoLexicon.Server.InviteCodeDefinition.self, forKey: .invitedBy)
             self.areInvitesDisabled = try container.decodeIfPresent(Bool.self, forKey: .areInvitesDisabled)
             self.inviteNote = try container.decodeIfPresent(String.self, forKey: .inviteNote)
+            self.deactivatedAt = try container.decodeIfPresent(DateFormatting.self, forKey: .deactivatedAt)?.wrappedValue
         }
 
         public func encode(to encoder: Encoder) throws {
@@ -728,6 +733,7 @@ extension ToolsOzoneLexicon.Moderation {
             try container.encodeIfPresent(self.invitedBy, forKey: .invitedBy)
             try container.encodeIfPresent(self.areInvitesDisabled, forKey: .areInvitesDisabled)
             try container.encodeIfPresent(self.inviteNote, forKey: .inviteNote)
+            try container.encodeIfPresent(self._deactivatedAt, forKey: .deactivatedAt)
         }
 
         enum CodingKeys: String, CodingKey {
@@ -740,6 +746,7 @@ extension ToolsOzoneLexicon.Moderation {
             case invitedBy
             case areInvitesDisabled = "invitesDisabled"
             case inviteNote
+            case deactivatedAt
         }
     }
 
@@ -792,10 +799,13 @@ extension ToolsOzoneLexicon.Moderation {
         /// The date and time the email of the user was confirmed. Optional.
         @DateFormattingOptional public var emailConfirmedAt: Date?
 
+        /// The date and time a status has been deactivated.
+        @DateFormattingOptional public var deactivatedAt: Date?
+
         public init(actorDID: String, handle: String, email: String?, relatedRecords: UnknownType, indexedAt: Date,
                     moderation: ToolsOzoneLexicon.Moderation.ModerationDetailDefinition, labels: [ComAtprotoLexicon.Label.LabelDefinition]?,
                     invitedBy: ComAtprotoLexicon.Server.InviteCodeDefinition?, invites: [ComAtprotoLexicon.Server.InviteCodeDefinition]?,
-                    areInvitesDisabled: Bool?, inviteNote: String?, emailConfirmedAt: Date? = nil) {
+                    areInvitesDisabled: Bool?, inviteNote: String?, emailConfirmedAt: Date? = nil, deactivatedAt: Date?) {
             self.actorDID = actorDID
             self.handle = handle
             self.email = email
@@ -808,6 +818,7 @@ extension ToolsOzoneLexicon.Moderation {
             self.areInvitesDisabled = areInvitesDisabled
             self.inviteNote = inviteNote
             self._emailConfirmedAt = DateFormattingOptional(wrappedValue: emailConfirmedAt)
+            self._deactivatedAt = DateFormattingOptional(wrappedValue: deactivatedAt)
         }
 
         public init(from decoder: Decoder) throws {
@@ -825,6 +836,7 @@ extension ToolsOzoneLexicon.Moderation {
             self.areInvitesDisabled = try container.decodeIfPresent(Bool.self, forKey: .areInvitesDisabled)
             self.inviteNote = try container.decodeIfPresent(String.self, forKey: .inviteNote)
             self.emailConfirmedAt = try container.decodeIfPresent(DateFormattingOptional.self, forKey: .emailConfirmedAt)?.wrappedValue
+            self.deactivatedAt = try container.decodeIfPresent(DateFormatting.self, forKey: .deactivatedAt)?.wrappedValue
         }
 
         public func encode(to encoder: Encoder) throws {
@@ -842,6 +854,7 @@ extension ToolsOzoneLexicon.Moderation {
             try container.encodeIfPresent(self.areInvitesDisabled, forKey: .areInvitesDisabled)
             try container.encodeIfPresent(self.inviteNote, forKey: .inviteNote)
             try container.encode(self._emailConfirmedAt, forKey: .emailConfirmedAt)
+            try container.encodeIfPresent(self._deactivatedAt, forKey: .deactivatedAt)
         }
 
         enum CodingKeys: String, CodingKey {
@@ -857,6 +870,7 @@ extension ToolsOzoneLexicon.Moderation {
             case areInvitesDisabled = "invitesDisabled"
             case inviteNote
             case emailConfirmedAt
+            case deactivatedAt
         }
     }
 
