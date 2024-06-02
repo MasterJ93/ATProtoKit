@@ -230,3 +230,16 @@ public class ATFacetParser {
         return await facets.facets
     }
 }
+
+/// A data model protocol for Features.
+///
+/// - SeeAlso: This is based on the [`app.bsky.richtext.facet`][github] lexicon.
+///
+/// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/richtext/facet.json
+internal protocol FeatureCodable: Codable {
+
+    /// The identifier of the lexicon.
+    ///
+    /// - Warning: The value must not change.
+    static var type: String { get }
+}
