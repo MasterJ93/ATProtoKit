@@ -99,6 +99,7 @@ Task {
 - ``APIClientService``
 - ``ATImageProcessable``
 - <doc:DateFormatting-PropertyWrapper>
+- ``ATFacetParser``
 
 @Comment {
     The following should be added:
