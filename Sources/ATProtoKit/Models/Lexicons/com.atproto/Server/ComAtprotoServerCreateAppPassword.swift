@@ -23,6 +23,19 @@ extension ComAtprotoLexicon.Server {
         /// - Note: According to the AT Protocol specifications: "A short name for the
         /// App Password, to help distinguish them."
         public let name: String
+
+        /// Indicates whether this App Password can be used to access sensitive content from
+        /// the user account.
+        ///
+        /// - Note: According to the AT Protocol specifications: "If an app password has
+        /// 'privileged' access to possibly sensitive account state. Meant for use with
+        /// trusted clients."
+        public let isPrivileged: Bool?
+
+        enum CodingKeys: String, CodingKey {
+            case name
+            case isPrivileged = "privileged"
+        }
     }
 
     /// An output model for creating an App Password.

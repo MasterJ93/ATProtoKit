@@ -21,11 +21,16 @@ extension ATProtoKit {
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/server/createAppPassword.json
     ///
-    /// - Parameter passwordName: The name given to the App Password to help distingush it
-    /// from others.
+    /// - Parameters:
+    ///   - passwordName: The name given to the App Password to help distingush it from others.
+    ///   - isPrivileged: Indicates whether this App Password can be used to access sensitive
+    ///   content from the user account.
     /// - Returns: A `Result`, either containing a ``ComAtprotoLexicon/Server/CreateAppPasswordOutput``
     /// if successful, or an `Error` if not.
-    public func createAppPassword(named passwordName: String) async throws -> Result<ComAtprotoLexicon.Server.CreateAppPasswordOutput, Error> {
+    public func createAppPassword(
+        named passwordName: String,
+        isPrivileged: Bool?
+    ) async throws -> Result<ComAtprotoLexicon.Server.CreateAppPasswordOutput, Error> {
         guard session != nil,
               let accessToken = session?.accessToken else {
             return .failure(ATRequestPrepareError.missingActiveSession)
@@ -37,7 +42,8 @@ extension ATProtoKit {
         }
 
         let requestBody = ComAtprotoLexicon.Server.CreateAppPasswordRequestBody(
-            name: passwordName
+            name: passwordName,
+            isPrivileged: isPrivileged
         )
 
         do {

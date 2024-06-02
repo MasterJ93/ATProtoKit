@@ -40,8 +40,8 @@ extension ToolsOzoneLexicon.Moderation {
         /// The subject handle of the event view. Optional.
         public var subjectHandle: String?
 
-        public init(id: Int, event: ATUnion.ModerationEventViewUnion, subject: ATUnion.ModerationEventViewSubjectUnion, subjectBlobCIDHashes: [String], createdBy: String,
-                    createdAt: Date, creatorHandle: String?, subjectHandle: String?) {
+        public init(id: Int, event: ATUnion.ModerationEventViewUnion, subject: ATUnion.ModerationEventViewSubjectUnion, subjectBlobCIDHashes: [String],
+                    createdBy: String, createdAt: Date, creatorHandle: String?, subjectHandle: String?) {
             self.id = id
             self.event = event
             self.subject = subject
@@ -115,8 +115,8 @@ extension ToolsOzoneLexicon.Moderation {
         /// The date and time the event view was created.
         @DateFormatting public var createdAt: Date
 
-        public init(id: Int, event: ATUnion.ModerationEventViewDetailUnion, subject: ATUnion.ModerationEventViewDetailSubjectUnion, subjectBlobs: [ToolsOzoneLexicon.Moderation.BlobViewDefinition],
-                    createdBy: String, createdAt: Date) {
+        public init(id: Int, event: ATUnion.ModerationEventViewDetailUnion, subject: ATUnion.ModerationEventViewDetailSubjectUnion,
+                    subjectBlobs: [ToolsOzoneLexicon.Moderation.BlobViewDefinition], createdBy: String, createdAt: Date) {
             self.id = id
             self.event = event
             self.subject = subject
@@ -232,10 +232,10 @@ extension ToolsOzoneLexicon.Moderation {
         /// An array of tags. Optional.
         public var tags: [String]?
 
-        public init(id: Int, subject: ATUnion.SubjectStatusViewSubjectUnion, subjectBlobCIDHashes: [String]?, subjectRepoHandle: String?, updatedAt: Date, createdAt: Date,
-                    reviewState: ToolsOzoneLexicon.Moderation.SubjectReviewStateDefinition, comment: String?, muteUntil: Date?, muteReportingUntil: Date?,
-                    lastReviewedBy: String?, lastReviewedAt: Date?, lastReportedAt: Date?, lastAppealedAt: Date?, isTakenDown: Bool?, wasAppealed: Bool?,
-                    suspendUntil: Date?, tags: [String]?) {
+        public init(id: Int, subject: ATUnion.SubjectStatusViewSubjectUnion, subjectBlobCIDHashes: [String]?, subjectRepoHandle: String?, updatedAt: Date,
+                    createdAt: Date, reviewState: ToolsOzoneLexicon.Moderation.SubjectReviewStateDefinition, comment: String?, muteUntil: Date?,
+                    muteReportingUntil: Date?, lastReviewedBy: String?, lastReviewedAt: Date?, lastReportedAt: Date?, lastAppealedAt: Date?, isTakenDown: Bool?,
+                    wasAppealed: Bool?, suspendUntil: Date?, tags: [String]?) {
             self.id = id
             self.subject = subject
             self.subjectBlobCIDHashes = subjectBlobCIDHashes
@@ -689,8 +689,8 @@ extension ToolsOzoneLexicon.Moderation {
         public var inviteNote: String?
 
         public init(actorDID: String, handle: String, email: String? = nil, relatedRecords: UnknownType, indexedAt: Date,
-                    moderation: ToolsOzoneLexicon.Moderation.ModerationDefinition, invitedBy: ComAtprotoLexicon.Server.InviteCodeDefinition? = nil, areInvitesDisabled: Bool? = nil,
-                    inviteNote: String? = nil) {
+                    moderation: ToolsOzoneLexicon.Moderation.ModerationDefinition, invitedBy: ComAtprotoLexicon.Server.InviteCodeDefinition? = nil,
+                    areInvitesDisabled: Bool? = nil, inviteNote: String? = nil) {
             self.actorDID = actorDID
             self.handle = handle
             self.email = email
