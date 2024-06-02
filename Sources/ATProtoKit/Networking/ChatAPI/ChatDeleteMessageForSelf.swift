@@ -20,7 +20,7 @@ extension ATProtoBlueskyChat {
     ///   - messageID: The ID of the message.
     /// /// - Returns: A `Result`, containing either a ``ChatBskyLexicon/Conversation/DeletedMessageViewDefinition``
     /// if successful, or an `Error` if not.
-    public func DeleteMessageForSelf(
+    public func deleteMessageForSelf(
         conversationID: String,
         messageID: String
     ) async throws -> Result<ChatBskyLexicon.Conversation.DeletedMessageViewDefinition, Error> {
