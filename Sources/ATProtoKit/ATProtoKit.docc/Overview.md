@@ -95,6 +95,7 @@ Task {
 }
 
 ### Utilities
+- ``ATProtoTools``
 - ``APIClientService``
 - ``ATImageProcessable``
 - <doc:DateFormatting-PropertyWrapper>
