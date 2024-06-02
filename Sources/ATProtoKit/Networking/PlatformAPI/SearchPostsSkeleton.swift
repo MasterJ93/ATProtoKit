@@ -42,12 +42,23 @@ extension ATProtoKit {
     ///   to `25`.
     ///   - cursor: The mark used to indicate the starting point for the next set of
     ///   result. Optional.
-    /// - Returns: A `Result`, containing either an ``UnspeccedSearchPostsSkeletonOutput``
+    /// - Returns: A `Result`, containing either an ``AppBskyLexicon/Unspecced/SearchPostsSkeletonOutput``
     /// if successful, or an `Error` if not.
-    public func searchPostsSkeleton(with searchQuery: String, sortRanking: UnspeccedSearchPostsSortRanking? = .latest, sinceDate: Date?, untilDate: Date?,
-                                    mentionIdentifier: String? = nil, author: String? = nil, language: Locale?, domain: String?, url: String?,
-                                    tags: [String]?, limit: Int? = 25, cursor: String? = nil,
-                                    pdsURL: String? = nil) async throws -> Result<UnspeccedSearchPostsSkeletonOutput, Error> {
+    public func searchPostsSkeleton(
+        with searchQuery: String,
+        sortRanking: AppBskyLexicon.Unspecced.SearchPostsSkeleton.Sort? = .latest,
+        sinceDate: Date?,
+        untilDate: Date?,
+        mentionIdentifier: String? = nil,
+        author: String? = nil,
+        language: Locale?,
+        domain: String?,
+        url: String?,
+        tags: [String]?,
+        limit: Int? = 25,
+        cursor: String? = nil,
+        pdsURL: String? = nil
+    ) async throws -> Result<AppBskyLexicon.Unspecced.SearchPostsSkeletonOutput, Error> {
         guard let sessionURL = pdsURL != nil ? pdsURL : session?.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/app.bsky.unspecced.searchPostsSkeleton") else {
             return .failure(ATRequestPrepareError.invalidRequestURL)
@@ -116,7 +127,7 @@ extension ATProtoKit {
                                                          contentTypeValue: nil,
                                                          authorizationValue: nil)
             let response = try await APIClientService.sendRequest(request,
-                                                                  decodeTo: UnspeccedSearchPostsSkeletonOutput.self)
+                                                                  decodeTo: AppBskyLexicon.Unspecced.SearchPostsSkeletonOutput.self)
 
             return .success(response)
         } catch {

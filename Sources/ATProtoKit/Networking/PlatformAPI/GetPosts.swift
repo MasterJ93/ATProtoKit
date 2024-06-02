@@ -25,9 +25,9 @@ extension ATProtoKit {
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/feed/getPosts.json
     ///
     /// - Parameter postURIs: An array of URIs of post records.
-    /// - Returns: A `Result`, containing either a ``FeedGetPostsOutput``
+    /// - Returns: A `Result`, containing either a ``AppBskyLexicon/Feed/GetPostsOutput``
     /// if successful, or an `Error` if not.
-    public func getPosts(_ postURIs: [String]) async throws -> Result<FeedGetPostsOutput, Error> {
+    public func getPosts(_ postURIs: [String]) async throws -> Result<AppBskyLexicon.Feed.GetPostsOutput, Error> {
         guard session != nil,
               let accessToken = session?.accessToken else {
             return .failure(ATRequestPrepareError.missingActiveSession)
@@ -58,7 +58,7 @@ extension ATProtoKit {
                                                          contentTypeValue: nil,
                                                          authorizationValue: "Bearer \(accessToken)")
             let response = try await APIClientService.sendRequest(request,
-                                                                  decodeTo: FeedGetPostsOutput.self)
+                                                                  decodeTo: AppBskyLexicon.Feed.GetPostsOutput.self)
 
             return .success(response)
         } catch {

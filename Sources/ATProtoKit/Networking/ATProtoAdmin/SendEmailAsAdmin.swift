@@ -27,10 +27,15 @@ extension ATProtoAdmin {
     ///   - content: The content of the email.
     ///   - senderDID: The decentralized identifier (DID) of the sender.
     ///   - comment: Any additional comments viewable to other moderators and administrators.
-    /// - Returns: A `Result`, containing either an ``AdminSendEmailOutput``
+    /// - Returns: A `Result`, containing either an ``ComAtprotoLexicon/Admin/SendEmailOutput``
     /// if successful, or an `Error` if not.
-    public func sendEmail(to recipientDID: String, withSubjectLine subjectLine: String?, content: String,
-                          senderDID: String, comment: String?) async throws -> Result<AdminSendEmailOutput, Error> {
+    public func sendEmail(
+        to recipientDID: String,
+        withSubjectLine subjectLine: String?,
+        content: String,
+        senderDID: String,
+        comment: String?
+    ) async throws -> Result<ComAtprotoLexicon.Admin.SendEmailOutput, Error> {
         guard session != nil,
               let accessToken = session?.accessToken else {
             return .failure(ATRequestPrepareError.missingActiveSession)
@@ -41,7 +46,7 @@ extension ATProtoAdmin {
             return .failure(ATRequestPrepareError.invalidRequestURL)
         }
 
-        let requestBody = AdminSendEmail(
+        let requestBody = ComAtprotoLexicon.Admin.SendEmailRequestBody(
             recipientDID: recipientDID,
             content: content,
             subject: subjectLine,
@@ -57,7 +62,7 @@ extension ATProtoAdmin {
                                                          authorizationValue: "Bearer \(accessToken)")
             let response = try await APIClientService.sendRequest(request,
                                                                   withEncodingBody: requestBody,
-                                                                  decodeTo: AdminSendEmailOutput.self)
+                                                                  decodeTo: ComAtprotoLexicon.Admin.SendEmailOutput.self)
 
             return .success(response)
         } catch {

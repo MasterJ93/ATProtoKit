@@ -33,7 +33,7 @@ extension ATProtoAdmin {
             throw ATRequestPrepareError.invalidRequestURL
         }
 
-        let requestBody = AdminDeleteAccount(
+        let requestBody = ComAtprotoLexicon.Admin.DeleteAccountRequestBody(
             accountDID: accountDID
         )
 

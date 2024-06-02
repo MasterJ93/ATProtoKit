@@ -27,7 +27,10 @@ extension ATProtoAdmin {
     ///   - accountDID: The decentralized identifier (DID) of the user's account.
     ///   - note: A note as to why the user account is getting the ability to receive invite
     ///   codes reinstated. Optional.
-    public func enableAccountInvites(for accountDID: String, note: String?) async throws {
+    public func enableAccountInvites(
+        for accountDID: String,
+        note: String?
+    ) async throws {
         guard session != nil,
               let accessToken = session?.accessToken else {
             throw ATRequestPrepareError.missingActiveSession
@@ -38,7 +41,7 @@ extension ATProtoAdmin {
             throw ATRequestPrepareError.invalidRequestURL
         }
 
-        let requestBody = AdminEnableAccountInvites(
+        let requestBody = ComAtprotoLexicon.Admin.EnableAccountInvitesRequestBody(
             accountDID: accountDID,
             note: note
         )

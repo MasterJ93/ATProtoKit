@@ -23,9 +23,12 @@ extension ATProtoAdmin {
     /// - Parameters:
     ///   - recordURI: The URI of the record.
     ///   - recordCID: The CID hash of the record. Optional.
-    /// - Returns: A `Result`, containing either an ``OzoneModerationRecordViewDetail``
+    /// - Returns: A `Result`, containing either an ``ToolsOzoneLexicon/Moderation/RecordViewDetailDefinition``
     /// if successful, or an `Error` if not.
-    public func getRecord(_ recordURI: String, recordCID: String?) async throws -> Result<OzoneModerationRecordViewDetail, Error> {
+    public func getRecord(
+        _ recordURI: String,
+        recordCID: String?
+    ) async throws -> Result<ToolsOzoneLexicon.Moderation.RecordViewDetailDefinition, Error> {
         guard session != nil,
               let accessToken = session?.accessToken else {
             return .failure(ATRequestPrepareError.missingActiveSession)
@@ -56,7 +59,7 @@ extension ATProtoAdmin {
                                                          contentTypeValue: nil,
                                                          authorizationValue: "Bearer \(accessToken)")
             let response = try await APIClientService.sendRequest(request,
-                                                                  decodeTo: OzoneModerationRecordViewDetail.self)
+                                                                  decodeTo: ToolsOzoneLexicon.Moderation.RecordViewDetailDefinition.self)
 
             return .success(response)
         } catch {

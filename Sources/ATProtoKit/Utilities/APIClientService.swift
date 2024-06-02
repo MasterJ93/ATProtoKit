@@ -168,8 +168,8 @@ public class APIClientService {
     ///   - imageData: The data of the blob to upload.
     /// - Returns: A `BlobContainer` instance with the upload result.
     public static func uploadBlob(pdsURL: String = "https://bsky.social", accessToken: String, filename: String,
-                                  imageData: Data) async throws -> BlobContainer {
-        logger.trace("In uploadBlob()")
+                                  imageData: Data) async throws -> ComAtprotoLexicon.Repository.BlobContainer {
+         logger.trace("In uploadBlob()")
          guard let requestURL = URL(string: "\(pdsURL)/xrpc/com.atproto.repo.uploadBlob") else {
              logger.error("Error while uploading blob", metadata: ["error": "\(ATRequestPrepareError.invalidRequestURL)"])
              throw ATRequestPrepareError.invalidRequestURL
@@ -187,7 +187,7 @@ public class APIClientService {
 
             logger.debug("Uploading blob", metadata: ["url": "\(requestURL)", "mime-type": "\(mimeType)", "size": "\(imageData.count)"])
             let response = try await sendRequest(request,
-                                                 decodeTo: BlobContainer.self)
+                                                 decodeTo: ComAtprotoLexicon.Repository.BlobContainer.self)
 
             logger.debug("Blob upload successful")
             logger.trace("Exiting uploadBlob()")

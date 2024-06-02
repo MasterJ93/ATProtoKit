@@ -31,11 +31,19 @@ public struct SessionResponse: SessionProtocol {
     /// information. Optional.
     public var didDocument: DIDDocument?
 
+
+    /// Indicates whether the user account is active. Optional.
+    public var isActive: Bool?
+
+    /// Indicates the possible reason for why the user account is inactive. Optional.
+    public var status: UserAccountStatus?
+
     enum CodingKeys: String, CodingKey {
         case handle
         case sessionDID = "did"
         case email
         case isEmailConfirmed = "emailConfirmed"
         case didDocument = "didDoc"
+        case isActive = "active"
     }
 }

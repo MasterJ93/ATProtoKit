@@ -91,7 +91,14 @@ public struct ATRecordTypeRegistry {
     /// `struct` that was found if there's a match.
     public static var recordRegistry = [String: ATRecordProtocol.Type]()
 
+    /// Indicates whether any Bluesky-related `ATRecordProtocol`-conforming `struct`s have been
+    /// added to ``recordRegistry``. Defaults to `false`.
+    ///
+    /// - Warning: Don't touch this property; this should only be used for ``ATProtoKit``.
+    public static var areBlueskyRecordsRegistered = false
+
     /// Initializes the registry with an array of record types.
+    ///
     /// - Parameter types: An array of ``ATRecordProtocol``-conforming `struct`s.
     public init(types: [ATRecordProtocol.Type]) {
         for type in types {
@@ -128,9 +135,9 @@ public struct ATRecordTypeRegistry {
 ///
 /// Within the ``ATRecordProtocol``-conforming `struct`, any properties that are of type
 /// `unknown` as dictated by the lexicon the `struct`conforms to _must_ of this type. For example,
-/// here's the basic structure for ``ATNotification``:
+/// here's the basic structure for ``AppBskyLexicon/Notification/Notification``:
 /// ```swift
-/// public struct ATNotification: Codable {
+/// public struct Notification: Codable {
 ///     public let notificationURI: String
 ///     public let notificationCID: String
 ///     public let notificationAuthor: String

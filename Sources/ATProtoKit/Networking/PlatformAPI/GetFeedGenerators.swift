@@ -22,9 +22,9 @@ extension ATProtoKit {
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/feed/getFeedGenerators.json
     ///
     /// - Parameter feedURIs: An array of URIs for feed generators.
-    /// - Returns: A `Result`, containing either a ``FeedGetFeedGeneratorOutput``
+    /// - Returns: A `Result`, containing either a ``AppBskyLexicon/Feed/GetFeedGeneratorsOutput``
     /// if successful, or an `Error` if not.
-    public func getFeedGenerators(_ feedURIs: [String]) async throws -> Result<FeedGetFeedGeneratorsOutput, Error> {
+    public func getFeedGenerators(_ feedURIs: [String]) async throws -> Result<AppBskyLexicon.Feed.GetFeedGeneratorsOutput, Error> {
         guard session != nil,
               let accessToken = session?.accessToken else {
             return .failure(ATRequestPrepareError.missingActiveSession)
@@ -53,7 +53,7 @@ extension ATProtoKit {
                                                          contentTypeValue: nil,
                                                          authorizationValue: "Bearer \(accessToken)")
             let response = try await APIClientService.sendRequest(request,
-                                                                  decodeTo: FeedGetFeedGeneratorsOutput.self)
+                                                                  decodeTo: AppBskyLexicon.Feed.GetFeedGeneratorsOutput.self)
 
             return .success(response)
         } catch {

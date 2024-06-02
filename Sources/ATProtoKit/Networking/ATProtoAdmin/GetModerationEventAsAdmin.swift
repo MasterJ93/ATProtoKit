@@ -22,9 +22,9 @@ extension ATProtoAdmin {
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/tools/ozone/moderation/getEvent.json
     ///
     /// - Parameter id: The ID of the moderator event.
-    /// - Returns: A `Result`, containing either an ``OzoneModerationEventViewDetail``
+    /// - Returns: A `Result`, containing either an ``ToolsOzoneLexicon/Moderation/EventViewDetailDefinition``
     /// if successful, or an `Error` if not.
-    public func getEvent(_ id: String) async throws -> Result<OzoneModerationEventViewDetail, Error> {
+    public func getEvent(_ id: String) async throws -> Result<ToolsOzoneLexicon.Moderation.EventViewDetailDefinition, Error> {
         guard session != nil,
               let accessToken = session?.accessToken else {
             return .failure(ATRequestPrepareError.missingActiveSession)
@@ -53,7 +53,7 @@ extension ATProtoAdmin {
                                                          contentTypeValue: nil,
                                                          authorizationValue: "Bearer \(accessToken)")
             let response = try await APIClientService.sendRequest(request,
-                                                                  decodeTo: OzoneModerationEventViewDetail.self)
+                                                                  decodeTo: ToolsOzoneLexicon.Moderation.EventViewDetailDefinition.self)
 
             return .success(response)
         } catch {

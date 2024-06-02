@@ -23,9 +23,12 @@ extension ATProtoKit {
     ///   Can only choose between 1 and 100.
     ///   - cursor: The mark used to indicate the starting point for the next set of
     ///   results. Optional.
-    /// - Returns: A `Result`, containing either an ``ActorGetSuggestionsOutput``
+    /// - Returns: A `Result`, containing either an ``AppBskyLexicon/Actor/GetSuggestionsOutput``
     /// if succesful, or an `Error` if it's not.
-    public func getSuggestions(limit: Int? = 50, cursor: String? = nil) async throws -> Result<ActorGetSuggestionsOutput, Error> {
+    public func getSuggestions(
+        limit: Int? = 50,
+        cursor: String? = nil
+    ) async throws -> Result<AppBskyLexicon.Actor.GetSuggestionsOutput, Error> {
         guard session != nil,
               let accessToken = session?.accessToken else {
             return .failure(ATRequestPrepareError.missingActiveSession)
@@ -58,7 +61,7 @@ extension ATProtoKit {
                                                          contentTypeValue: nil,
                                                          authorizationValue: "Bearer \(accessToken)")
             let response = try await APIClientService.sendRequest(request,
-                                                                  decodeTo: ActorGetSuggestionsOutput.self)
+                                                                  decodeTo: AppBskyLexicon.Actor.GetSuggestionsOutput.self)
 
             return .success(response)
         } catch {

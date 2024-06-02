@@ -23,10 +23,12 @@ extension ATProtoKit {
     ///   be included in the list. Optional. Defaults to `true`.
     ///   - areEarnedCodesIncluded: Indicates whether the invite codes that the user earned should
     ///   be included in the list. Optional. Defaults to `true`.
-    /// - Returns: A `Result`, containing either ``ServerGetAccountInviteCodesOutput``
+    /// - Returns: A `Result`, containing either ``ComAtprotoLexicon/Server/GetAccountInviteCodesOutput``
     /// if successful, and an `Error` if not.
-    public func getAccountInviteCodes(_ areUsedCodesIncluded: Bool = true,
-                                      areEarnedCodesIncluded: Bool = true) async throws -> Result<ServerGetAccountInviteCodesOutput, Error> {
+    public func getAccountInviteCodes(
+        _ areUsedCodesIncluded: Bool = true,
+        areEarnedCodesIncluded: Bool = true
+    ) async throws -> Result<ComAtprotoLexicon.Server.GetAccountInviteCodesOutput, Error> {
         guard session != nil,
               let accessToken = session?.accessToken else {
             return .failure(ATRequestPrepareError.missingActiveSession)
@@ -56,7 +58,7 @@ extension ATProtoKit {
                                                          contentTypeValue: nil,
                                                          authorizationValue: "Bearer \(accessToken)")
             let response = try await APIClientService.sendRequest(request,
-                                                                  decodeTo: ServerGetAccountInviteCodesOutput.self)
+                                                                  decodeTo: ComAtprotoLexicon.Server.GetAccountInviteCodesOutput.self)
 
             return .success(response)
         } catch {

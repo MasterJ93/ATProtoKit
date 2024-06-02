@@ -21,11 +21,16 @@ extension ATProtoKit {
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/server/createAppPassword.json
     ///
-    /// - Parameter passwordName: The name given to the App Password to help distingush it
-    /// from others.
-    /// - Returns: A `Result`, either containing a ``ServerCreateAppPasswordOutput``
+    /// - Parameters:
+    ///   - passwordName: The name given to the App Password to help distingush it from others.
+    ///   - isPrivileged: Indicates whether this App Password can be used to access sensitive
+    ///   content from the user account.
+    /// - Returns: A `Result`, either containing a ``ComAtprotoLexicon/Server/CreateAppPasswordOutput``
     /// if successful, or an `Error` if not.
-    public func createAppPassword(named passwordName: String) async throws -> Result<ServerCreateAppPasswordOutput, Error> {
+    public func createAppPassword(
+        named passwordName: String,
+        isPrivileged: Bool?
+    ) async throws -> Result<ComAtprotoLexicon.Server.CreateAppPasswordOutput, Error> {
         guard session != nil,
               let accessToken = session?.accessToken else {
             return .failure(ATRequestPrepareError.missingActiveSession)
@@ -36,8 +41,9 @@ extension ATProtoKit {
             return .failure(ATRequestPrepareError.invalidRequestURL)
         }
 
-        let requestBody = ServerCreateAppPassword(
-            name: passwordName
+        let requestBody = ComAtprotoLexicon.Server.CreateAppPasswordRequestBody(
+            name: passwordName,
+            isPrivileged: isPrivileged
         )
 
         do {
@@ -48,7 +54,7 @@ extension ATProtoKit {
                                                          authorizationValue: "Bearer \(accessToken)")
             let response = try await APIClientService.sendRequest(request,
                                                                   withEncodingBody: requestBody,
-                                                                  decodeTo: ServerCreateAppPasswordOutput.self)
+                                                                  decodeTo: ComAtprotoLexicon.Server.CreateAppPasswordOutput.self)
 
             return .success(response)
         } catch {

@@ -24,10 +24,12 @@ extension ATProtoAdmin {
     ///   - sort: The order the invite codes will be sorted by. Defaults to `.recent`.
     ///   - limit: The number of invite codes in the list. Defaults to `100`.
     ///   - cursor: The mark used to indicate the starting point for the next set of results. Optional.
-    /// - Returns: A `Result`, containing either an ``AdminGetInviteCodesOutput``
+    /// - Returns: A `Result`, containing either an ``ComAtprotoLexicon/Admin/GetInviteCodesOutput``
     /// if successful, or an `Error` if not.
-    public func getInviteCodes(sortedBy sort: AdminGetInviteCodesSort = .recent, withLimitOf limit: Int = 100,
-                               cursor: String?) async throws -> Result<AdminGetInviteCodesOutput, Error> {
+    public func getInviteCodes(
+        sortedBy sort: ComAtprotoLexicon.Admin.GetInviteCodes.Sort = .recent,
+        withLimitOf limit: Int = 100,
+        cursor: String?) async throws -> Result<ComAtprotoLexicon.Admin.GetInviteCodesOutput, Error> {
         guard session != nil,
               let accessToken = session?.accessToken else {
             return .failure(ATRequestPrepareError.missingActiveSession)
@@ -63,7 +65,7 @@ extension ATProtoAdmin {
                                                          contentTypeValue: nil,
                                                          authorizationValue: "Bearer \(accessToken)")
             let response = try await APIClientService.sendRequest(request,
-                                                                  decodeTo: AdminGetInviteCodesOutput.self)
+                                                                  decodeTo: ComAtprotoLexicon.Admin.GetInviteCodesOutput.self)
 
             return .success(response)
         } catch {

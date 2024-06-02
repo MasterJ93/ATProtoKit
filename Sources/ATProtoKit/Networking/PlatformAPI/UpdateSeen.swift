@@ -31,7 +31,7 @@ extension ATProtoKit {
             throw ATRequestPrepareError.invalidRequestURL
         }
 
-        let requestBody = NotificationUpdateSeen(
+        let requestBody = AppBskyLexicon.Notification.UpdateSeenRequestBody(
             seenAt: seenAt
         )
 

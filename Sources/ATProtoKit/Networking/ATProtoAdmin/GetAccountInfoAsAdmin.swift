@@ -24,9 +24,9 @@ extension ATProtoAdmin {
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/admin/getAccountInfo.json
     ///
     /// - Parameter accountDID: The decentralized identifier (DID) of the user account.
-    /// - Returns: A `Result`, containing either an ``AdminAccountView``
+    /// - Returns: A `Result`, containing either an ``ComAtprotoLexicon/Admin/AccountViewDefinition``
     /// if successful, or an `Error` if not.
-    public func getAccountInfo(_ accountDID: String) async throws -> Result<AdminAccountView, Error> {
+    public func getAccountInfo(_ accountDID: String) async throws -> Result<ComAtprotoLexicon.Admin.AccountViewDefinition, Error> {
         guard session != nil,
               let accessToken = session?.accessToken else {
             throw ATRequestPrepareError.missingActiveSession
@@ -55,7 +55,7 @@ extension ATProtoAdmin {
                                                          contentTypeValue: nil,
                                                          authorizationValue: "Bearer \(accessToken)")
             let response = try await APIClientService.sendRequest(request,
-                                                                  decodeTo: AdminAccountView.self)
+                                                                  decodeTo: ComAtprotoLexicon.Admin.AccountViewDefinition.self)
 
             return .success(response)
         } catch {

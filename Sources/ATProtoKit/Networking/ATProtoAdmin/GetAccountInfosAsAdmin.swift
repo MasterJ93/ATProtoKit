@@ -24,9 +24,9 @@ extension ATProtoAdmin {
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/admin/getAccountInfos.json
     ///
     /// - Parameter accountDIDs: An array of decentralized identifiers (DIDs) of user accounts.
-    /// - Returns: A `Result`, containing either an ``AdminGetInviteCodesOutput``
+    /// - Returns: A `Result`, containing either an ``ComAtprotoLexicon/Admin/GetAccountInfosOutput``
     /// if successful, or an `Error` if not.
-    public func getAccountInfos(_ accountDIDs: [String]) async throws -> Result<AdminGetAccountInfosOutput, Error> {
+    public func getAccountInfos(_ accountDIDs: [String]) async throws -> Result<ComAtprotoLexicon.Admin.GetAccountInfosOutput, Error> {
         guard session != nil,
               let accessToken = session?.accessToken else {
             return .failure(ATRequestPrepareError.missingActiveSession)
@@ -53,7 +53,7 @@ extension ATProtoAdmin {
                                                          contentTypeValue: nil,
                                                          authorizationValue: "Bearer \(accessToken)")
             let response = try await APIClientService.sendRequest(request,
-                                                                  decodeTo: AdminGetAccountInfosOutput.self)
+                                                                  decodeTo: ComAtprotoLexicon.Admin.GetAccountInfosOutput.self)
 
             return .success(response)
         } catch {

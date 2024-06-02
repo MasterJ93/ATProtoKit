@@ -26,8 +26,10 @@ extension ATProtoKit {
     /// - Parameters:
     ///   - crawlingHostname: The hostname that the crawling service resides in. Optional.
     ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `nil`.
-    public func notifyOfUpdate(in crawlingHostname: String? = nil,
-                               pdsURL: String? = nil) async throws {
+    public func notifyOfUpdate(
+        in crawlingHostname: String? = nil,
+        pdsURL: String? = nil
+    ) async throws {
         guard let sessionURL = pdsURL != nil ? pdsURL : session?.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/app.bsky.graph.notifyOfUpdate") else {
             throw ATRequestPrepareError.invalidRequestURL
@@ -39,7 +41,7 @@ extension ATProtoKit {
             throw ATRequestPrepareError.invalidHostnameURL
         }
 
-        let requestBody = SyncCrawler(
+        let requestBody = ComAtprotoLexicon.Sync.Crawler(
             crawlingHostname: finalhostnameURL
         )
 

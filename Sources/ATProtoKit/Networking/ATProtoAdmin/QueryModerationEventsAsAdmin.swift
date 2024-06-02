@@ -52,14 +52,26 @@ extension ATProtoAdmin {
     ///   - reportTypes: An array of report types.
     ///   - cursor: The mark used to indicate the starting point for the next set
     ///   of results. Optional.
-    /// - Returns: A `Result`, containing either an ``ModerationQueryEventsOutput``
+    /// - Returns: A `Result`, containing either an ``ToolsOzoneLexicon/Moderation/QueryEventsOutput``
     /// if successful, or an `Error` if not.
-    public func queryEvents(_ eventTypes: [String]? = nil, createdBy: String? = nil,
-                            sortDirection: AdminQueryModerationEventSortDirection? = .descending, createdAfter: Date? = nil, createdBefore: Date? = nil,
-                            subject: String? = nil, canIncludeAllUserRecords: Bool? = false, limit: Int? = 50, doesHaveComment: Bool? = nil,
-                            comment: String? = nil, addedLabels: [String]? = nil,
-                            removedLabels: [String]? = nil, addedTags: [String]? = nil, removedTags: [String]? = nil, reportTypes: [String]? = nil,
-                            cursor: String? = nil) async throws -> Result<ModerationQueryEventsOutput, Error> {
+    public func queryEvents(
+        _ eventTypes: [String]? = nil,
+        createdBy: String? = nil,
+        sortDirection: ToolsOzoneLexicon.Moderation.QueryEvents.SortDirection? = .descending,
+        createdAfter: Date? = nil,
+        createdBefore: Date? = nil,
+        subject: String? = nil,
+        canIncludeAllUserRecords: Bool? = false,
+        limit: Int? = 50,
+        doesHaveComment: Bool? = nil,
+        comment: String? = nil,
+        addedLabels: [String]? = nil,
+        removedLabels: [String]? = nil,
+        addedTags: [String]? = nil,
+        removedTags: [String]? = nil,
+        reportTypes: [String]? = nil,
+        cursor: String? = nil
+    ) async throws -> Result<ToolsOzoneLexicon.Moderation.QueryEventsOutput, Error> {
         guard session != nil,
               let accessToken = session?.accessToken else {
             return .failure(ATRequestPrepareError.missingActiveSession)
@@ -167,7 +179,7 @@ extension ATProtoAdmin {
                                                          contentTypeValue: nil,
                                                          authorizationValue: "Bearer \(accessToken)")
             let response = try await APIClientService.sendRequest(request,
-                                                                  decodeTo: ModerationQueryEventsOutput.self)
+                                                                  decodeTo: ToolsOzoneLexicon.Moderation.QueryEventsOutput.self)
 
             return .success(response)
         } catch {

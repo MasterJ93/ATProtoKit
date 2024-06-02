@@ -32,7 +32,7 @@ public typealias ATImage = NSImage
 /// Provides a standardized approach to processing images for uploading to servers that interact
 /// with the AT Protocol.
 ///
-/// This protocol aids in the conversion of images into an ``ImageQuery`` (which is used to give
+/// This protocol aids in the conversion of images into an ``ComAtprotoLexicon/Repository/ImageQuery`` (which is used to give
 /// all of the necessary information about the image for the server), while ensuring that
 /// privacy-sensitive EXIF data is stripped from the images before upload.
 ///
@@ -52,7 +52,7 @@ public typealias ATImage = NSImage
 /// \
 /// Also, this should be an `internal` method, as it will be part of
 /// `convertToImageQuery(image:altText:targetFileSize)`. It's recommended that it's called before
-/// ``convertToImageQuery(imagePath:altText:targetFileSize:)-2fma7`` attempts to access the image.
+/// ``convertToImageQuery(imagePath:altText:targetFileSize:)-468o1`` attempts to access the image.
 ///
 /// ### Example
 /// Below is a sample implementation showcasing how to conform to `ATImageProcessable` for a
@@ -105,20 +105,20 @@ public protocol ATImageProcessable {
     ///   - altText: The alt text used to help blind and low-vision users know what's contained
     ///   in the text. Optional.
     ///   - targetFileSize: The size (in bytes) the file needs to be.
-    /// - Returns: An ``ImageQuery``, which combines the image itself in a `Data` format and
+    /// - Returns: An ``ComAtprotoLexicon/Repository/ImageQuery``, which combines the image itself in a `Data` format and
     /// the alt text.
-    func convertToImageQuery(imagePath: String, altText: String?, targetFileSize: Int) -> ImageQuery?
+    func convertToImageQuery(imagePath: String, altText: String?, targetFileSize: Int) -> ComAtprotoLexicon.Repository.ImageQuery?
 
     /// Removes all EXIF and GPS metadata from the image.
     ///
     /// This method should ideally be before
-    /// ``convertToImageQuery(imagePath:altText:targetFileSize:)-2fma7`` does anything
+    /// ``convertToImageQuery(imagePath:altText:targetFileSize:)-468o1`` does anything
     /// to the image, as it will help with the process of maintaining more of the image quality.
     func stripMetadata(from image: ATImage) -> ATImage?
 }
 
 public extension ATImageProcessable {
-    func convertToImageQuery(imagePath: String, altText: String?, targetFileSize: Int = 1_000_000) -> ImageQuery? {
+    func convertToImageQuery(imagePath: String, altText: String?, targetFileSize: Int = 1_000_000) -> ComAtprotoLexicon.Repository.ImageQuery? {
         guard let image = NSImage(contentsOfFile: imagePath) else {
             print("Image could not be loaded.")
             return nil
@@ -166,7 +166,7 @@ public extension ATImageProcessable {
         }
 
         if let imageData {
-            return ImageQuery(imageData: imageData, fileName: filename, altText: altText)
+            return ComAtprotoLexicon.Repository.ImageQuery(imageData: imageData, fileName: filename, altText: altText)
         }
 
         return nil

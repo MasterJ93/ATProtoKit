@@ -154,9 +154,9 @@ There are multiple kinds of models: main models, definition models, record model
 
 ### Definition Models
 - Documentation for the models are as follows:
-	- The first line must be structured as "A data model definition for “, followed by a short, one sentence description of what the lexicon is for:
+	- The first line must be structured as "A definition model for [...].“ (where "[...]") is a short, one sentence description of what the lexicon is for):
    ```swift
-	/// A data model definition for the output of checking the user's account status.
+	/// A definition model for an actor viewer state.
    ```
    The requirements remain the same for the AT Protocol lexicon descriptions, the lexicon's NSID, and the GitHub link.
 - For the models themselves, they have the following requirements:
@@ -180,9 +180,9 @@ There are multiple kinds of models: main models, definition models, record model
 
 ### Record Models
 - Documentation for the models are as follows:
-    - The first line must be structured as "A record definition for ", followed by a short, one sentence description of what the lexicon is for:
+    - The first line must be structured as "A record model for [...]." (where "[...]" is a short, one sentence description of what the lexicon is for):
     ```swift
-    /// A record definition of a post.
+    /// A record model of a post.
     ```
     - After an empty `///` in the next line, the following line has the description that's procided by the lexicon. If there's no description, then this can be skipped. If there is one, it must say "- Note: According to the AT Protocol specifications: "`<#Description#>`"", where "`<#Description#>`" is the description provided by the lexicon.
     - After another empty `///` in the next line, the following line states where the API user can see the name of the lexicon, followed by the link. The structure must look like this:
@@ -200,7 +200,7 @@ There are multiple kinds of models: main models, definition models, record model
 
 ### Output Models
 - Documentation for the model are as follows:
-    - The first line must be structured as "An output model for ", followed by a short, one sentence desctiption of what the lexicon is for:
+    - The first line must be structured as "An output model for [...]." (where "[...]" is a short, one sentence desctiption of what the lexicon is for):
     ```swift
     /// An output model for checking the user's account status.
     ```
@@ -223,7 +223,7 @@ There are multiple kinds of models: main models, definition models, record model
 
 ### `requestBody` Models
 - Documentation for the model are as follows:
-    - The first line must be structured as "A request body model for ", followed by a short, one sentence desctiption of what the lexicon is for:
+    - The first line must be structured as "A request body model for [...]." (where "[...]" is a short, one sentence desctiption of what the lexicon is for]):
     ```swift
     /// A request body model for checking the user's account status.
     ```
@@ -417,4 +417,7 @@ _TBD..._
     ```
     - If there’s a `return` statement in the `do-catch` block, or if the query method is in there, the request and response methods should be beside each other.
     - If any additional method calls are being made, put them beside `createRequest()` and `sendRequest()` if they're strongly related to them.
-        
+- In documentation, when referring to the following, you _must_ write them out exactly as shown:
+    - decentralized identifier (DID)
+    - content identifer (CID)
+    - Namespaced Identifier (NSID)

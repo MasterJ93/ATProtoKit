@@ -1,13 +1,15 @@
 # Contribution Guidelines
 ## Introduction
 
-Thanks for your interest in contributing to `ATProtoKit`. This project aims to be a leading Swift API library for the AT Protocol and Bluesky and as a go-to choice for Swift developers to build projects for iOS, iPadOS, macOS, tvOS, watchOS, visionOS, and Linux.
+Thanks for your interest in contributing to `ATProtoKit`. This project aims to be a leading Swift API library for the AT Protocol and Bluesky and as a go-to choice for Swift developers to build projects for iOS, iPadOS, macOS, tvOS, watchOS, visionOS, Linux, and Docker.
 
 ## How to Contribute
 Contributions to ATProtoKit are welcomed and appreciated. Here are the areas where you can help:
-- Code Contributions, such as bug fixes, tweaking the models and methods to fit the latest lexicon changes, and improvements in the efficiency of the library itself.
+- Code contributions, such as bug fixes, tweaking the models and methods to fit the latest lexicon changes, and improvements in the efficiency of the library itself.
 - Documentation, which includes things such as sourcing the latest documentation from the AT Protocol Specifications, documenting every part of the project, and improving the DocC (creating tutorials, building articles, and making sure things are properly grouped together and organized).
-- Testing, which generally means making sure the project can build, run, and work on Apple’s platforms and Linux.
+- Testing, which generally means making sure the project can build, run, and work on Apple’s platforms, Linux, and Docker.
+> [!NOTE]
+Pull Requests for testing will be accepted at a later date.
 
 ## Contribution Process
 ### Setting Up Your Environment
@@ -17,7 +19,7 @@ Fork the `ATProtoKit` repository and open the project with your IDE of choice.
 For new features and improvements, put these changes into the `develop` branch. If you’re fixing a bug, then it should be in `main`. Be sure to fill out the Pull Request form before sending in a pull request.
 
 ### Code Style
-Please adhere to the coding standards in the [ATProtoKit API Design Guidelines](https://github.com/MasterJ93/ATProtoKit/blob/main/API_GUIDELINES.md) as well as the [Swift API Design Guidelines](https://www.swift.org/documentation/api-design-guidelines/). Make sure anything related to asynchronous tasks should be using Swift Concurrency. Later on, `swiftlint` will be used to help with some of these guidelines.
+Please adhere to the coding standards in the [ATProtoKit API Design Guidelines](https://github.com/MasterJ93/ATProtoKit/blob/main/API_GUIDELINES.md) as well as the [Swift API Design Guidelines](https://www.swift.org/documentation/api-design-guidelines/). Make sure anything related to asynchronous tasks should be using Swift Concurrency. Later on, `swiftformat` will be used to help with some of these guidelines.
 
 ### Documentation
 Make sure that all methods, functions, properties, enums, protocols, variables, parameters, and other elements are well-documented and understood. However, please don’t make it overly long: it should be concise and straightforward. There will be opportunities to have a large documentation header, in which case, this should explain important information on the object being used, complete with examples and notes if needed.
@@ -27,17 +29,20 @@ Make sure your commits are small and focused. While this isn’t an extremely st
 
 ### Submit Your Pull Request
 Prefix your pull request title with one of the following:
-- “[Feature]” for any new features.
-- “[Documentation]” for any documentation changes.
-- “[Bug Fix]” for any bug fixes.
+- `[Feature]` for any new features.
+- `[Enchancement]` for any enchancements to a feature.
+- `[Documentation]` for any documentation changes.
+- `[Bug Fix]` for any bug fixes.
 
-Please create a feature request issue before creating a Pull Request. This will allow for potential discussion so that everyone is in the same page. When it’s been approved, you can add the Pull Request with the applicable code. Please make the pull request to be targeted to `develop`, not `main`.
+Please create a feature request issue before creating a Pull Request. This will allow for potential discussion so that everyone is in the same page. When it’s been approved, you can add the Pull Request with the applicable code.
+> [!WARNING]
+Please make the pull request to be targeted to `develop`, not `main`. This doesn't apply if you're fixing a bug.
 
 ### Code Review
 Once submitted, you pull request will be reviewed. Engage with any feedback provided as soon as you can to ensure your contribution meets the project’s standards.
 
 ### Automated Checks
-Later on, a working version of an automated check will happen upon submitting a pull request. This will check to make sure it’s able to build on the latest version of macOS, iOS, and Ubuntu Linux. When the GitHub Action is working, having your code pass all of the tests will be required.
+Later on, a working version of an automated check will happen upon submitting a pull request. This will check to make sure it’s able to build on the latest version of macOS, iOS, Ubuntu Linux, and Docker. When the GitHub Action is working, having your code pass all of the tests will be required.
 
 ## Community Standards
 This project adopts the [Contributor Covenant Code of Conduct]() to make sure everyone can participate in a welcoming environment. Any form of harassment is not tolerated. Please take a moment to read it when you can.

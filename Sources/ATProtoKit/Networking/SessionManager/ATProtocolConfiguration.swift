@@ -49,8 +49,13 @@ public class ATProtocolConfiguration: ProtocolConfiguration {
     ///   be in. Optional. Defaults to `ATProtoKit`.
     ///   - logLevel: Specifies the highest level of logs that will be outputted. Optional.
     ///   Defaults to `.info`.
-    public init(handle: String, appPassword: String, pdsURL: String = "https://bsky.social", logIdentifier: String? = nil, logCategory: String? = nil,
-                logLevel: Logger.Level? = .info) {
+    public init(
+        handle: String,
+        appPassword: String,
+        pdsURL: String = "https://bsky.social",
+        logIdentifier: String? = nil,
+        logCategory: String? = nil,
+        logLevel: Logger.Level? = .info) {
         self.handle = handle
         self.appPassword = appPassword
         self.pdsURL = !pdsURL.isEmpty ? pdsURL : "https://bsky.social"
@@ -79,6 +84,7 @@ public class ATProtocolConfiguration: ProtocolConfiguration {
     /// - SeeAlso: This is based on the [`com.atproto.server.createSession`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/server/createSession.json
+    ///
     /// - Parameter authenticationFactorToken: A token used for
     /// Two-Factor Authentication. Optional.
     /// - Returns: A `Result` containing ``UserSession`` on success or an `Error` on failure.
@@ -93,7 +99,7 @@ public class ATProtocolConfiguration: ProtocolConfiguration {
         }
 
         logger?.debug("Setting the session credentials")
-        let credentials = SessionCredentials(
+        let credentials = ComAtprotoLexicon.Server.CreateSessionRequestBody(
             identifier: handle,
             password: appPassword,
             authenticationFactorToken: authenticationFactorToken
@@ -156,17 +162,25 @@ public class ATProtocolConfiguration: ProtocolConfiguration {
     ///   account to this instance. Optional.
     /// - Returns: A `Result`, containing either a ``UserSession``
     /// if successful, or an `Error` if not.
-    public func createAccount(email: String? = nil, handle: String, existingDID: String? = nil, inviteCode: String? = nil,
-                              verificationCode: String? = nil, verificationPhone: String? = nil, password: String? = nil, recoveryKey: String? = nil,
-                              plcOp: UnknownType? = nil) async throws -> Result<UserSession, Error> {
-        logger?.trace("In createAccount()")
+    public func createAccount(
+        email: String? = nil,
+        handle: String,
+        existingDID: String? = nil,
+        inviteCode: String? = nil,
+        verificationCode: String? = nil,
+        verificationPhone: String? = nil,
+        password: String? = nil,
+        recoveryKey: String? = nil,
+        plcOp: UnknownType? = nil
+    ) async throws -> Result<UserSession, Error> {
+        logger?.trace("In createAccount()"])
         guard let requestURL = URL(string: "\(self.pdsURL)/xrpc/com.atproto.server.createAccount") else {
             logger?.error("Error while creating account", metadata: ["error": "\(ATRequestPrepareError.invalidRequestURL)"])
             return .failure(ATRequestPrepareError.invalidRequestURL)
         }
-        
-        logger?.debug("Setting the account creation request body")
-        let requestBody = ServerCreateAccount(
+
+        let requestBody = ComAtprotoLexicon.Server.CreateAccountRequestBody(
+            develop
             email: email,
             handle: handle,
             existingDID: existingDID,
@@ -219,8 +233,10 @@ public class ATProtocolConfiguration: ProtocolConfiguration {
     ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `nil`.
     /// - Returns: Returns: A `Result` containing either ``SessionResponse``
     /// if successful, or an `Error` if not.
-    public func getSession(by accessToken: String,
-                           pdsURL: String? = nil) async throws -> Result<SessionResponse, Error> {
+    public func getSession(
+        by accessToken: String,
+        pdsURL: String? = nil
+    ) async throws -> Result<SessionResponse, Error> {
         logger?.trace("In getSession()")
         guard let sessionURL = pdsURL != nil ? pdsURL : self.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.server.getSession") else {
@@ -260,8 +276,10 @@ public class ATProtocolConfiguration: ProtocolConfiguration {
     ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `nil`.
     /// - Returns: A `Result`, containing either a ``UserSession``
     /// if successful, or an `Error` if not.
-    public func refreshSession(using refreshToken: String,
-                               pdsURL: String? = nil) async throws -> Result<UserSession, Error> {
+    public func refreshSession(
+        using refreshToken: String,
+        pdsURL: String? = nil
+    ) async throws -> Result<UserSession, Error> {
         logger?.info("In refreshSession()")
         guard let sessionURL = pdsURL != nil ? pdsURL : self.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.server.refreshSession") else {
@@ -304,8 +322,10 @@ public class ATProtocolConfiguration: ProtocolConfiguration {
     /// - Parameters:
     ///   - accessToken: The access token for the session.
     ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `nil`.
-    public func deleteSession(using accessToken: String,
-                              pdsURL: String? = nil) async throws {
+    public func deleteSession(
+        using accessToken: String,
+        pdsURL: String? = nil
+    ) async throws {
         logger?.trace("In deleteSession()")
         guard let sessionURL = pdsURL != nil ? pdsURL : self.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.server.deleteSession") else {

@@ -12,15 +12,15 @@ import Logging
 public class ATFacetParser {
     private static var logger = Logger(label: "ATFacetParser")
 
-    /// Manages a collection of ``Facet`` objects, providing thread-safe append operations.
+    /// Manages a collection of ``AppBskyLexicon/RichText/Facet`` objects, providing thread-safe append operations.
     actor FacetsActor {
 
-        /// The collection of ``Facet`` objects.
-        var facets = [Facet]()
-        
-        /// Appends a new ``Facet`` to the collection in a thread-safe manner.
-        /// - Parameter facet: Parameter facet: The ``Facet`` to append.
-        func append(_ facet: Facet) {
+        /// The collection of ``AppBskyLexicon/RichText/Facet`` objects.
+        var facets = [AppBskyLexicon.RichText.Facet]()
+
+        /// Appends a new ``AppBskyLexicon/RichText/Facet`` to the collection in a thread-safe manner.
+        /// - Parameter facet: Parameter facet: The ``AppBskyLexicon/RichText/Facet`` to append.
+        func append(_ facet: AppBskyLexicon.RichText.Facet) {
             facets.append(facet)
         }
     }
@@ -159,13 +159,13 @@ public class ATFacetParser {
     }
 
     /// Processes text to find mentions, URLs, and hashtags, converting these elements into
-    /// ``Facet`` objects.
+    /// ``AppBskyLexicon/RichText/Facet`` objects.
     /// - Parameters:
     ///   - text: The text to be processed.
     ///   - pdsURL: The URL of the Personal Data Server, defaulting to "https://bsky.social".
-    /// - Returns: An array of ``Facet`` objects representing the structured data elements found
+    /// - Returns: An array of ``AppBskyLexicon/RichText/Facet`` objects representing the structured data elements found
     /// in the text.
-    public static func parseFacets(from text: String, pdsURL: String = "https://bsky.social") async -> [Facet] {
+    public static func parseFacets(from text: String, pdsURL: String = "https://bsky.social") async -> [AppBskyLexicon.RichText.Facet] {
         logger.trace("In parseFacets()")
         let facets = FacetsActor()
 
@@ -200,9 +200,9 @@ public class ATFacetParser {
                             case .success(let resolveHandleOutput):
                                 guard let start = mention["start"] as? Int, let end = mention["end"] as? Int else { return }
 
-                                let mentionFacet = Facet(
-                                    index: ByteSlice(byteStart: start, byteEnd: end),
-                                    features: [.mention(Mention(did: resolveHandleOutput.handleDID))])
+                                let mentionFacet = AppBskyLexicon.RichText.Facet(
+                                    index: AppBskyLexicon.RichText.Facet.ByteSlice(byteStart: start, byteEnd: end),
+                                    features: [.mention(AppBskyLexicon.RichText.Facet.Mention(did: resolveHandleOutput.handleDID))])
 
                                 await facets.append(mentionFacet)
                                 logger.debug("New mention facet added")
@@ -225,9 +225,9 @@ public class ATFacetParser {
 
                     if let start = link["start"] as? Int,
                        let end = link["end"] as? Int {
-                        let linkFacet = Facet(
-                            index: ByteSlice(byteStart: start, byteEnd: end),
-                            features: [.link(Link(uri: url))]
+                        let linkFacet = AppBskyLexicon.RichText.Facet(
+                            index: AppBskyLexicon.RichText.Facet.ByteSlice(byteStart: start, byteEnd: end),
+                            features: [.link(AppBskyLexicon.RichText.Facet.Link(uri: url))]
                         )
 
                         await facets.append(linkFacet)
@@ -246,9 +246,9 @@ public class ATFacetParser {
 
                     if let start = hashtag["start"] as? Int,
                        let end = hashtag["end"] as? Int {
-                        let hashTagFacet = Facet(
-                            index: ByteSlice(byteStart: start, byteEnd: end),
-                            features: [.tag(Tag(tag: tag))]
+                        let hashTagFacet = AppBskyLexicon.RichText.Facet(
+                            index: AppBskyLexicon.RichText.Facet.ByteSlice(byteStart: start, byteEnd: end),
+                            features: [.tag(AppBskyLexicon.RichText.Facet.Tag(tag: tag))]
                         )
 
                         await facets.append(hashTagFacet)
@@ -261,4 +261,17 @@ public class ATFacetParser {
         logger.trace("Exiting parseFacets()")
         return await facets.facets
     }
+}
+
+/// A data model protocol for Features.
+///
+/// - SeeAlso: This is based on the [`app.bsky.richtext.facet`][github] lexicon.
+///
+/// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/richtext/facet.json
+internal protocol FeatureCodable: Codable {
+
+    /// The identifier of the lexicon.
+    ///
+    /// - Warning: The value must not change.
+    static var type: String { get }
 }

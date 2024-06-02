@@ -19,9 +19,9 @@ extension ATProtoKit {
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/feed/describeFeedGenerator.json
     ///
-    /// - Returns: A `Result`, containing either a ``FeedDescribeFeedGeneratorOutput``
+    /// - Returns: A `Result`, containing either a ``AppBskyLexicon/Feed/DescribeFeedGeneratorOutput``
     /// if successful, or an `Error` if not.
-    public func describeFeedGenerator(pdsURL: String? = nil) async throws -> Result<FeedDescribeFeedGeneratorOutput, Error> {
+    public func describeFeedGenerator(pdsURL: String? = nil) async throws -> Result<AppBskyLexicon.Feed.DescribeFeedGeneratorOutput, Error> {
         guard let sessionURL = pdsURL != nil ? pdsURL : session?.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/app.bsky.feed.describeFeedGenerator") else {
             return .failure(ATRequestPrepareError.invalidRequestURL)
@@ -34,7 +34,7 @@ extension ATProtoKit {
                                                          contentTypeValue: "application/json",
                                                          authorizationValue: nil)
             let response = try await APIClientService.sendRequest(request,
-                                                                  decodeTo: FeedDescribeFeedGeneratorOutput.self)
+                                                                  decodeTo: AppBskyLexicon.Feed.DescribeFeedGeneratorOutput.self)
 
             return .success(response)
         } catch {

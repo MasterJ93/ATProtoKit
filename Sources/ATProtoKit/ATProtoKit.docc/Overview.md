@@ -52,10 +52,13 @@ Task {
 
 - ``ATProtoKit/ATProtoKit``
 - ``ATProtoAdmin``
+- ``ATProtoBluesky``
+- ``ATProtoBlueskyChat``
 
 ### Authentication and Session Management
 
 - ``ATProtoKit/ATProtoKitConfiguration``
+- ``ATProtocolConfiguration``
 - ``UserSession``
  
  @Comment {
@@ -65,14 +68,18 @@ Task {
  
 ### Lexicons and Records
 
+- ``AppBskyLexicon``
+- ``ChatBskyLexicon``
+- ``ComAtprotoLexicon``
+- ``ToolsOzoneLexicon``
+- ``ATRecordProtocol``
+- ``ATRecordTypeRegistry``
+
 @Comment {
     The following should be added:
-        Records Overview (Article)
-        Creating Your Own Records (Article)
-        Converting a Lexicon Into a Model-Method Pair (Article)
-        app.bsky
-        com.atproto
-        tools.ozone
+    Records Overview (Article)
+    Creating Your Own Records (Article)
+    Converting a Lexicon Into a Model-Method Pair (Article)
 }
 
 ### Interacting With Users
@@ -83,6 +90,8 @@ Task {
 
 ### Data Streams
 
+- ``ATCBORManager``
+
 @Comment {
     The following should be added:
         Overview of Data Streams (Article)
@@ -91,9 +100,11 @@ Task {
 }
 
 ### Utilities
+- ``ATProtoTools``
 - ``APIClientService``
 - ``ATImageProcessable``
 - <doc:DateFormatting-PropertyWrapper>
+- ``ATFacetParser``
 
 @Comment {
     The following should be added:
