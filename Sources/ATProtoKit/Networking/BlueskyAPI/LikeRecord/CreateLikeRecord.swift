@@ -16,7 +16,7 @@ extension ATProtoKit {
     ///   - createdAt: The date and time the like record was created. Defaults to `Date.now`.
     ///   - shouldValidate: Indicates whether the record should be validated. Optional.
     ///   Defaults to `true`.
-    /// - Returns: A `Result`, containing either a ``StrongReference``
+    /// - Returns: A `Result`, containing either a ``ComAtprotoLexicon/Repository/StrongReference``
     /// if it's successful, or an `Error` if it's not.
     public func createLikeRecord(
         _ strongReference: ComAtprotoLexicon.Repository.StrongReference,

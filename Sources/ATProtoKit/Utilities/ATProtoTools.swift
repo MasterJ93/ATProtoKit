@@ -24,7 +24,7 @@ public class ATProtoTools {
     /// Resolves the reply references to prepare them for a later post record request.
     ///
     /// - Parameter parentURI: The URI of the post record the current one is directly replying to.
-    /// - Returns: A ``ReplyReference``.
+    /// - Returns: A ``AppBskyLexicon/Feed/PostRecord/ReplyReference``.
     public func resolveReplyReferences(parentURI: String) async throws -> AppBskyLexicon.Feed.PostRecord.ReplyReference {
         let threadRecords = try await fetchRecordForURI(parentURI)
 
@@ -75,7 +75,7 @@ public class ATProtoTools {
     /// Gets a record from the user's repository.
     ///
     /// - Parameter uri: The URI of the record.
-    /// - Returns: A ``RecordOutput``
+    /// - Returns: A ``ComAtprotoLexicon/Repository/GetRecordOutput``
     public func fetchRecordForURI(_ uri: String) async throws -> ComAtprotoLexicon.Repository.GetRecordOutput {
         let query = try parseURI(uri)
 

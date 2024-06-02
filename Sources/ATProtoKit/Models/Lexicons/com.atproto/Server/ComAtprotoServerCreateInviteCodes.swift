@@ -45,7 +45,8 @@ extension ComAtprotoLexicon.Server {
         public let codes: [ServerAccountCodes]
     }
 
-    /// The server invite codes generated from ``ServerCreateInviteCodes``.
+    /// The server invite codes generated from ``ComAtprotoLexicon/Server/CreateInviteCodesOutput``.
+    ///
     ///
     /// - SeeAlso: This is based on the [`com.atproto.server.createInviteCodes`][github] lexicon.
     ///
