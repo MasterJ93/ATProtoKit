@@ -52,6 +52,8 @@ Task {
 
 - ``ATProtoKit/ATProtoKit``
 - ``ATProtoAdmin``
+- ``ATProtoBluesky``
+- ``ATProtoBlueskyChat``
 
 ### Authentication and Session Management
 
@@ -65,14 +67,16 @@ Task {
  
 ### Lexicons and Records
 
+- ``AppBskyLexicon``
+- ``ChatBskyLexicon``
+- ``ComAtprotoLexicon``
+- ``ToolsOzoneLexicon``
+
 @Comment {
     The following should be added:
-        Records Overview (Article)
-        Creating Your Own Records (Article)
-        Converting a Lexicon Into a Model-Method Pair (Article)
-        app.bsky
-        com.atproto
-        tools.ozone
+    Records Overview (Article)
+    Creating Your Own Records (Article)
+    Converting a Lexicon Into a Model-Method Pair (Article)
 }
 
 ### Interacting With Users
