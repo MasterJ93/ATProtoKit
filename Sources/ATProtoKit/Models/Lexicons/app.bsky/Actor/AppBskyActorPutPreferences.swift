@@ -9,6 +9,14 @@ import Foundation
 
 extension AppBskyLexicon.Actor {
 
+    /// A request body model for editing preferences in a user account.
+    ///
+    /// - Note: According to the AT Protocol specifications: "Set the private preferences attached
+    /// to the account."
+    ///
+    /// - SeeAlso: This is based on the [`app.bsky.actor.putPreferences`][github] lexicon.
+    ///
+    /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/actor/putPreferences.json
     public struct PutPreferencesRequestBody: Codable {
 
         /// The identifier of the lexicon.

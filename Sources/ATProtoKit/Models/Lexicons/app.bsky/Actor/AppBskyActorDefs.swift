@@ -40,6 +40,7 @@ extension AppBskyLexicon.Actor {
         /// An array of labels created by the user. Optional.
         public let labels: [ComAtprotoLexicon.Label.LabelDefinition]?
 
+        @_documentation(visibility: private)
         public init(actorDID: String, actorHandle: String, displayName: String?, avatarImageURL: URL?, associated: ProfileAssociatedDefinition?,
                     viewer: ViewerStateDefinition?, labels: [ComAtprotoLexicon.Label.LabelDefinition]?) {
             self.actorDID = actorDID
@@ -62,7 +63,8 @@ extension AppBskyLexicon.Actor {
             self.viewer = try container.decodeIfPresent(ViewerStateDefinition.self, forKey: .viewer)
             self.labels = try container.decodeIfPresent([ComAtprotoLexicon.Label.LabelDefinition].self, forKey: .labels)
         }
-        
+
+        @_documentation(visibility: private)
         public func encode(to encoder: Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
             
@@ -77,7 +79,7 @@ extension AppBskyLexicon.Actor {
             try container.encodeIfPresent(self.viewer, forKey: .viewer)
             try container.encodeIfPresent(self.labels, forKey: .labels)
         }
-        
+
         enum CodingKeys: String, CodingKey {
             case actorDID = "did"
             case actorHandle = "handle"
@@ -128,6 +130,7 @@ extension AppBskyLexicon.Actor {
         /// An array of labels created by the user. Optional.
         public var labels: [ComAtprotoLexicon.Label.LabelDefinition]?
 
+        @_documentation(visibility: private)
         public init(actorDID: String, actorHandle: String, displayName: String?, description: String?, avatarImageURL: URL?,
                     associated: ProfileAssociatedDefinition?, indexedAt: Date?, viewer: ViewerStateDefinition?,
                     labels: [ComAtprotoLexicon.Label.LabelDefinition]?) {
@@ -156,6 +159,7 @@ extension AppBskyLexicon.Actor {
             self.labels = try container.decodeIfPresent([ComAtprotoLexicon.Label.LabelDefinition].self, forKey: .labels)
         }
         
+        @_documentation(visibility: private)
         public func encode(to encoder: Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
             
@@ -240,6 +244,7 @@ extension AppBskyLexicon.Actor {
         /// An array of labels created by the user. Optional.
         public var labels: [ComAtprotoLexicon.Label.LabelDefinition]?
 
+        @_documentation(visibility: private)
         public init(actorDID: String, actorHandle: String, displayName: String?, description: String?, avatarImageURL: URL?, bannerImageURL: URL?,
                     followerCount: Int?, followCount: Int?, postCount: Int?, associated: ProfileAssociatedDefinition?, indexedAt: Date?,
                     viewer: ViewerStateDefinition?, labels: [ComAtprotoLexicon.Label.LabelDefinition]?) {
@@ -276,6 +281,7 @@ extension AppBskyLexicon.Actor {
             self.labels = try container.decodeIfPresent([ComAtprotoLexicon.Label.LabelDefinition].self, forKey: .labels)
         }
         
+        @_documentation(visibility: private)
         public func encode(to encoder: Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
             
@@ -394,6 +400,7 @@ extension AppBskyLexicon.Actor {
         /// An array of different preferences the user can set.
         public let preferences: [ATUnion.ActorPreferenceUnion]
 
+        @_documentation(visibility: private)
         public init(preferences: [ATUnion.ActorPreferenceUnion]) {
             self.preferences = preferences
         }
@@ -415,6 +422,7 @@ extension AppBskyLexicon.Actor {
         /// `false` by default.
         public var isAdultContentEnabled: Bool = false
 
+        @_documentation(visibility: private)
         public init(isAdultContentEnabled: Bool) {
             self.isAdultContentEnabled = isAdultContentEnabled
         }
@@ -451,6 +459,7 @@ extension AppBskyLexicon.Actor {
         /// Indicates the visibility of the label's content.
         public let visibility: Visibility
 
+        @_documentation(visibility: private)
         public init(labelerDID: String?, label: String, visibility: Visibility) {
             self.labelerDID = labelerDID
             self.label = label
@@ -561,6 +570,7 @@ extension AppBskyLexicon.Actor {
         /// The index number of the timeline for the list of feeds. Optional.
         public var timelineIndex: Int?
 
+        @_documentation(visibility: private)
         public init(pinned: [String], saved: [String], timelineIndex: Int?) {
             self.pinned = pinned
             self.saved = saved
@@ -592,6 +602,7 @@ extension AppBskyLexicon.Actor {
         /// - Note: From the AT Protocol specification: "The birth date of account owner."
         @DateFormattingOptional public var birthDate: Date?
 
+        @_documentation(visibility: private)
         public init(birthDate: Date) {
             self._birthDate = DateFormattingOptional(wrappedValue: birthDate)
         }
@@ -602,6 +613,7 @@ extension AppBskyLexicon.Actor {
             self.birthDate = try container.decodeIfPresent(DateFormattingOptional.self, forKey: .birthDate)?.wrappedValue
         }
 
+        @_documentation(visibility: private)
         public func encode(to encoder: Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
 
@@ -739,6 +751,7 @@ extension AppBskyLexicon.Actor {
         /// name is 64 characters.
         public let tags: [String]
 
+        @_documentation(visibility: private)
         public init(tags: [String]) {
             self.tags = tags
         }
@@ -749,6 +762,7 @@ extension AppBskyLexicon.Actor {
             self.tags = try container.decode([String].self, forKey: .tags)
         }
 
+        @_documentation(visibility: private)
         public func encode(to encoder: Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
 
@@ -800,6 +814,7 @@ extension AppBskyLexicon.Actor {
             }
         }
 
+        @_documentation(visibility: private)
         public func encode(to encoder: Encoder) throws {
             var container = encoder.singleValueContainer()
             switch self {
@@ -832,6 +847,7 @@ extension AppBskyLexicon.Actor {
         /// An array of intended targets for the muted word.
         public let targets: [MutedWordTarget]
 
+        @_documentation(visibility: private)
         public init(value: String, targets: [MutedWordTarget]) {
             self.value = value
             self.targets = targets
@@ -844,6 +860,7 @@ extension AppBskyLexicon.Actor {
             self.targets = try container.decode([MutedWordTarget].self, forKey: .targets)
         }
 
+        @_documentation(visibility: private)
         public func encode(to encoder: Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
 

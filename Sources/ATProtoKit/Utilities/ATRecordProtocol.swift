@@ -175,6 +175,7 @@ public enum UnknownType: Codable {
     ///     \- the data read is corrupted or otherwise invalid\
     ///     \- the decoder is unable to find the `$type` property\
     ///     \- the JSON object is invalid
+    @_documentation(visibility: private)
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: DynamicCodingKeys.self)
 
@@ -265,6 +266,7 @@ public enum UnknownType: Codable {
     /// Encodes this instance into the given encoder.
     ///
     /// Inherited from `Encoder`.
+    @_documentation(visibility: private)
     public func encode(to encoder: Encoder) throws {
         var container = encoder.singleValueContainer()
 
