@@ -74,6 +74,7 @@ Task {
 - ``ToolsOzoneLexicon``
 - ``ATRecordProtocol``
 - ``ATRecordTypeRegistry``
+- ``ATUnion``
 
 @Comment {
     The following should be added:
