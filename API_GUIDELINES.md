@@ -12,11 +12,11 @@ The [Swift API Design Guidelines](https://www.swift.org/documentation/api-design
 
 
 ## Fundamentals
-- For code, the maximum length of a line is 170 characters. However, this isn’t a strong goal to have: it can be much longer than this.
-- For documentation, the maximum length of a line is 100 characters. However, this _is_ a (mostly) strict rule: if necessary, break it down into smaller lines.
+- For code, the maximum length of a line is 170 characters. However, this isn’t a strong goal to have: it can be a little longer than this.
+- For documentation, the maximum length of a line is 100 characters. This _is_ a (mostly) strict rule: if necessary, break it down into smaller lines.
     - The only exceptions to this rule include the following:
     - If a line that contains a oiece of code goes a little over the line, or if the code line is over 100 characters.
-    - If a link is over 100 characters.
+    - If a link is over 100 characters long.
     - If the Unclear Documentation Note is used.
 - Documentation lines should use the triple slashes (`///`) rather than the multi-block delimiter (`/** */`).
 - Everything in the project must be written in American English.
@@ -45,10 +45,10 @@ The [Swift API Design Guidelines](https://www.swift.org/documentation/api-design
     - For Lexicon Models and Lexicon Methods (seen below):
         - Files that contain a lexicon model should be based on the lexicon that it's used for. To be more specific, the lexicon's hostname, subdomain, and action name are combined into one.
         Examples:
-            - BskyActorDefs.swift
-            - BskyRichTextFacet.swift
-            - AtprotoSyncSubscribeRepos.swift
-            - OzoneCommunicationDefs.swift
+            - AppBskyActorDefs.swift
+            - AppBskyRichTextFacet.swift
+            - ComAtprotoSyncSubscribeRepos.swift
+            - ToolsOzoneCommunicationDefs.swift
         - With respect to file names, files which contain lexicon models don't use the requirement of expanding the shortened name, as they're designed to be closely aligned with the name of the namespaced identifier.
         - Files that contain a lexicon method will be named the same as the method, albeit, in PascalCase.
             - For admin and moderator methods, the file name must have an "-AsAdmin" suffix.
@@ -88,7 +88,19 @@ The [Swift API Design Guidelines](https://www.swift.org/documentation/api-design
 
 ## Lexicon Models
 Lexicons are relevant to models and methods. Here are some general guidelines:
-- Models follow the reverse DNS style of naming, but it removes the domain name and the periods. (Example: for the lexicon `app.bsky.actor.profile`, instead of naming the model as “app.bsky.actor.profile”, you name it as “ActorProfile”.)
+- Each model will be inside of two other models:
+    1. A model that's within the "Lexicons.swift" file. This model will be named after the NSID's TLD and domain name, followed by the "-Lexicon" suffix. For example, all models that fall under `app.bsky` will go into the `AppBskyLexicon` `struct`.
+    2. A model that's within a Swift file that contains the exact name of the `struct` before it. It will inside the extension of the previous `struct` and will only be named after the subdomain portion of the NSID. For example, any lexicons that fall under `app.bsky.actor` will go inside the `Actor` `struct`, which that one will be inside the `AppBskyLexicon` `extension`, which is in a file named "AppBskyLexicon.swift".
+    - An `extension` of the previous subdomain `struct`. All lexicons will have their own file. Each lexicon will insert their `struct`s into an `extension` of the subdomain `struct`. For example, all of the `app.bsky.actor.defs` lexicon models will be inside of an `extension` of `Actor`, and is contained in a separate file.
+- Models are named after the action portion of the NSID. (Example: for the lexicon `app.bsky.actor.profile`, instead of naming the model as “app.bsky.actor.profile”, you name it as “ActorProfile”.)
+    - There will be suffxes attached to the name, depending on the type of model:
+        - Any models that are purely a definition (this will usually be located in a `def` lexicon file) will have the "-Definition" suffix. For example, for `app.bsky.actor.defs#profileAssociated`, the model will be named `ProfileAssociatedDefinition`.
+        - Any models that are records will have the "-Record" suffix. For example, for the lexicon `app.bsky.actor.profile`, the model will be named `ProfileRecord`.
+        - Any portion of the lexicon that has an `procedure` value in the `type` field, and then contains an `input` field, will have the "-RequestBody" suffix in the model. For example, for `app.bsky.feed.sendInteractions`, there will be a model named `SendInteractionsRequestBody`.
+        - Any portion of the leixcon that has an `output` field will have the "-Output" suffix in the model. Continuing with `app.bsky.feed.sendInteractions`, there will be a model named `SendInteractionsOutput`.
+        - Any portion of the lexicon outside of the above exceptions will not contain a suffix. Instead, they will have a model that just contains the name of the action, followed by models within the previous one that contains the name of the definition. These definitions will either be a `struct` or `enum`, depending on the appropriate use case:
+            - For definitions where there are known values, an `enum` is required; it must conform to whatever is the most appropriate data type would be (usually it'll be a `String` type.)
+            - Anything else will be another `struct`.
 - All models are `struct`s, with one exception:
 	- If a lexicon has a `union` type, then the list of values are combined into another model, which will be of type `enum`.
 - All models must conform to `Codable`, but depending on the model, it may only need to conform to either `Encodable` or `Decodable`.
@@ -115,10 +127,12 @@ Here's the general layout for all Lexicon models:
 // Will be called "one-line documentation summary" for future reference.
 /// The record definition for a post record.
 ///
+
 // If the lexicon associated with this model contains documentation, then it must be inserted as a note.
 // Will be called "lexicon spec note" for future reference.
 /// - Note: According to the AT Protocol specifications: "Record containing a Bluesky post."
 ///
+
 // The Namespaced Identifier (NSID) of the lexicon must be displayed. It should also be linked: the link
 // will go to the lexicon JSON file associated with this model.
 // Will be called "lexicon link" for future reference.
@@ -304,7 +318,9 @@ _TBD..._
     - If the method parameter has a default value, then the the following will be added as an addition sentence: "Defaults to `[value]`", where `[value]` is the default value.
 
 ### Lexicon Methods
-- All methods must be inside an `extension` for `ATProtoKit`, unless it's related to adminstration or moderation, in which case, it needs to be inside the `extension` of `ATProtoAdmin`.
+- All methods must be inside an `extension` for `ATProtoKit`, unless it's related one of the following:
+    - Any lexicons that are within the `com.atproto.admin.*` or `tools.ozone.*` NSIDs need to be inside the `extension` of `ATProtoAdmin`.
+    - Any lexicons that are within the `chat.bsky.*` NSIDs need to be inside the `extension` of `ATBlueskyChat`.
 - The method's name must be the name of the namespaced identifier of the lexicon, if the TLD, doman, and subdomain was removed.
     - If there's a conflict (there's more than one method with the same name in a class), the sub-domain will be addedin a way that somewhat makes grammatical sense at least. For example: `getRepositoryRecord()` and `getSyncRecord()`.
 - The list of parameters should be inline with the lexicon's parameter list. Any additional parameters that need to be added should be at the end.
