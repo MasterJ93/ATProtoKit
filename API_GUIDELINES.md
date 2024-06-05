@@ -85,6 +85,10 @@ The [Swift API Design Guidelines](https://www.swift.org/documentation/api-design
     ```
     - [`Throws`](https://developer.apple.com/library/prerelease/mac/documentation/Xcode/Reference/xcode_markup_formatting_ref/Throws.html): Use this if a method can throw an error. When using this, ensure that all of the ways the method can throw are listed in bullet point form.
     - [`Warning`](https://developer.apple.com/library/archive/documentation/Xcode/Reference/xcode_markup_formatting_ref/Warning.html): Use this if the user must know something, and failure to do so will cause something major to break.
+- In documentation, when referring to the following, you _must_ write them out exactly as shown:
+    - decentralized identifier (DID)
+    - content identifer (CID)
+    - Namespaced Identifier (NSID)
 
 ## Lexicon Models
 Lexicons are relevant to models and methods. Here are some general guidelines:
@@ -105,7 +109,7 @@ Lexicons are relevant to models and methods. Here are some general guidelines:
 	- If a lexicon has a `union` type, then the list of values are combined into another model, which will be of type `enum`.
 - All models must conform to `Codable`, but depending on the model, it may only need to conform to either `Encodable` or `Decodable`.
 - Properties that are of type `Date` must use the `@DateFormatting` property wrapper. Likewise, properties that are of type `Date?` must use the `@DateFormattingOptional` property wrapper. There are a number of things that need to be done when doing this:
-	- In the initialization method, set the value of an underscored (_) version of the property name to an instance of `@DateFormatting` or `@DateFormattingOptional` (which will henceforth be named "`@DateFormatting` group”). The `wrappedValue` parameter’s should have the value of the initializer’s version of the non-underscored property:
+	- In the initialization method, set the value of an underscored (\_) version of the property name to an instance of `@DateFormatting` or `@DateFormattingOptional` (which will henceforth be named "`@DateFormatting` group”). The `wrappedValue` parameter’s should have the value of the initializer’s version of the non-underscored property:
 	```swift
 	self._indexedAt = DateFormatting(wrappedValue: indexedAt)
     self._indexedAt = DateFormattingOptional(wrappedValue: indexedAt)
@@ -433,7 +437,3 @@ _TBD..._
     ```
     - If there’s a `return` statement in the `do-catch` block, or if the query method is in there, the request and response methods should be beside each other.
     - If any additional method calls are being made, put them beside `createRequest()` and `sendRequest()` if they're strongly related to them.
-- In documentation, when referring to the following, you _must_ write them out exactly as shown:
-    - decentralized identifier (DID)
-    - content identifer (CID)
-    - Namespaced Identifier (NSID)
