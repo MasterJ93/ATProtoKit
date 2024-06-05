@@ -22,7 +22,8 @@ extension ATProtoKit {
     ///   - labelerDIDs: An array of decentralized identifiers (DIDs) of labeler services.
     ///   - isDetailed: Indicates whether the information is detailed. Optional.
     ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `nil`.
-    /// - Returns: A `Result`, containing either a ``AppBskyLexicon/Labeler/GetServicesOutput``
+    /// - Returns: A `Result`, containing either a
+    /// ``AppBskyLexicon/Labeler/GetServicesOutput``
     /// if successful, or an `Error` if not.
     public func getLabelerServices(
         labelerDIDs: [String],

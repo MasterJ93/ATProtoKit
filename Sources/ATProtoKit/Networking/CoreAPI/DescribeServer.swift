@@ -19,7 +19,8 @@ extension ATProtoKit {
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/server/describeServer.json
     ///
     /// - Parameter pdsURL: The URL of the Personal Data Server (PDS). Defaults to `nil`.
-    /// - Returns: A `Result`, containing either a ``ComAtprotoLexicon/Server/DescribeServerOutput``
+    /// - Returns: A `Result`, containing either a
+    /// ``ComAtprotoLexicon/Server/DescribeServerOutput``
     /// if successful, or an `Error` if not.
     public func describeServer(_ pdsURL: String? = nil) async throws -> Result<ComAtprotoLexicon.Server.DescribeServerOutput, Error> {
         guard let sessionURL = pdsURL != nil ? pdsURL : session?.pdsURL,

@@ -17,7 +17,8 @@ extension ATProtoBlueskyChat {
     ///
     /// - Parameter members: An array of members within the conversation. Maximum amount is
     /// 10 items.
-    /// - Returns: A `Result`, containing either a ``ChatBskyLexicon/Conversation/GetConversationOutput``
+    /// - Returns: A `Result`, containing either a
+    /// ``ChatBskyLexicon/Conversation/GetConversationOutput``
     /// if successful, or an `Error` if not.
     public func getConversation(byID conversationID: String) async throws -> Result<ChatBskyLexicon.Conversation.GetConversationOutput, Error> {
         guard session != nil,

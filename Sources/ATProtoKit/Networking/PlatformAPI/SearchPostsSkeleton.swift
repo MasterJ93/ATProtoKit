@@ -42,7 +42,8 @@ extension ATProtoKit {
     ///   to `25`.
     ///   - cursor: The mark used to indicate the starting point for the next set of
     ///   result. Optional.
-    /// - Returns: A `Result`, containing either an ``AppBskyLexicon/Unspecced/SearchPostsSkeletonOutput``
+    /// - Returns: A `Result`, containing either an
+    /// ``AppBskyLexicon/Unspecced/SearchPostsSkeletonOutput``
     /// if successful, or an `Error` if not.
     public func searchPostsSkeleton(
         with searchQuery: String,

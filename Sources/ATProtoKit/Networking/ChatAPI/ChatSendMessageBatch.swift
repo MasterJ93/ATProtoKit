@@ -18,7 +18,8 @@ extension ATProtoBlueskyChat {
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/chat/bsky/convo/sendMessageBatch.json
     /// 
     /// - Parameter messages: A array of messages. Maximum number is 100 items.
-    /// - Returns: A `Result`, containing either a ``ChatBskyLexicon/Conversation/SendMessageBatchOutput``
+    /// - Returns: A `Result`, containing either a
+    /// ``ChatBskyLexicon/Conversation/SendMessageBatchOutput``
     /// if successful, or an `Error` if not.
     public func sendMessageBatch(messages: [ChatBskyLexicon.Conversation.SendMessageBatch.MessageBatchItem]) async throws -> Result<ChatBskyLexicon.Conversation.SendMessageBatchOutput, Error> {
         guard session != nil,

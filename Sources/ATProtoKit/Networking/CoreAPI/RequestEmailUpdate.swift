@@ -18,7 +18,8 @@ extension ATProtoKit {
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/server/requestEmailUpdate.json
     ///
-    /// - Returns: A `Result`, containing either a ``ComAtprotoLexicon/Server/RequestEmailUpdateOutput``
+    /// - Returns: A `Result`, containing either a
+    /// ``ComAtprotoLexicon/Server/RequestEmailUpdateOutput``
     /// if successful, or an `Error` if not.
     public func requestEmailUpdate() async throws -> Result<ComAtprotoLexicon.Server.RequestEmailUpdateOutput, Error> {
         guard session != nil,

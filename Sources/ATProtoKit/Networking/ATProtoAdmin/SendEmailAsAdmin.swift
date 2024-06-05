@@ -27,7 +27,8 @@ extension ATProtoAdmin {
     ///   - content: The content of the email.
     ///   - senderDID: The decentralized identifier (DID) of the sender.
     ///   - comment: Any additional comments viewable to other moderators and administrators.
-    /// - Returns: A `Result`, containing either an ``ComAtprotoLexicon/Admin/SendEmailOutput``
+    /// - Returns: A `Result`, containing either an
+    /// ``ComAtprotoLexicon/Admin/SendEmailOutput``
     /// if successful, or an `Error` if not.
     public func sendEmail(
         to recipientDID: String,

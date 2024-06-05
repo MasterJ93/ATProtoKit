@@ -29,7 +29,8 @@ extension ATProtoKit {
     ///   - shouldValidate: ndicates whether the record should be validated. Optional. Defaults to `true`.
     ///   - record: The record itself.
     ///   - swapCommit: Swaps out an operation based on the CID. Optional.
-    /// - Returns: A `Result`, containing either a ``ComAtprotoLexicon/Repository/StrongReference``
+    /// - Returns: A `Result`, containing either a
+    /// ``ComAtprotoLexicon/Repository/StrongReference``
     /// if successful, and an `Error` if not.
     public func createRecord(
         repositoryDID: String,

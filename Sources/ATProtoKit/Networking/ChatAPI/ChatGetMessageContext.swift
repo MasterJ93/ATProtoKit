@@ -25,7 +25,8 @@ extension ATProtoBlueskyChat {
     ///   Defaults to `5`.
     ///   - messagesAfter: The number of messages younger than the message in `messageID`.
     ///   Optional. Defaults to `5`.
-    /// - Returns: A `Result`, containing either a ``ChatBskyLexicon/Moderation/GetMessageContextOutput``
+    /// - Returns: A `Result`, containing either a
+    /// ``ChatBskyLexicon/Moderation/GetMessageContextOutput``
     /// if successful, or an `Error` if not.
     public func getMessageContext(
         from conversationID: String?,

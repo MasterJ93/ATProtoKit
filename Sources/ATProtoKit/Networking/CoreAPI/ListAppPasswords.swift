@@ -20,7 +20,8 @@ extension ATProtoKit {
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/server/listAppPasswords.json
     ///
-    /// - Returns: A `Result`, containing either a ``ComAtprotoLexicon/Server/ListAppPasswordsOutput``
+    /// - Returns: A `Result`, containing either a
+    /// ``ComAtprotoLexicon/Server/ListAppPasswordsOutput``
     /// if successful, or an `Error` if not.
     public func listAppPasswords() async throws -> Result<ComAtprotoLexicon.Server.ListAppPasswordsOutput, Error> {
         guard session != nil,

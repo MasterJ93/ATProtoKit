@@ -22,7 +22,8 @@ extension ATProtoKit {
     ///   - limit: The number of items that can be in the list. Optional. Defaults to `500`.
     ///   - cursor: The mark used to indicate the starting point for the next set of
     ///   result. Optional.
-    /// - Returns: A `Result`, containing either a ``ComAtprotoLexicon/Repository/ListMissingBlobsOutput``
+    /// - Returns: A `Result`, containing either a
+    /// ``ComAtprotoLexicon/Repository/ListMissingBlobsOutput``
     /// if successful, or an `Error` if not.
     public func listMissingBlobs(
         limit: Int? = 500,

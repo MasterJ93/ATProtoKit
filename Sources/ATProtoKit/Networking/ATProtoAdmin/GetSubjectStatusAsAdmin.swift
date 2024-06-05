@@ -25,7 +25,8 @@ extension ATProtoAdmin {
     ///   - subjectDID: The decentralized identifier (DID) of the subject.
     ///   - subjectURI: The URI of the subject.
     ///   - subjectBlobCIDHash: The CID hash of the blob for the subject.
-    /// - Returns: A `Result`, containing either an ``ComAtprotoLexicon/Admin/GetSubjectStatusOutput``
+    /// - Returns: A `Result`, containing either an
+    /// ``ComAtprotoLexicon/Admin/GetSubjectStatusOutput``
     /// if successful, or an `Error` if not.
     public func getSubjectStatus(
         _ subjectDID: String,

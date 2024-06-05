@@ -24,7 +24,8 @@ extension ATProtoKit {
     ///   results. Optional.
     ///   - seenAt: The date and time the notification was seen. Defaults to the date and time the
     ///   request was sent.
-    /// - Returns: A `Result`, containing either a ``AppBskyLexicon/Notification/ListNotificationsOutput``
+    /// - Returns: A `Result`, containing either a
+    /// ``AppBskyLexicon/Notification/ListNotificationsOutput``
     /// if successful, or an `Error` if not.
     public func listNotifications(
         withLimitOf limit: Int? = 50,

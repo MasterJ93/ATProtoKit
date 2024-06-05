@@ -27,7 +27,8 @@ extension ATProtoKit {
     ///   - verificationMethods: A verification method recommeneded to be added in the
     ///   DID document. Optional.
     ///   - service: The service endpoint recommended in the DID document. Optional.
-    /// - Returns: A `Result`, containing either an ``ComAtprotoLexicon/Identity/SignPLCOperationOutput``
+    /// - Returns: A `Result`, containing either an
+    /// ``ComAtprotoLexicon/Identity/SignPLCOperationOutput``
     /// if successful, ot an `Error` if not.
     public func signPLCOperation(
         token: String,

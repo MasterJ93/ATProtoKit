@@ -23,7 +23,8 @@ extension ATProtoAdmin {
     ///   - reasonType: The reason for the report.
     ///   - reason: Any additional context accompanying the report. Optional.
     ///   - subject: The responsible party being reported.
-    /// - Returns: A `Result`, containing either ``ComAtprotoLexicon/Moderation/CreateReportOutput``
+    /// - Returns: A `Result`, containing either
+    /// ``ComAtprotoLexicon/Moderation/CreateReportOutput``
     /// if successful, or an `Error` if not.
     public func createReport(
         with reasonType: ComAtprotoLexicon.Moderation.ReasonTypeDefinition,

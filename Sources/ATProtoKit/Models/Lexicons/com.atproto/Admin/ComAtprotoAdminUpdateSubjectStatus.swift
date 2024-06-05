@@ -22,8 +22,11 @@ extension ComAtprotoLexicon.Admin {
         /// The subject associated with the subject status.
         public let subject: ATUnion.AdminUpdateSubjectStatusUnion
 
-        /// The status attributes of the subject. Optional.
+        /// The attributes of the user account's takedown. Optional.
         public let takedown: ComAtprotoLexicon.Admin.StatusAttributesDefinition?
+
+        /// The attributes of the user account's deactivation. Optional.
+        public let deactivated: ComAtprotoLexicon.Admin.StatusAttributesDefinition?
     }
 
     /// An output model for updating a subject status of an account, record, or blob.

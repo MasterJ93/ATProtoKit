@@ -23,7 +23,8 @@ extension ATProtoKit {
     /// - Parameters:
     ///   - repositoryDID: The decentalized identifier (DID) of the repository.
     ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `nil`.
-    /// - Returns: A `Result`, containing either a ``ComAtprotoLexicon/Server/ReserveSigningKeyOutput``
+    /// - Returns: A `Result`, containing either a
+    /// ``ComAtprotoLexicon/Server/ReserveSigningKeyOutput``
     /// if successful, or an `Error` if not.
     public func reserveSigningKey(
         _ repositoryDID: String,

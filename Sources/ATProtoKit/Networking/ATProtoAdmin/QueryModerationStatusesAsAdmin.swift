@@ -56,7 +56,8 @@ extension ATProtoAdmin {
     ///   the added tags. Optional.
     ///   - cursor: The mark used to indicate the starting point for the next set of
     ///   results. Optional.
-    /// - Returns: A `Result`, containing either an ``ToolsOzoneLexicon/Moderation/QueryStatusesOutput``
+    /// - Returns: A `Result`, containing either an
+    /// ``ToolsOzoneLexicon/Moderation/QueryStatusesOutput``
     /// if successful, or an `Error` if not.
     public func queryStatuses(
         _ subject: String?,

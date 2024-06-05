@@ -21,7 +21,8 @@ extension ATProtoKit {
     /// - Parameters:
     ///   - repositoryDID: The decentralized identifier (DID) of the repository.
     ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `nil`.
-    /// - Returns: A `Result`, containing either a ``ComAtprotoLexicon/Sync/GetLatestCommitOutput``
+    /// - Returns: A `Result`, containing either a
+    /// ``ComAtprotoLexicon/Sync/GetLatestCommitOutput``
     /// if successful, or an `Error` if not.
     public func getLatestCommit(
         from repositoryDID: String,

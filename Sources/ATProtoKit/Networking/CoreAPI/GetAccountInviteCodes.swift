@@ -23,7 +23,8 @@ extension ATProtoKit {
     ///   be included in the list. Optional. Defaults to `true`.
     ///   - areEarnedCodesIncluded: Indicates whether the invite codes that the user earned should
     ///   be included in the list. Optional. Defaults to `true`.
-    /// - Returns: A `Result`, containing either ``ComAtprotoLexicon/Server/GetAccountInviteCodesOutput``
+    /// - Returns: A `Result`, containing either
+    /// ``ComAtprotoLexicon/Server/GetAccountInviteCodesOutput``
     /// if successful, and an `Error` if not.
     public func getAccountInviteCodes(
         _ areUsedCodesIncluded: Bool = true,

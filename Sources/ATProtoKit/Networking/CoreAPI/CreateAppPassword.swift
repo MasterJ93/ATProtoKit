@@ -25,7 +25,8 @@ extension ATProtoKit {
     ///   - passwordName: The name given to the App Password to help distingush it from others.
     ///   - isPrivileged: Indicates whether this App Password can be used to access sensitive
     ///   content from the user account.
-    /// - Returns: A `Result`, either containing a ``ComAtprotoLexicon/Server/CreateAppPasswordOutput``
+    /// - Returns: A `Result`, either containing a
+    /// ``ComAtprotoLexicon/Server/CreateAppPasswordOutput``
     /// if successful, or an `Error` if not.
     public func createAppPassword(
         named passwordName: String,

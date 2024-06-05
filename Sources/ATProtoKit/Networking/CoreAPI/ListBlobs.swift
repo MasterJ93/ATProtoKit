@@ -25,7 +25,8 @@ extension ATProtoKit {
     ///   - cursor: The mark used to indicate the starting point for the next set of
     ///   results. Optional.
     ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `nil`.
-    /// - Returns: A `Result`, containing either a ``ComAtprotoLexicon/Sync/ListBlobsOutput``
+    /// - Returns: A `Result`, containing either a
+    /// ``ComAtprotoLexicon/Sync/ListBlobsOutput``
     /// if successful, or an `Error` if not.
     public func listBlobs(
         from repositoryDID: String,

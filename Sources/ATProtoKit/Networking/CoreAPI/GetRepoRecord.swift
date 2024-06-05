@@ -24,7 +24,8 @@ extension ATProtoKit {
     ///   - recordKey: The record key of the record.
     ///   - recordCID: The CID hash of the record. Optional.
     ///   - pdsURL: The URL of the Personal Data Server (PDS).
-    /// - Returns: A `Result`, which either contains a ``ComAtprotoLexicon/Repository/GetRecordOutput``
+    /// - Returns: A `Result`, which either contains a
+    /// ``ComAtprotoLexicon/Repository/GetRecordOutput``
     /// if successful, and an `Error` if not.
     public func getRepositoryRecord(
         from repository: String,

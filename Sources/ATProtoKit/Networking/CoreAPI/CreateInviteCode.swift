@@ -24,7 +24,8 @@ extension ATProtoKit {
     ///   - codeCount: The number of invite codes to be created. Defaults to 1.
     ///   - forAccount: The decentralized identifier (DIDs) of the user that can use the
     ///   invite code. Optional.
-    /// - Returns: A `Result`, containing either a ``ComAtprotoLexicon/Server/CreateInviteCodeOutput``
+    /// - Returns: A `Result`, containing either a
+    /// ``ComAtprotoLexicon/Server/CreateInviteCodeOutput``
     /// if successful, or an `Error` if not.
     public func createInviteCode(
         _ codeCount: Int = 1,

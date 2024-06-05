@@ -26,7 +26,8 @@ extension ATProtoKit {
     ///   Optional. Defaults to `80`. Can be between `0` and `1000`.
     ///   - accessToken: The token used to authenticate the user. Optional.
     ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `nil`.
-    /// - Returns: A `Result`, containing either a ``AppBskyLexicon/Feed/GetPostThreadOutput``
+    /// - Returns: A `Result`, containing either a
+    /// ``AppBskyLexicon/Feed/GetPostThreadOutput``
     /// if successful, or an `Error` if not.
     public func getPostThread(
         from postURI: String,

@@ -20,7 +20,8 @@ extension ATProtoKit {
     ///
     /// - Parameter seenAt: The date and time the notifications were seen. Defaults to the date and
     /// time the request was sent.
-    /// - Returns: A `Result`, containing either a ``AppBskyLexicon/Notification/GetUnreadCountOutput``
+    /// - Returns: A `Result`, containing either a
+    /// ``AppBskyLexicon/Notification/GetUnreadCountOutput``
     /// if successful, or an `Error` if not.
     public func getUnreadCount(
         seenAt: Date = Date.now

@@ -21,7 +21,8 @@ extension ATProtoKit {
     ///
     /// - Parameter accountDID: The decentralized identifier (DID) of the account.
     /// - Parameter cidHash: The CID hash of the blob.
-    /// - Parameter pdsURL: The URL of the Personal Data Server (PDS). Defaults to `https://bsky.social`.
+    /// - Parameter pdsURL: The URL of the Personal Data Server (PDS).
+    /// Defaults to `https://bsky.social`.
     /// - Returns: A `Result` containing `Data` on success or `Error` on failure.
     public static func getBlob(
         from accountDID: String,

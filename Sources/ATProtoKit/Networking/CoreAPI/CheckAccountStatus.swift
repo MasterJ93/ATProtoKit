@@ -19,7 +19,8 @@ extension ATProtoKit {
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/server/checkAccountStatus.json
     /// 
-    /// - Returns: A `Result`, containing either ``ComAtprotoLexicon/Server/CheckAccountStatusOutput``
+    /// - Returns: A `Result`, containing either
+    /// ``ComAtprotoLexicon/Server/CheckAccountStatusOutput``
     /// if successful, or an `Error` if not.
     public func checkAccountStatus() async throws -> Result<ComAtprotoLexicon.Server.CheckAccountStatusOutput, Error> {
         guard let sessionURL = session?.pdsURL,

@@ -21,7 +21,8 @@ extension ATProtoAdmin {
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/tools/ozone/moderation/getRepo.json
     ///
     /// - Parameter repositoryDID: The decentralized identifier (DID) of the repository.
-    /// - Returns: A `Result`, containing either an ``ToolsOzoneLexicon/Moderation/RepositoryViewDefinition``
+    /// - Returns: A `Result`, containing either an
+    /// ``ToolsOzoneLexicon/Moderation/RepositoryViewDefinition``
     /// if successful, or an `Error` if not.
     public func getRepository(_ repositoryDID: String) async throws -> Result<ToolsOzoneLexicon.Moderation.RepositoryViewDetailDefinition, Error> {
         guard session != nil,

@@ -52,7 +52,8 @@ extension ATProtoAdmin {
     ///   - reportTypes: An array of report types.
     ///   - cursor: The mark used to indicate the starting point for the next set
     ///   of results. Optional.
-    /// - Returns: A `Result`, containing either an ``ToolsOzoneLexicon/Moderation/QueryEventsOutput``
+    /// - Returns: A `Result`, containing either an
+    /// ``ToolsOzoneLexicon/Moderation/QueryEventsOutput``
     /// if successful, or an `Error` if not.
     public func queryEvents(
         _ eventTypes: [String]? = nil,

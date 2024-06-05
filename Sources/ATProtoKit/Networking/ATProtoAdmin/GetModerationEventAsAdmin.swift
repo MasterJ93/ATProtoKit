@@ -22,7 +22,8 @@ extension ATProtoAdmin {
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/tools/ozone/moderation/getEvent.json
     ///
     /// - Parameter id: The ID of the moderator event.
-    /// - Returns: A `Result`, containing either an ``ToolsOzoneLexicon/Moderation/EventViewDetailDefinition``
+    /// - Returns: A `Result`, containing either an
+    /// ``ToolsOzoneLexicon/Moderation/EventViewDetailDefinition``
     /// if successful, or an `Error` if not.
     public func getEvent(_ id: String) async throws -> Result<ToolsOzoneLexicon.Moderation.EventViewDetailDefinition, Error> {
         guard session != nil,

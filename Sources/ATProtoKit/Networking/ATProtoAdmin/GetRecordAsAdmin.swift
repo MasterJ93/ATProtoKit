@@ -23,7 +23,8 @@ extension ATProtoAdmin {
     /// - Parameters:
     ///   - recordURI: The URI of the record.
     ///   - recordCID: The CID hash of the record. Optional.
-    /// - Returns: A `Result`, containing either an ``ToolsOzoneLexicon/Moderation/RecordViewDetailDefinition``
+    /// - Returns: A `Result`, containing either an
+    /// ``ToolsOzoneLexicon/Moderation/RecordViewDetailDefinition``
     /// if successful, or an `Error` if not.
     public func getRecord(
         _ recordURI: String,
