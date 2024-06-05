@@ -18,7 +18,8 @@ extension ATProtoBlueskyChat {
     /// - Parameters:
     ///   - conversationID: The ID of the conversation.
     ///   - messageID: The ID of the message. Optional.
-    /// - Returns: A `Result`, containing either a ``ChatBskyLexicon/Conversation/UpdateReadOutput``
+    /// - Returns: A `Result`, containing either a
+    /// ``ChatBskyLexicon/Conversation/UpdateReadOutput``
     /// if successful, or an `Error` if not.
     public func updateRead(
         from conversationID: String,

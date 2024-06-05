@@ -26,7 +26,8 @@ extension ATProtoKit {
     ///   - viewerDID: The decentralized identifier (DID) of the requesting account. Optional.
     ///   - limit: - limit: The number of items the list will hold. Optional. Defaults to `50`. Can
     ///   only be between `1` and `100`.
-    /// - Returns: A `Result`, containing either an ``AppBskyLexicon/Unspecced/GetSuggestionsSkeletonOutput``
+    /// - Returns: A `Result`, containing either an
+    /// ``AppBskyLexicon/Unspecced/GetSuggestionsSkeletonOutput``
     /// if successful, or an `Error` if not.
     public func getSuggestionsSkeleton(
         viewerDID: String?,

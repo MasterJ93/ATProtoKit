@@ -25,7 +25,8 @@ extension ATProtoKit {
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/feed/getPosts.json
     ///
     /// - Parameter postURIs: An array of URIs of post records.
-    /// - Returns: A `Result`, containing either a ``AppBskyLexicon/Feed/GetPostsOutput``
+    /// - Returns: A `Result`, containing either a
+    /// ``AppBskyLexicon/Feed/GetPostsOutput``
     /// if successful, or an `Error` if not.
     public func getPosts(_ postURIs: [String]) async throws -> Result<AppBskyLexicon.Feed.GetPostsOutput, Error> {
         guard session != nil,

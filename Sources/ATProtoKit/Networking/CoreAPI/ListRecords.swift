@@ -26,7 +26,8 @@ extension ATProtoKit {
     ///   result. Optional.
     ///   - isArrayReverse: Indicates whether the list of records is listed in reverse. Optional.
     ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `nil`.
-    /// - Returns: A `Result`, containing ``ComAtprotoLexicon/Repository/ListRecordsOutput``
+    /// - Returns: A `Result`, containing
+    /// ``ComAtprotoLexicon/Repository/ListRecordsOutput``
     /// if successful, or an `Error` if not.
     public func listRecords(
         from repositoryDID: String,

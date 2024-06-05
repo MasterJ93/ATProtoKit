@@ -22,7 +22,8 @@ extension ATProtoKit {
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/feed/sendInteractions.json
     ///
     /// - Parameter interactions: An array of interactions.
-    /// - Returns: A `Result`, containing either a ``AppBskyLexicon/Feed/SendInteractionsOutput``
+    /// - Returns: A `Result`, containing either a
+    /// ``AppBskyLexicon/Feed/SendInteractionsOutput``
     /// if sucessful, or an `Error` if not.
     public func sendInteractions(
         _ interactions: [AppBskyLexicon.Feed.InteractionDefinition]

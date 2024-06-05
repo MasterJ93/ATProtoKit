@@ -19,7 +19,8 @@ extension ATProtoBlueskyChat {
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/chat/bsky/moderation/getActorMetadata.json
     /// 
     /// - Parameter actorDID: The decentralized identifier (DID) of the user account.
-    /// - Returns: A `Result`, containing either a ``ChatBskyLexicon/Moderation/GetActorMetadataOutput``
+    /// - Returns: A `Result`, containing either a
+    /// ``ChatBskyLexicon/Moderation/GetActorMetadataOutput``
     /// if successful, or an `Error` if not.
     public func getMessageContext(actorDID: String) async throws -> Result<ChatBskyLexicon.Moderation.GetActorMetadataOutput, Error> {
         guard session != nil,

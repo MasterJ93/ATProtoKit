@@ -21,7 +21,8 @@ extension ATProtoAdmin {
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/tools/ozone/communication/listTemplates.json
     ///
-    /// - Returns: A `Result`, containing either an ``ToolsOzoneLexicon/Communication/ListTemplatesOutput``
+    /// - Returns: A `Result`, containing either an
+    /// ``ToolsOzoneLexicon/Communication/ListTemplatesOutput``
     /// if successful, or an `Error` if not.
     public func listCommunicationTemplates() async throws -> Result<ToolsOzoneLexicon.Communication.ListTemplatesOutput, Error> {
         guard session != nil,

@@ -22,7 +22,8 @@ extension ATProtoKit {
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/feed/getFeedGenerators.json
     ///
     /// - Parameter feedURIs: An array of URIs for feed generators.
-    /// - Returns: A `Result`, containing either a ``AppBskyLexicon/Feed/GetFeedGeneratorsOutput``
+    /// - Returns: A `Result`, containing either a
+    /// ``AppBskyLexicon/Feed/GetFeedGeneratorsOutput``
     /// if successful, or an `Error` if not.
     public func getFeedGenerators(_ feedURIs: [String]) async throws -> Result<AppBskyLexicon.Feed.GetFeedGeneratorsOutput, Error> {
         guard session != nil,

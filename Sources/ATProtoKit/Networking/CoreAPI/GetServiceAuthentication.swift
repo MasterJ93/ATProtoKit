@@ -19,7 +19,8 @@ extension ATProtoKit {
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/server/getServiceAuth.json
     ///
     /// - Parameter serviceDID: The decentralized identifier (DID) of the service.
-    /// - Returns: A `Result`, containing either a ``ComAtprotoLexicon/Server/GetServiceAuthOutput``
+    /// - Returns: A `Result`, containing either a
+    /// ``ComAtprotoLexicon/Server/GetServiceAuthOutput``
     /// if successful, or an `Error`if not.
     public func getServiceAuthentication(from serviceDID: String) async throws -> Result<ComAtprotoLexicon.Server.GetServiceAuthOutput, Error> {
         guard session != nil,

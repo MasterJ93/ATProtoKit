@@ -19,7 +19,9 @@ extension ATProtoKit {
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/actor/getPreferences.json
     ///
-    /// - Returns: A `Result`, containing either ``AppBskyLexicon/Actor/GetPreferencesOutput`` if successful, or `Error` if not.
+    /// - Returns: A `Result`, containing either
+    /// ``AppBskyLexicon/Actor/GetPreferencesOutput``
+    /// if successful, or `Error` if not.
     public func getPreferences() async throws -> Result<AppBskyLexicon.Actor.GetPreferencesOutput, Error> {
         guard session != nil,
               let accessToken = session?.accessToken else {

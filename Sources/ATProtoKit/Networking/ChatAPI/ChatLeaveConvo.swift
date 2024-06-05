@@ -16,7 +16,8 @@ extension ATProtoBlueskyChat {
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/chat/bsky/convo/leaveConvo.json
     /// 
     /// - Parameter conversationID: The ID of the conversation.
-    /// - Returns: A `Result`, containing either a ``ChatBskyLexicon/Conversation/LeaveConversationOutput``
+    /// - Returns: A `Result`, containing either a
+    /// ``ChatBskyLexicon/Conversation/LeaveConversationOutput``
     /// if successful, or an `Error` if not.
     public func leaveConversation(from conversationID: String) async throws -> Result<ChatBskyLexicon.Conversation.LeaveConversationOutput, Error> {
         guard session != nil,

@@ -27,7 +27,8 @@ extension ATProtoKit {
     ///   - record: The record itself.
     ///   - swapRecord: Swaps the record in the server with the record contained in here. Optional.
     ///   - swapCommit: Swaps the commit in the server with the commit contained in here. Optional.
-    /// - Returns: A `Result`, containing either a ``ComAtprotoLexicon/Repository/StrongReference``
+    /// - Returns: A `Result`, containing either a
+    /// ``ComAtprotoLexicon/Repository/StrongReference``
     /// if successful, or an `Error` if not.
     public func putRecord(
         _ repositoryDID: String,

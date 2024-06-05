@@ -23,7 +23,8 @@ extension ATProtoKit {
     ///   Can only choose between 1 and 100.
     ///   - cursor: The mark used to indicate the starting point for the next set of
     ///   results. Optional.
-    /// - Returns: A `Result`, containing either an ``AppBskyLexicon/Actor/GetSuggestionsOutput``
+    /// - Returns: A `Result`, containing either an
+    /// ``AppBskyLexicon/Actor/GetSuggestionsOutput``
     /// if succesful, or an `Error` if it's not.
     public func getSuggestions(
         limit: Int? = 50,

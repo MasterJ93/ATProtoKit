@@ -19,7 +19,8 @@ extension ATProtoBlueskyChat {
     ///   - limit: The number of items that can be in the list. Optional. Defaults to `50`.
     ///   - cursor: The mark used to indicate the starting point for the next set of
     ///   result. Optional.
-    /// - Returns: A `Result`, containing either a ``ChatBskyLexicon/Conversation/ListConversationsOutput``
+    /// - Returns: A `Result`, containing either a
+    /// ``ChatBskyLexicon/Conversation/ListConversationsOutput``
     /// if successful, or an `Error` if not.
     public func listConversations(
         limit: Int? = 50,

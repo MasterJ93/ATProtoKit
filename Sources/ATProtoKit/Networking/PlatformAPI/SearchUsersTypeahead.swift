@@ -37,7 +37,8 @@ extension ATProtoKit {
     ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `nil`.
     ///   - shouldAuthenticate: Indicates whether the method will use the access token when
     ///   sending the request. Defaults to `false`.
-    /// - Returns: A `Result`, containing either ``AppBskyLexicon/Actor/SearchActorsTypeaheadOutput``
+    /// - Returns: A `Result`, containing either
+    /// ``AppBskyLexicon/Actor/SearchActorsTypeaheadOutput``
     /// if successful, and an `Error` if not.
     public func searchUsersTypeahead(
         by query: String,

@@ -20,7 +20,8 @@ extension ATProtoBlueskyChat {
     /// - Parameters:
     ///   - conversationID: The ID of the conversation.
     ///   - message: The message to be sent.
-    /// - Returns: A `Result`, containing either a ``ChatBskyLexicon/Conversation/MessageViewDefinition``
+    /// - Returns: A `Result`, containing either a
+    /// ``ChatBskyLexicon/Conversation/MessageViewDefinition``
     /// if successful, or an `Error` if not.
     public func sendMessage(
         conversationID: String,

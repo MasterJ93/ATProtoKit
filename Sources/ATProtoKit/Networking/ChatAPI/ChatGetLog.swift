@@ -17,7 +17,8 @@ extension ATProtoBlueskyChat {
     /// 
     /// - Parameter cursor: The mark used to indicate the starting point for the next set of
     ///   result. Optional.
-    /// - Returns: A `Result`, containing either a ``ChatBskyLexicon/Conversation/GetLogOutput``
+    /// - Returns: A `Result`, containing either a
+    /// ``ChatBskyLexicon/Conversation/GetLogOutput``
     /// if successful, or an `Error` if not.
     public func getLog(cursor: String? = nil) async throws -> Result<ChatBskyLexicon.Conversation.GetLogOutput, Error> {
         guard session != nil,

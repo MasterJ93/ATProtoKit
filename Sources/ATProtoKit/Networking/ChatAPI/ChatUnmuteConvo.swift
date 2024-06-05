@@ -16,7 +16,8 @@ extension ATProtoBlueskyChat {
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/chat/bsky/convo/unmuteConvo.json
     /// 
     /// - Parameter conversationID: The ID of the conversation.
-    /// - Returns: A `Result`, containing either a ``ChatBskyLexicon/Conversation/UnmuteConversationOutput``
+    /// - Returns: A `Result`, containing either a
+    /// ``ChatBskyLexicon/Conversation/UnmuteConversationOutput``
     /// if successful, or an `Error` if not.
     public func unmuteConversation(from conversationID: String) async throws -> Result<ChatBskyLexicon.Conversation.UnmuteConversationOutput, Error> {
         guard session != nil,

@@ -21,7 +21,8 @@ extension ATProtoKit {
     ///
     /// - Parameter actorDID: The decentralized identifier (DID) or handle of the user account
     /// that the suggestions are based on.
-    /// - Returns: A `Result`, containing either a ``AppBskyLexicon/Graph/GetSuggestedFollowsByActorOutput``
+    /// - Returns: A `Result`, containing either a
+    /// ``AppBskyLexicon/Graph/GetSuggestedFollowsByActorOutput``
     /// if successful, or an `Error` if not.
     public func getSuggestedFollowsByActor(_ actorDID: String) async throws -> Result<AppBskyLexicon.Graph.GetSuggestedFollowsByActorOutput, Error> {
         guard session != nil,

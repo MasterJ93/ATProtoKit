@@ -22,7 +22,8 @@ extension ATProtoKit {
     /// - Parameters:
     ///   - handle: The handle to resolve into a decentralized identifier (DID).
     ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `nil`.
-    /// - Returns: A `Result`, containing either a ``ComAtprotoLexicon/Identity/ResolveHandleOutput``
+    /// - Returns: A `Result`, containing either a
+    /// ``ComAtprotoLexicon/Identity/ResolveHandleOutput``
     /// if successful, or an `Error` if not.
     public func resolveHandle(
         from handle: String,

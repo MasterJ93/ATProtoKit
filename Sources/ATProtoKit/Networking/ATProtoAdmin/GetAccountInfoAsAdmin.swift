@@ -24,7 +24,8 @@ extension ATProtoAdmin {
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/admin/getAccountInfo.json
     ///
     /// - Parameter accountDID: The decentralized identifier (DID) of the user account.
-    /// - Returns: A `Result`, containing either an ``ComAtprotoLexicon/Admin/AccountViewDefinition``
+    /// - Returns: A `Result`, containing either an
+    /// ``ComAtprotoLexicon/Admin/AccountViewDefinition``
     /// if successful, or an `Error` if not.
     public func getAccountInfo(_ accountDID: String) async throws -> Result<ComAtprotoLexicon.Admin.AccountViewDefinition, Error> {
         guard session != nil,

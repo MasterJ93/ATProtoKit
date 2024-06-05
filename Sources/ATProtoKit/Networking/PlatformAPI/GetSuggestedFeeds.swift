@@ -22,7 +22,8 @@ extension ATProtoKit {
     ///   - limit: The number of items the list will hold. Optional. Defaults to `50`.
     ///   - cursor: The mark used to indicate the starting point for the next set of
     ///   result. Optional.
-    /// - Returns: A `Result`, containing either a ``AppBskyLexicon/Feed/GetSuggestedFeedsOutput``
+    /// - Returns: A `Result`, containing either a
+    /// ``AppBskyLexicon/Feed/GetSuggestedFeedsOutput``
     /// if successful, or an `Error` if not.
     public func getSuggestedFeeds(
         limit: Int? = 50,

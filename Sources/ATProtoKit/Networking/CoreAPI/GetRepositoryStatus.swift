@@ -19,7 +19,8 @@ extension ATProtoKit {
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/sync/getRepoStatus.json
     /// 
     /// - Parameter actorDID: The decentralized identifier (DID) of the user account.
-    /// - Returns: A `Result`, containing either a ``ComAtprotoLexicon/Sync/GetRepositoryStatusOutput``
+    /// - Returns: A `Result`, containing either a
+    /// ``ComAtprotoLexicon/Sync/GetRepositoryStatusOutput``
     ///  if successful, or an `Error` if not.
     public func getRepositoryStatus(from actorDID: String) async throws -> Result<ComAtprotoLexicon.Sync.GetRepositoryStatusOutput, Error> {
         guard session != nil,

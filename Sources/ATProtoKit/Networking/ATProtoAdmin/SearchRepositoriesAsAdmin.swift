@@ -26,7 +26,8 @@ extension ATProtoAdmin {
     ///   choose between `1` and `100`.
     ///   - cursor: The mark used to indicate the starting point for the next set of
     ///   results. Optional.
-    /// - Returns: A `Result`, containing either an ``ComAtprotoLexicon/Admin/SearchRepositoriesOutput``
+    /// - Returns: A `Result`, containing either an
+    /// ``ComAtprotoLexicon/Admin/SearchRepositoriesOutput``
     /// if successful, or an `Error` if not.
     public func searchRepositories(
         _ query: String?,

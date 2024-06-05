@@ -18,7 +18,8 @@ extension ATProtoBlueskyChat {
     /// - Parameters:
     ///   - conversationID: The ID of the conversation.
     ///   - limit: The number of items that can be in the list. Optional. Defaults to `50`.
-    /// - Returns: A `Result`, containing either a ``ChatBskyLexicon/Conversation/GetMessagesOutput``
+    /// - Returns: A `Result`, containing either a
+    /// ``ChatBskyLexicon/Conversation/GetMessagesOutput``
     /// if successful, or an `Error` if not.
     public func getMessages(
         from conversationID: String,

@@ -39,7 +39,8 @@ extension ATProtoKit {
     ///   Can only choose between `1` and `100`.
     ///   - cursor: The mark used to indicate the starting point for the next set of
     ///   results. Optional.
-    /// - Returns: A `Result`, containing either an ``AppBskyLexicon/Feed/SearchPostsOutput``
+    /// - Returns: A `Result`, containing either an
+    /// ``AppBskyLexicon/Feed/SearchPostsOutput``
     /// if succesful, or an `Error` if it's not.
     public func searchPosts(
         with searchQuery: String,

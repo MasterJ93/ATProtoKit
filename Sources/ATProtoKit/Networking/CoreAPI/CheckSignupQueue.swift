@@ -21,7 +21,8 @@ extension ATProtoKit {
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/temp/checkSignupQueue.json
     ///
     /// - Parameter query: The string used to search for the username.
-    /// - Returns: A `Result`, containing either a ``ComAtprotoLexicon/Temp/CheckSignupQueueOutput``
+    /// - Returns: A `Result`, containing either a
+    /// ``ComAtprotoLexicon/Temp/CheckSignupQueueOutput``
     /// if successful, ot an `Error` if not.
     public func checkSignupQueue(for query: String) async throws -> Result<ComAtprotoLexicon.Temp.CheckSignupQueueOutput, Error> {
         guard let sessionURL = session?.pdsURL,

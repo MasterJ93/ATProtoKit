@@ -29,7 +29,8 @@ extension ATProtoKit {
     ///   - limit: The number of items the list will hold. Optional. Defaults to `50`.
     ///   - cursor: The mark used to indicate the starting point for the next set of
     ///   result. Optional.
-    /// - Returns: A `Result`, containing either a ``AppBskyLexicon/Feed/GetAuthorFeedOutput``
+    /// - Returns: A `Result`, containing either a
+    /// ``AppBskyLexicon/Feed/GetAuthorFeedOutput``
     /// if successful, or an `Error` if not.
     public func getAuthorFeed(
         by actorDID: String,

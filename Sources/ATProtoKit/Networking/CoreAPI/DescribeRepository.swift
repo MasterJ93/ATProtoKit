@@ -19,7 +19,8 @@ extension ATProtoKit {
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/repo/describeRepo.json
     ///
     /// - Parameter repositoryDID: The decentralized identifier (DID) or handle of the repository.
-    /// - Returns: A `Result`, containing either a ``ComAtprotoLexicon/Repository/DescribeRepositoryOutput``
+    /// - Returns: A `Result`, containing either a
+    /// ``ComAtprotoLexicon/Repository/DescribeRepositoryOutput``
     /// if successful, ot an `Error` if not.
     public func describeRepository(
         _ repositoryDID: String,

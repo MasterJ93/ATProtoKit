@@ -29,7 +29,8 @@ extension ATProtoKit {
     ///   result. Optional.
     ///   - accessToken: The token used to authenticate the user. Optional.
     ///   - pdsURL: The URL of the Personal Data Server (PDS).
-    /// - Returns: A `Result`, containing either a ``AppBskyLexicon/Feed/GetFeedSkeletonOutput``
+    /// - Returns: A `Result`, containing either a
+    /// ``AppBskyLexicon/Feed/GetFeedSkeletonOutput``
     /// if successful, or an `Error` if not.
     public static func getFeedSkeleton(
         _ feedURI: String,

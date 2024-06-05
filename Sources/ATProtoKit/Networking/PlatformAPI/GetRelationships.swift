@@ -23,7 +23,8 @@ extension ATProtoKit {
     ///   - otherDIDs: An array of decentralized identifiers (DIDs) for the other user accounts
     ///   that the primary user account may be related to. Optional. Current maximum item length
     ///   is `30`.
-    /// - Returns: A `Result`, containing either a ``AppBskyLexicon/Graph/GetRelationshipsOutput``
+    /// - Returns: A `Result`, containing either a
+    /// ``AppBskyLexicon/Graph/GetRelationshipsOutput``
     /// if successful, or an `Error` if not.
     public func getRelationships(
         between actorDID: String,
