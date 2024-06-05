@@ -23,12 +23,15 @@ extension ATProtoAdmin {
     /// 
     /// - Parameters:
     ///   - subject: The subject associated with the subject status.
-    ///   - takedown: The status attributes of the subject. Optional.
-    /// - Returns: A `Result`, containing either an ``ComAtprotoLexicon``
+    ///   - takedown: The attributes of the user account's takedown. Optional.
+    ///   - deactivated: The attributes of the user account's deactivation. Optional.
+    /// - Returns: A `Result`, containing either an
+    /// ``ComAtprotoLexicon/Admin/UpdateSubjectStatusOutput``
     /// if successful, or an `Error` if not.
     public func updateSubjectStatusAsAdmin(
         _ subject: ATUnion.AdminUpdateSubjectStatusUnion,
-        takedown: ComAtprotoLexicon.Admin.StatusAttributesDefinition?
+        takedown: ComAtprotoLexicon.Admin.StatusAttributesDefinition?,
+        deactivated: ComAtprotoLexicon.Admin.StatusAttributesDefinition?
     ) async throws -> Result<ComAtprotoLexicon.Admin.UpdateSubjectStatusOutput, Error> {
         guard session != nil,
               let accessToken = session?.accessToken else {
@@ -42,7 +45,8 @@ extension ATProtoAdmin {
 
         let requestBody = ComAtprotoLexicon.Admin.UpdateSubjectStatusRequestBody(
             subject: subject,
-            takedown: takedown
+            takedown: takedown,
+            deactivated: deactivated
         )
 
         do {
