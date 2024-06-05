@@ -14,4 +14,7 @@ extension ToolsOzoneLexicon {
 
     /// A group of lexicons within the `tools.ozone.moderation` namespace.
     public struct Moderation {}
+
+    /// A group of lexicons within the `tools.ozone.server` namespace.
+    public struct Server {}
 }
