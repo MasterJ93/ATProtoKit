@@ -6,13 +6,13 @@
 //
 
 import Foundation
+import Logging
 
 /// The base class for the AT Protocol's Firehose event stream.
 class ATFirehoseStream: ATEventStreamConfiguration {
-
+    internal var logger = Logger(label: "ATFirehoseStream")
     /// Indicates whether the event stream is connected. Defaults to `false`.
     internal var isConnected: Bool = false
-    
     /// The URL of the relay. Defaults to `wss://bsky.network`.
     public var relayURL: String = "wss://bsky.network"
 
@@ -49,6 +49,8 @@ class ATFirehoseStream: ATEventStreamConfiguration {
     ///   to `URLSessionConfiguration.default`.
     required init(relayURL: String, namespacedIdentifiertURL: String, cursor: Int64?, sequencePosition: Int64?,
                   urlSessionConfiguration: URLSessionConfiguration = .default, webSocketTask: URLSessionWebSocketTask) async throws {
+        logger.trace("In init()")
+        logger.trace("Initializing the ATEventStreamConfiguration")
         self.relayURL = relayURL
         self.namespacedIdentifiertURL = namespacedIdentifiertURL
         self.cursor = cursor
@@ -56,8 +58,15 @@ class ATFirehoseStream: ATEventStreamConfiguration {
         self.urlSessionConfiguration = urlSessionConfiguration
         self.urlSession = URLSession(configuration: urlSessionConfiguration)
         self.webSocketTask = webSocketTask
-
-        guard let webSocketURL = URL(string: "\(relayURL)/xrpc/\(namespacedIdentifiertURL)") else { throw ATRequestPrepareError.invalidFormat }
+        
+        logger.debug("Opening a websocket", metadata: ["relayUrl": "\(relayURL)", "namespacedIdentifiertURL": "\(namespacedIdentifiertURL)"])
+        guard let webSocketURL = URL(string: "\(relayURL)/xrpc/\(namespacedIdentifiertURL)") else {
+            logger.error("Unable to create the websocket URL due to an invalid format.")
+            throw ATRequestPrepareError.invalidFormat
+        }
+        
+        logger.debug("Creating the websocket task")
         self.webSocketTask = urlSession.webSocketTask(with: webSocketURL)
+        logger.trace("Exiting init()")
     }
 }

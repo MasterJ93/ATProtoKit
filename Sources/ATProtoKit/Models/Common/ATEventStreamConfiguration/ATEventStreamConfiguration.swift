@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Logging
 
 /// The base protocol which all data stream-related classes conform to.
 ///
@@ -14,6 +15,7 @@ import Foundation
 /// managing the connection (opening, closing, and reconnecting), creating parameters for allowing
 /// and disallowing content, and handling sequences.
 public protocol ATEventStreamConfiguration: AnyObject {
+    var logger: Logger { get }
 
     /// The URL of the relay.
     ///

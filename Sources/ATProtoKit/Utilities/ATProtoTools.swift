@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Logging
 
 /// A group of methods for miscellaneous aspects of ATProtoKit.
 ///
@@ -20,12 +21,14 @@ import Foundation
 /// when version 1.0 is launched or `ATProtoTools` is stabilized, whichever comes first.
 /// Until then, if a method is better suited elsewhere, it will be immediately moved.
 public class ATProtoTools {
+    private var logger = Logger(label: "ATProtoTools")
 
     /// Resolves the reply references to prepare them for a later post record request.
     ///
     /// - Parameter parentURI: The URI of the post record the current one is directly replying to.
     /// - Returns: A ``AppBskyLexicon/Feed/PostRecord/ReplyReference``.
     public func resolveReplyReferences(parentURI: String) async throws -> AppBskyLexicon.Feed.PostRecord.ReplyReference {
+        logger.trace("In resolveReplyReferences()")
         let threadRecords = try await fetchRecordForURI(parentURI)
 
         guard let parentRecord = threadRecords.value else {
@@ -69,6 +72,7 @@ public class ATProtoTools {
                     return AppBskyLexicon.Feed.PostRecord.ReplyReference(root: replyReference.root, parent: replyReference.parent)
             }
         }
+        logger.trace("Exiting resolveReplyReferences()")
         return AppBskyLexicon.Feed.PostRecord.ReplyReference(root: replyReference.root, parent: replyReference.parent)
     }
 
@@ -77,14 +81,19 @@ public class ATProtoTools {
     /// - Parameter uri: The URI of the record.
     /// - Returns: A ``ComAtprotoLexicon/Repository/GetRecordOutput``
     public func fetchRecordForURI(_ uri: String) async throws -> ComAtprotoLexicon.Repository.GetRecordOutput {
+        logger.trace("In fetchRecordForURI()")
         let query = try parseURI(uri)
 
         let record = try await ATProtoKit().getRepositoryRecord(from: query.repository, collection: query.collection, recordKey: query.recordKey, pdsURL: nil)
 
         switch record {
             case .success(let result):
+                logger.debug("Reporitory record has been aquired", metadata: ["cid": "\(result.recordCID)"])
+                logger.trace("In fetchRecordForURI()")
                 return result
             case .failure(let failure):
+                logger.debug("Repository record has not been aquired")
+                logger.trace("In fetchRecordForURI()")
                 throw failure
         }
     }
@@ -94,6 +103,7 @@ public class ATProtoTools {
     /// - Parameter record: The record to convert.
     /// - Returns: A ``ReplyReference``.
     private func createReplyReference(from record: ComAtprotoLexicon.Repository.GetRecordOutput) -> AppBskyLexicon.Feed.PostRecord.ReplyReference {
+        logger.trace("In createReplyReference()") 
         let reference = ComAtprotoLexicon.Repository.StrongReference(recordURI: record.recordURI, cidHash: record.recordCID)
 
         return AppBskyLexicon.Feed.PostRecord.ReplyReference(root: reference, parent: reference)
@@ -112,12 +122,14 @@ public class ATProtoTools {
     /// - Returns: A ``RecordQuery``.
     internal func parseURI(_ uri: String,
                            pdsURL: String = "https://bsky.app") throws -> RecordQuery {
+        logger.trace("In parseURI()")
         if uri.hasPrefix("at://") {
+            logger.debug("Parsing URI with 'at://' prefix")
             let components = uri.split(separator: "/").map(String.init)
             guard components.count >= 4 else { throw ATRequestPrepareError.invalidFormat }
-
             return ATProtoTools.RecordQuery(repository: components[1], collection: components[2], recordKey: components[3])
         } else if uri.hasPrefix("\(pdsURL)/") {
+            logger.debug("Parsing URI with pds url '\(pdsURL)' prefix")
             let components = uri.split(separator: "/").map(String.init)
             guard components.count >= 6 else {
                 throw ATRequestPrepareError.invalidFormat
@@ -135,11 +147,12 @@ public class ATProtoTools {
                 case "feed":
                     collection = "app.bsky.feed.generator"
                 default:
+                    logger.error("Failed to parse the URI: invalid collection format", metadata: ["error": "\(ATRequestPrepareError.invalidFormat)"])
                     throw ATRequestPrepareError.invalidFormat
             }
-
             return RecordQuery(repository: record, collection: collection, recordKey: recordKey)
         } else {
+            logger.error("Failed to parse the URI", metadata: ["error": "\(ATRequestPrepareError.invalidFormat)"])
             throw ATRequestPrepareError.invalidFormat
         }
     }
