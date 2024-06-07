@@ -21,10 +21,12 @@ public class APIClientService {
     ///   - authorizationValue: The Authorization header value. Optional.
     ///   - proxyValue: The `atproto-proxy` header value. Optional.
     ///   - labelersValue: The `atproto-accept-labelers` value. Optional.
+    ///   - isRelatedToBskyChat: Indicates whether to use the "atproto-proxy" header for
+    ///   the value specific to Bluesky DMs. Optional. Defaults to `false`.
     /// - Returns: A configured `URLRequest` instance.
     public static func createRequest(forRequest requestURL: URL, andMethod httpMethod: HTTPMethod, acceptValue: String? = "application/json",
                                      contentTypeValue: String? = "application/json", authorizationValue: String? = nil,
-                                     labelersValue: String? = nil, proxyValue: String? = nil) -> URLRequest {
+                                     labelersValue: String? = nil, proxyValue: String? = nil, isRelatedToBskyChat: Bool = false) -> URLRequest {
         var request = URLRequest(url: requestURL)
         request.httpMethod = httpMethod.rawValue
 
@@ -49,6 +51,10 @@ public class APIClientService {
         // Send the data specifically for label-related calls.
         if let labelersValue {
             request.addValue(labelersValue, forHTTPHeaderField: "atproto-accept-labelers")
+        }
+
+        if isRelatedToBskyChat {
+            request.addValue("did:web:api.bsky.chat#bsky_chat", forHTTPHeaderField: "atproto-proxy")
         }
 
         return request
