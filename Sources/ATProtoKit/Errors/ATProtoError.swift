@@ -138,6 +138,37 @@ public enum ATAPIError: ATProtoError, Decodable {
     }
 }
 
+/// An error type related to issues with decentralized identifiers (DIDs).
+public enum ATDIDError: ATProtoError {
+
+    /// There are characters in the decentralized identifier (DID) that are not part of the
+    /// range of allowed characters.
+    ///
+    /// A DID can only contain characters from the ASCII standard, underscores (\_), periods (.),
+    /// colons (:), percent signs (%), and hypens (-).
+    case disallowedCharacters
+
+    /// The decentralized identifier (DID) lacks the minimum required segments.
+    ///
+    /// A DID must have three segments: the prefix, the method, and any method-specific content.
+    case notEnoughSegments
+
+    /// The decentralized identifier (DID) lacks the "did:" prefix.
+    case noValidPrefix
+
+    /// The method segment of the decentralized identifier (DID) is not all lowercased.
+    case didMethodNotLowercased
+
+    /// A colon (:) or percentage symbol (%) was found at the end of the last segment.
+    case invalidSuffixCharacter
+
+    /// The decentralized identifier (DID) has a length that's higher than 2048 characters.
+    case tooLong
+
+    /// The regular expression could not validate the given decentralized identifier (DID).
+    case failedToValidateViaRegex
+}
+
 /// An error type related to issues with Namespaced Identifiers (NSIDs).
 public enum ATNSIDError: ATProtoError {
 

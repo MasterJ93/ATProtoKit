@@ -3,6 +3,7 @@
 ## Topics
 
 - ``ATAPIError``
+- ``ATDIDError``
 - ``ATNSIDError``
 - ``ATRequestPrepareError``
 - ``ATHTTPRequestError``
