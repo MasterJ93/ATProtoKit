@@ -6,3 +6,9 @@
 //
 
 import Foundation
+
+/// A class that Identifies and validates Namespaced Identifiers (NSIDs).
+class NSIDManager {
+    
+    
+}

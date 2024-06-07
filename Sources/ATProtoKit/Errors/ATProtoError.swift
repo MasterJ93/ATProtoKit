@@ -138,6 +138,11 @@ public enum ATAPIError: ATProtoError, Decodable {
     }
 }
 
+/// An error type related to issues with Namespaced Identifiers (NSIDs).
+public enum ATNSIDError: ATProtoError {
+    
+}
+
 /// An error type related to issues surrounding preparing a request to be sent.
 public enum ATRequestPrepareError: ATProtoError {
 
