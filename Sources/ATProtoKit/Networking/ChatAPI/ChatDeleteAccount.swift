@@ -34,7 +34,8 @@ extension ATProtoBlueskyChat {
                                                          andMethod: .get,
                                                          acceptValue: "application/json",
                                                          contentTypeValue: nil,
-                                                         authorizationValue: "Bearer \(accessToken)")
+                                                         authorizationValue: "Bearer \(accessToken)",
+                                                         isRelatedToBskyChat: true)
 
             try await APIClientService.sendRequest(request,
                                                    withEncodingBody: requestBody)

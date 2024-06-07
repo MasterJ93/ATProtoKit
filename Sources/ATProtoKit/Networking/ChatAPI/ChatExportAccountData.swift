@@ -31,7 +31,8 @@ extension ATProtoBlueskyChat {
                                                          andMethod: .get,
                                                          acceptValue: "application/jsonl",
                                                          contentTypeValue: nil,
-                                                         authorizationValue: "Bearer \(accessToken)")
+                                                         authorizationValue: "Bearer \(accessToken)",
+                                                         isRelatedToBskyChat: true)
 
             _ = try await APIClientService.sendRequest(request)
         } catch {
