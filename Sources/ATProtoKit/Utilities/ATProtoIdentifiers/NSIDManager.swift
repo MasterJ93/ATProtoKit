@@ -160,7 +160,15 @@ public class NSIDManager {
     ///
     /// - Throws: An ``ATNSIDError``, indicating the NSID is invalid.
     public func validateViaRegex(_ nsid: String) throws {
-        
+        let nsidRegex = try Regex("^[a-zA-Z]([a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(\\.[a-zA-Z0-9]([a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)+(\\.[a-zA-Z]([a-zA-Z]{0,61}[a-zA-Z])?)$")
+
+        guard try nsidRegex.wholeMatch(in: nsid) != nil else {
+            throw ATNSIDError.failedToValidateViaRegex
+        }
+
+        guard nsid.count > 253 + 1 + 63 else {
+            throw ATNSIDError.tooLong
+        }
     }
 }
 

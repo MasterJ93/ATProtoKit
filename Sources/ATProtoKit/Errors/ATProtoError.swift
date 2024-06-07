@@ -170,6 +170,9 @@ public enum ATNSIDError: ATProtoError {
 
     /// The name segment contains characters other than latin letters.
     case nonLatinLetterFoundInNameSegment
+
+    /// The regular expression could not validate the given Namespaced Identifier (NSID).
+    case failedToValidateViaRegex
 }
 
 /// An error type related to issues surrounding preparing a request to be sent.
