@@ -22,7 +22,8 @@ Naturally, ``ATProtoKit/DateFormatting`` works only for `Date`, while ``ATProtoK
 
 When adding the property wrapper, make sure the property itself is mutable. Failure to do so while cause the build to fail.
 
-## Property Wrappers
+## Topics
+### Property Wrappers
 
 - ``ATProtoKit/DateFormatting``
 - ``ATProtoKit/DateFormattingOptional``
