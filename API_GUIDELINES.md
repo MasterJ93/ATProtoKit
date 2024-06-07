@@ -273,8 +273,25 @@ There may be times where documentation may be unclear by the lexicon. If this ha
 ```
 
 ## Model Designs
-### Regular models
-_TBD..._
+### General
+- When creating a model, the following layout must be in the following order:
+    1. `typealias`es.
+    2. `public` properties.
+        - This includes normal properties and computed properties.
+    3. `private` properties.
+        - This includes normal properties and computed properties.
+    4. `internal` properties.
+        - This includes normal properties and computed properties.
+    5. Initalizers.
+        - They must be in the order of `public`, `private`, and `internal`.
+        - `convenience init()` must be after the `public` initializers.
+    6. Methods.
+        - They must follow the order of `public`, `private`, `internal`, and `fileprivate`.
+        - `static` methods should be before normal `public` methods.
+    7. `enum`s.
+        - They must follow the order of `public`, `private`, and `internal`.
+- All properties, methods, `enum`s, `typealias`es, etc. ***must*** be fully documented, regardless of visibility.
+    - This ensures that people have a better understanding of what's going on, either for using the package, or contributing to it.
 
 ### Lexicon models
 - All models must be `public` `struct`s and should conform to `Codable`, `Decodable`, `Encodable`, or `ATRecordProtocol`.
