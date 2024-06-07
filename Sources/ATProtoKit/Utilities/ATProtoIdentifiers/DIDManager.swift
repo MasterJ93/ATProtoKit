@@ -56,9 +56,9 @@ public struct DIDManager {
     ///
     /// - Throws: An ``ATDIDError``, indicating the DID is invalid.
     public func validateViaRegex(_ did: String) throws {
-        let nsidRegex = try Regex("^did:[a-z]+:[a-zA-Z0-9._:%-]*[a-zA-Z0-9._-]$")
+        let didRegex = try Regex("^did:[a-z]+:[a-zA-Z0-9._:%-]*[a-zA-Z0-9._-]$")
 
-        guard try nsidRegex.wholeMatch(in: did) != nil else {
+        guard try didRegex.wholeMatch(in: did) != nil else {
             throw ATNSIDError.failedToValidateViaRegex
         }
 

@@ -162,10 +162,45 @@ public enum ATDIDError: ATProtoError {
     /// A colon (:) or percentage symbol (%) was found at the end of the last segment.
     case invalidSuffixCharacter
 
-    /// The decentralized identifier (DID) has a length that's higher than 2048 characters.
+    /// The decentralized identifier (DID) has a length that's higher than 2,048 characters.
     case tooLong
 
     /// The regular expression could not validate the given decentralized identifier (DID).
+    case failedToValidateViaRegex
+}
+
+/// An error type related to issues with handles.
+public enum ATHandleError: ATProtoError {
+
+    /// There are characters in the handle that are not part of the range of allowed characters.
+    ///
+    /// A handle can only contain letters and numbers from the ASCII standard, periods (.),
+    /// and hypens (-).
+    case disallowedCharacters
+
+    /// The handle has a length that's higher than 253 characters.
+    case tooLong
+
+    /// The handle doesn't have enough segments to be valid.
+    ///
+    /// Handles must have at least two segments: the domain name and the TLD.
+    case notEnoughSegments
+
+    /// One of the segments in the handle is empty.
+    case emptySegment
+
+    /// One of the segments in the handle has too many characters.
+    ///
+    /// Handle segments can have a maximum of 63 characters.
+    case segmentTooLong
+
+    /// One of the segments has a hypen (-) as the first or last character.
+    case hyphenFoundAtSegmentEnds
+
+    /// The TLD segment contains a character other than a latin letter.
+    case nonLatinLetterFoundInTLDSegment
+
+    /// The regular expression could not validate the given handle.
     case failedToValidateViaRegex
 }
 
