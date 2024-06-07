@@ -7,6 +7,7 @@
 
 import Foundation
 
+/// Identifies and validates handles.
 public struct HandleManager {
 
     /// A placeholder for an invalid handle.

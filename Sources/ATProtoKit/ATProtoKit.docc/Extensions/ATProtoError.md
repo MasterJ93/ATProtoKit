@@ -4,6 +4,7 @@
 
 - ``ATAPIError``
 - ``ATDIDError``
+- ``ATHandleError``
 - ``ATNSIDError``
 - ``ATRequestPrepareError``
 - ``ATHTTPRequestError``
