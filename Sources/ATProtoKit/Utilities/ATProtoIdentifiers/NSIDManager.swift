@@ -7,10 +7,10 @@
 
 import Foundation
 
-/// A class that Identifies and validates Namespaced Identifiers (NSIDs).
+/// A class that identifies and validates Namespaced Identifiers (NSIDs).
 public class NSIDManager {
 
-    /// An array of segments for .
+    /// An array of segments for the Namespaced Identifier (NSID).
     private var segments: [String] = []
 
     /// Returns the authority segment of the Namespaced Identifier (NSID).
@@ -21,12 +21,12 @@ public class NSIDManager {
         return Array(segments.prefix(2).reversed()).joined(separator: ".")
     }
 
-    /// Returns the name segement of the Namespaced Identifier (NSID).
+    /// Returns the name segment of the Namespaced Identifier (NSID).
     public var name: String {
         return Array(segments.dropFirst(2)).joined(separator: ".")
     }
 
-    /// Returns the subdomain segement of the Namespaced Identifier (NSID). Optional.
+    /// Returns the subdomain segment of the Namespaced Identifier (NSID). Optional.
     ///
     /// If the NSID only has three segments, then the property will return `nil`.
     ///
@@ -34,26 +34,27 @@ public class NSIDManager {
     /// let nsidWithSubdomain = NSIDManager(nsid: app.bsky.feed.post)
     /// let nsidWithoutSubdomain = NSIDManager(nsid: app.bsky.feed)
     ///
-    /// print(nsidWithSubdomain)    // Returns "feed".
-    /// print(nsidWithoutSubdomain) // Returns nil.
+    /// print(nsidWithSubdomain.subdomain)    // Returns "feed".
+    /// print(nsidWithoutSubdomain.subdomain) // Returns nil.
     /// ```
     public var subdomain: String? {
         if segments.count > 3 {
-            return segments[3]
+            return segments[2]
         }
 
         return nil
     }
 
     /// Initializes the class and ensures the Namespaced Identifier (NSID) is valid.
-    /// 
+    ///
     /// - Parameter nsid: The Namespaced Identifier (NSID) to validate.
     ///
     /// - Throws: An ``ATNSIDError``, indicating the NSID is invalid.
     public init(nsid: String) throws {
-
+        try validate(nsid)
+        self.segments = nsid.split(separator: ".").map(String.init)
     }
-    
+
     /// Parses the given Namespaced Identifier (NSID) into different segments.
     ///
     /// - Parameter nsid: The NSID to parse.
@@ -68,7 +69,7 @@ public class NSIDManager {
     ///
     /// - Parameters:
     ///   - authority: The domain authority segment of the NSID.
-    ///   - name: The name segement of the NSID.
+    ///   - name: The name segment of the NSID.
     /// - Returns: An instance of ``NSIDManager``, containing a valid NSID split into segments.
     ///
     /// - Throws: An ``ATNSIDError``, indicating the NSID is invalid.
@@ -76,12 +77,12 @@ public class NSIDManager {
         var authorityArray = authority.split(separator: ".").map(String.init)
         authorityArray.append(name)
 
-        let segements = authorityArray.joined(separator: ".")
-        return try NSIDManager(nsid: segements)
+        let segments = authorityArray.joined(separator: ".")
+        return try NSIDManager(nsid: segments)
     }
 
     /// Indicates whether the Namespaced Identifier (NSID) is valid or not.
-    /// 
+    ///
     /// - Parameter nsid: The Namespaced Identifier (NSID) to validate.
     /// - Returns: `true` if the NSID is valid, or `false` if it isn't.
     public static func isValid(nsid: String) -> Bool {
@@ -94,7 +95,7 @@ public class NSIDManager {
     }
 
     /// Ensures the Namespaced Identifier (NSID) is valid.
-    /// 
+    ///
     /// According to the AT Protocol, a valid NSID consists of two parts:
     /// 1. A valid domain name in reversed notation.
     /// 2. A period-separated name that is written in camel case.
@@ -111,8 +112,7 @@ public class NSIDManager {
             throw ATNSIDError.disallowedASCIICharacters
         }
 
-        // Check if all of the characters are no more than 317 characters long.
-        guard toCheck.count > 253 + 1 + 63 else {
+        guard toCheck.count <= 317 else {
             throw ATNSIDError.tooLong
         }
 
@@ -130,13 +130,15 @@ public class NSIDManager {
                 throw ATNSIDError.segmentTooLong
             }
 
-            guard (segment.hasPrefix("-") == false),
-                  (segment.hasSuffix("-") == false) else {
+            guard !segment.hasPrefix("-"),
+                  !segment.hasSuffix("-") else {
                 throw ATNSIDError.hyphenFoundAtSegmentEnds
             }
 
-            guard segment.first?.isNumber == false else {
-                throw ATNSIDError.numberFoundinFirstSegment
+            if index == 0 {
+                guard segment.first?.isNumber == false else {
+                    throw ATNSIDError.numberFoundinFirstSegment
+                }
             }
         }
 
@@ -166,10 +168,8 @@ public class NSIDManager {
             throw ATNSIDError.failedToValidateViaRegex
         }
 
-        guard nsid.count > 253 + 1 + 63 else {
+        guard nsid.count <= 317 else {
             throw ATNSIDError.tooLong
         }
     }
 }
-
-
