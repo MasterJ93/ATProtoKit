@@ -57,7 +57,7 @@ public class NSIDManager {
     /// Parses the given Namespaced Identifier (NSID) into different segments.
     ///
     /// - Parameter nsid: The NSID to parse.
-    /// - Returns: An instance of `NSIDManager`, containing a valid NSID split into segments.
+    /// - Returns: An instance of ``NSIDManager``, containing a valid NSID split into segments.
     ///
     /// - Throws: An ``ATNSIDError``, indicating the NSID is invalid.
     public static func parse(_ nsid: String) throws -> NSIDManager {
@@ -69,7 +69,7 @@ public class NSIDManager {
     /// - Parameters:
     ///   - authority: The domain authority segment of the NSID.
     ///   - name: The name segement of the NSID.
-    /// - Returns: An instance of `NSIDManager`, containing a valid NSID split into segments.
+    /// - Returns: An instance of ``NSIDManager``, containing a valid NSID split into segments.
     ///
     /// - Throws: An ``ATNSIDError``, indicating the NSID is invalid.
     public static func create(authority: String, name: String) throws -> NSIDManager {
