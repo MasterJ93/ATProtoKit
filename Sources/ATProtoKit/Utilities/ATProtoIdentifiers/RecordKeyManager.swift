@@ -8,7 +8,7 @@
 import Foundation
 
 /// A class for creating a validating Record Keys.
-class RecordKeyManager {
+public struct RecordKeyManager {
 
     /// The last timestamp recorded.
     private var lastTimestamp: UInt64 = UInt64(0)
@@ -44,7 +44,7 @@ class RecordKeyManager {
     /// - Returns: A new `tid` Record Key
     ///
     /// [atproto]: https://atproto.com/specs/record-key#record-key-type-tid
-    public func generateTID() -> String {
+    public mutating func generateTID() -> String {
         let microsecondsSinceUNIXEpoch = UInt64(Date().timeIntervalSince1970 * 1_000_000)
         var timestampPart: UInt64
 
@@ -74,7 +74,7 @@ class RecordKeyManager {
     ///
     /// - Parameter recordKey: The Record Key to validate.
     /// - Returns: A `RecordKeyType`, which states whether it's a known type of Record Key.
-    public func validateRecordKey(_ recordKey: String) -> RecordKeyType {
+    public func validate(_ recordKey: String) -> RecordKeyType {
         if isValidTID(recordKey: recordKey) {
             return .tid
         }
