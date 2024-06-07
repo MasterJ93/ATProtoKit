@@ -8,7 +8,7 @@
 import Foundation
 
 /// A class that identifies and validates Namespaced Identifiers (NSIDs).
-public class NSIDManager {
+public struct NSIDManager {
 
     /// An array of segments for the Namespaced Identifier (NSID).
     private var segments: [String] = []

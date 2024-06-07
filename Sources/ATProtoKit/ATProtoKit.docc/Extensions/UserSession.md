@@ -14,3 +14,4 @@ This is based loosely based on the [`com.atproto.server.createSession`][github] 
 - ``DIDDocument``
 - ``VerificationMethod``
 - ``ATService``
+- ``UserAccountStatus``
