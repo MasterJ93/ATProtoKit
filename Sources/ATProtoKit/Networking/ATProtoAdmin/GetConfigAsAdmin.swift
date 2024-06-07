@@ -32,7 +32,7 @@ extension ATProtoAdmin {
             return .failure(ATRequestPrepareError.invalidRequestURL)
         }
 
-        var queryItems = [(String, String)]()
+        let queryItems = [(String, String)]()
 
         let queryURL: URL
 
