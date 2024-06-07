@@ -3,6 +3,7 @@
 ## Topics
 
 - ``ATAPIError``
+- ``ATNSIDError``
 - ``ATRequestPrepareError``
 - ``ATHTTPRequestError``
 - ``ATBlueskyError``

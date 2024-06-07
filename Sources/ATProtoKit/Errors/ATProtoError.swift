@@ -140,7 +140,36 @@ public enum ATAPIError: ATProtoError, Decodable {
 
 /// An error type related to issues with Namespaced Identifiers (NSIDs).
 public enum ATNSIDError: ATProtoError {
-    
+
+    /// There are characters in the Namespaced Identifier (NSID) that are not part of the
+    /// ASCII standard.
+    case disallowedASCIICharacters
+
+    /// The Namespaced Identifier (NSID) has a length that's higher than 317 characters.
+    case tooLong
+
+    /// The Namespaced Identifier (NSID) doesn't have enough segments to be valid.
+    ///
+    /// NSIDs must have at least three segments: an authority segment (which consists of
+    /// two segments) and the name/subdomain segment.
+    case notEnoughSegments
+
+    /// One of the segments in the Namespaced Identifier (NSID) is empty.
+    case emptySegment
+
+    /// One of the segments in the Namespaced Identifier (NSID) has too many characters.
+    ///
+    /// NSID segments can have a maximum of 63 characters.
+    case segmentTooLong
+
+    /// One of the segments has a hypen (-) as the first or last character.
+    case hyphenFoundAtSegmentEnds
+
+    /// A number was found in the beginning of the first segment.
+    case numberFoundinFirstSegment
+
+    /// The name segment contains characters other than latin letters.
+    case nonLatinLetterFoundInNameSegment
 }
 
 /// An error type related to issues surrounding preparing a request to be sent.
