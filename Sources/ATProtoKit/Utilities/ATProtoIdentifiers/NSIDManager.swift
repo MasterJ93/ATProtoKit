@@ -94,6 +94,13 @@ public struct NSIDManager {
         }
     }
 
+    /// Combines the segments into a `String`.
+    ///
+    /// - Returns: A fully constructed Namespaced Identifier (NSID).
+    public func toString() -> String {
+        return segments.joined(separator: ".")
+    }
+
     /// Ensures the Namespaced Identifier (NSID) is valid.
     ///
     /// According to the AT Protocol, a valid NSID consists of two parts:
