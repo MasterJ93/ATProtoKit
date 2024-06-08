@@ -37,6 +37,7 @@ Task {
 
 ## What's New in ATProtoKit
 @Links(visualStyle: detailedGrid) {
+    - <doc:ATProtoIdentifiers>
     - <doc:Getting-Started-with-ATProtoKit>
 }
 
