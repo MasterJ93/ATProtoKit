@@ -1,5 +1,6 @@
 DOCC_TARGET = ATProtoKit
 DOCC_DIR = ./docs
+CHECKOUT_PATH ?= $(shell pwd)
 
 .PHONY: docc
 docc:
@@ -8,6 +9,7 @@ docc:
 		--disable-indexing \
 		--source-service github \
 		--source-service-base-url https://github.com/MasterJ93/ATProtoKit/tree/main \
+		--checkout-path $(CHECKOUT_PATH) \
 		--include-extended-types \
 		--transform-for-static-hosting \
 		--output-path $(DOCC_DIR)
