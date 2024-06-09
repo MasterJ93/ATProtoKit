@@ -2,6 +2,10 @@
 
 Find out the requirements for each identifier within the AT Protocol.
 
+@Metadata {
+    @PageColor(blue)
+}
+
 ## Overview
 
 These identifiers and schemes (we'll call them "identifiers" for short) are part of what makes the AT Protocol work. Not only is validation within the scope of best practices with respect to Swift, but it'll help to reduce less potenital bugs and errors.
