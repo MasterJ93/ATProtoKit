@@ -8,7 +8,222 @@
 import Foundation
 
 public struct ATURIManager {
+    
+    /// The `at://` prefix portion of the URI.
+    public let `protocol`: String = "at://"
 
+    /// A combination of the `at://` prefix and authority segments.
+    public var origin: String {
+        return "at://\(authoritySegment)"
+    }
+
+    /// The authority segment portion of the URI.
+    public var authoritySegment: String {
+        get {
+            return authority
+        }
+        set {
+            authority = newValue
+        }
+    }
+
+    /// The collection portion of the path segement.
+    public var collection: String {
+        get {
+            let parts = pathname.split(separator: "/").filter { !$0.isEmpty }
+            return parts.first.map(String.init) ?? ""
+        }
+        set {
+            var parts = pathname.split(separator: "/").filter { !$0.isEmpty }
+            if parts.isEmpty {
+                parts.append(Substring(newValue))
+            } else {
+                parts[0] = Substring(newValue)
+            }
+            pathname = "/" + parts.joined(separator: "/")
+        }
+    }
+
+    /// The search query within the URI.
+    public var searchQuery: String {
+        get {
+            return searchParameters ?? ""
+        }
+        set {
+            searchParameters = newValue
+        }
+    }
+
+    /// The Record Key portion of the path segment.
+    ///
+    /// If there's only one segment within the path segment, this will return `undefined`.
+    public var recordKey: String {
+        get {
+            let parts = pathname.split(separator: "/").filter { !$0.isEmpty }
+            return parts.count > 1 ? String(parts[1]) : ""
+        }
+        set {
+            var parts = pathname.split(separator: "/").filter { !$0.isEmpty }
+            if parts.isEmpty {
+                parts.append("undefined")
+            } else if parts.count == 1 {
+                parts.append(Substring(newValue))
+            } else {
+                parts[1] = Substring(newValue)
+            }
+            pathname = "/" + parts.joined(separator: "/")
+        }
+    }
+
+    /// The authority segment portion of the URI.
+    private var authority: String
+
+    /// The path segment portion of the URI.
+    ///
+    /// This could include the collection and/or Record Key.
+    private var pathname: String
+
+    /// A search query within the URI.
+    private var searchParameters: String?
+
+    /// The fragment segment portion of the URI.
+    public var fragmentSegment: String
+
+    /// Initializes a new instance, while putting each segment into separate properties.
+    ///
+    /// - Parameters:
+    ///   - atURI: The URI itself.
+    ///
+    /// - Throws: ``ATURIError/invalidURI``, which suggests the URI is invalid.
+    public init(atURI: String) throws {
+        var parsed: (String?, String?, String?, String?)
+
+        do {
+            parsed = try ATURIManager.parse(atURI)
+        } catch {
+            throw ATURIError.invalidURI
+        }
+
+        self.fragmentSegment = parsed.0 ?? ""
+        self.authority = parsed.1 ?? ""
+        self.pathname = parsed.2 ?? ""
+        self.searchParameters = parsed.3 ?? ""
+    }
+    
+//    /// Combines several segments from within a path segment into one.
+//    ///
+//    /// - Parameters:
+//    ///   - handleOrDID: The handle or decentralized identifier (DID).
+//    ///   - collection: The collection segment.
+//    ///   - recordKey: The Record Key segment.
+//    /// - Returns: A new instance of ``ATURIManager``.
+//    ///
+//    /// - Throws: ``ATURIError/invalidURI``, which suggests the URI is invalid.
+//    private static func make(handleOrDID: String, collection: String?, recordKey: String?) throws -> ATURIManager {
+//        var segments = handleOrDID
+//
+//        if let collection = collection {
+//            segments += collection
+//        }
+//
+//        if let recordKey = recordKey {
+//            segments += recordKey
+//        }
+//
+//        return try ATURIManager(atURI: segments)
+//    }
+
+    /// Parses a URI from a regular expression.
+    /// 
+    /// The regular expression contains sections for the `at://` prefix,
+    /// a decentralized identifier (DID), a name segment, a path segment, a query for searching,
+    /// and a fragment segment.
+    ///
+    /// - Parameter atURI: The URI to parse.
+    /// - Returns: A tuple, separating the URI into the following:\
+    ///   \- the fragment segment,\
+    ///   \- the authority segment,\
+    ///   \- the path segment, and\
+    ///   \- search parameters.
+    ///
+    /// - Throws: ``ATURIError/undefinedURI``, suggesting the URI is undefined.
+    public static func parse(_ atURI: String) throws -> (fragment: String?, authority: String?, pathname: String?, searchParameters: String?) {
+        let uriRegex = try Regex(#"^(at:\/\/)?((?:did:[a-z0-9:%-]+)|(?:[a-z0-9][a-z0-9.:-]*))(\/[^?#\s]*)?(\?[^#\s]+)?(#[^\s]+)?$"#)
+        guard let match = atURI.wholeMatch(of: uriRegex) else {
+            throw ATURIError.undefinedURI
+        }
+
+        let fragment = match[5].value as? String ?? ""
+        let authority = match[2].value as? String ?? ""
+        let pathname = match[3].value as? String ?? ""
+        let searchParameters = match[4].value as? String ?? ""
+
+        var components = URLComponents()
+        if !searchParameters.isEmpty {
+            components.query = String(searchParameters.dropFirst())
+        }
+
+        return (fragment, authority, pathname, searchParameters)
+    }
+
+    public func toString() -> String {
+        // Ensure pathname starts with a "/"
+        var path = pathname.isEmpty ? "/" : pathname
+        if !path.hasPrefix("/") {
+            path = "/" + path
+        }
+
+        // Ensure search parameters start with "?" if not empty
+        var query = searchParameters ?? ""
+        if !query.isEmpty && !query.hasPrefix("?") {
+            query = "?" + query
+        }
+
+        // Ensure fragment starts with "#" if not empty
+        var hashFragment = fragmentSegment
+        if !hashFragment.isEmpty && !hashFragment.hasPrefix("#") {
+            hashFragment = "#" + hashFragment
+        }
+
+        return "at://\(authoritySegment)\(path)\(query)\(hashFragment)"
+    }
+
+
+//    /// Parses a URI from a regular expression.
+//    ///
+//    /// This is similar to ``parse(_:)``, but the regular expression contains sections for a path
+//    /// segment, a query for searching, and a fragment segment.
+//    ///
+//    /// - Parameter atURI: The URI to parse.
+//    /// - Returns: A tuple, separating the URI into the following:\
+//    ///   \- the fragment segment,\
+//    ///   \- the path segment, and\
+//    ///   \- search parameters.
+//    ///
+//    /// - Throws: ``ATURIError/undefinedURI``, suggesting the URI is undefined.
+//    public func parseRelative(_ atURI: String) throws -> (hashtag: String?, pathname: String?, searchParameters: String?) {
+//        let uriRegex = try Regex(#"^(\/[^?#\s]*)?(\?[^#\s]+)?(#[^\s]+)?$"#)
+//        guard let match = atURI.wholeMatch(of: uriRegex) else {
+//            throw ATURIError.undefinedURI
+//        }
+//
+//        let hashtag = match[3].value as? String ?? ""
+//        let pathname = match[1].value as? String ?? ""
+//        let searchParameters = match[2].value as? String ?? ""
+//
+//        var components = URLComponents()
+//        if !searchParameters.isEmpty {
+//            components.query = String(searchParameters.dropFirst())
+//        }
+//
+//        return (hashtag, pathname, searchParameters)
+//    }
+    
+    /// Ensures the AT URI is valid.
+    ///
+    /// - Parameter atURI: The URI to be validated.
+    ///
+    /// - Throws: An ``ATURIError``, indicating the URI is invalid.
     public func validate(_ atURI: String) throws {
         let uriSegments = atURI.split(separator: "#", omittingEmptySubsequences: false)
 

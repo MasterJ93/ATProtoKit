@@ -244,6 +244,12 @@ public enum ATNSIDError: ATProtoError {
 /// An error type related to issues with AT URIs.
 public enum ATURIError: ATProtoError {
 
+    /// The URI is invalid.
+    case invalidURI
+
+    /// The URI is undefined.
+    case undefinedURI
+
     /// There are than one hashtags in the URI.
     case tooManyHashtags
 
