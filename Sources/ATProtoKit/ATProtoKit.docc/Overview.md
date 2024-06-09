@@ -93,8 +93,20 @@ Task {
     
 }
 
-### Data Streams
+### Identifiers and Schemes
+- <doc:ATProtoIdentifiers>
+- ``ATURIManager``
+- ``DIDManager``
+- ``HandleManager``
+- ``ATURIManager``
+- ``RecordKeyManager``
 
+### Event Streams
+
+- ``ATEventStreamConfiguration``
+- ``ATFirehoseStream``
+- ``FirehoseEventRepresentable``
+- ``CBORDecodedBlock``
 - ``ATCBORManager``
 
 @Comment {

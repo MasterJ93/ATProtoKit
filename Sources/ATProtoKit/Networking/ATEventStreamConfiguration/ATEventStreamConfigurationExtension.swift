@@ -44,7 +44,7 @@ extension ATEventStreamConfiguration {
     /// - Parameters:
     ///   - cursor: The mark used to indicate the starting point for the next set of results. Optional.
     ///   - retry: The number of times the connection attempts can be retried.
-    func reconnect(cursor: Int64?, retry: Int) async {
+    public func reconnect(cursor: Int64?, retry: Int) async {
         guard isConnected == false else {
             print("Already connected. No need to reconnect.")
             return
