@@ -24,7 +24,7 @@ do {
 Some of the identity managers include a `normalize(_:)` method. This will check to see if the identifiers have proper formats for use in the AT Protocol. This method will typically validate that the identifier is valid. Once that's passed, it will then format the identifier so that it's able to be used in the AT Protocol.
 
 ```swift
-let normalizedHandle = HandleManager(ATProto.com)
+let normalizedHandle = HandleManager.normalize(ATProto.com)
 
 print(normalizedHandle) // Prints as "atproto.com".
 ```
