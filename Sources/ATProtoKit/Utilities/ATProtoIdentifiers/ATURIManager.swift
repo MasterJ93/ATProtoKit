@@ -109,29 +109,6 @@ public struct ATURIManager {
         self.pathname = parsed.2 ?? ""
         self.searchParameters = parsed.3 ?? ""
     }
-    
-//    /// Combines several segments from within a path segment into one.
-//    ///
-//    /// - Parameters:
-//    ///   - handleOrDID: The handle or decentralized identifier (DID).
-//    ///   - collection: The collection segment.
-//    ///   - recordKey: The Record Key segment.
-//    /// - Returns: A new instance of ``ATURIManager``.
-//    ///
-//    /// - Throws: ``ATURIError/invalidURI``, which suggests the URI is invalid.
-//    private static func make(handleOrDID: String, collection: String?, recordKey: String?) throws -> ATURIManager {
-//        var segments = handleOrDID
-//
-//        if let collection = collection {
-//            segments += collection
-//        }
-//
-//        if let recordKey = recordKey {
-//            segments += recordKey
-//        }
-//
-//        return try ATURIManager(atURI: segments)
-//    }
 
     /// Parses a URI from a regular expression.
     /// 
@@ -189,36 +166,6 @@ public struct ATURIManager {
     }
 
 
-//    /// Parses a URI from a regular expression.
-//    ///
-//    /// This is similar to ``parse(_:)``, but the regular expression contains sections for a path
-//    /// segment, a query for searching, and a fragment segment.
-//    ///
-//    /// - Parameter atURI: The URI to parse.
-//    /// - Returns: A tuple, separating the URI into the following:\
-//    ///   \- the fragment segment,\
-//    ///   \- the path segment, and\
-//    ///   \- search parameters.
-//    ///
-//    /// - Throws: ``ATURIError/undefinedURI``, suggesting the URI is undefined.
-//    public func parseRelative(_ atURI: String) throws -> (hashtag: String?, pathname: String?, searchParameters: String?) {
-//        let uriRegex = try Regex(#"^(\/[^?#\s]*)?(\?[^#\s]+)?(#[^\s]+)?$"#)
-//        guard let match = atURI.wholeMatch(of: uriRegex) else {
-//            throw ATURIError.undefinedURI
-//        }
-//
-//        let hashtag = match[3].value as? String ?? ""
-//        let pathname = match[1].value as? String ?? ""
-//        let searchParameters = match[2].value as? String ?? ""
-//
-//        var components = URLComponents()
-//        if !searchParameters.isEmpty {
-//            components.query = String(searchParameters.dropFirst())
-//        }
-//
-//        return (hashtag, pathname, searchParameters)
-//    }
-    
     /// Ensures the AT URI is valid.
     ///
     /// - Parameter atURI: The URI to be validated.
