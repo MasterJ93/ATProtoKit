@@ -7,17 +7,17 @@
 
 import Foundation
 
-/// The base class for the AT Protocol's Firehose event stream.
-class ATFirehoseStream: ATEventStreamConfiguration {
+/// The base class for Bluesky's Firehose event stream.
+public class ATFirehoseStream: ATEventStreamConfiguration {
 
     /// Indicates whether the event stream is connected. Defaults to `false`.
-    internal var isConnected: Bool = false
-    
+    public var isConnected: Bool = false
+
     /// The URL of the relay. Defaults to `wss://bsky.network`.
     public var relayURL: String = "wss://bsky.network"
 
     /// The URL of the endpoint. Defaults to `com.atproto.sync.subscribeRepos`.
-    internal var namespacedIdentifiertURL: String = "com.atproto.sync.subscribeRepos"
+    public var namespacedIdentifiertURL: String = "com.atproto.sync.subscribeRepos"
 
     /// The number of the last successful message decoded. Optional.
     ///
@@ -29,13 +29,13 @@ class ATFirehoseStream: ATEventStreamConfiguration {
 
     /// The configuration object that defines the behaviours and polices for a URL session in the
     /// event stream.
-    internal let urlSession: URLSession
+    public let urlSession: URLSession
 
     /// The configuration object that defines behavior and policies for a URL session.
-    internal let urlSessionConfiguration: URLSessionConfiguration
+    public let urlSessionConfiguration: URLSessionConfiguration
 
     /// The URL session task that communicates over the WebSockets protocol standard.
-    internal var webSocketTask: URLSessionWebSocketTask
+    public var webSocketTask: URLSessionWebSocketTask
 
     /// Creates a new instance to prepare for the event stream.
     ///
@@ -47,7 +47,7 @@ class ATFirehoseStream: ATEventStreamConfiguration {
     ///   - urlSessionConfiguration: The configuration object that defines the behaviours and
     ///   polices for a URL session in the event stream. Defaults
     ///   to `URLSessionConfiguration.default`.
-    required init(relayURL: String, namespacedIdentifiertURL: String, cursor: Int64?, sequencePosition: Int64?,
+    public required init(relayURL: String, namespacedIdentifiertURL: String, cursor: Int64?, sequencePosition: Int64?,
                   urlSessionConfiguration: URLSessionConfiguration = .default, webSocketTask: URLSessionWebSocketTask) async throws {
         self.relayURL = relayURL
         self.namespacedIdentifiertURL = namespacedIdentifiertURL
