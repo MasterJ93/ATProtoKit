@@ -187,13 +187,17 @@ Further reading: [Record Key Syntax](https://atproto.com/specs/record-key)
 
 
 ### Decentralized Identifiers (DIDs)
+
 - ``DIDManager``
 
 ### Handles
+
 - ``HandleManager``
 
 ### Namespaced Identifiers (NSIDs)
+
 - ``NSIDManager``
 
 ### Record Keys
+
 - ``RecordKeyManager``

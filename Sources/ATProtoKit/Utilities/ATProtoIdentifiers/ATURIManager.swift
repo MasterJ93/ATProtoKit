@@ -7,6 +7,7 @@
 
 import Foundation
 
+/// Identifies and validates AT URIs.
 public struct ATURIManager {
     
     /// The `at://` prefix portion of the URI.
