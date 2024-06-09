@@ -53,19 +53,20 @@ I believe Bluesky and its accompanying AT Protocol gives the perfect balance bet
 - [x] Written with adherence to the Swift API Design Guidelines.
 - [ ] Well-written documentation for all of the AT Protocol and Bluesky APIs.
 - [x] A RichText helper to parse text into the applicable facets.
-- [ ] Extend the capabilities of the classes in case your project requires it.
+- [ ] Easily identify and validate different identifiers.
 - [ ] A powerful Firehose API that retrieves and filters events and records in real-time.
 - [ ] An HTML-parsing system to grab search engine-friendly elements for embeds.
 - [x] A logging tool for easy debugging.
 
-\* _Not all features above have been implemented; however, they will be, soon._
+> [!NOTE]
+> Not all features above have been implemented; however, they will be, soon.
 
 
 ## Installation
 You can use the Swift Package Manager to download and import the library into your project:
 ```swift
 dependencies: [
-    .package(url: "https://github.com/MasterJ93/ATProtoKit.git", from: "0.12.0")
+    .package(url: "https://github.com/MasterJ93/ATProtoKit.git", from: "0.13.0")
 ]
 ```
 
