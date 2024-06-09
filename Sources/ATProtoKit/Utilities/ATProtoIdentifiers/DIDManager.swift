@@ -15,7 +15,7 @@ public struct DIDManager {
     /// - Parameter did: The DID to be normalized.
     /// - Returns: The DID with the prefix `did:` normalized with the `did` prefix all lowercased.
     ///
-    /// - Throws: ``ATDIDError``, which indicates the DID is not valid.
+    /// - Throws: An ``ATDIDError``, which indicates the DID is not valid.
     public func normalize(_ did: String) -> String {
         var didSegments = did.split(separator: ":").map(String.init)
 
