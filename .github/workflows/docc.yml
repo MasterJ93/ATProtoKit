@@ -45,3 +45,5 @@ jobs:
         DATE_MSG=$(date "+This website is current as of %b %d, %Y at %H:%M %Z")
         git commit -m "Update DocC website" -m "$DATE_MSG"
         git push origin docc
+      env:
+          CHECKOUT_PATH: ${{ github.workspace }}
