@@ -6,6 +6,7 @@
 - ``ATDIDError``
 - ``ATHandleError``
 - ``ATNSIDError``
+- ``ATURIError``
 - ``ATRequestPrepareError``
 - ``ATHTTPRequestError``
 - ``ATBlueskyError``
