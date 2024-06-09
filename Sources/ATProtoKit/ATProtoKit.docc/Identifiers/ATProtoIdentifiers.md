@@ -19,6 +19,18 @@ do {
 }
 ```
 
+## Normalization
+
+Some of the identity managers include a `normalize(_:)` method. This will check to see if the identifiers have proper formats for use in the AT Protocol. This method will typically validate that the identifier is valid. Once that's passed, it will then format the identifier so that it's able to be used in the AT Protocol.
+
+```swift
+let normalizedHandle = HandleManager(ATProto.com)
+
+print(normalizedHandle) // Prints as "atproto.com".
+```
+
+- Important: Normalization should only be used if you're writing them out manually or if you're getting the identifier through a means other than directly from an API through the AT Protocol.
+
 ## Identifier Requirements
 Each identifier has various requirements in order to be valid. A short list for each will be available below, but it's highly encouraged to read the [AT Protocol Specifications](https://atproto.com) for more information.
 
