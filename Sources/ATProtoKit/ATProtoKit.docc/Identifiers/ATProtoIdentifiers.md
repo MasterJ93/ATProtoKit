@@ -24,6 +24,24 @@ Each identifier has various requirements in order to be valid. A short list for 
 
 ### AT URI
 
+AT URIs have the following structure:
+  1. The `at://` prefix.
+  2. An authority segment.
+  3. A Namespaced Identifier (NSID) segment.
+  4. A Record Key segment.
+  5. A fragment segment.
+
+- Note: Only the `at://` prefix and authority segments are required.
+
+This scheme also needs to conform to the following requirements:
+- The total length must not exceed 8 KB.
+- Must contain only ASCII characters; non-ASCII characters should be URL-encoded.
+- Whitespace characters are not allowed.
+- The authority segment should either a valid decentralized identifier (DID) or handle.
+- Optionally, the authority segment can be followed by a slash (/) and a valid NSID as the start of the path.
+  - Optionally, if an NSID is provided, it can be followed by a slash (/) and a Record Key segment.
+- The Record Key segment follows the [same rules as the `any` Record Key requirements](<doc:###Record-Key>).
+- Regardless of what follows beyond the authority segment, a fragment can follow after a hashtag (#) and then a JSON pointer (as per RFC-6901).
 
 Further reading: [AT URI Syntax](https://atproto.com/specs/at-uri-scheme)
 
@@ -150,7 +168,7 @@ Further reading: [Record Key Syntax](https://atproto.com/specs/record-key)
 
 ### AT URIs
 
-
+- ``ATURIManager``
 
 ### Content Identifiers (CIDs)
 

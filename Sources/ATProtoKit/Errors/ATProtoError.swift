@@ -241,6 +241,54 @@ public enum ATNSIDError: ATProtoError {
     case failedToValidateViaRegex
 }
 
+/// An error type related to issues with AT URIs.
+public enum ATURIError: ATProtoError {
+
+    /// There are than one hashtags in the URI.
+    case tooManyHashtags
+
+    /// There are characters in the URI that are not part of the
+    /// ASCII standard.
+    case disallowedASCIICharacters
+
+    /// The AT URI must contain `at://` as its first segment.
+    case missingPrefix
+
+    /// The URI doesn't have enough segments to be valid.
+    ///
+    /// AT URIs must have at least three segments: the `at://` prefix, a method, and authority.
+    case notEnoughSegments
+
+    /// The URI doesn't contain a valid decentralized identifier (DID) or handle.
+    case invalidAuthority
+
+    /// The AT URI cannot have a slash after the authority segment without a path segment.
+    case slashWithoutPathSegmentFound
+
+    /// The URI requires a first path segment (if supplied) to have a valid
+    /// Namespaced Identifier (NSID).
+    case invalidNSID
+
+    /// The AT URI cannot have a slash after the collection unless a record key is provided.
+    case slashAfterCollectionWithoutRecordKey
+
+    /// AT URI path can have at most two parts, and no trailing slash
+    case tooManySegments
+
+    /// AT URI fragment must be non-empty and start with slash.
+    case invalidOrEmptyFragment
+
+    /// There are characters in the fragment segment that are not part of the
+    /// ASCII standard.
+    case disallowedASCIICharactersInFragment
+
+    /// The AT URI has a length that's higher than 8,192 characters.
+    case tooLong
+
+    /// The regular expression could not validate the given AT URI.
+    case failedToValidateViaRegex
+}
+
 /// An error type related to issues surrounding preparing a request to be sent.
 public enum ATRequestPrepareError: ATProtoError {
 
