@@ -82,7 +82,7 @@ public struct HandleManager {
     
     /// Normalizes and validates the handle.
     ///
-    /// This method combines the efforts of ``normalizeHandle(_:)`` and
+    /// This method combines the efforts of ``normalize(_:)`` and
     /// ``validate(_:)`` into one convenient method.
     ///
     /// - Parameter handle: The handle to normalize and validate.
