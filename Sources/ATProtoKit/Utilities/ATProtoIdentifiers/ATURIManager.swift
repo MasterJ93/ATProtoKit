@@ -165,6 +165,15 @@ public struct ATURIManager {
         return "at://\(authoritySegment)\(path)\(query)\(hashFragment)"
     }
 
+    public func normalize() -> String {
+        var uriSegments = toString().split(separator: "/").map(String.init)
+
+        if !uriSegments[1].starts(with: "did") {
+            uriSegments[1] = HandleManager().normalize(uriSegments[1])
+        }
+
+        return uriSegments.joined(separator: "/")
+    }
 
     /// Ensures the AT URI is valid.
     ///
