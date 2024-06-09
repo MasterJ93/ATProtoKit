@@ -61,24 +61,4 @@ public struct DIDManager {
             throw ATDIDError.tooLong
         }
     }
-
-    /// Ensures the decentralized identifier (DID) is valid using a regular expression.
-    ///
-    /// This is similar to ``NSIDManager/validate(_:)``, but a regular expression is used for
-    /// validation instead.
-    /// 
-    /// - Parameter did: The DID to be validated.
-    ///
-    /// - Throws: An ``ATDIDError``, indicating the DID is invalid.
-    public func validateViaRegex(_ did: String) throws {
-        let didRegex = try Regex("^did:[a-z]+:[a-zA-Z0-9._:%-]*[a-zA-Z0-9._-]$")
-
-        guard try didRegex.wholeMatch(in: did) != nil else {
-            throw ATNSIDError.failedToValidateViaRegex
-        }
-
-        guard did.count <= 2048 else {
-            throw ATDIDError.tooLong
-        }
-    }
 }

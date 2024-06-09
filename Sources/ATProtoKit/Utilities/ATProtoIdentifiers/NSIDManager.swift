@@ -168,28 +168,4 @@ public struct NSIDManager {
             throw ATNSIDError.nonLatinLetterFoundInNameSegment
         }
     }
-
-    /// Ensures the Namespaced Identifier (NSID) is valid using a regular expression.
-    ///
-    /// This is similar to ``NSIDManager/validate(_:)``, but a regular expression is used for
-    /// validation instead.
-    ///
-    /// According to the AT Protocol, a valid NSID consists of two parts:
-    /// 1. A valid domain name in reversed notation.
-    /// 2. A period-separated name that is written in camel case.
-    ///
-    /// - Parameter nsid: The NSID to validate.
-    ///
-    /// - Throws: An ``ATNSIDError``, indicating the NSID is invalid.
-    public func validateViaRegex(_ nsid: String) throws {
-        let nsidRegex = try Regex("^[a-zA-Z]([a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(\\.[a-zA-Z0-9]([a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)+(\\.[a-zA-Z]([a-zA-Z]{0,61}[a-zA-Z])?)$")
-
-        guard try nsidRegex.wholeMatch(in: nsid) != nil else {
-            throw ATNSIDError.failedToValidateViaRegex
-        }
-
-        guard nsid.count <= 317 else {
-            throw ATNSIDError.tooLong
-        }
-    }
 }

@@ -13,6 +13,60 @@ public struct HandleManager {
     /// A placeholder for an invalid handle.
     public let invalidHandle: String = "handle.invalid"
     
+    /// Normalizes the handle to be all lowercased letters.
+    ///
+    /// - Parameter handle: The handle to normalize.
+    /// - Returns: A handle with all letters set to lowercased.
+    public func normalize(_ handle: String) -> String {
+        return handle.lowercased()
+    }
+
+    /// Normalizes and validates the handle.
+    ///
+    /// This method combines the efforts of ``normalize(_:)`` and
+    /// ``validate(_:)`` into one convenient method.
+    ///
+    /// - Parameter handle: The handle to normalize and validate.
+    /// - Returns: A validated handle with all letters set to lowercased.
+    ///
+    /// - Throws: An ``ATHandleError``, indicating the handle is invalid.
+    public func normalizeAndValidate(_ handle: String) throws -> String {
+        let normalized = normalize(handle)
+
+        do {
+            try validate(normalized)
+        } catch {
+            throw error
+        }
+
+        return normalized
+    }
+
+    /// Indicates whether the handle is valid.
+    ///
+    /// - Parameter handle: The handle to validate.
+    /// - Returns: `true` if the handle is valid, or `false` if not.
+    public func isValid(_ handle: String) -> Bool {
+        do {
+            _ = try validate(handle)
+            return true
+        } catch {
+            return false
+        }
+    }
+
+    /// Indicates whether the TLD segment of the handle is valid.
+    ///
+    /// - Parameter handle: The handle that contains the TLD to validate.
+    /// - Returns: `true` if the handle is valid, or `false` if not.
+    public func isValidTLD(handle: String) -> Bool {
+        guard let tld = handle.split(separator: ".").last else {
+            return false
+        }
+
+        return disallowedTLDs(rawValue: String(tld)) == nil
+    }
+
     /// Ensures the handle is valid.
     ///
     /// - Parameter handle: The handle to validate.
@@ -52,78 +106,6 @@ public struct HandleManager {
         guard handle.last?.isLetter != nil else {
             throw ATHandleError.nonLatinLetterFoundInTLDSegment
         }
-    }
-
-    /// Ensures the handle is valid via a regular expression.
-    ///
-    /// This is similar to ``HandleManager/validate(_:)``, but a regular expression is used for
-    /// validation instead.
-    ///
-    /// - Throws: An ``ATHandleError``, indicating the handle is invalid.
-    public func validateViaRegex(_ handle: String) throws {
-        let handleRegex = try Regex("^([a-zA-Z0-9]([a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\\.)+[a-zA-Z]([a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?$")
-
-        guard try handleRegex.wholeMatch(in: handle) != nil else {
-            throw ATHandleError.failedToValidateViaRegex
-        }
-
-        guard handle.count <= 253 else {
-            throw ATHandleError.tooLong
-        }
-    }
-
-    /// Normalizes the handle to be all lowercased letters.
-    /// 
-    /// - Parameter handle: The handle to normalize.
-    /// - Returns: A handle with all letters set to lowercased.
-    public func normalize(_ handle: String) -> String {
-        return handle.lowercased()
-    }
-    
-    /// Normalizes and validates the handle.
-    ///
-    /// This method combines the efforts of ``normalize(_:)`` and
-    /// ``validate(_:)`` into one convenient method.
-    ///
-    /// - Parameter handle: The handle to normalize and validate.
-    /// - Returns: A validated handle with all letters set to lowercased.
-    ///
-    /// - Throws: An ``ATHandleError``, indicating the handle is invalid.
-    public func normalizeAndValidate(_ handle: String) throws -> String {
-        let normalized = normalize(handle)
-
-        do {
-            try validate(normalized)
-        } catch {
-            throw error
-        }
-
-        return normalized
-    }
-
-    /// Indicates whether the handle is valid.
-    /// 
-    /// - Parameter handle: The handle to validate.
-    /// - Returns: `true` if the handle is valid, or `false` if not.
-    public func isValid(_ handle: String) -> Bool {
-        do {
-            _ = try validate(handle)
-            return true
-        } catch {
-            return false
-        }
-    }
-
-    /// Indicates whether the TLD segment of the handle is valid.
-    ///
-    /// - Parameter handle: The handle that contains the TLD to validate.
-    /// - Returns: `true` if the handle is valid, or `false` if not.
-    public func isValidTLD(handle: String) -> Bool {
-        guard let tld = handle.split(separator: ".").last else {
-            return false
-        }
-
-        return disallowedTLDs(rawValue: String(tld)) == nil
     }
 
     /// A collection of TLDs that are not permitted in the AT Protocol.

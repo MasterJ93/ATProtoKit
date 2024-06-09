@@ -245,43 +245,5 @@ public struct ATURIManager {
         if uriSegment.count > 8_192 {
             throw ATURIError.tooLong
         }
-
-    }
-
-    public func validateViaRegex(_ atURI: String) throws {
-        let atURIRegex = try Regex(#"^at:\/\/(?<authority>[a-zA-Z0-9._:%-]+)(\/(?<collection>[a-zA-Z0-9-.]+)(\/(?<rkey>[a-zA-Z0-9._~:@!$&%')(*+,;=-]+))?)?(#(?<fragment>\/[a-zA-Z0-9._~:@!$&%')(*+,;=\-[\]/\\]*))?$"#)
-
-        guard let match = atURI.wholeMatch(of: atURIRegex) else {
-            throw ATURIError.failedToValidateViaRegex
-        }
-
-        let authoritySegment = match.output["authority"]?.value as? String
-        let collectionSegment = match.output["collection"]?.value as? String
-
-        if let authority = authoritySegment {
-            do {
-                try HandleManager().validate(authority)
-            } catch {
-                do {
-                    try DIDManager().validate(authority)
-                } catch {
-                    throw ATURIError.invalidAuthority
-                }
-            }
-        } else {
-            throw ATURIError.failedToValidateViaRegex
-        }
-
-        if let collection = collectionSegment {
-            do {
-                _ = try NSIDManager(nsid: collection)
-            } catch {
-                throw ATURIError.invalidNSID
-            }
-        }
-
-        if atURI.count > 8_192 {
-            throw ATURIError.tooLong
-        }
     }
 }
