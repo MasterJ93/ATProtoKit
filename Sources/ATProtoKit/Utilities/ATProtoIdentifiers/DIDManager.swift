@@ -10,6 +10,22 @@ import Foundation
 /// Identifies and validates decentralized identifiers (DIDs).
 public struct DIDManager {
 
+    /// Normalizes the decentralized identifier (DID).
+    ///
+    /// - Parameter did: The DID to be normalized.
+    /// - Returns: The DID with the prefix `did:` normalized with the `did` prefix all lowercased.
+    ///
+    /// - Throws: ``ATDIDError``, which indicates the DID is not valid.
+    public func normalize(_ did: String) -> String {
+        var didSegments = did.split(separator: ":").map(String.init)
+
+        if let firstSegment = didSegments.first {
+            didSegments[0] = firstSegment.lowercased()
+        }
+
+        return didSegments.joined(separator: ":")
+    }
+
     /// Ensures the decentralized identifier (DID) is valid.
     ///
     /// - Parameter did: The DID to be validated.
@@ -44,7 +60,6 @@ public struct DIDManager {
         guard did.count <= 2048 else {
             throw ATDIDError.tooLong
         }
-
     }
 
     /// Ensures the decentralized identifier (DID) is valid using a regular expression.

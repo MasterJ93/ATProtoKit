@@ -81,6 +81,19 @@ public struct NSIDManager {
         return try NSIDManager(nsid: segments)
     }
 
+    /// Normalizes the Namespaced Identifier (NSID).
+    ///
+    /// - Parameter nsid: The NSID to be normalized.
+    /// - Returns: The NSID with the domain authority segments normalized.
+    ///
+    /// - Throws: An ``ATNSIDError``, which indicates the NSID is not valid.
+    public func normalize(_ nsid: String) -> String {
+        _ = segments[0].lowercased()
+        _ = segments[1].lowercased()
+
+        return toString()
+    }
+
     /// Indicates whether the Namespaced Identifier (NSID) is valid or not.
     ///
     /// - Parameter nsid: The Namespaced Identifier (NSID) to validate.

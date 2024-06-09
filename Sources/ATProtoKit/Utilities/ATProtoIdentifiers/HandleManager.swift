@@ -76,7 +76,7 @@ public struct HandleManager {
     /// 
     /// - Parameter handle: The handle to normalize.
     /// - Returns: A handle with all letters set to lowercased.
-    public func normalizeHandle(_ handle: String) -> String {
+    public func normalize(_ handle: String) -> String {
         return handle.lowercased()
     }
     
@@ -90,7 +90,7 @@ public struct HandleManager {
     ///
     /// - Throws: An ``ATHandleError``, indicating the handle is invalid.
     public func normalizeAndValidate(_ handle: String) throws -> String {
-        let normalized = normalizeHandle(handle)
+        let normalized = normalize(handle)
 
         do {
             try validate(normalized)
