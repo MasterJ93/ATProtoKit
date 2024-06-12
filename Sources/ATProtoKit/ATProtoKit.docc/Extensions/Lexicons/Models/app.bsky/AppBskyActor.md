@@ -49,4 +49,3 @@
 
 ### app.bsky.actor.searchActorsTypeahead
 - ``SearchActorsTypeaheadOutput``
-
