@@ -379,6 +379,12 @@ extension AppBskyLexicon.Actor {
         /// A URI which indicates the user is being followed by the requesting account.
         public let followedByURI: String?
 
+        /// An array of mutual followers. Optional.
+        ///
+        /// - Note: According to the AT Protocol specifications: "The subject's followers whom you
+        /// also follow."
+        public let knownFollowers: KnownFollowers
+
         enum CodingKeys: String, CodingKey {
             case isMuted = "muted"
             case mutedByArray = "mutedByList"
@@ -387,6 +393,33 @@ extension AppBskyLexicon.Actor {
             case blockingByArray = "blockingByList"
             case followingURI = "following"
             case followedByURI = "followedBy"
+            case knownFollowers
+        }
+    }
+
+    /// A definition model for mutual followers.
+    ///
+    /// - Note: According to the AT Protocol specifications: "The subject's followers whom you
+    /// also follow."
+    ///
+    /// - SeeAlso: This is based on the [`app.bsky.actor.defs`][github] lexicon.
+    ///
+    /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/actor/defs.json
+    public struct KnownFollowers: Codable {
+
+        /// The number of mutual followers related to the parent structure's specifications.
+        public let count: Int
+
+        /// An array of user accounts that follow the viewer.
+        public let followers: [ProfileViewBasicDefinition]
+
+        public func encode(to encoder: any Encoder) throws {
+            var container = encoder.container(keyedBy: CodingKeys.self)
+
+            try container.encode(self.count, forKey: .count)
+
+            // Truncate `displayName` to 5 items before encoding
+            try truncatedEncode(self.followers, withContainer: &container, forKey: .followers, upToLength: 5)
         }
     }
 
