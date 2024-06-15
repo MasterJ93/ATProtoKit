@@ -11,7 +11,7 @@ extension ToolsOzoneLexicon.Moderation {
 
     /// A definition model for a moderation event view.
     ///
-    /// - SeeAlso: This is based on the [`com.atproto.admin.defs`][github] lexicon.
+    /// - SeeAlso: This is based on the [`tools.ozone.moderation.defs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/tools/ozone/moderation/defs.json
     public struct ModerationEventViewDefinition: Codable {
@@ -92,7 +92,7 @@ extension ToolsOzoneLexicon.Moderation {
 
     /// A definition model for a detailed moderation event view
     ///
-    /// - SeeAlso: This is based on the [`com.atproto.admin.defs`][github] lexicon.
+    /// - SeeAlso: This is based on the [`tools.ozone.moderation.defs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/tools/ozone/moderation/defs.json
     public struct EventViewDetailDefinition: Codable {
@@ -159,7 +159,7 @@ extension ToolsOzoneLexicon.Moderation {
 
     /// A definition model for a subject's status view.
     ///
-    /// - SeeAlso: This is based on the [`com.atproto.admin.defs`][github] lexicon.
+    /// - SeeAlso: This is based on the [`tools.ozone.moderation.defs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/tools/ozone/moderation/defs.json
     public struct SubjectStatusViewDefinition: Codable {
@@ -326,7 +326,7 @@ extension ToolsOzoneLexicon.Moderation {
 
     /// A definition model for  the subject review state.
     ///
-    /// - SeeAlso: This is based on the [`com.atproto.admin.defs`][github] lexicon.
+    /// - SeeAlso: This is based on the [`tools.ozone.moderation.defs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/tools/ozone/moderation/defs.json
     public enum SubjectReviewStateDefinition: String, Codable {
@@ -359,7 +359,7 @@ extension ToolsOzoneLexicon.Moderation {
 
     /// A definition model for an event takedown.
     ///
-    /// - SeeAlso: This is based on the [`com.atproto.admin.defs`][github] lexicon.
+    /// - SeeAlso: This is based on the [`tools.ozone.moderation.defs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/tools/ozone/moderation/defs.json
     public struct EventTakedownDefinition: Codable {
@@ -382,7 +382,7 @@ extension ToolsOzoneLexicon.Moderation {
     /// - Note: According to the AT Protocol specifications: "Revert take down action on
     /// a subject."
     ///
-    /// - SeeAlso: This is based on the [`com.atproto.admin.defs`][github] lexicon.
+    /// - SeeAlso: This is based on the [`tools.ozone.moderation.defs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/tools/ozone/moderation/defs.json
     public struct EventReverseTakedownDefinition: Codable {
@@ -398,7 +398,7 @@ extension ToolsOzoneLexicon.Moderation {
     ///
     /// - Note: According to the AT Protocol specifications: "Resolve appeal on a subject."
     ///
-    /// - SeeAlso: This is based on the [`com.atproto.admin.defs`][github] lexicon.
+    /// - SeeAlso: This is based on the [`tools.ozone.moderation.defs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/tools/ozone/moderation/defs.json
     public struct EventResolveAppealDefinition: Codable {
@@ -413,7 +413,7 @@ extension ToolsOzoneLexicon.Moderation {
     ///
     /// - Note: According to the AT Protocol specifications: "Add a comment to a subject."
     ///
-    /// - SeeAlso: This is based on the [`com.atproto.admin.defs`][github] lexicon.
+    /// - SeeAlso: This is based on the [`tools.ozone.moderation.defs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/tools/ozone/moderation/defs.json
     public struct EventCommentDefinition: Codable {
@@ -436,7 +436,7 @@ extension ToolsOzoneLexicon.Moderation {
     ///
     /// - Note: According to the AT Protocol specifications: "Report a subject."
     ///
-    /// - SeeAlso: This is based on the [`com.atproto.admin.defs`][github] lexicon.
+    /// - SeeAlso: This is based on the [`tools.ozone.moderation.defs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/tools/ozone/moderation/defs.json
     public struct EventReportDefinition: Codable {
@@ -459,7 +459,7 @@ extension ToolsOzoneLexicon.Moderation {
     ///
     /// - Note: According to the AT Protocol specifications: "Apply/Negate labels on a subject"
     ///
-    /// - SeeAlso: This is based on the [`com.atproto.admin.defs`][github] lexicon.
+    /// - SeeAlso: This is based on the [`tools.ozone.moderation.defs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/tools/ozone/moderation/defs.json
     public struct EventLabelDefinition: Codable {
@@ -482,7 +482,7 @@ extension ToolsOzoneLexicon.Moderation {
 
     /// A definition model for an acknowledgement event.
     ///
-    /// - SeeAlso: This is based on the [`com.atproto.admin.defs`][github] lexicon.
+    /// - SeeAlso: This is based on the [`tools.ozone.moderation.defs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/tools/ozone/moderation/defs.json
     public struct EventAcknowledgeDefinition: Codable {
@@ -493,7 +493,7 @@ extension ToolsOzoneLexicon.Moderation {
 
     /// A definition model for an acknowledgement event.
     ///
-    /// - SeeAlso: This is based on the [`com.atproto.admin.defs`][github] lexicon.
+    /// - SeeAlso: This is based on the [tools.ozone.moderation.defs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/tools/ozone/moderation/defs.json
     public struct EventEscalateDefinition: Codable {
@@ -506,7 +506,7 @@ extension ToolsOzoneLexicon.Moderation {
     ///
     /// - Note: According to the AT Protocol specifications: "Mute incoming reports on a subject."
     ///
-    /// - SeeAlso: This is based on the [`com.atproto.admin.defs`][github] lexicon.
+    /// - SeeAlso: This is based on the [`tools.ozone.moderation.defs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/tools/ozone/moderation/defs.json
     public struct EventMuteDefinition: Codable {
@@ -525,7 +525,7 @@ extension ToolsOzoneLexicon.Moderation {
     ///
     /// - Note: According to the AT Protocol specifications: "Unmute action on a subject."
     ///
-    /// - SeeAlso: This is based on the [`com.atproto.admin.defs`][github] lexicon.
+    /// - SeeAlso: This is based on the [`tools.ozone.moderation.defs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/tools/ozone/moderation/defs.json
     public struct EventUnmuteDefinition: Codable {
@@ -542,7 +542,7 @@ extension ToolsOzoneLexicon.Moderation {
     /// - Note: According to the AT Protocol specifications: "Mute incoming reports from
     /// an account."
     ///
-    /// - SeeAlso: This is based on the [`com.atproto.admin.defs`][github] lexicon.
+    /// - SeeAlso: This is based on the [`tools.ozone.moderation.defs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/tools/ozone/moderation/defs.json
     public struct EventMuteReporterDefinition: Codable {
@@ -562,7 +562,7 @@ extension ToolsOzoneLexicon.Moderation {
     /// - Note: According to the AT Protocol specifications: "Unmute incoming reports
     /// from an account."
     ///
-    /// - SeeAlso: This is based on the [`com.atproto.admin.defs`][github] lexicon.
+    /// - SeeAlso: This is based on the [`tools.ozone.moderation.defs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/tools/ozone/moderation/defs.json
     public struct EventUnmuteReporterDefinition: Codable {
@@ -752,7 +752,7 @@ extension ToolsOzoneLexicon.Moderation {
 
     /// A definition model for a detailed repository view.
     ///
-    /// - SeeAlso: This is based on the [`com.atproto.admin.defs`][github] lexicon.
+    /// - SeeAlso: This is based on the [`tools.ozone.moderation.defs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/admin/defs.json
     public struct RepositoryViewDetailDefinition: Codable {
@@ -876,7 +876,7 @@ extension ToolsOzoneLexicon.Moderation {
 
     /// A definition model for a respository view that may not have been found.
     ///
-    /// - SeeAlso: This is based on the [`com.atproto.admin.defs`][github] lexicon.
+    /// - SeeAlso: This is based on the [`tools.ozone.moderation.defs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/admin/defs.json
     public struct RepositoryViewNotFoundDefinition: Codable {
@@ -891,7 +891,7 @@ extension ToolsOzoneLexicon.Moderation {
 
     /// A definition model for a record view.
     ///
-    /// - SeeAlso: This is based on the [`com.atproto.admin.defs`][github] lexicon.
+    /// - SeeAlso: This is based on the [`tools.ozone.moderation.defs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/admin/defs.json
     public struct RecordViewDefinition: Codable {
@@ -983,7 +983,7 @@ extension ToolsOzoneLexicon.Moderation {
 
     /// A definition model for a detailed view of a record.
     ///
-    /// - SeeAlso: This is based on the [`com.atproto.admin.defs`][github] lexicon.
+    /// - SeeAlso: This is based on the [`tools.ozone.moderation.defs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/admin/defs.json
     public struct RecordViewDetailDefinition: Codable {
@@ -1084,7 +1084,7 @@ extension ToolsOzoneLexicon.Moderation {
 
     /// A definition model for a record that may not have been found.
     ///
-    /// - SeeAlso: This is based on the [`com.atproto.admin.defs`][github] lexicon.
+    /// - SeeAlso: This is based on the [`tools.ozone.moderation.defs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/admin/defs.json
     public struct RecordViewNotFoundDefinition: Codable {
@@ -1105,7 +1105,7 @@ extension ToolsOzoneLexicon.Moderation {
     ///   \
     ///   Clarifications from Bluesky are needed in order to fully understand this item.
     ///
-    /// - SeeAlso: This is based on the [`com.atproto.admin.defs`][github] lexicon.
+    /// - SeeAlso: This is based on the [`tools.ozone.moderation.defs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/admin/defs.json
     public struct ModerationDefinition: Codable {
@@ -1212,7 +1212,7 @@ extension ToolsOzoneLexicon.Moderation {
 
     /// A definition model for details for an image.
     ///
-    /// - SeeAlso: This is based on the [`com.atproto.admin.defs`][github] lexicon.
+    /// - SeeAlso: This is based on the [`tools.ozone.moderation.defs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/admin/defs.json
     public struct ImageDetailsDefinition: Codable {
@@ -1226,7 +1226,7 @@ extension ToolsOzoneLexicon.Moderation {
 
     /// A definition model for details for a video.
     ///
-    /// - SeeAlso: This is based on the [`com.atproto.admin.defs`][github] lexicon.
+    /// - SeeAlso: This is based on the [`tools.ozone.moderation.defs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/admin/defs.json
     public struct VideoDetailsDefinition: Codable {
