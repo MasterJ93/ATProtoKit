@@ -9,6 +9,7 @@ import Foundation
 
 extension ToolsOzoneLexicon.Moderation {
 
+    /// The main data model definition for listing all moderation events pertaining a subject.
     public struct QueryStatuses: Codable {
 
         /// Indicates the sorting field for the moderation status array.
