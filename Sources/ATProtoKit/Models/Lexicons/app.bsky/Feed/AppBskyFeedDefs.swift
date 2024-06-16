@@ -136,12 +136,16 @@ extension AppBskyLexicon.Feed {
         /// The URI of the requesting account's like of the subject account's post. Optional.
         public let likeURI: String?
 
+        /// Indicates whether the thread has been muted.
+        public let isThreadMuted: Bool
+
         /// Indicates whether the requesting account can reply to the account's post. Optional.
         public let areRepliesDisabled: Bool?
 
         enum CodingKeys: String, CodingKey {
             case repostURI = "repost"
             case likeURI = "like"
+            case isThreadMuted = "threadMuted"
             case areRepliesDisabled = "replyDisabled"
         }
     }

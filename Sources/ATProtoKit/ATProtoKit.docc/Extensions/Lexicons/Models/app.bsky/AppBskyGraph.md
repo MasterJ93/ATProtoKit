@@ -80,6 +80,10 @@
 
 - ``MuteActorListRequestBody``
 
+### app.bsky.graph.muteThread
+
+- ``MuteThreadRequestBody``
+
 ### app.bsky.graph.unmuteActor
 
 - ``UnmuteActorRequestBody``
@@ -87,3 +91,7 @@
 ### app.bsky.graph.unmuteActorList
 
 - ``UnmuteActorListRequestBody``
+
+### app.bsky.graph.unmuteThread
+
+= ``UnmuteThreadRequestBody``
