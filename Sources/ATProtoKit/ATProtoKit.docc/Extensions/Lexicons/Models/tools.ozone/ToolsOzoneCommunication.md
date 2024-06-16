@@ -4,7 +4,7 @@
 
 ### tools.ozone.communication.createTemplate
 
-- ``ToolsOzoneLexicon/Communication/CreateTemplateRequestBody
+- ``ToolsOzoneLexicon/Communication/CreateTemplateRequestBody``
 
 ### tools.ozone.communication.defs
 

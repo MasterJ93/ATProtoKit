@@ -5,7 +5,7 @@
 ### com.atproto.moderation.createReport
 
 - ``ComAtprotoLexicon/Moderation/CreateReportRequestBody``
-- ``ComAtprotoLexicon/Moderation/CreateReportOutput
+- ``ComAtprotoLexicon/Moderation/CreateReportOutput``
 
 ### com.atproto.moderation.defs
 
