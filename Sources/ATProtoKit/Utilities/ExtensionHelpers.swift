@@ -75,12 +75,6 @@ extension String: Truncatable {
     }
 }
 
-extension String {
-    public func readCID() {
-        
-    }
-}
-
 // MARK: - Array Extension
 extension Array: Truncatable {
 
