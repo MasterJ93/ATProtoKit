@@ -25,6 +25,9 @@ extension ATProtoKit {
     /// - Returns: A `Result`, containing either a
     /// ``AppBskyLexicon/Feed/GetFeedGeneratorsOutput``
     /// if successful, or an `Error` if not.
+    ///
+    /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
+    /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func getFeedGenerators(_ feedURIs: [String]) async throws -> Result<AppBskyLexicon.Feed.GetFeedGeneratorsOutput, Error> {
         guard session != nil,
               let accessToken = session?.accessToken else {

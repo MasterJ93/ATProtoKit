@@ -32,6 +32,9 @@ extension ATProtoKit {
     /// - Returns: A `Result`, containing either an
     /// ``ToolsOzoneLexicon/Communication/TemplateViewDefinition``
     /// if successful, or an `Error` if not.
+    ///
+    /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
+    /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func updateCommunicationTemplate(
         _ id: String,
         name: String?,

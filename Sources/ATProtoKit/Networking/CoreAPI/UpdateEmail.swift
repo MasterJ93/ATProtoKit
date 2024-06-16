@@ -26,6 +26,9 @@ extension ATProtoKit {
     ///   - isEmailAuthenticationFactorEnabled: Indicates whether
     ///   Two-Factor Authentication (via email) is enabled. Optional.
     ///   - token: The token used to confirm the change. Optional.
+    ///
+    ///   - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
+    /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func updateEmail(
         _ email: String,
         isEmailAuthenticationFactorEnabled: Bool? = nil,

@@ -24,6 +24,9 @@ extension ATProtoKit {
     /// - Returns: A `Result`, containing either a
     /// ``ComAtprotoLexicon/Sync/GetLatestCommitOutput``
     /// if successful, or an `Error` if not.
+    ///
+    /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
+    /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func getLatestCommit(
         from repositoryDID: String,
         pdsURL: String? = nil

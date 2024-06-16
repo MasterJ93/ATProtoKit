@@ -22,6 +22,9 @@ extension ATProtoBlueskyChat {
     /// - Returns: A `Result`, containing either a
     /// ``ChatBskyLexicon/Conversation/ListConversationsOutput``
     /// if successful, or an `Error` if not.
+    ///
+    /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
+    /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func listConversations(
         limit: Int? = 50,
         cursor: String? = nil

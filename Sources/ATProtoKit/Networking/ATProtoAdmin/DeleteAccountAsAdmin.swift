@@ -22,6 +22,9 @@ extension ATProtoAdmin {
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/admin/deleteAccount.json
     ///
     /// - Parameter accountDID: The decentralized identifier (DID) of the user's account.
+    ///
+    /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
+    /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func deleteAccount(_ accountDID: String) async throws {
         guard session != nil,
               let accessToken = session?.accessToken else {

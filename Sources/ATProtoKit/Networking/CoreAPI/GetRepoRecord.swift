@@ -27,6 +27,9 @@ extension ATProtoKit {
     /// - Returns: A `Result`, which either contains a
     /// ``ComAtprotoLexicon/Repository/GetRecordOutput``
     /// if successful, and an `Error` if not.
+    ///
+    /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
+    /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func getRepositoryRecord(
         from repository: String,
         collection: String,

@@ -33,6 +33,7 @@ public protocol ProtocolConfiguration {
     /// Two-Factor Authentication. Optional.
     /// - Returns: A `Result` type containing either a ``UserSession``
     /// on success or an `Error` on failure.
+    ///
     /// - Throws: An error if there are issues creating the request or communicating with the PDS.
     func authenticate(authenticationFactorToken: String?) async throws -> Result<UserSession, Error>
 }

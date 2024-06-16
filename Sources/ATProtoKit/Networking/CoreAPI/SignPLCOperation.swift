@@ -30,6 +30,9 @@ extension ATProtoKit {
     /// - Returns: A `Result`, containing either an
     /// ``ComAtprotoLexicon/Identity/SignPLCOperationOutput``
     /// if successful, ot an `Error` if not.
+    ///
+    /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
+    /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func signPLCOperation(
         token: String,
         rotationKeys: [String]?,

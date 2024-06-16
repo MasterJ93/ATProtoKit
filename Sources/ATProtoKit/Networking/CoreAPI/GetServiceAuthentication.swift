@@ -22,6 +22,9 @@ extension ATProtoKit {
     /// - Returns: A `Result`, containing either a
     /// ``ComAtprotoLexicon/Server/GetServiceAuthOutput``
     /// if successful, or an `Error`if not.
+    ///
+    /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
+    /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func getServiceAuthentication(from serviceDID: String) async throws -> Result<ComAtprotoLexicon.Server.GetServiceAuthOutput, Error> {
         guard session != nil,
               let accessToken = session?.accessToken else {

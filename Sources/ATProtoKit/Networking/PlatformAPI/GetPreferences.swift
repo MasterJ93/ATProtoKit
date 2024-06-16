@@ -22,6 +22,9 @@ extension ATProtoKit {
     /// - Returns: A `Result`, containing either
     /// ``AppBskyLexicon/Actor/GetPreferencesOutput``
     /// if successful, or `Error` if not.
+    ///
+    /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
+    /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func getPreferences() async throws -> Result<AppBskyLexicon.Actor.GetPreferencesOutput, Error> {
         guard session != nil,
               let accessToken = session?.accessToken else {

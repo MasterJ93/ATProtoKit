@@ -19,6 +19,9 @@ extension ATProtoKit {
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/graph/muteActor.json
     ///
     /// - Parameter actorDID: The decentralized identifier (DID) or handle of a user account.
+    ///
+    /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
+    /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func muteActor(_ actorDID: String) async throws {
         guard session != nil,
               let accessToken = session?.accessToken else {

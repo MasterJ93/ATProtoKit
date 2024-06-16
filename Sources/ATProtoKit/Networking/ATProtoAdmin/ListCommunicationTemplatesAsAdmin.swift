@@ -24,6 +24,9 @@ extension ATProtoAdmin {
     /// - Returns: A `Result`, containing either an
     /// ``ToolsOzoneLexicon/Communication/ListTemplatesOutput``
     /// if successful, or an `Error` if not.
+    ///
+    /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
+    /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func listCommunicationTemplates() async throws -> Result<ToolsOzoneLexicon.Communication.ListTemplatesOutput, Error> {
         guard session != nil,
               let accessToken = session?.accessToken else {

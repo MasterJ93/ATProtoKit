@@ -22,6 +22,9 @@ extension ATProtoKit {
     /// - Returns: A `Result`, containing either a
     /// ``ComAtprotoLexicon/Repository/DescribeRepositoryOutput``
     /// if successful, ot an `Error` if not.
+    ///
+    /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
+    /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func describeRepository(
         _ repositoryDID: String,
         pdsURL: String? = nil

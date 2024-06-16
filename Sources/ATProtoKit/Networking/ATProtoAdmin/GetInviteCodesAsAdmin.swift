@@ -27,6 +27,9 @@ extension ATProtoAdmin {
     /// - Returns: A `Result`, containing either an
     /// ``ComAtprotoLexicon/Admin/GetInviteCodesOutput``
     /// if successful, or an `Error` if not.
+    ///
+    /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
+    /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func getInviteCodes(
         sortedBy sort: ComAtprotoLexicon.Admin.GetInviteCodes.Sort = .recent,
         withLimitOf limit: Int = 100,

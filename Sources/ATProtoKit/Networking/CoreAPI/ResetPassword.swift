@@ -24,6 +24,9 @@ extension ATProtoKit {
     ///   - token: The token used to reset the password.
     ///   - newPassword: The new password for the user's account.
     ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `nil`.
+    ///
+    ///   - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
+    /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func resetPassword(
         using token: String,
         newPassword: String,

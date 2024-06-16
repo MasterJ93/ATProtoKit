@@ -24,6 +24,9 @@ extension ATProtoKit {
     /// - Parameter pdsURL: The URL of the Personal Data Server (PDS).
     /// Defaults to `https://bsky.social`.
     /// - Returns: A `Result` containing `Data` on success or `Error` on failure.
+    ///
+    /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
+    /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public static func getBlob(
         from accountDID: String,
         cidHash: String,

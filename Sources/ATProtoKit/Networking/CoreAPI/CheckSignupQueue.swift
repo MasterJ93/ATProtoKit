@@ -24,6 +24,9 @@ extension ATProtoKit {
     /// - Returns: A `Result`, containing either a
     /// ``ComAtprotoLexicon/Temp/CheckSignupQueueOutput``
     /// if successful, ot an `Error` if not.
+    ///
+    /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
+    /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func checkSignupQueue(for query: String) async throws -> Result<ComAtprotoLexicon.Temp.CheckSignupQueueOutput, Error> {
         guard let sessionURL = session?.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.temp.checkSignupQueue") else {

@@ -21,6 +21,9 @@ extension ATProtoAdmin {
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/tools/ozone/communication/deleteTemplate.json
     ///
     /// - Parameter id: The ID of the communication template.
+    ///
+    /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
+    /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func deleteCommunicationTemplate(by id: String) async throws {
         guard session != nil,
               let accessToken = session?.accessToken else {

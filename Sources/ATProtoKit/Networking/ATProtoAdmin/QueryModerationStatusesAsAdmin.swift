@@ -59,6 +59,9 @@ extension ATProtoAdmin {
     /// - Returns: A `Result`, containing either an
     /// ``ToolsOzoneLexicon/Moderation/QueryStatusesOutput``
     /// if successful, or an `Error` if not.
+    ///
+    /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
+    /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func queryStatuses(
         _ subject: String?,
         comment: String?,

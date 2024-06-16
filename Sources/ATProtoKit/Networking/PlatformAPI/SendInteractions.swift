@@ -25,6 +25,9 @@ extension ATProtoKit {
     /// - Returns: A `Result`, containing either a
     /// ``AppBskyLexicon/Feed/SendInteractionsOutput``
     /// if sucessful, or an `Error` if not.
+    ///
+    /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
+    /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func sendInteractions(
         _ interactions: [AppBskyLexicon.Feed.InteractionDefinition]
     ) async throws -> Result<AppBskyLexicon.Feed.SendInteractionsOutput, Error>{

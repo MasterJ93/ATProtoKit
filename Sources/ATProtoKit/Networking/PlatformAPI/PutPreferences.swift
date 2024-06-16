@@ -19,6 +19,9 @@ extension ATProtoKit {
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/actor/putPreferences.json
     ///
     /// - Parameter preferences: An array of preferences the user wants to change.
+    ///
+    /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
+    /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func putPreferences(preferences: AppBskyLexicon.Actor.PreferencesDefinition) async throws {
         guard session != nil,
               let accessToken = session?.accessToken else {

@@ -118,6 +118,7 @@ public class ATCBORManager {
     ///   - data: The data to scan.
     ///   - length: The number of bytes to scan.
     /// - Returns: A subset of the data if the length is valid.
+    /// 
     /// - Throws: An error if the data length is not sufficient.
     func scanData(data: Data, length: Int) throws -> Data {
         guard data.count >= length else {

@@ -23,6 +23,9 @@ extension ATProtoKit {
     /// - Parameters:
     ///   - email: The email associated with the user's account.
     ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `nil`.
+    ///
+    ///   - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
+    /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func requestPasswordReset(
         _ email: String,
         pdsURL: String? = nil

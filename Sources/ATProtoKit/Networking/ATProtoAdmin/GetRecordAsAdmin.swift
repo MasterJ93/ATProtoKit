@@ -26,6 +26,9 @@ extension ATProtoAdmin {
     /// - Returns: A `Result`, containing either an
     /// ``ToolsOzoneLexicon/Moderation/RecordViewDetailDefinition``
     /// if successful, or an `Error` if not.
+    ///
+    /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
+    /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func getRecord(
         _ recordURI: String,
         recordCID: String?

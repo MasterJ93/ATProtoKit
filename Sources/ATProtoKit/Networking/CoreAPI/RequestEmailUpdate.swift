@@ -21,6 +21,9 @@ extension ATProtoKit {
     /// - Returns: A `Result`, containing either a
     /// ``ComAtprotoLexicon/Server/RequestEmailUpdateOutput``
     /// if successful, or an `Error` if not.
+    ///
+    /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
+    /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func requestEmailUpdate() async throws -> Result<ComAtprotoLexicon.Server.RequestEmailUpdateOutput, Error> {
         guard session != nil,
               let accessToken = session?.accessToken else {

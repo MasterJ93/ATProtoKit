@@ -28,6 +28,9 @@ extension ATProtoKit {
     /// - Returns: A `Result`, containing either a
     /// ``AppBskyLexicon/Feed/GetPostsOutput``
     /// if successful, or an `Error` if not.
+    ///
+    /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
+    /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func getPosts(_ postURIs: [String]) async throws -> Result<AppBskyLexicon.Feed.GetPostsOutput, Error> {
         guard session != nil,
               let accessToken = session?.accessToken else {

@@ -28,6 +28,9 @@ extension ATProtoKit {
     /// - Returns: A `Result`, containing either an
     /// ``AppBskyLexicon/Feed/GetListFeedOutput``
     /// if succesful, or an `Error` if it's not.
+    ///
+    /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
+    /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func getListFeed(
         from listURI: String,
         limit: Int? = 50,

@@ -19,6 +19,9 @@ extension ATProtoBlueskyChat {
     /// - Returns: A `Result`, containing either a
     /// ``ChatBskyLexicon/Conversation/UnmuteConversationOutput``
     /// if successful, or an `Error` if not.
+    ///
+    /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
+    /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func unmuteConversation(from conversationID: String) async throws -> Result<ChatBskyLexicon.Conversation.UnmuteConversationOutput, Error> {
         guard session != nil,
               let accessToken = session?.accessToken else {

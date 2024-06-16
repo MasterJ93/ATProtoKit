@@ -29,6 +29,9 @@ extension ATProtoKit {
     /// - Returns: A `Result`, containing either a
     /// ``AppBskyLexicon/Feed/GetPostThreadOutput``
     /// if successful, or an `Error` if not.
+    ///
+    /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
+    /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func getPostThread(
         from postURI: String,
         depth: Int? = 6,

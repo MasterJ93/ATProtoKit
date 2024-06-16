@@ -21,6 +21,9 @@ extension ATProtoBlueskyChat {
     /// - Returns: A `Result`, containing either a
     /// ``ChatBskyLexicon/Conversation/SendMessageBatchOutput``
     /// if successful, or an `Error` if not.
+    ///
+    /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
+    /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func sendMessageBatch(messages: [ChatBskyLexicon.Conversation.SendMessageBatch.MessageBatchItem]) async throws -> Result<ChatBskyLexicon.Conversation.SendMessageBatchOutput, Error> {
         guard session != nil,
               let accessToken = session?.accessToken else {

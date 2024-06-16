@@ -24,6 +24,9 @@ extension ATProtoKit {
     /// - Returns: A `Result`, containing either an
     /// ``AppBskyLexicon/Unspecced/GetTaggedSuggestionsOutput``
     /// if successful, or an `Error` if not.
+    ///
+    /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
+    /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func getTaggedSuggestions(pdsURL: String? = nil) async throws -> Result<AppBskyLexicon.Unspecced.GetTaggedSuggestionsOutput, Error> {
         guard let sessionURL = pdsURL != nil ? pdsURL : session?.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/app.bsky.unspecced.getTaggedSuggestions") else {

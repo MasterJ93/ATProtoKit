@@ -40,6 +40,9 @@ extension ATProtoKit {
     /// - Returns: A `Result`, containing either
     /// ``AppBskyLexicon/Actor/SearchActorsTypeaheadOutput``
     /// if successful, and an `Error` if not.
+    ///
+    /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
+    /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func searchUsersTypeahead(
         by query: String,
         limit: Int? = 10,

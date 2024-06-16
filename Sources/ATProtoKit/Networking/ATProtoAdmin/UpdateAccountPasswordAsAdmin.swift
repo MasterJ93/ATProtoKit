@@ -21,6 +21,9 @@ extension ATProtoAdmin {
     /// - Parameters:
     ///   - accountDID: The decentralized identifier (DID) of the user account.
     ///   - newPassword: The new password for the user account.
+    ///
+    ///   - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
+    /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func updateAccountPassword(
         for accountDID: String,
         newPassword: String

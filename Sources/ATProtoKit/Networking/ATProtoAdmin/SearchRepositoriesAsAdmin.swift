@@ -29,6 +29,9 @@ extension ATProtoAdmin {
     /// - Returns: A `Result`, containing either an
     /// ``ComAtprotoLexicon/Admin/SearchRepositoriesOutput``
     /// if successful, or an `Error` if not.
+    ///
+    /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
+    /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func searchRepositories(
         _ query: String?,
         withLimitOf limit: Int? = 50,

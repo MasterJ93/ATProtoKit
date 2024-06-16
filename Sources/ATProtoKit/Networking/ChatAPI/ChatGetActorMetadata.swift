@@ -22,6 +22,9 @@ extension ATProtoBlueskyChat {
     /// - Returns: A `Result`, containing either a
     /// ``ChatBskyLexicon/Moderation/GetActorMetadataOutput``
     /// if successful, or an `Error` if not.
+    ///
+    /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
+    /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func getMessageContext(actorDID: String) async throws -> Result<ChatBskyLexicon.Moderation.GetActorMetadataOutput, Error> {
         guard session != nil,
               let accessToken = session?.accessToken else {

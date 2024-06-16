@@ -27,6 +27,9 @@ extension ATProtoAdmin {
     /// - Returns: A `Result`, containing either an
     /// ``ComAtprotoLexicon/Admin/GetAccountInfosOutput``
     /// if successful, or an `Error` if not.
+    ///
+    /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
+    /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func getAccountInfos(_ accountDIDs: [String]) async throws -> Result<ComAtprotoLexicon.Admin.GetAccountInfosOutput, Error> {
         guard session != nil,
               let accessToken = session?.accessToken else {

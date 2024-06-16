@@ -22,6 +22,9 @@ extension ATProtoBlueskyChat {
     /// - - Returns: A `Result`, containing either a
     /// ``ChatBskyLexicon/Conversation/GetConversationForMembersOutput``
     /// if successful, or an `Error` if not.
+    ///
+    /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
+    /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func getConversaionForMembers(_ members: [String]) async throws -> Result<ChatBskyLexicon.Conversation.GetConversationForMembersOutput, Error> {
         guard session != nil,
               let accessToken = session?.accessToken else {

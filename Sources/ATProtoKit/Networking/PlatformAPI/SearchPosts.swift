@@ -42,6 +42,9 @@ extension ATProtoKit {
     /// - Returns: A `Result`, containing either an
     /// ``AppBskyLexicon/Feed/SearchPostsOutput``
     /// if succesful, or an `Error` if it's not.
+    ///
+    /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
+    /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func searchPosts(
         with searchQuery: String,
         sortRanking: AppBskyLexicon.Feed.SearchPosts.SortRanking? = .latest,

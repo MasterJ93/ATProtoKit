@@ -26,6 +26,9 @@ extension ATProtoKit {
     /// - Parameters:
     ///   - repositoryData: The repository data in the form of a CAR file.
     ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `nil`.
+    ///
+    ///   - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
+    /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func importRepository(
         _ repositoryData: Data,
         pdsURL: String? = nil

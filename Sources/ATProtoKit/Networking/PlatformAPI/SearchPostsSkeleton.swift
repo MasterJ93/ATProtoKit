@@ -45,6 +45,9 @@ extension ATProtoKit {
     /// - Returns: A `Result`, containing either an
     /// ``AppBskyLexicon/Unspecced/SearchPostsSkeletonOutput``
     /// if successful, or an `Error` if not.
+    ///
+    /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
+    /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func searchPostsSkeleton(
         with searchQuery: String,
         sortRanking: AppBskyLexicon.Unspecced.SearchPostsSkeleton.Sort? = .latest,

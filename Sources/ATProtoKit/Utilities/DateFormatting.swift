@@ -89,6 +89,7 @@ public struct DateFormatting: Codable {
     }
 
     /// Decodes a `Date` object from a `String` using the `CustomDateFormatter`.
+    ///
     /// - Throws: If the date string does not match the expected format.
     public init(from decoder: Decoder) throws {
         let container = try decoder.singleValueContainer()
@@ -159,6 +160,7 @@ public struct DateFormattingOptional: Codable {
     }
 
     /// Decodes an optional `Date?` object from a `String` using the `CustomDateFormatter`.
+    /// 
     /// - Throws: If decoding fails or the value is `nil`, sets `wrappedValue` to `nil`.
     public init(from decoder: Decoder) throws {
         let container = try decoder.singleValueContainer()

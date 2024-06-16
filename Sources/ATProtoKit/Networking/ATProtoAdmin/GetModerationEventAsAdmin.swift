@@ -25,6 +25,9 @@ extension ATProtoAdmin {
     /// - Returns: A `Result`, containing either an
     /// ``ToolsOzoneLexicon/Moderation/EventViewDetailDefinition``
     /// if successful, or an `Error` if not.
+    ///
+    /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
+    /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func getEvent(_ id: String) async throws -> Result<ToolsOzoneLexicon.Moderation.EventViewDetailDefinition, Error> {
         guard session != nil,
               let accessToken = session?.accessToken else {

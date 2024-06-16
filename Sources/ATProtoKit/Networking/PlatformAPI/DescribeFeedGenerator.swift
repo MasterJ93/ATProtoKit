@@ -22,6 +22,9 @@ extension ATProtoKit {
     /// - Returns: A `Result`, containing either a
     /// ``AppBskyLexicon/Feed/DescribeFeedGeneratorOutput``
     /// if successful, or an `Error` if not.
+    ///
+    /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
+    /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func describeFeedGenerator(pdsURL: String? = nil) async throws -> Result<AppBskyLexicon.Feed.DescribeFeedGeneratorOutput, Error> {
         guard let sessionURL = pdsURL != nil ? pdsURL : session?.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/app.bsky.feed.describeFeedGenerator") else {

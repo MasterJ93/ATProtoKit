@@ -15,6 +15,8 @@ extension ATProtoBlueskyChat {
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/chat/bsky/actor/exportAccountData.json
     ///
+    ///- Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
+    /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func exportAccountData() async throws {
         guard session != nil,
               let accessToken = session?.accessToken else {

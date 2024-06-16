@@ -30,6 +30,9 @@ extension ATProtoAdmin {
     /// - Returns: A `Result`, containing either an
     /// ``ComAtprotoLexicon/Admin/SendEmailOutput``
     /// if successful, or an `Error` if not.
+    ///
+    /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
+    /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func sendEmail(
         to recipientDID: String,
         withSubjectLine subjectLine: String?,

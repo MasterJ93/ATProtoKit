@@ -22,6 +22,9 @@ extension ATProtoKit {
     /// - Returns: A `Result`, containing either
     /// ``ComAtprotoLexicon/Server/CheckAccountStatusOutput``
     /// if successful, or an `Error` if not.
+    ///
+    /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
+    /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func checkAccountStatus() async throws -> Result<ComAtprotoLexicon.Server.CheckAccountStatusOutput, Error> {
         guard let sessionURL = session?.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.server.checkAccountStatus") else {

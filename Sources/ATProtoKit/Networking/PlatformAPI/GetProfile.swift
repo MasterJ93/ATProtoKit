@@ -36,6 +36,9 @@ extension ATProtoKit {
     /// - Returns: A `Result`, containing
     /// ``AppBskyLexicon/Actor/GetProfileOutput``
     /// if successful, or an `Error` if not.
+    ///
+    /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
+    /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func getProfile(
         _ actor: String,
         pdsURL: String? = nil,

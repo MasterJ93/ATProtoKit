@@ -24,6 +24,9 @@ extension ATProtoKit {
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/server/deactivateAccount.json
     ///
     /// - Parameter date: The date and time of when the server should delete the account.
+    ///
+    /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
+    /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func deactivateAccount(withDeletedDateOf date: Date) async throws {
         guard session != nil,
               let accessToken = session?.accessToken else {

@@ -59,6 +59,7 @@ public protocol ATRecordProtocol: Codable {
     /// This initializer mirrors the one from `Decodable`, but is needed to help make the
     /// polymorphic decoding work.
     /// - Parameter decoder: The decoder to read data from.
+    ///
     /// - Throws: An error is thrown if reading from the decoder fails, or if the data
     /// read is corrupted or otherwise invalid.
     init(from decoder: Decoder) throws
@@ -118,6 +119,7 @@ public struct ATRecordTypeRegistry {
     ///   - type: The Namespaced Identifier (NSID) of the record.
     ///   - decoder: The decoder to read data from.
     /// - Returns: A `struct` or `class`, which conforms to ``ATRecordProtocol``.
+    ///
     /// - Throws: An error can occur if one if the following happens:\
     ///     \- reading from the decoder fails\
     ///     \- the data read is corrupted or otherwise invalid
@@ -170,6 +172,7 @@ public enum UnknownType: Codable {
     /// (Inherited from `Decoder`.)
     ///
     /// - Parameter decoder: The decoder to read data from.
+    ///
     /// - Throws: an error can occur if the following happens:\
     ///     \- reading from the decoder fails\
     ///     \- the data read is corrupted or otherwise invalid\
@@ -205,6 +208,7 @@ public enum UnknownType: Codable {
     ///
     /// - Parameter container: The container that the JSON object resides in.
     /// - A `[String: Any]` object.
+    ///
     /// - Throws: A `DecodingError` if there's a type mismatch.
     private static func decodeNestedDictionary(container: KeyedDecodingContainer<DynamicCodingKeys>) throws -> [String: Any] {
         var dictionary = [String: Any]()
@@ -238,6 +242,7 @@ public enum UnknownType: Codable {
     ///
     /// - Parameter container: The container that the JSON object resides in.
     /// - An `[Any]` object.
+    /// 
     /// - Throws: A `DecodingError` if there's a type mismatch.
     private static func decodeArray(from container: KeyedDecodingContainer<DynamicCodingKeys>, forKey key: DynamicCodingKeys) throws -> [Any] {
         var unkeyedContainer = try container.nestedUnkeyedContainer(forKey: key)

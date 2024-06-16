@@ -19,6 +19,9 @@ extension ATProtoKit {
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/graph/muteActorList.json
     ///
     /// - Parameter listURI: The URI of a list.
+    ///
+    /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
+    /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func muteActorList(_ listURI: String) async throws {
         guard session != nil,
               let accessToken = session?.accessToken else {

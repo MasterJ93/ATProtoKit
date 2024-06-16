@@ -22,6 +22,9 @@ extension ATProtoKit {
     /// - Returns: A `Result`, containing either a
     /// ``ComAtprotoLexicon/Sync/GetRepositoryStatusOutput``
     ///  if successful, or an `Error` if not.
+    ///
+    ///  - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
+    /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func getRepositoryStatus(from actorDID: String) async throws -> Result<ComAtprotoLexicon.Sync.GetRepositoryStatusOutput, Error> {
         guard session != nil,
               let accessToken = session?.accessToken else {

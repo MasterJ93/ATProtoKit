@@ -20,6 +20,9 @@ extension ATProtoKit {
     ///
     /// - Parameter seenAt: The date and time the notification was seen. Defaults to the date
     /// and time the request was sent.
+    ///
+    /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
+    /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func updateSeen(seenAt: Date = Date.now) async throws {
         guard session != nil,
               let accessToken = session?.accessToken else {

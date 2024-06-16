@@ -24,6 +24,9 @@ extension ATProtoKit {
     /// - Returns: A `Result`, containing either a
     /// ``AppBskyLexicon/Graph/GetSuggestedFollowsByActorOutput``
     /// if successful, or an `Error` if not.
+    ///
+    /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
+    /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func getSuggestedFollowsByActor(_ actorDID: String) async throws -> Result<AppBskyLexicon.Graph.GetSuggestedFollowsByActorOutput, Error> {
         guard session != nil,
               let accessToken = session?.accessToken else {

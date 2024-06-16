@@ -23,6 +23,9 @@ extension ATProtoKit {
     /// - Returns: A `Result`, containing either a
     /// ``AppBskyLexicon/Notification/GetUnreadCountOutput``
     /// if successful, or an `Error` if not.
+    ///
+    /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
+    /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func getUnreadCount(
         seenAt: Date = Date.now
     ) async throws -> Result<AppBskyLexicon.Notification.GetUnreadCountOutput, Error> {

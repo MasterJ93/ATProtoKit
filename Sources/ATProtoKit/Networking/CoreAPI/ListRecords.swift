@@ -29,6 +29,9 @@ extension ATProtoKit {
     /// - Returns: A `Result`, containing
     /// ``ComAtprotoLexicon/Repository/ListRecordsOutput``
     /// if successful, or an `Error` if not.
+    ///
+    /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
+    /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func listRecords(
         from repositoryDID: String,
         collection: String,

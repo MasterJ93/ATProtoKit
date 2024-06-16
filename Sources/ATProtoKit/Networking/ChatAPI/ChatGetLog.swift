@@ -20,6 +20,9 @@ extension ATProtoBlueskyChat {
     /// - Returns: A `Result`, containing either a
     /// ``ChatBskyLexicon/Conversation/GetLogOutput``
     /// if successful, or an `Error` if not.
+    ///
+    /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
+    /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func getLog(cursor: String? = nil) async throws -> Result<ChatBskyLexicon.Conversation.GetLogOutput, Error> {
         guard session != nil,
               let accessToken = session?.accessToken else {

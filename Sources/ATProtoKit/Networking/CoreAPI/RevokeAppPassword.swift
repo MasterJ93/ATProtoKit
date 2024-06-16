@@ -19,6 +19,9 @@ extension ATProtoKit {
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/server/revokeAppPassword.json
     ///
     /// - Parameter appPasswordName: The name associated with the App Password.
+    ///
+    /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
+    /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func revokeAppPassword(named appPasswordName: String) async throws {
         guard session != nil,
               let accessToken = session?.accessToken else {

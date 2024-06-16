@@ -28,6 +28,9 @@ extension ATProtoKit {
     /// - Parameters:
     ///   - email: The email address to confirm.
     ///   - token: The token used to confirm the email address.
+    ///
+    ///   - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
+    /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func confirmEmail(
         _ email: String,
         token: String

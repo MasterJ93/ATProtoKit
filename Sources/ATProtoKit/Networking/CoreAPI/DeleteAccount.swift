@@ -24,6 +24,9 @@ extension ATProtoKit {
     ///   - accountDID: The decentralized identifier (DID) of the user account to be deleted.
     ///   - password: The password of the user account.
     ///   - token: A token to confirm the deletion of the account.
+    ///
+    ///   - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
+    /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func deleteAccount(
         _ accountDID: String,
         password: String,

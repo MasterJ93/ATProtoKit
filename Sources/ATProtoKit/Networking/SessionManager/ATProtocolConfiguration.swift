@@ -91,7 +91,8 @@ public class ATProtocolConfiguration: ProtocolConfiguration {
     /// - Parameter authenticationFactorToken: A token used for
     /// Two-Factor Authentication. Optional.
     /// - Returns: A `Result` containing ``UserSession`` on success or an `Error` on failure.
-    /// - Throws: An ``ATProtoError``-conforming error type, depending on the issye. Go to
+    ///
+    /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func authenticate(authenticationFactorToken: String? = nil) async throws -> Result<UserSession, Error> {
         guard let requestURL = URL(string: "\(self.pdsURL)/xrpc/com.atproto.server.createSession") else {
@@ -154,6 +155,9 @@ public class ATProtocolConfiguration: ProtocolConfiguration {
     ///   account to this instance. Optional.
     /// - Returns: A `Result`, containing either a ``UserSession``
     /// if successful, or an `Error` if not.
+    ///
+    /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
+    /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func createAccount(
         email: String? = nil,
         handle: String,
@@ -216,6 +220,9 @@ public class ATProtocolConfiguration: ProtocolConfiguration {
     ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `nil`.
     /// - Returns: Returns: A `Result` containing either ``SessionResponse``
     /// if successful, or an `Error` if not.
+    ///
+    /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
+    /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func getSession(
         by accessToken: String,
         pdsURL: String? = nil
@@ -252,6 +259,9 @@ public class ATProtocolConfiguration: ProtocolConfiguration {
     ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `nil`.
     /// - Returns: A `Result`, containing either a ``UserSession``
     /// if successful, or an `Error` if not.
+    ///
+    /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
+    /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func refreshSession(
         using refreshToken: String,
         pdsURL: String? = nil
@@ -291,6 +301,9 @@ public class ATProtocolConfiguration: ProtocolConfiguration {
     /// - Parameters:
     ///   - accessToken: The access token for the session.
     ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `nil`.
+    ///
+    /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
+    /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func deleteSession(
         using accessToken: String,
         pdsURL: String? = nil

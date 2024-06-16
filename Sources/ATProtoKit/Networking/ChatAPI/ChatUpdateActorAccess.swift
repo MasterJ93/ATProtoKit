@@ -22,6 +22,9 @@ extension ATProtoBlueskyChat {
     ///   - actorDID: The decentralized identifier (DID) of the user account.
     ///   - doesAllowAccess: Indicates whether the user account can acess direct messages.
     ///   - reference: A reference. Optional.
+    ///
+    ///   - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
+    /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func updateActorAccess(
         actorDID: String,
         doesAllowAccess: Bool,

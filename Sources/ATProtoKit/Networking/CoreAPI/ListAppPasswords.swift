@@ -23,6 +23,9 @@ extension ATProtoKit {
     /// - Returns: A `Result`, containing either a
     /// ``ComAtprotoLexicon/Server/ListAppPasswordsOutput``
     /// if successful, or an `Error` if not.
+    ///
+    /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
+    /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func listAppPasswords() async throws -> Result<ComAtprotoLexicon.Server.ListAppPasswordsOutput, Error> {
         guard session != nil,
               let accessToken = session?.accessToken else {
