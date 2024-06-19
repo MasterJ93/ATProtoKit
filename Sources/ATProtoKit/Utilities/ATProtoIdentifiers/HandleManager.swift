@@ -73,9 +73,10 @@ public struct HandleManager {
     ///
     /// - Throws: An ``ATHandleError``, indicating the handle is invalid.
     public func validate(_ handle: String) throws {
-        let asciiCheck = try Regex("^[a-zA-Z0-9.-]*$")
-        guard handle.wholeMatch(of: asciiCheck) != nil else {
-            throw ATDIDError.disallowedCharacters
+        let asciiCheck = #"^[a-zA-Z0-9.-]*$"#
+
+        guard let match = ATProtoTools.match(asciiCheck, in: String(handle)) else {
+            throw ATURIError.disallowedASCIICharacters
         }
 
         guard handle.count <= 253 else {

@@ -73,6 +73,28 @@ extension String: Truncatable {
 
         return filteredString
     }
+
+    /// Checks if the string matches the given regular expression pattern.
+    ///
+    /// This method uses `NSRegularExpression` to determine if the entire string
+    /// matches the specified regular expression pattern. It throws an error if
+    /// the pattern is invalid.
+    ///
+    /// - Parameter pattern: The regular expression pattern to match against.
+    /// - Returns: A Boolean value indicating whether the string matches the pattern.
+    /// - Throws: An error of type `NSError` if the regular expression pattern is invalid.
+    ///
+    /// # Example Usage:
+    /// ```
+    /// let isValid = try "example123".matches(pattern: "^[a-zA-Z0-9]*$")
+    /// print(isValid) // true if the string contains only alphanumeric characters
+    /// ```
+    func matches(pattern: String) throws -> Bool {
+        let regex = try NSRegularExpression(pattern: pattern)
+        let range = NSRange(location: 0, length: self.utf16.count)
+
+        return regex.firstMatch(in: self, options: [], range: range) != nil
+    }
 }
 
 // MARK: - Array Extension

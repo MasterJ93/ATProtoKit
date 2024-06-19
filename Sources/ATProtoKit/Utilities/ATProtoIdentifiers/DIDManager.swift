@@ -32,9 +32,10 @@ public struct DIDManager {
     ///
     /// - Throws: An ``ATDIDError``, indicating the DID is invalid.
     public func validate(_ did: String) throws {
-        let asciiCheck = try Regex("^[a-zA-Z0-9._:%-]*$")
-        guard did.wholeMatch(of: asciiCheck) != nil else {
-            throw ATDIDError.disallowedCharacters
+        let asciiCheck = #"^[a-zA-Z0-9._:%-]*$"#
+
+        guard let match = ATProtoTools.match(asciiCheck, in: String(did)) else {
+            throw ATURIError.disallowedASCIICharacters
         }
 
         let segments = did.split(separator: ":")

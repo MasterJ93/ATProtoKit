@@ -20,7 +20,7 @@ extension ATProtoKit {
     /// if it's successful, or an `Error` if it's not.
     public func createLikeRecord(
         _ strongReference: ComAtprotoLexicon.Repository.StrongReference,
-        createdAt: Date = Date.now,
+        createdAt: Date = Date(),
         shouldValidate: Bool? = true
     ) async throws -> Result<ComAtprotoLexicon.Repository.StrongReference, Error> {
         guard let session else { return .failure(ATRequestPrepareError.missingActiveSession) }

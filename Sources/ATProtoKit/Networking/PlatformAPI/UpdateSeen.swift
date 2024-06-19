@@ -23,7 +23,7 @@ extension ATProtoKit {
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
-    public func updateSeen(seenAt: Date = Date.now) async throws {
+    public func updateSeen(seenAt: Date = Date()) async throws {
         guard session != nil,
               let accessToken = session?.accessToken else {
             throw ATRequestPrepareError.missingActiveSession

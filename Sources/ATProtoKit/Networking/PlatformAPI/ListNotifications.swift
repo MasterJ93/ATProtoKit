@@ -33,7 +33,7 @@ extension ATProtoKit {
     public func listNotifications(
         withLimitOf limit: Int? = 50,
         cursor: String? = nil,
-        seenAt: Date = Date.now
+        seenAt: Date = Date()
     ) async throws -> Result<AppBskyLexicon.Notification.ListNotificationsOutput, Error> {
         guard session != nil,
               let accessToken = session?.accessToken else {

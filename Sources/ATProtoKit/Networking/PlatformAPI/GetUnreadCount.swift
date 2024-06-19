@@ -27,7 +27,7 @@ extension ATProtoKit {
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func getUnreadCount(
-        seenAt: Date = Date.now
+        seenAt: Date = Date()
     ) async throws -> Result<AppBskyLexicon.Notification.GetUnreadCountOutput, Error> {
         guard session != nil,
               let accessToken = session?.accessToken else {

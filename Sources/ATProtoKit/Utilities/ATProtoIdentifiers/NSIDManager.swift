@@ -126,10 +126,10 @@ public struct NSIDManager {
     public func validate(_ nsid: String) throws {
         let toCheck = nsid
 
-        // Check if all of the characters are ASCII.
-        let asciiCheck = try Regex("^[a-zA-Z0-9.-]*$")
-        guard toCheck.wholeMatch(of: asciiCheck) != nil else {
-            throw ATNSIDError.disallowedASCIICharacters
+        let asciiCheck = #"^[a-zA-Z0-9.-]*$"#
+
+        guard let match = ATProtoTools.match(asciiCheck, in: String(toCheck)) else {
+            throw ATURIError.disallowedASCIICharacters
         }
 
         guard toCheck.count <= 317 else {

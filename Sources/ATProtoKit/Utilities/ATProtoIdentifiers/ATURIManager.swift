@@ -126,18 +126,18 @@ public struct ATURIManager {
     ///
     /// - Throws: ``ATURIError/undefinedURI``, suggesting the URI is undefined.
     public static func parse(_ atURI: String) throws -> (fragment: String?, authority: String?, pathname: String?, searchParameters: String?) {
-        let uriRegex = try Regex(#"^(at:\/\/)?((?:did:[a-z0-9:%-]+)|(?:[a-z0-9][a-z0-9.:-]*))(\/[^?#\s]*)?(\?[^#\s]+)?(#[^\s]+)?$"#)
-        guard let match = atURI.wholeMatch(of: uriRegex) else {
+        let uriRegex = #"^(at:\/\/)?((?:did:[a-z0-9:%-]+)|(?:[a-z0-9][a-z0-9.:-]*))(\/[^?#\s]*)?(\?[^#\s]+)?(#[^\s]+)?$"#
+        guard let match = ATProtoTools.match(uriRegex, in: atURI) else {
             throw ATURIError.undefinedURI
         }
 
-        let fragment = match[5].value as? String ?? ""
-        let authority = match[2].value as? String ?? ""
-        let pathname = match[3].value as? String ?? ""
-        let searchParameters = match[4].value as? String ?? ""
+        let fragment = match[5]
+        let authority = match[2]
+        let pathname = match[3]
+        let searchParameters = match[4]
 
         var components = URLComponents()
-        if !searchParameters.isEmpty {
+        if let searchParameters = searchParameters, !searchParameters.isEmpty {
             components.query = String(searchParameters.dropFirst())
         }
 
@@ -191,8 +191,8 @@ public struct ATURIManager {
         let fragmentSegment = uriSegments.count > 1 ? uriSegments[1] : nil
         let uriSegment = uriSegments[0]
 
-        let asciiCheck = try Regex(#"^[a-zA-Z0-9._~:@!$&')(*+,;=%/-]*$"#)
-        guard uriSegment.wholeMatch(of: asciiCheck) != nil else {
+        let asciiCheck = #"^[a-zA-Z0-9._~:@!$&')(*+,;=%/-]*$"#
+        guard let _ = ATProtoTools.match(asciiCheck, in: String(uriSegment)) else {
             throw ATURIError.disallowedASCIICharacters
         }
 
@@ -246,9 +246,9 @@ public struct ATURIManager {
                 throw ATURIError.invalidOrEmptyFragment
             }
 
-            let fragmentCheck = try Regex(#"^\/[a-zA-Z0-9._~:@!$&')(*+,;=%[\]/-]*$"#)
-            guard fragment.wholeMatch(of: fragmentCheck) != nil else {
-                throw ATURIError.disallowedASCIICharactersInFragment
+            let fragmentCheck = #"^\/[a-zA-Z0-9._~:@!$&')(*+,;=%[\]/-]*$"#
+            guard let match = ATProtoTools.match(fragmentCheck, in: String(fragment)) else {
+                throw ATURIError.disallowedASCIICharacters
             }
         }
 

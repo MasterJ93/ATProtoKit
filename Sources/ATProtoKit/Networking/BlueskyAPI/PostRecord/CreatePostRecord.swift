@@ -33,7 +33,7 @@ extension ATProtoKit {
         embed: EmbedIdentifier? = nil,
         labels: ATUnion.PostSelfLabelsUnion? = nil,
         tags: [String]? = nil,
-        creationDate: Date = Date.now,
+        creationDate: Date = Date(),
         recordKey: String? = nil,
         shouldValidate: Bool? = true,
         swapCommit: String? = nil
