@@ -109,8 +109,8 @@ extension AppBskyLexicon.RichText {
             /// The identifier of the lexicon.
             ///
             /// - Warning: The value must not change.
-            public static var type: String = "app.bsky.richtext.facet#mention"
-            
+            public static let type: String = "app.bsky.richtext.facet#mention"
+
             /// The decentralized identifier (DID) of the feature.
             public let did: String
             
@@ -122,7 +122,6 @@ extension AppBskyLexicon.RichText {
                 let container = try decoder.container(keyedBy: CodingKeys.self)
                 
                 self.did = try container.decode(String.self, forKey: .did)
-                Mention.type = try container.decode(String.self, forKey: .type)
             }
             
             public func encode(to encoder: Encoder) throws {
@@ -151,7 +150,7 @@ extension AppBskyLexicon.RichText {
             /// The identifier of the lexicon.
             ///
             /// - Warning: The value must not change.
-            public static var type: String = "app.bsky.richtext.facet#link"
+            public static let type: String = "app.bsky.richtext.facet#link"
             
             /// The URI of the feature.
             public let uri: String
@@ -164,7 +163,6 @@ extension AppBskyLexicon.RichText {
                 let container = try decoder.container(keyedBy: CodingKeys.self)
                 
                 self.uri = try container.decode(String.self, forKey: .uri)
-                Link.type = try container.decode(String.self, forKey: .type)
             }
             
             public func encode(to encoder: Encoder) throws {
@@ -194,8 +192,8 @@ extension AppBskyLexicon.RichText {
             /// The identifier of the lexicon.
             ///
             /// - Warning: The value must not change.
-            public static var type: String = "app.bsky.richtext.facet#tag"
-            
+            public static let type: String = "app.bsky.richtext.facet#tag"
+
             /// The name of the tag.
             public let tag: String
             
@@ -207,7 +205,6 @@ extension AppBskyLexicon.RichText {
                 let container = try decoder.container(keyedBy: CodingKeys.self)
                 
                 self.tag = try container.decode(String.self, forKey: .tag)
-                Tag.type = try container.decode(String.self, forKey: .type)
             }
             
             public func encode(to encoder: Encoder) throws {
