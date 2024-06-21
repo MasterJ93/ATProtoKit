@@ -128,7 +128,7 @@ public struct NSIDManager {
 
         let asciiCheck = #"^[a-zA-Z0-9.-]*$"#
 
-        guard let match = ATProtoTools.match(asciiCheck, in: String(toCheck)) else {
+        guard ATProtoTools.match(asciiCheck, in: String(toCheck)) != nil else {
             throw ATURIError.disallowedASCIICharacters
         }
 

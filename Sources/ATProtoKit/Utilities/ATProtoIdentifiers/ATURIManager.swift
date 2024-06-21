@@ -247,7 +247,7 @@ public struct ATURIManager {
             }
 
             let fragmentCheck = #"^\/[a-zA-Z0-9._~:@!$&')(*+,;=%[\]/-]*$"#
-            guard let match = ATProtoTools.match(fragmentCheck, in: String(fragment)) else {
+            guard ATProtoTools.match(fragmentCheck, in: String(fragment)) != nil else {
                 throw ATURIError.disallowedASCIICharacters
             }
         }

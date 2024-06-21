@@ -34,7 +34,7 @@ public struct DIDManager {
     public func validate(_ did: String) throws {
         let asciiCheck = #"^[a-zA-Z0-9._:%-]*$"#
 
-        guard let match = ATProtoTools.match(asciiCheck, in: String(did)) else {
+        guard ATProtoTools.match(asciiCheck, in: String(did)) != nil else {
             throw ATURIError.disallowedASCIICharacters
         }
 

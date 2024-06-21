@@ -75,7 +75,7 @@ public struct HandleManager {
     public func validate(_ handle: String) throws {
         let asciiCheck = #"^[a-zA-Z0-9.-]*$"#
 
-        guard let match = ATProtoTools.match(asciiCheck, in: String(handle)) else {
+        guard ATProtoTools.match(asciiCheck, in: String(handle)) != nil else {
             throw ATURIError.disallowedASCIICharacters
         }
 
