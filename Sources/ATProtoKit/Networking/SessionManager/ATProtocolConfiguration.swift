@@ -18,7 +18,7 @@ public class ATProtocolConfiguration: ProtocolConfiguration {
     public var appPassword: String
 
     /// The URL of the Personal Data Server (PDS).
-public var pdsURL: String
+    public var pdsURL: String
 
     /// Specifies the logger that will be used for emitting log messages.
     public private(set) var logger: Logger?
