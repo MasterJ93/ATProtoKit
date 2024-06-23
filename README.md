@@ -108,8 +108,8 @@ Task {
 
     switch session {
         case .success(let result):
-            print("Result (Access Token): \(session.accessToken)")
-            print("Result (Refresh Token): \(session.refreshToken)")
+            print("Result (Access Token): \(result.accessToken)")
+            print("Result (Refresh Token): \(result.refreshToken)")
         case .failure(let error):
             print("Error: \(error)")
     }
