@@ -372,10 +372,3 @@ public enum CBORProcessingError: Error {
     /// The CBOR string can't be decoded.
     case cannotDecode
 }
-
-/// An error type related to ``ATImageProcessable``.
-public enum ATImageProcessingError: ATProtoError {
-
-    /// The image's file size can't be lowered any further to fit the target file size.
-    case unableToResizeImage
-}
