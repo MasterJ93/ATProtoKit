@@ -10,7 +10,7 @@ Link any related issues here. Format: `#[issue number]`
 - [ ] Documentation
 
 ## Checklist:
-- [ ] My code follows the ATProtoKit API Design Guidelines as well as the Swift API Design Guidelines.
+- [ ] My code follows the [ATProtoKit API Design Guidelines](https://github.com/MasterJ93/ATProtoKit/blob/main/API_GUIDELINES.md) as well as the [Swift API Design Guidelines](https://www.swift.org/documentation/api-design-guidelines/).
 - [ ] I have performed a self-review of my own code and commented it, particularly in hard-to-understand areas.
 - [ ] I have made corresponding changes to the documentation.
 - [ ] My changes generate no new warnings or errors in the compiler or runtime.
