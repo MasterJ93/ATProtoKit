@@ -121,7 +121,7 @@ To use ATProtoKit in your apps, your app should target the specific version numb
 - **iOS** and **iPadOS** 14 or later.
 - **macOS** 13 or later.
 - **tvOS** 14 or later.
-- **watchOS** 8 or later.
+- **watchOS** 9 or later.
 - **visionOS** 1 or later.
 
 You can also use this project for any programs you make using Swift and running on **Docker**.
