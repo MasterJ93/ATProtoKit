@@ -11,6 +11,9 @@ Thank you for supporting `ATProtoKit`. Right now, it's just me at the moment, bu
   - GitHub: KC-2001MS
   - Bluesky: @iroiro-work.bsky.social
   - Email: iroiro.work1234@gmail.com
+- Joshua Holme
+  - GitHub: JoshuaHolme
+  - Bluesky: @josh.holme.social
 
 ## Security Contributions
 If you've submitted any security contributions and they've been resolved, your name will be listed in here, along with:
