@@ -10,12 +10,6 @@ import Foundation
 extension ATProtoKit {
 
     /// Retrieves all of the user account's likes.
-    /// 
-    /// - Note: Despite the fact that the documentation in the AT Protocol specifications say that
-    /// this API call doesn't require auth, testing shows that this is not true. It's unclear
-    /// whether this is intentional (and therefore, the documentation is outdated) or unintentional
-    /// (in this case, the underlying implementation is outdated). For now, this method will act as
-    /// if auth is required until Bluesky clarifies their position.
     ///
     /// - Important: This will only be able to get like records for the authenticated account.
     /// This won't work for any other user account. If you need to grab the like records for user
@@ -23,7 +17,7 @@ extension ATProtoKit {
     /// ``listRecords(from:collection:limit:cursor:isArrayReverse:pdsURL:)`` instead.
     ///
     /// - Note: According to the AT Protocol specifications: "Get a list of posts liked by an
-    /// actor. Does not require auth."
+    /// actor. Requires auth, actor must be the requesting account."
     ///
     /// - SeeAlso: This is based on the [`app.bsky.feed.getActorLikes`][github] lexicon.
     ///

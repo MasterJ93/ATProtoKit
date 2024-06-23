@@ -34,7 +34,7 @@ extension ATProtoKit {
     ///   - shouldAuthenticate: Indicates whether the method will use the access token when
     ///   sending the request. Defaults to `false`.
     /// - Returns: A `Result`, containing
-    /// ``AppBskyLexicon/Actor/GetProfileOutput``
+    /// ``AppBskyLexicon/Actor/ProfileViewDetailedDefinition``
     /// if successful, or an `Error` if not.
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
@@ -43,7 +43,7 @@ extension ATProtoKit {
         _ actor: String,
         pdsURL: String? = nil,
         shouldAuthenticate: Bool = false
-    ) async throws -> Result<AppBskyLexicon.Actor.GetProfileOutput, Error> {
+    ) async throws -> Result<AppBskyLexicon.Actor.ProfileViewDetailedDefinition, Error> {
         let authorizationValue = prepareAuthorizationValue(
             methodPDSURL: pdsURL,
             shouldAuthenticate: shouldAuthenticate,
@@ -73,7 +73,7 @@ extension ATProtoKit {
                                                          contentTypeValue: nil,
                                                          authorizationValue: authorizationValue)
             let result = try await APIClientService.sendRequest(request,
-                                                                decodeTo: AppBskyLexicon.Actor.GetProfileOutput.self)
+                                                                decodeTo: AppBskyLexicon.Actor.ProfileViewDetailedDefinition.self)
 
             return .success(result)
         } catch {

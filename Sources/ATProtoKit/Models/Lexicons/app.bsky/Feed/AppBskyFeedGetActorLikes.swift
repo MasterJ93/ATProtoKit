@@ -12,7 +12,7 @@ extension AppBskyLexicon.Feed {
     /// An output model for seeing all of a user account's likes.
     ///
     /// - Note: According to the AT Protocol specifications: "Get a list of posts liked by an actor.
-    /// Does not require auth."
+    /// Requires auth, actor must be the requesting account."
     ///
     /// - SeeAlso: This is based on the [`app.bsky.feed.getActorLikes`][github] lexicon.
     ///
