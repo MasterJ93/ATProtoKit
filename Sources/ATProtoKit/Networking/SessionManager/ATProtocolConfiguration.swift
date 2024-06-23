@@ -12,13 +12,13 @@ import Logging
 public class ATProtocolConfiguration: ProtocolConfiguration {
 
     /// The user's handle identifier in their account.
-    public private(set) var handle: String
+    public var handle: String
 
     /// The app password of the user's account.
-    public private(set) var appPassword: String
+    public var appPassword: String
 
     /// The URL of the Personal Data Server (PDS).
-    public private(set) var pdsURL: String
+    public var pdsURL: String
 
     /// Specifies the logger that will be used for emitting log messages.
     public private(set) var logger: Logger?
