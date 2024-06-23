@@ -13,4 +13,3 @@
 - ``ATEventStreamError``
 - ``WebSocketFrameMessageError``
 - ``CBORProcessingError``
-- ``ATImageProcessingError``
