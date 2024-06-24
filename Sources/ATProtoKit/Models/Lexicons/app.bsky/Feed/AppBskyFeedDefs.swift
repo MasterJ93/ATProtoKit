@@ -225,11 +225,11 @@ extension AppBskyLexicon.Feed {
         /// original post of the thread.
         public let parent: ATUnion.ReplyReferenceParentUnion
 
-        /// The author of the parent's post.
+        /// The author of the parent's post. Optional.
         ///
         /// - Note: According to the AT Protocol specifications: "When parent is a reply to another
         /// post, this is the author of that post."
-        public let grandparentAuthor: AppBskyLexicon.Actor.ProfileViewBasicDefinition
+        public let grandparentAuthor: AppBskyLexicon.Actor.ProfileViewBasicDefinition?
     }
 
     /// A definition model for a very stripped down version of a repost.
