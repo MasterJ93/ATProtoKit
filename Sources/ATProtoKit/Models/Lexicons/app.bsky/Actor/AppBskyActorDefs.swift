@@ -383,7 +383,7 @@ extension AppBskyLexicon.Actor {
         ///
         /// - Note: According to the AT Protocol specifications: "The subject's followers whom you
         /// also follow."
-        public let knownFollowers: KnownFollowers
+        public let knownFollowers: KnownFollowers?
 
         enum CodingKeys: String, CodingKey {
             case isMuted = "muted"
