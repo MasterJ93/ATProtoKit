@@ -202,6 +202,22 @@ public enum UnknownType: Codable {
         }
     }
 
+    /// Attempts to retrieve a record of the specified type from an `UnknownType` instance.
+    ///
+    /// This is a convience method that handles the case checks. By using this, you can reference
+    /// a specific property within a record with just one line.
+    ///
+    /// - Parameter type: An ``ATRecordProtocol``-conforming type.
+    /// - Returns: An instance of the specified record type if the `UnknownType` contains a record
+    /// of that type.
+    public func getRecord<T: ATRecordProtocol>(ofType type: T.Type) -> T? {
+        guard case .record(let record as T) = self else {
+            return nil
+        }
+
+        return record
+    }
+
     /// Decodes a nested dictionary from an unknown JSON object.
     ///
     /// This is essential to decode truly unknown types.
