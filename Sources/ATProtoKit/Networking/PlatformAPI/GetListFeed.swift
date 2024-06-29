@@ -22,7 +22,8 @@ extension ATProtoKit {
     ///   - listURI: The URI of the feed.
     ///   - limit: limit: The number of suggested users to follow. Optional. Defaults to `50`.
     ///   Can only choose between `1` and `100`.
-    ///   - cursor: The mark used to indicate the starting point for the next set of results. Optional.
+    ///   - cursor: The mark used to indicate the starting point for the next set
+    ///   of results. Optional.
     ///   - accessToken: The access token of the user. Optional.
     ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `nil`.
     /// - Returns: A `Result`, containing either an

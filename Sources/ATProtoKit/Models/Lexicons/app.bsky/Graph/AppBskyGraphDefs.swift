@@ -34,19 +34,23 @@ extension AppBskyLexicon.Graph {
         /// The avatar image URL of the user list. Optional.
         public let avatarImageURL: URL?
 
+        /// The number of items on the list.
+        public let listItemCount: Int?
+
         /// The viewer's state of the user list. Optional.
         public var viewer: ListViewerStateDefinition?
 
-        /// The late time the user list was indexed.
+        /// The late time the user list was indexed. Optional.
         @DateFormattingOptional public var indexedAt: Date?
 
-        public init(actorURI: String, cidHash: String, name: String, purpose: ListPurpose, avatarImageURL: URL?, viewer: ListViewerStateDefinition?,
-                    indexedAt: Date?) {
+        public init(actorURI: String, cidHash: String, name: String, purpose: ListPurpose, avatarImageURL: URL?, listItemCount: Int?,
+                    viewer: ListViewerStateDefinition?, indexedAt: Date?) {
             self.actorURI = actorURI
             self.cidHash = cidHash
             self.name = name
             self.purpose = purpose
             self.avatarImageURL = avatarImageURL
+            self.listItemCount = listItemCount
             self.viewer = viewer
             self._indexedAt = DateFormattingOptional(wrappedValue: indexedAt)
         }
@@ -59,6 +63,7 @@ extension AppBskyLexicon.Graph {
             self.name = try container.decode(String.self, forKey: .name)
             self.purpose = try container.decode(ListPurpose.self, forKey: .purpose)
             self.avatarImageURL = try container.decodeIfPresent(URL.self, forKey: .avatarImageURL)
+            self.listItemCount = try container.decodeIfPresent(Int.self, forKey: .listItemCount)
             self.viewer = try container.decodeIfPresent(ListViewerStateDefinition.self, forKey: .viewer)
             self.indexedAt = try container.decodeIfPresent(DateFormattingOptional.self, forKey: .indexedAt)?.wrappedValue
         }
@@ -72,6 +77,7 @@ extension AppBskyLexicon.Graph {
             try truncatedEncode(self.name, withContainer: &container, forKey: .name, upToCharacterLength: 64)
             try container.encode(self.purpose, forKey: .purpose)
             try container.encodeIfPresent(self.avatarImageURL, forKey: .avatarImageURL)
+            try container.encodeIfPresent(self.listItemCount, forKey: .listItemCount)
             try container.encodeIfPresent(self.viewer, forKey: .viewer)
             try container.encode(self._indexedAt, forKey: .indexedAt)
         }
@@ -82,6 +88,7 @@ extension AppBskyLexicon.Graph {
             case name = "name"
             case purpose = "purpose"
             case avatarImageURL = "avatar"
+            case listItemCount
             case viewer = "viewer"
             case indexedAt
         }
@@ -124,6 +131,9 @@ extension AppBskyLexicon.Graph {
         /// The avatar image URL of the user list. Optional.
         public var avatarImageURL: URL?
 
+        /// The number of items on the list.
+        public let listItemCount: Int?
+
         /// The viewer's state of the user list. Optional.
         public var viewer: ListViewerStateDefinition?
 
@@ -131,7 +141,7 @@ extension AppBskyLexicon.Graph {
         @DateFormatting public var indexedAt: Date
 
         public init(listURI: String, cidHash: String, creator: AppBskyLexicon.Actor.ProfileViewDefinition, name: String, purpose: ListPurpose,
-                    description: String?, descriptionFacets: [AppBskyLexicon.RichText.Facet]?, avatarImageURL: URL?,
+                    description: String?, descriptionFacets: [AppBskyLexicon.RichText.Facet]?, avatarImageURL: URL?, listItemCount: Int?,
                     viewer: ListViewerStateDefinition?, indexedAt: Date) {
             self.listURI = listURI
             self.cidHash = cidHash
@@ -141,6 +151,7 @@ extension AppBskyLexicon.Graph {
             self.description = description
             self.descriptionFacets = descriptionFacets
             self.avatarImageURL = avatarImageURL
+            self.listItemCount = listItemCount
             self.viewer = viewer
             self._indexedAt = DateFormatting(wrappedValue: indexedAt)
         }
@@ -156,6 +167,7 @@ extension AppBskyLexicon.Graph {
             self.description = try container.decodeIfPresent(String.self, forKey: .description)
             self.descriptionFacets = try container.decodeIfPresent([AppBskyLexicon.RichText.Facet].self, forKey: .descriptionFacets)
             self.avatarImageURL = try container.decodeIfPresent(URL.self, forKey: .avatarImageURL)
+            self.listItemCount = try container.decodeIfPresent(Int.self, forKey: .listItemCount)
             self.viewer = try container.decodeIfPresent(ListViewerStateDefinition.self, forKey: .viewer)
             self.indexedAt = try container.decode(DateFormatting.self, forKey: .indexedAt).wrappedValue
         }
@@ -175,6 +187,7 @@ extension AppBskyLexicon.Graph {
             try truncatedEncodeIfPresent(self.description, withContainer: &container, forKey: .description, upToCharacterLength: 300)
             try container.encodeIfPresent(self.descriptionFacets, forKey: .descriptionFacets)
             try container.encodeIfPresent(self.avatarImageURL, forKey: .avatarImageURL)
+            try container.encodeIfPresent(self.listItemCount, forKey: .listItemCount)
             try container.encodeIfPresent(self.viewer, forKey: .viewer)
             try container.encode(self._indexedAt, forKey: .indexedAt)
         }
@@ -188,6 +201,7 @@ extension AppBskyLexicon.Graph {
             case description = "description"
             case descriptionFacets = "descriptionFacets"
             case avatarImageURL = "avatar"
+            case listItemCount
             case viewer = "viewer"
             case indexedAt = "indexedAt"
         }
@@ -212,6 +226,203 @@ extension AppBskyLexicon.Graph {
         }
     }
 
+    /// A definition model for a starter pack view.
+    ///
+    /// - SeeAlso: This is based on the [`app.bsky.graph.defs`][github] lexicon.
+    ///
+    /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/graph/defs.json
+    public struct StarterPackViewDefinition: Codable {
+
+        /// The URI of the starter pack.
+        public let starterPackURI: String
+
+        /// The content identifier (CID) of the starter pack.
+        public let starterPackCID: String
+
+        /// The starter pack record itself.
+        public let starterPackRecord: UnknownType
+
+        /// The creator of the starter pack.
+        public let creator: AppBskyLexicon.Actor.ProfileViewBasicDefinition
+
+        /// A basic list view. Optional.
+        public let list: AppBskyLexicon.Graph.ListViewBasicDefinition?
+
+        /// An array of list items. Optional.
+        public let listItemsSample: [AppBskyLexicon.Graph.ListItemViewDefinition]?
+
+        /// An array of feeds. Optional.
+        public let feeds: [AppBskyLexicon.Feed.GeneratorViewDefinition]?
+
+        /// The number of users that have joined the service through the starter pack within the
+        /// last seven days. Optional.
+        public let joinedWeekCount: Int?
+
+        /// The total number of users that have joined the service though the
+        /// starter pack. Optional.
+        public let joinedAllTimeCount: Int?
+
+        /// An array of labels created by the user. Optional.
+        public let labels: [ComAtprotoLexicon.Label.LabelDefinition]?
+
+        /// The late time the user list was indexed. Optional.
+        @DateFormatting public var indexedAt: Date
+
+        public init(starterPackURI: String, starterPackCID: String, starterPackRecord: UnknownType, creator: AppBskyLexicon.Actor.ProfileViewBasicDefinition,
+                    list: AppBskyLexicon.Graph.ListViewBasicDefinition?, listItemsSample: [AppBskyLexicon.Graph.ListItemViewDefinition]?,
+                    feeds: [AppBskyLexicon.Feed.GeneratorViewDefinition]?, joinedWeekCount: Int?, joinedAllTimeCount: Int?,
+                    labels: [ComAtprotoLexicon.Label.LabelDefinition]?, indexedAt: Date) {
+            self.starterPackURI = starterPackURI
+            self.starterPackCID = starterPackCID
+            self.starterPackRecord = starterPackRecord
+            self.creator = creator
+            self.list = list
+            self.listItemsSample = listItemsSample
+            self.feeds = feeds
+            self.joinedWeekCount = joinedWeekCount
+            self.joinedAllTimeCount = joinedAllTimeCount
+            self.labels = labels
+            self._indexedAt = DateFormatting(wrappedValue: indexedAt)
+        }
+
+        public init(from decoder: any Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+
+            self.starterPackURI = try container.decode(String.self, forKey: .starterPackURI)
+            self.starterPackCID = try container.decode(String.self, forKey: .starterPackCID)
+            self.starterPackRecord = try container.decode(UnknownType.self, forKey: .starterPackRecord)
+            self.creator = try container.decode(AppBskyLexicon.Actor.ProfileViewBasicDefinition.self, forKey: .creator)
+            self.list = try container.decodeIfPresent(AppBskyLexicon.Graph.ListViewBasicDefinition.self, forKey: .list)
+            self.listItemsSample = try container.decodeIfPresent([AppBskyLexicon.Graph.ListItemViewDefinition].self, forKey: .listItemsSample)
+            self.feeds = try container.decodeIfPresent([AppBskyLexicon.Feed.GeneratorViewDefinition].self, forKey: .feeds)
+            self.joinedWeekCount = try container.decodeIfPresent(Int.self, forKey: .joinedWeekCount)
+            self.joinedAllTimeCount = try container.decodeIfPresent(Int.self, forKey: .joinedAllTimeCount)
+            self.labels = try container.decodeIfPresent([ComAtprotoLexicon.Label.LabelDefinition].self, forKey: .labels)
+            self.indexedAt = try container.decode(DateFormatting.self, forKey: .indexedAt).wrappedValue
+        }
+
+        public func encode(to encoder: any Encoder) throws {
+            var container = encoder.container(keyedBy: CodingKeys.self)
+
+            try container.encode(self.starterPackURI, forKey: .starterPackURI)
+            try container.encode(self.starterPackCID, forKey: .starterPackCID)
+            try container.encode(self.starterPackRecord, forKey: .starterPackRecord)
+            try container.encode(self.creator, forKey: .creator)
+            try container.encodeIfPresent(self.list, forKey: .list)
+            try truncatedEncodeIfPresent(self.listItemsSample, withContainer: &container, forKey: .listItemsSample, upToCharacterLength: 12)
+            try truncatedEncodeIfPresent(self.feeds, withContainer: &container, forKey: .feeds, upToArrayLength: 3)
+            try container.encodeIfPresent(self.joinedWeekCount, forKey: .joinedWeekCount)
+            try container.encodeIfPresent(self.joinedAllTimeCount, forKey: .joinedAllTimeCount)
+            try container.encodeIfPresent(self.labels, forKey: .labels)
+            try container.encode(self._indexedAt, forKey: .indexedAt)
+        }
+
+        enum CodingKeys: String, CodingKey {
+            case starterPackURI = "uri"
+            case starterPackCID = "cid"
+            case starterPackRecord = "record"
+            case creator
+            case list
+            case listItemsSample
+            case feeds
+            case joinedWeekCount
+            case joinedAllTimeCount
+            case labels
+            case indexedAt
+        }
+    }
+
+    /// A definition model for a basic starter pack view.
+    ///
+    /// - SeeAlso: This is based on the [`app.bsky.graph.defs`][github] lexicon.
+    ///
+    /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/graph/defs.json
+    public struct StarterPackViewBasicDefinition: Codable {
+
+        /// The URI of the starter pack.
+        public let starterPackURI: String
+
+        /// The content identifier (CID) of the starter pack.
+        public let starterPackCID: String
+
+        /// The starter pack record itself.
+        public let starterPackRecord: UnknownType
+
+        /// The creator of the starter pack.
+        public let creator: AppBskyLexicon.Actor.ProfileViewBasicDefinition
+
+        /// The number of items in the list.
+        public let listItemCount: Int?
+
+        /// The number of users that have joined the service through the starter pack within the
+        /// last seven days. Optional.
+        public let joinedWeekCount: Int?
+
+        /// The total number of users that have joined the service though the
+        /// starter pack. Optional.
+        public let joinedAllTimeCount: Int?
+
+        /// An array of labels created by the user. Optional.
+        public let labels: [ComAtprotoLexicon.Label.LabelDefinition]?
+
+        /// The late time the user list was indexed. Optional.
+        @DateFormatting public var indexedAt: Date
+
+        public init(starterPackURI: String, starterPackCID: String, starterPackRecord: UnknownType, creator: AppBskyLexicon.Actor.ProfileViewBasicDefinition,
+                    listItemCount: Int?, joinedWeekCount: Int?, joinedAllTimeCount: Int?, labels: [ComAtprotoLexicon.Label.LabelDefinition]?,
+                    indexedAt: Date) {
+            self.starterPackURI = starterPackURI
+            self.starterPackCID = starterPackCID
+            self.starterPackRecord = starterPackRecord
+            self.creator = creator
+            self.listItemCount = listItemCount
+            self.joinedWeekCount = joinedWeekCount
+            self.joinedAllTimeCount = joinedAllTimeCount
+            self.labels = labels
+            self._indexedAt = DateFormatting(wrappedValue: indexedAt)
+        }
+
+        public init(from decoder: any Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+
+            self.starterPackURI = try container.decode(String.self, forKey: .starterPackURI)
+            self.starterPackCID = try container.decode(String.self, forKey: .starterPackCID)
+            self.starterPackRecord = try container.decode(UnknownType.self, forKey: .starterPackRecord)
+            self.creator = try container.decode(AppBskyLexicon.Actor.ProfileViewBasicDefinition.self, forKey: .creator)
+            self.listItemCount = try container.decodeIfPresent(Int.self, forKey: .listItemCount)
+            self.joinedWeekCount = try container.decodeIfPresent(Int.self, forKey: .joinedWeekCount)
+            self.joinedAllTimeCount = try container.decodeIfPresent(Int.self, forKey: .joinedAllTimeCount)
+            self.labels = try container.decodeIfPresent([ComAtprotoLexicon.Label.LabelDefinition].self, forKey: .labels)
+            self.indexedAt = try container.decode(DateFormatting.self, forKey: .indexedAt).wrappedValue
+        }
+
+        public func encode(to encoder: any Encoder) throws {
+            var container = encoder.container(keyedBy: CodingKeys.self)
+
+            try container.encode(self.starterPackURI, forKey: .starterPackURI)
+            try container.encode(self.starterPackCID, forKey: .starterPackCID)
+            try container.encode(self.starterPackRecord, forKey: .starterPackRecord)
+            try container.encode(self.creator, forKey: .creator)
+            try container.encodeIfPresent(self.listItemCount, forKey: .listItemCount)
+            try container.encodeIfPresent(self.joinedWeekCount, forKey: .joinedWeekCount)
+            try container.encodeIfPresent(self.joinedAllTimeCount, forKey: .joinedAllTimeCount)
+            try container.encodeIfPresent(self.labels, forKey: .labels)
+            try container.encode(self._indexedAt, forKey: .indexedAt)
+        }
+
+        enum CodingKeys: String, CodingKey {
+            case starterPackURI = "uri"
+            case starterPackCID = "cid"
+            case starterPackRecord = "record"
+            case creator
+            case listItemCount
+            case joinedWeekCount
+            case joinedAllTimeCount
+            case labels
+            case indexedAt
+        }
+    }
+
     /// A definition model for the user list's purpose.
     ///
     /// - SeeAlso: This is based on the [`app.bsky.graph.defs`][github] lexicon.
@@ -228,6 +439,11 @@ extension AppBskyLexicon.Graph {
         ///
         /// - Note: The documentation is taken directly from the lexicon itself.
         case curatelist = "app.bsky.graph.defs#curatelist"
+
+        /// A list of actors used for only for reference purposes such as within a starter pack.
+        ///
+        /// - Note: The documentation is taken directly from the lexicon itself.
+        case referencelist = "app.bsky.graph.defs#referencelist"
     }
 
     /// A definition model for a viewer's state of a user list.

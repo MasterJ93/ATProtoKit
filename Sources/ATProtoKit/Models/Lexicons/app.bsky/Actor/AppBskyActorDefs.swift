@@ -40,9 +40,12 @@ extension AppBskyLexicon.Actor {
         /// An array of labels created by the user. Optional.
         public let labels: [ComAtprotoLexicon.Label.LabelDefinition]?
 
+        /// The date and time the profile was created. Optional.
+        @DateFormattingOptional public var createdAt: Date?
+
         @_documentation(visibility: private)
         public init(actorDID: String, actorHandle: String, displayName: String?, avatarImageURL: URL?, associated: ProfileAssociatedDefinition?,
-                    viewer: ViewerStateDefinition?, labels: [ComAtprotoLexicon.Label.LabelDefinition]?) {
+                    viewer: ViewerStateDefinition?, labels: [ComAtprotoLexicon.Label.LabelDefinition]?, createdAt: Date?) {
             self.actorDID = actorDID
             self.actorHandle = actorHandle
             self.displayName = displayName
@@ -50,6 +53,7 @@ extension AppBskyLexicon.Actor {
             self.associated = associated
             self.viewer = viewer
             self.labels = labels
+            self._createdAt = DateFormattingOptional(wrappedValue: createdAt)
         }
         
         public init(from decoder: Decoder) throws {
@@ -62,6 +66,7 @@ extension AppBskyLexicon.Actor {
             self.associated = try container.decodeIfPresent(ProfileAssociatedDefinition.self, forKey: .associated)
             self.viewer = try container.decodeIfPresent(ViewerStateDefinition.self, forKey: .viewer)
             self.labels = try container.decodeIfPresent([ComAtprotoLexicon.Label.LabelDefinition].self, forKey: .labels)
+            self.createdAt = try container.decodeIfPresent(DateFormattingOptional.self, forKey: .createdAt)?.wrappedValue
         }
 
         @_documentation(visibility: private)
@@ -78,6 +83,7 @@ extension AppBskyLexicon.Actor {
             try container.encodeIfPresent(self.associated, forKey: .associated)
             try container.encodeIfPresent(self.viewer, forKey: .viewer)
             try container.encodeIfPresent(self.labels, forKey: .labels)
+            try container.encodeIfPresent(self.createdAt, forKey: .createdAt)
         }
 
         enum CodingKeys: String, CodingKey {
@@ -88,6 +94,7 @@ extension AppBskyLexicon.Actor {
             case associated
             case viewer
             case labels
+            case createdAt
         }
     }
 
@@ -123,6 +130,9 @@ extension AppBskyLexicon.Actor {
         /// The date the profile was last indexed. Optional.
         @DateFormattingOptional public var indexedAt: Date?
 
+        /// The date and time the profile was created. Optional.
+        @DateFormattingOptional public var createdAt: Date?
+
         /// The list of metadata relating to the requesting account's relationship with the subject
         /// account. Optional.
         public var viewer: ViewerStateDefinition?
@@ -132,7 +142,7 @@ extension AppBskyLexicon.Actor {
 
         @_documentation(visibility: private)
         public init(actorDID: String, actorHandle: String, displayName: String?, description: String?, avatarImageURL: URL?,
-                    associated: ProfileAssociatedDefinition?, indexedAt: Date?, viewer: ViewerStateDefinition?,
+                    associated: ProfileAssociatedDefinition?, indexedAt: Date?, createdAt: Date?, viewer: ViewerStateDefinition?,
                     labels: [ComAtprotoLexicon.Label.LabelDefinition]?) {
             self.actorDID = actorDID
             self.actorHandle = actorHandle
@@ -141,6 +151,7 @@ extension AppBskyLexicon.Actor {
             self.avatarImageURL = avatarImageURL
             self.associated = associated
             self._indexedAt = DateFormattingOptional(wrappedValue: indexedAt)
+            self._createdAt = DateFormattingOptional(wrappedValue: createdAt)
             self.viewer = viewer
             self.labels = labels
         }
@@ -155,6 +166,7 @@ extension AppBskyLexicon.Actor {
             self.avatarImageURL = try container.decodeIfPresent(URL.self, forKey: .avatarImageURL)
             self.associated = try container.decodeIfPresent(ProfileAssociatedDefinition.self, forKey: .associated)
             self.indexedAt = try container.decodeIfPresent(DateFormattingOptional.self, forKey: .indexedAt)?.wrappedValue
+            self.createdAt = try container.decodeIfPresent(DateFormattingOptional.self, forKey: .createdAt)?.wrappedValue
             self.viewer = try container.decodeIfPresent(ViewerStateDefinition.self, forKey: .viewer)
             self.labels = try container.decodeIfPresent([ComAtprotoLexicon.Label.LabelDefinition].self, forKey: .labels)
         }
@@ -176,6 +188,7 @@ extension AppBskyLexicon.Actor {
             try container.encodeIfPresent(self.avatarImageURL, forKey: .avatarImageURL)
             try container.encodeIfPresent(self.associated, forKey: .associated)
             try container.encodeIfPresent(self._indexedAt, forKey: .indexedAt)
+            try container.encodeIfPresent(self._createdAt, forKey: .createdAt)
             try container.encodeIfPresent(self.viewer, forKey: .viewer)
             try container.encodeIfPresent(self.labels, forKey: .labels)
         }
@@ -188,6 +201,7 @@ extension AppBskyLexicon.Actor {
             case avatarImageURL = "avatar"
             case associated
             case indexedAt
+            case createdAt
             case viewer
             case labels
         }

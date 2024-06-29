@@ -177,7 +177,6 @@ extension ATProtoAdmin {
         }
 
         // cursor
-        // cursor
         if let cursor {
             queryItems.append(("cursor", cursor))
         }
