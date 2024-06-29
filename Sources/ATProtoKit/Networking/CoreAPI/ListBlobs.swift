@@ -11,7 +11,7 @@ extension ATProtoKit {
 
     /// Lists a user account's blob CID hashes.
     /// 
-    /// - Note: According to the AT Protocol specifications: "List blob CIDso for an account,
+    /// - Note: According to the AT Protocol specifications: "List blob CIDs for an account,
     /// since some repo revision. Does not require auth; implemented by PDS."
     ///
     /// - SeeAlso: This is based on the [`com.atproto.sync.listBlobs`][github] lexicon.
