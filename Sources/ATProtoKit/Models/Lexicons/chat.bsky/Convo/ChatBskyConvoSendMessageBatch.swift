@@ -49,7 +49,7 @@ extension ChatBskyLexicon.Conversation {
         public func encode(to encoder: any Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
 
-            try truncatedEncode(self.items, withContainer: &container, forKey: .items, upToLength: 100)
+            try truncatedEncode(self.items, withContainer: &container, forKey: .items, upToCharacterLength: 100)
         }
     }
 

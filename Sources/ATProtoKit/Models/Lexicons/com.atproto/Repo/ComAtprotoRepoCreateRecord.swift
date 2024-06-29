@@ -58,7 +58,7 @@ extension ComAtprotoLexicon.Repository {
 
             try container.encode(self.repositoryDID, forKey: .repositoryDID)
             try container.encode(self.collection, forKey: .collection)
-            try truncatedEncodeIfPresent(self.recordKey, withContainer: &container, forKey: .recordKey, upToLength: 15)
+            try truncatedEncodeIfPresent(self.recordKey, withContainer: &container, forKey: .recordKey, upToCharacterLength: 15)
             try container.encodeIfPresent(self.shouldValidate, forKey: .shouldValidate)
             try container.encode(self.record, forKey: .record)
             try container.encodeIfPresent(self.swapCommit, forKey: .swapCommit)

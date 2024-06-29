@@ -58,7 +58,7 @@ extension ChatBskyLexicon.Conversation {
 
             // Truncate `tags` to 10000 characters before encoding
             // `maxGraphemes`'s limit is 1000, but `String.count` should respect that limit implictly
-            try truncatedEncode(self.text, withContainer: &container, forKey: .text, upToLength: 1_000)
+            try truncatedEncode(self.text, withContainer: &container, forKey: .text, upToCharacterLength: 1_000)
             try container.encodeIfPresent(self.facets, forKey: .facets)
             try container.encodeIfPresent(self.embeds, forKey: .embeds)
         }
@@ -133,7 +133,7 @@ extension ChatBskyLexicon.Conversation {
             try container.encode(self.revision, forKey: .revision)
             // Truncate `tags` to 10000 characters before encoding
             // `maxGraphemes`'s limit is 1000, but `String.count` should respect that limit implictly
-            try truncatedEncode(self.text, withContainer: &container, forKey: .text, upToLength: 1_000)
+            try truncatedEncode(self.text, withContainer: &container, forKey: .text, upToCharacterLength: 1_000)
             try container.encodeIfPresent(self.facets, forKey: .facets)
             try container.encodeIfPresent(self.embeds, forKey: .embeds)
             try container.encode(self.sender, forKey: .sender)

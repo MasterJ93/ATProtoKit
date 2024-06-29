@@ -89,10 +89,10 @@ extension AppBskyLexicon.Feed {
             try container.encode(self.feedDID, forKey: .feedDID)
             // Truncate `displayName` to 240 characters before encoding
             // `maxGraphemes`'s limit is 24, but `String.count` should respect that limit implictly
-            try truncatedEncode(self.displayName, withContainer: &container, forKey: .description, upToLength: 240)
+            try truncatedEncode(self.displayName, withContainer: &container, forKey: .description, upToCharacterLength: 24)
             // Truncate `displayName` to 3,000 characters before encoding
             // `maxGraphemes`'s limit is 300, but `String.count` should respect that limit implictly
-            try truncatedEncodeIfPresent(self.description, withContainer: &container, forKey: .description, upToLength: 3_000)
+            try truncatedEncodeIfPresent(self.description, withContainer: &container, forKey: .description, upToCharacterLength: 300)
             try container.encodeIfPresent(self.descriptionFacets, forKey: .descriptionFacets)
             try container.encodeIfPresent(self.avatarImageURL, forKey: .avatarImageURL)
             try container.encodeIfPresent(self.canAcceptInteractions, forKey: .canAcceptInteractions)

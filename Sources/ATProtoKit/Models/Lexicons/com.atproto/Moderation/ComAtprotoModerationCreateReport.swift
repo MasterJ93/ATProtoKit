@@ -102,7 +102,7 @@ extension ComAtprotoLexicon.Moderation {
 
             // Truncate `reason` to 20,000 characters before encoding
             // `maxGraphemes`'s limit is 2,000, but `String.count` should respect that limit implictly
-            try truncatedEncodeIfPresent(self.reason, withContainer: &container, forKey: .reason, upToLength: 20_000)
+            try truncatedEncodeIfPresent(self.reason, withContainer: &container, forKey: .reason, upToCharacterLength: 2_000)
             try container.encode(self.subject, forKey: .subject)
             try container.encode(self.reportedBy, forKey: .reportedBy)
             try container.encode(self._createdAt, forKey: .createdAt)

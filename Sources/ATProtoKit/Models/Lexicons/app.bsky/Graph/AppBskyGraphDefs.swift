@@ -69,7 +69,7 @@ extension AppBskyLexicon.Graph {
             try container.encode(self.actorURI, forKey: .actorURI)
             try container.encode(self.cidHash, forKey: .cidHash)
             try container.encode(self.name, forKey: .name)
-            try truncatedEncode(self.name, withContainer: &container, forKey: .name, upToLength: 64)
+            try truncatedEncode(self.name, withContainer: &container, forKey: .name, upToCharacterLength: 64)
             try container.encode(self.purpose, forKey: .purpose)
             try container.encodeIfPresent(self.avatarImageURL, forKey: .avatarImageURL)
             try container.encodeIfPresent(self.viewer, forKey: .viewer)
@@ -167,12 +167,12 @@ extension AppBskyLexicon.Graph {
             try container.encode(self.cidHash, forKey: .cidHash)
             try container.encode(self.creator, forKey: .creator)
             // Truncate `name` to 64 characters before encoding.
-            try truncatedEncode(self.name, withContainer: &container, forKey: .name, upToLength: 64)
+            try truncatedEncode(self.name, withContainer: &container, forKey: .name, upToCharacterLength: 64)
             try container.encode(self.purpose, forKey: .purpose)
 
             // Truncate `description` to 3000 characters before encoding
             // `maxGraphemes`'s limit is 300, but `String.count` should respect that limit
-            try truncatedEncodeIfPresent(self.description, withContainer: &container, forKey: .description, upToLength: 3000)
+            try truncatedEncodeIfPresent(self.description, withContainer: &container, forKey: .description, upToCharacterLength: 300)
             try container.encodeIfPresent(self.descriptionFacets, forKey: .descriptionFacets)
             try container.encodeIfPresent(self.avatarImageURL, forKey: .avatarImageURL)
             try container.encodeIfPresent(self.viewer, forKey: .viewer)

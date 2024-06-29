@@ -79,7 +79,7 @@ extension ChatBskyLexicon.Actor {
             try container.encode(self.actorHandle, forKey: .actorHandle)
             // Truncate `displayName` to 640 characters before encoding
             // `maxGraphemes`'s limit is 64, but `String.count` should respect that limit implictly
-            try truncatedEncodeIfPresent(self.displayName, withContainer: &container, forKey: .displayName, upToLength: 640)
+            try truncatedEncodeIfPresent(self.displayName, withContainer: &container, forKey: .displayName, upToCharacterLength: 64)
             try container.encodeIfPresent(self.avatarImageURL, forKey: .avatarImageURL)
             try container.encodeIfPresent(self.associated, forKey: .associated)
             try container.encodeIfPresent(self.viewer, forKey: .viewer)

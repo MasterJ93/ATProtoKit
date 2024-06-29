@@ -28,9 +28,35 @@ internal protocol Truncatable {
 internal func truncatedEncode<T: CodingKey, Element: Truncatable & Encodable>(_ value: Element,
                                                                               withContainer container: inout KeyedEncodingContainer<T>,
                                                                               forKey key: T,
-                                                                              upToLength length: Int) throws {
-    let truncatedValue = value.truncated(toLength: length)
-    try container.encode(truncatedValue, forKey: key)
+                                                                              upToCharacterLength characterLength: Int? = nil,
+                                                                              upToArrayLength arrayLength: Int? = nil) throws {
+    if let arrayValue = value as? [Element] {
+        // Truncate the array if `upToArrayLength` is specified
+        var truncatedArray = arrayValue
+
+        if let arrayLength = arrayLength {
+            truncatedArray = Array(truncatedArray.prefix(arrayLength))
+        }
+        // Truncate each element in the array if `upToCharacterLength` is specified
+        let truncatedElements = truncatedArray.map { element -> Element in
+            if let characterLength = characterLength {
+                return element.truncated(toLength: characterLength)
+            }
+
+            return element
+        }
+
+        try container.encode(truncatedElements, forKey: key)
+    } else {
+        // Truncate the value if `upToCharacterLength` is specified
+        var truncatedValue = value
+
+        if let characterLength = characterLength {
+            truncatedValue = truncatedValue.truncated(toLength: characterLength)
+        }
+
+        try container.encode(truncatedValue, forKey: key)
+    }
 }
 
 /// Encodes an optional `Truncatable & Encodable` value to a container with truncation if the
@@ -51,9 +77,35 @@ internal func truncatedEncode<T: CodingKey, Element: Truncatable & Encodable>(_ 
 internal func truncatedEncodeIfPresent<T: CodingKey, Element: Truncatable & Encodable>(_ value: Element?,
                                                                                        withContainer container: inout KeyedEncodingContainer<T>,
                                                                                        forKey key: T,
-                                                                                       upToLength length: Int) throws {
+                                                                                       upToCharacterLength characterLength: Int? = nil,
+                                                                                       upToArrayLength arrayLength: Int? = nil) throws {
     if let value = value {
-        let truncatedValue = value.truncated(toLength: length)
-        try container.encode(truncatedValue, forKey: key)
+        if let arrayValue = value as? [Element] {
+            // Truncate the array if `upToArrayLength` is specified
+            var truncatedArray = arrayValue
+
+            if let arrayLength = arrayLength {
+                truncatedArray = Array(truncatedArray.prefix(arrayLength))
+            }
+            // Truncate each element in the array if `upToCharacterLength` is specified
+            let truncatedElements = truncatedArray.map { element -> Element in
+                if let characterLength = characterLength {
+                    return element.truncated(toLength: characterLength)
+                }
+
+                return element
+            }
+
+            try container.encode(truncatedElements, forKey: key)
+        } else {
+            // Truncate the value if `upToCharacterLength` is specified
+            var truncatedValue = value
+
+            if let characterLength = characterLength {
+                truncatedValue = truncatedValue.truncated(toLength: characterLength)
+            }
+
+            try container.encode(truncatedValue, forKey: key)
+        }
     }
 }

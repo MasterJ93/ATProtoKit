@@ -73,7 +73,7 @@ extension AppBskyLexicon.Actor {
             
             // Truncate `displayName` to 640 characters before encoding
             // `maxGraphemes`'s limit is 64, but `String.count` should respect that limit implictly
-            try truncatedEncodeIfPresent(self.displayName, withContainer: &container, forKey: .displayName, upToLength: 640)
+            try truncatedEncodeIfPresent(self.displayName, withContainer: &container, forKey: .displayName, upToCharacterLength: 64)
             try container.encodeIfPresent(self.avatarImageURL, forKey: .avatarImageURL)
             try container.encodeIfPresent(self.associated, forKey: .associated)
             try container.encodeIfPresent(self.viewer, forKey: .viewer)
@@ -168,11 +168,11 @@ extension AppBskyLexicon.Actor {
             
             // Truncate `displayName` to 640 characters before encoding
             // `maxGraphemes`'s limit is 64, but `String.count` should respect that limit implictly
-            try truncatedEncodeIfPresent(self.displayName, withContainer: &container, forKey: .displayName, upToLength: 640)
-            
+            try truncatedEncodeIfPresent(self.displayName, withContainer: &container, forKey: .displayName, upToCharacterLength: 64)
+
             // Truncate `description` to 2560 characters before encoding
             // `maxGraphemes`'s limit is 256, but `String.count` should respect that limit
-            try truncatedEncodeIfPresent(self.description, withContainer: &container, forKey: .description, upToLength: 2560)
+            try truncatedEncodeIfPresent(self.description, withContainer: &container, forKey: .description, upToCharacterLength: 256)
             try container.encodeIfPresent(self.avatarImageURL, forKey: .avatarImageURL)
             try container.encodeIfPresent(self.associated, forKey: .associated)
             try container.encodeIfPresent(self._indexedAt, forKey: .indexedAt)
@@ -290,11 +290,11 @@ extension AppBskyLexicon.Actor {
             
             // Truncate `displayName` to 640 characters before encoding
             // `maxGraphemes`'s limit is 64, but `String.count` should respect that limit implictly
-            try truncatedEncodeIfPresent(self.displayName, withContainer: &container, forKey: .displayName, upToLength: 640)
-            
+            try truncatedEncodeIfPresent(self.displayName, withContainer: &container, forKey: .displayName, upToCharacterLength: 64)
+
             // Truncate `description` to 2560 characters before decoding
             // `maxGraphemes`'s limit is 256, but `String.count` should respect that limit
-            try truncatedEncodeIfPresent(self.description, withContainer: &container, forKey: .description, upToLength: 2560)
+            try truncatedEncodeIfPresent(self.description, withContainer: &container, forKey: .description, upToCharacterLength: 256)
             try container.encodeIfPresent(self.avatarImageURL, forKey: .avatarImageURL)
             try container.encodeIfPresent(self.bannerImageURL, forKey: .bannerImageURL)
             try container.encodeIfPresent(self.followerCount, forKey: .followerCount)
@@ -419,7 +419,7 @@ extension AppBskyLexicon.Actor {
             try container.encode(self.count, forKey: .count)
 
             // Truncate `displayName` to 5 items before encoding
-            try truncatedEncode(self.followers, withContainer: &container, forKey: .followers, upToLength: 5)
+            try truncatedEncode(self.followers, withContainer: &container, forKey: .followers, upToArrayLength: 5)
         }
     }
 
@@ -802,9 +802,7 @@ extension AppBskyLexicon.Actor {
             // Truncate `tags` to 640 characters before encoding.
             // `maxGraphemes`'s limit is 64, but `String.count` should respect that limit implictly.
             // Then, truncate `tags` to 100 items before encoding.
-            try truncatedEncode(
-                self.tags.map { $0.truncated(toLength: 640) },
-                withContainer: &container, forKey: .tags, upToLength: 100)
+            try truncatedEncode(self.tags, withContainer: &container, forKey: .tags, upToCharacterLength: 64, upToArrayLength: 100)
         }
 
         enum CodingKeys: String, CodingKey {
@@ -899,7 +897,7 @@ extension AppBskyLexicon.Actor {
 
             // Truncate `value` to 1000 characters before decoding
             // `maxGraphemes`'s limit is 100, but `String.count` should respect that limit
-            try truncatedEncode(self.value, withContainer: &container, forKey: .value, upToLength: 1000)
+            try truncatedEncode(self.value, withContainer: &container, forKey: .value, upToCharacterLength: 100)
             try container.encode(self.targets, forKey: .targets)
         }
 

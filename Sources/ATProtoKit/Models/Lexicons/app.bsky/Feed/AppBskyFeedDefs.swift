@@ -197,7 +197,7 @@ extension AppBskyLexicon.Feed {
             try container.encodeIfPresent(self.reason, forKey: .reason)
             // Truncate `description` to 2000 characters before encoding
             // `maxGraphemes`'s limit is 300, but `String.count` should respect that limit
-            try truncatedEncodeIfPresent(self.feedContext, withContainer: &container, forKey: .feedContext, upToLength: 2000)
+            try truncatedEncodeIfPresent(self.feedContext, withContainer: &container, forKey: .feedContext, upToCharacterLength: 300)
         }
 
         public enum CodingKeys: CodingKey {
@@ -471,7 +471,7 @@ extension AppBskyLexicon.Feed {
 
             // Truncate `description` to 3000 characters before encoding
             // `maxGraphemes`'s limit is 300, but `String.count` should respect that limit
-            try truncatedEncodeIfPresent(self.description, withContainer: &container, forKey: .description, upToLength: 3000)
+            try truncatedEncodeIfPresent(self.description, withContainer: &container, forKey: .description, upToCharacterLength: 300)
 
             try container.encodeIfPresent(self.descriptionFacets, forKey: .descriptionFacets)
             try container.encodeIfPresent(self.avatarImageURL, forKey: .avatarImageURL)
@@ -625,7 +625,7 @@ extension AppBskyLexicon.Feed {
             try container.encode(self.event, forKey: .event)
             // Truncate `description` to 2000 characters before encoding
             // `maxGraphemes`'s limit is 300, but `String.count` should respect that limit
-            try truncatedEncodeIfPresent(self.feedContext, withContainer: &container, forKey: .feedContext, upToLength: 2000)
+            try truncatedEncodeIfPresent(self.feedContext, withContainer: &container, forKey: .feedContext, upToCharacterLength: 300)
         }
 
         enum CodingKeys: CodingKey {
