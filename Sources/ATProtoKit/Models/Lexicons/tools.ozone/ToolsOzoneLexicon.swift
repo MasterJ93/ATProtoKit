@@ -17,4 +17,7 @@ extension ToolsOzoneLexicon {
 
     /// A group of lexicons within the `tools.ozone.server` namespace.
     public struct Server {}
+
+    /// A group of lexicon within the `tools.ozone.team` namespace.
+    public struct Team {}
 }
