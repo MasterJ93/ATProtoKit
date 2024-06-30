@@ -50,7 +50,7 @@ extension ATProtoKit {
                                                          andMethod: .get,
                                                          acceptValue: "application/json",
                                                          contentTypeValue: nil,
-                                                         authorizationValue: nil)
+                                                         authorizationValue: "Bearer \(accessToken)")
             let response = try await APIClientService.sendRequest(request,
                                                                   decodeTo: AppBskyLexicon.Graph.GetStarterPacksOutput.self)
 

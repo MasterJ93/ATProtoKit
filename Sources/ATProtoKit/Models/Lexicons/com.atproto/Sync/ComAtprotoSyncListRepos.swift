@@ -47,10 +47,18 @@ extension ComAtprotoLexicon.Sync {
             /// The repository's revision.
             public let revision: String
 
+            /// Indicates whether the repository is active. Optional.
+            public let isActive: Bool?
+
+            /// The status of the repository. Optional.
+            public let status: UserAccountStatus?
+
             enum CodingKeys: String, CodingKey {
                 case repositoryDID = "did"
                 case commitCID = "head"
                 case revision = "rev"
+                case isActive = "active"
+                case status
             }
         }
     }
