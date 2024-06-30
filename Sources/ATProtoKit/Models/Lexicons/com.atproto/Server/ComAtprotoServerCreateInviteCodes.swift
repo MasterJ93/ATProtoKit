@@ -42,7 +42,7 @@ extension ComAtprotoLexicon.Server {
     public struct CreateInviteCodesOutput: Codable {
 
         /// An array of invite codes.
-        public let codes: [ServerAccountCodes]
+        public let codes: [AccountCodes]
     }
 
     /// The server invite codes generated from ``ComAtprotoLexicon/Server/CreateInviteCodesOutput``.
@@ -51,7 +51,7 @@ extension ComAtprotoLexicon.Server {
     /// - SeeAlso: This is based on the [`com.atproto.server.createInviteCodes`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/server/createInviteCodes.json
-    public struct ServerAccountCodes: Codable {
+    public struct AccountCodes: Codable {
 
         /// The account that holds the invite codes.
         ///

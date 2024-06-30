@@ -83,6 +83,10 @@
 
 ### app.bsky.feed.getTimeline
 
+- ``GetTimelineOutput``
+
+### app.bsky.feed.like
+
 - ``LikeRecord``
 
 ### app.bsky.feed.post

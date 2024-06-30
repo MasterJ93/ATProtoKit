@@ -9,6 +9,7 @@
 - ``ProfileViewDetailedDefinition``
 - ``ProfileAssociatedDefinition``
 - ``ViewerStateDefinition``
+- ``KnownFollowers``
 - ``PreferencesDefinition``
 - ``AdultContentPreferencesDefinition``
 - ``ContentLabelPreferencesDefinition``

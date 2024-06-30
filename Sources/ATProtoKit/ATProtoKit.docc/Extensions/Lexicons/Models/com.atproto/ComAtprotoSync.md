@@ -16,7 +16,8 @@
 
 ### com.atproto.sync.getRepoStatus
 
-- ``ComAtprotoLexicon/Sync/GetLatestCommitOutput``
+- ``ComAtprotoLexicon/Sync/GetRepositoryStatus``
+- ``ComAtprotoLexicon/Sync/GetRepositoryStatusOutput``
 
 ### com.atproto.sync.listBlobs
 

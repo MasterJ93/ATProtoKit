@@ -44,6 +44,11 @@
 - ``ToolsOzoneLexicon/Moderation/QueryEvents``
 - ``ToolsOzoneLexicon/Moderation/QueryEventsOutput``
 
+### tools.ozone.moderation.queryStatuses
+
+- ``ToolsOzoneLexicon/Moderation/QueryStatuses``
+- ``ToolsOzoneLexicon/Moderation/QueryStatusesOutput``
+
 ### tools.ozone.moderation.searchRepos
 
 - ``ToolsOzoneLexicon/Moderation/SearchRepositoryOutput``

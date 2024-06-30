@@ -11,6 +11,8 @@
 - ``ListViewBasicDefinition``
 - ``ListViewDefinition``
 - ``ListItemViewDefinition``
+- ``StarterPackViewDefinition``
+- ``StarterPackViewBasicDefinition``
 - ``ListPurpose``
 - ``ListViewerStateDefinition``
 - ``NotFoundActorDefinition``
@@ -19,6 +21,10 @@
 ### app.bsky.graph.follow
 
 - ``FollowRecord``
+
+### app.bsky.graph.getActorStarterPacks
+
+- ``GetActorStarterPacksOutput``
 
 ### app.bsky.graph.getBlocks
 
@@ -31,6 +37,10 @@
 ### app.bsky.graph.getFollows
 
 - ``GetFollowsOutput``
+
+### app.bsky.graph.getKnownFollowers
+
+- ``GetKnownFollowersOutput``
 
 ### app.bsky.graph.getList
 
@@ -55,6 +65,14 @@
 ### app.bsky.graph.getRelationships
 
 - ``GetRelationshipsOutput``
+
+### app.bsky.graph.getStarterPack
+
+- ``GetStarterPackOutput``
+
+### app.bsky.graph.getStarterPacks
+
+- ``GetStarterPacksOutput``
 
 ### app.bsky.graph.getSuggestedFollowsByActor
 
@@ -83,6 +101,10 @@
 ### app.bsky.graph.muteThread
 
 - ``MuteThreadRequestBody``
+
+### app.bsky.graph.starterpack
+
+- ``StarterpackRecord``
 
 ### app.bsky.graph.unmuteActor
 

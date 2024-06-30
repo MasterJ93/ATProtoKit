@@ -37,7 +37,7 @@ extension ToolsOzoneLexicon.Moderation {
     /// - Note: According to the AT Protocol specifications: "View moderation statuses of subjects
     /// (record or repo)."
     ///
-    /// - SeeAlso: This is based on the [`ools.ozone.moderation.queryStatuses`][github] lexicon.
+    /// - SeeAlso: This is based on the [`tools.ozone.moderation.queryStatuses`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/tools/ozone/moderation/queryEvents.json
     public struct QueryStatusesOutput: Codable {
