@@ -21,6 +21,13 @@ extension ATProtoAdmin {
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/tools/ozone/team/listMembers.json
     ///
+    /// - Parameters:
+    ///   - limit: The number of invite codes in the list. Defaults to `50`.
+    ///   - cursor: The mark used to indicate the starting point for the next set of results. Optional.
+    /// - Returns: An array of members in the ozone service that the administrator is in.
+    ///
+    /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
+    /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func listMembers(
         limit: Int? = 50,
         cursor: String? = nil

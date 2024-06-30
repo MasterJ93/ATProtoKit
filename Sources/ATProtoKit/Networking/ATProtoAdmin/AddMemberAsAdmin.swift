@@ -10,17 +10,24 @@ import Foundation
 extension ATProtoAdmin {
     
     /// Adds an member into the ozone service as an administrator.
-    ///
+    /// 
     /// - Important: This is an administrator task and as such, regular users won't be able to
     /// access this; if they attempt to do so, an error will occur.
-    ///
+    /// 
     /// - Note: According to the AT Protocol specifications: "Add a member to the ozone team.
     /// Requires admin role."
-    ///
+    /// 
     /// - SeeAlso: This is based on the [`tools.ozone.team.addMember`][github] lexicon.
-    ///
+    /// 
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/tools/ozone/team/addMember.json
+    /// 
+    /// - Parameters:
+    ///   - did: The decentralized identifier (DID) of the member.
+    ///   - role: The current role that was given to the member.
+    /// - Returns: A newly-created member in the ozone service.
     ///
+    /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
+    /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func addMember(
         with did: String,
         and role: ToolsOzoneLexicon.Team.MemberDefinition.Role

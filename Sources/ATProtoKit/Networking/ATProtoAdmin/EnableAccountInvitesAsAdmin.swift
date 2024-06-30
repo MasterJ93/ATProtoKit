@@ -28,7 +28,7 @@ extension ATProtoAdmin {
     ///   - note: A note as to why the user account is getting the ability to receive invite
     ///   codes reinstated. Optional.
     ///
-    ///   - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
+    /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func enableAccountInvites(
         for accountDID: String,

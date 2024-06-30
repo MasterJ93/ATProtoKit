@@ -20,7 +20,15 @@ extension ATProtoAdmin {
     /// - SeeAlso: This is based on the [`tools.ozone.team.updateMember`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/tools/ozone/team/updateMember.json
+    /// 
+    /// - Parameters:
+    ///   - did: The decentralized identifier (DID) of the member.
+    ///   - isDisabled: Indicates whether the member is disabled. Optional.
+    ///   - role: The current role that was given to the member.
+    /// - Returns: An updated version of the member within the ozone service.
     ///
+    /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
+    /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func updateMember(
         with did: String,
         isDisabled: Bool? = nil,

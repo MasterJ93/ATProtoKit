@@ -10,17 +10,21 @@ import Foundation
 extension ATProtoAdmin {
 
     /// Deletes an ozone service member as an administrator.
-    ///
+    /// 
     /// - Important: This is an administrator task and as such, regular users won't be able to
     /// access this; if they attempt to do so, an error will occur.
-    ///
+    /// 
     /// - Note: According to the AT Protocol specifications: "Delete a member from ozone team.
     /// Requires admin role."
-    ///
+    /// 
     /// - SeeAlso: This is based on the [`tools.ozone.team.deleteMember`][github] lexicon.
-    ///
+    /// 
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/tools/ozone/team/deleteMember.json
+    /// 
+    /// - Parameter did: The decentralized identifier (DID) of the member.
     ///
+    /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
+    /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func deleteMember(with did: String) async throws {
         guard session != nil,
               let accessToken = session?.accessToken else {
