@@ -271,7 +271,14 @@ public class APIClientService {
         /// Removes the specified resource(s) from the AT Protocol server.
         case delete = "DELETE"
     }
-    
+
+//    ///
+//    public enum ATProtoProxy: String {
+//
+//        case bskyChat = "did:web:api.bsky.chat#bsky_chat"
+//        case test = ""
+//    }
+
     /// Determines the MIME type based on a file's extension.
     ///
     /// - Parameter filename: The filename to determine the MIME type for.
