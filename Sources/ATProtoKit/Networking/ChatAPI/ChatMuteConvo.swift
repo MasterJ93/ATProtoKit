@@ -16,21 +16,19 @@ extension ATProtoBlueskyChat {
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/chat/bsky/convo/muteConvo.json
     /// 
     /// - Parameter conversationID: The ID of the conversation.
-    /// - Returns: A `Result`, containing either a
-    /// ``ChatBskyLexicon/Conversation/MuteConversationOutput``
-    /// if successful, or an `Error` if not.
+    /// - Returns: The conversation that the user account has successfully muted.
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
-    public func muteConversation(from conversationID: String) async throws -> Result<ChatBskyLexicon.Conversation.MuteConversationOutput, Error> {
+    public func muteConversation(from conversationID: String) async throws -> ChatBskyLexicon.Conversation.MuteConversationOutput {
         guard session != nil,
               let accessToken = session?.accessToken else {
-            return .failure(ATRequestPrepareError.missingActiveSession)
+            throw ATRequestPrepareError.missingActiveSession
         }
 
         guard let sessionURL = session?.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/chat.bsky.convo.muteConvo") else {
-            return .failure(ATRequestPrepareError.invalidRequestURL)
+            throw ATRequestPrepareError.invalidRequestURL
         }
 
         let requestBody = ChatBskyLexicon.Conversation.MuteConversationRequestBody(
@@ -48,9 +46,9 @@ extension ATProtoBlueskyChat {
                                                                   withEncodingBody: requestBody,
                                                                   decodeTo: ChatBskyLexicon.Conversation.MuteConversationOutput.self)
 
-            return .success(response)
+            return response
         } catch {
-            return .failure(error)
+            throw error
         }
     }
 }

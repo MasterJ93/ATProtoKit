@@ -19,21 +19,22 @@ extension ATProtoBlueskyChat {
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/chat/bsky/moderation/getActorMetadata.json
     /// 
     /// - Parameter actorDID: The decentralized identifier (DID) of the user account.
-    /// - Returns: A `Result`, containing either a
-    /// ``ChatBskyLexicon/Moderation/GetActorMetadataOutput``
-    /// if successful, or an `Error` if not.
+    /// - Returns: The metadata of the specified user account's chat account, which contains the
+    /// number of messages sent and received, number of total conversations, and number of
+    /// started conversations. The metadata is avaialble for the past 7 days, the past 30 days,
+    /// and the lifetime of the chat account.
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
-    public func getMessageContext(actorDID: String) async throws -> Result<ChatBskyLexicon.Moderation.GetActorMetadataOutput, Error> {
+    public func getMessageContext(actorDID: String) async throws -> ChatBskyLexicon.Moderation.GetActorMetadataOutput {
         guard session != nil,
               let accessToken = session?.accessToken else {
-            return .failure(ATRequestPrepareError.missingActiveSession)
+            throw ATRequestPrepareError.missingActiveSession
         }
 
         guard let sessionURL = session?.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/chat.bsky.moderation.getActorMetadata") else {
-            return .failure(ATRequestPrepareError.invalidRequestURL)
+            throw ATRequestPrepareError.invalidRequestURL
         }
 
         var queryItems = [(String, String)]()
@@ -57,9 +58,9 @@ extension ATProtoBlueskyChat {
             let response = try await APIClientService.sendRequest(request,
                                                                   decodeTo: ChatBskyLexicon.Moderation.GetActorMetadataOutput.self)
 
-            return .success(response)
+            return response
         } catch {
-            return .failure(error)
+            throw error
         }
     }
 }

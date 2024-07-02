@@ -19,13 +19,12 @@ extension ATProtoBlueskyChat {
     /// 
     /// - Parameter members: An array of members within the conversation. Maximum amount is
     /// 10 items.
-    /// - - Returns: A `Result`, containing either a
-    /// ``ChatBskyLexicon/Conversation/GetConversationForMembersOutput``
-    /// if successful, or an `Error` if not.
+    /// - Returns: A view of the conversation metadata, including an array of members in the
+    /// conversation, mute indication, the last message, and the number of unread messages.
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
-    public func getConversaionForMembers(_ members: [String]) async throws -> Result<ChatBskyLexicon.Conversation.GetConversationForMembersOutput, Error> {
+    public func getConversaionForMembers(_ members: [String]) async throws -> ChatBskyLexicon.Conversation.GetConversationForMembersOutput {
         guard session != nil,
               let accessToken = session?.accessToken else {
             throw ATRequestPrepareError.missingActiveSession
@@ -33,7 +32,7 @@ extension ATProtoBlueskyChat {
 
         guard let sessionURL = session?.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/chat.bsky.convo.getConvoForMembers") else {
-            return .failure(ATRequestPrepareError.invalidRequestURL)
+            throw ATRequestPrepareError.invalidRequestURL
         }
 
         var queryItems = [(String, String)]()
@@ -57,9 +56,9 @@ extension ATProtoBlueskyChat {
             let response = try await APIClientService.sendRequest(request,
                                                                   decodeTo: ChatBskyLexicon.Conversation.GetConversationForMembersOutput.self)
 
-            return .success(response)
+            return response
         } catch {
-            return .failure(error)
+            throw error
         }
     }
 }

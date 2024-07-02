@@ -25,9 +25,7 @@ extension ATProtoBlueskyChat {
     ///   Defaults to `5`.
     ///   - messagesAfter: The number of messages younger than the message in `messageID`.
     ///   Optional. Defaults to `5`.
-    /// - Returns: A `Result`, containing either a
-    /// ``ChatBskyLexicon/Moderation/GetMessageContextOutput``
-    /// if successful, or an `Error` if not.
+    /// - Returns: An array of messages. The array may contain deleted messages.
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
@@ -36,15 +34,15 @@ extension ATProtoBlueskyChat {
         messageID: String,
         messagesBefore: Int? = 5,
         messagesAfter: Int? = 5
-    ) async throws -> Result<ChatBskyLexicon.Moderation.GetMessageContextOutput, Error> {
+    ) async throws -> ChatBskyLexicon.Moderation.GetMessageContextOutput {
         guard session != nil,
               let accessToken = session?.accessToken else {
-            return .failure(ATRequestPrepareError.missingActiveSession)
+            throw ATRequestPrepareError.missingActiveSession
         }
 
         guard let sessionURL = session?.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/chat.bsky.moderation.getMessageContext") else {
-            return .failure(ATRequestPrepareError.invalidRequestURL)
+            throw ATRequestPrepareError.invalidRequestURL
         }
 
         var queryItems = [(String, String)]()
@@ -80,9 +78,9 @@ extension ATProtoBlueskyChat {
             let response = try await APIClientService.sendRequest(request,
                                                                   decodeTo: ChatBskyLexicon.Moderation.GetMessageContextOutput.self)
 
-            return .success(response)
+            return response
         } catch {
-            return .failure(error)
+            throw error
         }
     }
 }

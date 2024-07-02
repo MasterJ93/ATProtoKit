@@ -17,21 +17,19 @@ extension ATProtoBlueskyChat {
     ///
     /// - Parameter members: An array of members within the conversation. Maximum amount is
     /// 10 items.
-    /// - Returns: A `Result`, containing either a
-    /// ``ChatBskyLexicon/Conversation/GetConversationOutput``
-    /// if successful, or an `Error` if not.
+    /// - Returns: The conversation between tto user accounts that matches `conversationID`.
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
-    public func getConversation(byID conversationID: String) async throws -> Result<ChatBskyLexicon.Conversation.GetConversationOutput, Error> {
+    public func getConversation(by conversationID: String) async throws -> ChatBskyLexicon.Conversation.GetConversationOutput {
         guard session != nil,
               let accessToken = session?.accessToken else {
-            return .failure(ATRequestPrepareError.missingActiveSession)
+            throw ATRequestPrepareError.missingActiveSession
         }
 
         guard let sessionURL = session?.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/app.bsky.graph.getList") else {
-            return .failure(ATRequestPrepareError.invalidRequestURL)
+            throw ATRequestPrepareError.invalidRequestURL
         }
 
         var queryItems = [(String, String)]()
@@ -55,9 +53,9 @@ extension ATProtoBlueskyChat {
             let response = try await APIClientService.sendRequest(request,
                                                                   decodeTo: ChatBskyLexicon.Conversation.GetConversationOutput.self)
 
-            return .success(response)
+            return response
         } catch {
-            return .failure(error)
+            throw error
         }
 
     }

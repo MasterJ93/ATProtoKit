@@ -18,16 +18,14 @@ extension ATProtoBlueskyChat {
     /// - Parameters:
     ///   - conversationID: The ID of the conversation.
     ///   - messageID: The ID of the message.
-    /// /// - Returns: A `Result`, containing either a
-    /// ``ChatBskyLexicon/Conversation/DeletedMessageViewDefinition``
-    /// if successful, or an `Error` if not.
+    /// - Returns: A deleted message view.
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func deleteMessageForSelf(
         conversationID: String,
         messageID: String
-    ) async throws -> Result<ChatBskyLexicon.Conversation.DeletedMessageViewDefinition, Error> {
+    ) async throws -> ChatBskyLexicon.Conversation.DeletedMessageViewDefinition {
         guard session != nil,
               let accessToken = session?.accessToken else {
             throw ATRequestPrepareError.missingActiveSession
@@ -35,7 +33,7 @@ extension ATProtoBlueskyChat {
 
         guard let sessionURL = session?.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/chat.bsky.convo.deleteMessageForSelf") else {
-            return .failure(ATRequestPrepareError.invalidRequestURL)
+            throw ATRequestPrepareError.invalidRequestURL
         }
 
         let requestBody = ChatBskyLexicon.Conversation.DeleteMessageForSelfRequestBody(
@@ -54,9 +52,9 @@ extension ATProtoBlueskyChat {
                                                                   withEncodingBody: requestBody,
                                                                   decodeTo: ChatBskyLexicon.Conversation.DeletedMessageViewDefinition.self)
 
-            return .success(response)
+            return response
         } catch {
-            return .failure(error)
+            throw error
         }
     }
 }

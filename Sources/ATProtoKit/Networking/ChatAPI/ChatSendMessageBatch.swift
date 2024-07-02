@@ -18,21 +18,19 @@ extension ATProtoBlueskyChat {
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/chat/bsky/convo/sendMessageBatch.json
     /// 
     /// - Parameter messages: A array of messages. Maximum number is 100 items.
-    /// - Returns: A `Result`, containing either a
-    /// ``ChatBskyLexicon/Conversation/SendMessageBatchOutput``
-    /// if successful, or an `Error` if not.
+    /// - Returns: An array of messages.
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
-    public func sendMessageBatch(messages: [ChatBskyLexicon.Conversation.SendMessageBatch.MessageBatchItem]) async throws -> Result<ChatBskyLexicon.Conversation.SendMessageBatchOutput, Error> {
+    public func sendMessageBatch(messages: [ChatBskyLexicon.Conversation.SendMessageBatch.MessageBatchItem]) async throws -> ChatBskyLexicon.Conversation.SendMessageBatchOutput {
         guard session != nil,
               let accessToken = session?.accessToken else {
-            return .failure(ATRequestPrepareError.missingActiveSession)
+            throw ATRequestPrepareError.missingActiveSession
         }
 
         guard let sessionURL = session?.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/chat.bsky.convo.sendMessageBatch") else {
-            return .failure(ATRequestPrepareError.invalidRequestURL)
+            throw ATRequestPrepareError.invalidRequestURL
         }
 
         let requestBody = ChatBskyLexicon.Conversation.SendMessageBatchRequestBody(
@@ -50,9 +48,9 @@ extension ATProtoBlueskyChat {
                                                                   withEncodingBody: requestBody,
                                                                   decodeTo: ChatBskyLexicon.Conversation.SendMessageBatchOutput.self)
 
-            return .success(response)
+            return response
         } catch {
-            return .failure(error)
+            throw error
         }
     }
 }

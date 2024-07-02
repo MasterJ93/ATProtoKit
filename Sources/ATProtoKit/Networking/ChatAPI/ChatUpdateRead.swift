@@ -18,24 +18,22 @@ extension ATProtoBlueskyChat {
     /// - Parameters:
     ///   - conversationID: The ID of the conversation.
     ///   - messageID: The ID of the message. Optional.
-    /// - Returns: A `Result`, containing either a
-    /// ``ChatBskyLexicon/Conversation/UpdateReadOutput``
-    /// if successful, or an `Error` if not.
+    /// - Returns: The conversation that the user account has now marked as unread.
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func updateRead(
         from conversationID: String,
         upTo messageID: String? = nil
-    ) async throws -> Result<ChatBskyLexicon.Conversation.UpdateReadOutput, Error> {
+    ) async throws -> ChatBskyLexicon.Conversation.UpdateReadOutput {
             guard session != nil,
                   let accessToken = session?.accessToken else {
-                return .failure(ATRequestPrepareError.missingActiveSession)
+                throw ATRequestPrepareError.missingActiveSession
             }
 
             guard let sessionURL = session?.pdsURL,
                   let requestURL = URL(string: "\(sessionURL)/xrpc/chat.bsky.convo.updateRead") else {
-                return .failure(ATRequestPrepareError.invalidRequestURL)
+                throw ATRequestPrepareError.invalidRequestURL
             }
 
             let requestBody = ChatBskyLexicon.Conversation.UpdateReadRequestBody(
@@ -54,9 +52,9 @@ extension ATProtoBlueskyChat {
                                                                       withEncodingBody: requestBody,
                                                                       decodeTo: ChatBskyLexicon.Conversation.UpdateReadOutput.self)
 
-                return .success(response)
+                return response
             } catch {
-                return .failure(error)
+                throw error
             }
     }
 }

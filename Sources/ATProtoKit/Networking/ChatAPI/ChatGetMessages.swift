@@ -18,24 +18,23 @@ extension ATProtoBlueskyChat {
     /// - Parameters:
     ///   - conversationID: The ID of the conversation.
     ///   - limit: The number of items that can be in the list. Optional. Defaults to `50`.
-    /// - Returns: A `Result`, containing either a
-    /// ``ChatBskyLexicon/Conversation/GetMessagesOutput``
-    /// if successful, or an `Error` if not.
+    /// - Returns: An array of messages, with an optional cursor for expanding the array. The array
+    /// may contain deleted messages.
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func getMessages(
         from conversationID: String,
         limit: Int? = 50
-    ) async throws -> Result<ChatBskyLexicon.Conversation.GetMessagesOutput, Error> {
+    ) async throws -> ChatBskyLexicon.Conversation.GetMessagesOutput {
         guard session != nil,
               let accessToken = session?.accessToken else {
-            return .failure(ATRequestPrepareError.missingActiveSession)
+            throw ATRequestPrepareError.missingActiveSession
         }
 
         guard let sessionURL = session?.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/chat.bsky.convo.getMessages") else {
-            return .failure(ATRequestPrepareError.invalidRequestURL)
+            throw ATRequestPrepareError.invalidRequestURL
         }
 
         var queryItems = [(String, String)]()
@@ -64,9 +63,9 @@ extension ATProtoBlueskyChat {
             let response = try await APIClientService.sendRequest(request,
                                                                   decodeTo: ChatBskyLexicon.Conversation.GetMessagesOutput.self)
 
-            return .success(response)
+            return response
         } catch {
-            return .failure(error)
+            throw error
         }
     }
 }

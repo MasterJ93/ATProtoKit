@@ -31,8 +31,8 @@ extension ChatBskyLexicon.Conversation {
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/chat/bsky/convo/muteConvo.json
     public struct MuteConversationOutput: Codable {
 
-        /// The conversation itself.
-        public let conversation: [ConversationViewDefinition]
+        /// The conversation the user account has successfully muted.
+        public let conversation: ConversationViewDefinition
 
         enum CodingKeys: String, CodingKey {
             case conversation = "convo"

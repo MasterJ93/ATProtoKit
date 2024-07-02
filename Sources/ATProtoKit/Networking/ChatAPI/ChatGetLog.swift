@@ -17,21 +17,19 @@ extension ATProtoBlueskyChat {
     /// 
     /// - Parameter cursor: The mark used to indicate the starting point for the next set of
     ///   result. Optional.
-    /// - Returns: A `Result`, containing either a
-    /// ``ChatBskyLexicon/Conversation/GetLogOutput``
-    /// if successful, or an `Error` if not.
+    /// - Returns: An array of message logs, with an optional cursor to expand the array.
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
-    public func getLog(cursor: String? = nil) async throws -> Result<ChatBskyLexicon.Conversation.GetLogOutput, Error> {
+    public func getLog(cursor: String? = nil) async throws -> ChatBskyLexicon.Conversation.GetLogOutput {
         guard session != nil,
               let accessToken = session?.accessToken else {
-            return .failure(ATRequestPrepareError.missingActiveSession)
+            throw ATRequestPrepareError.missingActiveSession
         }
 
         guard let sessionURL = session?.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/chat.bsky.convo.getLog") else {
-            return .failure(ATRequestPrepareError.invalidRequestURL)
+            throw ATRequestPrepareError.invalidRequestURL
         }
 
         var queryItems = [(String, String)]()
@@ -57,9 +55,9 @@ extension ATProtoBlueskyChat {
             let response = try await APIClientService.sendRequest(request,
                                                                   decodeTo: ChatBskyLexicon.Conversation.GetLogOutput.self)
 
-            return .success(response)
+            return response
         } catch {
-            return .failure(error)
+            throw error
         }
     }
 }

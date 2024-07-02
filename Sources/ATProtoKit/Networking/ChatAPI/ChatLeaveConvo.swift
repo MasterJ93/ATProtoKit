@@ -16,13 +16,11 @@ extension ATProtoBlueskyChat {
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/chat/bsky/convo/leaveConvo.json
     /// 
     /// - Parameter conversationID: The ID of the conversation.
-    /// - Returns: A `Result`, containing either a
-    /// ``ChatBskyLexicon/Conversation/LeaveConversationOutput``
-    /// if successful, or an `Error` if not.
+    /// - Returns: The ID and revision of the conversation that the user account has left.
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
-    public func leaveConversation(from conversationID: String) async throws -> Result<ChatBskyLexicon.Conversation.LeaveConversationOutput, Error> {
+    public func leaveConversation(from conversationID: String) async throws -> ChatBskyLexicon.Conversation.LeaveConversationOutput {
         guard session != nil,
               let accessToken = session?.accessToken else {
             throw ATRequestPrepareError.missingActiveSession
@@ -30,7 +28,7 @@ extension ATProtoBlueskyChat {
 
         guard let sessionURL = session?.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/chat.bsky.convo.leaveConvo") else {
-            return .failure(ATRequestPrepareError.invalidRequestURL)
+            throw ATRequestPrepareError.invalidRequestURL
         }
 
         let requestBody = ChatBskyLexicon.Conversation.LeaveConversationRequestBody(
@@ -48,7 +46,7 @@ extension ATProtoBlueskyChat {
                                                                   withEncodingBody: requestBody,
                                                                   decodeTo: ChatBskyLexicon.Conversation.LeaveConversationOutput.self)
 
-            return .success(response)
+            return response
         } catch {
             throw error
         }

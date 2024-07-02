@@ -20,24 +20,22 @@ extension ATProtoBlueskyChat {
     /// - Parameters:
     ///   - conversationID: The ID of the conversation.
     ///   - message: The message to be sent.
-    /// - Returns: A `Result`, containing either a
-    /// ``ChatBskyLexicon/Conversation/MessageViewDefinition``
-    /// if successful, or an `Error` if not.
+    /// - Returns: The message that the user account has successfully sent.
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func sendMessage(
         conversationID: String,
         message: ChatBskyLexicon.Conversation.MessageInputDefinition
-    ) async throws -> Result<ChatBskyLexicon.Conversation.MessageViewDefinition, Error> {
+    ) async throws -> ChatBskyLexicon.Conversation.MessageViewDefinition {
         guard session != nil,
               let accessToken = session?.accessToken else {
-            return .failure(ATRequestPrepareError.missingActiveSession)
+            throw ATRequestPrepareError.missingActiveSession
         }
 
         guard let sessionURL = session?.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/chat.bsky.convo.sendMessage") else {
-            return .failure(ATRequestPrepareError.invalidRequestURL)
+            throw ATRequestPrepareError.invalidRequestURL
         }
 
         let requestBody = ChatBskyLexicon.Conversation.SendMessageRequestBody(
@@ -56,9 +54,9 @@ extension ATProtoBlueskyChat {
                                                                   withEncodingBody: requestBody,
                                                                   decodeTo: ChatBskyLexicon.Conversation.MessageViewDefinition.self)
 
-            return .success(response)
+            return response
         } catch {
-            return .failure(error)
+            throw error
         }
     }
 }
