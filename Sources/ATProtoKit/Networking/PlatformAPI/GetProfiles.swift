@@ -35,9 +35,7 @@ extension ATProtoKit {
     ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `nil`.
     ///   - shouldAuthenticate: Indicates whether the method will use the access token when
     ///   sending the request. Defaults to `false`.
-    /// - Returns: A `Result`, containing
-    /// ``AppBskyLexicon/Actor/GetProfilesOutput``
-    /// if successful, or an `Error` if not.
+    /// - Returns: An array of detailed profile views for several user accounts.
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
@@ -45,7 +43,7 @@ extension ATProtoKit {
         _ actors: [String],
         pdsURL: String? = nil,
         shouldAuthenticate: Bool = false
-    ) async throws -> Result<AppBskyLexicon.Actor.GetProfilesOutput, Error> {
+    ) async throws -> AppBskyLexicon.Actor.GetProfilesOutput {
         let authorizationValue = prepareAuthorizationValue(
             methodPDSURL: pdsURL,
             shouldAuthenticate: shouldAuthenticate,
@@ -55,7 +53,7 @@ extension ATProtoKit {
         let finalPDSURL = determinePDSURL(customPDSURL: pdsURL)
 
         guard let requestURL = URL(string: "\(finalPDSURL)/xrpc/app.bsky.actor.getProfiles") else {
-            return .failure(ATRequestPrepareError.invalidRequestURL)
+            throw ATRequestPrepareError.invalidRequestURL
         }
 
         var queryItems = [(String, String)]()
@@ -78,9 +76,9 @@ extension ATProtoKit {
             let result = try await APIClientService.sendRequest(request,
                                                                 decodeTo: AppBskyLexicon.Actor.GetProfilesOutput.self)
 
-            return .success(result)
+            return result
         } catch {
-            return .failure(error)
+            throw error
         }
     }
 }

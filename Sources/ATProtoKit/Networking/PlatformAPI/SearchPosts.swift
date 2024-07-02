@@ -39,9 +39,8 @@ extension ATProtoKit {
     ///   Can only choose between `1` and `100`.
     ///   - cursor: The mark used to indicate the starting point for the next set of
     ///   results. Optional.
-    /// - Returns: A `Result`, containing either an
-    /// ``AppBskyLexicon/Feed/SearchPostsOutput``
-    /// if succesful, or an `Error` if it's not.
+    /// - Returns: An array of post records in the results, with an optional cursor to expand
+    /// the array. The output may also display the total number of search results.
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
@@ -58,15 +57,15 @@ extension ATProtoKit {
         tags: [String]?,
         limit: Int? = 25,
         cursor: String? = nil
-    ) async throws -> Result<AppBskyLexicon.Feed.SearchPostsOutput, Error> {
+    ) async throws -> AppBskyLexicon.Feed.SearchPostsOutput {
         guard session != nil,
               let accessToken = session?.accessToken else {
-            return .failure(ATRequestPrepareError.missingActiveSession)
+            throw ATRequestPrepareError.missingActiveSession
         }
 
         guard let sessionURL = session?.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/app.bsky.feed.searchPosts") else {
-            return .failure(ATRequestPrepareError.invalidRequestURL)
+            throw ATRequestPrepareError.invalidRequestURL
         }
 
         var queryItems = [(String, String)]()
@@ -134,9 +133,9 @@ extension ATProtoKit {
             let response = try await APIClientService.sendRequest(request,
                                                                   decodeTo: AppBskyLexicon.Feed.SearchPostsOutput.self)
 
-            return .success(response)
+            return response
         } catch {
-            return .failure(error)
+            throw error
         }
 
     }

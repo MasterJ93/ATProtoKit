@@ -22,24 +22,22 @@ extension ATProtoKit {
     ///   - limit: The number of items the list will hold. Optional. Defaults to `50`.
     ///   - cursor: The mark used to indicate the starting point for the next set of
     ///   result. Optional.
-    /// - Returns: A `Result`, containing either a
-    /// ``AppBskyLexicon/Feed/GetSuggestedFeedsOutput``
-    /// if successful, or an `Error` if not.
+    /// - Returns: An array of feed generators, with an optional cursor to extend the array.
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func getSuggestedFeeds(
         limit: Int? = 50,
         cursor: String? = nil
-    ) async throws -> Result<AppBskyLexicon.Feed.GetSuggestedFeedsOutput, Error> {
+    ) async throws -> AppBskyLexicon.Feed.GetSuggestedFeedsOutput {
         guard session != nil,
               let accessToken = session?.accessToken else {
-            return .failure(ATRequestPrepareError.missingActiveSession)
+            throw ATRequestPrepareError.missingActiveSession
         }
 
         guard let sessionURL = session?.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/app.bsky.feed.getSuggestedFeeds") else {
-            return .failure(ATRequestPrepareError.invalidRequestURL)
+            throw ATRequestPrepareError.invalidRequestURL
         }
 
         var queryItems = [(String, String)]()
@@ -69,9 +67,9 @@ extension ATProtoKit {
             let response = try await APIClientService.sendRequest(request,
                                                                   decodeTo: AppBskyLexicon.Feed.GetSuggestedFeedsOutput.self)
 
-            return .success(response)
+            return response
         } catch {
-            return .failure(error)
+            throw error
         }
     }
 }

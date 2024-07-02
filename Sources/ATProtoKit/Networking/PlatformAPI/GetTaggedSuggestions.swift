@@ -21,16 +21,14 @@ extension ATProtoKit {
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/unspecced/getTaggedSuggestions.json
     ///
-    /// - Returns: A `Result`, containing either an
-    /// ``AppBskyLexicon/Unspecced/GetTaggedSuggestionsOutput``
-    /// if successful, or an `Error` if not.
+    /// - Returns: An array of suggestions.
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
-    public func getTaggedSuggestions(pdsURL: String? = nil) async throws -> Result<AppBskyLexicon.Unspecced.GetTaggedSuggestionsOutput, Error> {
+    public func getTaggedSuggestions(pdsURL: String? = nil) async throws -> AppBskyLexicon.Unspecced.GetTaggedSuggestionsOutput {
         guard let sessionURL = pdsURL != nil ? pdsURL : session?.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/app.bsky.unspecced.getTaggedSuggestions") else {
-            return .failure(ATRequestPrepareError.invalidRequestURL)
+            throw ATRequestPrepareError.invalidRequestURL
         }
 
         do {
@@ -42,9 +40,9 @@ extension ATProtoKit {
             let response = try await APIClientService.sendRequest(request,
                                                                   decodeTo: AppBskyLexicon.Unspecced.GetTaggedSuggestionsOutput.self)
 
-            return .success(response)
+            return response
         } catch {
-            return .failure(error)
+            throw error
         }
     }
 }

@@ -22,24 +22,23 @@ extension ATProtoKit {
     ///   - limit: The number of items that can be in the list. Optional. Defaults to `50`.
     ///   - cursor: The mark used to indicate the starting point for the next set of
     ///   result. Optional.
-    /// - Returns: A `Result`, containing either a
-    /// ``AppBskyLexicon/Graph/GetBlocksOutput``
-    /// if successful, or an `Error` if not.
+    /// - Returns: An array of profiles that have been blocked by the user account, with an
+    /// optional cursor to extend the array.
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func getListBlocks(
         limit: Int? = 50,
         cursor: String? = nil
-    ) async throws -> Result<AppBskyLexicon.Graph.GetBlocksOutput, Error> {
+    ) async throws -> AppBskyLexicon.Graph.GetBlocksOutput {
         guard session != nil,
               let accessToken = session?.accessToken else {
-            return .failure(ATRequestPrepareError.missingActiveSession)
+            throw ATRequestPrepareError.missingActiveSession
         }
 
         guard let sessionURL = session?.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/app.bsky.graph.getListBlocks") else {
-            return .failure(ATRequestPrepareError.invalidRequestURL)
+            throw ATRequestPrepareError.invalidRequestURL
         }
 
         var queryItems = [(String, String)]()
@@ -69,9 +68,9 @@ extension ATProtoKit {
             let response = try await APIClientService.sendRequest(request,
                                                                   decodeTo: AppBskyLexicon.Graph.GetBlocksOutput.self)
 
-            return .success(response)
+            return response
         } catch {
-            return .failure(error)
+            throw error
         }
     }
 }

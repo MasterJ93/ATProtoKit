@@ -21,21 +21,19 @@ extension ATProtoKit {
     ///
     /// - Parameter actorDID: The decentralized identifier (DID) or handle of the user account
     /// that the suggestions are based on.
-    /// - Returns: A `Result`, containing either a
-    /// ``AppBskyLexicon/Graph/GetSuggestedFollowsByActorOutput``
-    /// if successful, or an `Error` if not.
+    /// - Returns: An array of user accounts the requesting user account is suggested to follow.
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
-    public func getSuggestedFollowsByActor(_ actorDID: String) async throws -> Result<AppBskyLexicon.Graph.GetSuggestedFollowsByActorOutput, Error> {
+    public func getSuggestedFollowsByActor(_ actorDID: String) async throws -> AppBskyLexicon.Graph.GetSuggestedFollowsByActorOutput {
         guard session != nil,
               let accessToken = session?.accessToken else {
-            return .failure(ATRequestPrepareError.missingActiveSession)
+            throw ATRequestPrepareError.missingActiveSession
         }
 
         guard let sessionURL = session?.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/app.bsky.graph.getSuggestedFollowsByActor") else {
-            return .failure(ATRequestPrepareError.invalidRequestURL)
+            throw ATRequestPrepareError.invalidRequestURL
         }
 
         var queryItems = [(String, String)]()
@@ -59,9 +57,9 @@ extension ATProtoKit {
             let response = try await APIClientService.sendRequest(request,
                                                                   decodeTo: AppBskyLexicon.Graph.GetSuggestedFollowsByActorOutput.self)
 
-            return .success(response)
+            return response
         } catch {
-            return .failure(error)
+            throw error
         }
     }
 }

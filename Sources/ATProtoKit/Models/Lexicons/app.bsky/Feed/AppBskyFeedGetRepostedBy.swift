@@ -28,7 +28,7 @@ extension AppBskyLexicon.Feed {
         /// The mark used to indicate the starting point for the next set of results. Optional.
         public let cursor: String?
 
-        /// An array of user accounts who reported the post record.
+        /// An array of user accounts who reposted the post record.
         public let repostedBy: [AppBskyLexicon.Actor.ProfileViewDefinition]
 
         enum CodingKeys:String, CodingKey {

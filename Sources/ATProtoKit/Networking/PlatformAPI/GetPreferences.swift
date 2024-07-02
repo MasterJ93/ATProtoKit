@@ -19,21 +19,19 @@ extension ATProtoKit {
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/actor/getPreferences.json
     ///
-    /// - Returns: A `Result`, containing either
-    /// ``AppBskyLexicon/Actor/GetPreferencesOutput``
-    /// if successful, or `Error` if not.
+    /// - Returns: An array, containing the preferences set in the user account.
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
-    public func getPreferences() async throws -> Result<AppBskyLexicon.Actor.GetPreferencesOutput, Error> {
+    public func getPreferences() async throws -> AppBskyLexicon.Actor.GetPreferencesOutput {
         guard session != nil,
               let accessToken = session?.accessToken else {
-            return .failure(ATRequestPrepareError.missingActiveSession)
+            throw ATRequestPrepareError.missingActiveSession
         }
 
         guard let sessionURL = session?.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/app.bsky.actor.getPreferences") else {
-            return .failure(ATRequestPrepareError.invalidRequestURL)
+            throw ATRequestPrepareError.invalidRequestURL
         }
 
         do {
@@ -45,9 +43,9 @@ extension ATProtoKit {
             let response = try await APIClientService.sendRequest(request,
                                                                   decodeTo: AppBskyLexicon.Actor.GetPreferencesOutput.self)
 
-            return .success(response)
-        } catch(let error) {
-            return .failure(error)
+            return response
+        } catch {
+            throw error
         }
     }
 }

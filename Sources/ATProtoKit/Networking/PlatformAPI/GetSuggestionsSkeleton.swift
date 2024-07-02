@@ -26,24 +26,22 @@ extension ATProtoKit {
     ///   - viewerDID: The decentralized identifier (DID) of the requesting account. Optional.
     ///   - limit: - limit: The number of items the list will hold. Optional. Defaults to `50`. Can
     ///   only be between `1` and `100`.
-    /// - Returns: A `Result`, containing either an
-    /// ``AppBskyLexicon/Unspecced/GetSuggestionsSkeletonOutput``
-    /// if successful, or an `Error` if not.
+    /// - Returns: An array of actors, with an optional cursor to expend the array.
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func getSuggestionsSkeleton(
         viewerDID: String?,
         limit: Int? = 50
-    ) async throws -> Result<AppBskyLexicon.Unspecced.GetSuggestionsSkeletonOutput, Error> {
+    ) async throws -> AppBskyLexicon.Unspecced.GetSuggestionsSkeletonOutput {
         guard session != nil,
               let accessToken = session?.accessToken else {
-            return .failure(ATRequestPrepareError.missingActiveSession)
+            throw ATRequestPrepareError.missingActiveSession
         }
 
         guard let sessionURL = session?.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/app.bsky.unspecced.getSuggestionsSkeleton") else {
-            return .failure(ATRequestPrepareError.invalidRequestURL)
+            throw ATRequestPrepareError.invalidRequestURL
         }
 
         var queryItems = [(String, String)]()
@@ -73,9 +71,9 @@ extension ATProtoKit {
             let response = try await APIClientService.sendRequest(request,
                                                                   decodeTo: AppBskyLexicon.Unspecced.GetSuggestionsSkeletonOutput.self)
 
-            return .success(response)
+            return response
         } catch {
-            return .failure(error)
+            throw error
         }
     }
 }

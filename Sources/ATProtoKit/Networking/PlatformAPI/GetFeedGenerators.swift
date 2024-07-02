@@ -22,21 +22,19 @@ extension ATProtoKit {
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/feed/getFeedGenerators.json
     ///
     /// - Parameter feedURIs: An array of URIs for feed generators.
-    /// - Returns: A `Result`, containing either a
-    /// ``AppBskyLexicon/Feed/GetFeedGeneratorsOutput``
-    /// if successful, or an `Error` if not.
+    /// - Returns: An array of feed generator views, as well as their online and validity statuses.
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
-    public func getFeedGenerators(_ feedURIs: [String]) async throws -> Result<AppBskyLexicon.Feed.GetFeedGeneratorsOutput, Error> {
+    public func getFeedGenerators(_ feedURIs: [String]) async throws -> AppBskyLexicon.Feed.GetFeedGeneratorsOutput {
         guard session != nil,
               let accessToken = session?.accessToken else {
-            return .failure(ATRequestPrepareError.missingActiveSession)
+            throw ATRequestPrepareError.missingActiveSession
         }
 
         guard let sessionURL = session?.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/app.bsky.feed.getFeedGenerators") else {
-            return .failure(ATRequestPrepareError.invalidRequestURL)
+            throw ATRequestPrepareError.invalidRequestURL
         }
 
         var queryItems = [(String, String)]()
@@ -59,9 +57,9 @@ extension ATProtoKit {
             let response = try await APIClientService.sendRequest(request,
                                                                   decodeTo: AppBskyLexicon.Feed.GetFeedGeneratorsOutput.self)
 
-            return .success(response)
+            return response
         } catch {
-            return .failure(error)
+            throw error
         }
     }
 }

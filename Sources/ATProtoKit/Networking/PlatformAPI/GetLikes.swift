@@ -24,9 +24,8 @@ extension ATProtoKit {
     ///   - limit: The number of items that can be in the list. Optional. Defaults to `50`.
     ///   - cursor: The mark used to indicate the starting point for the next set of
     ///   result. Optional.
-    /// - Returns: A `Result`, containing either a
-    /// ``AppBskyLexicon/Feed/GetLikesOutput``
-    /// if successful, or an `Error` if not.
+    /// - Returns: An array of likes for the specified record, including an optional cursor
+    /// for extending the array, as well as the URI and CID hash of the record itself.
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
@@ -35,15 +34,15 @@ extension ATProtoKit {
         recordCID: String? = nil,
         limit: Int? = 50,
         cursor: String? = nil
-    ) async throws -> Result<AppBskyLexicon.Feed.GetLikesOutput, Error> {
+    ) async throws -> AppBskyLexicon.Feed.GetLikesOutput {
         guard session != nil,
               let accessToken = session?.accessToken else {
-            return .failure(ATRequestPrepareError.missingActiveSession)
+            throw ATRequestPrepareError.missingActiveSession
         }
 
         guard let sessionURL = session?.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/app.bsky.feed.getLikes") else {
-            return .failure(ATRequestPrepareError.invalidRequestURL)
+            throw ATRequestPrepareError.invalidRequestURL
         }
 
         var queryItems = [(String, String)]()
@@ -79,9 +78,9 @@ extension ATProtoKit {
             let response = try await APIClientService.sendRequest(request,
                                                                   decodeTo: AppBskyLexicon.Feed.GetLikesOutput.self)
 
-            return .success(response)
+            return response
         } catch {
-            return .failure(error)
+            throw error
         }
     }
 }

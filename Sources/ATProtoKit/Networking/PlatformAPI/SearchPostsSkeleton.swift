@@ -42,9 +42,8 @@ extension ATProtoKit {
     ///   to `25`.
     ///   - cursor: The mark used to indicate the starting point for the next set of
     ///   result. Optional.
-    /// - Returns: A `Result`, containing either an
-    /// ``AppBskyLexicon/Unspecced/SearchPostsSkeletonOutput``
-    /// if successful, or an `Error` if not.
+    /// - Returns: An array of un-hydrated post records in the results, with an optional cursor to
+    /// expand the array. The output may also display the total number of search results.
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
@@ -62,10 +61,10 @@ extension ATProtoKit {
         limit: Int? = 25,
         cursor: String? = nil,
         pdsURL: String? = nil
-    ) async throws -> Result<AppBskyLexicon.Unspecced.SearchPostsSkeletonOutput, Error> {
+    ) async throws -> AppBskyLexicon.Unspecced.SearchPostsSkeletonOutput {
         guard let sessionURL = pdsURL != nil ? pdsURL : session?.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/app.bsky.unspecced.searchPostsSkeleton") else {
-            return .failure(ATRequestPrepareError.invalidRequestURL)
+            throw ATRequestPrepareError.invalidRequestURL
         }
 
         var queryItems = [(String, String)]()
@@ -133,9 +132,9 @@ extension ATProtoKit {
             let response = try await APIClientService.sendRequest(request,
                                                                   decodeTo: AppBskyLexicon.Unspecced.SearchPostsSkeletonOutput.self)
 
-            return .success(response)
+            return response
         } catch {
-            return .failure(error)
+            throw error
         }
     }
 }

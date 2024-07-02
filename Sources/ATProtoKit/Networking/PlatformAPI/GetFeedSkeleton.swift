@@ -29,9 +29,7 @@ extension ATProtoKit {
     ///   result. Optional.
     ///   - accessToken: The token used to authenticate the user. Optional.
     ///   - pdsURL: The URL of the Personal Data Server (PDS).
-    /// - Returns: A `Result`, containing either a
-    /// ``AppBskyLexicon/Feed/GetFeedSkeletonOutput``
-    /// if successful, or an `Error` if not.
+    /// - Returns: An array of skeleton feeds, with an optional cursor to extend the array.
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
@@ -40,13 +38,13 @@ extension ATProtoKit {
         limit: Int? = 50,
         cursor: String? = nil,
         pdsURL: String
-    ) async throws -> Result <AppBskyLexicon.Feed.GetFeedSkeletonOutput, Error> {
+    ) async throws -> AppBskyLexicon.Feed.GetFeedSkeletonOutput {
         guard let requestURL = URL(string: "\(pdsURL)/xrpc/app.bsky.feed.getFeedSkeleton") else {
-            return .failure(ATRequestPrepareError.invalidRequestURL)
+            throw ATRequestPrepareError.invalidRequestURL
         }
 
         if pdsURL == "https://bsky.social" {
-            return .failure(ATRequestPrepareError.invalidPDS)
+            throw ATRequestPrepareError.invalidPDS
         }
 
         var queryItems = [(String, String)]()
@@ -69,9 +67,9 @@ extension ATProtoKit {
             let response = try await APIClientService.sendRequest(request,
                                                                   decodeTo: AppBskyLexicon.Feed.GetFeedSkeletonOutput.self)
 
-            return .success(response)
+            return response
         } catch {
-            return .failure(error)
+            throw error
         }
     }
 }

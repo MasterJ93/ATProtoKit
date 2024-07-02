@@ -19,16 +19,15 @@ extension ATProtoKit {
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/feed/describeFeedGenerator.json
     ///
-    /// - Returns: A `Result`, containing either a
-    /// ``AppBskyLexicon/Feed/DescribeFeedGeneratorOutput``
-    /// if successful, or an `Error` if not.
+    /// - Returns:The details of a feed generator, including its decentralized identifier (DID),
+    /// feed URIs, and policy information.
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
-    public func describeFeedGenerator(pdsURL: String? = nil) async throws -> Result<AppBskyLexicon.Feed.DescribeFeedGeneratorOutput, Error> {
+    public func describeFeedGenerator(pdsURL: String? = nil) async throws -> AppBskyLexicon.Feed.DescribeFeedGeneratorOutput {
         guard let sessionURL = pdsURL != nil ? pdsURL : session?.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/app.bsky.feed.describeFeedGenerator") else {
-            return .failure(ATRequestPrepareError.invalidRequestURL)
+            throw ATRequestPrepareError.invalidRequestURL
         }
 
         do {
@@ -40,9 +39,9 @@ extension ATProtoKit {
             let response = try await APIClientService.sendRequest(request,
                                                                   decodeTo: AppBskyLexicon.Feed.DescribeFeedGeneratorOutput.self)
 
-            return .success(response)
+            return response
         } catch {
-            return .failure(error)
+            throw error
         }
     }
 }

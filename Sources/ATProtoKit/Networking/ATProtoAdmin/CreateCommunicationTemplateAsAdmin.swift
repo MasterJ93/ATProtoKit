@@ -27,8 +27,7 @@ extension ATProtoAdmin {
     ///   - subject: The subject line of the communication template.
     ///   - createdBy: The decentralized identifier (DID) of the creator of the
     ///   communication template. Optional.
-    /// - Returns: A `Result`, containing either ``ToolsOzoneLexicon/Communication/TemplateViewDefinition``
-    /// if successful, or an `Error` if not.
+    /// - Returns: A communication template.
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
@@ -37,15 +36,15 @@ extension ATProtoAdmin {
         contentMarkdown: String,
         subject: String,
         createdBy: String?
-    ) async throws -> Result<ToolsOzoneLexicon.Communication.TemplateViewDefinition, Error> {
+    ) async throws -> ToolsOzoneLexicon.Communication.TemplateViewDefinition {
         guard session != nil,
               let accessToken = session?.accessToken else {
-            return .failure(ATRequestPrepareError.missingActiveSession)
+            throw ATRequestPrepareError.missingActiveSession
         }
 
         guard let sessionURL = session?.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/tools.ozone.communication.createTemplate") else {
-            return .failure(ATRequestPrepareError.invalidRequestURL)
+            throw ATRequestPrepareError.invalidRequestURL
         }
 
         let requestBody = ToolsOzoneLexicon.Communication.CreateTemplateRequestBody(
@@ -65,9 +64,9 @@ extension ATProtoAdmin {
                                                                   withEncodingBody: requestBody,
                                                                   decodeTo: ToolsOzoneLexicon.Communication.TemplateViewDefinition.self)
 
-            return .success(response)
+            return response
         } catch {
-            return .failure(error)
+            throw error
         }
     }
 }

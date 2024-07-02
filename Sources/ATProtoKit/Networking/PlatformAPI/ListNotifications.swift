@@ -24,9 +24,7 @@ extension ATProtoKit {
     ///   results. Optional.
     ///   - seenAt: The date and time the notification was seen. Defaults to the date and time the
     ///   request was sent.
-    /// - Returns: A `Result`, containing either a
-    /// ``AppBskyLexicon/Notification/ListNotificationsOutput``
-    /// if successful, or an `Error` if not.
+    /// - Returns: An array of notifications, with an optional cursor to expand the array.
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
@@ -34,15 +32,15 @@ extension ATProtoKit {
         withLimitOf limit: Int? = 50,
         cursor: String? = nil,
         seenAt: Date = Date()
-    ) async throws -> Result<AppBskyLexicon.Notification.ListNotificationsOutput, Error> {
+    ) async throws -> AppBskyLexicon.Notification.ListNotificationsOutput {
         guard session != nil,
               let accessToken = session?.accessToken else {
-            return .failure(ATRequestPrepareError.missingActiveSession)
+            throw ATRequestPrepareError.missingActiveSession
         }
 
         guard let sessionURL = session?.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/app.bsky.notification.listNotifications") else {
-            return .failure(ATRequestPrepareError.invalidRequestURL)
+            throw ATRequestPrepareError.invalidRequestURL
         }
 
         var queryItems = [(String, String)]()
@@ -57,7 +55,7 @@ extension ATProtoKit {
         }
 
         guard let formattedSeenAt = CustomDateFormatter.shared.string(from: seenAt) else {
-            return .failure(ATRequestPrepareError.invalidFormat)
+            throw ATRequestPrepareError.invalidFormat
         }
 
         queryItems.append(("seenAt", formattedSeenAt))
@@ -78,9 +76,9 @@ extension ATProtoKit {
             let response = try await APIClientService.sendRequest(request,
                                                                   decodeTo: AppBskyLexicon.Notification.ListNotificationsOutput.self)
 
-            return .success(response)
+            return response
         } catch {
-            return .failure(error)
+            throw error
         }
     }
 }

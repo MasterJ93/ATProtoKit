@@ -20,23 +20,21 @@ extension ATProtoKit {
     ///
     /// - Parameter seenAt: The date and time the notifications were seen. Defaults to the date and
     /// time the request was sent.
-    /// - Returns: A `Result`, containing either a
-    /// ``AppBskyLexicon/Notification/GetUnreadCountOutput``
-    /// if successful, or an `Error` if not.
+    /// - Returns: The number of unread notifications.
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func getUnreadCount(
         seenAt: Date = Date()
-    ) async throws -> Result<AppBskyLexicon.Notification.GetUnreadCountOutput, Error> {
+    ) async throws -> AppBskyLexicon.Notification.GetUnreadCountOutput {
         guard session != nil,
               let accessToken = session?.accessToken else {
-            return .failure(ATRequestPrepareError.missingActiveSession)
+            throw ATRequestPrepareError.missingActiveSession
         }
 
         guard let sessionURL = session?.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/app.bsky.notification.getUnreadCount") else {
-            return .failure(ATRequestPrepareError.invalidRequestURL)
+            throw ATRequestPrepareError.invalidRequestURL
         }
 
         var queryItems = [(String, String)]()
@@ -61,9 +59,9 @@ extension ATProtoKit {
             let response = try await APIClientService.sendRequest(request,
                                                                   decodeTo: AppBskyLexicon.Notification.GetUnreadCountOutput.self)
 
-            return .success(response)
+            return response
         } catch {
-            return .failure(error)
+            throw error
         }
     }
 }

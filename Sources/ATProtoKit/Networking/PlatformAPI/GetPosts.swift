@@ -25,21 +25,19 @@ extension ATProtoKit {
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/feed/getPosts.json
     ///
     /// - Parameter postURIs: An array of URIs of post records.
-    /// - Returns: A `Result`, containing either a
-    /// ``AppBskyLexicon/Feed/GetPostsOutput``
-    /// if successful, or an `Error` if not.
+    /// - Returns: An array of hydrated posts.
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
-    public func getPosts(_ postURIs: [String]) async throws -> Result<AppBskyLexicon.Feed.GetPostsOutput, Error> {
+    public func getPosts(_ postURIs: [String]) async throws -> AppBskyLexicon.Feed.GetPostsOutput {
         guard session != nil,
               let accessToken = session?.accessToken else {
-            return .failure(ATRequestPrepareError.missingActiveSession)
+            throw ATRequestPrepareError.missingActiveSession
         }
 
         guard let sessionURL = session?.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/app.bsky.feed.getPosts") else {
-            return .failure(ATRequestPrepareError.invalidRequestURL)
+            throw ATRequestPrepareError.invalidRequestURL
         }
 
         var queryItems = [(String, String)]()
@@ -64,9 +62,9 @@ extension ATProtoKit {
             let response = try await APIClientService.sendRequest(request,
                                                                   decodeTo: AppBskyLexicon.Feed.GetPostsOutput.self)
 
-            return .success(response)
+            return response
         } catch {
-            return .failure(error)
+            throw error
         }
     }
 }

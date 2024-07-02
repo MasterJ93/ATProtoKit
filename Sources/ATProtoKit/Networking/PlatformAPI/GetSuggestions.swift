@@ -23,24 +23,22 @@ extension ATProtoKit {
     ///   Can only choose between 1 and 100.
     ///   - cursor: The mark used to indicate the starting point for the next set of
     ///   results. Optional.
-    /// - Returns: A `Result`, containing either an
-    /// ``AppBskyLexicon/Actor/GetSuggestionsOutput``
-    /// if succesful, or an `Error` if it's not.
+    /// - Returns: An array of actors, with an optional cursor to extend the array.
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func getSuggestions(
         limit: Int? = 50,
         cursor: String? = nil
-    ) async throws -> Result<AppBskyLexicon.Actor.GetSuggestionsOutput, Error> {
+    ) async throws -> AppBskyLexicon.Actor.GetSuggestionsOutput {
         guard session != nil,
               let accessToken = session?.accessToken else {
-            return .failure(ATRequestPrepareError.missingActiveSession)
+            throw ATRequestPrepareError.missingActiveSession
         }
 
         guard let sessionURL = session?.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/app.bsky.actor.getSuggestions") else {
-            return .failure(ATRequestPrepareError.invalidRequestURL)
+            throw ATRequestPrepareError.invalidRequestURL
         }
 
         // Make sure limit is between 1 and 100.
@@ -67,9 +65,9 @@ extension ATProtoKit {
             let response = try await APIClientService.sendRequest(request,
                                                                   decodeTo: AppBskyLexicon.Actor.GetSuggestionsOutput.self)
 
-            return .success(response)
+            return response
         } catch {
-            return .failure(error)
+            throw error
         }
     }
 }

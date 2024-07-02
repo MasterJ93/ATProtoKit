@@ -28,9 +28,8 @@ extension ATProtoKit {
     ///   - limit: The number of items that can be in the list. Optional. Defaults to `25`.
     ///   - cursor: The mark used to indicate the starting point for the next set of
     ///   result. Optional.
-    /// - Returns: A `Result`, containing either an
-    /// ``AppBskyLexicon/Unspecced/SearchActorsSkeletonOutput``
-    /// if successful, or an `Error` if not.
+    /// - Returns: An array of actors, with an optional cursor to expand the array. The output
+    /// may also display the number of search results.
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
@@ -41,10 +40,10 @@ extension ATProtoKit {
         limit: Int? = 25,
         cursor: String? = nil,
         pdsURL: String? = nil
-    ) async throws -> Result<AppBskyLexicon.Unspecced.SearchActorsSkeletonOutput, Error> {
+    ) async throws -> AppBskyLexicon.Unspecced.SearchActorsSkeletonOutput {
         guard let sessionURL = pdsURL != nil ? pdsURL : session?.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/app.bsky.unspecced.searchActorsSkeleton") else {
-            return .failure(ATRequestPrepareError.invalidRequestURL)
+            throw ATRequestPrepareError.invalidRequestURL
         }
 
         var queryItems = [(String, String)]()
@@ -84,9 +83,9 @@ extension ATProtoKit {
             let response = try await APIClientService.sendRequest(request,
                                                                   decodeTo: AppBskyLexicon.Unspecced.SearchActorsSkeletonOutput.self)
 
-            return .success(response)
+            return response
         } catch {
-            return .failure(error)
+            throw error
         }
     }
 }

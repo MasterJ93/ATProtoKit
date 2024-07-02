@@ -26,9 +26,7 @@ extension ATProtoKit {
     ///   Optional. Defaults to `80`. Can be between `0` and `1000`.
     ///   - accessToken: The token used to authenticate the user. Optional.
     ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `nil`.
-    /// - Returns: A `Result`, containing either a
-    /// ``AppBskyLexicon/Feed/GetPostThreadOutput``
-    /// if successful, or an `Error` if not.
+    /// - Returns: A post thread that matches the `postURI`.
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
@@ -38,7 +36,7 @@ extension ATProtoKit {
         parentHeight: Int? = 80,
         pdsURL: String? = nil,
         shouldAuthenticate: Bool = false
-    ) async throws -> Result<AppBskyLexicon.Feed.GetPostThreadOutput, Error> {
+    ) async throws -> AppBskyLexicon.Feed.GetPostThreadOutput {
         let authorizationValue = prepareAuthorizationValue(
             methodPDSURL: pdsURL,
             shouldAuthenticate: shouldAuthenticate,
@@ -47,7 +45,7 @@ extension ATProtoKit {
 
         guard let sessionURL = pdsURL != nil ? pdsURL : session?.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/app.bsky.feed.getPostThread") else {
-            return .failure(ATRequestPrepareError.invalidRequestURL)
+            throw ATRequestPrepareError.invalidRequestURL
         }
 
         var queryItems = [(String, String)]()
@@ -80,9 +78,9 @@ extension ATProtoKit {
             let response = try await APIClientService.sendRequest(request,
                                                                   decodeTo: AppBskyLexicon.Feed.GetPostThreadOutput.self)
 
-            return .success(response)
+            return response
         } catch {
-            return .failure(error)
+            throw error
         }
     }
 }

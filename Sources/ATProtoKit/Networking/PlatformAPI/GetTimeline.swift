@@ -29,9 +29,7 @@ extension ATProtoKit {
     ///   - limit: The number of items the list will hold. Optional. Defaults to `50`. Can only be
     ///   between `1` and `100`.
     ///   - cursor: The mark used to indicate the starting point for the next set of result. Optional.
-    /// - Returns: A `Result`, containing either a
-    /// ``AppBskyLexicon/Feed/GetTimelineOutput``
-    /// if successful, or an `Error` if not.
+    /// - Returns: An array of post records, with an optional cursor to expend the array.
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
@@ -39,15 +37,15 @@ extension ATProtoKit {
         using algorithm: String? = nil,
         limit: Int? = 50,
         cursor: String? = nil
-    ) async throws -> Result<AppBskyLexicon.Feed.GetTimelineOutput, Error> {
+    ) async throws -> AppBskyLexicon.Feed.GetTimelineOutput {
         guard session != nil,
               let accessToken = session?.accessToken else {
-            return .failure(ATRequestPrepareError.missingActiveSession)
+            throw ATRequestPrepareError.missingActiveSession
         }
 
         guard let sessionURL = session?.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/app.bsky.feed.getTimeline") else {
-            return .failure(ATRequestPrepareError.invalidRequestURL)
+            throw ATRequestPrepareError.invalidRequestURL
         }
 
         var queryItems = [(String, String)]()
@@ -80,9 +78,9 @@ extension ATProtoKit {
             let response = try await APIClientService.sendRequest(request,
                                                                   decodeTo: AppBskyLexicon.Feed.GetTimelineOutput.self)
 
-            return .success(response)
+            return response
         } catch {
-            return .failure(error)
+            throw error
         }
     }
 }

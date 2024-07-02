@@ -60,7 +60,7 @@ extension AppBskyLexicon.Unspecced {
         /// all hits."
         public let hitsTotal: Int?
 
-        /// An array of posts.
+        /// An array of un-hydrated posts.
         public let posts: [SkeletonSearchPostDefinition]
     }
 }

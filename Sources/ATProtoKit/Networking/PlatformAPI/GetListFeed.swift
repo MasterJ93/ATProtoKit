@@ -26,9 +26,7 @@ extension ATProtoKit {
     ///   of results. Optional.
     ///   - accessToken: The access token of the user. Optional.
     ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `nil`.
-    /// - Returns: A `Result`, containing either an
-    /// ``AppBskyLexicon/Feed/GetListFeedOutput``
-    /// if succesful, or an `Error` if it's not.
+    /// - Returns: An array of posts in a feed, with an optional cursor to extend the array.
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
@@ -38,10 +36,10 @@ extension ATProtoKit {
         cursor: String? = nil,
         accessToken: String? = nil,
         pdsURL: String? = nil
-    ) async throws -> Result<AppBskyLexicon.Feed.GetListFeedOutput, Error> {
+    ) async throws -> AppBskyLexicon.Feed.GetListFeedOutput {
         guard let sessionURL = pdsURL != nil ? pdsURL : session?.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/app.bsky.feed.getListFeed") else {
-            return .failure(ATRequestPrepareError.invalidRequestURL)
+            throw ATRequestPrepareError.invalidRequestURL
         }
 
         var queryItems = [(String, String)]()
@@ -73,9 +71,9 @@ extension ATProtoKit {
             let response = try await APIClientService.sendRequest(request,
                                                                   decodeTo: AppBskyLexicon.Feed.GetListFeedOutput.self)
 
-            return .success(response)
+            return response
         } catch {
-            return .failure(error)
+            throw error
         }
     }
 }

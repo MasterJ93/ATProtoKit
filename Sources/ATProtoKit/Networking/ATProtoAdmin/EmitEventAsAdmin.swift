@@ -27,8 +27,7 @@ extension ATProtoAdmin {
     ///   - subjectBlobCIDHashes: An array of CID hashes related to blobs for the moderator's
     ///   event view. Optional.
     ///   - createdBy: The decentralized identifier (DID) of the moderator taking this action.
-    /// - Returns: A `Result`, containing either an ``ToolsOzoneLexicon/Moderation/ModerationEventViewDefinition`` if successful,
-    /// or an `Error` if not.
+    /// - Returns: A moderation event view.
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
@@ -37,15 +36,15 @@ extension ATProtoAdmin {
         subject: ATUnion.EmitEventSubjectUnion,
         subjectBlobCIDHashes: [String]?,
         createdBy: String
-    ) async throws -> Result<ToolsOzoneLexicon.Moderation.ModerationEventViewDefinition, Error> {
+    ) async throws -> ToolsOzoneLexicon.Moderation.ModerationEventViewDefinition {
         guard session != nil,
               let accessToken = session?.accessToken else {
-            return .failure(ATRequestPrepareError.missingActiveSession)
+            throw ATRequestPrepareError.missingActiveSession
         }
 
         guard let sessionURL = session?.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/tools.ozone.moderation.emitEvent") else {
-            return .failure(ATRequestPrepareError.invalidRequestURL)
+            throw ATRequestPrepareError.invalidRequestURL
         }
 
         let requestBody = ToolsOzoneLexicon.Moderation.EmitEventRequestBody(
@@ -65,9 +64,9 @@ extension ATProtoAdmin {
                                                                   withEncodingBody: requestBody,
                                                                   decodeTo: ToolsOzoneLexicon.Moderation.ModerationEventViewDefinition.self)
 
-            return .success(response)
+            return response
         } catch {
-            return .failure(error)
+            throw error
         }
     }
 }
