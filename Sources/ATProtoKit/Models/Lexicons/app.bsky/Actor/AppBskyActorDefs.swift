@@ -994,4 +994,51 @@ extension AppBskyLexicon.Actor {
             case labelerDID = "did"
         }
     }
+
+    /// A definition model for Bluesky app-specific states.
+    ///
+    /// - Important: Do not use this at all, as this is specific to the Bluesky app.
+    ///
+    /// - Note: According to the AT Protocol specifications: "A grab bag of state that's specific
+    /// to the bsky.app program. Third-party apps shouldn't use this."
+    ///
+    /// - SeeAlso: This is based on the [`app.bsky.actor.defs`][github] lexicon.
+    ///
+    /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/actor/defs.json
+    public struct BskyAppStatePreferencesDefinition: Codable {
+
+        /// An active progress guide. Optional.
+        public let activeProgressGuide: String?
+
+        /// An array of elements that the user will see. Optional.
+        public let queuedNudges: [String]?
+
+        public func encode(to encoder: any Encoder) throws {
+            var container = encoder.container(keyedBy: CodingKeys.self)
+
+            try container.encodeIfPresent(self.activeProgressGuide, forKey: .activeProgressGuide)
+            try truncatedEncodeIfPresent(self.queuedNudges, withContainer: &container, forKey: .queuedNudges, upToCharacterLength: 100, upToArrayLength: 1_000)
+        }
+    }
+
+    /// A definition model for a progress guide.
+    ///
+    /// - Note: According to the AT Protocol specifications: "If set, an active progress guide.
+    /// Once completed, can be set to undefined. Should have unspecced fields tracking progress."
+    ///
+    /// - SeeAlso: This is based on the [`app.bsky.actor.defs`][github] lexicon.
+    ///
+    /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/actor/defs.json
+    public struct BskyAppProgressGuide: Codable {
+
+        /// The progress guide itself.
+        public let guide: [String]
+
+        public func encode(to encoder: any Encoder) throws {
+            var container = encoder.container(keyedBy: CodingKeys.self)
+
+            try container.encode(self.guide, forKey: .guide)
+            try truncatedEncode(self.guide, withContainer: &container, forKey: .guide, upToArrayLength: 100)
+        }
+    }
 }
