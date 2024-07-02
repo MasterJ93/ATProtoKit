@@ -90,13 +90,14 @@ public class ATProtocolConfiguration: ProtocolConfiguration {
     ///
     /// - Parameter authenticationFactorToken: A token used for
     /// Two-Factor Authentication. Optional.
-    /// - Returns: A `Result` containing ``UserSession`` on success or an `Error` on failure.
+    /// - Returns: An instance of an authenticated user session within the AT Protocol. It may also
+    /// have logging information, as well as the URL of the Personal Data Server (PDS).
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
-    public func authenticate(authenticationFactorToken: String? = nil) async throws -> Result<UserSession, Error> {
+    public func authenticate(authenticationFactorToken: String? = nil) async throws -> UserSession {
         guard let requestURL = URL(string: "\(self.pdsURL)/xrpc/com.atproto.server.createSession") else {
-            return .failure(ATRequestPrepareError.invalidRequestURL)
+            throw ATRequestPrepareError.invalidRequestURL
         }
 
         let credentials = ComAtprotoLexicon.Server.CreateSessionRequestBody(
@@ -117,9 +118,9 @@ public class ATProtocolConfiguration: ProtocolConfiguration {
                 response.logger = self.logger
             }
 
-            return .success(response)
+            return response
         } catch {
-            return .failure(error)
+            throw error
         }
     }
     
@@ -153,8 +154,8 @@ public class ATProtocolConfiguration: ProtocolConfiguration {
     ///   creation operation. Optional.
     ///   - plcOp: A signed DID PLC operation to be submitted as part of importing an existing
     ///   account to this instance. Optional.
-    /// - Returns: A `Result`, containing either a ``UserSession``
-    /// if successful, or an `Error` if not.
+    /// - Returns: An instance of an authenticated user session within the AT Protocol. It may also
+    /// have logging information, as well as the URL of the Personal Data Server (PDS).
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
@@ -168,9 +169,9 @@ public class ATProtocolConfiguration: ProtocolConfiguration {
         password: String? = nil,
         recoveryKey: String? = nil,
         plcOp: UnknownType? = nil
-    ) async throws -> Result<UserSession, Error> {
+    ) async throws -> UserSession {
         guard let requestURL = URL(string: "\(self.pdsURL)/xrpc/com.atproto.server.createAccount") else {
-            return .failure(ATRequestPrepareError.invalidRequestURL)
+            throw ATRequestPrepareError.invalidRequestURL
         }
 
         let requestBody = ComAtprotoLexicon.Server.CreateAccountRequestBody(
@@ -200,9 +201,9 @@ public class ATProtocolConfiguration: ProtocolConfiguration {
                 response.logger = self.logger
             }
 
-            return .success(response)
+            return response
         } catch {
-            return .failure(error)
+            throw error
         }
     }
 
@@ -218,18 +219,18 @@ public class ATProtocolConfiguration: ProtocolConfiguration {
     /// - Parameters:
     ///   - accessToken: The access token for the session.
     ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `nil`.
-    /// - Returns: Returns: A `Result` containing either ``SessionResponse``
-    /// if successful, or an `Error` if not.
+    /// - Returns: An instance of the session-related information what contains a session response
+    /// within the AT Protocol.
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func getSession(
         by accessToken: String,
         pdsURL: String? = nil
-    ) async throws -> Result<SessionResponse, Error> {
+    ) async throws -> SessionResponse {
         guard let sessionURL = pdsURL != nil ? pdsURL : self.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.server.getSession") else {
-            return .failure(ATRequestPrepareError.invalidRequestURL)
+            throw ATRequestPrepareError.invalidRequestURL
         }
 
         do {
@@ -239,9 +240,9 @@ public class ATProtocolConfiguration: ProtocolConfiguration {
             let response = try await APIClientService.sendRequest(request,
                                                                   decodeTo: SessionResponse.self)
 
-            return .success(response)
+            return response
         } catch {
-            return .failure(error)
+            throw error
         }
     }
 
@@ -257,18 +258,18 @@ public class ATProtocolConfiguration: ProtocolConfiguration {
     /// - Parameters:
     ///   - refreshToken: The refresh token for the session.
     ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `nil`.
-    /// - Returns: A `Result`, containing either a ``UserSession``
-    /// if successful, or an `Error` if not.
+    /// - Returns: An instance of an authenticated user session within the AT Protocol. It may also
+    /// have logging information, as well as the URL of the Personal Data Server (PDS).
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func refreshSession(
         using refreshToken: String,
         pdsURL: String? = nil
-    ) async throws -> Result<UserSession, Error> {
+    ) async throws -> UserSession {
         guard let sessionURL = pdsURL != nil ? pdsURL : self.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.server.refreshSession") else {
-            return .failure(ATRequestPrepareError.invalidRequestURL)
+            throw ATRequestPrepareError.invalidRequestURL
         }
 
         do {
@@ -283,9 +284,9 @@ public class ATProtocolConfiguration: ProtocolConfiguration {
                 response.logger = self.logger
             }
 
-            return .success(response)
+            return response
         } catch {
-            return .failure(error)
+            throw error
         }
     }
     

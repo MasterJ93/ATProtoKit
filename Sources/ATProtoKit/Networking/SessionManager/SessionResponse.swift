@@ -7,9 +7,8 @@
 
 import Foundation
 
-/// Represents a concrete implementation of `SessionProtocol`, which contains all
-/// session-related data returned from a successful
-/// session response within the AT Protocol.
+/// Represents a concrete implementation of `SessionProtocol`, which contains all session-related
+/// data returned from a successful session response within the AT Protocol.
 public struct SessionResponse: SessionProtocol {
 
     /// The handle of the user's account.
