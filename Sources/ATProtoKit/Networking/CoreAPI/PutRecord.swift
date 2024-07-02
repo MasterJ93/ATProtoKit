@@ -27,9 +27,9 @@ extension ATProtoKit {
     ///   - record: The record itself.
     ///   - swapRecord: Swaps the record in the server with the record contained in here. Optional.
     ///   - swapCommit: Swaps the commit in the server with the commit contained in here. Optional.
-    /// - Returns: A `Result`, containing either a
+    /// - Returns: A
     /// ``ComAtprotoLexicon/Repository/StrongReference``
-    /// if successful, or an `Error` if not.
+    /// structure which represents the record that was successfully created.
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
@@ -41,15 +41,15 @@ extension ATProtoKit {
         record: UnknownType,
         swapRecord: String? = nil,
         swapCommit: String? = nil
-    ) async throws -> Result<ComAtprotoLexicon.Repository.StrongReference, Error> {
+    ) async throws -> ComAtprotoLexicon.Repository.StrongReference {
         guard session != nil,
               let accessToken = session?.accessToken else {
-            return .failure(ATRequestPrepareError.missingActiveSession)
+            throw ATRequestPrepareError.missingActiveSession
         }
 
         guard let sessionURL = session?.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.repo.putRecord") else {
-            return .failure(ATRequestPrepareError.invalidRequestURL)
+            throw ATRequestPrepareError.invalidRequestURL
         }
 
         let requestBody = ComAtprotoLexicon.Repository.PutRecordRequestBody(
@@ -72,9 +72,9 @@ extension ATProtoKit {
                                                                   withEncodingBody: requestBody,
                                                                   decodeTo: ComAtprotoLexicon.Repository.StrongReference.self)
 
-            return .success(response)
+            return response
         } catch {
-            return .failure(error)
+            throw error
         }
     }
 }

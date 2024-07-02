@@ -40,8 +40,13 @@ public struct ATUnion {
         /// The "Muted Words" preference.
         case mutedWordsPreferences(AppBskyLexicon.Actor.MutedWordsPreferencesDefinition)
 
-        /// The Hidden Posts" preference.
+        /// The "Hidden Posts" preference.
         case hiddenPostsPreferences(AppBskyLexicon.Actor.HiddenPostsPreferencesDefinition)
+
+        /// The "Bluesky App State" preference.
+        ///
+        /// - Important: this should never be used, as it's supposed to be for the official Bluesky iOS client.
+        case bskyAppStatePreferences(AppBskyLexicon.Actor.BskyAppStatePreferencesDefinition)
 
         // Implement custom decoding
         public init(from decoder: Decoder) throws {
@@ -67,6 +72,8 @@ public struct ATUnion {
                 self = .mutedWordsPreferences(value)
             } else if let value = try? container.decode(AppBskyLexicon.Actor.HiddenPostsPreferencesDefinition.self) {
                 self = .hiddenPostsPreferences(value)
+            } else if let value = try? container.decode(AppBskyLexicon.Actor.BskyAppStatePreferencesDefinition.self) {
+                self = .bskyAppStatePreferences(value)
             } else {
                 throw DecodingError.typeMismatch(
                     ActorPreferenceUnion.self, DecodingError.Context(
@@ -99,6 +106,8 @@ public struct ATUnion {
                     try container.encode(mutedWordsPreferences)
                 case .hiddenPostsPreferences(let hiddenPostsPreferences):
                     try container.encode(hiddenPostsPreferences)
+                case .bskyAppStatePreferences(let bskyAppStatePreferences):
+                    try container.encode(bskyAppStatePreferences)
             }
         }
     }

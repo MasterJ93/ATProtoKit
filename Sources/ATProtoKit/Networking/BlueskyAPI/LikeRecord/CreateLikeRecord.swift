@@ -16,21 +16,22 @@ extension ATProtoKit {
     ///   - createdAt: The date and time the like record was created. Defaults to `Date.now`.
     ///   - shouldValidate: Indicates whether the record should be validated. Optional.
     ///   Defaults to `true`.
-    /// - Returns: A `Result`, containing either a ``ComAtprotoLexicon/Repository/StrongReference``
-    /// if it's successful, or an `Error` if it's not.
+    /// - Returns: A
+    /// ``ComAtprotoLexicon/Repository/StrongReference``
+    /// structure which represents the record that was successfully created.
     public func createLikeRecord(
         _ strongReference: ComAtprotoLexicon.Repository.StrongReference,
         createdAt: Date = Date(),
         shouldValidate: Bool? = true
-    ) async throws -> Result<ComAtprotoLexicon.Repository.StrongReference, Error> {
-        guard let session else { return .failure(ATRequestPrepareError.missingActiveSession) }
+    ) async throws -> ComAtprotoLexicon.Repository.StrongReference {
+        guard let session else { throw ATRequestPrepareError.missingActiveSession }
 
         let likeRecord = AppBskyLexicon.Feed.LikeRecord(
             subject: strongReference,
             createdAt: createdAt
         )
 
-        return await createRecord(
+        return try await createRecord(
             repositoryDID: session.sessionDID,
             collection: "app.bsky.feed.like",
             shouldValidate: shouldValidate,

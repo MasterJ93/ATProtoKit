@@ -37,14 +37,14 @@ extension ATProtoKit {
         recordKey: String? = nil,
         shouldValidate: Bool? = true,
         swapCommit: String? = nil
-    ) async -> Result<ComAtprotoLexicon.Repository.StrongReference, Error> {
+    ) async throws -> ComAtprotoLexicon.Repository.StrongReference {
 
         guard let session else {
-            return .failure(ATRequestPrepareError.missingActiveSession)
+            throw ATRequestPrepareError.missingActiveSession
         }
 
         guard let sessionURL = session.pdsURL else {
-            return .failure(ATRequestPrepareError.invalidPDS)
+            throw ATRequestPrepareError.invalidPDS
         }
         // Replies
         var resolvedReplyTo: AppBskyLexicon.Feed.PostRecord.ReplyReference? = nil
@@ -52,7 +52,7 @@ extension ATProtoKit {
             do {
                 resolvedReplyTo = try await ATProtoTools().resolveReplyReferences(parentURI: replyURI)
             } catch {
-                return .failure(error)
+                throw error
             }
         }
 
@@ -75,7 +75,7 @@ extension ATProtoKit {
                         break
                 }
             } catch {
-                return .failure(error)
+                throw error
             }
         }
 
@@ -91,7 +91,7 @@ extension ATProtoKit {
             createdAt: creationDate
         )
 
-        return await createRecord(
+        return try await createRecord(
             repositoryDID: session.sessionDID,
             collection: "app.bsky.feed.post",
             recordKey: recordKey ?? nil,
