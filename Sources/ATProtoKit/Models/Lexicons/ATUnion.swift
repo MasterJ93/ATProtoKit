@@ -48,6 +48,9 @@ public struct ATUnion {
         /// - Important: this should never be used, as it's supposed to be for the official Bluesky iOS client.
         case bskyAppStatePreferences(AppBskyLexicon.Actor.BskyAppStatePreferencesDefinition)
 
+        /// The "Labelers" preference.
+        case labelersPreferences(AppBskyLexicon.Actor.LabelersPreferencesDefinition)
+
         // Implement custom decoding
         public init(from decoder: Decoder) throws {
             let container = try decoder.singleValueContainer()
@@ -74,6 +77,8 @@ public struct ATUnion {
                 self = .hiddenPostsPreferences(value)
             } else if let value = try? container.decode(AppBskyLexicon.Actor.BskyAppStatePreferencesDefinition.self) {
                 self = .bskyAppStatePreferences(value)
+            } else if let value = try? container.decode(AppBskyLexicon.Actor.LabelersPreferencesDefinition.self) {
+                self = .labelersPreferences(value)
             } else {
                 throw DecodingError.typeMismatch(
                     ActorPreferenceUnion.self, DecodingError.Context(
@@ -108,6 +113,8 @@ public struct ATUnion {
                     try container.encode(hiddenPostsPreferences)
                 case .bskyAppStatePreferences(let bskyAppStatePreferences):
                     try container.encode(bskyAppStatePreferences)
+                case .labelersPreferences(let labelersPreferences):
+                    try container.encode(labelersPreferences)
             }
         }
     }
@@ -133,6 +140,9 @@ public struct ATUnion {
         /// A labeler view.
         case labelerView(AppBskyLexicon.Labeler.LabelerViewDefinition)
 
+        /// A starter pack view.
+        case starterPackViewBasic(AppBskyLexicon.Graph.StarterPackViewBasicDefinition)
+
         public init(from decoder: Decoder) throws {
             let container = try decoder.singleValueContainer()
 
@@ -148,6 +158,8 @@ public struct ATUnion {
                 self = .listView(value)
             } else if let value = try? container.decode(AppBskyLexicon.Labeler.LabelerViewDefinition.self) {
                 self = .labelerView(value)
+            } else if let value = try? container.decode(AppBskyLexicon.Graph.StarterPackViewBasicDefinition.self) {
+                self = .starterPackViewBasic(value)
             } else {
                 throw DecodingError.typeMismatch(
                     RecordViewUnion.self, DecodingError.Context(
@@ -171,6 +183,8 @@ public struct ATUnion {
                     try container.encode(listView)
                 case .labelerView(let labelerView):
                     try container.encode(labelerView)
+                case .starterPackViewBasic(let starterPackViewBasic):
+                    try container.encode(starterPackViewBasic)
             }
         }
     }
