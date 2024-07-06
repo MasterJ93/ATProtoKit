@@ -30,17 +30,21 @@ ATProtoKit is an easy-to-understand API library that leverages the AT Protocol w
 
 ## Example Usage
 ```swift
-let config = ATProtocolConfiguration(handle: "example.bsky.social", appPassword: "app-password")
+let config = ATProtocolConfiguration(handle: "lucy.bsky.social", appPassword: "hunter2")
 
 Task {
-    let session = try await config.authenticate()
-    switch session {
-        case .success(let result):
-            let atProto = ATProtoKit(session: result)
-            let postResult = await atProto.createPostRecord(text: "Hello Bluesky!")
-        case .failure(let error):
-            print("Error: \(error)")
-        }
+    print("Starting application...")
+
+    do {
+        let session = try await config.authenticate()
+
+        let atProto = ATProtoKit(session: session)
+        let postResult = try await atProto.createPostRecord(text: "Hello Bluesky!")
+
+        print(postResult)
+    } catch {
+        print("Error: \(error)")
+    }
 }
 ```
 
@@ -93,12 +97,12 @@ As shown in the Example Usage, it all starts with `ATProtocolConfiguration`, whi
 ```swift
 import ATProtoKit
 
-let config = ATProtocolConfiguration(handle: "lucy.bsky.social", appPassword: "app-password")
+let config = ATProtocolConfiguration(handle: "lucy.bsky.social", appPassword: "hunter2")
 ```
 
 By default, `ATProtocolConfiguration` conforms to `https://bsky.social`. However, if you’re using a different distributed service, you can specify the URL:
 ```swift
-let result = ATProtocolConfiguration(handle: "lucy.example.social", appPassword: "app-password", pdsURL: "https://example.social")
+let result = ATProtocolConfiguration(handle: "lucy.example.social", appPassword: "hunter2", pdsURL: "https://example.social")
 ```
 
 This session contains all of the elements you need, such as the access and refresh tokens:

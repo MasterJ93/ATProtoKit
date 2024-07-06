@@ -32,20 +32,20 @@ Task {
 }
 ```
 
-You can use a `switch` statement to get the ``UserSession`` instance (if the session was successfully created) or handle the error (if an error occured).
+You can use a `do-catch` block to get the ``UserSession`` instance (if the session was successfully created) or handle the error (if an error occured):
 
 ```swift
-Task {
-    let session = try await config.authenticate()
+let config = ATProtocolConfiguration(handle: "lucy.bsky.social", appPassword: "hunter2")
 
-    switch session {
-    case .success(let result):
+Task {
+    do {
+        let session = try await config.authenticate()
+
         // Handle the success.
-    case .failure(let error):
+    } catch {
         // Handle the error.
     }
 }
-```
 
 > Note: If you've enabled Two-Factor Authentication (via email), you may see an `AuthFactorTokenRequired` error. In that case, check your inbox for a code, then call ``ATProtocolConfiguration/authenticate(authenticationFactorToken:)`` again, but put in the code for the `authenticationFactorToken` parameter.
 

@@ -20,16 +20,19 @@ Below is a very quick example to run the project:
 ```swift
 import ATProtoKit
 
-let config = ATProtocolConfiguration(handle: "example.bsky.social", appPassword: "app-password")
+let config = ATProtocolConfiguration(handle: "example.bsky.social", appPassword: "hunter2")
 
 Task {
-    let session = try await config.authenticate()
+    print("Starting application...")
 
-    switch session {
-    case .success(let result):
-        let atProto = ATProtoKit(session: result)
-        let postResult = await atProto.createPostRecord(text: "Hello Bluesky!")
-    case .failure(let error):
+    do {
+        let session = try await config.authenticate()
+
+        let atProto = ATProtoKit(session: session)
+        let postResult = try await atProto.createPostRecord(text: "Hello Bluesky!")
+
+        print(postResult)
+    } catch {
         print("Error: \(error)")
     }
 }

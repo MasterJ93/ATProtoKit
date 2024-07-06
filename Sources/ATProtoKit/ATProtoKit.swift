@@ -105,13 +105,12 @@ extension ATProtoKitConfiguration {
 ///
 /// ```swift
 /// Task {
-///     let result = try await config.authenticate()
+///     do {
+///         let session = try await config.authenticate()
 ///
-///     switch result {
-///         case .success(let result):
-///             print("Access token: \(result.accessToken)")
-///         case .failure(let error):
-///             print("Error: \(error)")
+///         print("Access token: \(session.accessToken)")
+///     } catch {
+///         print("Error: \(error)")
 ///     }
 /// }
 /// ```
@@ -186,13 +185,12 @@ public class ATProtoKit: ATProtoKitConfiguration {
 /// get information about the session. The result is handed over to the `ATProtoAdmin`'s instance:
 ///```swift
 /// Task {
-///     let result = try await config.authenticate()
+///     do {
+///         let session = try await config.authenticate()
 ///
-///     switch result {
-///         case .success(let result):
-///             print("Access token: \(result.accessToken)")
-///         case .failure(let error):
-///             print("Error: \(error)")
+///         print("Access token: \(session.accessToken)")
+///     } catch {
+///         print("Error: \(error)")
 ///     }
 /// }
 /// ```
