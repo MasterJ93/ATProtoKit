@@ -40,6 +40,7 @@ Task {
 
 ## What's New in ATProtoKit
 @Links(visualStyle: detailedGrid) {
+    - <doc:getRecordTutorial>
     - <doc:ATProtoIdentifiers>
     - <doc:Getting-Started-with-ATProtoKit>
 }
@@ -89,6 +90,7 @@ Task {
 
 ### UnknownType
 - ``UnknownType``
+- <doc:getRecordTutorial>
 
 ### Interacting With Users
 
