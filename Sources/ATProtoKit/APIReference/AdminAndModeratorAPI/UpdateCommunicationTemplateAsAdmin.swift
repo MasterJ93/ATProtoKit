@@ -37,11 +37,11 @@ extension ATProtoKit {
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func updateCommunicationTemplate(
         _ id: String,
-        name: String?,
-        contentMarkdown: String?,
-        subject: String?,
-        updatedBy: String?,
-        isDisabled: Bool?
+        name: String? = nil,
+        contentMarkdown: String? = nil,
+        subject: String? = nil,
+        updatedBy: String? = nil,
+        isDisabled: Bool? = nil
     ) async throws -> Result<ToolsOzoneLexicon.Communication.TemplateViewDefinition, Error> {
         guard session != nil,
               let accessToken = session?.accessToken else {

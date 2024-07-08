@@ -34,7 +34,7 @@ extension ATProtoAdmin {
     public func emitEvent(
         _ event: ATUnion.EmitEventUnion,
         subject: ATUnion.EmitEventSubjectUnion,
-        subjectBlobCIDHashes: [String]?,
+        subjectBlobCIDHashes: [String]? = nil,
         createdBy: String
     ) async throws -> ToolsOzoneLexicon.Moderation.ModerationEventViewDefinition {
         guard session != nil,

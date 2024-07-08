@@ -63,25 +63,25 @@ extension ATProtoAdmin {
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func queryStatuses(
-        _ subject: String?,
-        comment: String?,
-        reportedAfter: Date?,
-        reportedBefore: Date?,
-        reviewedAfter: Date?,
-        reviewedBefore: Date?,
+        _ subject: String? = nil,
+        comment: String? = nil,
+        reportedAfter: Date? = nil,
+        reportedBefore: Date? = nil,
+        reviewedAfter: Date? = nil,
+        reviewedBefore: Date? = nil,
         shouldIncludeMuted: Bool? = false,
-        isOnlyMuted: Bool?,
-        reviewState: String?,
-        ignoreSubjects: [String]?,
-        lastReviewedBy: String?,
+        isOnlyMuted: Bool? = nil,
+        reviewState: String? = nil,
+        ignoreSubjects: [String]? = nil,
+        lastReviewedBy: String? = nil,
         sortField: ToolsOzoneLexicon.Moderation.QueryStatuses.SortField? = .lastReportedAt,
         sortDirection: ToolsOzoneLexicon.Moderation.QueryStatuses.SortDirection? = .descending,
-        isTakenDown: Bool?,
-        isAppealed: Bool?,
+        isTakenDown: Bool? = nil,
+        isAppealed: Bool? = nil,
         limit: Int? = 50,
-        tags: [String]?,
-        excludeTags: [String]?,
-        cursor: String?
+        tags: [String]? = nil,
+        excludeTags: [String]? = nil,
+        cursor: String? = nil
     ) async throws -> Result<ToolsOzoneLexicon.Moderation.QueryStatusesOutput, Error> {
         guard session != nil,
               let accessToken = session?.accessToken else {

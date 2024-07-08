@@ -34,7 +34,7 @@ extension ATProtoAdmin {
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func searchAccounts(
-        by email: String?,
+        by email: String? = nil,
         cursor: String? = nil,
         limit: Int? = 50
     ) async throws -> Result<ComAtprotoLexicon.Admin.SearchAccountsOutput, Error> {

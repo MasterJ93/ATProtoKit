@@ -35,10 +35,10 @@ extension ATProtoAdmin {
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func sendEmail(
         to recipientDID: String,
-        withSubjectLine subjectLine: String?,
+        withSubjectLine subjectLine: String? = nil,
         content: String,
         senderDID: String,
-        comment: String?
+        comment: String? = nil
     ) async throws -> Result<ComAtprotoLexicon.Admin.SendEmailOutput, Error> {
         guard session != nil,
               let accessToken = session?.accessToken else {

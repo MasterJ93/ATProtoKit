@@ -33,7 +33,7 @@ extension ATProtoKit {
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func createAppPassword(
         named passwordName: String,
-        isPrivileged: Bool?
+        isPrivileged: Bool? = nil
     ) async throws -> Result<ComAtprotoLexicon.Server.CreateAppPasswordOutput, Error> {
         guard session != nil,
               let accessToken = session?.accessToken else {

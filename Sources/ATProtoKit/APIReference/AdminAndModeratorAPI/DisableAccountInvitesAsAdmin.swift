@@ -29,7 +29,7 @@ extension ATProtoAdmin {
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func disableAccountInvites(
         for accountDID: String,
-        note: String?
+        note: String? = nil
     ) async throws {
         guard session != nil,
               let accessToken = session?.accessToken else {

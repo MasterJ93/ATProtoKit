@@ -30,7 +30,7 @@ extension ATProtoKit {
         _ repositoryDID: String,
         shouldValidate: Bool? = true,
         writes: [ATUnion.ApplyWritesUnion],
-        swapCommit: String?
+        swapCommit: String? = nil
     ) async throws {
         guard session != nil,
               let accessToken = session?.accessToken else {

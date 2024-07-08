@@ -33,7 +33,7 @@ extension ATProtoAdmin {
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func searchRepositories(
-        _ query: String?,
+        _ query: String? = nil,
         withLimitOf limit: Int? = 50,
         cursor: String?
     ) async throws -> Result<ComAtprotoLexicon.Admin.SearchRepositoriesOutput, Error> {

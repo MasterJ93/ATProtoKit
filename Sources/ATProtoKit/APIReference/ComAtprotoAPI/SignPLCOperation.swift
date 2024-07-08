@@ -35,8 +35,8 @@ extension ATProtoKit {
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func signPLCOperation(
         token: String,
-        rotationKeys: [String]?,
-        alsoKnownAs: [String]?,
+        rotationKeys: [String]? = nil,
+        alsoKnownAs: [String]? = nil,
         verificationMethods: VerificationMethod?,
         service: ATService?
     ) async throws -> Result<ComAtprotoLexicon.Identity.SignPLCOperationOutput, Error> {

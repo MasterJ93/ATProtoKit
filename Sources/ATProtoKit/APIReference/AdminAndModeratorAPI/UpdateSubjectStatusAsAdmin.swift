@@ -33,8 +33,8 @@ extension ATProtoAdmin {
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func updateSubjectStatusAsAdmin(
         _ subject: ATUnion.AdminUpdateSubjectStatusUnion,
-        takedown: ComAtprotoLexicon.Admin.StatusAttributesDefinition?,
-        deactivated: ComAtprotoLexicon.Admin.StatusAttributesDefinition?
+        takedown: ComAtprotoLexicon.Admin.StatusAttributesDefinition? = nil,
+        deactivated: ComAtprotoLexicon.Admin.StatusAttributesDefinition? = nil
     ) async throws -> Result<ComAtprotoLexicon.Admin.UpdateSubjectStatusOutput, Error> {
         guard session != nil,
               let accessToken = session?.accessToken else {

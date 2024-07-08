@@ -35,7 +35,7 @@ extension ATProtoAdmin {
         named name: String,
         contentMarkdown: String,
         subject: String,
-        createdBy: String?
+        createdBy: String? = nil
     ) async throws -> ToolsOzoneLexicon.Communication.TemplateViewDefinition {
         guard session != nil,
               let accessToken = session?.accessToken else {

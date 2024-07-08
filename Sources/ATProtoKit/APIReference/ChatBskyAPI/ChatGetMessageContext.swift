@@ -30,7 +30,7 @@ extension ATProtoBlueskyChat {
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func getMessageContext(
-        from conversationID: String?,
+        from conversationID: String? = nil,
         messageID: String,
         messagesBefore: Int? = 5,
         messagesAfter: Int? = 5

@@ -47,14 +47,14 @@ extension ATProtoKit {
     public func searchPosts(
         with searchQuery: String,
         sortRanking: AppBskyLexicon.Feed.SearchPosts.SortRanking? = .latest,
-        sinceDate: Date?,
-        untilDate: Date?,
+        sinceDate: Date? = nil,
+        untilDate: Date? = nil,
         mentionIdentifier: String? = nil,
         author: String? = nil,
-        language: Locale?,
-        domain: String?,
-        url: String?,
-        tags: [String]?,
+        language: Locale? = nil,
+        domain: String? = nil,
+        url: String? = nil,
+        tags: [String]? = nil,
         limit: Int? = 25,
         cursor: String? = nil
     ) async throws -> AppBskyLexicon.Feed.SearchPostsOutput {

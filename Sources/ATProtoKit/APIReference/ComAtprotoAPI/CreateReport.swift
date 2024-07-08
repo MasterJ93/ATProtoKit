@@ -31,7 +31,7 @@ extension ATProtoAdmin {
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func createReport(
         with reasonType: ComAtprotoLexicon.Moderation.ReasonTypeDefinition,
-        withContextof reason: String?,
+        withContextof reason: String? = nil,
         subject: ATUnion.CreateReportSubjectUnion
     ) async throws -> Result<ComAtprotoLexicon.Moderation.CreateReportOutput, Error> {
         guard session != nil,

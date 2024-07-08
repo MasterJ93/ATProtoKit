@@ -40,7 +40,7 @@ extension ATProtoKit {
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func queryLabels(
         uriPatterns: [String],
-        sources: [String]?,
+        sources: [String]? = nil,
         limit: Int? = 50,
         cursor: String? = nil,
         pdsURL: String? = nil,

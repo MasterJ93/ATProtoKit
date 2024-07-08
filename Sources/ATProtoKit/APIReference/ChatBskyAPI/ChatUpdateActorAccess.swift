@@ -28,7 +28,7 @@ extension ATProtoBlueskyChat {
     public func updateActorAccess(
         actorDID: String,
         doesAllowAccess: Bool,
-        reference: String?
+        reference: String? = nil
     ) async throws {
         guard session != nil,
               let accessToken = session?.accessToken else {

@@ -31,7 +31,7 @@ extension ATProtoAdmin {
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func getRecord(
         _ recordURI: String,
-        recordCID: String?
+        recordCID: String? = nil
     ) async throws -> Result<ToolsOzoneLexicon.Moderation.RecordViewDetailDefinition, Error> {
         guard session != nil,
               let accessToken = session?.accessToken else {
