@@ -42,37 +42,34 @@ extension ATProtoKit {
                                                     _ likeRecord: inout ATProtoTools.RecordQuery?) async throws {
         switch record {
             case .recordQuery(let recordQuery):
-                // Perform the fetch and validation based on recordQuery.
-                let output = try await self.getRepositoryRecord(from: recordQuery.repository, collection: recordQuery.collection,
-                                                                recordKey: recordQuery.recordKey, recordCID: recordQuery.recordCID, pdsURL: sessionURL)
+                do {
+                    // Perform the fetch and validation based on recordQuery.
+                    let output = try await self.getRepositoryRecord(from: recordQuery.repository, collection: recordQuery.collection,
+                                                                    recordKey: recordQuery.recordKey, recordCID: recordQuery.recordCID, pdsURL: sessionURL)
 
-                switch output {
-                    case .success(let result):
-                        let recordURI = "at://\(recordQuery.repository)/\(recordQuery.collection)/\(recordQuery.recordKey)"
-                        guard result.recordURI == recordURI else {
-                            throw ATRequestPrepareError.invalidRecord
-                        }
+                    let recordURI = "at://\(recordQuery.repository)/\(recordQuery.collection)/\(recordQuery.recordKey)"
 
-                        likeRecord = recordQuery
-                    case .failure(let error):
-                        throw error
+                    guard output.recordURI == recordURI else {
+                        throw ATRequestPrepareError.invalidRecord
+                    }
+                } catch {
+                    throw error
                 }
 
             case .recordURI(let recordURI):
-                // Perform the fetch and validation based on the parsed URI.
-                let parsedURI = try ATProtoTools().parseURI(recordURI)
-                let output = try await self.getRepositoryRecord(from: parsedURI.repository, collection: parsedURI.collection,
-                                                                recordKey: parsedURI.recordKey, recordCID: parsedURI.recordCID, pdsURL: sessionURL)
+                do {
+                    // Perform the fetch and validation based on the parsed URI.
+                    let parsedURI = try ATProtoTools().parseURI(recordURI)
+                    let output = try await self.getRepositoryRecord(from: parsedURI.repository, collection: parsedURI.collection,
+                                                                    recordKey: parsedURI.recordKey, recordCID: parsedURI.recordCID, pdsURL: sessionURL)
 
-                switch output {
-                    case .success(let result):
-                        guard recordURI == result.recordURI else {
-                            throw ATRequestPrepareError.invalidRecord
-                        }
+                    guard recordURI == output.recordURI else {
+                        throw ATRequestPrepareError.invalidRecord
+                    }
 
-                        likeRecord = parsedURI
-                    case .failure(let error):
-                        throw error
+                    likeRecord = parsedURI
+                } catch {
+                    throw error
                 }
         }
     }

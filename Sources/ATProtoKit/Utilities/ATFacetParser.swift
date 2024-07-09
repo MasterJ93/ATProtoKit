@@ -170,20 +170,15 @@ public class ATFacetParser {
 
                         let mentionResult = try await ATProtoKit().resolveHandle(from: notATHandle, pdsURL: pdsURL)
 
-                        switch mentionResult {
-                            case .success(let resolveHandleOutput):
-                                guard let start = mention["start"] as? Int, let end = mention["end"] as? Int else { return }
+                        guard let start = mention["start"] as? Int, let end = mention["end"] as? Int else { return }
 
-                                let mentionFacet = AppBskyLexicon.RichText.Facet(
-                                    index: AppBskyLexicon.RichText.Facet.ByteSlice(byteStart: start, byteEnd: end),
-                                    features: [.mention(AppBskyLexicon.RichText.Facet.Mention(did: resolveHandleOutput.handleDID))])
+                        let mentionFacet = AppBskyLexicon.RichText.Facet(
+                            index: AppBskyLexicon.RichText.Facet.ByteSlice(byteStart: start, byteEnd: end),
+                            features: [.mention(AppBskyLexicon.RichText.Facet.Mention(did: mentionResult.handleDID))])
 
-                                await facets.append(mentionFacet)
-                            case .failure(let error):
-                                print("Error: \(error)")
-                        }
+                        await facets.append(mentionFacet)
                     } catch {
-
+                        print("Error: \(error)")
                     }
                 }
             }
