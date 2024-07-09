@@ -1339,6 +1339,9 @@ public struct ATUnion {
         /// A diversion event.
         case moderationEventDivert(ToolsOzoneLexicon.Moderation.EventDivertDefinition)
 
+        /// A tag event.
+        case moderationEventTag(ToolsOzoneLexicon.Moderation.EventTagDefinition)
+
         public init(from decoder: Decoder) throws {
             let container = try decoder.singleValueContainer()
 
@@ -1370,6 +1373,8 @@ public struct ATUnion {
                 self = .moderationEventResolveAppeal(value)
             } else if let value = try? container.decode(ToolsOzoneLexicon.Moderation.EventDivertDefinition.self) {
                 self = .moderationEventDivert(value)
+            } else if let value = try? container.decode(ToolsOzoneLexicon.Moderation.EventTagDefinition.self) {
+                self = .moderationEventTag(value)
             } else {
                 throw DecodingError.typeMismatch(
                     ModerationEventViewUnion.self, DecodingError.Context(
@@ -1409,6 +1414,8 @@ public struct ATUnion {
                     try container.encode(moderationEventResolveAppeal)
                 case .moderationEventDivert(let moderationEventDivert):
                     try container.encode(moderationEventDivert)
+                case .moderationEventTag(let moderationEventTag):
+                    try container.encode(moderationEventTag)
             }
         }
     }
@@ -1485,6 +1492,9 @@ public struct ATUnion {
         /// A resolve appeal event.
         case moderationEventResolveAppeal(ToolsOzoneLexicon.Moderation.EventResolveAppealDefinition)
 
+        /// A tag event.
+        case moderationEventTag(ToolsOzoneLexicon.Moderation.EventTagDefinition)
+
         public init(from decoder: Decoder) throws {
             let container = try decoder.singleValueContainer()
 
@@ -1506,6 +1516,8 @@ public struct ATUnion {
                 self = .moderationEventMute(value)
             } else if let value = try? container.decode(ToolsOzoneLexicon.Moderation.EventResolveAppealDefinition.self) {
                 self = .moderationEventResolveAppeal(value)
+            } else if let value = try? container.decode(ToolsOzoneLexicon.Moderation.EventTagDefinition.self) {
+                self = .moderationEventTag(value)
             } else {
                 throw DecodingError.typeMismatch(
                     ModerationEventViewDetailUnion.self, DecodingError.Context(
@@ -1535,6 +1547,8 @@ public struct ATUnion {
                     try container.encode(moderationEventMute)
                 case .moderationEventResolveAppeal(let moderationEventResolveAppeal):
                     try container.encode(moderationEventResolveAppeal)
+                case .moderationEventTag(let moderationEventTag):
+                    try container.encode(moderationEventTag)
             }
         }
     }
