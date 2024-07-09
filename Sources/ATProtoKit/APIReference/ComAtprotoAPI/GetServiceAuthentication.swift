@@ -19,21 +19,19 @@ extension ATProtoKit {
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/server/getServiceAuth.json
     ///
     /// - Parameter serviceDID: The decentralized identifier (DID) of the service.
-    /// - Returns: A `Result`, containing either a
-    /// ``ComAtprotoLexicon/Server/GetServiceAuthOutput``
-    /// if successful, or an `Error`if not.
+    /// - Returns: The signed token from the service that matches `serviceDID`.
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
-    public func getServiceAuthentication(from serviceDID: String) async throws -> Result<ComAtprotoLexicon.Server.GetServiceAuthOutput, Error> {
+    public func getServiceAuthentication(from serviceDID: String) async throws -> ComAtprotoLexicon.Server.GetServiceAuthOutput {
         guard session != nil,
               let accessToken = session?.accessToken else {
-            return .failure(ATRequestPrepareError.missingActiveSession)
+            throw ATRequestPrepareError.missingActiveSession
         }
 
         guard let sessionURL = session?.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.server.getServiceAuth") else {
-            return .failure(ATRequestPrepareError.invalidRequestURL)
+            throw ATRequestPrepareError.invalidRequestURL
         }
 
         let queryItems = [
@@ -56,9 +54,9 @@ extension ATProtoKit {
             let response = try await APIClientService.sendRequest(request,
                                                                   decodeTo: ComAtprotoLexicon.Server.GetServiceAuthOutput.self)
 
-            return .success(response)
+            return response
         } catch {
-            return .failure(error)
+            throw error
         }
     }
 }

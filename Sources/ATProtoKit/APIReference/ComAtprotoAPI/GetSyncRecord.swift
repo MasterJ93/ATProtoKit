@@ -24,8 +24,7 @@ extension ATProtoKit {
     ///   - recordKey: The record key of the record.
     ///   - recordCID: The CID hash of the record. Optional.
     ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `nil`.
-    /// - Returns: A `Result`, containing either a `Data` object
-    /// if successful, or an `Error` if not.
+    /// - Returns: A .car file, containing CBOR-encoded data of a record.
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
@@ -35,10 +34,10 @@ extension ATProtoKit {
         recordKey: String,
         recordCID: String? = nil,
         pdsURL: String? = nil
-    ) async throws -> Result<Data, Error> {
+    ) async throws -> Data {
         guard let sessionURL = pdsURL != nil ? pdsURL : session?.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.sync.getRecord") else {
-            return .failure(ATRequestPrepareError.invalidRequestURL)
+            throw ATRequestPrepareError.invalidRequestURL
         }
 
         var queryItems = [
@@ -66,9 +65,9 @@ extension ATProtoKit {
                                                          authorizationValue: nil)
             let response = try await APIClientService.sendRequest(request)
 
-            return .success(response)
+            return response
         } catch {
-            return .failure(error)
+            throw error
         }
     }
 }

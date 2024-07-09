@@ -23,19 +23,17 @@ extension ATProtoKit {
     /// - Parameters:
     ///   - repositoryDID: The decentalized identifier (DID) of the repository.
     ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `nil`.
-    /// - Returns: A `Result`, containing either a
-    /// ``ComAtprotoLexicon/Server/ReserveSigningKeyOutput``
-    /// if successful, or an `Error` if not.
+    /// - Returns: The newly-created signing key.
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func reserveSigningKey(
         _ repositoryDID: String,
         pdsURL: String? = nil
-    ) async throws -> Result<ComAtprotoLexicon.Server.ReserveSigningKeyOutput, Error> {
+    ) async throws -> ComAtprotoLexicon.Server.ReserveSigningKeyOutput {
         guard let sessionURL = pdsURL != nil ? pdsURL : determinePDSURL(customPDSURL: pdsURL),
               let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.server.reserveSigningKey") else {
-            return .failure(ATRequestPrepareError.invalidRequestURL)
+            throw ATRequestPrepareError.invalidRequestURL
         }
 
         let requestBody = ComAtprotoLexicon.Server.ReserveSigningKeyRequestBody(
@@ -52,9 +50,9 @@ extension ATProtoKit {
                                                                   withEncodingBody: requestBody,
                                                                   decodeTo: ComAtprotoLexicon.Server.ReserveSigningKeyOutput.self)
 
-            return .success(response)
+            return response
         } catch {
-            return .failure(error)
+            throw error
         }
     }
 }

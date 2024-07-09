@@ -26,9 +26,7 @@ extension ATProtoKit {
     ///   result. Optional.
     ///   - isArrayReverse: Indicates whether the list of records is listed in reverse. Optional.
     ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `nil`.
-    /// - Returns: A `Result`, containing
-    /// ``ComAtprotoLexicon/Repository/ListRecordsOutput``
-    /// if successful, or an `Error` if not.
+    /// - Returns: An array of records, with an optional cursor to extend the array.
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
@@ -39,10 +37,10 @@ extension ATProtoKit {
         cursor: String? = nil,
         isArrayReverse: Bool? = nil,
         pdsURL: String? = nil
-    ) async throws -> Result<ComAtprotoLexicon.Repository.ListRecordsOutput, Error> {
+    ) async throws -> ComAtprotoLexicon.Repository.ListRecordsOutput {
         guard let sessionURL = pdsURL != nil ? pdsURL : session?.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.repo.listRecords") else {
-            return .failure(ATRequestPrepareError.invalidRequestURL)
+            throw ATRequestPrepareError.invalidRequestURL
         }
 
         var queryItems = [(String, String)]()
@@ -80,9 +78,9 @@ extension ATProtoKit {
             let response = try await APIClientService.sendRequest(request,
                                                                   decodeTo: ComAtprotoLexicon.Repository.ListRecordsOutput.self)
 
-            return .success(response)
+            return response
         } catch {
-            return .failure(error)
+            throw error
         }
     }
 }

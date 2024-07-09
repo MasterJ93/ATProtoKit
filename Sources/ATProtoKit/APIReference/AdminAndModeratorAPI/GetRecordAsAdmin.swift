@@ -23,24 +23,22 @@ extension ATProtoAdmin {
     /// - Parameters:
     ///   - recordURI: The URI of the record.
     ///   - recordCID: The CID hash of the record. Optional.
-    /// - Returns: A `Result`, containing either an
-    /// ``ToolsOzoneLexicon/Moderation/RecordViewDetailDefinition``
-    /// if successful, or an `Error` if not.
+    /// - Returns: A detailed view of a record.
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func getRecord(
         _ recordURI: String,
         recordCID: String? = nil
-    ) async throws -> Result<ToolsOzoneLexicon.Moderation.RecordViewDetailDefinition, Error> {
+    ) async throws -> ToolsOzoneLexicon.Moderation.RecordViewDetailDefinition {
         guard session != nil,
               let accessToken = session?.accessToken else {
-            return .failure(ATRequestPrepareError.missingActiveSession)
+            throw ATRequestPrepareError.missingActiveSession
         }
 
         guard let sessionURL = session?.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/tools.ozone.moderation.getRecord") else {
-            return .failure(ATRequestPrepareError.invalidRequestURL)
+            throw ATRequestPrepareError.invalidRequestURL
         }
 
         var queryItems = [("uri", recordURI)]
@@ -65,9 +63,9 @@ extension ATProtoAdmin {
             let response = try await APIClientService.sendRequest(request,
                                                                   decodeTo: ToolsOzoneLexicon.Moderation.RecordViewDetailDefinition.self)
 
-            return .success(response)
+            return response
         } catch {
-            return .failure(error)
+            throw error
         }
     }
 }

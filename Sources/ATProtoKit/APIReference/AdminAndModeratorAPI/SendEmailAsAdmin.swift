@@ -27,9 +27,7 @@ extension ATProtoAdmin {
     ///   - content: The content of the email.
     ///   - senderDID: The decentralized identifier (DID) of the sender.
     ///   - comment: Any additional comments viewable to other moderators and administrators.
-    /// - Returns: A `Result`, containing either an
-    /// ``ComAtprotoLexicon/Admin/SendEmailOutput``
-    /// if successful, or an `Error` if not.
+    /// - Returns: An indication of whether the email has been sent.
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
@@ -39,15 +37,15 @@ extension ATProtoAdmin {
         content: String,
         senderDID: String,
         comment: String? = nil
-    ) async throws -> Result<ComAtprotoLexicon.Admin.SendEmailOutput, Error> {
+    ) async throws -> ComAtprotoLexicon.Admin.SendEmailOutput {
         guard session != nil,
               let accessToken = session?.accessToken else {
-            return .failure(ATRequestPrepareError.missingActiveSession)
+            throw ATRequestPrepareError.missingActiveSession
         }
 
         guard let sessionURL = session?.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.admin.sendEmail") else {
-            return .failure(ATRequestPrepareError.invalidRequestURL)
+            throw ATRequestPrepareError.invalidRequestURL
         }
 
         let requestBody = ComAtprotoLexicon.Admin.SendEmailRequestBody(
@@ -68,9 +66,9 @@ extension ATProtoAdmin {
                                                                   withEncodingBody: requestBody,
                                                                   decodeTo: ComAtprotoLexicon.Admin.SendEmailOutput.self)
 
-            return .success(response)
+            return response
         } catch {
-            return .failure(error)
+            throw error
         }
     }
 }

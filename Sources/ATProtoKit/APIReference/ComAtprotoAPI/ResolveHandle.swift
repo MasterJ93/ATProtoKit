@@ -22,19 +22,17 @@ extension ATProtoKit {
     /// - Parameters:
     ///   - handle: The handle to resolve into a decentralized identifier (DID).
     ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `nil`.
-    /// - Returns: A `Result`, containing either a
-    /// ``ComAtprotoLexicon/Identity/ResolveHandleOutput``
-    /// if successful, or an `Error` if not.
+    /// - Returns: The resolved handle's decentralized identifier (DID).
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func resolveHandle(
         from handle: String,
         pdsURL: String? = nil
-    ) async throws -> Result<ComAtprotoLexicon.Identity.ResolveHandleOutput, Error> {
+    ) async throws -> ComAtprotoLexicon.Identity.ResolveHandleOutput {
         guard let sessionURL = pdsURL != nil ? pdsURL : session?.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.identity.resolveHandle") else {
-            return .failure(ATRequestPrepareError.invalidRequestURL)
+            throw ATRequestPrepareError.invalidRequestURL
         }
 
         let queryItems = [
@@ -57,9 +55,9 @@ extension ATProtoKit {
             let response = try await APIClientService.sendRequest(request,
                                                                   decodeTo: ComAtprotoLexicon.Identity.ResolveHandleOutput.self)
 
-            return .success(response)
+            return response
         } catch {
-            return .failure(error)
+            throw error
         }
     }
 }

@@ -24,24 +24,22 @@ extension ATProtoKit {
     ///   - codeCount: The number of invite codes to be created. Defaults to 1.
     ///   - forAccount: The decentralized identifier (DIDs) of the user that can use the
     ///   invite code. Optional.
-    /// - Returns: A `Result`, containing either a
-    /// ``ComAtprotoLexicon/Server/CreateInviteCodeOutput``
-    /// if successful, or an `Error` if not.
+    /// - Returns: The details of the newly-created invite code.
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func createInviteCode(
         _ codeCount: Int = 1,
         for account: [String]
-    ) async throws -> Result<ComAtprotoLexicon.Server.CreateInviteCodeOutput, Error> {
+    ) async throws -> ComAtprotoLexicon.Server.CreateInviteCodeOutput {
         guard session != nil,
               let accessToken = session?.accessToken else {
-            return .failure(ATRequestPrepareError.missingActiveSession)
+            throw ATRequestPrepareError.missingActiveSession
         }
 
         guard let sessionURL = session?.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.server.createInviteCode") else {
-            return .failure(ATRequestPrepareError.invalidRequestURL)
+            throw ATRequestPrepareError.invalidRequestURL
         }
 
         // Make sure the number isn't lower than one.
@@ -60,9 +58,9 @@ extension ATProtoKit {
                                                                   withEncodingBody: requestBody,
                                                                   decodeTo: ComAtprotoLexicon.Server.CreateInviteCodeOutput.self)
 
-            return .success(response)
+            return response
         } catch {
-            return .failure(error)
+            throw error
         }
     }
 }

@@ -53,11 +53,11 @@ extension ComAtprotoLexicon.Sync {
         /// The status of the repository. Optional.
         public let status: GetRepositoryStatus.Status
 
-        /// The revision of the repository.
+        /// The revision of the repository. Optional.
         ///
         /// - Note: According to the AT Protocol specifications: "Optional field, the current rev
         /// of the repo, if active=true"
-        public let revision: String
+        public let revision: String?
 
         enum CodingKeys: String, CodingKey {
             case repositoryDID = "did"

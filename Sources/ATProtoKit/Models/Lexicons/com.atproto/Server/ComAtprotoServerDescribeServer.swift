@@ -9,7 +9,7 @@ import Foundation
 
 extension ComAtprotoLexicon.Server {
 
-    /// A data model for etrieving a description of the server.
+    /// A data model for retrieving a description of the server.
     public struct DescribeServer: Codable {
 
         /// A data model of service policy URLs.

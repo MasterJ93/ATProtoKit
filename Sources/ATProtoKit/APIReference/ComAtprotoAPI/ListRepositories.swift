@@ -25,9 +25,7 @@ extension ATProtoKit {
     ///   - cursor: The mark used to indicate the starting point for the next set of
     ///   results. Optional.
     ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `nil`.
-    /// - Returns: A `Result`, containing either a
-    /// ``ComAtprotoLexicon/Sync/ListRepositoriesOutput``
-    /// if successful, or an `Error` if not.
+    /// - Returns: An array of repositories, with an optional cursor to extend the array.
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
@@ -35,10 +33,10 @@ extension ATProtoKit {
         limit: Int? = 500,
         cursor: String? = nil,
         pdsURL: String? = nil
-    ) async throws -> Result<ComAtprotoLexicon.Sync.ListRepositoriesOutput, Error> {
+    ) async throws -> ComAtprotoLexicon.Sync.ListRepositoriesOutput {
         guard let sessionURL = pdsURL != nil ? pdsURL : session?.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.sync.getRepos") else {
-            return .failure(ATRequestPrepareError.invalidRequestURL)
+            throw ATRequestPrepareError.invalidRequestURL
         }
 
         var queryItems = [(String, String)]()
@@ -68,9 +66,9 @@ extension ATProtoKit {
             let response = try await APIClientService.sendRequest(request,
                                                                   decodeTo: ComAtprotoLexicon.Sync.ListRepositoriesOutput.self)
 
-            return .success(response)
+            return response
         } catch {
-            return .failure(error)
+            throw error
         }
     }
 }

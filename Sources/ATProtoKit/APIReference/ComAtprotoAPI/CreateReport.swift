@@ -23,9 +23,7 @@ extension ATProtoAdmin {
     ///   - reasonType: The reason for the report.
     ///   - reason: Any additional context accompanying the report. Optional.
     ///   - subject: The responsible party being reported.
-    /// - Returns: A `Result`, containing either
-    /// ``ComAtprotoLexicon/Moderation/CreateReportOutput``
-    /// if successful, or an `Error` if not.
+    /// - Returns: A view of the newly-created report that will be sent to the moderators.
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
@@ -33,15 +31,15 @@ extension ATProtoAdmin {
         with reasonType: ComAtprotoLexicon.Moderation.ReasonTypeDefinition,
         withContextof reason: String? = nil,
         subject: ATUnion.CreateReportSubjectUnion
-    ) async throws -> Result<ComAtprotoLexicon.Moderation.CreateReportOutput, Error> {
+    ) async throws -> ComAtprotoLexicon.Moderation.CreateReportOutput {
         guard session != nil,
               let accessToken = session?.accessToken else {
-            return .failure(ATRequestPrepareError.missingActiveSession)
+            throw ATRequestPrepareError.missingActiveSession
         }
 
         guard let sessionURL = session?.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.moderation.createReport") else {
-            return .failure(ATRequestPrepareError.invalidRequestURL)
+            throw ATRequestPrepareError.invalidRequestURL
         }
 
         let requestBody = ComAtprotoLexicon.Moderation.CreateReportRequestBody(
@@ -60,9 +58,9 @@ extension ATProtoAdmin {
                                                                   withEncodingBody: requestBody,
                                                                   decodeTo: ComAtprotoLexicon.Moderation.CreateReportOutput.self)
 
-            return .success(response)
+            return response
         } catch {
-            return .failure(error)
+            throw error
         }
     }
 }

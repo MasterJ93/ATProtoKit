@@ -36,6 +36,7 @@ extension ComAtprotoLexicon.Server {
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/server/reserveSigningKey.json
     public struct ReserveSigningKeyOutput: Codable {
+
         /// The signing key itself.
         ///
         /// - Note: According to the AT Protocol specifications: "The public key for the reserved

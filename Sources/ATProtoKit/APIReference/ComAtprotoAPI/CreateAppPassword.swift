@@ -25,24 +25,22 @@ extension ATProtoKit {
     ///   - passwordName: The name given to the App Password to help distingush it from others.
     ///   - isPrivileged: Indicates whether this App Password can be used to access sensitive
     ///   content from the user account.
-    /// - Returns: A `Result`, either containing a
-    /// ``ComAtprotoLexicon/Server/CreateAppPasswordOutput``
-    /// if successful, or an `Error` if not.
+    /// - Returns: The details of the newly-created App Password.
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func createAppPassword(
         named passwordName: String,
         isPrivileged: Bool? = nil
-    ) async throws -> Result<ComAtprotoLexicon.Server.CreateAppPasswordOutput, Error> {
+    ) async throws -> ComAtprotoLexicon.Server.CreateAppPasswordOutput {
         guard session != nil,
               let accessToken = session?.accessToken else {
-            return .failure(ATRequestPrepareError.missingActiveSession)
+            throw ATRequestPrepareError.missingActiveSession
         }
 
         guard let sessionURL = session?.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.server.createAppPassword") else {
-            return .failure(ATRequestPrepareError.invalidRequestURL)
+            throw ATRequestPrepareError.invalidRequestURL
         }
 
         let requestBody = ComAtprotoLexicon.Server.CreateAppPasswordRequestBody(
@@ -60,9 +58,9 @@ extension ATProtoKit {
                                                                   withEncodingBody: requestBody,
                                                                   decodeTo: ComAtprotoLexicon.Server.CreateAppPasswordOutput.self)
 
-            return .success(response)
+            return response
         } catch {
-            return .failure(error)
+            throw error
         }
 
     }

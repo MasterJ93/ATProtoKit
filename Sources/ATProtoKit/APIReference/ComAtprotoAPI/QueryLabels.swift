@@ -32,9 +32,7 @@ extension ATProtoKit {
     ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `nil`.
     ///   - shouldAuthenticate: Indicates whether the method will use the access token when
     ///   sending the request. Defaults to `false`.
-    /// - Returns: A `Result`, containing either a
-    /// ``ComAtprotoLexicon/Label/QueryLabelsOutput``
-    /// if successful, or an `Error` if not.
+    /// - Returns: An array of labels, with an optional cursor to extend the array.
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
@@ -45,7 +43,7 @@ extension ATProtoKit {
         cursor: String? = nil,
         pdsURL: String? = nil,
         shouldAuthenticate: Bool = false
-    ) async throws -> Result<ComAtprotoLexicon.Label.QueryLabelsOutput, Error> {
+    ) async throws -> ComAtprotoLexicon.Label.QueryLabelsOutput {
         let authorizationValue = prepareAuthorizationValue(
             methodPDSURL: pdsURL,
             shouldAuthenticate: shouldAuthenticate,
@@ -90,9 +88,9 @@ extension ATProtoKit {
             let response = try await APIClientService.sendRequest(request,
                                                                   decodeTo: ComAtprotoLexicon.Label.QueryLabelsOutput.self)
 
-            return .success(response)
+            return response
         } catch {
-            return .failure(error)
+            throw error
         }
     }
 }

@@ -20,6 +20,9 @@ extension ComAtprotoLexicon.Label {
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/label/queryLabels.json
     public struct QueryLabelsOutput: Codable {
 
+        /// The mark used to indicate the starting point for the next set of results. Optional.
+        public let cursor: String?
+
         /// An array of labels.
         public let labels: [ComAtprotoLexicon.Label.LabelDefinition]
     }

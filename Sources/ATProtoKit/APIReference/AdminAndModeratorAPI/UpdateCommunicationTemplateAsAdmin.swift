@@ -29,9 +29,7 @@ extension ATProtoKit {
     ///   - updatedBy: The decentralized identifier (DID) of the user who updated the
     ///   communication template. Optional.
     ///   - isDisabled: Indicates whether the communication template is disabled. Optional.
-    /// - Returns: A `Result`, containing either an
-    /// ``ToolsOzoneLexicon/Communication/TemplateViewDefinition``
-    /// if successful, or an `Error` if not.
+    /// - Returns: The recently-updated communication template.
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
@@ -42,15 +40,15 @@ extension ATProtoKit {
         subject: String? = nil,
         updatedBy: String? = nil,
         isDisabled: Bool? = nil
-    ) async throws -> Result<ToolsOzoneLexicon.Communication.TemplateViewDefinition, Error> {
+    ) async throws -> ToolsOzoneLexicon.Communication.TemplateViewDefinition {
         guard session != nil,
               let accessToken = session?.accessToken else {
-            return .failure(ATRequestPrepareError.missingActiveSession)
+            throw ATRequestPrepareError.missingActiveSession
         }
 
         guard let sessionURL = session?.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/tools.ozone.communication.updateTemplate") else {
-            return .failure(ATRequestPrepareError.invalidRequestURL)
+            throw ATRequestPrepareError.invalidRequestURL
         }
 
         let requestBody = ToolsOzoneLexicon.Communication.UpdateTemplateRequestBody(
@@ -72,9 +70,9 @@ extension ATProtoKit {
                                                                   withEncodingBody: requestBody,
                                                                   decodeTo: ToolsOzoneLexicon.Communication.TemplateViewDefinition.self)
 
-            return .success(response)
+            return response
         } catch {
-            return .failure(error)
+            throw error
         }
     }
 }

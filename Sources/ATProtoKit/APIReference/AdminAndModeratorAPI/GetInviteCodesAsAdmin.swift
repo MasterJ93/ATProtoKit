@@ -24,24 +24,23 @@ extension ATProtoAdmin {
     ///   - sort: The order the invite codes will be sorted by. Defaults to `.recent`.
     ///   - limit: The number of invite codes in the list. Defaults to `100`.
     ///   - cursor: The mark used to indicate the starting point for the next set of results. Optional.
-    /// - Returns: A `Result`, containing either an
-    /// ``ComAtprotoLexicon/Admin/GetInviteCodesOutput``
-    /// if successful, or an `Error` if not.
+    /// - Returns: An array of invite codes, with an optional cursor to extend the array.
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func getInviteCodes(
         sortedBy sort: ComAtprotoLexicon.Admin.GetInviteCodes.Sort = .recent,
         withLimitOf limit: Int = 100,
-        cursor: String?) async throws -> Result<ComAtprotoLexicon.Admin.GetInviteCodesOutput, Error> {
+        cursor: String?
+    ) async throws -> ComAtprotoLexicon.Admin.GetInviteCodesOutput {
         guard session != nil,
               let accessToken = session?.accessToken else {
-            return .failure(ATRequestPrepareError.missingActiveSession)
+            throw ATRequestPrepareError.missingActiveSession
         }
 
         guard let sessionURL = session?.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.admin.getInviteCodes") else {
-            return .failure(ATRequestPrepareError.invalidRequestURL)
+            throw ATRequestPrepareError.invalidRequestURL
         }
 
         // Make sure limit is between 1 and 500.
@@ -71,9 +70,9 @@ extension ATProtoAdmin {
             let response = try await APIClientService.sendRequest(request,
                                                                   decodeTo: ComAtprotoLexicon.Admin.GetInviteCodesOutput.self)
 
-            return .success(response)
+            return response
         } catch {
-            return .failure(error)
+            throw error
         }
     }
 }

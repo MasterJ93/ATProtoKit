@@ -22,21 +22,19 @@ extension ATProtoAdmin {
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/tools/ozone/moderation/getEvent.json
     ///
     /// - Parameter id: The ID of the moderator event.
-    /// - Returns: A `Result`, containing either an
-    /// ``ToolsOzoneLexicon/Moderation/EventViewDetailDefinition``
-    /// if successful, or an `Error` if not.
+    /// - Returns:A detailed moderation event view.
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
-    public func getEvent(_ id: String) async throws -> Result<ToolsOzoneLexicon.Moderation.EventViewDetailDefinition, Error> {
+    public func getEvent(_ id: String) async throws -> ToolsOzoneLexicon.Moderation.EventViewDetailDefinition {
         guard session != nil,
               let accessToken = session?.accessToken else {
-            return .failure(ATRequestPrepareError.missingActiveSession)
+            throw ATRequestPrepareError.missingActiveSession
         }
 
         guard let sessionURL = session?.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/tools.ozone.moderation.getEvent") else {
-            return .failure(ATRequestPrepareError.invalidRequestURL)
+            throw ATRequestPrepareError.invalidRequestURL
         }
 
         let queryItems = [
@@ -59,9 +57,9 @@ extension ATProtoAdmin {
             let response = try await APIClientService.sendRequest(request,
                                                                   decodeTo: ToolsOzoneLexicon.Moderation.EventViewDetailDefinition.self)
 
-            return .success(response)
+            return response
         } catch {
-            return .failure(error)
+            throw error
         }
     }
 }

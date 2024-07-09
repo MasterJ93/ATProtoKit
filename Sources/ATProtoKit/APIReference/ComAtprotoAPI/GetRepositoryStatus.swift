@@ -19,21 +19,20 @@ extension ATProtoKit {
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/sync/getRepoStatus.json
     /// 
     /// - Parameter actorDID: The decentralized identifier (DID) of the user account.
-    /// - Returns: A `Result`, containing either a
-    /// ``ComAtprotoLexicon/Sync/GetRepositoryStatusOutput``
-    ///  if successful, or an `Error` if not.
+    /// - Returns: The status of the repository, which includes its decentralized identifier (DID),
+    /// active status, and an optional revision number.
     ///
     ///  - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
-    public func getRepositoryStatus(from actorDID: String) async throws -> Result<ComAtprotoLexicon.Sync.GetRepositoryStatusOutput, Error> {
+    public func getRepositoryStatus(from actorDID: String) async throws -> ComAtprotoLexicon.Sync.GetRepositoryStatusOutput {
         guard session != nil,
               let accessToken = session?.accessToken else {
-            return .failure(ATRequestPrepareError.missingActiveSession)
+            throw ATRequestPrepareError.missingActiveSession
         }
 
         guard let sessionURL = session?.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.sync.getRepoStatus") else {
-            return .failure(ATRequestPrepareError.invalidRequestURL)
+            throw ATRequestPrepareError.invalidRequestURL
         }
 
         var queryItems = [(String, String)]()
@@ -56,9 +55,9 @@ extension ATProtoKit {
             let response = try await APIClientService.sendRequest(request,
                                                                   decodeTo: ComAtprotoLexicon.Sync.GetRepositoryStatusOutput.self)
 
-            return .success(response)
+            return response
         } catch {
-            return .failure(error)
+            throw error
         }
     }
 }

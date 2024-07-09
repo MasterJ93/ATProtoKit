@@ -24,9 +24,7 @@ extension ATProtoKit {
     ///   - recordKey: The record key of the record.
     ///   - recordCID: The CID hash of the record. Optional.
     ///   - pdsURL: The URL of the Personal Data Server (PDS).
-    /// - Returns: A `Result`, which either contains a
-    /// ``ComAtprotoLexicon/Repository/GetRecordOutput``
-    /// if successful, and an `Error` if not.
+    /// - Returns: The record itself, as well as its URI and CID.
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
@@ -36,10 +34,10 @@ extension ATProtoKit {
         recordKey: String,
         recordCID: String? = nil,
         pdsURL: String? = nil
-    ) async throws -> Result<ComAtprotoLexicon.Repository.GetRecordOutput, Error> {
+    ) async throws -> ComAtprotoLexicon.Repository.GetRecordOutput {
         guard let sessionURL = pdsURL != nil ? pdsURL : session?.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.repo.getRecord") else {
-            return .failure(ATRequestPrepareError.invalidRequestURL)
+            throw ATRequestPrepareError.invalidRequestURL
         }
 
         var queryItems = [
@@ -66,9 +64,9 @@ extension ATProtoKit {
             let response = try await APIClientService.sendRequest(request,
                                                                   decodeTo: ComAtprotoLexicon.Repository.GetRecordOutput.self)
 
-            return .success(response)
+            return response
         } catch {
-            return .failure(error)
+            throw error
         }
     }
 }

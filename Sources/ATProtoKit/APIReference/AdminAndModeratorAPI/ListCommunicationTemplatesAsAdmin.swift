@@ -21,21 +21,19 @@ extension ATProtoAdmin {
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/tools/ozone/communication/listTemplates.json
     ///
-    /// - Returns: A `Result`, containing either an
-    /// ``ToolsOzoneLexicon/Communication/ListTemplatesOutput``
-    /// if successful, or an `Error` if not.
+    /// - Returns: An array of communication templates.
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
-    public func listCommunicationTemplates() async throws -> Result<ToolsOzoneLexicon.Communication.ListTemplatesOutput, Error> {
+    public func listCommunicationTemplates() async throws -> ToolsOzoneLexicon.Communication.ListTemplatesOutput {
         guard session != nil,
               let accessToken = session?.accessToken else {
-            return .failure(ATRequestPrepareError.missingActiveSession)
+            throw ATRequestPrepareError.missingActiveSession
         }
 
         guard let sessionURL = session?.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/tools.ozone.communication.listTemplates") else {
-            return .failure(ATRequestPrepareError.invalidRequestURL)
+            throw ATRequestPrepareError.invalidRequestURL
         }
 
         do {
@@ -47,9 +45,9 @@ extension ATProtoAdmin {
             let response = try await APIClientService.sendRequest(request,
                                                                   decodeTo: ToolsOzoneLexicon.Communication.ListTemplatesOutput.self)
 
-            return .success(response)
+            return response
         } catch {
-            return .failure(error)
+            throw error
         }
     }
 }

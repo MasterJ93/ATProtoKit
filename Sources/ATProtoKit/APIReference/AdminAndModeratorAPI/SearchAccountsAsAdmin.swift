@@ -27,9 +27,8 @@ extension ATProtoAdmin {
     ///   results. Optional.
     ///   - limit: The number of repositories in the array. Optional. Defaults to `50`. Can only
     ///   choose between `1` and `100`.
-    /// - Returns: A `Result`, containing either an
-    /// ``ComAtprotoLexicon/Admin/SearchAccountsOutput``
-    /// if successful, or an `Error` if not.
+    /// - Returns: An array of accounts from a search query, with an optional cursor to extend
+    /// the array.
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
@@ -37,15 +36,15 @@ extension ATProtoAdmin {
         by email: String? = nil,
         cursor: String? = nil,
         limit: Int? = 50
-    ) async throws -> Result<ComAtprotoLexicon.Admin.SearchAccountsOutput, Error> {
+    ) async throws -> ComAtprotoLexicon.Admin.SearchAccountsOutput {
         guard session != nil,
               let accessToken = session?.accessToken else {
-            return .failure(ATRequestPrepareError.missingActiveSession)
+            throw ATRequestPrepareError.missingActiveSession
         }
 
         guard let sessionURL = session?.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.admin.searchAccounts") else {
-            return .failure(ATRequestPrepareError.invalidRequestURL)
+            throw ATRequestPrepareError.invalidRequestURL
         }
 
         var queryItems = [(String, String)]()
@@ -79,9 +78,9 @@ extension ATProtoAdmin {
             let response = try await APIClientService.sendRequest(request,
                                                                   decodeTo: ComAtprotoLexicon.Admin.SearchAccountsOutput.self)
 
-            return .success(response)
+            return response
         } catch {
-            return .failure(error)
+            throw error
         }
     }
 }

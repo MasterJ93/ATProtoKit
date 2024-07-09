@@ -83,13 +83,12 @@ public class ATProtoTools {
     public func fetchRecordForURI(_ uri: String) async throws -> ComAtprotoLexicon.Repository.GetRecordOutput {
         let query = try parseURI(uri)
 
-        let record = try await ATProtoKit().getRepositoryRecord(from: query.repository, collection: query.collection, recordKey: query.recordKey, pdsURL: nil)
+        do {
+            let record = try await ATProtoKit().getRepositoryRecord(from: query.repository, collection: query.collection, recordKey: query.recordKey, pdsURL: nil)
 
-        switch record {
-            case .success(let result):
-                return result
-            case .failure(let failure):
-                throw failure
+            return record
+        } catch {
+            throw error
         }
     }
 

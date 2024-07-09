@@ -18,21 +18,19 @@ extension ATProtoAdmin {
     /// 
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/tools/ozone/server/getConfig.json
     /// 
-    /// - Returns: A `Result`, containing either an
-    /// ``ToolsOzoneLexicon/Server/GetConfigurationOutput``
-    /// if successful, or an `Error` if not.
+    /// - Returns:The details about the Ozone server's configuration.
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
-    public func getConfiguration() async throws -> Result<ToolsOzoneLexicon.Server.GetConfigurationOutput, Error> {
+    public func getConfiguration() async throws -> ToolsOzoneLexicon.Server.GetConfigurationOutput {
         guard session != nil,
               let accessToken = session?.accessToken else {
-            return .failure(ATRequestPrepareError.missingActiveSession)
+            throw ATRequestPrepareError.missingActiveSession
         }
 
         guard let sessionURL = session?.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/tools.ozone.server.getConfig") else {
-            return .failure(ATRequestPrepareError.invalidRequestURL)
+            throw ATRequestPrepareError.invalidRequestURL
         }
 
         let queryItems = [(String, String)]()
@@ -53,9 +51,9 @@ extension ATProtoAdmin {
             let response = try await APIClientService.sendRequest(request,
                                                                   decodeTo: ToolsOzoneLexicon.Server.GetConfigurationOutput.self)
 
-            return .success(response)
+            return response
         } catch {
-            return .failure(error)
+            throw error
         }
     }
 }

@@ -27,9 +27,7 @@ extension ATProtoKit {
     ///   - verificationMethods: A verification method recommeneded to be added in the
     ///   DID document. Optional.
     ///   - service: The service endpoint recommended in the DID document. Optional.
-    /// - Returns: A `Result`, containing either an
-    /// ``ComAtprotoLexicon/Identity/SignPLCOperationOutput``
-    /// if successful, ot an `Error` if not.
+    /// - Returns: The PLC operation itself.
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
@@ -39,15 +37,15 @@ extension ATProtoKit {
         alsoKnownAs: [String]? = nil,
         verificationMethods: VerificationMethod?,
         service: ATService?
-    ) async throws -> Result<ComAtprotoLexicon.Identity.SignPLCOperationOutput, Error> {
+    ) async throws -> ComAtprotoLexicon.Identity.SignPLCOperationOutput {
         guard session != nil,
               let accessToken = session?.accessToken else {
-            return .failure(ATRequestPrepareError.missingActiveSession)
+            throw ATRequestPrepareError.missingActiveSession
         }
 
         guard let sessionURL = session?.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.identity.signPLCOperation") else {
-            return .failure(ATRequestPrepareError.invalidRequestURL)
+            throw ATRequestPrepareError.invalidRequestURL
         }
 
         let requestBody = ComAtprotoLexicon.Identity.SignPLCOperationRequestBody(
@@ -68,9 +66,9 @@ extension ATProtoKit {
                                                                   withEncodingBody: requestBody,
                                                                   decodeTo: ComAtprotoLexicon.Identity.SignPLCOperationOutput.self)
 
-            return .success(response)
+            return response
         } catch {
-            return .failure(error)
+            throw error
         }
     }
 }

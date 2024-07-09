@@ -23,24 +23,22 @@ extension ATProtoKit {
     ///   be included in the list. Optional. Defaults to `true`.
     ///   - areEarnedCodesIncluded: Indicates whether the invite codes that the user earned should
     ///   be included in the list. Optional. Defaults to `true`.
-    /// - Returns: A `Result`, containing either
-    /// ``ComAtprotoLexicon/Server/GetAccountInviteCodesOutput``
-    /// if successful, and an `Error` if not.
+    /// - Returns: An array of invite codes being held be the user account.
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func getAccountInviteCodes(
         _ areUsedCodesIncluded: Bool = true,
         areEarnedCodesIncluded: Bool = true
-    ) async throws -> Result<ComAtprotoLexicon.Server.GetAccountInviteCodesOutput, Error> {
+    ) async throws -> ComAtprotoLexicon.Server.GetAccountInviteCodesOutput {
         guard session != nil,
               let accessToken = session?.accessToken else {
-            return .failure(ATRequestPrepareError.missingActiveSession)
+            throw ATRequestPrepareError.missingActiveSession
         }
 
         guard let sessionURL = session?.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.server.getAccountInviteCodes") else {
-            return .failure(ATRequestPrepareError.invalidRequestURL)
+            throw ATRequestPrepareError.invalidRequestURL
         }
 
         let queryItems = [
@@ -64,9 +62,9 @@ extension ATProtoKit {
             let response = try await APIClientService.sendRequest(request,
                                                                   decodeTo: ComAtprotoLexicon.Server.GetAccountInviteCodesOutput.self)
 
-            return .success(response)
+            return response
         } catch {
-            return .failure(error)
+            throw error
         }
     }
 }

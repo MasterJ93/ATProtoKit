@@ -21,9 +21,7 @@ extension ATProtoKit {
     ///   - codeCount: The number of invite codes to be created. Defaults to `1`.
     ///   - forAccounts: An array of decentralized identifiers (DIDs) that can use the
     ///   invite codes.
-    /// - Returns: A `Result`, containing either a
-    /// ``ComAtprotoLexicon/Server/CreateInviteCodesOutput``
-    /// if successful, or an `Error` if not.
+    /// - Returns: An array of newly-created invide codes
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.

@@ -25,9 +25,7 @@ extension ATProtoAdmin {
     ///   - subjectDID: The decentralized identifier (DID) of the subject.
     ///   - subjectURI: The URI of the subject.
     ///   - subjectBlobCIDHash: The CID hash of the blob for the subject.
-    /// - Returns: A `Result`, containing either an
-    /// ``ComAtprotoLexicon/Admin/GetSubjectStatusOutput``
-    /// if successful, or an `Error` if not.
+    /// - Returns: The status of a subject.
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
@@ -35,15 +33,15 @@ extension ATProtoAdmin {
         _ subjectDID: String,
         subjectURI: String,
         subjectBlobCIDHash: String
-    ) async throws -> Result<ComAtprotoLexicon.Admin.GetSubjectStatusOutput, Error> {
+    ) async throws -> ComAtprotoLexicon.Admin.GetSubjectStatusOutput {
         guard session != nil,
               let accessToken = session?.accessToken else {
-            return .failure(ATRequestPrepareError.missingActiveSession)
+            throw ATRequestPrepareError.missingActiveSession
         }
 
         guard let sessionURL = session?.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.admin.getSubjectStatus") else {
-            return .failure(ATRequestPrepareError.invalidRequestURL)
+            throw ATRequestPrepareError.invalidRequestURL
         }
 
         let queryItems = [
@@ -68,9 +66,9 @@ extension ATProtoAdmin {
             let response = try await APIClientService.sendRequest(request,
                                                                   decodeTo: ComAtprotoLexicon.Admin.GetSubjectStatusOutput.self)
 
-            return .success(response)
+            return response
         } catch {
-            return .failure(error)
+            throw error
         }
     }
 }

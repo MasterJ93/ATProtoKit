@@ -25,9 +25,7 @@ extension ATProtoAdmin {
     ///   - subject: The subject associated with the subject status.
     ///   - takedown: The attributes of the user account's takedown. Optional.
     ///   - deactivated: The attributes of the user account's deactivation. Optional.
-    /// - Returns: A `Result`, containing either an
-    /// ``ComAtprotoLexicon/Admin/UpdateSubjectStatusOutput``
-    /// if successful, or an `Error` if not.
+    /// - Returns: The recently-updated status of a subject.
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
@@ -35,15 +33,15 @@ extension ATProtoAdmin {
         _ subject: ATUnion.AdminUpdateSubjectStatusUnion,
         takedown: ComAtprotoLexicon.Admin.StatusAttributesDefinition? = nil,
         deactivated: ComAtprotoLexicon.Admin.StatusAttributesDefinition? = nil
-    ) async throws -> Result<ComAtprotoLexicon.Admin.UpdateSubjectStatusOutput, Error> {
+    ) async throws -> ComAtprotoLexicon.Admin.UpdateSubjectStatusOutput {
         guard session != nil,
               let accessToken = session?.accessToken else {
-            return .failure(ATRequestPrepareError.missingActiveSession)
+            throw ATRequestPrepareError.missingActiveSession
         }
 
         guard let sessionURL = session?.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.admin.updateSubjectStatus") else {
-            return .failure(ATRequestPrepareError.invalidRequestURL)
+            throw ATRequestPrepareError.invalidRequestURL
         }
 
         let requestBody = ComAtprotoLexicon.Admin.UpdateSubjectStatusRequestBody(
@@ -62,9 +60,9 @@ extension ATProtoAdmin {
                                                                   withEncodingBody: requestBody,
                                                                   decodeTo: ComAtprotoLexicon.Admin.UpdateSubjectStatusOutput.self)
 
-            return .success(response)
+            return response
         } catch {
-            return .failure(error)
+            throw error
         }
     }
 }

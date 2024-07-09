@@ -23,7 +23,7 @@ extension ATProtoKit {
     /// - Parameter cidHash: The CID hash of the blob.
     /// - Parameter pdsURL: The URL of the Personal Data Server (PDS).
     /// Defaults to `https://bsky.social`.
-    /// - Returns: A `Result` containing `Data` on success or `Error` on failure.
+    /// - Returns: The data blob owned by the user account.
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
@@ -31,10 +31,10 @@ extension ATProtoKit {
         from accountDID: String,
         cidHash: String,
         pdsURL: String? = "https://bsky.social"
-    ) async -> Result<Data, Error> {
+    ) async throws -> Data {
         guard let sessionURL = pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.sync.getBlob") else {
-            return .failure(ATRequestPrepareError.invalidRequestURL)
+            throw ATRequestPrepareError.invalidRequestURL
         }
 
         let queryItems = [
@@ -57,9 +57,9 @@ extension ATProtoKit {
                                                          authorizationValue: nil)
             let response = try await APIClientService.sendRequest(request)
 
-            return .success(response)
+            return response
         } catch {
-            return .failure(error)
+            throw error
         }
     }
 }

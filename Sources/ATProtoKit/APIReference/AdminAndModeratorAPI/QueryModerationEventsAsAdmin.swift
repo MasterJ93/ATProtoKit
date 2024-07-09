@@ -52,9 +52,8 @@ extension ATProtoAdmin {
     ///   - reportTypes: An array of report types.
     ///   - cursor: The mark used to indicate the starting point for the next set
     ///   of results. Optional.
-    /// - Returns: A `Result`, containing either an
-    /// ``ToolsOzoneLexicon/Moderation/QueryEventsOutput``
-    /// if successful, or an `Error` if not.
+    /// - Returns: An array of all moderation events pertaining a subject, with an optional cursor
+    /// to extend the array.
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
@@ -75,15 +74,15 @@ extension ATProtoAdmin {
         removedTags: [String]? = nil,
         reportTypes: [String]? = nil,
         cursor: String? = nil
-    ) async throws -> Result<ToolsOzoneLexicon.Moderation.QueryEventsOutput, Error> {
+    ) async throws -> ToolsOzoneLexicon.Moderation.QueryEventsOutput {
         guard session != nil,
               let accessToken = session?.accessToken else {
-            return .failure(ATRequestPrepareError.missingActiveSession)
+            throw ATRequestPrepareError.missingActiveSession
         }
 
         guard let sessionURL = session?.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/tools.ozone.moderation.queryEvents") else {
-            return .failure(ATRequestPrepareError.invalidRequestURL)
+            throw ATRequestPrepareError.invalidRequestURL
         }
 
         var queryItems = [(String, String)]()
@@ -185,9 +184,9 @@ extension ATProtoAdmin {
             let response = try await APIClientService.sendRequest(request,
                                                                   decodeTo: ToolsOzoneLexicon.Moderation.QueryEventsOutput.self)
 
-            return .success(response)
+            return response
         } catch {
-            return .failure(error)
+            throw error
         }
     }
 }

@@ -27,8 +27,7 @@ extension ATProtoKit {
     ///   - repositoryDID: The decentralized identifier (DID) of the repository.
     ///   - repositoryCIDHashes: An array of CID hashes from the repository.
     ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `nil`.
-    /// - Returns: A `Result`, containing either `Data`
-    /// if successful, or `Error` if not.
+    /// - Returns: A .car file, containing CBOR-encoded data of the repository blocks.
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
@@ -36,10 +35,10 @@ extension ATProtoKit {
         from repositoryDID: String,
         by repositoryCIDHashes: [String],
         pdsURL: String? = nil
-    ) async throws -> Result<Data, Error> {
+    ) async throws -> Data {
         guard let sessionURL = pdsURL != nil ? pdsURL : session?.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.sync.getBlocks") else {
-            return .failure(ATRequestPrepareError.invalidRequestURL)
+            throw ATRequestPrepareError.invalidRequestURL
         }
 
         var queryItems = [(String, String)]()
@@ -62,9 +61,9 @@ extension ATProtoKit {
                                                          authorizationValue: nil)
             let response = try await APIClientService.sendRequest(request)
 
-            return .success(response)
+            return response
         } catch {
-            return .failure(error)
+            throw error
         }
     }
 }

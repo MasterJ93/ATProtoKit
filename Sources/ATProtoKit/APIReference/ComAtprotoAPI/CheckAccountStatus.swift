@@ -19,16 +19,17 @@ extension ATProtoKit {
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/server/checkAccountStatus.json
     /// 
-    /// - Returns: A `Result`, containing either
-    /// ``ComAtprotoLexicon/Server/CheckAccountStatusOutput``
-    /// if successful, or an `Error` if not.
+    /// - Returns: The status of the user account, which includes the validity of the
+    /// decentralized identifier (DID); it's active status; commits, revisions, and blocks of the
+    /// repository, indexed records, and the number of private state values, indexed records, and
+    /// blobs (both expected and imported).
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
-    public func checkAccountStatus() async throws -> Result<ComAtprotoLexicon.Server.CheckAccountStatusOutput, Error> {
+    public func checkAccountStatus() async throws -> ComAtprotoLexicon.Server.CheckAccountStatusOutput {
         guard let sessionURL = session?.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.server.checkAccountStatus") else {
-            return .failure(ATRequestPrepareError.invalidRequestURL)
+            throw ATRequestPrepareError.invalidRequestURL
         }
 
         do {
@@ -39,9 +40,9 @@ extension ATProtoKit {
             let response = try await APIClientService.sendRequest(request,
                                                                   decodeTo: ComAtprotoLexicon.Server.CheckAccountStatusOutput.self)
 
-            return .success(response)
+            return response
         } catch {
-            return .failure(error)
+            throw error
         }
     }
 }

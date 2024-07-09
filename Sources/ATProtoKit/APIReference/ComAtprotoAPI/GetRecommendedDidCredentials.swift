@@ -19,16 +19,14 @@ extension ATProtoKit {
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/identity/getRecommendedDidCredentials.json
     ///
-    /// - Returns: A `Result`, containing either an
-    /// ``ComAtprotoLexicon/Identity/GetRecommendedDidCredentialsOutput``
-    /// if successful, or an `Error` if not.
+    /// - Returns: The DID document of the Personal Data Server (PDS).
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
-    public func getRecommendedDIDCredentials() async throws -> Result<ComAtprotoLexicon.Identity.GetRecommendedDidCredentialsOutput, Error> {
+    public func getRecommendedDIDCredentials() async throws -> ComAtprotoLexicon.Identity.GetRecommendedDidCredentialsOutput {
         guard let sessionURL = session?.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.identity.getRecommendedDidCredentials") else {
-            return .failure(ATRequestPrepareError.invalidRequestURL)
+            throw ATRequestPrepareError.invalidRequestURL
         }
 
         do {
@@ -40,9 +38,9 @@ extension ATProtoKit {
             let response = try await APIClientService.sendRequest(request, decodeTo:
                                                                   ComAtprotoLexicon.Identity.GetRecommendedDidCredentialsOutput.self)
 
-            return .success(response)
+            return response
         } catch {
-            return .failure(error)
+            throw error
         }
     }
 }

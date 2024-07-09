@@ -21,16 +21,16 @@ extension ATProtoKit {
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/temp/checkSignupQueue.json
     ///
     /// - Parameter query: The string used to search for the username.
-    /// - Returns: A `Result`, containing either a
-    /// ``ComAtprotoLexicon/Temp/CheckSignupQueueOutput``
-    /// if successful, ot an `Error` if not.
+    /// - Returns: Ths status of the future user account's status in the sign up queue, which
+    /// includes the activation status, its place in the queue, and an estimated number of minutes
+    /// to wait until the user can use the service.
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
-    public func checkSignupQueue(for query: String) async throws -> Result<ComAtprotoLexicon.Temp.CheckSignupQueueOutput, Error> {
+    public func checkSignupQueue(for query: String) async throws -> ComAtprotoLexicon.Temp.CheckSignupQueueOutput {
         guard let sessionURL = session?.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.temp.checkSignupQueue") else {
-            return .failure(ATRequestPrepareError.invalidRequestURL)
+            throw ATRequestPrepareError.invalidRequestURL
         }
 
         var queryItems = [(String, String)]()
@@ -53,9 +53,9 @@ extension ATProtoKit {
             let response = try await APIClientService.sendRequest(request,
                                                                   decodeTo: ComAtprotoLexicon.Temp.CheckSignupQueueOutput.self)
 
-            return .success(response)
+            return response
         } catch {
-            return .failure(error)
+            throw error
         }
     }
 }

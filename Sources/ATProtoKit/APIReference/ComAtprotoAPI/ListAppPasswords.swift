@@ -20,21 +20,19 @@ extension ATProtoKit {
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/server/listAppPasswords.json
     ///
-    /// - Returns: A `Result`, containing either a
-    /// ``ComAtprotoLexicon/Server/ListAppPasswordsOutput``
-    /// if successful, or an `Error` if not.
+    /// - Returns: An array of App Passwords belonging to the user account.
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
-    public func listAppPasswords() async throws -> Result<ComAtprotoLexicon.Server.ListAppPasswordsOutput, Error> {
+    public func listAppPasswords() async throws -> ComAtprotoLexicon.Server.ListAppPasswordsOutput {
         guard session != nil,
               let accessToken = session?.accessToken else {
-            return .failure(ATRequestPrepareError.missingActiveSession)
+            throw ATRequestPrepareError.missingActiveSession
         }
 
         guard let sessionURL = session?.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.server.listAppPasswords") else {
-            return .failure(ATRequestPrepareError.invalidRequestURL)
+            throw ATRequestPrepareError.invalidRequestURL
         }
 
         do {
@@ -46,9 +44,9 @@ extension ATProtoKit {
             let response = try await APIClientService.sendRequest(request,
                                                                   decodeTo: ComAtprotoLexicon.Server.ListAppPasswordsOutput.self)
 
-            return .success(response)
+            return response
         } catch {
-            return .failure(error)
+            throw error
         }
     }
 }

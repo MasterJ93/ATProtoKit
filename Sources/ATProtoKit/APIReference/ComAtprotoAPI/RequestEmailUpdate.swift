@@ -18,21 +18,19 @@ extension ATProtoKit {
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/server/requestEmailUpdate.json
     ///
-    /// - Returns: A `Result`, containing either a
-    /// ``ComAtprotoLexicon/Server/RequestEmailUpdateOutput``
-    /// if successful, or an `Error` if not.
+    /// - Returns: An Indicatation of whether a token is required.
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
-    public func requestEmailUpdate() async throws -> Result<ComAtprotoLexicon.Server.RequestEmailUpdateOutput, Error> {
+    public func requestEmailUpdate() async throws -> ComAtprotoLexicon.Server.RequestEmailUpdateOutput {
         guard session != nil,
               let accessToken = session?.accessToken else {
-            return .failure(ATRequestPrepareError.missingActiveSession)
+            throw ATRequestPrepareError.missingActiveSession
         }
 
         guard let sessionURL = session?.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.server.requestEmailUpdate") else {
-            return .failure(ATRequestPrepareError.invalidRequestURL)
+            throw ATRequestPrepareError.invalidRequestURL
         }
 
         do {
@@ -44,9 +42,9 @@ extension ATProtoKit {
             let response = try await APIClientService.sendRequest(request,
                                                                   decodeTo: ComAtprotoLexicon.Server.RequestEmailUpdateOutput.self)
 
-            return .success(response)
+            return response
         } catch {
-            return .failure(error)
+            throw error
         }
     }
 }

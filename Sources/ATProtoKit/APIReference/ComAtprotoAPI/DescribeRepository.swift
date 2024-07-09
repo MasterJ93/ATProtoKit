@@ -19,19 +19,17 @@ extension ATProtoKit {
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/repo/describeRepo.json
     ///
     /// - Parameter repositoryDID: The decentralized identifier (DID) or handle of the repository.
-    /// - Returns: A `Result`, containing either a
-    /// ``ComAtprotoLexicon/Repository/DescribeRepositoryOutput``
-    /// if successful, ot an `Error` if not.
+    /// - Returns: Some general information about the repository that matches `repositoryDID`.
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func describeRepository(
         _ repositoryDID: String,
         pdsURL: String? = nil
-    ) async throws -> Result<ComAtprotoLexicon.Repository.DescribeRepositoryOutput, Error> {
+    ) async throws -> ComAtprotoLexicon.Repository.DescribeRepositoryOutput {
         guard let sessionURL = pdsURL != nil ? pdsURL : session?.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.repo.describeRepo") else {
-            return .failure(ATRequestPrepareError.invalidRequestURL)
+            throw ATRequestPrepareError.invalidRequestURL
         }
 
         var queryItems = [(String, String)]()
@@ -54,9 +52,9 @@ extension ATProtoKit {
             let response = try await APIClientService.sendRequest(request,
                                                                   decodeTo: ComAtprotoLexicon.Repository.DescribeRepositoryOutput.self)
 
-            return .success(response)
+            return response
         } catch {
-            return .failure(error)
+            throw error
         }
     }
 }

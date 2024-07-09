@@ -25,9 +25,8 @@ extension ATProtoKit {
     ///   - cursor: The mark used to indicate the starting point for the next set of
     ///   results. Optional.
     ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `nil`.
-    /// - Returns: A `Result`, containing either a
-    /// ``ComAtprotoLexicon/Sync/ListBlobsOutput``
-    /// if successful, or an `Error` if not.
+    /// - Returns: An array of CID hashes from a user account, with an optional cursor to extend
+    /// the array.
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
@@ -37,10 +36,10 @@ extension ATProtoKit {
         limit: Int? = 500,
         cursor: String? = nil,
         pdsURL: String? = nil
-    ) async throws -> Result<ComAtprotoLexicon.Sync.ListBlobsOutput, Error> {
+    ) async throws -> ComAtprotoLexicon.Sync.ListBlobsOutput {
         guard let sessionURL = pdsURL != nil ? pdsURL : session?.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.sync.listBlobs") else {
-            return .failure(ATRequestPrepareError.invalidRequestURL)
+            throw ATRequestPrepareError.invalidRequestURL
         }
 
         var queryItems = [(String, String)]()
@@ -76,9 +75,9 @@ extension ATProtoKit {
             let response = try await APIClientService.sendRequest(request,
                                                                   decodeTo: ComAtprotoLexicon.Sync.ListBlobsOutput.self)
 
-            return .success(response)
+            return response
         } catch {
-            return .failure(error)
+            throw error
         }
     }
 }
