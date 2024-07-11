@@ -23,7 +23,8 @@ extension ATProtoAdmin {
     ///
     /// - Parameters:
     ///   - limit: The number of invite codes in the list. Defaults to `50`.
-    ///   - cursor: The mark used to indicate the starting point for the next set of results. Optional.
+    ///   - cursor: The mark used to indicate the starting point for the next set
+    ///   of results. Optional.
     /// - Returns: An array of members in the ozone service that the administrator is in.
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to

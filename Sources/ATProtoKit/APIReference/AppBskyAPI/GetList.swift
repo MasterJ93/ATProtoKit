@@ -21,8 +21,8 @@ extension ATProtoKit {
     /// - Parameters:
     ///   - listURI: The URI of the list.
     ///   - limit: The number of items that can be in the list. Optional. Defaults to `50`.
-    ///   - cursor: The mark used to indicate the starting point for the next set of
-    ///   result. Optional.
+    ///   - cursor: The mark used to indicate the starting point for the next set
+    ///   of results. Optional.
     /// - Returns: An array of list items, the metadata of the list itself, and an optional cursor
     /// to extend the array.
     ///

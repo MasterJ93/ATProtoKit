@@ -21,8 +21,8 @@ extension ATProtoKit {
     /// - Parameters:
     ///   - limit: The number of suggested users to follow. Optional. Defaults to 50.
     ///   Can only choose between 1 and 100.
-    ///   - cursor: The mark used to indicate the starting point for the next set of
-    ///   results. Optional.
+    ///   - cursor: The mark used to indicate the starting point for the next set
+    ///   of results. Optional.
     /// - Returns: An array of actors, with an optional cursor to extend the array.
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to

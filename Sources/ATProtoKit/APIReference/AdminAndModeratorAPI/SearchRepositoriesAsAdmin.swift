@@ -24,8 +24,8 @@ extension ATProtoAdmin {
     ///   - query: The string used against a list of actors. Optional.
     ///   - limit: The number of repositories in the array. Optional. Defaults to `50`. Can only
     ///   choose between `1` and `100`.
-    ///   - cursor: The mark used to indicate the starting point for the next set of
-    ///   results. Optional.
+    ///   - cursor: The mark used to indicate the starting point for the next set
+    ///   of results. Optional.
     /// - Returns: An array of repositories, with an optional cursor to extend the array.
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to

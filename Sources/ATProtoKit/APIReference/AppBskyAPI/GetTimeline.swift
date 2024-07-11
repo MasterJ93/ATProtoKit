@@ -28,7 +28,8 @@ extension ATProtoKit {
     ///   if no value is inserted.
     ///   - limit: The number of items the list will hold. Optional. Defaults to `50`. Can only be
     ///   between `1` and `100`.
-    ///   - cursor: The mark used to indicate the starting point for the next set of result. Optional.
+    ///   - cursor: The mark used to indicate the starting point for the next set
+    ///   of results. Optional.
     /// - Returns: An array of post records, with an optional cursor to expend the array.
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to

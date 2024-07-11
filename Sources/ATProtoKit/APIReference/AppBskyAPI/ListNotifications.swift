@@ -20,8 +20,8 @@ extension ATProtoKit {
     ///
     /// - Parameters:
     ///   - limit: The number of invite codes in the list. Optional. Defaults to `50`.
-    ///   - cursor: The mark used to indicate the starting point for the next set of
-    ///   results. Optional.
+    ///   - cursor: The mark used to indicate the starting point for the next set
+    ///   of results. Optional.
     ///   - seenAt: The date and time the notification was seen. Defaults to the date and time the
     ///   request was sent.
     /// - Returns: An array of notifications, with an optional cursor to expand the array.

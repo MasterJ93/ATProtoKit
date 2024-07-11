@@ -27,8 +27,8 @@ extension ATProtoKit {
     ///   - sources: An array of decentralized identifiers (DIDs) for label sources. Optional.
     ///   - limit: The number of suggested users to follow. Optional. Defaults to `50`.
     ///   Can only choose between `1` and `250`.
-    ///   - cursor: The mark used to indicate the starting point for the next set of
-    ///   results. Optional.
+    ///   - cursor: The mark used to indicate the starting point for the next set
+    ///   of results. Optional.
     ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `nil`.
     ///   - shouldAuthenticate: Indicates whether the method will use the access token when
     ///   sending the request. Defaults to `false`.

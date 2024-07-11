@@ -23,8 +23,8 @@ extension ATProtoAdmin {
     /// 
     /// - Parameters:
     ///   - email: The email addressed used as the search query. Optional.
-    ///   - cursor: The mark used to indicate the starting point for the next set of
-    ///   results. Optional.
+    ///   - cursor: The mark used to indicate the starting point for the next set
+    ///   of results. Optional.
     ///   - limit: The number of repositories in the array. Optional. Defaults to `50`. Can only
     ///   choose between `1` and `100`.
     /// - Returns: An array of accounts from a search query, with an optional cursor to extend

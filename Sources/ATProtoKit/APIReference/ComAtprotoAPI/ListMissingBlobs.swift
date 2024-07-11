@@ -20,8 +20,8 @@ extension ATProtoKit {
     ///
     /// - Parameters:
     ///   - limit: The number of items that can be in the list. Optional. Defaults to `500`.
-    ///   - cursor: The mark used to indicate the starting point for the next set of
-    ///   result. Optional.
+    ///   - cursor: The mark used to indicate the starting point for the next set
+    ///   of results. Optional.
     /// - Returns: An array of missing blobs attached to the user account.
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to

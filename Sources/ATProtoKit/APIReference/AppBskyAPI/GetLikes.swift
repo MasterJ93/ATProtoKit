@@ -22,8 +22,8 @@ extension ATProtoKit {
     ///   - recordURI: The URI of the record.
     ///   - recordCID: The CID hash of the subject for filtering likes.
     ///   - limit: The number of items that can be in the list. Optional. Defaults to `50`.
-    ///   - cursor: The mark used to indicate the starting point for the next set of
-    ///   result. Optional.
+    ///   - cursor: The mark used to indicate the starting point for the next set
+    ///   of results. Optional.
     /// - Returns: An array of likes for the specified record, including an optional cursor
     /// for extending the array, as well as the URI and CID hash of the record itself.
     ///

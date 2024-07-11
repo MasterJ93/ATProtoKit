@@ -40,8 +40,8 @@ extension ATProtoKit {
     ///   - tags: An array of tags to be used against the results. Optional.
     ///   - limit: The number of items that can be in the list. Optional. Defaults
     ///   to `25`.
-    ///   - cursor: The mark used to indicate the starting point for the next set of
-    ///   result. Optional.
+    ///   - cursor: The mark used to indicate the starting point for the next set
+    ///   of results. Optional.
     /// - Returns: An array of un-hydrated post records in the results, with an optional cursor to
     /// expand the array. The output may also display the total number of search results.
     ///

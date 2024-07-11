@@ -22,8 +22,8 @@ extension ATProtoKit {
     ///   - actorDID: The decentralized identifier (DID) or handle of the user account to
     ///   search the user accounts they follow.
     ///   - limit: The number of items the list will hold. Optional. Defaults to `50`.
-    ///   - cursor: The mark used to indicate the starting point for the next set of
-    ///   result. Optional.
+    ///   - cursor: The mark used to indicate the starting point for the next set
+    ///   of results. Optional.
     /// - Returns: An array of user accounts that the user account follows, information about the
     /// user account itself, and an optional cursor for extending the array.
     ///

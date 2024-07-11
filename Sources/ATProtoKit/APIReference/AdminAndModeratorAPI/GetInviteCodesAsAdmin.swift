@@ -23,7 +23,8 @@ extension ATProtoAdmin {
     /// - Parameters:
     ///   - sort: The order the invite codes will be sorted by. Defaults to `.recent`.
     ///   - limit: The number of invite codes in the list. Defaults to `100`.
-    ///   - cursor: The mark used to indicate the starting point for the next set of results. Optional.
+    ///   - cursor: The mark used to indicate the starting point for the next set
+    ///   of results. Optional.
     /// - Returns: An array of invite codes, with an optional cursor to extend the array.
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
@@ -31,7 +32,7 @@ extension ATProtoAdmin {
     public func getInviteCodes(
         sortedBy sort: ComAtprotoLexicon.Admin.GetInviteCodes.Sort = .recent,
         withLimitOf limit: Int = 100,
-        cursor: String?
+        cursor: String? = nil
     ) async throws -> ComAtprotoLexicon.Admin.GetInviteCodesOutput {
         guard session != nil,
               let accessToken = session?.accessToken else {

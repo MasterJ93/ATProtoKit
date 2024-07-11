@@ -24,8 +24,8 @@ extension ATProtoKit {
     /// - Parameters:
     ///   - query: The string used to 
     ///   - limit: The number of items that can be in the list. Optional. Defaults to `50`.
-    ///   - cursor: The mark used to indicate the starting point for the next set of
-    ///   result. Optional.
+    ///   - cursor: The mark used to indicate the starting point for the next set
+    ///   of result. Optional.
     /// - Returns: An array of feed generators, with an optional cursor to extend the array.
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to

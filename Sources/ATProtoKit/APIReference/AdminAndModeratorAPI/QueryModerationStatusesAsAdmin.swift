@@ -54,8 +54,8 @@ extension ATProtoAdmin {
     ///   added tags. Optional.
     ///   - excludeTags: An array of tags that makes the list display events that doesn't contain
     ///   the added tags. Optional.
-    ///   - cursor: The mark used to indicate the starting point for the next set of
-    ///   results. Optional.
+    ///   - cursor: The mark used to indicate the starting point for the next set
+    ///   of results. Optional.
     /// - Returns: An array of all moderation events pertaining a subject, with an optional cursor
     /// to extend the array.
     ///

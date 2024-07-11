@@ -25,8 +25,8 @@ extension ATProtoKit {
     /// - Parameters:
     ///   - feedURI: The URI of the feed generator.
     ///   - limit: The number of items that can be in the list. Optional. Defaults to `50`.
-    ///   - cursor: The mark used to indicate the starting point for the next set of
-    ///   result. Optional.
+    ///   - cursor: The mark used to indicate the starting point for the next set
+    ///   of results. Optional.
     ///   - accessToken: The token used to authenticate the user. Optional.
     ///   - pdsURL: The URL of the Personal Data Server (PDS).
     /// - Returns: An array of skeleton feeds, with an optional cursor to extend the array.

@@ -22,8 +22,8 @@ extension ATProtoKit {
     ///
     /// - Parameters:
     ///   - limit: The number of repositories that can be in the list. Optional. Defaults to `500`.
-    ///   - cursor: The mark used to indicate the starting point for the next set of
-    ///   results. Optional.
+    ///   - cursor: The mark used to indicate the starting point for the next set
+    ///   of results. Optional.
     ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `nil`.
     /// - Returns: An array of repositories, with an optional cursor to extend the array.
     ///

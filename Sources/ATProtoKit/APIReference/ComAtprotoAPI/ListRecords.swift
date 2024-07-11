@@ -22,8 +22,8 @@ extension ATProtoKit {
     ///   - repositoryDID: The decentralized identifier (DID) or handle of the repository.
     ///   - collection: The Namespaced Identifier (NSID) of the repository.
     ///   - limit: The number of items that can be in the list. Optional. Defaults to `50`.
-    ///   - cursor: The mark used to indicate the starting point for the next set of
-    ///   result. Optional.
+    ///   - cursor: The mark used to indicate the starting point for the next set
+    ///   of results. Optional.
     ///   - isArrayReverse: Indicates whether the list of records is listed in reverse. Optional.
     ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `nil`.
     /// - Returns: An array of records, with an optional cursor to extend the array.

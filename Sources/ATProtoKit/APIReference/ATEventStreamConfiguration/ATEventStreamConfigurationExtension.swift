@@ -42,7 +42,8 @@ extension ATEventStreamConfiguration {
     /// This method can only be used if the client didn't disconnect itself from the server.
     ///
     /// - Parameters:
-    ///   - cursor: The mark used to indicate the starting point for the next set of results. Optional.
+    ///   - cursor: The mark used to indicate the starting point for the next set
+    ///   of results. Optional.
     ///   - retry: The number of times the connection attempts can be retried.
     public func reconnect(cursor: Int64?, retry: Int) async {
         guard isConnected == false else {

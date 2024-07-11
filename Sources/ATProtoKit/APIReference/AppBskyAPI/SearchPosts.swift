@@ -37,8 +37,8 @@ extension ATProtoKit {
     ///   - tags: An array of tags to be used against the results. Optional.
     ///   - limit: The number of suggested users to follow. Optional. Defaults to `25`.
     ///   Can only choose between `1` and `100`.
-    ///   - cursor: The mark used to indicate the starting point for the next set of
-    ///   results. Optional.
+    ///   - cursor: The mark used to indicate the starting point for the next set
+    ///   of results. Optional.
     /// - Returns: An array of post records in the results, with an optional cursor to expand
     /// the array. The output may also display the total number of search results.
     ///

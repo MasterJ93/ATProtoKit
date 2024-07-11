@@ -22,8 +22,8 @@ extension ATProtoKit {
     ///   - postURI: The URI of the post record.
     ///   - postCID: The CID hasg of the post record. Optional.
     ///   - limit: The number of items that can be in the list. Optional. Defaults to `50`.
-    ///   - cursor: The mark used to indicate the starting point for the next set of
-    ///   result. Optional.
+    ///   - cursor: The mark used to indicate the starting point for the next set
+    ///   of results. Optional.
     /// - Returns: An array of user accounts who reposted the post record, with an optional cursor
     /// for extending the array, and the URI and CID hash of the post record.
     ///

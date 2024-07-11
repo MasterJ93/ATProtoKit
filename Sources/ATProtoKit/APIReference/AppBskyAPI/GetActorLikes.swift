@@ -26,8 +26,8 @@ extension ATProtoKit {
     /// - Parameters:
     ///   - actorDID: The decentralized identifier (DID) of the user account.
     ///   - limit: The number of items the list will hold. Optional. Defaults to `50`.
-    ///   - cursor: The mark used to indicate the starting point for the next set of
-    ///   result. Optional.
+    ///   - cursor: The mark used to indicate the starting point for the next set
+    ///   of results. Optional.
     /// - Returns: An array of like records from the user account, with an optional cursor
     /// for extending the array.
     ///

@@ -21,8 +21,8 @@ extension ATProtoKit {
     /// - Parameters:
     ///   - actorDID: The decentralized identifier (DID) of the user who created the feeds.
     ///   - limit: The number of items that can be in the list. Optional. Defaults to `50`.
-    ///   - cursor: The mark used to indicate the starting point for the next set of
-    ///   result. Optional.
+    ///   - cursor: The mark used to indicate the starting point for the next set
+    ///   of results. Optional.
     /// - Returns: An array of feeds created by the user account, as well as an optional cursor
     /// to extend the array.
     ///

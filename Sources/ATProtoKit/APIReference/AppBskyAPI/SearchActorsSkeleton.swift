@@ -26,8 +26,8 @@ extension ATProtoKit {
     ///   boosting followed accounts in rankings.
     ///   - canTypeAhead: Indicates whether the results can be typed ahead. Optional.
     ///   - limit: The number of items that can be in the list. Optional. Defaults to `25`.
-    ///   - cursor: The mark used to indicate the starting point for the next set of
-    ///   result. Optional.
+    ///   - cursor: The mark used to indicate the starting point for the next set
+    ///   of results. Optional.
     /// - Returns: An array of actors, with an optional cursor to expand the array. The output
     /// may also display the number of search results.
     ///
