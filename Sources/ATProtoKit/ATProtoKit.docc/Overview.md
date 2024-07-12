@@ -38,6 +38,8 @@ Task {
 }
 ```
 
+ATProtoKit is fully open source under the [MIT license](https://github.com/MasterJ93/ATProtoKit/blob/main/LICENSE.md). You can take a look at it and make contributions to it [on GitHub](https://github.com/MasterJ93/ATProtoKit).
+
 ## What's New in ATProtoKit
 @Links(visualStyle: detailedGrid) {
     - <doc:getRecordTutorial>
