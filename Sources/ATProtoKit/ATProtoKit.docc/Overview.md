@@ -38,7 +38,7 @@ Task {
 }
 ```
 
-ATProtoKit is fully open source under the [MIT license](https://github.com/MasterJ93/ATProtoKit/blob/main/LICENSE.md). You can take a look at it and make contributions to it [on GitHub](https://github.com/MasterJ93/ATProtoKit).
+ATProtoKit is fully open source under the [MIT license](https://github.com/MasterJ93/ATProtoKit/blob/main/LICENSE.md). You can take a look at it and make contributions to it [on GitHub](https://github.com/MasterJ93/ATProtoKit). Some of the documentation has been copied or adapted from [Bluesky's atproto repo](https://github.com/bluesky-social/atproto). ATProtoKit adopts the [MIT license](https://github.com/MasterJ93/ATProtoKit/blob/main/ATProtoLicense/ATPROTO-LICENSE.txt) from their repo.
 
 ## What's New in ATProtoKit
 @Links(visualStyle: detailedGrid) {
