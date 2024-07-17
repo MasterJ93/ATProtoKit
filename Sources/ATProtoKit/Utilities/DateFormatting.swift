@@ -13,28 +13,49 @@ struct CustomDateFormatter {
     /// A shared, singleton instance for global access.
     static let shared = CustomDateFormatter()
 
-    /// The internal ISO8601DateFormatter instance.
-    private let dateFormatter: ISO8601DateFormatter
+    /// An array of date formatters for various supported formats.
+    private let dateFormatters: [DateFormatter]
 
     /// A private initializer to enforce singleton usage.
     private init() {
-        dateFormatter = ISO8601DateFormatter()
-        // Ensure the dateFormatter can parse dates with fractional seconds.
-        dateFormatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
+        let formats = [
+            "yyyy-MM-dd'T'HH:mm:ss.SSSXXXXX",        // preferred
+            "yyyy-MM-dd'T'HH:mm:ss.SSSSSSXXXXX",
+            "yyyy-MM-dd'T'HH:mm:ss.SSS",
+            "yyyy-MM-dd'T'HH:mm:ss.SSSSSS",
+            "yyyy-MM-dd'T'HH:mm:ss.SSSSSSSSSSSXXXXX", // supported
+            "yyyy-MM-dd'T'HH:mm:ssXXXXX",
+            "yyyy-MM-dd'T'HH:mm:ss.SXXXXX",
+            "yyyy-MM-dd'T'HH:mm:ss.SSSXXXXX",
+            "yyyy-MM-dd'T'HH:mm:ss.SSSXXXXX" // already included above but just for clarity
+        ]
+
+        dateFormatters = formats.map { format in
+            let formatter = DateFormatter()
+            formatter.dateFormat = format
+            formatter.locale = Locale(identifier: "en_US_POSIX")
+            formatter.timeZone = TimeZone(secondsFromGMT: 0)
+            return formatter
+        }
     }
 
     /// Converts a `Date` object to a `String` representation.
     /// - Parameter date: The `Date` object to format.
     /// - Returns: A `String` representation of the given `Date` object, or `nil` if the conversion fails.
     func string(from date: Date) -> String? {
-        return dateFormatter.string(from: date)
+        return dateFormatters.first?.string(from: date)
     }
-    
+
     /// Parses a string into a `Date` object according to the ISO8601 format.
     /// - Parameter string: The string representation of the date.
     /// - Returns: A `Date` object if the string can be successfully parsed, otherwise `nil`.
     func date(from string: String) -> Date? {
-        return dateFormatter.date(from: string)
+        for formatter in dateFormatters {
+            if let date = formatter.date(from: string) {
+                return date
+            }
+        }
+        return nil
     }
 }
 
