@@ -892,10 +892,26 @@ extension AppBskyLexicon.Actor {
         /// An array of intended targets for the muted word.
         public let targets: [MutedWordTarget]
 
+        /// Determines whether the muted word applies to all or a select array of user accounts.
+        ///
+        /// If this field if left as `nil`, then the muted word will apply to all user accounts.
+        ///
+        /// - Note: According to the AT Protocol specifications: ""Groups of users to apply the
+        /// muted word to. If undefined, applies to all users."
+        public let actorTarget: ActorTarget?
+
+        /// The date and time the muted word will no longer be in the user account's list.
+        ///
+        /// - Note: According to the AT Protocol specifications: "The date and time at which the
+        /// muted word will expire and no longer be applied."
+        @DateFormattingOptional public var expiresAt: Date?
+
         @_documentation(visibility: private)
-        public init(value: String, targets: [MutedWordTarget]) {
+        public init(value: String, targets: [MutedWordTarget], actorTarget: ActorTarget?, expiresAt: Date?) {
             self.value = value
             self.targets = targets
+            self.actorTarget = actorTarget
+            self._expiresAt = DateFormattingOptional(wrappedValue: expiresAt)
         }
 
         public init(from decoder: Decoder) throws {
@@ -903,6 +919,8 @@ extension AppBskyLexicon.Actor {
 
             self.value = try container.decode(String.self, forKey: .value)
             self.targets = try container.decode([MutedWordTarget].self, forKey: .targets)
+            self.actorTarget = try container.decodeIfPresent(ActorTarget.self, forKey: .actorTarget)
+            self.expiresAt = try container.decodeIfPresent(DateFormattingOptional.self, forKey: .expiresAt)?.wrappedValue
         }
 
         @_documentation(visibility: private)
@@ -913,11 +931,25 @@ extension AppBskyLexicon.Actor {
             // `maxGraphemes`'s limit is 100, but `String.count` should respect that limit
             try truncatedEncode(self.value, withContainer: &container, forKey: .value, upToCharacterLength: 100)
             try container.encode(self.targets, forKey: .targets)
+            try container.encodeIfPresent(self.actorTarget, forKey: .actorTarget)
+            try container.encodeIfPresent(self._expiresAt, forKey: .expiresAt)
         }
 
         enum CodingKeys: CodingKey {
             case value
             case targets
+            case actorTarget
+            case expiresAt
+        }
+
+        /// An array of user accounts that the muted word applies to.
+        public enum ActorTarget: String, Codable {
+
+            /// The muted word applies to everyone.
+            case all
+
+            /// The muted word applies to everyone but a select array of user accounts.
+            case excludeFollowing = "exclude-following"
         }
     }
 
