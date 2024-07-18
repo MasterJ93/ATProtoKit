@@ -123,7 +123,7 @@ public struct ATUnion {
     public enum RecordViewUnion: Codable {
 
         /// A normal record type.
-        case viewRecord(AppBskyLexicon.Embed.RecordDefinition)
+        case viewRecord(AppBskyLexicon.Embed.RecordDefinition.ViewRecord)
 
         /// A record that may not have been found.
         case viewNotFound(AppBskyLexicon.Embed.RecordDefinition.ViewNotFound)
@@ -146,7 +146,7 @@ public struct ATUnion {
         public init(from decoder: Decoder) throws {
             let container = try decoder.singleValueContainer()
 
-            if let value = try? container.decode(AppBskyLexicon.Embed.RecordDefinition.self) {
+            if let value = try? container.decode(AppBskyLexicon.Embed.RecordDefinition.ViewRecord.self) {
                 self = .viewRecord(value)
             } else if let value = try? container.decode(AppBskyLexicon.Embed.RecordDefinition.ViewNotFound.self) {
                 self = .viewNotFound(value)
