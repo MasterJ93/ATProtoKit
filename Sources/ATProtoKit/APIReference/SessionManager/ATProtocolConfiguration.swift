@@ -36,6 +36,9 @@ public class ATProtocolConfiguration: ProtocolConfiguration {
     /// Specifies the highest level of logs that will be outputted. Optional. Defaults to `.info`.
     public let logLevel: Logger.Level?
 
+    /// Specifies the logger that will be used for emitting log messages.
+    private static var sharedLogger: Logger?
+
     /// Initializes a new instance of `ATProtocolConfiguration`, which assembles a new session
     /// for the user account.
     ///
@@ -63,16 +66,20 @@ public class ATProtocolConfiguration: ProtocolConfiguration {
         self.logCategory = logCategory ?? "ATProtoKit"
         self.logLevel = logLevel
 
-        #if canImport(os)
-        LoggingSystem.bootstrap { label in
-            ATLogHandler(subsystem: label, category: logCategory ?? "ATProtoKit")
-        }
-        #else
-        LoggingSystem.bootstrap(StreamLogHandler.standardOutput)
-        #endif
+            if ATProtocolConfiguration.sharedLogger == nil {
+                #if canImport(os)
+                LoggingSystem.bootstrap { label in
+                    ATLogHandler(subsystem: label, category: logCategory ?? "ATProtoKit")
+                }
+                #else
+                LoggingSystem.bootstrap(StreamLogHandler.standardOutput)
+                #endif
 
-        logger = Logger(label: logIdentifier ?? "com.cjrriley.ATProtoKit")
-        logger?.logLevel = logLevel ?? .info
+                ATProtocolConfiguration.sharedLogger = Logger(label: self.logIdentifier ?? "com.cjrriley.ATProtoKit")
+                ATProtocolConfiguration.sharedLogger?.logLevel = logLevel ?? .info
+            }
+
+            self.logger = ATProtocolConfiguration.sharedLogger
     }
     
     /// Attempts to authenticate the user into the server.
