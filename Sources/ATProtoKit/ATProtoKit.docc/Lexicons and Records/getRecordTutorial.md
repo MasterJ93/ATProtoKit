@@ -23,7 +23,7 @@ do {
 
 There's one required parameter used tell the method which `struct` to decode the JSON response to. Make sure you add `.self` at the end of the name of the `struct`.
 
-These are all of the requirements of `getRecord()`. Uou can continue to chain the properties as normal.
+These are all of the requirements of `getRecord()`. You can continue to chain the properties as normal.
 
 ## See Also
 
