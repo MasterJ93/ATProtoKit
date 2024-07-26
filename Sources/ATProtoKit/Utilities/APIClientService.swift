@@ -7,12 +7,21 @@
 
 import Foundation
 
-/// A helper class to handle the most common HTTP Requests for the AT Protocol.
+/// A helper class to handle the most common HTTP requests for the AT Protocol.
 public class APIClientService {
-    private init() {}
+
+    /// A `URLSession` object for use in all HTTP requests.
+    public let urlSession: URLSession
+
+    /// Creates an instance for use in accepting and returning API requests and
+    /// responses respectively.
+    public init(configuration: URLSessionConfiguration = .default) {
+        self.urlSession = URLSession(configuration: configuration)
+    }
 
 // MARK: Creating requests -
     /// Creates a `URLRequest` with specified parameters.
+    ///
     /// - Parameters:
     ///   - requestURL: The URL for the request.
     ///   - httpMethod: The HTTP method to use (GET, POST, PUT, DELETE).
@@ -60,7 +69,7 @@ public class APIClientService {
         return request
     }
 
-    static func encode<T: Encodable>(_ jsonData: T) async throws -> Data {
+    func encode<T: Encodable>(_ jsonData: T) async throws -> Data {
         guard let httpBody = try? JSONSerialization.data(withJSONObject: jsonData) else {
             throw ATHTTPRequestError.unableToEncodeRequestBody
         }
@@ -69,11 +78,12 @@ public class APIClientService {
 
 
     /// Sets query items for a given URL.
+    ///
     /// - Parameters:
     ///   - requestURL: The base URL to append query items to.
     ///   - queryItems: An array of key-value pairs to be set as query items.
     /// - Returns: A new URL with the query items appended.
-    public static func setQueryItems(for requestURL: URL, with queryItems: [(String, String)]) throws -> URL {
+    public func setQueryItems(for requestURL: URL, with queryItems: [(String, String)]) throws -> URL {
         var components = URLComponents(url: requestURL, resolvingAgainstBaseURL: true)
 
         // Map out each URLQueryItem with the key ($0.0) and value ($0.1) of the item.
@@ -87,24 +97,26 @@ public class APIClientService {
 
 // MARK: Sending requests -
     /// Sends a `URLRequest` and decodes the response to a specified `Decodable` type.
+    ///
     /// - Parameters:
     ///   - request: The `URLRequest` to send.
     ///   - body: An optional `Encodable` body to be encoded and attached to the request.
     ///   - decodeTo: The type to decode the response into.
     /// - Returns: An instance of the specified `Decodable` type.
-    public static func sendRequest<T: Decodable>(_ request: URLRequest, withEncodingBody body: Encodable? = nil, decodeTo: T.Type) async throws -> T {
-        let (data, _) = try await performRequest(request, withEncodingBody: body)
+    public func sendRequest<T: Decodable>(_ request: URLRequest, withEncodingBody body: Encodable? = nil, decodeTo: T.Type) async throws -> T {
+        let (data, _) = try await self.performRequest(request, withEncodingBody: body)
 
         let decodedData = try JSONDecoder().decode(T.self, from: data)
         return decodedData
     }
 
     /// Sends a `URLRequest` without expecting a specific decoded response type.
+    ///
     /// - Parameters:
     ///   - request: The `URLRequest` to send.
     ///   - body: An optional `Encodable` body to be encoded and attached to the request.
-    public static func sendRequest(_ request: URLRequest, withEncodingBody body: Encodable? = nil) async throws {
-        _ = try await performRequest(request, withEncodingBody: body)
+    public func sendRequest(_ request: URLRequest, withEncodingBody body: Encodable? = nil) async throws {
+        _ = try await self.performRequest(request, withEncodingBody: body)
     }
 
     /// Sends a `URLRequest` in order to receive a data object.
@@ -117,8 +129,8 @@ public class APIClientService {
     /// more appropriate.
     /// - Parameter request: The `URLRequest` to send.
     /// - Returns: A `Data` object that contains the blob.
-    public static func sendRequest(_ request: URLRequest) async throws -> Data {
-        let (data, _) = try await performRequest(request)
+    public func sendRequest(_ request: URLRequest) async throws -> Data {
+        let (data, _) = try await self.performRequest(request)
         return data
     }
 
@@ -139,24 +151,24 @@ public class APIClientService {
     ///   - filename: The filename of the blob to upload.
     ///   - imageData: The data of the blob to upload.
     /// - Returns: A `BlobContainer` instance with the upload result.
-    public static func uploadBlob(pdsURL: String = "https://bsky.social", accessToken: String, filename: String,
+    public func uploadBlob(pdsURL: String = "https://bsky.social", accessToken: String, filename: String,
                                   imageData: Data) async throws -> ComAtprotoLexicon.Repository.BlobContainer {
          guard let requestURL = URL(string: "\(pdsURL)/xrpc/com.atproto.repo.uploadBlob") else {
              throw ATRequestPrepareError.invalidRequestURL
          }
 
-        let mimeType = mimeType(for: filename)
+        let mimeType = APIClientService.mimeType(for: filename)
 
         do {
-            var request = createRequest(
+            var request = APIClientService.createRequest(
                 forRequest: requestURL,
                 andMethod: .post,
                 contentTypeValue: mimeType,
                 authorizationValue: "Bearer \(accessToken)")
             request.httpBody = imageData
 
-            let response = try await sendRequest(request,
-                                                 decodeTo: ComAtprotoLexicon.Repository.BlobContainer.self)
+            let response = try await self.sendRequest(request,
+                                                      decodeTo: ComAtprotoLexicon.Repository.BlobContainer.self)
 
             return response
         } catch {
@@ -170,7 +182,7 @@ public class APIClientService {
     ///   - request: The `URLRequest` to send.
     ///   - body: An optional `Encodable` body to be encoded and attached to the request.
     /// - Returns: A `Dictionary` representation of the JSON response.
-    public static func sendRequestWithRawJSONOutput(_ request: URLRequest, withEncodingBody body: Encodable? = nil) async throws -> [String: Any] {
+    public func sendRequestWithRawJSONOutput(_ request: URLRequest, withEncodingBody body: Encodable? = nil) async throws -> [String: Any] {
         var urlRequest = request
 
         // Encode the body to JSON data if it's not nil
@@ -230,7 +242,7 @@ public class APIClientService {
     ///   - request: The `URLRequest` to send.
     ///   - body: An optional `Encodable` body to be encoded and attached to the request.
     /// - Returns: A tuple containing the data and the HTTPURLResponse.
-    private static func performRequest(_ request: URLRequest, withEncodingBody body: Encodable? = nil) async throws -> (Data, HTTPURLResponse) {
+    private func performRequest(_ request: URLRequest, withEncodingBody body: Encodable? = nil) async throws -> (Data, HTTPURLResponse) {
         var urlRequest = request
 
         if let body = body {
