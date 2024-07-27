@@ -11,7 +11,10 @@ import Foundation
 public class APIClientService {
 
     /// The `URLSession` instance to be used for network requests.
-    public let urlSession: URLSession
+    private(set) var urlSession: URLSession
+
+    /// A `URLSession` object for use in all HTTP requests.
+    public static let shared = APIClientService()
 
     /// Creates an instance for use in accepting and returning API requests and
     /// responses respectively.
@@ -20,6 +23,13 @@ public class APIClientService {
     /// Defaults to `.default`.
     public init(configuration: URLSessionConfiguration = .default) {
         self.urlSession = URLSession(configuration: configuration)
+    }
+
+    /// Configures the singleton instance with a custom `URLSessionConfiguration`.
+    ///
+    /// - Parameter configuration: An instance of `URLSessionConfiguration`.
+    public static func configure(with configuration: URLSessionConfiguration) {
+        shared.urlSession = URLSession(configuration: configuration)
     }
 
 // MARK: Creating requests -

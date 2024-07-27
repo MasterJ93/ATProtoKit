@@ -64,13 +64,14 @@ public class ATProtocolConfiguration: ProtocolConfiguration {
         logIdentifier: String? = nil,
         logCategory: String? = nil,
         logLevel: Logger.Level? = .info) {
-        self.handle = handle
-        self.appPassword = appPassword
-        self.pdsURL = !pdsURL.isEmpty ? pdsURL : "https://bsky.social"
-        self.configuration = configuration
-        self.logIdentifier = logIdentifier ?? Bundle.main.bundleIdentifier ?? "com.cjrriley.ATProtoKit"
-        self.logCategory = logCategory ?? "ATProtoKit"
-        self.logLevel = logLevel
+            self.handle = handle
+            self.appPassword = appPassword
+            self.pdsURL = !pdsURL.isEmpty ? pdsURL : "https://bsky.social"
+            self.configuration = configuration
+            self.logIdentifier = logIdentifier ?? Bundle.main.bundleIdentifier ?? "com.cjrriley.ATProtoKit"
+            self.logCategory = logCategory ?? "ATProtoKit"
+            self.logLevel = logLevel
+
 
             if ATProtocolConfiguration.sharedLogger == nil {
                 #if canImport(os)
@@ -86,6 +87,10 @@ public class ATProtocolConfiguration: ProtocolConfiguration {
             }
 
             self.logger = ATProtocolConfiguration.sharedLogger
+
+            APIClientService.configure(with: self.configuration)
+
+
     }
     
     /// Attempts to authenticate the user into the server.
