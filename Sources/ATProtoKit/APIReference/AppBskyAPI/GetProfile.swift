@@ -66,12 +66,16 @@ extension ATProtoKit {
                 with: queryItems
             )
 
-            let request = APIClientService.createRequest(forRequest: queryURL,
-                                                         andMethod: .get,
-                                                         contentTypeValue: nil,
-                                                         authorizationValue: authorizationValue)
-            let result = try await APIClientService.sendRequest(request,
-                                                                decodeTo: AppBskyLexicon.Actor.ProfileViewDetailedDefinition.self)
+            let request = APIClientService.createRequest(
+                forRequest: queryURL,
+                andMethod: .get,
+                contentTypeValue: nil,
+                authorizationValue: authorizationValue
+            )
+            let result = try await APIClientService.shared.sendRequest(
+                request,
+                decodeTo: AppBskyLexicon.Actor.ProfileViewDetailedDefinition.self
+            )
 
             return result
         } catch {

@@ -41,14 +41,18 @@ extension ATProtoAdmin {
         )
 
         do {
-            let request = APIClientService.createRequest(forRequest: requestURL,
-                                                         andMethod: .post,
-                                                         acceptValue: "application/json",
-                                                         contentTypeValue: "application/json",
-                                                         authorizationValue: "Bearer \(accessToken)")
+            let request = APIClientService.createRequest(
+                forRequest: requestURL,
+                andMethod: .post,
+                acceptValue: "application/json",
+                contentTypeValue: "application/json",
+                authorizationValue: "Bearer \(accessToken)"
+            )
 
-            _ = try await APIClientService.sendRequest(request,
-                                                       withEncodingBody: requestBody)
+            _ = try await APIClientService.shared.sendRequest(
+                request,
+                withEncodingBody: requestBody
+            )
         } catch {
             throw error
         }

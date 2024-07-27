@@ -34,13 +34,17 @@ extension ATProtoKit {
         }
 
         do {
-            let request = APIClientService.createRequest(forRequest: requestURL,
-                                                         andMethod: .post,
-                                                         acceptValue: "application/json",
-                                                         contentTypeValue: nil,
-                                                         authorizationValue: "Bearer \(accessToken)")
-            let response = try await APIClientService.sendRequest(request,
-                                                                  decodeTo: ComAtprotoLexicon.Server.RequestEmailUpdateOutput.self)
+            let request = APIClientService.createRequest(
+                forRequest: requestURL,
+                andMethod: .post,
+                acceptValue: "application/json",
+                contentTypeValue: nil,
+                authorizationValue: "Bearer \(accessToken)"
+            )
+            let response = try await APIClientService.shared.sendRequest(
+                request,
+                decodeTo: ComAtprotoLexicon.Server.RequestEmailUpdateOutput.self
+            )
 
             return response
         } catch {

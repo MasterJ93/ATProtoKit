@@ -58,11 +58,15 @@ extension ATProtoKit {
                 with: queryItems
             )
 
-            let request = APIClientService.createRequest(forRequest: queryURL,
-                                                         andMethod: .get,
-                                                         authorizationValue: nil)
-            let response = try await APIClientService.sendRequest(request,
-                                                                  decodeTo: ComAtprotoLexicon.Repository.GetRecordOutput.self)
+            let request = APIClientService.createRequest(
+                forRequest: queryURL,
+                andMethod: .get,
+                authorizationValue: nil
+            )
+            let response = try await APIClientService.shared.sendRequest(
+                request,
+                decodeTo: ComAtprotoLexicon.Repository.GetRecordOutput.self
+            )
 
             return response
         } catch {

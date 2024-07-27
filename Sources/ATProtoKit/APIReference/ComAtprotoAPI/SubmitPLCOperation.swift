@@ -34,13 +34,17 @@ extension ATProtoKit {
         )
 
         do {
-            let request = APIClientService.createRequest(forRequest: requestURL,
-                                                         andMethod: .post,
-                                                         acceptValue: "application/json",
-                                                         contentTypeValue: nil,
-                                                         authorizationValue: nil)
-            try await APIClientService.sendRequest(request,
-                                                   withEncodingBody: requestBody)
+            let request = APIClientService.createRequest(
+                forRequest: requestURL,
+                andMethod: .post,
+                acceptValue: "application/json",
+                contentTypeValue: nil,
+                authorizationValue: nil
+            )
+            try await APIClientService.shared.sendRequest(
+                request,
+                withEncodingBody: requestBody
+            )
         } catch {
             throw error
         }

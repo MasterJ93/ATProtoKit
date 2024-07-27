@@ -49,13 +49,17 @@ extension ATProtoKit {
                 with: queryItems
             )
 
-            let request = APIClientService.createRequest(forRequest: queryURL,
-                                                         andMethod: .get,
-                                                         acceptValue: "application/json",
-                                                         contentTypeValue: nil,
-                                                         authorizationValue: "Bearer \(accessToken)")
-            let response = try await APIClientService.sendRequest(request,
-                                                                  decodeTo: AppBskyLexicon.Feed.GetFeedGeneratorsOutput.self)
+            let request = APIClientService.createRequest(
+                forRequest: queryURL,
+                andMethod: .get,
+                acceptValue: "application/json",
+                contentTypeValue: nil,
+                authorizationValue: "Bearer \(accessToken)"
+            )
+            let response = try await APIClientService.shared.sendRequest(
+                request,
+                decodeTo: AppBskyLexicon.Feed.GetFeedGeneratorsOutput.self
+            )
 
             return response
         } catch {

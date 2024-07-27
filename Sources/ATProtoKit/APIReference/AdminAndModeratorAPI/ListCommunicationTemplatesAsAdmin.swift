@@ -37,13 +37,17 @@ extension ATProtoAdmin {
         }
 
         do {
-            let request = APIClientService.createRequest(forRequest: requestURL,
-                                                         andMethod: .get,
-                                                         acceptValue: "application/json",
-                                                         contentTypeValue: nil,
-                                                         authorizationValue: "Bearer \(accessToken)")
-            let response = try await APIClientService.sendRequest(request,
-                                                                  decodeTo: ToolsOzoneLexicon.Communication.ListTemplatesOutput.self)
+            let request = APIClientService.createRequest(
+                forRequest: requestURL,
+                andMethod: .get,
+                acceptValue: "application/json",
+                contentTypeValue: nil,
+                authorizationValue: "Bearer \(accessToken)"
+            )
+            let response = try await APIClientService.shared.sendRequest(
+                request,
+                decodeTo: ToolsOzoneLexicon.Communication.ListTemplatesOutput.self
+            )
 
             return response
         } catch {

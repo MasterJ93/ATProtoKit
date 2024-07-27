@@ -33,13 +33,17 @@ extension ATProtoKit {
         }
 
         do {
-            let request = APIClientService.createRequest(forRequest: requestURL,
-                                                         andMethod: .get,
-                                                         acceptValue: "application/json",
-                                                         contentTypeValue: nil,
-                                                         authorizationValue: nil)
-            let response = try await APIClientService.sendRequest(request,
-                                                                  decodeTo: AppBskyLexicon.Unspecced.GetTaggedSuggestionsOutput.self)
+            let request = APIClientService.createRequest(
+                forRequest: requestURL,
+                andMethod: .get,
+                acceptValue: "application/json",
+                contentTypeValue: nil,
+                authorizationValue: nil
+            )
+            let response = try await APIClientService.shared.sendRequest(
+                request,
+                decodeTo: AppBskyLexicon.Unspecced.GetTaggedSuggestionsOutput.self
+            )
 
             return response
         } catch {

@@ -76,12 +76,16 @@ extension ATProtoKit {
                 with: queryItems
             )
 
-            let request = APIClientService.createRequest(forRequest: queryURL,
-                                                         andMethod: .get,
-                                                         acceptValue: "application/json",
-                                                         authorizationValue: authorizationValue)
-            let response = try await APIClientService.sendRequest(request,
-                                                                  decodeTo: AppBskyLexicon.Actor.SearchActorsTypeaheadOutput.self)
+            let request = APIClientService.createRequest(
+                forRequest: queryURL,
+                andMethod: .get,
+                acceptValue: "application/json",
+                authorizationValue: authorizationValue
+            )
+            let response = try await APIClientService.shared.sendRequest(
+                request,
+                decodeTo: AppBskyLexicon.Actor.SearchActorsTypeaheadOutput.self
+            )
 
             return response
         } catch {

@@ -43,14 +43,18 @@ extension ATProtoKit {
         )
 
         do {
-            let request = APIClientService.createRequest(forRequest: requestURL,
-                                                         andMethod: .get,
-                                                         acceptValue: nil,
-                                                         contentTypeValue: "application/vnd.ipld.car",
-                                                         authorizationValue: nil)
+            let request = APIClientService.createRequest(
+                forRequest: requestURL,
+                andMethod: .get,
+                acceptValue: nil,
+                contentTypeValue: "application/vnd.ipld.car",
+                authorizationValue: nil
+            )
 
-            try await APIClientService.sendRequest(request,
-                                                   withEncodingBody: requestBody)
+            try await APIClientService.shared.sendRequest(
+                request,
+                withEncodingBody: requestBody
+            )
         } catch {
             throw error
         }

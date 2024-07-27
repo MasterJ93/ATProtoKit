@@ -50,12 +50,14 @@ extension ATProtoKit {
                 with: queryItems
             )
 
-            let request = APIClientService.createRequest(forRequest: queryURL,
-                                                         andMethod: .get,
-                                                         acceptValue: "'*/*'",
-                                                         contentTypeValue: nil,
-                                                         authorizationValue: nil)
-            let response = try await APIClientService.sendRequest(request)
+            let request = APIClientService.createRequest(
+                forRequest: queryURL,
+                andMethod: .get,
+                acceptValue: "'*/*'",
+                contentTypeValue: nil,
+                authorizationValue: nil
+            )
+            let response = try await APIClientService.shared.sendRequest(request)
 
             return response
         } catch {

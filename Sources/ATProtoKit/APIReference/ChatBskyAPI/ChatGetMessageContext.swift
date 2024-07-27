@@ -69,14 +69,18 @@ extension ATProtoBlueskyChat {
                 with: queryItems
             )
 
-            let request = APIClientService.createRequest(forRequest: queryURL,
-                                                         andMethod: .get,
-                                                         acceptValue: "application/json",
-                                                         contentTypeValue: "application/json",
-                                                         authorizationValue: "Bearer \(accessToken)",
-                                                         isRelatedToBskyChat: true)
-            let response = try await APIClientService.sendRequest(request,
-                                                                  decodeTo: ChatBskyLexicon.Moderation.GetMessageContextOutput.self)
+            let request = APIClientService.createRequest(
+                forRequest: queryURL,
+                andMethod: .get,
+                acceptValue: "application/json",
+                contentTypeValue: "application/json",
+                authorizationValue: "Bearer \(accessToken)",
+                isRelatedToBskyChat: true
+            )
+            let response = try await APIClientService.shared.sendRequest(
+                request,
+                decodeTo: ChatBskyLexicon.Moderation.GetMessageContextOutput.self
+            )
 
             return response
         } catch {

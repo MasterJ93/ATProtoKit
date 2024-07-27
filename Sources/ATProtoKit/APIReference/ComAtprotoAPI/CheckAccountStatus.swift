@@ -33,12 +33,16 @@ extension ATProtoKit {
         }
 
         do {
-            let request = APIClientService.createRequest(forRequest: requestURL,
-                                                         andMethod: .get,
-                                                         contentTypeValue: nil,
-                                                         authorizationValue: nil)
-            let response = try await APIClientService.sendRequest(request,
-                                                                  decodeTo: ComAtprotoLexicon.Server.CheckAccountStatusOutput.self)
+            let request = APIClientService.createRequest(
+                forRequest: requestURL,
+                andMethod: .get,
+                contentTypeValue: nil,
+                authorizationValue: nil
+            )
+            let response = try await APIClientService.shared.sendRequest(
+                request,
+                decodeTo: ComAtprotoLexicon.Server.CheckAccountStatusOutput.self
+            )
 
             return response
         } catch {

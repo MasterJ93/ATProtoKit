@@ -80,13 +80,17 @@ extension ATProtoKit {
                 with: queryItems
             )
 
-            let request = APIClientService.createRequest(forRequest: queryURL,
-                                                         andMethod: .post,
-                                                         acceptValue: "application/json",
-                                                         contentTypeValue: nil,
-                                                         authorizationValue: authorizationValue)
-            let response = try await APIClientService.sendRequest(request,
-                                                                  decodeTo: ComAtprotoLexicon.Label.QueryLabelsOutput.self)
+            let request = APIClientService.createRequest(
+                forRequest: queryURL,
+                andMethod: .post,
+                acceptValue: "application/json",
+                contentTypeValue: nil,
+                authorizationValue: authorizationValue
+            )
+            let response = try await APIClientService.shared.sendRequest(
+                request,
+                decodeTo: ComAtprotoLexicon.Label.QueryLabelsOutput.self
+            )
 
             return response
         } catch {

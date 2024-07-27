@@ -46,13 +46,17 @@ extension ATProtoKit {
                 with: queryItems
             )
 
-            let request = APIClientService.createRequest(forRequest: queryURL,
-                                                         andMethod: .get,
-                                                         acceptValue: "application/vnd.ipld.car",
-                                                         contentTypeValue: nil,
-                                                         authorizationValue: nil)
-            let response = try await APIClientService.sendRequest(request,
-                                                                  decodeTo: ComAtprotoLexicon.Sync.GetLatestCommitOutput.self)
+            let request = APIClientService.createRequest(
+                forRequest: queryURL,
+                andMethod: .get,
+                acceptValue: "application/vnd.ipld.car",
+                contentTypeValue: nil,
+                authorizationValue: nil
+            )
+            let response = try await APIClientService.shared.sendRequest(
+                request,
+                decodeTo: ComAtprotoLexicon.Sync.GetLatestCommitOutput.self
+            )
 
             return response
         } catch {

@@ -41,14 +41,18 @@ extension ATProtoKit {
         )
 
         do {
-            let request = APIClientService.createRequest(forRequest: requestURL,
-                                                         andMethod: .post,
-                                                         acceptValue: "application/json",
-                                                         contentTypeValue: "application/json",
-                                                         authorizationValue: nil)
-            let response = try await APIClientService.sendRequest(request,
-                                                                  withEncodingBody: requestBody,
-                                                                  decodeTo: ComAtprotoLexicon.Server.ReserveSigningKeyOutput.self)
+            let request = APIClientService.createRequest(
+                forRequest: requestURL,
+                andMethod: .post,
+                acceptValue: "application/json",
+                contentTypeValue: "application/json",
+                authorizationValue: nil
+            )
+            let response = try await APIClientService.shared.sendRequest(
+                request,
+                withEncodingBody: requestBody,
+                decodeTo: ComAtprotoLexicon.Server.ReserveSigningKeyOutput.self
+            )
 
             return response
         } catch {

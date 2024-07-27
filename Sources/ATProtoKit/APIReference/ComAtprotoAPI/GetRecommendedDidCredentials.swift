@@ -30,13 +30,17 @@ extension ATProtoKit {
         }
 
         do {
-            let request = APIClientService.createRequest(forRequest: requestURL,
-                                                         andMethod: .get,
-                                                         acceptValue: "application/json",
-                                                         contentTypeValue: nil,
-                                                         authorizationValue: nil)
-            let response = try await APIClientService.sendRequest(request, decodeTo:
-                                                                  ComAtprotoLexicon.Identity.GetRecommendedDidCredentialsOutput.self)
+            let request = APIClientService.createRequest(
+                forRequest: requestURL,
+                andMethod: .get,
+                acceptValue: "application/json",
+                contentTypeValue: nil,
+                authorizationValue: nil
+            )
+            let response = try await APIClientService.shared.sendRequest(
+                request, decodeTo:
+                ComAtprotoLexicon.Identity.GetRecommendedDidCredentialsOutput.self
+            )
 
             return response
         } catch {

@@ -35,13 +35,15 @@ extension ATProtoKit {
         }
 
         do {
-            let request = APIClientService.createRequest(forRequest: requestURL,
-                                                         andMethod: .post,
-                                                         acceptValue: nil,
-                                                         contentTypeValue: nil,
-                                                         authorizationValue: "Bearer \(accessToken)")
+            let request = APIClientService.createRequest(
+                forRequest: requestURL,
+                andMethod: .post,
+                acceptValue: nil,
+                contentTypeValue: nil,
+                authorizationValue: "Bearer \(accessToken)"
+            )
 
-            _ = try await APIClientService.sendRequest(request)
+            _ = try await APIClientService.shared.sendRequest(request)
         } catch {
             throw error
         }

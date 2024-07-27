@@ -47,15 +47,19 @@ extension ATProtoBlueskyChat {
         )
 
         do {
-            let request = APIClientService.createRequest(forRequest: requestURL,
-                                                         andMethod: .get,
-                                                         acceptValue: nil,
-                                                         contentTypeValue: "application/json",
-                                                         authorizationValue: "Bearer \(accessToken)",
-                                                         isRelatedToBskyChat: true)
+            let request = APIClientService.createRequest(
+                forRequest: requestURL,
+                andMethod: .get,
+                acceptValue: nil,
+                contentTypeValue: "application/json",
+                authorizationValue: "Bearer \(accessToken)",
+                isRelatedToBskyChat: true
+            )
 
-            try await APIClientService.sendRequest(request,
-                                                   withEncodingBody: requestBody)
+            try await APIClientService.shared.sendRequest(
+                request,
+                withEncodingBody: requestBody
+            )
         } catch {
             throw error
         }
