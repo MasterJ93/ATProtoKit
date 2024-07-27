@@ -125,11 +125,15 @@ public class ATProtocolConfiguration: ProtocolConfiguration {
         )
 
         do {
-            let request = APIClientService.createRequest(forRequest: requestURL,
-                                                         andMethod: .post)
-            var response = try await APIClientService(configuration: self.configuration).sendRequest(request,
-                                                                                                     withEncodingBody: credentials,
-                                                                                                     decodeTo: UserSession.self)
+            let request = APIClientService.createRequest(
+                forRequest: requestURL,
+                andMethod: .post
+            )
+            var response = try await APIClientService.shared.sendRequest(
+                request,
+                withEncodingBody: credentials,
+                decodeTo: UserSession.self
+            )
             response.pdsURL = self.pdsURL
 
             if self.logger != nil {
@@ -205,14 +209,18 @@ public class ATProtocolConfiguration: ProtocolConfiguration {
         )
 
         do {
-            let request = APIClientService.createRequest(forRequest: requestURL,
-                                                         andMethod: .post,
-                                                         acceptValue: nil,
-                                                         contentTypeValue: nil,
-                                                         authorizationValue: nil)
-            var response = try await APIClientService(configuration: self.configuration).sendRequest(request,
-                                                                                                     withEncodingBody: requestBody,
-                                                                                                     decodeTo: UserSession.self)
+            let request = APIClientService.createRequest(
+                forRequest: requestURL,
+                andMethod: .post,
+                acceptValue: nil,
+                contentTypeValue: nil,
+                authorizationValue: nil
+            )
+            var response = try await APIClientService.shared.sendRequest(
+                request,
+                withEncodingBody: requestBody,
+                decodeTo: UserSession.self
+            )
             response.pdsURL = self.pdsURL
 
             if self.logger != nil {
@@ -252,11 +260,15 @@ public class ATProtocolConfiguration: ProtocolConfiguration {
         }
 
         do {
-            let request = APIClientService.createRequest(forRequest: requestURL,
-                                                         andMethod: .get,
-                                                         authorizationValue: "Bearer \(accessToken)")
-            let response = try await APIClientService(configuration: self.configuration).sendRequest(request,
-                                                                                                     decodeTo: SessionResponse.self)
+            let request = APIClientService.createRequest(
+                forRequest: requestURL,
+                andMethod: .get,
+                authorizationValue: "Bearer \(accessToken)"
+            )
+            let response = try await APIClientService.shared.sendRequest(
+                request,
+                decodeTo: SessionResponse.self
+            )
 
             return response
         } catch {
@@ -294,8 +306,10 @@ public class ATProtocolConfiguration: ProtocolConfiguration {
             let request = APIClientService.createRequest(forRequest: requestURL,
                                                          andMethod: .post,
                                                          authorizationValue: "Bearer \(refreshToken)")
-            var response = try await APIClientService(configuration: self.configuration).sendRequest(request,
-                                                                                                     decodeTo: UserSession.self)
+            var response = try await APIClientService.shared.sendRequest(
+                request,
+                decodeTo: UserSession.self
+            )
             response.pdsURL = self.pdsURL
 
             if self.logger != nil {
@@ -333,12 +347,16 @@ public class ATProtocolConfiguration: ProtocolConfiguration {
         }
 
         do {
-            let request = APIClientService.createRequest(forRequest: requestURL,
-                                                         andMethod: .post,
-                                                         authorizationValue: "Bearer \(accessToken)")
+            let request = APIClientService.createRequest(
+                forRequest: requestURL,
+                andMethod: .post,
+                authorizationValue: "Bearer \(accessToken)"
+            )
 
-            _ = try await APIClientService(configuration: self.configuration).sendRequest(request,
-                                                                                          withEncodingBody: nil)
+            _ = try await APIClientService.shared.sendRequest(
+                request,
+                withEncodingBody: nil
+            )
         } catch {
             throw error
         }
