@@ -15,6 +15,9 @@ public class APIClientService {
 
     /// Creates an instance for use in accepting and returning API requests and
     /// responses respectively.
+    /// 
+    /// - Parameter configuration: An instance of `URLSessionConfiguration`.
+    /// Defaults to `.default`.
     public init(configuration: URLSessionConfiguration = .default) {
         self.urlSession = URLSession(configuration: configuration)
     }
