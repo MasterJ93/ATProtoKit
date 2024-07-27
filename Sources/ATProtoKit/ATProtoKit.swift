@@ -21,6 +21,11 @@ public protocol ATProtoKitConfiguration {
     /// Represents an authenticated user session within the AT Protocol. Optional.
     var session: UserSession? { get }
 
+    /// An instance of `URLSessionConfiguration`.
+    ///
+    /// Be sure to use `.default` as the default.
+    var urlSessionConfiguration: URLSessionConfiguration { get set }
+
     /// Specifies the logger that will be used for emitting log messages. Optional.
     ///
     /// - Note: Be sure to create an instance inside the `init()` method. This is important so
@@ -119,6 +124,26 @@ public class ATProtoKit: ATProtoKitConfiguration {
     /// Represents an authenticated user session within the AT Protocol. Optional.
     public let session: UserSession?
 
+    /// An instance of `URLSessionConfiguration`.
+    ///
+    /// Please directly add the configuration from ``ATProtocolConfiguration/configuration``
+    /// for consistency if it's a custom value.
+    ///
+    /// ```swift
+    /// let config = ATProtocolConfiguration(handle: "example.bsky.social", appPassword: "hunter2")
+    ///
+    /// Task {
+    ///     do {
+    ///         let atProtoKit = ATProtoKit(session: session)
+    ///
+    ///         atProtoKit.urlSessionConfiguration = config.configuration
+    ///     } catch {
+    ///         // Error...
+    ///     }
+    /// }
+    /// ```
+    public var urlSessionConfiguration: URLSessionConfiguration = .default
+
     /// An array of record lexicon structs created by Bluesky.
     ///
     /// If `canUseBlueskyRecords` is set to `false`, these will not be used.
@@ -199,6 +224,26 @@ public class ATProtoAdmin: ATProtoKitConfiguration {
     /// Represents an authenticated user session within the AT Protocol. Optional.
     public let session: UserSession?
 
+    /// An instance of `URLSessionConfiguration`.
+    ///
+    /// Please directly add the the `URLSessionConfiguration` instance onto the property if it's
+    /// a custom value.
+    ///
+    /// ```swift
+    /// let config = ATProtocolConfiguration(handle: "example.bsky.social", appPassword: "hunter2")
+    ///
+    /// Task {
+    ///     do {
+    ///         let atProtoAdmin = ATProtoAdmin(session: session)
+    ///
+    ///         atProtoAdmin.urlSessionConfiguration = config.configuration
+    ///     } catch {
+    ///         // Error...
+    ///     }
+    /// }
+    /// ```
+    public var urlSessionConfiguration: URLSessionConfiguration = .default
+
     /// Specifies the logger that will be used for emitting log messages.
     public private(set) var logger: Logger?
 
@@ -225,6 +270,12 @@ public class ATProtoBluesky: ATProtoKitConfiguration {
     /// Represents an authenticated user session within the AT Protocol. Optional.
     public private(set) var session: UserSession?
 
+    /// An instance of `URLSessionConfiguration`.
+    ///
+    /// - Note: This class will automatically grab the custom `URLSessionConfiguration` instance
+    /// from the `ATProtoKit` instance.
+    public var urlSessionConfiguration: URLSessionConfiguration = .default
+
     /// Specifies the logger that will be used for emitting log messages.
     public private(set) var logger: Logger?
 
@@ -239,6 +290,7 @@ public class ATProtoBluesky: ATProtoKitConfiguration {
     public init(atProtoKitInstance: ATProtoKit, logger: Logger? = nil) {
         self.atProtoKitInstance = atProtoKitInstance
         self.session = self.atProtoKitInstance.session ?? nil
+        self.urlSessionConfiguration = self.atProtoKitInstance.urlSessionConfiguration
         self.logger = self.atProtoKitInstance.session?.logger ?? logger
     }
 }
@@ -255,6 +307,12 @@ public class ATProtoBlueskyChat: ATProtoKitConfiguration {
     /// Represents an authenticated user session within the AT Protocol. Optional.
     public private(set) var session: UserSession?
 
+    /// An instance of `URLSessionConfiguration`.
+    ///
+    /// - Note: This class will automatically grab the custom `URLSessionConfiguration` instance
+    /// from the `ATProtoKit` instance.
+    public var urlSessionConfiguration: URLSessionConfiguration = .default
+
     /// Specifies the logger that will be used for emitting log messages.
     public private(set) var logger: Logger?
 
@@ -269,6 +327,7 @@ public class ATProtoBlueskyChat: ATProtoKitConfiguration {
     public init(atProtoKitInstance: ATProtoKit, logger: Logger? = nil) {
         self.atProtoKitInstance = atProtoKitInstance
         self.session = self.atProtoKitInstance.session ?? nil
+        self.urlSessionConfiguration = self.atProtoKitInstance.urlSessionConfiguration
         self.logger = self.atProtoKitInstance.session?.logger ?? logger
     }
 }

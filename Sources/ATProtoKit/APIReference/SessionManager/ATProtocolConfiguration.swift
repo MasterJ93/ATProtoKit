@@ -20,8 +20,8 @@ public class ATProtocolConfiguration: ProtocolConfiguration {
     /// The URL of the Personal Data Server (PDS).
     public var pdsURL: String
 
-    /// An instance of `URLSession`.
-    public let configuration: URLSessionConfiguration
+    /// An instance of `URLSessionConfiguration`. Optional.
+    public let configuration: URLSessionConfiguration?
 
     /// Specifies the logger that will be used for emitting log messages.
     public private(set) var logger: Logger?
