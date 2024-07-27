@@ -26,8 +26,7 @@ struct CustomDateFormatter {
             "yyyy-MM-dd'T'HH:mm:ss.SSSSSSSSSSSXXXXX", // supported
             "yyyy-MM-dd'T'HH:mm:ssXXXXX",
             "yyyy-MM-dd'T'HH:mm:ss.SXXXXX",
-            "yyyy-MM-dd'T'HH:mm:ss.SSSXXXXX",
-            "yyyy-MM-dd'T'HH:mm:ss.SSSXXXXX" // already included above but just for clarity
+            "yyyy-MM-dd'T'HH:mm:ss.SSSXXXXX"
         ]
 
         dateFormatters = formats.map { format in
@@ -114,6 +113,7 @@ public struct DateFormatting: Codable {
     /// - Throws: If the date string does not match the expected format.
     public init(from decoder: Decoder) throws {
         let container = try decoder.singleValueContainer()
+
         let dateString = try container.decode(String.self)
         guard let date = CustomDateFormatter.shared.date(from: dateString) else {
             throw DecodingError.dataCorruptedError(in: container, debugDescription: "Date string does not match format expected by formatter.")
@@ -185,6 +185,7 @@ public struct DateFormattingOptional: Codable {
     /// - Throws: If decoding fails or the value is `nil`, sets `wrappedValue` to `nil`.
     public init(from decoder: Decoder) throws {
         let container = try decoder.singleValueContainer()
+
         if let dateString = try? container.decode(String.self) {
             self.wrappedValue = CustomDateFormatter.shared.date(from: dateString)
         } else {
