@@ -21,8 +21,8 @@ public class APIClientService {
     /// 
     /// - Parameter configuration: An instance of `URLSessionConfiguration`.
     /// Defaults to `.default`.
-    public init(configuration: URLSessionConfiguration = .default) {
-        self.urlSession = URLSession(configuration: configuration)
+    private init() {
+        self.urlSession = URLSession(configuration: .default)
     }
 
     /// Configures the singleton instance with a custom `URLSessionConfiguration`.
@@ -207,7 +207,7 @@ public class APIClientService {
             }
         }
 
-        let (data, response) = try await URLSession.shared.data(for: urlRequest)
+        let (data, response) = try await urlSession.data(for: urlRequest)
 
         guard let httpResponse = response as? HTTPURLResponse else {
             throw ATHTTPRequestError.errorGettingResponse
