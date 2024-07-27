@@ -6,6 +6,9 @@
 //
 
 import Foundation
+#if canImport(FoundationNetworking)
+@_exported import FoundationNetworking
+#endif
 
 /// A helper class to handle the most common HTTP requests for the AT Protocol.
 public class APIClientService {
