@@ -10,7 +10,7 @@ import Foundation
 /// A helper class to handle the most common HTTP requests for the AT Protocol.
 public class APIClientService {
 
-    /// A `URLSession` object for use in all HTTP requests.
+    /// The `URLSession` instance to be used for network requests.
     public let urlSession: URLSession
 
     /// Creates an instance for use in accepting and returning API requests and
@@ -256,7 +256,7 @@ public class APIClientService {
             }
         }
 
-        let (data, response) = try await URLSession.shared.data(for: urlRequest)
+        let (data, response) = try await urlSession.data(for: urlRequest)
 
         guard let httpResponse = response as? HTTPURLResponse else {
             throw ATHTTPRequestError.errorGettingResponse
