@@ -7,7 +7,7 @@
 
 import Foundation
 
-extension ATProtoKit {
+extension ATProtoBluesky {
 
     /// Deletes a like record.
     ///
@@ -35,7 +35,12 @@ extension ATProtoKit {
             throw ATRequestPrepareError.invalidRecord
         }
 
-        try await deleteRecord(repositoryDID: repositoryDID, collection: likeCollection, recordKey: likeRecordKey, swapRecord: requestBody?.recordCID)
+        try await atProtoKitInstance.deleteRecord(
+            repositoryDID: repositoryDID,
+            collection: likeCollection,
+            recordKey: likeRecordKey,
+            swapRecord: requestBody?.recordCID
+        )
     }
 
     fileprivate func resolveRecordIdentifierToQuery(_ record: RecordIdentifier, _ sessionURL: String,
@@ -44,8 +49,12 @@ extension ATProtoKit {
             case .recordQuery(let recordQuery):
                 do {
                     // Perform the fetch and validation based on recordQuery.
-                    let output = try await self.getRepositoryRecord(from: recordQuery.repository, collection: recordQuery.collection,
-                                                                    recordKey: recordQuery.recordKey, recordCID: recordQuery.recordCID, pdsURL: sessionURL)
+                    let output = try await atProtoKitInstance.getRepositoryRecord(from: recordQuery.repository,
+                                                                                  collection: recordQuery.collection,
+                                                                                  recordKey: recordQuery.recordKey,
+                                                                                  recordCID: recordQuery.recordCID,
+                                                                                  pdsURL: sessionURL
+                    )
 
                     let recordURI = "at://\(recordQuery.repository)/\(recordQuery.collection)/\(recordQuery.recordKey)"
 
@@ -60,8 +69,12 @@ extension ATProtoKit {
                 do {
                     // Perform the fetch and validation based on the parsed URI.
                     let parsedURI = try ATProtoTools().parseURI(recordURI)
-                    let output = try await self.getRepositoryRecord(from: parsedURI.repository, collection: parsedURI.collection,
-                                                                    recordKey: parsedURI.recordKey, recordCID: parsedURI.recordCID, pdsURL: sessionURL)
+                    let output = try await atProtoKitInstance.getRepositoryRecord(from: parsedURI.repository,
+                                                                                  collection: parsedURI.collection,
+                                                                                  recordKey: parsedURI.recordKey,
+                                                                                  recordCID: parsedURI.recordCID,
+                                                                                  pdsURL: sessionURL
+                    )
 
                     guard recordURI == output.recordURI else {
                         throw ATRequestPrepareError.invalidRecord

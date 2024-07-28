@@ -7,7 +7,7 @@
 
 import Foundation
 
-extension ATProtoKit {
+extension ATProtoBluesky {
 
     /// Creates a post record to the user's account.
     /// 
@@ -91,7 +91,7 @@ extension ATProtoKit {
             createdAt: creationDate
         )
 
-        return try await createRecord(
+        return try await atProtoKitInstance.createRecord(
             repositoryDID: session.sessionDID,
             collection: "app.bsky.feed.post",
             recordKey: recordKey ?? nil,

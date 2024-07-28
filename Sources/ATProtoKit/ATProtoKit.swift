@@ -255,7 +255,7 @@ public class ATProtoBluesky: ATProtoKitConfiguration {
     public private(set) var logger: Logger?
 
     /// Represents the instance of ``ATProtoKit/ATProtoKit``.
-    private let atProtoKitInstance: ATProtoKit
+    internal let atProtoKitInstance: ATProtoKit
 
     /// Initializes a new instance of `ATProtoBluesky`.
     /// - Parameters:
@@ -291,7 +291,7 @@ public class ATProtoBlueskyChat: ATProtoKitConfiguration {
     public private(set) var logger: Logger?
 
     /// Represents the instance of ``ATProtoKit/ATProtoKit``.
-    private let atProtoKitInstance: ATProtoKit
+    internal let atProtoKitInstance: ATProtoKit
 
     /// Initializes a new instance of `ATProtoBlueskyChat`.
     /// - Parameters:

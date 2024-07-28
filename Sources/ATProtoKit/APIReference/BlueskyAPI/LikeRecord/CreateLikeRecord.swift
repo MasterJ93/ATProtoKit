@@ -7,7 +7,7 @@
 
 import Foundation
 
-extension ATProtoKit {
+extension ATProtoBluesky {
 
     /// Create a like record to a user's post.
     /// 
@@ -31,7 +31,7 @@ extension ATProtoKit {
             createdAt: createdAt
         )
 
-        return try await createRecord(
+        return try await atProtoKitInstance.createRecord(
             repositoryDID: session.sessionDID,
             collection: "app.bsky.feed.like",
             shouldValidate: shouldValidate,
