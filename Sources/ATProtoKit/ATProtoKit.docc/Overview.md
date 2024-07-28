@@ -108,7 +108,6 @@ ATProtoKit is fully open source under the [MIT license](https://github.com/Maste
 - ``ATURIManager``
 - ``DIDManager``
 - ``HandleManager``
-- ``ATURIManager``
 - ``RecordKeyManager``
 
 ### Event Streams
