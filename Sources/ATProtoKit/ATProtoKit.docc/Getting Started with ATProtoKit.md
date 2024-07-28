@@ -59,10 +59,22 @@ let atProto = ATProtoKit(session: result)
 ```
 
 ### Creating a post
-To create a post, use the ``ATProtoKit/ATProtoKit/createPostRecord(text:locales:replyTo:embed:labels:tags:creationDate:recordKey:shouldValidate:swapCommit:)`` method. While this method is extremely extensive, we're only going to focus on the `text` parameter.
+To create a post, first create an ``ATProtoBluesky`` instance, with the ``ATProtoKit/ATProtoKit`` instance as the parameter:
+```swift
+let atProtoBluesky = ATProtoBluesky(atProtoKitInstance: atProto)
+```
+
+Then use the ``ATProtoBluesky/createPostRecord(text:locales:replyTo:embed:labels:tags:creationDate:recordKey:shouldValidate:swapCommit:)`` method. While this method is extremely extensive, we're only going to focus on the `text` parameter.
 
 ```swift
-let postResult = await atProto.createPostRecord(text: "Hello Bluesky!")
+let postResult = try await atProtoBluesky.createPostRecord(text: "Hello Bluesky!")
 ```
 
 You should see the post in your Bluesky account once you run this code. When the method successfully completes, you'll receive a ``ComAtprotoLexicon/Repository/StrongReference`` object that contains the URI of the record (``ComAtprotoLexicon/Repository/StrongReference/recordURI``) and the content identifier hash of the record (``ComAtprotoLexicon/Repository/StrongReference/cidHash``).
+
+
+let atProtoBluesky = ATProtoBluesky(atProtoKitInstance: atProto)
+
+let postResult = try await atProtoBluesky.createPostRecord(text: "Hello Bluesky!")
+
+print(postResult)

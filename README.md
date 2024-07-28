@@ -39,7 +39,9 @@ Task {
         let session = try await config.authenticate()
 
         let atProto = ATProtoKit(session: session)
-        let postResult = try await atProto.createPostRecord(text: "Hello Bluesky!")
+        let atProtoBluesky = ATProtoBluesky(atProtoKitInstance: atProto)
+
+        let postResult = try await atProtoBluesky.createPostRecord(text: "Hello Bluesky!")
 
         print(postResult)
     } catch {
@@ -108,14 +110,13 @@ let result = ATProtocolConfiguration(handle: "lucy.example.social", appPassword:
 This session contains all of the elements you need, such as the access and refresh tokens:
 ```swift
 Task {
-    let session = try await config.authenticate()
+    do {
+        let session = try await config.authenticate()
 
-    switch session {
-        case .success(let result):
-            print("Result (Access Token): \(result.accessToken)")
-            print("Result (Refresh Token): \(result.refreshToken)")
-        case .failure(let error):
-            print("Error: \(error)")
+        print("Result (Access Token): \(session.accessToken)")
+        print("Result (Refresh Token): \(session.refreshToken)")
+    } catch {
+        print("Error: \(error)")
     }
 }
 ```

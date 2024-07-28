@@ -29,7 +29,9 @@ Task {
         let session = try await config.authenticate()
 
         let atProto = ATProtoKit(session: session)
-        let postResult = try await atProto.createPostRecord(text: "Hello Bluesky!")
+        let atProtoBluesky = ATProtoBluesky(atProtoKitInstance: atProto)
+
+        let postResult = try await atProtoBluesky.createPostRecord(text: "Hello Bluesky!")
 
         print(postResult)
     } catch {
