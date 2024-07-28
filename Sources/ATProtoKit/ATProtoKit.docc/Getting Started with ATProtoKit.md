@@ -46,6 +46,7 @@ Task {
         // Handle the error.
     }
 }
+```
 
 > Note: If you've enabled Two-Factor Authentication (via email), you may see an `AuthFactorTokenRequired` error. In that case, check your inbox for a code, then call ``ATProtocolConfiguration/authenticate(authenticationFactorToken:)`` again, but put in the code for the `authenticationFactorToken` parameter.
 
