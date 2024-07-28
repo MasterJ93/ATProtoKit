@@ -11,6 +11,9 @@ import Foundation
 #endif
 
 /// A helper class to handle the most common HTTP requests for the AT Protocol.
+///
+/// This is, effectively, the meat of the "XRPC" portion of the AT Protocol, which creates
+/// client-server and server-server communication.
 public class APIClientService {
 
     /// The `URLSession` instance to be used for network requests.
