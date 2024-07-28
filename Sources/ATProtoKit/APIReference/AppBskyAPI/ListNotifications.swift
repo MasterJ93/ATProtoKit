@@ -20,6 +20,7 @@ extension ATProtoKit {
     ///
     /// - Parameters:
     ///   - limit: The number of invite codes in the list. Optional. Defaults to `50`.
+    ///   - priority: Indicates whether the notification is a priority. Optional.
     ///   - cursor: The mark used to indicate the starting point for the next set
     ///   of results. Optional.
     ///   - seenAt: The date and time the notification was seen. Defaults to the date and time the
@@ -30,6 +31,7 @@ extension ATProtoKit {
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func listNotifications(
         withLimitOf limit: Int? = 50,
+        priority: Bool?,
         cursor: String? = nil,
         seenAt: Date = Date()
     ) async throws -> AppBskyLexicon.Notification.ListNotificationsOutput {
@@ -48,6 +50,10 @@ extension ATProtoKit {
         if let limit {
             let finalLimit = max(1, min(limit, 100))
             queryItems.append(("limit", "\(finalLimit)"))
+        }
+
+        if let priority {
+            queryItems.append(("priority", "\(priority)"))
         }
 
         if let cursor {

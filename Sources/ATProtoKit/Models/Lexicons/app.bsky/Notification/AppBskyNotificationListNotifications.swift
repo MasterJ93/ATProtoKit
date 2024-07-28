@@ -24,6 +24,28 @@ extension AppBskyLexicon.Notification {
 
         /// An array of notifications.
         public let notifications: [Notification]
+
+        /// Indicates whether the priority preference is enabled. Optional.
+        public let isPriority: Bool?
+
+        /// The date and time the notification was last seen. Optional.
+        @DateFormattingOptional public var seenAt: Date?
+
+        public init(cursor: String?, notifications: [Notification], isPriority: Bool?, seenAt: Date?) {
+            self.cursor = cursor
+            self.notifications = notifications
+            self.isPriority = isPriority
+            self._seenAt = DateFormattingOptional(wrappedValue: seenAt)
+        }
+
+        public init(from decoder: any Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+
+            self.cursor = try container.decodeIfPresent(String.self, forKey: .cursor)
+            self.notifications = try container.decode([AppBskyLexicon.Notification.Notification].self, forKey: .notifications)
+            self.isPriority = try container.decodeIfPresent(Bool.self, forKey: .isPriority)
+            self.seenAt = try container.decodeIfPresent(DateFormattingOptional.self, forKey: .seenAt)?.wrappedValue
+        }
     }
 
     /// A data model definition for a notification.

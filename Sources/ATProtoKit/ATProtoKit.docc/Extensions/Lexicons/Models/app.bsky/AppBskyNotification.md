@@ -11,6 +11,10 @@
 - ``ListNotificationsOutput``
 - ``Notification``
 
+### app.bsky.notification.putPreferences
+
+- ``PutNotificationRequestBody``
+
 ### app.bsky.notification.registerPush
 
 - ``RegisterPush``

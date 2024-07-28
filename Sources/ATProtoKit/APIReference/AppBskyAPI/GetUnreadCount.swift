@@ -18,13 +18,16 @@ extension ATProtoKit {
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/notification/getUnreadCount.json
     ///
-    /// - Parameter seenAt: The date and time the notifications were seen. Defaults to the date and
-    /// time the request was sent.
+    /// - Parameters:
+    ///   - seenAt: The date and time the notifications were seen. Defaults to the date and
+    ///   time the request was sent.
+    ///   - priority: Indicates whether the notification is a priority. Optional.
     /// - Returns: The number of unread notifications.
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func getUnreadCount(
+        priority: Bool?,
         seenAt: Date = Date()
     ) async throws -> AppBskyLexicon.Notification.GetUnreadCountOutput {
         guard session != nil,
@@ -38,6 +41,10 @@ extension ATProtoKit {
         }
 
         var queryItems = [(String, String)]()
+
+        if let priority {
+            queryItems.append(("priority", "\(priority)"))
+        }
 
         if let seenAtDate = CustomDateFormatter.shared.string(from: seenAt) {
             queryItems.append(("seenAt", "\(seenAtDate)"))
