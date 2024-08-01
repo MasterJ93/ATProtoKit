@@ -886,6 +886,9 @@ extension AppBskyLexicon.Actor {
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/actor/defs.json
     public struct MutedWord: Codable {
 
+        /// The ID of the muted word.
+        public let id: String?
+
         /// The word to mute.
         public let value: String
 
@@ -907,7 +910,8 @@ extension AppBskyLexicon.Actor {
         @DateFormattingOptional public var expiresAt: Date?
 
         @_documentation(visibility: private)
-        public init(value: String, targets: [MutedWordTarget], actorTarget: ActorTarget?, expiresAt: Date?) {
+        public init(id: String?, value: String, targets: [MutedWordTarget], actorTarget: ActorTarget?, expiresAt: Date?) {
+            self.id = id
             self.value = value
             self.targets = targets
             self.actorTarget = actorTarget
@@ -917,6 +921,7 @@ extension AppBskyLexicon.Actor {
         public init(from decoder: Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
 
+            self.id = try container.decodeIfPresent(String.self, forKey: .id)
             self.value = try container.decode(String.self, forKey: .value)
             self.targets = try container.decode([MutedWordTarget].self, forKey: .targets)
             self.actorTarget = try container.decodeIfPresent(ActorTarget.self, forKey: .actorTarget)
@@ -927,6 +932,7 @@ extension AppBskyLexicon.Actor {
         public func encode(to encoder: Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
 
+            try container.encodeIfPresent(self.id, forKey: .id)
             // Truncate `value` to 1000 characters before decoding
             // `maxGraphemes`'s limit is 100, but `String.count` should respect that limit
             try truncatedEncode(self.value, withContainer: &container, forKey: .value, upToCharacterLength: 100)
@@ -936,6 +942,7 @@ extension AppBskyLexicon.Actor {
         }
 
         enum CodingKeys: CodingKey {
+            case id
             case value
             case targets
             case actorTarget
