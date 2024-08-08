@@ -106,7 +106,8 @@ public enum ATAPIError: ATProtoError, Decodable {
                 "AuthFactorTokenRequired",
                 "MemberAlreadyExists",
                 "MemberNotFound",
-                "CannotDeleteSelf":
+                "CannotDeleteSelf",
+                "BadExpiration":
                 self = .badRequest(message: message)
             case "Unauthorized":
                 self = .unauthorized(message: message)

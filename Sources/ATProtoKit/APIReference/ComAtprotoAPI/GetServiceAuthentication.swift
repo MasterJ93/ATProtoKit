@@ -18,12 +18,20 @@ extension ATProtoKit {
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/server/getServiceAuth.json
     ///
-    /// - Parameter serviceDID: The decentralized identifier (DID) of the service.
+    /// - Parameters:
+    ///   -  serviceDID: The decentralized identifier (DID) of the service.
+    ///   - expirationTime: The exporation date of the session tokens expire. Optional.
+    ///   Defaults to 60 seconds in the Unix Epoch format.
+    ///   - lexiconMethod: The Namespaced Identifier (NSID) of the lexicon that the token is bound to. Optional.
     /// - Returns: The signed token from the service that matches `serviceDID`.
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
-    public func getServiceAuthentication(from serviceDID: String) async throws -> ComAtprotoLexicon.Server.GetServiceAuthOutput {
+    public func getServiceAuthentication(
+        from serviceDID: String,
+        expirationTime: Int? = 60,
+        lexiconMethod: String?
+    ) async throws -> ComAtprotoLexicon.Server.GetServiceAuthOutput {
         guard session != nil,
               let accessToken = session?.accessToken else {
             throw ATRequestPrepareError.missingActiveSession
@@ -34,9 +42,17 @@ extension ATProtoKit {
             throw ATRequestPrepareError.invalidRequestURL
         }
 
-        let queryItems = [
+        var queryItems = [
             ("aud", serviceDID)
         ]
+
+        if let expirationTime {
+            queryItems.append(("exp", "\(expirationTime)"))
+        }
+
+        if let lexiconMethod {
+            queryItems.append(("lxm", lexiconMethod))
+        }
 
         let queryURL: URL
 

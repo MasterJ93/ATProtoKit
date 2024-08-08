@@ -601,7 +601,7 @@ extension AppBskyLexicon.Feed {
         /// The feed generator's context. Optional.
         ///
         /// - Note: According to the AT Protocol specifications: "Context on a feed item that was
-        /// orginally supplied by the feed generator on getFeedSkeleton."
+        /// originally supplied by the feed generator on getFeedSkeleton."
         public let feedContext: String?
 
         public init(item: String, event: Event, feedContext: String) {

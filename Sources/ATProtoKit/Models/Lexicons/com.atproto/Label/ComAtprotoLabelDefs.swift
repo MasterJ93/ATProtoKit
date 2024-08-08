@@ -210,7 +210,7 @@ extension ComAtprotoLexicon.Label {
     /// A definition model for labeler-created labels.
     ///
     /// - Note: According to the AT Protocol specifications: "Declares a label value and its expected
-    /// interpertations and behaviors."
+    /// interpretations and behaviors."
     ///
     /// - SeeAlso: This is based on the [`com.atproto.label.defs`][github] lexicon.
     ///
