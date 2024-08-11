@@ -27,15 +27,15 @@ extension ComAtprotoLexicon.Server {
         /// to how long they should hold onto the deactivated account before deleting."
         @DateFormatting public var deleteAfter: Date
 
-        public init(deleteAfter: Date) {
-            self._deleteAfter = DateFormatting(wrappedValue: deleteAfter)
-        }
-
-        public init(from decoder: Decoder) throws {
-            let container = try decoder.container(keyedBy: CodingKeys.self)
-
-            self.deleteAfter = try container.decode(DateFormatting.self, forKey: .deleteAfter).wrappedValue
-        }
+//        public init(deleteAfter: Date) {
+//            self._deleteAfter = DateFormatting(wrappedValue: deleteAfter)
+//        }
+//
+//        public init(from decoder: Decoder) throws {
+//            let container = try decoder.container(keyedBy: CodingKeys.self)
+//
+//            self.deleteAfter = try container.decode(DateFormatting.self, forKey: .deleteAfter).wrappedValue
+//        }
 
         public func encode(to encoder: Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)

@@ -46,31 +46,31 @@ extension ChatBskyLexicon.Actor {
         /// cannot actively participate in converations"
         public let isChatDisabled: Bool?
 
-        public init(actorDID: String, actorHandle: String, displayName: String?, avatarImageURL: URL?,
-                    associated: AppBskyLexicon.Actor.ProfileAssociatedDefinition?, viewer: [AppBskyLexicon.Actor.ViewerStateDefinition]?,
-                    labels: [ComAtprotoLexicon.Label.LabelDefinition]?, isChatDisabled: Bool?) {
-            self.actorDID = actorDID
-            self.actorHandle = actorHandle
-            self.displayName = displayName
-            self.avatarImageURL = avatarImageURL
-            self.associated = associated
-            self.viewer = viewer
-            self.labels = labels
-            self.isChatDisabled = isChatDisabled
-        }
-
-        public init(from decoder: any Decoder) throws {
-            let container = try decoder.container(keyedBy: CodingKeys.self)
-
-            self.actorDID = try container.decode(String.self, forKey: .actorDID)
-            self.actorHandle = try container.decode(String.self, forKey: .actorHandle)
-            self.displayName = try container.decodeIfPresent(String.self, forKey: .displayName)
-            self.avatarImageURL = try container.decodeIfPresent(URL.self, forKey: .avatarImageURL)
-            self.associated = try container.decodeIfPresent(AppBskyLexicon.Actor.ProfileAssociatedDefinition.self, forKey: .associated)
-            self.viewer = try container.decodeIfPresent([AppBskyLexicon.Actor.ViewerStateDefinition].self, forKey: .viewer)
-            self.labels = try container.decodeIfPresent([ComAtprotoLexicon.Label.LabelDefinition].self, forKey: .labels)
-            self.isChatDisabled = try container.decodeIfPresent(Bool.self, forKey: .isChatDisabled)
-        }
+//        public init(actorDID: String, actorHandle: String, displayName: String?, avatarImageURL: URL?,
+//                    associated: AppBskyLexicon.Actor.ProfileAssociatedDefinition?, viewer: [AppBskyLexicon.Actor.ViewerStateDefinition]?,
+//                    labels: [ComAtprotoLexicon.Label.LabelDefinition]?, isChatDisabled: Bool?) {
+//            self.actorDID = actorDID
+//            self.actorHandle = actorHandle
+//            self.displayName = displayName
+//            self.avatarImageURL = avatarImageURL
+//            self.associated = associated
+//            self.viewer = viewer
+//            self.labels = labels
+//            self.isChatDisabled = isChatDisabled
+//        }
+//
+//        public init(from decoder: any Decoder) throws {
+//            let container = try decoder.container(keyedBy: CodingKeys.self)
+//
+//            self.actorDID = try container.decode(String.self, forKey: .actorDID)
+//            self.actorHandle = try container.decode(String.self, forKey: .actorHandle)
+//            self.displayName = try container.decodeIfPresent(String.self, forKey: .displayName)
+//            self.avatarImageURL = try container.decodeIfPresent(URL.self, forKey: .avatarImageURL)
+//            self.associated = try container.decodeIfPresent(AppBskyLexicon.Actor.ProfileAssociatedDefinition.self, forKey: .associated)
+//            self.viewer = try container.decodeIfPresent([AppBskyLexicon.Actor.ViewerStateDefinition].self, forKey: .viewer)
+//            self.labels = try container.decodeIfPresent([ComAtprotoLexicon.Label.LabelDefinition].self, forKey: .labels)
+//            self.isChatDisabled = try container.decodeIfPresent(Bool.self, forKey: .isChatDisabled)
+//        }
 
         public func encode(to encoder: any Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)

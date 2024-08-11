@@ -54,30 +54,30 @@ extension ToolsOzoneLexicon.Communication {
         /// The date and time the communication template was updated.
         @DateFormatting public var updatedAt: Date
 
-        public init(id: Int, name: String, subject: String? = nil, contentMarkdown: String, isDisabled: Bool, lastUpdatedBy: String,
-                    createdAt: Date, updatedAt: Date) {
-            self.id = id
-            self.name = name
-            self.subject = subject
-            self.contentMarkdown = contentMarkdown
-            self.isDisabled = isDisabled
-            self.lastUpdatedBy = lastUpdatedBy
-            self._createdAt = DateFormatting(wrappedValue: createdAt)
-            self._updatedAt = DateFormatting(wrappedValue: updatedAt)
-        }
-
-        public init(from decoder: Decoder) throws {
-            let container = try decoder.container(keyedBy: CodingKeys.self)
-
-            self.id = try container.decode(Int.self, forKey: .id)
-            self.name = try container.decode(String.self, forKey: .name)
-            self.subject = try container.decodeIfPresent(String.self, forKey: .subject)
-            self.contentMarkdown = try container.decode(String.self, forKey: .contentMarkdown)
-            self.isDisabled = try container.decode(Bool.self, forKey: .isDisabled)
-            self.lastUpdatedBy = try container.decode(String.self, forKey: .lastUpdatedBy)
-            self.createdAt = try container.decode(DateFormatting.self, forKey: .createdAt).wrappedValue
-            self.updatedAt = try container.decode(DateFormatting.self, forKey: .updatedAt).wrappedValue
-        }
+//        public init(id: Int, name: String, subject: String? = nil, contentMarkdown: String, isDisabled: Bool, lastUpdatedBy: String,
+//                    createdAt: Date, updatedAt: Date) {
+//            self.id = id
+//            self.name = name
+//            self.subject = subject
+//            self.contentMarkdown = contentMarkdown
+//            self.isDisabled = isDisabled
+//            self.lastUpdatedBy = lastUpdatedBy
+//            self._createdAt = DateFormatting(wrappedValue: createdAt)
+//            self._updatedAt = DateFormatting(wrappedValue: updatedAt)
+//        }
+//
+//        public init(from decoder: Decoder) throws {
+//            let container = try decoder.container(keyedBy: CodingKeys.self)
+//
+//            self.id = try container.decode(Int.self, forKey: .id)
+//            self.name = try container.decode(String.self, forKey: .name)
+//            self.subject = try container.decodeIfPresent(String.self, forKey: .subject)
+//            self.contentMarkdown = try container.decode(String.self, forKey: .contentMarkdown)
+//            self.isDisabled = try container.decode(Bool.self, forKey: .isDisabled)
+//            self.lastUpdatedBy = try container.decode(String.self, forKey: .lastUpdatedBy)
+//            self.createdAt = try container.decode(DateFormatting.self, forKey: .createdAt).wrappedValue
+//            self.updatedAt = try container.decode(DateFormatting.self, forKey: .updatedAt).wrappedValue
+//        }
 
         public func encode(to encoder: Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)

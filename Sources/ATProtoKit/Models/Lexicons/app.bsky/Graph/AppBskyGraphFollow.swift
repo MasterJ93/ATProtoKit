@@ -30,17 +30,17 @@ extension AppBskyLexicon.Graph {
         /// The date and time the record was created.
         @DateFormatting public var createdAt: Date
 
-        public init(subjectDID: String, createdAt: Date) {
-            self.subjectDID = subjectDID
-            self._createdAt = DateFormatting(wrappedValue: createdAt)
-        }
-
-        public init(from decoder: any Decoder) throws {
-            let container = try decoder.container(keyedBy: CodingKeys.self)
-
-            self.subjectDID = try container.decode(String.self, forKey: .subjectDID)
-            self.createdAt = try container.decode(DateFormatting.self, forKey: .createdAt).wrappedValue
-        }
+//        public init(subjectDID: String, createdAt: Date) {
+//            self.subjectDID = subjectDID
+//            self._createdAt = DateFormatting(wrappedValue: createdAt)
+//        }
+//
+//        public init(from decoder: any Decoder) throws {
+//            let container = try decoder.container(keyedBy: CodingKeys.self)
+//
+//            self.subjectDID = try container.decode(String.self, forKey: .subjectDID)
+//            self.createdAt = try container.decode(DateFormatting.self, forKey: .createdAt).wrappedValue
+//        }
 
         public func encode(to encoder: any Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)

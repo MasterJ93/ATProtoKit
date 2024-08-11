@@ -99,35 +99,35 @@ extension AppBskyLexicon.Embed {
             /// The date the record was last indexed.
             @DateFormatting public var indexedAt: Date
 
-            public init(recordURI: String, cidHash: String, author: AppBskyLexicon.Actor.ProfileViewBasicDefinition, value: UnknownType,
-                        labels: [ComAtprotoLexicon.Label.LabelDefinition]?, replyCount: Int?, repostCount: Int?, likeCount: Int?,
-                        embeds: [ATUnion.EmbedViewUnion]?, indexedAt: Date) {
-                self.recordURI = recordURI
-                self.cidHash = cidHash
-                self.author = author
-                self.value = value
-                self.labels = labels
-                self.replyCount = replyCount
-                self.repostCount = repostCount
-                self.likeCount = likeCount
-                self.embeds = embeds
-                self._indexedAt = DateFormatting(wrappedValue: indexedAt)
-            }
-
-            public init(from decoder: any Decoder) throws {
-                let container = try decoder.container(keyedBy: CodingKeys.self)
-
-                self.recordURI = try container.decode(String.self, forKey: .recordURI)
-                self.cidHash = try container.decode(String.self, forKey: .cidHash)
-                self.author = try container.decode(AppBskyLexicon.Actor.ProfileViewBasicDefinition.self, forKey: .author)
-                self.value = try container.decode(UnknownType.self, forKey: .value)
-                self.labels = try container.decodeIfPresent([ComAtprotoLexicon.Label.LabelDefinition].self, forKey: .labels)
-                self.replyCount = try container.decodeIfPresent(Int.self, forKey: .replyCount)
-                self.repostCount = try container.decodeIfPresent(Int.self, forKey: .repostCount)
-                self.likeCount = try container.decodeIfPresent(Int.self, forKey: .likeCount)
-                self.embeds = try container.decodeIfPresent([ATUnion.EmbedViewUnion].self, forKey: .embeds)
-                self.indexedAt = try container.decode(DateFormatting.self, forKey: .indexedAt).wrappedValue
-            }
+//            public init(recordURI: String, cidHash: String, author: AppBskyLexicon.Actor.ProfileViewBasicDefinition, value: UnknownType,
+//                        labels: [ComAtprotoLexicon.Label.LabelDefinition]?, replyCount: Int?, repostCount: Int?, likeCount: Int?,
+//                        embeds: [ATUnion.EmbedViewUnion]?, indexedAt: Date) {
+//                self.recordURI = recordURI
+//                self.cidHash = cidHash
+//                self.author = author
+//                self.value = value
+//                self.labels = labels
+//                self.replyCount = replyCount
+//                self.repostCount = repostCount
+//                self.likeCount = likeCount
+//                self.embeds = embeds
+//                self._indexedAt = DateFormatting(wrappedValue: indexedAt)
+//            }
+//
+//            public init(from decoder: any Decoder) throws {
+//                let container = try decoder.container(keyedBy: CodingKeys.self)
+//
+//                self.recordURI = try container.decode(String.self, forKey: .recordURI)
+//                self.cidHash = try container.decode(String.self, forKey: .cidHash)
+//                self.author = try container.decode(AppBskyLexicon.Actor.ProfileViewBasicDefinition.self, forKey: .author)
+//                self.value = try container.decode(UnknownType.self, forKey: .value)
+//                self.labels = try container.decodeIfPresent([ComAtprotoLexicon.Label.LabelDefinition].self, forKey: .labels)
+//                self.replyCount = try container.decodeIfPresent(Int.self, forKey: .replyCount)
+//                self.repostCount = try container.decodeIfPresent(Int.self, forKey: .repostCount)
+//                self.likeCount = try container.decodeIfPresent(Int.self, forKey: .likeCount)
+//                self.embeds = try container.decodeIfPresent([ATUnion.EmbedViewUnion].self, forKey: .embeds)
+//                self.indexedAt = try container.decode(DateFormatting.self, forKey: .indexedAt).wrappedValue
+//            }
 
             public func encode(to encoder: any Encoder) throws {
                 var container = encoder.container(keyedBy: CodingKeys.self)

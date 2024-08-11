@@ -43,31 +43,31 @@ extension AppBskyLexicon.Actor {
         /// The date and time the profile was created. Optional.
         @DateFormattingOptional public var createdAt: Date?
 
-        @_documentation(visibility: private)
-        public init(actorDID: String, actorHandle: String, displayName: String?, avatarImageURL: URL?, associated: ProfileAssociatedDefinition?,
-                    viewer: ViewerStateDefinition?, labels: [ComAtprotoLexicon.Label.LabelDefinition]?, createdAt: Date?) {
-            self.actorDID = actorDID
-            self.actorHandle = actorHandle
-            self.displayName = displayName
-            self.avatarImageURL = avatarImageURL
-            self.associated = associated
-            self.viewer = viewer
-            self.labels = labels
-            self._createdAt = DateFormattingOptional(wrappedValue: createdAt)
-        }
+//        @_documentation(visibility: private)
+//        public init(actorDID: String, actorHandle: String, displayName: String?, avatarImageURL: URL?, associated: ProfileAssociatedDefinition?,
+//                    viewer: ViewerStateDefinition?, labels: [ComAtprotoLexicon.Label.LabelDefinition]?, createdAt: Date?) {
+//            self.actorDID = actorDID
+//            self.actorHandle = actorHandle
+//            self.displayName = displayName
+//            self.avatarImageURL = avatarImageURL
+//            self.associated = associated
+//            self.viewer = viewer
+//            self.labels = labels
+//            self._createdAt = DateFormattingOptional(wrappedValue: createdAt)
+//        }
         
-        public init(from decoder: Decoder) throws {
-            let container = try decoder.container(keyedBy: CodingKeys.self)
-            
-            self.actorDID = try container.decode(String.self, forKey: .actorDID)
-            self.actorHandle = try container.decode(String.self, forKey: .actorHandle)
-            self.displayName = try container.decodeIfPresent(String.self, forKey: .displayName)
-            self.avatarImageURL = try container.decodeIfPresent(URL.self, forKey: .avatarImageURL)
-            self.associated = try container.decodeIfPresent(ProfileAssociatedDefinition.self, forKey: .associated)
-            self.viewer = try container.decodeIfPresent(ViewerStateDefinition.self, forKey: .viewer)
-            self.labels = try container.decodeIfPresent([ComAtprotoLexicon.Label.LabelDefinition].self, forKey: .labels)
-            self.createdAt = try container.decodeIfPresent(DateFormattingOptional.self, forKey: .createdAt)?.wrappedValue
-        }
+//        public init(from decoder: Decoder) throws {
+//            let container = try decoder.container(keyedBy: CodingKeys.self)
+//            
+//            self.actorDID = try container.decode(String.self, forKey: .actorDID)
+//            self.actorHandle = try container.decode(String.self, forKey: .actorHandle)
+//            self.displayName = try container.decodeIfPresent(String.self, forKey: .displayName)
+//            self.avatarImageURL = try container.decodeIfPresent(URL.self, forKey: .avatarImageURL)
+//            self.associated = try container.decodeIfPresent(ProfileAssociatedDefinition.self, forKey: .associated)
+//            self.viewer = try container.decodeIfPresent(ViewerStateDefinition.self, forKey: .viewer)
+//            self.labels = try container.decodeIfPresent([ComAtprotoLexicon.Label.LabelDefinition].self, forKey: .labels)
+//            self.createdAt = try container.decodeIfPresent(DateFormattingOptional.self, forKey: .createdAt)?.wrappedValue
+//        }
 
         @_documentation(visibility: private)
         public func encode(to encoder: Encoder) throws {
@@ -140,36 +140,36 @@ extension AppBskyLexicon.Actor {
         /// An array of labels created by the user. Optional.
         public var labels: [ComAtprotoLexicon.Label.LabelDefinition]?
 
-        @_documentation(visibility: private)
-        public init(actorDID: String, actorHandle: String, displayName: String?, description: String?, avatarImageURL: URL?,
-                    associated: ProfileAssociatedDefinition?, indexedAt: Date?, createdAt: Date?, viewer: ViewerStateDefinition?,
-                    labels: [ComAtprotoLexicon.Label.LabelDefinition]?) {
-            self.actorDID = actorDID
-            self.actorHandle = actorHandle
-            self.displayName = displayName
-            self.description = description
-            self.avatarImageURL = avatarImageURL
-            self.associated = associated
-            self._indexedAt = DateFormattingOptional(wrappedValue: indexedAt)
-            self._createdAt = DateFormattingOptional(wrappedValue: createdAt)
-            self.viewer = viewer
-            self.labels = labels
-        }
-        
-        public init(from decoder: Decoder) throws {
-            let container = try decoder.container(keyedBy: CodingKeys.self)
-            
-            self.actorDID = try container.decode(String.self, forKey: .actorDID)
-            self.actorHandle = try container.decode(String.self, forKey: .actorHandle)
-            self.displayName = try container.decodeIfPresent(String.self, forKey: .displayName)
-            self.description = try container.decodeIfPresent(String.self, forKey: .description)
-            self.avatarImageURL = try container.decodeIfPresent(URL.self, forKey: .avatarImageURL)
-            self.associated = try container.decodeIfPresent(ProfileAssociatedDefinition.self, forKey: .associated)
-            self.indexedAt = try container.decodeIfPresent(DateFormattingOptional.self, forKey: .indexedAt)?.wrappedValue
-            self.createdAt = try container.decodeIfPresent(DateFormattingOptional.self, forKey: .createdAt)?.wrappedValue
-            self.viewer = try container.decodeIfPresent(ViewerStateDefinition.self, forKey: .viewer)
-            self.labels = try container.decodeIfPresent([ComAtprotoLexicon.Label.LabelDefinition].self, forKey: .labels)
-        }
+//        @_documentation(visibility: private)
+//        public init(actorDID: String, actorHandle: String, displayName: String?, description: String?, avatarImageURL: URL?,
+//                    associated: ProfileAssociatedDefinition?, indexedAt: Date?, createdAt: Date?, viewer: ViewerStateDefinition?,
+//                    labels: [ComAtprotoLexicon.Label.LabelDefinition]?) {
+//            self.actorDID = actorDID
+//            self.actorHandle = actorHandle
+//            self.displayName = displayName
+//            self.description = description
+//            self.avatarImageURL = avatarImageURL
+//            self.associated = associated
+//            self._indexedAt = DateFormattingOptional(wrappedValue: indexedAt)
+//            self._createdAt = DateFormattingOptional(wrappedValue: createdAt)
+//            self.viewer = viewer
+//            self.labels = labels
+//        }
+//        
+//        public init(from decoder: Decoder) throws {
+//            let container = try decoder.container(keyedBy: CodingKeys.self)
+//            
+//            self.actorDID = try container.decode(String.self, forKey: .actorDID)
+//            self.actorHandle = try container.decode(String.self, forKey: .actorHandle)
+//            self.displayName = try container.decodeIfPresent(String.self, forKey: .displayName)
+//            self.description = try container.decodeIfPresent(String.self, forKey: .description)
+//            self.avatarImageURL = try container.decodeIfPresent(URL.self, forKey: .avatarImageURL)
+//            self.associated = try container.decodeIfPresent(ProfileAssociatedDefinition.self, forKey: .associated)
+//            self.indexedAt = try container.decodeIfPresent(DateFormattingOptional.self, forKey: .indexedAt)?.wrappedValue
+//            self.createdAt = try container.decodeIfPresent(DateFormattingOptional.self, forKey: .createdAt)?.wrappedValue
+//            self.viewer = try container.decodeIfPresent(ViewerStateDefinition.self, forKey: .viewer)
+//            self.labels = try container.decodeIfPresent([ComAtprotoLexicon.Label.LabelDefinition].self, forKey: .labels)
+//        }
         
         @_documentation(visibility: private)
         public func encode(to encoder: Encoder) throws {
@@ -258,42 +258,42 @@ extension AppBskyLexicon.Actor {
         /// An array of labels created by the user. Optional.
         public var labels: [ComAtprotoLexicon.Label.LabelDefinition]?
 
-        @_documentation(visibility: private)
-        public init(actorDID: String, actorHandle: String, displayName: String?, description: String?, avatarImageURL: URL?, bannerImageURL: URL?,
-                    followerCount: Int?, followCount: Int?, postCount: Int?, associated: ProfileAssociatedDefinition?, indexedAt: Date?,
-                    viewer: ViewerStateDefinition?, labels: [ComAtprotoLexicon.Label.LabelDefinition]?) {
-            self.actorDID = actorDID
-            self.actorHandle = actorHandle
-            self.displayName = displayName
-            self.description = description
-            self.avatarImageURL = avatarImageURL
-            self.bannerImageURL = bannerImageURL
-            self.followerCount = followerCount
-            self.followCount = followCount
-            self.postCount = postCount
-            self.associated = associated
-            self._indexedAt = DateFormattingOptional(wrappedValue: indexedAt)
-            self.viewer = viewer
-            self.labels = labels
-        }
-        
-        public init(from decoder: Decoder) throws {
-            let container = try decoder.container(keyedBy: CodingKeys.self)
-            
-            self.actorDID = try container.decode(String.self, forKey: .actorDID)
-            self.actorHandle = try container.decode(String.self, forKey: .actorHandle)
-            self.displayName = try container.decodeIfPresent(String.self, forKey: .displayName)
-            self.description = try container.decodeIfPresent(String.self, forKey: .description)
-            self.avatarImageURL = try container.decodeIfPresent(URL.self, forKey: .avatarImageURL)
-            self.bannerImageURL = try container.decodeIfPresent(URL.self, forKey: .bannerImageURL)
-            self.followerCount = try container.decodeIfPresent(Int.self, forKey: .followerCount)
-            self.followCount = try container.decodeIfPresent(Int.self, forKey: .followCount)
-            self.postCount = try container.decodeIfPresent(Int.self, forKey: .postCount)
-            self.associated = try container.decodeIfPresent(ProfileAssociatedDefinition.self, forKey: .associated)
-            self.indexedAt = try container.decodeIfPresent(DateFormattingOptional.self, forKey: .indexedAt)?.wrappedValue
-            self.viewer = try container.decodeIfPresent(ViewerStateDefinition.self, forKey: .viewer)
-            self.labels = try container.decodeIfPresent([ComAtprotoLexicon.Label.LabelDefinition].self, forKey: .labels)
-        }
+//        @_documentation(visibility: private)
+//        public init(actorDID: String, actorHandle: String, displayName: String?, description: String?, avatarImageURL: URL?, bannerImageURL: URL?,
+//                    followerCount: Int?, followCount: Int?, postCount: Int?, associated: ProfileAssociatedDefinition?, indexedAt: Date?,
+//                    viewer: ViewerStateDefinition?, labels: [ComAtprotoLexicon.Label.LabelDefinition]?) {
+//            self.actorDID = actorDID
+//            self.actorHandle = actorHandle
+//            self.displayName = displayName
+//            self.description = description
+//            self.avatarImageURL = avatarImageURL
+//            self.bannerImageURL = bannerImageURL
+//            self.followerCount = followerCount
+//            self.followCount = followCount
+//            self.postCount = postCount
+//            self.associated = associated
+//            self._indexedAt = DateFormattingOptional(wrappedValue: indexedAt)
+//            self.viewer = viewer
+//            self.labels = labels
+//        }
+//        
+//        public init(from decoder: Decoder) throws {
+//            let container = try decoder.container(keyedBy: CodingKeys.self)
+//            
+//            self.actorDID = try container.decode(String.self, forKey: .actorDID)
+//            self.actorHandle = try container.decode(String.self, forKey: .actorHandle)
+//            self.displayName = try container.decodeIfPresent(String.self, forKey: .displayName)
+//            self.description = try container.decodeIfPresent(String.self, forKey: .description)
+//            self.avatarImageURL = try container.decodeIfPresent(URL.self, forKey: .avatarImageURL)
+//            self.bannerImageURL = try container.decodeIfPresent(URL.self, forKey: .bannerImageURL)
+//            self.followerCount = try container.decodeIfPresent(Int.self, forKey: .followerCount)
+//            self.followCount = try container.decodeIfPresent(Int.self, forKey: .followCount)
+//            self.postCount = try container.decodeIfPresent(Int.self, forKey: .postCount)
+//            self.associated = try container.decodeIfPresent(ProfileAssociatedDefinition.self, forKey: .associated)
+//            self.indexedAt = try container.decodeIfPresent(DateFormattingOptional.self, forKey: .indexedAt)?.wrappedValue
+//            self.viewer = try container.decodeIfPresent(ViewerStateDefinition.self, forKey: .viewer)
+//            self.labels = try container.decodeIfPresent([ComAtprotoLexicon.Label.LabelDefinition].self, forKey: .labels)
+//        }
         
         @_documentation(visibility: private)
         public func encode(to encoder: Encoder) throws {
@@ -649,16 +649,16 @@ extension AppBskyLexicon.Actor {
         /// - Note: From the AT Protocol specification: "The birth date of account owner."
         @DateFormattingOptional public var birthDate: Date?
 
-        @_documentation(visibility: private)
-        public init(birthDate: Date) {
-            self._birthDate = DateFormattingOptional(wrappedValue: birthDate)
-        }
-
-        public init(from decoder: Decoder) throws {
-            let container = try decoder.container(keyedBy: CodingKeys.self)
-
-            self.birthDate = try container.decodeIfPresent(DateFormattingOptional.self, forKey: .birthDate)?.wrappedValue
-        }
+//        @_documentation(visibility: private)
+//        public init(birthDate: Date) {
+//            self._birthDate = DateFormattingOptional(wrappedValue: birthDate)
+//        }
+//
+//        public init(from decoder: Decoder) throws {
+//            let container = try decoder.container(keyedBy: CodingKeys.self)
+//
+//            self.birthDate = try container.decodeIfPresent(DateFormattingOptional.self, forKey: .birthDate)?.wrappedValue
+//        }
 
         @_documentation(visibility: private)
         public func encode(to encoder: Encoder) throws {
@@ -909,24 +909,24 @@ extension AppBskyLexicon.Actor {
         /// muted word will expire and no longer be applied."
         @DateFormattingOptional public var expiresAt: Date?
 
-        @_documentation(visibility: private)
-        public init(id: String?, value: String, targets: [MutedWordTarget], actorTarget: ActorTarget?, expiresAt: Date?) {
-            self.id = id
-            self.value = value
-            self.targets = targets
-            self.actorTarget = actorTarget
-            self._expiresAt = DateFormattingOptional(wrappedValue: expiresAt)
-        }
-
-        public init(from decoder: Decoder) throws {
-            let container = try decoder.container(keyedBy: CodingKeys.self)
-
-            self.id = try container.decodeIfPresent(String.self, forKey: .id)
-            self.value = try container.decode(String.self, forKey: .value)
-            self.targets = try container.decode([MutedWordTarget].self, forKey: .targets)
-            self.actorTarget = try container.decodeIfPresent(ActorTarget.self, forKey: .actorTarget)
-            self.expiresAt = try container.decodeIfPresent(DateFormattingOptional.self, forKey: .expiresAt)?.wrappedValue
-        }
+//        @_documentation(visibility: private)
+//        public init(id: String?, value: String, targets: [MutedWordTarget], actorTarget: ActorTarget?, expiresAt: Date?) {
+//            self.id = id
+//            self.value = value
+//            self.targets = targets
+//            self.actorTarget = actorTarget
+//            self._expiresAt = DateFormattingOptional(wrappedValue: expiresAt)
+//        }
+//
+//        public init(from decoder: Decoder) throws {
+//            let container = try decoder.container(keyedBy: CodingKeys.self)
+//
+//            self.id = try container.decodeIfPresent(String.self, forKey: .id)
+//            self.value = try container.decode(String.self, forKey: .value)
+//            self.targets = try container.decode([MutedWordTarget].self, forKey: .targets)
+//            self.actorTarget = try container.decodeIfPresent(ActorTarget.self, forKey: .actorTarget)
+//            self.expiresAt = try container.decodeIfPresent(DateFormattingOptional.self, forKey: .expiresAt)?.wrappedValue
+//        }
 
         @_documentation(visibility: private)
         public func encode(to encoder: Encoder) throws {
