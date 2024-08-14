@@ -22,16 +22,6 @@ extension AppBskyLexicon.Notification {
         /// The date and time the notification was seen by the user account.
         @DateFormatting public var seenAt: Date
 
-//        public init(seenAt: Date) {
-//            self._seenAt = DateFormatting(wrappedValue: seenAt)
-//        }
-//
-//        public init(from decoder: any Decoder) throws {
-//            let container = try decoder.container(keyedBy: CodingKeys.self)
-//
-//            self.seenAt = try container.decode(DateFormatting.self, forKey: .seenAt).wrappedValue
-//        }
-
         public func encode(to encoder: any Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
 

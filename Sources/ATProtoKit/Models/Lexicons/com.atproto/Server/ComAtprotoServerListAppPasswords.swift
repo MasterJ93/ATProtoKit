@@ -38,20 +38,6 @@ extension ComAtprotoLexicon.Server {
             /// the user account.
             public let isPrivileged: Bool?
 
-//            public init(name: String, createdAt: Date, isPrivileged: Bool?) {
-//                self.name = name
-//                self._createdAt = DateFormatting(wrappedValue: createdAt)
-//                self.isPrivileged = isPrivileged
-//            }
-//
-//            public init(from decoder: Decoder) throws {
-//                let container = try decoder.container(keyedBy: CodingKeys.self)
-//
-//                self.name = try container.decode(String.self, forKey: .name)
-//                self.createdAt = try container.decode(DateFormatting.self, forKey: .createdAt).wrappedValue
-//                self.isPrivileged = try container.decodeIfPresent(Bool.self, forKey: .isPrivileged)
-//            }
-
             public func encode(to encoder: Encoder) throws {
                 var container = encoder.container(keyedBy: CodingKeys.self)
 

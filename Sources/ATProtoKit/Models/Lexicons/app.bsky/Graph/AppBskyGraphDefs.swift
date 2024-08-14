@@ -43,31 +43,6 @@ extension AppBskyLexicon.Graph {
         /// The late time the user list was indexed. Optional.
         @DateFormattingOptional public var indexedAt: Date?
 
-//        public init(actorURI: String, cidHash: String, name: String, purpose: ListPurpose, avatarImageURL: URL?, listItemCount: Int?,
-//                    viewer: ListViewerStateDefinition?, indexedAt: Date?) {
-//            self.actorURI = actorURI
-//            self.cidHash = cidHash
-//            self.name = name
-//            self.purpose = purpose
-//            self.avatarImageURL = avatarImageURL
-//            self.listItemCount = listItemCount
-//            self.viewer = viewer
-//            self._indexedAt = DateFormattingOptional(wrappedValue: indexedAt)
-//        }
-//
-//        public init(from decoder: Decoder) throws {
-//            let container = try decoder.container(keyedBy: CodingKeys.self)
-//
-//            self.actorURI = try container.decode(String.self, forKey: .actorURI)
-//            self.cidHash = try container.decode(String.self, forKey: .cidHash)
-//            self.name = try container.decode(String.self, forKey: .name)
-//            self.purpose = try container.decode(ListPurpose.self, forKey: .purpose)
-//            self.avatarImageURL = try container.decodeIfPresent(URL.self, forKey: .avatarImageURL)
-//            self.listItemCount = try container.decodeIfPresent(Int.self, forKey: .listItemCount)
-//            self.viewer = try container.decodeIfPresent(ListViewerStateDefinition.self, forKey: .viewer)
-//            self.indexedAt = try container.decodeIfPresent(DateFormattingOptional.self, forKey: .indexedAt)?.wrappedValue
-//        }
-
         public func encode(to encoder: Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
 
@@ -139,38 +114,6 @@ extension AppBskyLexicon.Graph {
 
         /// The late time the user list was indexed.
         @DateFormatting public var indexedAt: Date
-
-//        public init(listURI: String, cidHash: String, creator: AppBskyLexicon.Actor.ProfileViewDefinition, name: String, purpose: ListPurpose,
-//                    description: String?, descriptionFacets: [AppBskyLexicon.RichText.Facet]?, avatarImageURL: URL?, listItemCount: Int?,
-//                    viewer: ListViewerStateDefinition?, indexedAt: Date) {
-//            self.listURI = listURI
-//            self.cidHash = cidHash
-//            self.creator = creator
-//            self.name = name
-//            self.purpose = purpose
-//            self.description = description
-//            self.descriptionFacets = descriptionFacets
-//            self.avatarImageURL = avatarImageURL
-//            self.listItemCount = listItemCount
-//            self.viewer = viewer
-//            self._indexedAt = DateFormatting(wrappedValue: indexedAt)
-//        }
-//
-//        public init(from decoder: Decoder) throws {
-//            let container = try decoder.container(keyedBy: CodingKeys.self)
-//
-//            self.listURI = try container.decode(String.self, forKey: .listURI)
-//            self.cidHash = try container.decode(String.self, forKey: .cidHash)
-//            self.creator = try container.decode(AppBskyLexicon.Actor.ProfileViewDefinition.self, forKey: .creator)
-//            self.name = try container.decode(String.self, forKey: .name)
-//            self.purpose = try container.decode(ListPurpose.self, forKey: .purpose)
-//            self.description = try container.decodeIfPresent(String.self, forKey: .description)
-//            self.descriptionFacets = try container.decodeIfPresent([AppBskyLexicon.RichText.Facet].self, forKey: .descriptionFacets)
-//            self.avatarImageURL = try container.decodeIfPresent(URL.self, forKey: .avatarImageURL)
-//            self.listItemCount = try container.decodeIfPresent(Int.self, forKey: .listItemCount)
-//            self.viewer = try container.decodeIfPresent(ListViewerStateDefinition.self, forKey: .viewer)
-//            self.indexedAt = try container.decode(DateFormatting.self, forKey: .indexedAt).wrappedValue
-//        }
 
         public func encode(to encoder: Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
@@ -268,39 +211,6 @@ extension AppBskyLexicon.Graph {
         /// The late time the user list was indexed. Optional.
         @DateFormatting public var indexedAt: Date
 
-//        public init(starterPackURI: String, starterPackCID: String, starterPackRecord: UnknownType, creator: AppBskyLexicon.Actor.ProfileViewBasicDefinition,
-//                    list: AppBskyLexicon.Graph.ListViewBasicDefinition?, listItemsSample: [AppBskyLexicon.Graph.ListItemViewDefinition]?,
-//                    feeds: [AppBskyLexicon.Feed.GeneratorViewDefinition]?, joinedWeekCount: Int?, joinedAllTimeCount: Int?,
-//                    labels: [ComAtprotoLexicon.Label.LabelDefinition]?, indexedAt: Date) {
-//            self.starterPackURI = starterPackURI
-//            self.starterPackCID = starterPackCID
-//            self.starterPackRecord = starterPackRecord
-//            self.creator = creator
-//            self.list = list
-//            self.listItemsSample = listItemsSample
-//            self.feeds = feeds
-//            self.joinedWeekCount = joinedWeekCount
-//            self.joinedAllTimeCount = joinedAllTimeCount
-//            self.labels = labels
-//            self._indexedAt = DateFormatting(wrappedValue: indexedAt)
-//        }
-//
-//        public init(from decoder: any Decoder) throws {
-//            let container = try decoder.container(keyedBy: CodingKeys.self)
-//
-//            self.starterPackURI = try container.decode(String.self, forKey: .starterPackURI)
-//            self.starterPackCID = try container.decode(String.self, forKey: .starterPackCID)
-//            self.starterPackRecord = try container.decode(UnknownType.self, forKey: .starterPackRecord)
-//            self.creator = try container.decode(AppBskyLexicon.Actor.ProfileViewBasicDefinition.self, forKey: .creator)
-//            self.list = try container.decodeIfPresent(AppBskyLexicon.Graph.ListViewBasicDefinition.self, forKey: .list)
-//            self.listItemsSample = try container.decodeIfPresent([AppBskyLexicon.Graph.ListItemViewDefinition].self, forKey: .listItemsSample)
-//            self.feeds = try container.decodeIfPresent([AppBskyLexicon.Feed.GeneratorViewDefinition].self, forKey: .feeds)
-//            self.joinedWeekCount = try container.decodeIfPresent(Int.self, forKey: .joinedWeekCount)
-//            self.joinedAllTimeCount = try container.decodeIfPresent(Int.self, forKey: .joinedAllTimeCount)
-//            self.labels = try container.decodeIfPresent([ComAtprotoLexicon.Label.LabelDefinition].self, forKey: .labels)
-//            self.indexedAt = try container.decode(DateFormatting.self, forKey: .indexedAt).wrappedValue
-//        }
-
         public func encode(to encoder: any Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
 
@@ -367,34 +277,6 @@ extension AppBskyLexicon.Graph {
 
         /// The late time the user list was indexed. Optional.
         @DateFormatting public var indexedAt: Date
-
-//        public init(starterPackURI: String, starterPackCID: String, starterPackRecord: UnknownType, creator: AppBskyLexicon.Actor.ProfileViewBasicDefinition,
-//                    listItemCount: Int?, joinedWeekCount: Int?, joinedAllTimeCount: Int?, labels: [ComAtprotoLexicon.Label.LabelDefinition]?,
-//                    indexedAt: Date) {
-//            self.starterPackURI = starterPackURI
-//            self.starterPackCID = starterPackCID
-//            self.starterPackRecord = starterPackRecord
-//            self.creator = creator
-//            self.listItemCount = listItemCount
-//            self.joinedWeekCount = joinedWeekCount
-//            self.joinedAllTimeCount = joinedAllTimeCount
-//            self.labels = labels
-//            self._indexedAt = DateFormatting(wrappedValue: indexedAt)
-//        }
-//
-//        public init(from decoder: any Decoder) throws {
-//            let container = try decoder.container(keyedBy: CodingKeys.self)
-//
-//            self.starterPackURI = try container.decode(String.self, forKey: .starterPackURI)
-//            self.starterPackCID = try container.decode(String.self, forKey: .starterPackCID)
-//            self.starterPackRecord = try container.decode(UnknownType.self, forKey: .starterPackRecord)
-//            self.creator = try container.decode(AppBskyLexicon.Actor.ProfileViewBasicDefinition.self, forKey: .creator)
-//            self.listItemCount = try container.decodeIfPresent(Int.self, forKey: .listItemCount)
-//            self.joinedWeekCount = try container.decodeIfPresent(Int.self, forKey: .joinedWeekCount)
-//            self.joinedAllTimeCount = try container.decodeIfPresent(Int.self, forKey: .joinedAllTimeCount)
-//            self.labels = try container.decodeIfPresent([ComAtprotoLexicon.Label.LabelDefinition].self, forKey: .labels)
-//            self.indexedAt = try container.decode(DateFormatting.self, forKey: .indexedAt).wrappedValue
-//        }
 
         public func encode(to encoder: any Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)

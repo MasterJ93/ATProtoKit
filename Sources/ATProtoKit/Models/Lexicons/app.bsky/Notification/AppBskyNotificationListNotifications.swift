@@ -31,22 +31,6 @@ extension AppBskyLexicon.Notification {
         /// The date and time the notification was last seen. Optional.
         @DateFormattingOptional public var seenAt: Date?
 
-//        public init(cursor: String?, notifications: [Notification], isPriority: Bool?, seenAt: Date?) {
-//            self.cursor = cursor
-//            self.notifications = notifications
-//            self.isPriority = isPriority
-//            self._seenAt = DateFormattingOptional(wrappedValue: seenAt)
-//        }
-//
-//        public init(from decoder: any Decoder) throws {
-//            let container = try decoder.container(keyedBy: CodingKeys.self)
-//
-//            self.cursor = try container.decodeIfPresent(String.self, forKey: .cursor)
-//            self.notifications = try container.decode([AppBskyLexicon.Notification.Notification].self, forKey: .notifications)
-//            self.isPriority = try container.decodeIfPresent(Bool.self, forKey: .isPriority)
-//            self.seenAt = try container.decodeIfPresent(DateFormattingOptional.self, forKey: .seenAt)?.wrappedValue
-//        }
-
         enum CodingKeys: String, CodingKey {
             case cursor
             case notifications
@@ -91,33 +75,6 @@ extension AppBskyLexicon.Notification {
 
         /// An array of labels. Optional.
         public let labels: [ComAtprotoLexicon.Label.LabelDefinition]?
-
-//        public init(notificationURI: String, notificationCID: String, notificationAuthor: String, notificationReason: Reason, reasonSubjectURI: String,
-//                    record: UnknownType, isRead: Bool, indexedAt: Date, labels: [ComAtprotoLexicon.Label.LabelDefinition]) {
-//            self.notificationURI = notificationURI
-//            self.notificationCID = notificationCID
-//            self.notificationAuthor = notificationAuthor
-//            self.notificationReason = notificationReason
-//            self.reasonSubjectURI = reasonSubjectURI
-//            self.record = record
-//            self.isRead = isRead
-//            self._indexedAt = DateFormatting(wrappedValue: indexedAt)
-//            self.labels = labels
-//        }
-//
-//        public init(from decoder: any Decoder) throws {
-//            let container = try decoder.container(keyedBy: CodingKeys.self)
-//
-//            self.notificationURI = try container.decode(String.self, forKey: .notificationURI)
-//            self.notificationCID = try container.decode(String.self, forKey: .notificationCID)
-//            self.notificationAuthor = try container.decode(String.self, forKey: .notificationAuthor)
-//            self.notificationReason = try container.decode(Notification.Reason.self, forKey: .notificationReason)
-//            self.reasonSubjectURI = try container.decodeIfPresent(String.self, forKey: .reasonSubjectURI)
-//            self.record = try container.decode(UnknownType.self, forKey: .record)
-//            self.isRead = try container.decode(Bool.self, forKey: .isRead)
-//            self.indexedAt = try container.decode(DateFormatting.self, forKey: .indexedAt).wrappedValue
-//            self.labels = try container.decodeIfPresent([ComAtprotoLexicon.Label.LabelDefinition].self, forKey: .labels)
-//        }
 
         public func encode(to encoder: any Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)

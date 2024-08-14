@@ -103,29 +103,6 @@ extension ChatBskyLexicon.Conversation {
         /// The date and time the message was seen.
         @DateFormatting public var seenAt: Date
 
-//        public init(messageID: String?, revision: String, text: String, facets: [AppBskyLexicon.RichText.Facet]?,
-//                    embeds: [ATUnion.MessageViewEmbedUnion]?, sender: String, seenAt: Date) {
-//            self.messageID = messageID
-//            self.revision = revision
-//            self.text = text
-//            self.facets = facets
-//            self.embeds = embeds
-//            self.sender = sender
-//            self._seenAt = DateFormatting(wrappedValue: seenAt)
-//        }
-//
-//        public init(from decoder: any Decoder) throws {
-//            let container = try decoder.container(keyedBy: CodingKeys.self)
-//
-//            self.messageID = try container.decodeIfPresent(String.self, forKey: .messageID)
-//            self.revision = try container.decode(String.self, forKey: .revision)
-//            self.text = try container.decode(String.self, forKey: .text)
-//            self.facets = try container.decodeIfPresent([AppBskyLexicon.RichText.Facet].self, forKey: .facets)
-//            self.embeds = try container.decodeIfPresent([ATUnion.MessageViewEmbedUnion].self, forKey: .embeds)
-//            self.sender = try container.decode(String.self, forKey: .sender)
-//            self.seenAt = try container.decode(DateFormatting.self, forKey: .seenAt).wrappedValue
-//        }
-
         public func encode(to encoder: any Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
 
@@ -169,22 +146,6 @@ extension ChatBskyLexicon.Conversation {
 
         /// The date and time the message was seen.
         @DateFormatting public var seenAt: Date
-
-//        public init(messageID: String?, revision: String, sender: String, seenAt: Date) {
-//            self.messageID = messageID
-//            self.revision = revision
-//            self.sender = sender
-//            self._seenAt = DateFormatting(wrappedValue: seenAt)
-//        }
-//
-//        public init(from decoder: any Decoder) throws {
-//            let container = try decoder.container(keyedBy: CodingKeys.self)
-//
-//            self.messageID = try container.decodeIfPresent(String.self, forKey: .messageID)
-//            self.revision = try container.decode(String.self, forKey: .revision)
-//            self.sender = try container.decode(String.self, forKey: .sender)
-//            self.seenAt = try container.decode(DateFormatting.self, forKey: .seenAt).wrappedValue
-//        }
 
         public func encode(to encoder: any Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
