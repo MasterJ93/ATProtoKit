@@ -66,3 +66,5 @@
 ///     }
 /// }
 /// ```
+@attached(peer, names: named(ATUnionMacro))
+public macro ATUnionMacro(named: String, containing: [String: String]) = #externalMacro(module: "ATUnionMacro", type: "ATUnion")
