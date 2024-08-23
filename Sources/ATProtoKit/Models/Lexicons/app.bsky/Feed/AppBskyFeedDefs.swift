@@ -32,10 +32,10 @@ extension AppBskyLexicon.Feed {
         public var embed: ATUnion.EmbedViewUnion?
 
         /// The number of replies in the post. Optional.
-        public var replyCount: Int?
+        public let replyCount: Int?
 
         /// The number of reposts in the post. Optional.
-        public var repostCount: Int?
+        public let repostCount: Int?
 
         /// The number of likes in the post. Optional.
         public var likeCount: Int?
@@ -44,64 +44,13 @@ extension AppBskyLexicon.Feed {
         @DateFormatting public var indexedAt: Date
 
         /// The viewer's interaction with the post. Optional.
-        public var viewer: ViewerStateDefinition?
+        public let viewer: ViewerStateDefinition?
 
         /// An array of labels attached to the post. Optional.
-        public var labels: [ComAtprotoLexicon.Label.LabelDefinition]?
+        public let labels: [ComAtprotoLexicon.Label.LabelDefinition]?
 
         /// The ruleset of who can reply to the post. Optional.
-        public var threadgate: ThreadgateViewDefinition?
-
-        public init(postURI: String, cidHash: String, author: AppBskyLexicon.Actor.ProfileViewBasicDefinition, record: UnknownType,
-                    embed: ATUnion.EmbedViewUnion?, replyCount: Int?, repostCount: Int?, likeCount: Int?, indexedAt: Date, viewer: ViewerStateDefinition?,
-                    labels: [ComAtprotoLexicon.Label.LabelDefinition]?, threadgate: ThreadgateViewDefinition?) {
-            self.postURI = postURI
-            self.cidHash = cidHash
-            self.author = author
-            self.record = record
-            self.embed = embed
-            self.replyCount = replyCount
-            self.repostCount = repostCount
-            self.likeCount = likeCount
-            self._indexedAt = DateFormatting(wrappedValue: indexedAt)
-            self.viewer = viewer
-            self.labels = labels
-            self.threadgate = threadgate
-        }
-
-        public init(from decoder: Decoder) throws {
-            let container = try decoder.container(keyedBy: CodingKeys.self)
-
-            self.postURI = try container.decode(String.self, forKey: .postURI)
-            self.cidHash = try container.decode(String.self, forKey: .cidHash)
-            self.author = try container.decode(AppBskyLexicon.Actor.ProfileViewBasicDefinition.self, forKey: .author)
-            self.record = try container.decode(UnknownType.self, forKey: .record)
-            self.embed = try container.decodeIfPresent(ATUnion.EmbedViewUnion.self, forKey: .embed)
-            self.replyCount = try container.decodeIfPresent(Int.self, forKey: .replyCount)
-            self.repostCount = try container.decodeIfPresent(Int.self, forKey: .repostCount)
-            self.likeCount = try container.decodeIfPresent(Int.self, forKey: .likeCount)
-            self.indexedAt = try container.decode(DateFormatting.self, forKey: .indexedAt).wrappedValue
-            self.viewer = try container.decodeIfPresent(ViewerStateDefinition.self, forKey: .viewer)
-            self.labels = try container.decodeIfPresent([ComAtprotoLexicon.Label.LabelDefinition].self, forKey: .labels)
-            self.threadgate = try container.decodeIfPresent(ThreadgateViewDefinition.self, forKey: .threadgate)
-        }
-
-        public func encode(to encoder: Encoder) throws {
-            var container = encoder.container(keyedBy: CodingKeys.self)
-
-            try container.encode(self.postURI, forKey: .postURI)
-            try container.encode(self.cidHash, forKey: .cidHash)
-            try container.encode(self.author, forKey: .author)
-            try container.encode(self.record, forKey: .record)
-            try container.encodeIfPresent(self.embed, forKey: .embed)
-            try container.encodeIfPresent(self.replyCount, forKey: .replyCount)
-            try container.encodeIfPresent(self.repostCount, forKey: .repostCount)
-            try container.encodeIfPresent(self.likeCount, forKey: .likeCount)
-            try container.encode(self._indexedAt, forKey: .indexedAt)
-            try container.encodeIfPresent(self.viewer, forKey: .viewer)
-            try container.encodeIfPresent(self.labels, forKey: .labels)
-            try container.encodeIfPresent(self.threadgate, forKey: .threadgate)
-        }
+        public let threadgate: ThreadgateViewDefinition?
 
         enum CodingKeys: String, CodingKey {
             case postURI = "uri"
@@ -173,21 +122,21 @@ extension AppBskyLexicon.Feed {
         /// feed generator that may be passed back alongside interactions."
         public let feedContext: String?
 
-        public init(post: PostViewDefinition, reply: ReplyReferenceDefinition?, reason: ATUnion.ReasonRepostUnion?, feedContext: String?) {
-            self.post = post
-            self.reply = reply
-            self.reason = reason
-            self.feedContext = feedContext
-        }
+//        public init(post: PostViewDefinition, reply: ReplyReferenceDefinition?, reason: ATUnion.ReasonRepostUnion?, feedContext: String?) {
+//            self.post = post
+//            self.reply = reply
+//            self.reason = reason
+//            self.feedContext = feedContext
+//        }
 
-        public init(from decoder: any Decoder) throws {
-            let container = try decoder.container(keyedBy: CodingKeys.self)
-
-            self.post = try container.decode(PostViewDefinition.self, forKey: .post)
-            self.reply = try container.decodeIfPresent(ReplyReferenceDefinition.self, forKey: .reply)
-            self.reason = try container.decodeIfPresent(ATUnion.ReasonRepostUnion.self, forKey: .reason)
-            self.feedContext = try container.decodeIfPresent(String.self, forKey: .feedContext)
-        }
+//        public init(from decoder: any Decoder) throws {
+//            let container = try decoder.container(keyedBy: CodingKeys.self)
+//
+//            self.post = try container.decode(PostViewDefinition.self, forKey: .post)
+//            self.reply = try container.decodeIfPresent(ReplyReferenceDefinition.self, forKey: .reply)
+//            self.reason = try container.decodeIfPresent(ATUnion.ReasonRepostUnion.self, forKey: .reason)
+//            self.feedContext = try container.decodeIfPresent(String.self, forKey: .feedContext)
+//        }
 
         public func encode(to encoder: any Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
@@ -245,17 +194,17 @@ extension AppBskyLexicon.Feed {
         /// The last time the repost was indexed.
         @DateFormatting public var indexedAt: Date
 
-        public init(by: AppBskyLexicon.Actor.ProfileViewBasicDefinition, indexedAt: Date) {
-            self.by = by
-            self._indexedAt = DateFormatting(wrappedValue: indexedAt)
-        }
+//        public init(by: AppBskyLexicon.Actor.ProfileViewBasicDefinition, indexedAt: Date) {
+//            self.by = by
+//            self._indexedAt = DateFormatting(wrappedValue: indexedAt)
+//        }
 
-        public init(from decoder: Decoder) throws {
-            let container = try decoder.container(keyedBy: CodingKeys.self)
-
-            self.by = try container.decode(AppBskyLexicon.Actor.ProfileViewBasicDefinition.self, forKey: .by)
-            self.indexedAt = try container.decode(DateFormatting.self, forKey: .indexedAt).wrappedValue
-        }
+//        public init(from decoder: Decoder) throws {
+//            let container = try decoder.container(keyedBy: CodingKeys.self)
+//
+//            self.by = try container.decode(AppBskyLexicon.Actor.ProfileViewBasicDefinition.self, forKey: .by)
+//            self.indexedAt = try container.decode(DateFormatting.self, forKey: .indexedAt).wrappedValue
+//        }
 
         enum CodingKeys: CodingKey {
             case by
@@ -298,19 +247,19 @@ extension AppBskyLexicon.Feed {
         public let feedURI: String
 
         /// Indicates whether the post wasn't found. Defaults to `true`.
-        public private(set) var isNotFound: Bool
+        public let isNotFound: Bool
 
-        public init(feedURI: String, isNotFound: Bool = true) {
-            self.feedURI = feedURI
-            self.isNotFound = isNotFound
-        }
-
-        public init(from decoder: Decoder) throws {
-            let container = try decoder.container(keyedBy: CodingKeys.self)
-
-            feedURI = try container.decode(String.self, forKey: .feedURI)
-            isNotFound = (try? container.decodeIfPresent(Bool.self, forKey: .isNotFound)) ?? true
-        }
+//        public init(feedURI: String, isNotFound: Bool = true) {
+//            self.feedURI = feedURI
+//            self.isNotFound = isNotFound
+//        }
+//
+//        public init(from decoder: Decoder) throws {
+//            let container = try decoder.container(keyedBy: CodingKeys.self)
+//
+//            feedURI = try container.decode(String.self, forKey: .feedURI)
+//            isNotFound = (try? container.decodeIfPresent(Bool.self, forKey: .isNotFound)) ?? true
+//        }
 
         enum CodingKeys: String, CodingKey {
             case feedURI = "uri"
@@ -329,12 +278,12 @@ extension AppBskyLexicon.Feed {
         public let feedURI: String
 
         /// Indicates whether this post has been blocked from the user. Defaults to `true`.
-        public private(set) var isBlocked: Bool = true
+        public let isBlocked: Bool
 
         /// The author of the post.
         public let author: BlockedAuthorDefinition
 
-        public init(feedURI: String, isBlocked: Bool = true, author: BlockedAuthorDefinition) {
+        public init(feedURI: String, isBlocked: Bool, author: BlockedAuthorDefinition) {
             self.feedURI = feedURI
             self.isBlocked = isBlocked
             self.author = author
@@ -423,42 +372,42 @@ extension AppBskyLexicon.Feed {
         /// The last time the feed generator was indexed.
         @DateFormatting public var indexedAt: Date
 
-        public init(feedURI: String, cidHash: String, feedDID: String, creator: AppBskyLexicon.Actor.ProfileViewDefinition, displayName: String,
-                    description: String?, descriptionFacets: [AppBskyLexicon.RichText.Facet]?, avatarImageURL: URL?, likeCount: Int?,
-                    canAcceptInteractions: Bool?, labels: [ComAtprotoLexicon.Label.LabelDefinition]?,
-                    viewer: GeneratorViewerStateDefinition?, indexedAt: Date) {
-            self.feedURI = feedURI
-            self.cidHash = cidHash
-            self.feedDID = feedDID
-            self.creator = creator
-            self.displayName = displayName
-            self.description = description
-            self.descriptionFacets = descriptionFacets
-            self.avatarImageURL = avatarImageURL
-            self.likeCount = likeCount
-            self.canAcceptInteractions = canAcceptInteractions
-            self.labels = labels
-            self.viewer = viewer
-            self._indexedAt = DateFormatting(wrappedValue: indexedAt)
-        }
+//        public init(feedURI: String, cidHash: String, feedDID: String, creator: AppBskyLexicon.Actor.ProfileViewDefinition, displayName: String,
+//                    description: String?, descriptionFacets: [AppBskyLexicon.RichText.Facet]?, avatarImageURL: URL?, likeCount: Int?,
+//                    canAcceptInteractions: Bool?, labels: [ComAtprotoLexicon.Label.LabelDefinition]?,
+//                    viewer: GeneratorViewerStateDefinition?, indexedAt: Date) {
+//            self.feedURI = feedURI
+//            self.cidHash = cidHash
+//            self.feedDID = feedDID
+//            self.creator = creator
+//            self.displayName = displayName
+//            self.description = description
+//            self.descriptionFacets = descriptionFacets
+//            self.avatarImageURL = avatarImageURL
+//            self.likeCount = likeCount
+//            self.canAcceptInteractions = canAcceptInteractions
+//            self.labels = labels
+//            self.viewer = viewer
+//            self._indexedAt = DateFormatting(wrappedValue: indexedAt)
+//        }
 
-        public init(from decoder: Decoder) throws {
-            let container = try decoder.container(keyedBy: CodingKeys.self)
-
-            self.feedURI = try container.decode(String.self, forKey: .feedURI)
-            self.cidHash = try container.decode(String.self, forKey: .cidHash)
-            self.feedDID = try container.decode(String.self, forKey: .feedDID)
-            self.creator = try container.decode(AppBskyLexicon.Actor.ProfileViewDefinition.self, forKey: .creator)
-            self.displayName = try container.decode(String.self, forKey: .displayName)
-            self.description = try container.decodeIfPresent(String.self, forKey: .description)
-            self.descriptionFacets = try container.decodeIfPresent([AppBskyLexicon.RichText.Facet].self, forKey: .descriptionFacets)
-            self.avatarImageURL = try container.decodeIfPresent(URL.self, forKey: .avatarImageURL)
-            self.likeCount = try container.decodeIfPresent(Int.self, forKey: .likeCount)
-            self.canAcceptInteractions = try container.decodeIfPresent(Bool.self, forKey: .canAcceptInteractions)
-            self.labels = try container.decodeIfPresent([ComAtprotoLexicon.Label.LabelDefinition].self, forKey: .labels)
-            self.viewer = try container.decodeIfPresent(GeneratorViewerStateDefinition.self, forKey: .viewer)
-            self.indexedAt = try container.decode(DateFormatting.self, forKey: .indexedAt).wrappedValue
-        }
+//        public init(from decoder: Decoder) throws {
+//            let container = try decoder.container(keyedBy: CodingKeys.self)
+//
+//            self.feedURI = try container.decode(String.self, forKey: .feedURI)
+//            self.cidHash = try container.decode(String.self, forKey: .cidHash)
+//            self.feedDID = try container.decode(String.self, forKey: .feedDID)
+//            self.creator = try container.decode(AppBskyLexicon.Actor.ProfileViewDefinition.self, forKey: .creator)
+//            self.displayName = try container.decode(String.self, forKey: .displayName)
+//            self.description = try container.decodeIfPresent(String.self, forKey: .description)
+//            self.descriptionFacets = try container.decodeIfPresent([AppBskyLexicon.RichText.Facet].self, forKey: .descriptionFacets)
+//            self.avatarImageURL = try container.decodeIfPresent(URL.self, forKey: .avatarImageURL)
+//            self.likeCount = try container.decodeIfPresent(Int.self, forKey: .likeCount)
+//            self.canAcceptInteractions = try container.decodeIfPresent(Bool.self, forKey: .canAcceptInteractions)
+//            self.labels = try container.decodeIfPresent([ComAtprotoLexicon.Label.LabelDefinition].self, forKey: .labels)
+//            self.viewer = try container.decodeIfPresent(GeneratorViewerStateDefinition.self, forKey: .viewer)
+//            self.indexedAt = try container.decode(DateFormatting.self, forKey: .indexedAt).wrappedValue
+//        }
 
         public func encode(to encoder: Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
@@ -604,19 +553,19 @@ extension AppBskyLexicon.Feed {
         /// originally supplied by the feed generator on getFeedSkeleton."
         public let feedContext: String?
 
-        public init(item: String, event: Event, feedContext: String) {
-            self.item = item
-            self.event = event
-            self.feedContext = feedContext
-        }
+//        public init(item: String, event: Event, feedContext: String) {
+//            self.item = item
+//            self.event = event
+//            self.feedContext = feedContext
+//        }
 
-        public init(from decoder: any Decoder) throws {
-            let container = try decoder.container(keyedBy: CodingKeys.self)
-
-            self.item = try container.decode(String.self, forKey: .item)
-            self.event = try container.decode(Event.self, forKey: .event)
-            self.feedContext = try container.decode(String.self, forKey: .feedContext)
-        }
+//        public init(from decoder: any Decoder) throws {
+//            let container = try decoder.container(keyedBy: CodingKeys.self)
+//
+//            self.item = try container.decode(String.self, forKey: .item)
+//            self.event = try container.decode(Event.self, forKey: .event)
+//            self.feedContext = try container.decode(String.self, forKey: .feedContext)
+//        }
 
         public func encode(to encoder: any Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
