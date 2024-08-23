@@ -75,15 +75,68 @@ import SwiftCompilerPlugin
 /// ```
 public struct ATUnionMacro: PeerMacro {
     public static func expansion(
-        of node: some FreestandingMacroExpansionSyntax,
-        in context: some MacroExpansionContext
-    ) throws -> [DeclSyntax] {
+        of node: SwiftSyntax.AttributeSyntax,
+        providingPeersOf declaration: some SwiftSyntax.DeclSyntaxProtocol,
+        in context: some SwiftSyntaxMacros.MacroExpansionContext
+    ) throws -> [SwiftSyntax.DeclSyntax] {
 
-        
+        // Check if the macro is attached to a struct.
+        guard let structDecl = declaration.as(StructDeclSyntax.self) else {
+            throw ATMacroError.onlyApplicableToStruct
+        }
+
+        // Check if the macro is attached to "ATUnion".
+        if structDecl.name != "ATUnion" {
+            throw ATMacroError.onlyApplicableToATUnion
+        }
+
+        // Check if the marco has any arguments.
+        guard let unionName = node.argumentList.first?.expression,
+              let unionCases = node.argumentList.last?.expression else {
+            throw ATMacroError.noArguments
+        }
+
+        let testing = unionName.as(DictionaryExprSyntax.self)
+
+
+        var atUnionEnum: String
+
+        atUnionEnum = """
+        public enum \(argument): Codable {
+        """
+
+        for <#item#> in <#items#> {
+            atUnionEnum = atUnionEnum +
+            """
+                case ()
+            """
+        }
+        return []
     }
 }
 
 
+// MARK: - Errors
+
+/// An error type related to `ATMacro` macros.
+public enum ATMacroError: CustomStringConvertible, Error {
+    case onlyApplicableToStruct
+    case onlyApplicableToATUnion
+    case noArguments
+
+    public var description: String {
+        switch self {
+            case .onlyApplicableToStruct:
+                return "This macro can only be applied to a struct"
+            case .onlyApplicableToATUnion:
+                return "This macro can only be applied to the 'ATUnion' struct."
+            case .noArguments:
+                return "This macro has no arguments."
+        }
+    }
+}
+
+// MARK: - Main Implementation
 @main
 struct ATMacro: CompilerPlugin {
     let providingMacros: [Macro.Type] = [
