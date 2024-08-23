@@ -73,7 +73,7 @@ import SwiftCompilerPlugin
 ///     }
 /// }
 /// ```
-public struct ATUnionMacro: DeclarationMacro {
+public struct ATUnionMacro: PeerMacro {
     public static func expansion(
         of node: some FreestandingMacroExpansionSyntax,
         in context: some MacroExpansionContext
