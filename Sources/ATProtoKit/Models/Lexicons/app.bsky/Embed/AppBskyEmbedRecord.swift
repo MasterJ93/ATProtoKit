@@ -93,56 +93,14 @@ extension AppBskyLexicon.Embed {
             /// The number of likes for the record. Optional.
             public let likeCount: Int?
 
+            /// The number of quotes for the record. Optional.
+            public let quoteCount: Int?
+
             /// An array of embed views of various types.
             public let embeds: [ATUnion.EmbedViewUnion]?
 
             /// The date the record was last indexed.
             @DateFormatting public var indexedAt: Date
-
-            public init(recordURI: String, cidHash: String, author: AppBskyLexicon.Actor.ProfileViewBasicDefinition, value: UnknownType,
-                        labels: [ComAtprotoLexicon.Label.LabelDefinition]?, replyCount: Int?, repostCount: Int?, likeCount: Int?,
-                        embeds: [ATUnion.EmbedViewUnion]?, indexedAt: Date) {
-                self.recordURI = recordURI
-                self.cidHash = cidHash
-                self.author = author
-                self.value = value
-                self.labels = labels
-                self.replyCount = replyCount
-                self.repostCount = repostCount
-                self.likeCount = likeCount
-                self.embeds = embeds
-                self._indexedAt = DateFormatting(wrappedValue: indexedAt)
-            }
-
-            public init(from decoder: any Decoder) throws {
-                let container = try decoder.container(keyedBy: CodingKeys.self)
-
-                self.recordURI = try container.decode(String.self, forKey: .recordURI)
-                self.cidHash = try container.decode(String.self, forKey: .cidHash)
-                self.author = try container.decode(AppBskyLexicon.Actor.ProfileViewBasicDefinition.self, forKey: .author)
-                self.value = try container.decode(UnknownType.self, forKey: .value)
-                self.labels = try container.decodeIfPresent([ComAtprotoLexicon.Label.LabelDefinition].self, forKey: .labels)
-                self.replyCount = try container.decodeIfPresent(Int.self, forKey: .replyCount)
-                self.repostCount = try container.decodeIfPresent(Int.self, forKey: .repostCount)
-                self.likeCount = try container.decodeIfPresent(Int.self, forKey: .likeCount)
-                self.embeds = try container.decodeIfPresent([ATUnion.EmbedViewUnion].self, forKey: .embeds)
-                self.indexedAt = try container.decode(DateFormatting.self, forKey: .indexedAt).wrappedValue
-            }
-
-            public func encode(to encoder: any Encoder) throws {
-                var container = encoder.container(keyedBy: CodingKeys.self)
-
-                try container.encode(self.recordURI, forKey: .recordURI)
-                try container.encode(self.cidHash, forKey: .cidHash)
-                try container.encode(self.author, forKey: .author)
-                try container.encode(self.value, forKey: .value)
-                try container.encodeIfPresent(self.labels, forKey: .labels)
-                try container.encodeIfPresent(self.replyCount, forKey: .replyCount)
-                try container.encodeIfPresent(self.repostCount, forKey: .repostCount)
-                try container.encodeIfPresent(self.likeCount, forKey: .likeCount)
-                try container.encodeIfPresent(self.embeds, forKey: .embeds)
-                try container.encode(self._indexedAt, forKey: .indexedAt)
-            }
 
             enum CodingKeys: String, CodingKey {
                 case type = "$type"
@@ -154,6 +112,7 @@ extension AppBskyLexicon.Embed {
                 case replyCount
                 case repostCount
                 case likeCount
+                case quoteCount
                 case embeds = "embeds"
                 case indexedAt
             }
@@ -198,6 +157,25 @@ extension AppBskyLexicon.Embed {
                 case recordURI = "uri"
                 case isRecordBlocked = "blocked"
                 case recordAuthor = "author"
+            }
+        }
+
+        /// A data model for a definition of a record that has been detached.
+        ///
+        /// - SeeAlso: This is based on the [`app.bsky.embed.record`][github] lexicon.
+        ///
+        /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/embed/record.json
+        public struct ViewDetached: Codable {
+
+            /// The URI of the record.
+            public let postURI: String
+
+            /// Indicates whether the record was detached.
+            public let isRecordDetached: Bool
+
+            enum CodingKeys: String, CodingKey {
+                case postURI = "uri"
+                case isRecordDetached = "detached"
             }
         }
     }

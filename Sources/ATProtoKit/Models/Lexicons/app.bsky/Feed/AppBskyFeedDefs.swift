@@ -38,7 +38,10 @@ extension AppBskyLexicon.Feed {
         public let repostCount: Int?
 
         /// The number of likes in the post. Optional.
-        public var likeCount: Int?
+        public let likeCount: Int?
+
+        /// The number of quote posts in the post. Optional.
+        public let quoteCount: Int?
 
         /// The last time the post has been indexed.
         @DateFormatting public var indexedAt: Date
@@ -61,6 +64,7 @@ extension AppBskyLexicon.Feed {
             case replyCount
             case repostCount
             case likeCount
+            case quoteCount
             case indexedAt
             case viewer
             case labels
@@ -91,11 +95,15 @@ extension AppBskyLexicon.Feed {
         /// Indicates whether the requesting account can reply to the account's post. Optional.
         public let areRepliesDisabled: Bool?
 
+        /// Indicates whether the post can be embedded.
+        public let isEmbeddingDisabled: Bool?
+
         enum CodingKeys: String, CodingKey {
             case repostURI = "repost"
             case likeURI = "like"
             case isThreadMuted = "threadMuted"
             case areRepliesDisabled = "replyDisabled"
+            case isEmbeddingDisabled = "embeddingDisabled"
         }
     }
 
@@ -506,7 +514,7 @@ extension AppBskyLexicon.Feed {
         }
     }
 
-    /// A definition model for  a feed threadgate view.
+    /// A definition model for a feed threadgate view.
     ///
     /// - SeeAlso: This is based on the [`app.bsky.feed.defs`][github] lexicon.
     ///
