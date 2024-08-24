@@ -21,5 +21,8 @@ extension AppBskyLexicon.Feed {
 
         /// The post thread itself.
         public let thread: ATUnion.GetPostThreadOutputThreadUnion
+
+        /// A feed's threadgate view. Optional.
+        public let threadgate: AppBskyLexicon.Feed.ThreadgateViewDefinition?
     }
 }
