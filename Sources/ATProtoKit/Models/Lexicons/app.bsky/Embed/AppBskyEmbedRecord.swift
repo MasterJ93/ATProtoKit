@@ -93,26 +93,14 @@ extension AppBskyLexicon.Embed {
             /// The number of likes for the record. Optional.
             public let likeCount: Int?
 
+            /// The number of quotes for the record. Optional.
+            public let quoteCount: Int?
+
             /// An array of embed views of various types.
             public let embeds: [ATUnion.EmbedViewUnion]?
 
             /// The date the record was last indexed.
             @DateFormatting public var indexedAt: Date
-
-            public func encode(to encoder: any Encoder) throws {
-                var container = encoder.container(keyedBy: CodingKeys.self)
-
-                try container.encode(self.recordURI, forKey: .recordURI)
-                try container.encode(self.cidHash, forKey: .cidHash)
-                try container.encode(self.author, forKey: .author)
-                try container.encode(self.value, forKey: .value)
-                try container.encodeIfPresent(self.labels, forKey: .labels)
-                try container.encodeIfPresent(self.replyCount, forKey: .replyCount)
-                try container.encodeIfPresent(self.repostCount, forKey: .repostCount)
-                try container.encodeIfPresent(self.likeCount, forKey: .likeCount)
-                try container.encodeIfPresent(self.embeds, forKey: .embeds)
-                try container.encode(self._indexedAt, forKey: .indexedAt)
-            }
 
             enum CodingKeys: String, CodingKey {
                 case type = "$type"
@@ -124,6 +112,7 @@ extension AppBskyLexicon.Embed {
                 case replyCount
                 case repostCount
                 case likeCount
+                case quoteCount
                 case embeds = "embeds"
                 case indexedAt
             }
@@ -168,6 +157,25 @@ extension AppBskyLexicon.Embed {
                 case recordURI = "uri"
                 case isRecordBlocked = "blocked"
                 case recordAuthor = "author"
+            }
+        }
+
+        /// A data model for a definition of a record that has been detached.
+        ///
+        /// - SeeAlso: This is based on the [`app.bsky.embed.record`][github] lexicon.
+        ///
+        /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/embed/record.json
+        public struct ViewDetached: Codable {
+
+            /// The URI of the record.
+            public let postURI: String
+
+            /// Indicates whether the record was detached.
+            public let isRecordDetached: Bool
+
+            enum CodingKeys: String, CodingKey {
+                case postURI = "uri"
+                case isRecordDetached = "detached"
             }
         }
     }

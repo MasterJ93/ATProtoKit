@@ -37,11 +37,8 @@ extension AppBskyLexicon.Feed {
         /// The date and time of the creation of the threadgate.
         @DateFormatting public var createdAt: Date
 
-        public init(post: String, allow: [ATUnion.ThreadgateUnion], createdAt: Date) {
-            self.post = post
-            self.allow = allow
-            self._createdAt = DateFormatting(wrappedValue: createdAt)
-        }
+        /// An array of hidden replies in the form of URIs. Optional.
+        public let hiddenReplies: [String]?
 
         public init(from decoder: Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
@@ -49,6 +46,7 @@ extension AppBskyLexicon.Feed {
             self.post = try container.decode(String.self, forKey: .post)
             self.allow = try container.decode([ATUnion.ThreadgateUnion].self, forKey: .allow)
             self.createdAt = try container.decode(DateFormatting.self, forKey: .createdAt).wrappedValue
+            self.hiddenReplies = try container.decodeIfPresent([String].self, forKey: .hiddenReplies)
         }
 
         public func encode(to encoder: Encoder) throws {
@@ -57,6 +55,8 @@ extension AppBskyLexicon.Feed {
             try container.encode(self.post, forKey: .post)
             try container.encode(self.allow, forKey: .allow)
             try container.encode(self._createdAt, forKey: .createdAt)
+
+            try truncatedEncodeIfPresent(self.hiddenReplies, withContainer: &container, forKey: .hiddenReplies, upToArrayLength: 50)
         }
 
         enum CodingKeys: String, CodingKey {
@@ -64,6 +64,7 @@ extension AppBskyLexicon.Feed {
             case post
             case allow
             case createdAt
+            case hiddenReplies
         }
 
         /// A rule that indicates whether users that the post author mentions can reply to the post.

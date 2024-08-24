@@ -131,6 +131,9 @@ public struct ATUnion {
         /// A record that may have been blocked.
         case viewBlocked(AppBskyLexicon.Embed.RecordDefinition.ViewBlocked)
 
+        /// A record that may have been detached.
+        case viewDetached(AppBskyLexicon.Embed.RecordDefinition.ViewDetached)
+
         /// A generator view.
         case generatorView(AppBskyLexicon.Feed.GeneratorViewDefinition)
 
@@ -152,6 +155,8 @@ public struct ATUnion {
                 self = .viewNotFound(value)
             } else if let value = try? container.decode(AppBskyLexicon.Embed.RecordDefinition.ViewBlocked.self) {
                 self = .viewBlocked(value)
+            } else if let value = try? container.decode(AppBskyLexicon.Embed.RecordDefinition.ViewDetached.self) {
+                self = .viewDetached(value)
             } else if let value = try? container.decode(AppBskyLexicon.Feed.GeneratorViewDefinition.self) {
                 self = .generatorView(value)
             } else if let value = try? container.decode(AppBskyLexicon.Graph.ListViewDefinition.self) {
@@ -177,6 +182,8 @@ public struct ATUnion {
                     try container.encode(viewNotFound)
                 case .viewBlocked(let viewBlocked):
                     try container.encode(viewBlocked)
+                case .viewDetached(let viewDetached):
+                    try container.encode(viewDetached)
                 case .generatorView(let generatorView):
                     try container.encode(generatorView)
                 case .listView(let listView):
@@ -666,6 +673,32 @@ public struct ATUnion {
             switch self {
                 case .selfLabels(let selfLabelsValue):
                     try container.encode(selfLabelsValue)
+            }
+        }
+    }
+
+    public enum EmbeddingRulesUnion: Codable {
+
+        case disabledRule(AppBskyLexicon.Feed.PostgateRecord)
+
+        public init(from decoder: any Decoder) throws {
+            let container = try decoder.singleValueContainer()
+
+            if let value = try? container.decode(AppBskyLexicon.Feed.PostgateRecord.self) {
+                self = .disabledRule(value)
+            } else {
+                throw DecodingError.typeMismatch(
+                    EmbeddingRulesUnion.self, DecodingError.Context(
+                        codingPath: decoder.codingPath, debugDescription: "Unknown EmbeddingRulesUnion type"))
+            }
+        }
+
+        public func encode(to encoder: Encoder) throws {
+            var container = encoder.singleValueContainer()
+
+            switch self {
+                case .disabledRule(let disabledRule):
+                    try container.encode(disabledRule)
             }
         }
     }
