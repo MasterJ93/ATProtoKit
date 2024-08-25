@@ -123,8 +123,8 @@ public class ATProtoKit: ATProtoKitConfiguration {
     ///
     /// If `canUseBlueskyRecords` is set to `false`, these will not be used.
     private let recordLexicons: [ATRecordProtocol.Type] = [
-        AppBskyLexicon.Actor.ProfileRecord.self, AppBskyLexicon.Feed.GeneratorRecord.self, AppBskyLexicon.Feed.LikeRecord.self,
-        AppBskyLexicon.Feed.PostRecord.self, AppBskyLexicon.Feed.RepostRecord.self, AppBskyLexicon.Feed.ThreadgateRecord.self,
+        AppBskyLexicon.Feed.GeneratorRecord.self, AppBskyLexicon.Feed.LikeRecord.self, AppBskyLexicon.Feed.PostRecord.self,
+        AppBskyLexicon.Feed.PostgateRecord.self, AppBskyLexicon.Feed.RepostRecord.self, AppBskyLexicon.Feed.ThreadgateRecord.self,
         AppBskyLexicon.Graph.BlockRecord.self, AppBskyLexicon.Graph.FollowRecord.self, AppBskyLexicon.Graph.ListRecord.self,
         AppBskyLexicon.Graph.ListBlockRecord.self, AppBskyLexicon.Graph.ListItemRecord.self, AppBskyLexicon.Graph.StarterpackRecord.self,
         AppBskyLexicon.Labeler.ServiceRecord.self, ChatBskyLexicon.Actor.DeclarationRecord.self
