@@ -69,6 +69,10 @@
 
 - ``GetPostsOutput``
 
+### app.bsky.feed.getQuotes
+
+- ``GetQuotesOutput``
+
 ### app.bsky.feed.getPostThread
 
 - ``GetPostThreadOutput``
@@ -92,6 +96,10 @@
 ### app.bsky.feed.post
 
 - ``PostRecord``
+
+### app.bsky.feed.postgate
+
+- ``PostgateRecord``
 
 ### app.bsky.feed.repost
 
