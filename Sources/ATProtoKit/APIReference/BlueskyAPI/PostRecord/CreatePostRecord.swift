@@ -9,8 +9,13 @@ import Foundation
 
 extension ATProtoBluesky {
 
-    /// Creates a post record to the user's account.
-    /// 
+    /// A convenience method to create a post record to user account in Bluesky.
+    ///
+    /// This can be used instead of creating your own method if you wish not to do so.
+    ///
+    /// - Bug: Creating a record that contains a record and media at the same time has yet to
+    /// be implemented.
+    ///
     /// - Parameters:
     ///   - text: The text that's directly displayed in the post record. Current limit is
     ///   300 characters.
@@ -70,8 +75,8 @@ extension ATProtoBluesky {
                         resolvedEmbed = try await buildExternalEmbed(from: external)
                     case .record(let record):
                         resolvedEmbed = try await addQuotePostToEmbed(record)
-                    case .recordWithMedia(let recordWithMedia):
-//                        resolvedEmbed = .recordWithMedia(recordWithMedia)
+                    case .recordWithMedia(let record, let media):
+//                        resolvedEmbed = .recordWithMedia()
                         break
                 }
             } catch {
