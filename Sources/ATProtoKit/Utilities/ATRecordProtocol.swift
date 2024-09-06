@@ -65,22 +65,51 @@ public protocol ATRecordProtocol: Codable {
     init(from decoder: Decoder) throws
 }
 
+public protocol ATRecordConfiguration {
+
+    /// An array of record lexicon structs created by Bluesky.
+    ///
+    /// If `canUseBlueskyRecords` is set to `false`, these will not be used.
+    var recordLexicons: [ATRecordProtocol.Type] { get }
+
+    /// Internal state to track the process of adding records to ``ATRecordConfiguration``.
+    var initializationTask: Task<Void, Error>? { get }
+
+    /// A method for setting the process of adding records to ``ATRecordTypeRegistry``.
+    func checkInitialization() async throws
+}
+
+extension ATRecordConfiguration {
+
+    public func checkInitialization() async throws {
+        if let task = initializationTask {
+            try await task.value
+        }
+    }
+}
+
 /// A registry for all decodable record types in the AT Protocol.
 ///
 /// All record lexicon `struct`s (whether from Bluesky or user created) will be included in
 /// the registry. This is used as a map for ``UnknownType`` to find the most appropriate type
 /// that the JSON object will fit into.
 ///
+/// This registry is managed by an `actor`, ensuring concurrency-safe access to its internal
+/// data. Because of this, all interactions with `ATRecordTypeRegistry` must be done
+/// asynchronously using `await`.
+///
 /// When adding a record, you need to type `.self` at the end.
 /// ```swift
-/// ATRecordTypeRegistry(types: [UserProfile.self])
+/// Task {
+///     await ATRecordTypeRegistry(types: [UserProfile.self])
+/// }
 /// ```
 ///
 /// - Important: Make sure you don't add the same `struct` multiple times.
 ///
 /// - Warning: All record types _must_ conform to ``ATRecordProtocol``. Failure to do so may
 /// result in an error.
-public struct ATRecordTypeRegistry {
+public actor ATRecordTypeRegistry {
 
     /// The registry itself.
     ///
@@ -101,7 +130,7 @@ public struct ATRecordTypeRegistry {
     /// Initializes the registry with an array of record types.
     ///
     /// - Parameter types: An array of ``ATRecordProtocol``-conforming `struct`s.
-    public init(types: [ATRecordProtocol.Type]) {
+    public init(types: [ATRecordProtocol.Type]) async {
         for type in types {
             ATRecordTypeRegistry.recordRegistry[String(describing: type.type)] = type
         }
@@ -124,9 +153,30 @@ public struct ATRecordTypeRegistry {
     ///     \- reading from the decoder fails\
     ///     \- the data read is corrupted or otherwise invalid
     ///     \- no object key in `recordRegistry` matches the `$type`'s value.
-    public static func createInstance(ofType type: String, from decoder: Decoder) throws -> ATRecordProtocol? {
-        guard let typeClass = recordRegistry[type] else { return nil }
+    public static func createInstance(ofType type: String, from decoder: Decoder) async throws -> ATRecordProtocol? {
+
+        guard let typeClass = await self.getRecordType(for: type) else {
+            return nil
+        }
+
+        // Instantiate the record from the decoder
         return try typeClass.init(from: decoder)
+    }
+
+    /// Retrieves a specific record type based on the Namespaced Identifier (NSID) of the record.
+    /// 
+    /// - Parameter type: The NSID string.
+    /// - Returns: The ``ATRecordProtocol``-conforming type (if there's a match), or `nil`
+    /// (if there isn't).
+    public static func getRecordType(for type: String) async -> ATRecordProtocol.Type? {
+        return ATRecordTypeRegistry.recordRegistry[type]
+    }
+
+    /// Sets the boolean value of ``areBlueskyRecordsRegistered``.
+    ///
+    /// - Warning: Don't touch this method; this should only be used for ``ATProtoKit``.
+    public static func setBlueskyRecordsRegistered(_ registered: Bool) async {
+        ATRecordTypeRegistry.areBlueskyRecordsRegistered = registered
     }
 }
 
