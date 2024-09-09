@@ -30,6 +30,7 @@
 
 ### com.atproto.server.createInviteCodes
 
+- ``AccountCodes``
 - ``ComAtprotoLexicon/Server/CreateInviteCodesRequestBody``
 - ``ComAtprotoLexicon/Server/CreateInviteCodesOutput``
 

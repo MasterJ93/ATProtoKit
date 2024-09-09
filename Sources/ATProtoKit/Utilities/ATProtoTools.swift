@@ -29,8 +29,8 @@ public class ATProtoTools {
     ///
     /// - Parameter parentURI: The URI of the post record the current one is directly replying to.
     /// - Returns: A ``AppBskyLexicon/Feed/PostRecord/ReplyReference``.
-    public func resolveReplyReferences(parentURI: String) async throws -> AppBskyLexicon.Feed.PostRecord.ReplyReference {
-        let threadRecords = try await fetchRecordForURI(parentURI)
+    public func resolveReplyReferences(parentURI: String, session: UserSession? = nil) async throws -> AppBskyLexicon.Feed.PostRecord.ReplyReference {
+        let threadRecords = try await fetchRecordForURI(parentURI, session: session)
 
         guard let parentRecord = threadRecords.value else {
             return createReplyReference(from: threadRecords)
@@ -80,11 +80,11 @@ public class ATProtoTools {
     ///
     /// - Parameter uri: The URI of the record.
     /// - Returns: A ``ComAtprotoLexicon/Repository/GetRecordOutput``
-    public func fetchRecordForURI(_ uri: String) async throws -> ComAtprotoLexicon.Repository.GetRecordOutput {
+    public func fetchRecordForURI(_ uri: String, session: UserSession? = nil) async throws -> ComAtprotoLexicon.Repository.GetRecordOutput {
         let query = try parseURI(uri)
 
         do {
-            let record = try await ATProtoKit().getRepositoryRecord(from: query.repository, collection: query.collection, recordKey: query.recordKey, pdsURL: nil)
+            let record = try await ATProtoKit().getRepositoryRecord(from: query.repository, collection: query.collection, recordKey: query.recordKey, pdsURL: session?.pdsURL)
 
             return record
         } catch {

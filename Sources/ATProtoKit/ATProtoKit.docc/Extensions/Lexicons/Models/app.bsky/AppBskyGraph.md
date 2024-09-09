@@ -116,4 +116,4 @@
 
 ### app.bsky.graph.unmuteThread
 
-= ``UnmuteThreadRequestBody``
+- ``UnmuteThreadRequestBody``
