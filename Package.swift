@@ -24,11 +24,10 @@ let package = Package(
         )
     ],
     dependencies: [
-        .package(url: "https://github.com/scinfu/SwiftSoup.git", from: "2.7.0"),
         .package(url: "https://github.com/swiftlang/swift-docc-plugin.git", from: "1.3.0"),
         .package(url: "https://github.com/apple/swift-log.git", from: "1.0.0"),
         .package(url: "https://github.com/MasterJ93/SwiftCBOR.git", from: "0.4.0"),
-        .package(url: "https://github.com/swiftlang/swift-syntax.git", from: "509.1.1")
+        .package(url: "https://github.com/swiftlang/swift-syntax.git", from: "509.0.0")
     ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
@@ -36,7 +35,7 @@ let package = Package(
         .target(
             name: "ATProtoKit",
             dependencies: [
-                "SwiftSoup",
+                "ATMacro",
                 .product(name: "Logging", package: "swift-log"),
                 .product(name: "SwiftCBOR", package: "swiftcbor")
             ]
@@ -46,7 +45,6 @@ let package = Package(
         .macro(
             name: "Macros",
             dependencies: [
-                .product(name: "SwiftSyntax", package: "swift-syntax"),
                 .product(name: "SwiftSyntaxMacros", package: "swift-syntax"),
                 .product(name: "SwiftCompilerPlugin", package: "swift-syntax")
             ]

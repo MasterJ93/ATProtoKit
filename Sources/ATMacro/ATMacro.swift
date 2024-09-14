@@ -64,79 +64,86 @@
 @freestanding(declaration, names: arbitrary)
 public macro ATUnionBuilder(named: String, containing: [String: String]) = #externalMacro(module: "Macros", type: "ATUnionBuilderMacro")
 
-
-/// A macro that truncates items in the property before use.
+/// A helper macro for lexicon models.
 ///
-/// To use the macro, use it in replacement from the actual property.
+/// This automatically creates the `init()`, `init(from decoder: any Decoder) throws`,
+/// and `encode(to encoder: Encoder) throws` methods from `Codable` if it wasn't created manually.
 ///
-/// ```swift
-/// public struct KnownFollowers: Codable {
+/// The `truncation` parameter lets you add truncate arrays and string values. The order is
+/// as follows:\
+/// `[String : (Int?, Int?)]`\
+///   - Key (`String`): The name of the property.
+///   - Value (`(Int?, Int?)`): The numbers which indicates the maximum number of `String`
+///   characters and array items respectively.
 ///
-///     /// The number of mutual followers related to the parent structure's specifications.
-///     #TruncatedProperty(accessor: .let, type: Int.self, named: count, arrayLength: 5)
+/// - Important: If you enter a dictionary entry, you must input at least one number inside of
+/// the tuple. Put `nil` inside the appropriate part of the tuple if there's no limit. If there's
+/// no `String` as the value's property, the first `Int` of the tuple will be ignored. If there's
+/// no array as the value's property, the second `Int` of the tuple will be ignored.
 ///
-///     /// An array of user accounts that follow the viewer.
-///     public let followers: [ProfileViewBasicDefinition]
+///```swift
+/// @LexiconModel(truncation: ["recordKey" : (15, nil)])
+/// public struct CreateRecordRequestBody: Codable {
+///     public let repositoryDID: String
+///     public let collection: String
+///     public let recordKey: String?
+///     public let shouldValidate: Bool?
+///     public let record: UnknownType
+///     public let swapCommit: String?
 /// }
-/// ```
+///```
 ///
-/// The above code will produce the following:
+/// produces the following:
 /// ```swift
-/// public struct KnownFollowers: Codable {
+/// public struct CreateRecordRequestBody: Codable {
+///     public let repositoryDID: String
+///     public let collection: String
+///     public let recordKey: String?
+///     public let shouldValidate: Bool?
+///     public let record: UnknownType
+///     public let swapCommit: String?
 ///
-///     /// The number of mutual followers related to the parent structure's specifications.
-///     public let count: Int {
-///         k
+///     public init(repositoryDID: String, collection: String, recordKey: String?, shouldValidate: Bool?, record: UnknownType, swapCommit: String?) {
+///         self.repositoryDID = repositoryDID
+///         self.collection = collection
+///         self.recordKey = recordKey
+///         self.shouldValidate = shouldValidate
+///         self.record = record
+///         self.swapCommit = swapCommit
 ///     }
 ///
-///     /// An array of user accounts that follow the viewer.
-///     public let followers: [ProfileViewBasicDefinition]
-/// }
-/// ```
-@freestanding(declaration, names: arbitrary)
-public macro TruncatedProperty<T>(accessor: String,
-                                  type: T.Type,
-                                  named: String,
-                                  arrayLength: Int? = nil,
-                                  characterLength: Int? = nil
-) = #externalMacro(module: "Macros", type: "ATTruncatedPropertyMacro")
-
-
-/// A macro that formats the date to and from the required formats in the AT Protocol.
+///     public init(from decoder: any Decoder) throws {
+///         let container = try decoder.container(keyedBy: CodingKeys.self)
+///         self.repositoryDID = try container.decode(String.self, forKey: .repositoryDID)
+///         self.collection = try container.decode(String.self, forKey: .collection)
+///         self.recordKey = try container.decodeIfPresent(String.self, forKey: .recordKey)
+///         self.shouldValidate = try container.decodeIfPresent(Bool.self, forKey: .shouldValidate)
+///         self.record = try container.decode(UnknownType.self, forKey: .record)
+///         self.swapCommit = try container.decodeIfPresent(String.self, forKey: .swapCommit)
+///     }
 ///
-/// To use the macro, use it in replacement from the actual propery.
+///     public func encode(to encoder: any Encoder) throws {
+///         var container = encoder.container(keyedBy: CodingKeys.self)
+///         try container.encode(self.repositoryDID, forKey: .repositoryDID)
+///         try container.encode(self.collection, forKey: .collection)
+///         try truncatedEncodeIfPresent(self.recordKey, withContainer: &container, forKey: .recordKey, upToCharacterLength: 15)
+///         try container.encodeIfPresent(self.shouldValidate, forKey: .shouldValidate)
+///         try container.encode(self.record, forKey: .record)
+///         try container.encodeIfPresent(self.swapCommit, forKey: .swapCommit)
+///     }
 ///
-/// ```swift
-/// public struct ReasonRepostDefinition: Codable {
-///
-///     /// The basic details of the user who reposted the post.
-///     public let by: AppBskyLexicon.Actor.ProfileViewBasicDefinition
-///
-///     /// The last time the repost was indexed.
-///     #DateFormatting(named: "indexedAt", isOptional: false)
-///
-///     enum CodingKeys: CodingKey {
-///         case by
-///         case indexedAt
+///     enum CodingKeys: String, CodingKey {
+///         case repositoryDID
+///         case collection
+///         case recordKey
+///         case shouldValidate
+///         case record
+///         case swapCommit
 ///     }
 /// }
 /// ```
-/// 
-/// The above code will produce the following:
-/// ```swift
-/// public struct ReasonRepostDefinition: Codable {
 ///
-///     /// The basic details of the user who reposted the post.
-///     public let by: AppBskyLexicon.Actor.ProfileViewBasicDefinition
-///
-///     /// The last time the repost was indexed.
-///     @DateFormatting public var indexedAt: Date
-///
-///     enum CodingKeys: CodingKey {
-///         case by
-///         case indexedAt
-///     }
-/// }
-/// ```
-@freestanding(declaration, names: arbitrary)
-public macro ATDateFormatting(named: String, isOptional: Bool = false) = #externalMacro(module: "Macros", type: "ATDateFormattingMacro")
+/// - Parameter truncation: A dictionary which contains some information related to what's
+///   being truncated. Optional.
+@attached(member, names: arbitrary)
+public macro ATLexiconModel(truncation: [String : (Int?, Int?)]? = nil) = #externalMacro(module: "Macros", type: "ATLexiconModelMacro")

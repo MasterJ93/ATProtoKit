@@ -15,7 +15,6 @@ import SwiftCompilerPlugin
 struct ATMacro: CompilerPlugin {
     let providingMacros: [Macro.Type] = [
         ATUnionBuilderMacro.self,
-        ATTruncatedPropertyMacro.self,
-        ATDateFormattingMacro.self
+        ATLexiconModelMacro.self
     ]
 }

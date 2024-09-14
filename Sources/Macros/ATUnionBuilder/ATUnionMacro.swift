@@ -6,11 +6,11 @@
 //
 
 import Foundation
+import SwiftCompilerPlugin
 import SwiftSyntax
 import SwiftSyntaxBuilder
 import SwiftSyntaxMacros
-import SwiftCompilerPlugin
-
+import SwiftDiagnostics
 
 /// A marco that adds an enum for the purposes of adding a union type for a given lexicon.
 ///
