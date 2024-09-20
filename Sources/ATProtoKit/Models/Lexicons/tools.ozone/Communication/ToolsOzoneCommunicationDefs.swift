@@ -41,6 +41,11 @@ extension ToolsOzoneLexicon.Communication {
         /// Indicates whether the communication template has been disabled.
         public let isDisabled: Bool
 
+        /// The language of the message.
+        ///
+        /// - Note: According to the AT Protocol specifications: "Message language."
+        public let language: Locale?
+
         /// The decentralized identifier (DID) of the user who last updated the
         /// communication template.
         ///
@@ -73,6 +78,7 @@ extension ToolsOzoneLexicon.Communication {
             case subject
             case contentMarkdown
             case isDisabled = "disabled"
+            case language = "lang"
             case lastUpdatedBy
             case createdAt
             case updatedAt

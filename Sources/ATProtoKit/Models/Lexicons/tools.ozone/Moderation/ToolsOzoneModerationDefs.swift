@@ -282,6 +282,13 @@ extension ToolsOzoneLexicon.Moderation {
         /// - Note: According to the AT Protocol specifications: "Indicates how long the takedown
         /// should be in effect before automatically expiring."
         public let durationInHours: Int?
+
+        /// Indicates whether the remaining reports on the content created by the user account will
+        /// be resolved. Optional.
+        ///
+        /// - Note: According to the AT Protocol specifications: "If true, all other reports on
+        /// content authored by this account will be resolved (acknowledged)."
+        public let acknowledgeAccountSubjects: Bool?
     }
 
     /// A definition model for a reverse takedown event.

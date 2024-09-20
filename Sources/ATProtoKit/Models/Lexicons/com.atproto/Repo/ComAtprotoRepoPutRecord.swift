@@ -39,7 +39,8 @@ extension ComAtprotoLexicon.Repository {
         /// Indicates whether the record should be validated. Optional.
         ///
         /// - Note: According to the AT Protocol specifications: "Can be set to 'false' to skip
-        /// Lexicon schema validation of record data."
+        /// Lexicon schema validation of record data, 'true' to require it, or leave unset to
+        /// validate only for known Lexicons."
         public let shouldValidate: Bool?
 
         /// The record itself.
@@ -70,6 +71,39 @@ extension ComAtprotoLexicon.Repository {
             case record
             case swapRecord
             case swapCommit
+        }
+    }
+
+    /// A output model for creating a record that replaces a previous record.
+    ///
+    /// - Note: According to the AT Protocol specifications: "Write a repository record, creating
+    /// or updating it as needed. Requires auth, implemented by PDS."
+    ///
+    /// - SeeAlso: This is based on the [`com.atproto.repo.putRecord`][github] lexicon.
+    ///
+    /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/repo/putRecord.json
+    public struct PutRecordOutput: Codable {
+
+        /// The URI of the record.
+        public let recordURI: String
+
+        /// The CID of the record.
+        public let recordCID: String
+
+        /// The commit of the record. Optional.
+        public let recordCommit: ComAtprotoLexicon.Repository.CommitMetaDefinition?
+
+        /// The status of the write operation's validation.
+        public let validationStatus: ValidationStatus?
+
+        /// The status of the write operation's validation.
+        public enum ValidationStatus: String, Codable {
+
+            /// Status is valid.
+            case valid
+
+            /// Status is unknown.
+            case unknown
         }
     }
 }

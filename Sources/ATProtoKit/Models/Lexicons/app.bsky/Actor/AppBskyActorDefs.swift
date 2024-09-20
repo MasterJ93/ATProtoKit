@@ -928,11 +928,18 @@ extension AppBskyLexicon.Actor {
         /// An array of elements that the user will see. Optional.
         public let queuedNudges: [String]?
 
+        /// An array of NUXs (New User Experiences). Optional.
+        ///
+        /// - Note: According to the AT Protocol specifications: "Storage for NUXs the user
+        /// has encountered."
+        public let nexs: [NUXDefinition]?
+
         public func encode(to encoder: any Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
 
             try container.encodeIfPresent(self.activeProgressGuide, forKey: .activeProgressGuide)
             try truncatedEncodeIfPresent(self.queuedNudges, withContainer: &container, forKey: .queuedNudges, upToCharacterLength: 100, upToArrayLength: 1_000)
+            try truncatedEncodeIfPresent(self.nexs, withContainer: &container, forKey: .nexs, upToArrayLength: 100)
         }
     }
 
@@ -954,6 +961,51 @@ extension AppBskyLexicon.Actor {
 
             try container.encode(self.guide, forKey: .guide)
             try truncatedEncode(self.guide, withContainer: &container, forKey: .guide, upToArrayLength: 100)
+        }
+    }
+
+    /// A definition model for a NUX.
+    ///
+    /// - Note: According to the AT Protocol specifications: "A new user experiences (NUX)
+    /// storage object"
+    ///
+    /// - SeeAlso: This is based on the [`app.bsky.actor.defs`][github] lexicon.
+    ///
+    /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/actor/defs.json
+    public struct NUXDefinition: Codable {
+
+        /// The ID of the NUX.
+        public let id: String
+
+        /// Indicated whether the experience was completed.
+        public var isCompleted: Bool = false
+
+        /// Data created for the NUX. Optional.
+        ///
+        /// - Note: According to the AT Protocol specifications: "Arbitrary data for the NUX.
+        /// The structure is defined by the NUX itself. Limited to 300 characters."
+        public let data: String?
+
+        /// The date and time the NUX expires. Optional.
+        ///
+        /// - Note: According to the AT Protocol specifications: "The date and time at which the
+        /// NUX will expire and should be considered completed."
+        @DateFormattingOptional public var expiresAt: Date?
+
+        public func encode(to encoder: any Encoder) throws {
+            var container = encoder.container(keyedBy: CodingKeys.self)
+
+            try truncatedEncode(self.id, withContainer: &container, forKey: .id, upToCharacterLength: 100)
+            try container.encode(self.isCompleted, forKey: .isCompleted)
+            try truncatedEncodeIfPresent(self.data, withContainer: &container, forKey: .data, upToCharacterLength: 300)
+            try container.encode(self._expiresAt, forKey: .expiresAt)
+        }
+
+        enum CodingKeys: String, CodingKey {
+            case id
+            case isCompleted = "completed"
+            case data
+            case expiresAt
         }
     }
 }

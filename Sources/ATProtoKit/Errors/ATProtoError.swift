@@ -107,7 +107,8 @@ public enum ATAPIError: ATProtoError, Decodable {
                 "MemberAlreadyExists",
                 "MemberNotFound",
                 "CannotDeleteSelf",
-                "BadExpiration":
+                "BadExpiration",
+                "DuplicateTemplateName":
                 self = .badRequest(message: message)
             case "Unauthorized":
                 self = .unauthorized(message: message)

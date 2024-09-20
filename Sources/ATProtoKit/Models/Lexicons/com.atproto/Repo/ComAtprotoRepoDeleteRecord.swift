@@ -58,4 +58,18 @@ extension ComAtprotoLexicon.Repository {
             case swapCommit
         }
     }
+
+    /// A output model for deleting a record.
+    ///
+    /// - Note: According to the AT Protocol specifications: "Delete a repository record, or ensure
+    /// it doesn't exist. Requires auth, implemented by PDS."
+    ///
+    /// - SeeAlso: This is based on the [`com.atproto.repo.deleteRecord`][github] lexicon.
+    ///
+    /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/repo/deleteRecord.json
+    public struct DeleteRecordOutput: Codable {
+
+        /// The commit of the record. Optional.
+        public let recordCommit: ComAtprotoLexicon.Repository.CommitMetaDefinition?
+    }
 }

@@ -1762,7 +1762,7 @@ public struct ATUnion {
         case moderationEventResolveAppeal(ToolsOzoneLexicon.Moderation.EventResolveAppealDefinition)
 
         /// A diversion event.
-        case moderationEventDivert(ToolsOzoneLexicon.Moderation.EventDivertDefinition)
+        case moderationEventTag(ToolsOzoneLexicon.Moderation.EventTagDefinition)
 
         public init(from decoder: Decoder) throws {
             let container = try decoder.singleValueContainer()
@@ -1793,8 +1793,8 @@ public struct ATUnion {
                 self = .moderationEventEmail(value)
             } else if let value = try? container.decode(ToolsOzoneLexicon.Moderation.EventResolveAppealDefinition.self) {
                 self = .moderationEventResolveAppeal(value)
-            } else if let value = try? container.decode(ToolsOzoneLexicon.Moderation.EventDivertDefinition.self) {
-                self = .moderationEventDivert(value)
+            } else if let value = try? container.decode(ToolsOzoneLexicon.Moderation.EventTagDefinition.self) {
+                self = .moderationEventTag(value)
             } else {
                 throw DecodingError.typeMismatch(
                     EmitEventUnion.self, DecodingError.Context(
@@ -1832,8 +1832,8 @@ public struct ATUnion {
                     try container.encode(moderationEventEmail)
                 case .moderationEventResolveAppeal(let moderationEventResolveAppeal):
                     try container.encode(moderationEventResolveAppeal)
-                case .moderationEventDivert(let moderationEventDivert):
-                    try container.encode(moderationEventDivert)
+                case .moderationEventTag(let value):
+                    try container.encode(value)
             }
         }
     }

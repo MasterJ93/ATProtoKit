@@ -38,6 +38,14 @@ extension ComAtprotoLexicon.Repository {
             /// The value of the write operation.
             public let value: UnknownType
 
+            public func encode(to encoder: any Encoder) throws {
+                var container = encoder.container(keyedBy: CodingKeys.self)
+
+                try container.encode(self.collection, forKey: .collection)
+                try truncatedEncodeIfPresent(self.recordKey, withContainer: &container, forKey: .recordKey, upToCharacterLength: 15)
+                try container.encode(self.value, forKey: .value)
+            }
+
             enum CodingKeys: String, CodingKey {
                 case collection
                 case recordKey = "rkey"
@@ -92,6 +100,67 @@ extension ComAtprotoLexicon.Repository {
                 case recordKey = "rkey"
             }
         }
+
+        /// A data model definition for a "Create" write operation result.
+        ///
+        /// - SeeAlso: This is based on the [`com.atproto.repo.applyWrites`][github] lexicon.
+        ///
+        /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/repo/applyWrites.json
+        public struct CreateResult: Codable {
+
+            /// The URI of the result of the "Create" write operation.
+            public let uri: String
+
+            /// The CID of the result of the "Create" write operation.
+            public let cid: String
+
+            /// The status of the write operation's validation.
+            public let validationStatus: ValidationStatus?
+
+            /// The status of the write operation's validation.
+            public enum ValidationStatus: String, Codable {
+
+                /// Status is valid.
+                case valid
+
+                /// Status is unknown.
+                case unknown
+            }
+        }
+
+        /// A data model definition for a "Update" write operation result.
+        ///
+        /// - SeeAlso: This is based on the [`com.atproto.repo.applyWrites`][github] lexicon.
+        ///
+        /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/repo/applyWrites.json
+        public struct UpdateResult: Codable {
+
+            /// The URI of the result of the "Update" write operation.
+            public let uri: String
+
+            /// The CID of the result of the "Update" write operation.
+            public let cid: String
+
+            /// The status of the write operation's validation.
+            public let validationStatus: ValidationStatus?
+
+            /// The status of the write operation's validation.
+            public enum ValidationStatus: String, Codable {
+
+                /// Status is valid.
+                case valid
+
+                /// Status is unknown.
+                case unknown
+            }
+        }
+
+        /// A data model definition for a "Delete" write operation result.
+        ///
+        /// - SeeAlso: This is based on the [`com.atproto.repo.applyWrites`][github] lexicon.
+        ///
+        /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/repo/applyWrites.json
+        public struct DeleteResult: Codable {}
     }
 
     /// A request body model for applying batch CRUD transactions.
@@ -113,7 +182,8 @@ extension ComAtprotoLexicon.Repository {
         /// Indicates whether the operation should be validated. Optional. Defaults to `true`.
         ///
         /// - Note: According to the AT Protocol specifications: "Can be set to 'false' to skip
-        /// Lexicon schema validation of record data, for all operations."
+        /// Lexicon schema validation of record data across all operations, 'true' to require it,
+        /// or leave unset to validate only for known Lexicons."
         public let shouldValidate: Bool?
 
         /// The write operation itself.
@@ -134,6 +204,62 @@ extension ComAtprotoLexicon.Repository {
             case shouldValidate = "validate"
             case writes
             case swapCommit
+        }
+    }
+
+    /// An output model for applying batch CRUD transactions.
+    ///
+    /// - Note: According to the AT Protocol specifications: "Apply a batch transaction of
+    /// repository creates, updates, and deletes. Requires auth, implemented by PDS."
+    ///
+    /// - SeeAlso: This is based on the [`com.atproto.repo.applyWrites`][github] lexicon.
+    ///
+    /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/repo/applyWrites.json
+    public struct ApplyWritesOutput: Codable {
+
+        /// The commit of the writes. Optional.
+        public let commit: ComAtprotoLexicon.Repository.CommitMetaDefinition?
+
+        /// An array of results. Optional.
+        public let results: [ATUnion.ApplyWritesResultUnion]?
+    }
+}
+
+extension ATUnion {
+
+    /// A reference containing the list of write operation results.
+    public enum ApplyWritesResultUnion: Codable {
+        case createResult(ComAtprotoLexicon.Repository.ApplyWrites.CreateResult)
+        case updateResult(ComAtprotoLexicon.Repository.ApplyWrites.UpdateResult)
+        case deleteResult(ComAtprotoLexicon.Repository.ApplyWrites.DeleteResult)
+
+        public init(from decoder: any Decoder) throws {
+            let container = try decoder.singleValueContainer()
+
+            if let value = try? container.decode(ComAtprotoLexicon.Repository.ApplyWrites.CreateResult.self) {
+                self = .createResult(value)
+            } else if let value = try? container.decode(ComAtprotoLexicon.Repository.ApplyWrites.UpdateResult.self) {
+                self = .updateResult(value)
+            } else if let value = try? container.decode(ComAtprotoLexicon.Repository.ApplyWrites.DeleteResult.self) {
+                self = .deleteResult(value)
+            } else {
+                throw DecodingError.typeMismatch(
+                    ApplyWritesResultUnion.self, DecodingError.Context(
+                        codingPath: decoder.codingPath, debugDescription: "Unknown ApplyWritesResultUnion value"))
+            }
+        }
+
+        public func encode(to encoder: any Encoder) throws {
+            var container = encoder.singleValueContainer()
+
+            switch self {
+                case .createResult(let value):
+                    try container.encode(value)
+                case .updateResult(let value):
+                    try container.encode(value)
+                case .deleteResult(let value):
+                    try container.encode(value)
+            }
         }
     }
 }
