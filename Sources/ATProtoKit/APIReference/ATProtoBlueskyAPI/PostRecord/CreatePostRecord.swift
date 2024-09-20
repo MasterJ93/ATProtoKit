@@ -78,7 +78,7 @@ extension ATProtoBluesky {
                     case .recordWithMedia(let record, let media):
 //                        resolvedEmbed = .recordWithMedia()
                         break
-                    case .video(video: let video):
+                    case .video(let video):
                         break
                 }
             } catch {

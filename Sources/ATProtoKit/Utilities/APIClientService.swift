@@ -162,7 +162,7 @@ public class APIClientService {
     ///   - decodeTo: The type to decode the response into.
     /// - Returns: An instance of the specified `Decodable` type.
     public func sendRequest<T: Decodable>(_ request: URLRequest, withDataBody data: Data, decodeTo: T.Type) async throws -> T {
-        var urlRequest = request
+        let urlRequest = request
 
         // let (data, response) = try await
         let (responseData, response) = try await urlSession.upload(for: urlRequest, from: data)
@@ -177,7 +177,7 @@ public class APIClientService {
             throw URLError(.badServerResponse)
         }
 
-        let decodedData = try JSONDecoder().decode(T.self, from: data)
+        let decodedData = try JSONDecoder().decode(T.self, from: responseData)
         return decodedData
     }
 
