@@ -78,6 +78,8 @@ extension ATProtoBluesky {
                     case .recordWithMedia(let record, let media):
 //                        resolvedEmbed = .recordWithMedia()
                         break
+                    case .video(video: let video):
+                        break
                 }
             } catch {
                 throw error
@@ -181,6 +183,8 @@ extension ATProtoBluesky {
         /// - Parameter images: An array of `ImageQuery` objects, each containing the image data,
         /// metadata, and filenames of the image.
         case images(images: [ComAtprotoLexicon.Repository.ImageQuery])
+
+        case video(video: [AppBskyLexicon.Embed.VideoDefinition.View])
 
         /// Represents an external link to be embedded in the post.
         /// - Parameter url: A `URL` pointing to the external content.

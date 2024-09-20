@@ -211,6 +211,9 @@ public struct ATUnion {
         /// The view of a record embed alongside an embed of some compatible media.
         case embedRecordWithMediaView(AppBskyLexicon.Embed.RecordWithMediaDefinition.View)
 
+        /// The view of a video embed.
+        case embedVideoView(AppBskyLexicon.Embed.VideoDefinition.View)
+
         public init(from decoder: Decoder) throws {
             let container = try decoder.singleValueContainer()
 
@@ -222,6 +225,8 @@ public struct ATUnion {
                 self = .embedRecordView(value)
             } else if let value = try? container.decode(AppBskyLexicon.Embed.RecordWithMediaDefinition.View.self) {
                 self = .embedRecordWithMediaView(value)
+            } else if let value = try? container.decode(AppBskyLexicon.Embed.VideoDefinition.View.self) {
+                self = .embedVideoView(value)
             } else {
                 throw DecodingError.typeMismatch(
                     EmbedViewUnion.self, DecodingError.Context(
@@ -241,6 +246,8 @@ public struct ATUnion {
                     try container.encode(embedRecordView)
                 case .embedRecordWithMediaView(let embedRecordWithMediaView):
                     try container.encode(embedRecordWithMediaView)
+                case .embedVideoView(let value):
+                    try container.encode(value)
             }
         }
     }
@@ -254,6 +261,9 @@ public struct ATUnion {
         /// An external link that will be embedded.
         case embedExternal(AppBskyLexicon.Embed.ExternalDefinition)
 
+        /// A video that will be embedded.
+        case embedVideo(AppBskyLexicon.Embed.VideoDefinition)
+
         public init(from decoder: Decoder) throws {
             let container = try decoder.singleValueContainer()
 
@@ -261,6 +271,8 @@ public struct ATUnion {
                 self = .embedImages(value)
             } else if let value = try? container.decode(AppBskyLexicon.Embed.ExternalDefinition.self) {
                 self = .embedExternal(value)
+            } else if let value = try? container.decode(AppBskyLexicon.Embed.VideoDefinition.self) {
+                self = .embedVideo(value)
             } else {
                 throw DecodingError.typeMismatch(
                     RecordWithMediaUnion.self, DecodingError.Context(
@@ -276,6 +288,8 @@ public struct ATUnion {
                     try container.encode(media)
                 case .embedExternal(let media):
                     try container.encode(media)
+                case .embedVideo(let value):
+                    try container.encode(value)
             }
         }
     }
@@ -615,6 +629,9 @@ public struct ATUnion {
         /// A embed with both a record and some compatible media.
         case recordWithMedia(AppBskyLexicon.Embed.RecordWithMediaDefinition)
 
+        /// A video embed.
+        case video(AppBskyLexicon.Embed.VideoDefinition)
+
         public init(from decoder: Decoder) throws {
             let container = try decoder.singleValueContainer()
 
@@ -626,6 +643,8 @@ public struct ATUnion {
                 self = .record(recordValue)
             } else if let recordWithMediaValue = try? container.decode(AppBskyLexicon.Embed.RecordWithMediaDefinition.self) {
                 self = .recordWithMedia(recordWithMediaValue)
+            } else if let value = try? container.decode(AppBskyLexicon.Embed.VideoDefinition.self) {
+                self = .video(value)
             } else {
                 throw DecodingError.typeMismatch(
                     PostEmbedUnion.self, DecodingError.Context(
@@ -645,6 +664,8 @@ public struct ATUnion {
                     try container.encode(recordValue)
                 case .recordWithMedia(let recordWithMediaValue):
                     try container.encode(recordWithMediaValue)
+                case .video(let value):
+                    try container.encode(value)
             }
         }
     }

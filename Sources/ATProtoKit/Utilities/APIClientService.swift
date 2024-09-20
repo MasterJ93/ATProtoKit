@@ -146,11 +146,39 @@ public class APIClientService {
     /// responsibility to handle the information stored inside the `Data` object. If the output is
     /// known and it's not a blob, however, then the other `sendRequest` methods are
     /// more appropriate.
+    ///
     /// - Parameter request: The `URLRequest` to send.
     /// - Returns: A `Data` object that contains the blob.
     public func sendRequest(_ request: URLRequest) async throws -> Data {
         let (data, _) = try await self.performRequest(request)
         return data
+    }
+
+    /// Sends a raw file to a server.
+    ///
+    /// - Parameters:
+    ///   - request: The URL to send the request to.
+    ///   - data: The file object itself.
+    ///   - decodeTo: The type to decode the response into.
+    /// - Returns: An instance of the specified `Decodable` type.
+    public func sendRequest<T: Decodable>(_ request: URLRequest, withDataBody data: Data, decodeTo: T.Type) async throws -> T {
+        var urlRequest = request
+
+        // let (data, response) = try await
+        let (responseData, response) = try await urlSession.upload(for: urlRequest, from: data)
+
+        guard let httpResponse = response as? HTTPURLResponse else {
+            throw ATHTTPRequestError.errorGettingResponse
+        }
+
+        guard httpResponse.statusCode == 200 else {
+            let responseBody = String(data: data, encoding: .utf8) ?? "No response body"
+            print("HTTP Status Code: \(httpResponse.statusCode) - Response Body: \(responseBody)")
+            throw URLError(.badServerResponse)
+        }
+
+        let decodedData = try JSONDecoder().decode(T.self, from: data)
+        return decodedData
     }
 
     /// Sends a `URLRequest` and returns the raw JSON output as a `Dictionary`.
@@ -278,6 +306,8 @@ public class APIClientService {
             case "png": return "image/png"
             case "jpeg", "jpg": return "image/jpeg"
             case "webp": return "image/webp"
+            case "mp4": return "video/mp4"
+            case "mov": return "video/quicktime"
             default: return "application/octet-stream"
         }
     }

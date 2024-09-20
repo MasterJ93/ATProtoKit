@@ -28,6 +28,9 @@ extension AppBskyLexicon {
     /// A group of lexicons within the `app.bsky.notification` namespace.
     public struct Notification {}
 
+    /// A group of lexicons within the `app.bsky.video.*` namespace.
+    public struct Video {}
+
     /// A group of lexicons within the `app.bsky.richtext` namespace.
     public struct RichText {}
 
