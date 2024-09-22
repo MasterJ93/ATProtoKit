@@ -10,11 +10,12 @@ import Foundation
 @_exported import FoundationNetworking
 #endif
 
-/// A helper class to handle the most common HTTP requests for the AT Protocol.
+/// An actor which handle the most common HTTP requests for the AT Protocol.
 ///
 /// This is, effectively, the meat of the "XRPC" portion of the AT Protocol, which creates
-/// client-server and server-server communication.
-public class APIClientService {
+/// client-server and server-server communication. Only one instance of this actor can be active
+/// at once.
+public actor APIClientService {
 
     /// The `URLSession` instance to be used for network requests.
     private(set) var urlSession: URLSession
@@ -34,8 +35,8 @@ public class APIClientService {
     /// Configures the singleton instance with a custom `URLSessionConfiguration`.
     ///
     /// - Parameter configuration: An instance of `URLSessionConfiguration`.
-    public static func configure(with configuration: URLSessionConfiguration) {
-        shared.urlSession = URLSession(configuration: configuration)
+    public func configure(with configuration: URLSessionConfiguration) async {
+        self.urlSession = URLSession(configuration: configuration)
     }
 
 // MARK: Creating requests -
