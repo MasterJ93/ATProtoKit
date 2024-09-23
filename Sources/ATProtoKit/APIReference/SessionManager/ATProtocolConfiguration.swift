@@ -88,6 +88,8 @@ public class ATProtocolConfiguration: ProtocolConfiguration {
 
             self.logger = ATProtocolConfiguration.sharedLogger
 
-            APIClientService.configure(with: self.configuration)
+            Task {
+                await APIClientService.shared.configure(with: self.configuration)
+            }
     }
 }
