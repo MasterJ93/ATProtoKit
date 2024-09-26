@@ -30,11 +30,12 @@ extension AppBskyLexicon.Video {
         public let state: State
 
         /// The progress of the job. Optional.
+        ///
+        /// - Note: According to the AT Protocol specifications: "Progress within the current
+        /// processing state."
         public let progress: Int?
 
-        /// The video itself that's being processed.
-        ///
-        /// - Note: According to the AT Protocol specifications: "Progress within the current processing state."
+        /// The video itself that's being processed. Optional.
         public let blob: ComAtprotoLexicon.Repository.UploadBlobOutput?
 
         /// The error code of the job. Optional.

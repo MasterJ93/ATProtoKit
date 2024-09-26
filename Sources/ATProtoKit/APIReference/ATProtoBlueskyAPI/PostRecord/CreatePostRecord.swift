@@ -109,9 +109,10 @@ extension ATProtoBluesky {
     }
     
     /// Uploads images to the AT Protocol for attaching to a record at a later request.
+    ///
     /// - Parameters:
     ///   - images: The ``ComAtprotoLexicon/Repository/ImageQuery`` that contains the image data. Current limit is 4 images.
-    ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `nil`.
+    ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `https://bsky.social`.
     ///   - accessToken: The access token used to authenticate to the user.
     /// - Returns: An ``ATUnion/EmbedViewUnion``, which contains an array of ``AppBskyLexicon/Embed/ImagesDefinition``s for
     /// use in a record.
@@ -140,7 +141,8 @@ extension ATProtoBluesky {
     
     /// Scraps the website for the required information in order to attach to a record's embed at a
     /// later request.
-    /// - Parameter url: The URL of the website
+    ///
+    /// - Parameter url: The URL of the website.
     /// - Returns: An ``ATUnion/EmbedViewUnion`` which contains an ``AppBskyLexicon/Embed/ExternalDefinition`` for use
     /// in a record.
     public func buildExternalEmbed(from url: URL) async throws -> ATUnion.PostEmbedUnion? {

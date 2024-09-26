@@ -18,7 +18,8 @@ extension ATProtoKit {
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/video/getUploadLimits.json
     ///
     /// - Parameter video: The video file itself.
-    /// - Returns:
+    /// - Returns: An instance of a status of the video upload, which contains things like the
+    /// job ID, progress, and state.
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.

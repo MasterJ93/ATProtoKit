@@ -23,7 +23,7 @@ extension ATProtoKit {
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
-    public func getVideoStatus(from jobID: String) async throws -> AppBskyLexicon.Video.GetJobStatusOutput {
+    public func getJobStatus(from jobID: String) async throws -> AppBskyLexicon.Video.GetJobStatusOutput {
 
         guard session != nil,
               let accessToken = session?.accessToken else {
