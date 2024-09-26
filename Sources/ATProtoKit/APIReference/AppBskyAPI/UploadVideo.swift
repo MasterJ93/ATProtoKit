@@ -11,8 +11,10 @@ extension ATProtoKit {
 
     /// Uploads a video to a user's account.
     ///
-    /// - Note: According to the AT Protocol specifications: "Upload a video to be processed
-    /// then stored on the PDS."
+    /// - Note: According to the AT Protocol specifications: "Upload a new blob, to be referenced
+    /// from a repository record. The blob will be deleted if it is not referenced within a time
+    /// window (eg, minutes). Blob restrictions (mimetype, size, etc) are enforced when the
+    /// reference is created. Requires auth, implemented by PDS."
     /// - SeeAlso: This is based on the [`app.bsky.video.uploadVideo`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/video/getUploadLimits.json
@@ -39,17 +41,20 @@ extension ATProtoKit {
         )
 
         do {
-            let request = APIClientService.createRequest(
+            var request = APIClientService.createRequest(
                 forRequest: requestURL,
                 andMethod: .post,
                 acceptValue: "application/json",
-                contentTypeValue: nil,
+                contentTypeValue: "video/mp4",
                 authorizationValue: "Bearer \(accessToken)"
             )
+            request.httpBody = video
+            print("requestURL: \(requestURL)")
 
+
+            print("The problem isn't up to this point: it goes further than this...")
             let response = try await APIClientService.shared.sendRequest(
                 request,
-                withDataBody: requestBody.video,
                 decodeTo: AppBskyLexicon.Video.GetJobStatusOutput.self
             )
 
