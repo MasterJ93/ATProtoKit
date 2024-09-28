@@ -95,8 +95,11 @@ extension AppBskyLexicon.Feed {
         /// Indicates whether the requesting account can reply to the account's post. Optional.
         public let areRepliesDisabled: Bool?
 
-        /// Indicates whether the post can be embedded.
+        /// Indicates whether the post can be embedded. Optional.
         public let isEmbeddingDisabled: Bool?
+
+        /// Indicates whether the post record is pinned. Optional.
+        public let isPinned: Bool?
 
         enum CodingKeys: String, CodingKey {
             case repostURI = "repost"
@@ -104,6 +107,7 @@ extension AppBskyLexicon.Feed {
             case isThreadMuted = "threadMuted"
             case areRepliesDisabled = "replyDisabled"
             case isEmbeddingDisabled = "embeddingDisabled"
+            case isPinned = "pinned"
         }
     }
 
@@ -120,7 +124,7 @@ extension AppBskyLexicon.Feed {
         /// The reply reference for the post, if it's a reply. Optional.
         public var reply: ReplyReferenceDefinition?
 
-        // TODO: Check to see if this is correct.
+        // TODO: Check to see if this documentation is correct.
         /// The user who reposted the post. Optional.
         public var reason: ATUnion.ReasonRepostUnion?
 
@@ -219,6 +223,13 @@ extension AppBskyLexicon.Feed {
             case indexedAt
         }
     }
+
+    /// A definition model for a marker for pinned posts.
+    ///
+    /// - SeeAlso: This is based on the [`app.bsky.feed.defs`][github] lexicon.
+    ///
+    /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/feed/defs.json
+    public struct ReasonPinnedDefinition: Codable {}
 
     /// A definition model for a hydrated version of a repost.
     ///
@@ -506,6 +517,13 @@ extension AppBskyLexicon.Feed {
             case repostURI = "repost"
         }
     }
+
+    /// A definition model for a pin in a feed generator.
+    ///
+    /// - SeeAlso: This is based on the [`app.bsky.feed.defs`][github] lexicon.
+    ///
+    /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/feed/defs.json
+    public struct SkeletonReasonPin: Codable {}
 
     /// A definition model for a feed threadgate view.
     ///

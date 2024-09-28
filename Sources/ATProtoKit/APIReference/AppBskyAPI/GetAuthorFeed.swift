@@ -29,6 +29,9 @@ extension ATProtoKit {
     ///   - limit: The number of items the list will hold. Optional. Defaults to `50`.
     ///   - cursor: The mark used to indicate the starting point for the next set
     ///   of results. Optional.
+    ///   - filter: The supported post and/or repost combinations in responses.  Optional.
+    ///   Defaults to `.postsWithReplies`.
+    ///   - shouldIncludePins: Indicates whether the output includes pinned posts. Optional.
     /// - Returns: An array of feeds created by the specified user account, with an optional cursor
     /// to extend the array.
     ///
@@ -38,7 +41,8 @@ extension ATProtoKit {
         by actorDID: String,
         limit: Int? = 50,
         cursor: String? = nil,
-        postFilter: AppBskyLexicon.Feed.GetAuthorFeed.Filter? = .postsWithReplies
+        postFilter: AppBskyLexicon.Feed.GetAuthorFeed.Filter? = .postsWithReplies,
+        shouldIncludePins: Bool? = false
     ) async throws -> AppBskyLexicon.Feed.GetAuthorFeedOutput {
         guard session != nil,
               let accessToken = session?.accessToken else {
@@ -65,6 +69,10 @@ extension ATProtoKit {
 
         if let postFilter {
             queryItems.append(("filter", "\(postFilter)"))
+        }
+
+        if let shouldIncludePins {
+            queryItems.append(("includePins", "\(shouldIncludePins)"))
         }
 
         let queryURL: URL

@@ -58,6 +58,9 @@ extension AppBskyLexicon.Actor {
         /// The starter pack the user account used to join Bluesky. Optional.
         public let joinedViaStarterPack: ComAtprotoLexicon.Repository.StrongReference?
 
+        /// A post record that's pinned to the profile. Optional.
+        public let pinnedPost: ComAtprotoLexicon.Repository.StrongReference?
+
         /// The date and time the profile was created. Optional.
         @DateFormattingOptional public var createdAt: Date?
 
@@ -69,6 +72,7 @@ extension AppBskyLexicon.Actor {
             case labels
             case joinedViaStarterPack
             case createdAt
+            case pinnedPost
         }
     }
 }

@@ -191,6 +191,9 @@ extension AppBskyLexicon.Actor {
         /// The associated profile view. Optional.
         public let associated: ProfileAssociatedDefinition?
 
+        /// The starter pack the user account used to join Bluesky. Optional.
+        public let joinedViaStarterPack: AppBskyLexicon.Graph.StarterpackRecord?
+
         /// The date the profile was last indexed. Optional.
         @DateFormattingOptional public var indexedAt: Date?
 
@@ -200,7 +203,10 @@ extension AppBskyLexicon.Actor {
 
         /// An array of labels created by the user. Optional.
         public var labels: [ComAtprotoLexicon.Label.LabelDefinition]?
-        
+
+        /// A post record that's pinned to the profile. Optional.
+        public let pinnedPost: ComAtprotoLexicon.Repository.StrongReference?
+
         @_documentation(visibility: private)
         public func encode(to encoder: Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
@@ -221,9 +227,11 @@ extension AppBskyLexicon.Actor {
             try container.encodeIfPresent(self.followCount, forKey: .followCount)
             try container.encodeIfPresent(self.postCount, forKey: .postCount)
             try container.encodeIfPresent(self.associated, forKey: .associated)
+            try container.encodeIfPresent(self.joinedViaStarterPack, forKey: .joinedViaStarterPack)
             try container.encodeIfPresent(self._indexedAt, forKey: .indexedAt)
             try container.encodeIfPresent(self.viewer, forKey: .viewer)
             try container.encodeIfPresent(self.labels, forKey: .labels)
+            try container.encodeIfPresent(self.pinnedPost, forKey: .pinnedPost)
         }
         
         enum CodingKeys: String, CodingKey {
@@ -236,10 +244,12 @@ extension AppBskyLexicon.Actor {
             case followerCount = "followersCount"
             case followCount = "followsCount"
             case postCount = "postsCount"
+            case joinedViaStarterPack
             case associated
             case indexedAt
             case viewer
             case labels
+            case pinnedPost
         }
     }
 
