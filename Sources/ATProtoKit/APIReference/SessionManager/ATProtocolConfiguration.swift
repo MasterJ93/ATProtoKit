@@ -63,7 +63,8 @@ public class ATProtocolConfiguration: ProtocolConfiguration {
         configuration: URLSessionConfiguration = .default,
         logIdentifier: String? = nil,
         logCategory: String? = nil,
-        logLevel: Logger.Level? = .info) {
+        logLevel: Logger.Level? = .info
+    ) {
             self.handle = handle
             self.appPassword = appPassword
             self.pdsURL = !pdsURL.isEmpty ? pdsURL : "https://bsky.social"
@@ -72,7 +73,6 @@ public class ATProtocolConfiguration: ProtocolConfiguration {
             self.logCategory = logCategory ?? "ATProtoKit"
             self.logLevel = logLevel
 
-
             setupLog(logCategory, logLevel)
 
             Task {
@@ -80,7 +80,43 @@ public class ATProtocolConfiguration: ProtocolConfiguration {
             }
     }
 
-
+    /// Initializes a new instance of `ATProtocolConfiguration`, which assembles an a session
+    /// specifically for a service.
+    /// 
+    /// This should only be used to create different instances of services where you don't need a
+    /// handle or password.
+    ///
+    /// - Important: ``ATProtocolConfiguration/authenticate(authenticationFactorToken:)``,
+    /// ``ATProtocolConfiguration/createAccount(email:handle:existingDID:inviteCode:verificationCode:verificationPhone:password:recoveryKey:plcOp:)``,
+    /// ``ATProtocolConfiguration/deleteSession(using:pdsURL:)``,
+    /// ``ATProtocolConfiguration/getSession(by:pdsURL:)``, and
+    /// ``ATProtocolConfiguration/refreshSession(using:pdsURL:)`` will not work when initializing
+    /// ATProtocolConfiguration with this initializer.
+    ///
+    /// - Parameters:
+    ///   - service: The web address of the service.
+    ///   - configuration: An instance of `URLSessionConfiguration`. Optional.
+    ///   - logIdentifier: Specifies the identifier for managing log outputs. Optional. Defaults
+    ///   to the project's `CFBundleIdentifier`.
+    ///   - logCategory: Specifies the category name the logs in the logger within ATProtoKit will
+    ///   be in. Optional. Defaults to `ATProtoKit`.
+    ///   - logLevel: Specifies the highest level of logs that will be outputted. Optional.
+    ///   Defaults to `.info`.
+    public init(
+        service: String,
+        configuration: URLSessionConfiguration = .default,
+        logIdentifier: String? = nil,
+        logCategory: String? = nil,
+        logLevel: Logger.Level? = .info
+    ) {
+        self.handle = ""
+        self.appPassword = ""
+        self.pdsURL = service
+        self.configuration = configuration
+        self.logIdentifier = logIdentifier ?? Bundle.main.bundleIdentifier ?? "com.cjrriley.ATProtoKit"
+        self.logCategory = logCategory ?? "ATProtoKit"
+        self.logLevel = logLevel
+    }
 
     fileprivate func setupLog(_ logCategory: String?, _ logLevel: Logger.Level?) {
         if ATProtocolConfiguration.sharedLogger == nil {
