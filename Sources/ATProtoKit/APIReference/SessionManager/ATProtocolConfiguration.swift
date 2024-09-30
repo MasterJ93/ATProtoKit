@@ -73,23 +73,29 @@ public class ATProtocolConfiguration: ProtocolConfiguration {
             self.logLevel = logLevel
 
 
-            if ATProtocolConfiguration.sharedLogger == nil {
-                #if canImport(os)
-                LoggingSystem.bootstrap { label in
-                    ATLogHandler(subsystem: label, category: logCategory ?? "ATProtoKit")
-                }
-                #else
-                LoggingSystem.bootstrap(StreamLogHandler.standardOutput)
-                #endif
-
-                ATProtocolConfiguration.sharedLogger = Logger(label: self.logIdentifier ?? "com.cjrriley.ATProtoKit")
-                ATProtocolConfiguration.sharedLogger?.logLevel = logLevel ?? .info
-            }
-
-            self.logger = ATProtocolConfiguration.sharedLogger
+            setupLog(logCategory, logLevel)
 
             Task {
                 await APIClientService.shared.configure(with: self.configuration)
             }
+    }
+
+
+
+    fileprivate func setupLog(_ logCategory: String?, _ logLevel: Logger.Level?) {
+        if ATProtocolConfiguration.sharedLogger == nil {
+            #if canImport(os)
+            LoggingSystem.bootstrap { label in
+                ATLogHandler(subsystem: label, category: logCategory ?? "ATProtoKit")
+            }
+            #else
+            LoggingSystem.bootstrap(StreamLogHandler.standardOutput)
+            #endif
+
+            ATProtocolConfiguration.sharedLogger = Logger(label: self.logIdentifier ?? "com.cjrriley.ATProtoKit")
+            ATProtocolConfiguration.sharedLogger?.logLevel = logLevel ?? .info
+        }
+
+        self.logger = ATProtocolConfiguration.sharedLogger
     }
 }
