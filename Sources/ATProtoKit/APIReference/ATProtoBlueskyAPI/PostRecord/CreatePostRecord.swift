@@ -259,11 +259,6 @@ extension ATProtoBluesky {
 
         return .record(embedRecord)
     }
-
-    enum UploadError: Error {
-        case badServerResponse
-        case cannotParseResponse
-    }
     
     /// Represents the different types of content that can be embedded in a post record.
     /// 
