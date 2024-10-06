@@ -76,8 +76,8 @@ extension ATProtoBluesky {
                     case .record(let record):
                         resolvedEmbed = try await addQuotePostToEmbed(record)
                     case .recordWithMedia(let record, let media):
-//                        resolvedEmbed = .recordWithMedia()
-                        break
+                        let recordWithMediaDefinition = AppBskyLexicon.Embed.RecordWithMediaDefinition(record: record, media: media)
+                        resolvedEmbed = .recordWithMedia(recordWithMediaDefinition)
                     case .video(let video, let captions, let altText):
                         resolvedEmbed = try await buildVideo(video, with: captions, altText: altText, pdsURL: sessionURL, accessToken: session.accessToken)
                 }
@@ -188,9 +188,7 @@ extension ATProtoBluesky {
         // Upload the video and start the process.
         let videoJobStatus = try await atProtoKitInstance.uploadVideo(video)
 
-        let jobStatusResult = try await atProtoKitInstance.getJobStatus(from: videoJobStatus.jobStatus.jobID)
-
-        print("Job Status result (the first time): \(jobStatusResult)\n")
+        print("Job Status result (the first time): \(videoJobStatus)\n")
 
         try await Task.sleep(nanoseconds: 2 * 1_000_000_000)
 
@@ -198,7 +196,7 @@ extension ATProtoBluesky {
         while true {
             let jobStatus = try await atProtoKitInstance.getJobStatus(from: videoJobStatus.jobStatus.jobID)
 
-            print("Job Status result: \(jobStatusResult)\n")
+            print("Job Status result: \(jobStatus)\n")
             if jobStatus.jobStatus.state == .jobStateCompleted {
                 // Unwrap jobStatus.blob.
                 if let blob = jobStatus.jobStatus.blob {
