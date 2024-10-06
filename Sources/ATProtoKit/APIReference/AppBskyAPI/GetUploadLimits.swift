@@ -24,21 +24,19 @@ extension ATProtoKit {
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func getUploadLimits() async throws -> AppBskyLexicon.Video.GetUploadLimitsOutput {
-
         guard session != nil,
-              let accessToken = session?.accessToken else {
+              (session?.accessToken != nil) else {
             throw ATRequestPrepareError.missingActiveSession
         }
 
-        guard let sessionURL = session?.pdsURL,
-              let requestURL = URL(string: "https://video.bsky.app/xrpc/app.bsky.video.getUploadLimits") else {
+        let service = try await self.getServiceAuthentication(from: "did:web:video.bsky.app", lexiconMethod: "app.bsky.video.getUploadLimits")
+        let serviceToken = service.token
+
+        guard let requestURL = URL(string: "https://video.bsky.app/xrpc/app.bsky.video.getUploadLimits") else {
             throw ATRequestPrepareError.invalidRequestURL
         }
 
         let queryItems = [(String, String)]()
-
-        let service = try await self.getServiceAuthentication(from: "did:web:video.bsky.app", lexiconMethod: "app.bsky.video.getUploadLimits")
-        let serviceToken = service.token
 
         let queryURL: URL
 

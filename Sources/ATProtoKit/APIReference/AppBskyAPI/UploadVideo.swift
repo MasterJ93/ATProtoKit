@@ -27,25 +27,25 @@ extension ATProtoKit {
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func uploadVideo(_ video: Data) async throws -> AppBskyLexicon.Video.GetJobStatusOutput {
         guard session != nil,
-              let accessToken = session?.accessToken else {
+              (session?.accessToken != nil),
+              let serviceEndpoint = session?.didDocument?.service[0].serviceEndpoint else {
             throw ATRequestPrepareError.missingActiveSession
         }
 
-        guard let sessionURL = session?.pdsURL,
-              let requestURL = URL(string: "https://video.bsky.app/xrpc/app.bsky.video.uploadVideo") else {
+        guard let serviceEndpointHost = serviceEndpoint.host() else {
+            throw ATRequestPrepareError.invalidRequestURL
+        }
+
+        let service = try await self.getServiceAuthentication(from: "did:web:\(serviceEndpointHost)", lexiconMethod: "com.atproto.repo.uploadBlob")
+        let serviceToken = service.token
+
+        guard let requestURL = URL(string: "https://video.bsky.app/xrpc/app.bsky.video.uploadVideo") else {
             throw ATRequestPrepareError.invalidRequestURL
         }
 
         let requestBody = AppBskyLexicon.Video.UploadVideoRequestBody(
             video: video
         )
-
-        guard let serviceEndpoint = session?.didDocument?.service[0].serviceEndpoint else {
-            throw ATRequestPrepareError.missingActiveSession
-        }
-
-        let service = try await self.getServiceAuthentication(from: "did:web:\(serviceEndpoint.host()!)", lexiconMethod: "com.atproto.repo.uploadBlob")
-        let serviceToken = service.token
 
         var queryItems = [(String, String)]()
 

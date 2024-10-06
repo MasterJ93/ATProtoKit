@@ -24,23 +24,21 @@ extension ATProtoKit {
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func getJobStatus(from jobID: String) async throws -> AppBskyLexicon.Video.GetJobStatusOutput {
-
         guard session != nil,
-              let accessToken = session?.accessToken else {
+              (session?.accessToken != nil) else {
             throw ATRequestPrepareError.missingActiveSession
         }
 
-        guard let sessionURL = session?.pdsURL,
-              let requestURL = URL(string: "https://video.bsky.app/xrpc/app.bsky.video.getJobStatus") else {
+        let service = try await self.getServiceAuthentication(from: "did:web:video.bsky.app", lexiconMethod: "app.bsky.video.getJobStatus")
+        let serviceToken = service.token
+
+        guard let requestURL = URL(string: "https://video.bsky.app/xrpc/app.bsky.video.getJobStatus") else {
             throw ATRequestPrepareError.invalidRequestURL
         }
 
         var queryItems = [(String, String)]()
 
         queryItems.append(("jobId", jobID))
-
-        let service = try await self.getServiceAuthentication(from: "did:web:video.bsky.app", lexiconMethod: "app.bsky.video.getJobStatus")
-        let serviceToken = service.token
 
         let queryURL: URL
 

@@ -184,7 +184,8 @@ public class ATProtoTools {
 
     /// Generates a random alphanumeric string with a specified length
     ///
-    /// A maximum of 25 characters can be created for the string.
+    /// A maximum of 25 characters can be created for the string. This is useful for generating
+    /// random file names when uploading blobs into the server.
     ///
     /// - Parameter length: The number of characters the string will generate. Defaults to `8`.
     /// - Returns: a string with each character being a random character, repeated to the
