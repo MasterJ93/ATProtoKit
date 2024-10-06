@@ -181,10 +181,10 @@ public struct ATUnionBuilderMacro: DeclarationMacro {
             """
         )
 
-        for (key, _) in argument.enumerated() {
+        for (_, key) in argument.enumerated() {
             cases.append(
                 """
-                case .\(key)(let unionValue):
+                case .\(key.0)(let unionValue):
                         try container.encode(unionValue)
                 """
             )
