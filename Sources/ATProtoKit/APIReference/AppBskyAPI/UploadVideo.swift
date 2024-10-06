@@ -32,7 +32,7 @@ extension ATProtoKit {
         }
 
         guard let sessionURL = session?.pdsURL,
-              let requestURL = URL(string: "\(sessionURL)/xrpc/app.bsky.video.uploadVideo") else {
+              let requestURL = URL(string: "https://video.bsky.app/xrpc/app.bsky.video.uploadVideo") else {
             throw ATRequestPrepareError.invalidRequestURL
         }
 
@@ -40,19 +40,39 @@ extension ATProtoKit {
             video: video
         )
 
+        guard let serviceEndpoint = session?.didDocument?.service[0].serviceEndpoint else {
+            throw ATRequestPrepareError.missingActiveSession
+        }
+
+        let service = try await self.getServiceAuthentication(from: "did:web:\(serviceEndpoint.host()!)", lexiconMethod: "com.atproto.repo.uploadBlob")
+        let serviceToken = service.token
+
+        var queryItems = [(String, String)]()
+
+        if let did = session?.sessionDID {
+            queryItems.append(("did", did))
+        }
+
+        queryItems.append(("name", "\(ATProtoTools().generateRandomString()).mp4"))
+
+        let queryURL: URL
+
         do {
+            queryURL = try APIClientService.setQueryItems(
+                for: requestURL,
+                with: queryItems
+            )
+
             var request = APIClientService.createRequest(
-                forRequest: requestURL,
+                forRequest: queryURL,
                 andMethod: .post,
                 acceptValue: "application/json",
                 contentTypeValue: "video/mp4",
-                authorizationValue: "Bearer \(accessToken)"
+                authorizationValue: "Bearer \(serviceToken)"
             )
-            request.httpBody = video
+            request.httpBody = requestBody.video
             print("requestURL: \(requestURL)")
 
-
-            print("The problem isn't up to this point: it goes further than this...")
             let response = try await APIClientService.shared.sendRequest(
                 request,
                 decodeTo: AppBskyLexicon.Video.GetJobStatusOutput.self

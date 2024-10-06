@@ -31,13 +31,16 @@ extension ATProtoKit {
         }
 
         guard let sessionURL = session?.pdsURL,
-              let requestURL = URL(string: "\(sessionURL)/xrpc/app.bsky.video.getJobStatus") else {
+              let requestURL = URL(string: "https://video.bsky.app/xrpc/app.bsky.video.getJobStatus") else {
             throw ATRequestPrepareError.invalidRequestURL
         }
 
         var queryItems = [(String, String)]()
 
         queryItems.append(("jobId", jobID))
+
+        let service = try await self.getServiceAuthentication(from: "did:web:video.bsky.app", lexiconMethod: "app.bsky.video.getJobStatus")
+        let serviceToken = service.token
 
         let queryURL: URL
 
@@ -52,7 +55,7 @@ extension ATProtoKit {
                 andMethod: .get,
                 acceptValue: "application/json",
                 contentTypeValue: nil,
-                authorizationValue: "Bearer \(accessToken)"
+                authorizationValue: "Bearer \(serviceToken)"
             )
             let response = try await APIClientService.shared.sendRequest(
                 request,

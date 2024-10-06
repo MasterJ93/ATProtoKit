@@ -30,7 +30,7 @@ extension ATProtoKit {
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func getServiceAuthentication(
         from serviceDID: String,
-        expirationTime: Int? = 60,
+        expirationTime: Int? = Int(Date().timeIntervalSince1970) + 60,
         lexiconMethod: String?
     ) async throws -> ComAtprotoLexicon.Server.GetServiceAuthOutput {
         guard session != nil,

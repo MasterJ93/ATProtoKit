@@ -112,6 +112,7 @@ public actor APIClientService {
         guard let finalURL = components?.url else {
             throw ATHTTPRequestError.failedToConstructURLWithParameters
         }
+
         return finalURL
     }
 

@@ -31,11 +31,14 @@ extension ATProtoKit {
         }
 
         guard let sessionURL = session?.pdsURL,
-              let requestURL = URL(string: "\(sessionURL)/xrpc/app.bsky.video.getUploadLimits") else {
+              let requestURL = URL(string: "https://video.bsky.app/xrpc/app.bsky.video.getUploadLimits") else {
             throw ATRequestPrepareError.invalidRequestURL
         }
 
         let queryItems = [(String, String)]()
+
+        let service = try await self.getServiceAuthentication(from: "did:web:video.bsky.app", lexiconMethod: "app.bsky.video.getUploadLimits")
+        let serviceToken = service.token
 
         let queryURL: URL
 
@@ -50,7 +53,7 @@ extension ATProtoKit {
                 andMethod: .get,
                 acceptValue: "application/json",
                 contentTypeValue: nil,
-                authorizationValue: "Bearer \(accessToken)"
+                authorizationValue: "Bearer \(serviceToken)"
             )
             let response = try await APIClientService.shared.sendRequest(
                 request,

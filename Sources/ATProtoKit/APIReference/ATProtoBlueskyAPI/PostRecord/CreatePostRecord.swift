@@ -189,6 +189,7 @@ extension ATProtoBluesky {
         let videoJobStatus = try await atProtoKitInstance.uploadVideo(video)
 
         let jobStatusResult = try await atProtoKitInstance.getJobStatus(from: videoJobStatus.jobStatus.jobID)
+
         print("Job Status result (the first time): \(jobStatusResult)\n")
 
         try await Task.sleep(nanoseconds: 2 * 1_000_000_000)
