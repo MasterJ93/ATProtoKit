@@ -78,7 +78,7 @@ extension ATProtoBluesky {
                     case .recordWithMedia(let record, let media):
 //                        resolvedEmbed = .recordWithMedia()
                         break
-                    case .video(let video, let captions, let altText, let accessToken):
+                    case .video(let video, let captions, let altText):
                         resolvedEmbed = try await buildVideo(video, with: captions, altText: altText, pdsURL: sessionURL, accessToken: session.accessToken)
                 }
             } catch {
@@ -291,7 +291,7 @@ extension ATProtoBluesky {
         ///   - video: The video file itself.
         ///   - captions: An array of captions for the video. Optional.
         ///   - altText: The alt text for the video. Optional.
-        case video(video: Data, captions: [Caption]? = nil, altText: String? = nil, token: String)
+        case video(video: Data, captions: [Caption]? = nil, altText: String? = nil)
 
         /// Represents an external link to be embedded in the post.
         /// - Parameter url: A `URL` pointing to the external content.
