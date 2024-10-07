@@ -36,7 +36,11 @@ extension ATProtoKit {
             throw ATRequestPrepareError.invalidRequestURL
         }
 
-        let service = try await self.getServiceAuthentication(from: "did:web:\(serviceEndpointHost)", lexiconMethod: "com.atproto.repo.uploadBlob")
+        let service = try await self.getServiceAuthentication(
+            from: "did:web:\(serviceEndpointHost)",
+            expirationTime: 30 * 60,
+            lexiconMethod: "com.atproto.repo.uploadBlob"
+        )
         let serviceToken = service.token
 
         guard let requestURL = URL(string: "https://video.bsky.app/xrpc/app.bsky.video.uploadVideo") else {
