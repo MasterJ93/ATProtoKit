@@ -293,7 +293,7 @@ public enum ATHTTPRequestError: ATProtoError {
 }
 
 /// An error type related to issues surrounding HTTP responses.
-public enum ATHTTPResponseError: ATProtoError {
+public enum ATHTTPResponseError: Decodable, ATProtoError {
 
     /// The name of the error.
     case error
