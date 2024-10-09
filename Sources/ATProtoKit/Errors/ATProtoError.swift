@@ -74,21 +74,14 @@ public enum ATAPIError: ATProtoError {
 /// An error type related to a failed upload job.
 /// 
 /// This would typically be used in a job status.
-public enum ATJobStatusError: ATProtoError {
+public enum ATJobStatusError: Decodable, ATProtoError {
 
     /// The job failed.
     ///
-    /// - Parameters:
-    ///   - error: The name of the error.
-    ///   - message: An explanation of the error.
-    case failedJob(error: String?, message: String?)
-
-    var localizedDescription: String {
-        switch self {
-        case .failedJob(let error, let message):
-            return "Job failed with error: \(error ?? "Unknown error"), message: \(message ?? "No message provided.")"
-        }
-    }
+    /// The error code for this will be 409.
+    ///
+    /// - Parameter error: A job state, containing a filed up error and message.
+    case failedJob(error: AppBskyLexicon.Video.JobStatusDefinition)
 }
 
 /// An error type related to issues with decentralized identifiers (DIDs).
