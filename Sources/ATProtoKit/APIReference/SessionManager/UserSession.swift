@@ -55,7 +55,7 @@ public struct UserSession: SessionProtocol {
     /// after the successful initalizing.
     public var pdsURL: String?
 
-    /// Specifies the logger that will be used for emitting log messages.
+    /// Specifies the logger that will be used for emitting log messages. Optional.
     public var logger: Logger?
 
     /// The number of times a request can be attempted before it's considered a failure.
