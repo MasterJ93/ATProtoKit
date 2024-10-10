@@ -67,8 +67,13 @@ public enum ATAPIError: ATProtoError {
     case gatewayTimeout
 
     /// Represents an unknown error with an associated message.
-    /// - Parameter message: The message received along side the error.
-    case unknown(error: String?)
+    /// - Parameters:
+    ///   - error: The message received along side the error. Optional.
+    ///   - errorCode: The error code number Optional.
+    ///   - errorData: The raw JSON object of the error. Optional.
+    ///   - httpHeaders: The raw headers the come with the response. Optional.
+    ///
+    case unknown(error: String?, errorCode: Int? = nil, errorData: Data? = nil, httpHeaders: [String : String]? = nil)
 }
 
 /// An error type related to a failed upload job.

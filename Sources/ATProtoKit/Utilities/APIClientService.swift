@@ -306,7 +306,10 @@ public actor APIClientService {
                         throw ATAPIError.gatewayTimeout
                     default:
                         let errorResponse = String(data: data, encoding: .utf8) ?? "No response body"
-                        throw ATAPIError.unknown(error: errorResponse)
+                        let errorCode = httpResponse.statusCode
+                        let httpHeaders = httpResponse.allHeaderFields as? [String: String] ?? [:]
+
+                        throw ATAPIError.unknown(error: errorResponse, errorCode: errorCode, errorData: data, httpHeaders: httpHeaders)
                 }
             } else {
                 throw URLError(.badServerResponse)
@@ -314,8 +317,6 @@ public actor APIClientService {
         } catch {
             throw error
         }
-
-
     }
 
 // MARK: -
