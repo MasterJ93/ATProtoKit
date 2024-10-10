@@ -130,6 +130,11 @@ public class ATProtocolConfiguration: ProtocolConfiguration {
         self.logLevel = logLevel
     }
 
+    /// Private method to set up logger.
+    ///
+    /// - Parameters:
+    ///   - logCategory: The catergory of the logger. Optional.
+    ///   - logLevel: The level of the logger. Optional.
     fileprivate func setupLog(_ logCategory: String?, _ logLevel: Logger.Level?) {
         if ATProtocolConfiguration.sharedLogger == nil {
             #if canImport(os)
