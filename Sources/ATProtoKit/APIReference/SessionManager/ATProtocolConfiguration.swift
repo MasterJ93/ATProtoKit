@@ -42,6 +42,18 @@ public class ATProtocolConfiguration: ProtocolConfiguration {
     /// Specifies the logger that will be used for emitting log messages.
     private static var sharedLogger: Logger?
 
+    /// The number of times a request can be attempted before it's considered a failure.
+    ///
+    /// By default, ATProtoKit will retry a request attempt for 1 second.
+    public var maxRetryCount: Int?
+
+    /// The length of time to wait before attempting to retry a request.
+    ///
+    /// By default, ATProtoKit will wait for 1 second before attempting to retry a request.
+    /// ATProtoKit will change the number exponentally in order to help prevent overloading
+    /// the server.
+    public var retryTimeDelay: TimeInterval?
+
     /// Initializes a new instance of `ATProtocolConfiguration`, which assembles a new session
     /// for the user account.
     ///
