@@ -25,9 +25,12 @@ extension ATProtoKit {
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
-    public func uploadVideo(_ video: Data) async throws -> AppBskyLexicon.Video.GetJobStatusOutput {
+    public func uploadVideo(_ video: Data) async throws -> AppBskyLexicon.Video.JobStatusDefinition {
+        var attempts = 0
+        var delay: TimeInterval = 1.0
+
         guard session != nil,
-              (session?.accessToken != nil),
+              session?.accessToken != nil,
               let serviceEndpoint = session?.didDocument?.service[0].serviceEndpoint else {
             throw ATRequestPrepareError.missingActiveSession
         }
@@ -61,6 +64,12 @@ extension ATProtoKit {
 
         let queryURL: URL
 
+
+        guard let maxRetryCount = session?.maxRetryCount,
+              let retryTimeDelay = session?.retryTimeDelay else {
+            throw ATRequestPrepareError.missingActiveSession
+        }
+
         do {
             queryURL = try APIClientService.setQueryItems(
                 for: requestURL,
@@ -79,11 +88,51 @@ extension ATProtoKit {
 
             let response = try await APIClientService.shared.sendRequest(
                 request,
-                decodeTo: AppBskyLexicon.Video.GetJobStatusOutput.self
+                decodeTo: AppBskyLexicon.Video.JobStatusDefinition.self
             )
 
             return response
-        } catch {
+        } catch let error as ATAPIError {
+            switch error {
+                case .tooManyRequests(let requestError, let retryAfter):
+                    throw requestError
+                case .unauthorized(let requestError, let wwwAuthenticate):
+                    throw requestError
+                case .badRequest(let requestError),
+                     .forbidden(let requestError),
+                     .notFound(let requestError),
+                     .methodNotAllowed(let requestError),
+                     .payloadTooLarge(let requestError),
+                     .upgradeRequired(let requestError),
+                     .internalServerError(let requestError),
+                     .methodNotImplemented(let requestError):
+                    if attempts == maxRetryCount {
+                        throw requestError
+                    } else {
+                        attempts += 1
+                        try await Task.sleep(nanoseconds: UInt64(retryTimeDelay * 1_000_000_000))
+                    }
+                case .badGateway,
+                     .serviceUnavailable,
+                     .gatewayTimeout:
+                    if attempts == maxRetryCount {
+                        throw error
+                    } else {
+                        attempts += 1
+                        try await Task.sleep(nanoseconds: UInt64(retryTimeDelay * 1_000_000_000))
+                    }
+                case .unknown(error: let requestError, errorCode: let errorCode, errorData: let errorData, httpHeaders: let httpHeaders):
+                    if attempts == maxRetryCount {
+                        throw error
+                    } else {
+                        attempts += 1
+                        try await Task.sleep(nanoseconds: UInt64(retryTimeDelay * 1_000_000_000))
+                    }
+            }
+
+            attempts += 1
+            try await Task.sleep(nanoseconds: UInt64(retryTimeDelay * 1_000_000_000))
+
             throw error
         }
     }
