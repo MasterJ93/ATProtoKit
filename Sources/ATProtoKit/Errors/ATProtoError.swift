@@ -291,13 +291,13 @@ public enum ATHTTPRequestError: ATProtoError {
 }
 
 /// An error type related to issues surrounding HTTP responses.
-public enum ATHTTPResponseError: Decodable, ATProtoError {
+public struct ATHTTPResponseError: Decodable, ATProtoError {
 
     /// The name of the error.
-    case error
+    public let error: String
 
     /// The message for the error.
-    case message
+    public let message: String
 }
 
 /// An error type specifically related to Bluesky (either before or after interacting with
