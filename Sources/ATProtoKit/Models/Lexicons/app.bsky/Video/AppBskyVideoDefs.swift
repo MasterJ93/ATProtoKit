@@ -56,7 +56,10 @@ extension AppBskyLexicon.Video {
 
         /// The state of the video processing job.
         public enum State: String, Codable {
-            
+
+            /// The job has been created.
+            case jobStateCreated = "JOB_STATE_CREATED"
+
             /// The job is completed processing.
             case jobStateCompleted = "JOB_STATE_COMPLETED"
 
