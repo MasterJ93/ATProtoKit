@@ -30,17 +30,19 @@ extension ATProtoKit {
         var delay: TimeInterval = 1.0
 
         guard session != nil,
-              session?.accessToken != nil,
-              let serviceEndpoint = session?.didDocument?.service[0].serviceEndpoint else {
+              session?.accessToken != nil else {
             throw ATRequestPrepareError.missingActiveSession
         }
 
-        guard let serviceEndpointHost = serviceEndpoint.host() else {
+        guard let serviceEndpoint = session?.didDocument?.service[0].serviceEndpoint,
+              let serviceEndpointHost = serviceEndpoint.host() else {
             throw ATRequestPrepareError.invalidRequestURL
         }
 
+        let aud = "did:web:\(serviceEndpointHost)"
+
         let service = try await self.getServiceAuthentication(
-            from: "did:web:\(serviceEndpointHost)",
+            from: aud,
             expirationTime: 30 * 60,
             lexiconMethod: "com.atproto.repo.uploadBlob"
         )
@@ -65,75 +67,77 @@ extension ATProtoKit {
         let queryURL: URL
 
 
-        guard let maxRetryCount = session?.maxRetryCount,
-              let retryTimeDelay = session?.retryTimeDelay else {
-            throw ATRequestPrepareError.missingActiveSession
-        }
+        let maxRetryCount = session?.maxRetryCount ?? 3
+        let retryTimeDelay = session?.retryTimeDelay ?? 1.0
 
-        do {
-            queryURL = try APIClientService.setQueryItems(
-                for: requestURL,
-                with: queryItems
-            )
+        while attempts < maxRetryCount {
+            do {
+                queryURL = try APIClientService.setQueryItems(
+                    for: requestURL,
+                    with: queryItems
+                )
 
-            var request = APIClientService.createRequest(
-                forRequest: queryURL,
-                andMethod: .post,
-                acceptValue: "application/json",
-                contentTypeValue: "video/mp4",
-                authorizationValue: "Bearer \(serviceToken)"
-            )
-            request.httpBody = requestBody.video
-            print("requestURL: \(requestURL)")
+                var request = APIClientService.createRequest(
+                    forRequest: queryURL,
+                    andMethod: .post,
+                    acceptValue: "application/json",
+                    contentTypeValue: "video/mp4",
+                    authorizationValue: "Bearer \(serviceToken)"
+                )
+                request.httpBody = requestBody.video
+                print("requestURL: \(requestURL)")
 
-            let response = try await APIClientService.shared.sendRequest(
-                request,
-                decodeTo: AppBskyLexicon.Video.JobStatusDefinition.self
-            )
+                let response = try await APIClientService.shared.sendRequest(
+                    request,
+                    decodeTo: AppBskyLexicon.Video.JobStatusDefinition.self
+                )
 
-            return response
-        } catch let error as ATAPIError {
-            switch error {
-                case .tooManyRequests(let requestError, let retryAfter):
-                    throw requestError
-                case .unauthorized(let requestError, let wwwAuthenticate):
-                    throw requestError
-                case .badRequest(let requestError),
-                     .forbidden(let requestError),
-                     .notFound(let requestError),
-                     .methodNotAllowed(let requestError),
-                     .payloadTooLarge(let requestError),
-                     .upgradeRequired(let requestError),
-                     .internalServerError(let requestError),
-                     .methodNotImplemented(let requestError):
-                    if attempts == maxRetryCount {
+                return response
+            } catch let error as ATAPIError {
+                switch error {
+                    case .tooManyRequests(let requestError, let retryAfter):
                         throw requestError
-                    } else {
-                        attempts += 1
-                        try await Task.sleep(nanoseconds: UInt64(retryTimeDelay * 1_000_000_000))
-                    }
-                case .badGateway,
-                     .serviceUnavailable,
-                     .gatewayTimeout:
-                    if attempts == maxRetryCount {
-                        throw error
-                    } else {
-                        attempts += 1
-                        try await Task.sleep(nanoseconds: UInt64(retryTimeDelay * 1_000_000_000))
-                    }
-                case .unknown(error: let requestError, errorCode: let errorCode, errorData: let errorData, httpHeaders: let httpHeaders):
-                    if attempts == maxRetryCount {
-                        throw error
-                    } else {
-                        attempts += 1
-                        try await Task.sleep(nanoseconds: UInt64(retryTimeDelay * 1_000_000_000))
-                    }
+                    case .unauthorized(let requestError, let wwwAuthenticate):
+                        throw requestError
+                    case .badRequest(let requestError),
+                            .forbidden(let requestError),
+                            .notFound(let requestError),
+                            .methodNotAllowed(let requestError),
+                            .payloadTooLarge(let requestError),
+                            .upgradeRequired(let requestError),
+                            .internalServerError(let requestError),
+                            .methodNotImplemented(let requestError):
+                        if attempts == maxRetryCount {
+                            throw requestError
+                        } else {
+                            attempts += 1
+                            try await Task.sleep(nanoseconds: UInt64(retryTimeDelay * 1_000_000_000))
+                        }
+                    case .badGateway,
+                            .serviceUnavailable,
+                            .gatewayTimeout:
+                        if attempts == maxRetryCount {
+                            throw error
+                        } else {
+                            attempts += 1
+                            try await Task.sleep(nanoseconds: UInt64(retryTimeDelay * 1_000_000_000))
+                        }
+                    case .unknown(error: let requestError, errorCode: let errorCode, errorData: let errorData, httpHeaders: let httpHeaders):
+                        if attempts == maxRetryCount {
+                            throw error
+                        } else {
+                            attempts += 1
+                            try await Task.sleep(nanoseconds: UInt64(retryTimeDelay * 1_000_000_000))
+                        }
+                }
+
+                attempts += 1
+                try await Task.sleep(nanoseconds: UInt64(retryTimeDelay * 1_000_000_000))
+
+                throw error
             }
-
-            attempts += 1
-            try await Task.sleep(nanoseconds: UInt64(retryTimeDelay * 1_000_000_000))
-
-            throw error
         }
+
+        throw ATRequestPrepareError.invalidRequestURL
     }
 }
