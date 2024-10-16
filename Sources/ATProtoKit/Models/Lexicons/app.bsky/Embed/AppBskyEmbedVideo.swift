@@ -18,7 +18,12 @@ extension AppBskyLexicon.Embed {
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/embed/video.json
     public struct VideoDefinition: Codable {
-        
+
+        /// The identifier of the lexicon.
+        ///
+        /// - Warning: The value must not change.
+        public let type: String = "app.bsky.embed.video"
+
         /// The video itself.
         public let video: ComAtprotoLexicon.Repository.UploadBlobOutput
 
@@ -44,6 +49,7 @@ extension AppBskyLexicon.Embed {
         }
 
         enum CodingKeys: String, CodingKey {
+            case type = "$type"
             case video
             case captions
             case altText = "alt"
