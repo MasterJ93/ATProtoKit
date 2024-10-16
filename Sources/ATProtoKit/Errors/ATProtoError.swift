@@ -87,6 +87,18 @@ public enum ATJobStatusError: Decodable, ATProtoError {
     ///
     /// - Parameter error: A job state, containing a filed up error and message.
     case failedJob(error: AppBskyLexicon.Video.JobStatusDefinition)
+
+    /// The video can't be uploaded because the user account has used up their upload limit
+    /// for today.
+    ///
+    /// - Parameter message: The message for the error.
+    case videoLimitExceeded(message: String)
+
+    /// The video can't be uploaded because the user account either has the ability to upload
+    /// videos disabld or because they have been banned from doing so.
+    ///
+    /// - Parameter message: The message for the error.
+    case permissionToUploadVideosDenied(message: String)
 }
 
 /// An error type related to issues with decentralized identifiers (DIDs).
