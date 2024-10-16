@@ -184,30 +184,96 @@ extension ATProtoBluesky {
         var videoBlob: ComAtprotoLexicon.Repository.UploadBlobOutput? = nil
         var captionReferences: [AppBskyLexicon.Embed.VideoDefinition.Caption] = []
 
-        print("The problem is goes further than this.")
-        // Upload the video and start the process.
-        let videoJobStatus = try await atProtoKitInstance.uploadVideo(video)
+        var videoJobStatus: AppBskyLexicon.Video.JobStatusDefinition? = nil
 
-        print("Job Status result (the first time): \(videoJobStatus)\n")
+        // Check if the user can upload.
+        do {
+            let uploadLimitInformation = try await atProtoKitInstance.getUploadLimits()
+
+            if uploadLimitInformation.canUpload == false {
+                throw ATJobStatusError.permissionToUploadVideosDenied(message: "User account does not have permission to upload videos.")
+            }
+
+            if let remainingVideos = uploadLimitInformation.remainingDailyVideos, let remainingBytes = uploadLimitInformation.remainingDailyBytes {
+                if remainingVideos == 0 || remainingBytes == 0 {
+                    throw ATJobStatusError.videoLimitExceeded(message: "User account has reached the maximum number of videos they can upload.")
+                }
+            }
+        } catch {
+            throw error
+        }
+
+
+        // Upload the video and start the process.
+        do {
+            videoJobStatus = try await atProtoKitInstance.uploadVideo(video)
+        } catch let uploadVideoError as ATAPIError {
+            switch uploadVideoError {
+                case .unauthorized(error: let error, wwwAuthenticate: let wwwAuthenticate):
+                    throw error
+                case .badRequest(error: let error),
+                     .forbidden(error: let error),
+                     .notFound(error: let error),
+                     .methodNotAllowed(error: let error),
+                     .payloadTooLarge(error: let error),
+                     .upgradeRequired(error: let error),
+                     .internalServerError(error: let error),
+                     .methodNotImplemented(error: let error):
+                    throw error
+                case .tooManyRequests(error: let error, retryAfter: let retryAfter):
+                    throw error
+                case .badGateway:
+                    throw ATAPIError.badGateway
+                case .serviceUnavailable:
+                    throw ATAPIError.serviceUnavailable
+                case .gatewayTimeout:
+                    throw ATAPIError.gatewayTimeout
+                case .unknown(error: let error, errorCode: let errorCode, errorData: let errorData, httpHeaders: let httpHeaders):
+                    throw ATAPIError.unknown(error: error, errorCode: errorCode, errorData: errorData, httpHeaders: httpHeaders)
+            }
+        } catch let uploadVideoError as ATJobStatusError {
+            switch uploadVideoError {
+                case .failedJob(error: let error):
+                    if error.error == "already_exists" {
+                        do {
+                            videoJobStatus = try await atProtoKitInstance.getJobStatus(from: error.jobID).jobStatus
+                        } catch {
+                            throw error
+                        }
+                    }
+                default:
+                    throw ATAPIError.unknown(error: "An unknown error has occured.")
+            }
+        }
+
+        guard let videoJobStatus = videoJobStatus else {
+            throw ATAPIError.unknown(error: "Failed to initialize video job status.")
+        }
 
         try await Task.sleep(nanoseconds: 2 * 1_000_000_000)
 
         // Loop until the state says the upload was successful or a failure.
-        while true {
-            let jobStatus = try await atProtoKitInstance.getJobStatus(from: videoJobStatus.jobStatus.jobID)
+        var jobCompleted = false
 
-            print("Job Status result: \(jobStatus)\n")
-            if jobStatus.jobStatus.state == .jobStateCompleted {
-                // Unwrap jobStatus.blob.
-                if let blob = jobStatus.jobStatus.blob {
-                    videoBlob = blob
-                }
-            } else if jobStatus.jobStatus.state == .jobStateFailed {
-                print("Job failed.\nError: \(jobStatus.jobStatus.error)\nMessage: \(jobStatus.jobStatus.message)")
-                throw ATJobStatusError.failedJob(error: jobStatus.jobStatus.error, message: jobStatus.jobStatus.message)
+        repeat {
+            let jobStatus = try await atProtoKitInstance.getJobStatus(from: videoJobStatus.jobID)
+
+            switch jobStatus.jobStatus.state {
+                case .jobStateCompleted:
+                    if let blob = jobStatus.jobStatus.blob {
+                        videoBlob = blob
+                        print("Blob successfully assigned.")
+                        jobCompleted = true
+                    }
+                case .jobStateFailed:
+                    throw ATJobStatusError.failedJob(error: jobStatus.jobStatus)
+                default:
+                    try await Task.sleep(nanoseconds: UInt64(pollingFrequency) * 1_000_000_000)
             }
+        } while !jobCompleted
 
-            try await Task.sleep(nanoseconds: UInt64(pollingFrequency) * 1_000_000_000)
+        guard let videoBlob = videoBlob else {
+            throw ATAPIError.unknown(error: "Failed to retrieve video blob.")
         }
 
         // Upload captions.
