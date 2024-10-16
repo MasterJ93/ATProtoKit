@@ -32,6 +32,6 @@ extension AppBskyLexicon.Video {
     public struct UploadVideoOutput: Codable {
 
         /// An array of job statuses.
-        public let jobStatus: [AppBskyLexicon.Video.JobStatusDefinition]
+        public let jobStatus: AppBskyLexicon.Video.JobStatusDefinition
     }
 }

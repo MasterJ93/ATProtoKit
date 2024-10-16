@@ -181,7 +181,7 @@ extension ATProtoBluesky {
     public func buildVideo(_ video: Data, with captions: [Caption]? = nil, altText: String? = nil, pollingFrequency: Int = 3, pdsURL: String = "https://bsky.social",
                            accessToken: String) async throws -> ATUnion.PostEmbedUnion {
 
-        var videoBlob: ComAtprotoLexicon.Repository.UploadBlobOutput
+        var videoBlob: ComAtprotoLexicon.Repository.UploadBlobOutput? = nil
         var captionReferences: [AppBskyLexicon.Embed.VideoDefinition.Caption] = []
 
         print("The problem is goes further than this.")
