@@ -42,6 +42,7 @@ extension AppBskyLexicon.Embed {
         public func encode(to encoder: any Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
 
+            try container.encode(self.type, forKey: .type)
             try container.encode(self.video, forKey: .video)
             try truncatedEncodeIfPresent(self.captions, withContainer: &container, forKey: .captions, upToArrayLength: 20)
             try container.encodeIfPresent(self.altText, forKey: .altText)
