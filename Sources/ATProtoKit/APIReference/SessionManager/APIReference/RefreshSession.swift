@@ -49,6 +49,14 @@ extension ATProtocolConfiguration {
                 response.logger = self.logger
             }
 
+            if self.maxRetryCount != nil {
+                response.maxRetryCount = self.maxRetryCount
+            }
+
+            if self.retryTimeDelay != nil {
+                response.retryTimeDelay = self.retryTimeDelay
+            }
+
             return response
         } catch {
             throw error

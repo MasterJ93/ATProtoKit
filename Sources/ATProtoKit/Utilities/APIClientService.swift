@@ -10,11 +10,12 @@ import Foundation
 @_exported import FoundationNetworking
 #endif
 
-/// A helper class to handle the most common HTTP requests for the AT Protocol.
+/// An actor which handle the most common HTTP requests for the AT Protocol.
 ///
 /// This is, effectively, the meat of the "XRPC" portion of the AT Protocol, which creates
-/// client-server and server-server communication.
-public class APIClientService {
+/// client-server and server-server communication. Only one instance of this actor can be active
+/// at once.
+public actor APIClientService {
 
     /// The `URLSession` instance to be used for network requests.
     private(set) var urlSession: URLSession
@@ -34,8 +35,8 @@ public class APIClientService {
     /// Configures the singleton instance with a custom `URLSessionConfiguration`.
     ///
     /// - Parameter configuration: An instance of `URLSessionConfiguration`.
-    public static func configure(with configuration: URLSessionConfiguration) {
-        shared.urlSession = URLSession(configuration: configuration)
+    public func configure(with configuration: URLSessionConfiguration) async {
+        self.urlSession = URLSession(configuration: configuration)
     }
 
 // MARK: Creating requests -
@@ -111,6 +112,7 @@ public class APIClientService {
         guard let finalURL = components?.url else {
             throw ATHTTPRequestError.failedToConstructURLWithParameters
         }
+
         return finalURL
     }
 
@@ -123,7 +125,7 @@ public class APIClientService {
     ///   - decodeTo: The type to decode the response into.
     /// - Returns: An instance of the specified `Decodable` type.
     public func sendRequest<T: Decodable>(_ request: URLRequest, withEncodingBody body: Encodable? = nil, decodeTo: T.Type) async throws -> T {
-        let (data, _) = try await self.performRequest(request, withEncodingBody: body)
+        let data = try await self.performRequest(request, withEncodingBody: body)
 
         let decodedData = try JSONDecoder().decode(T.self, from: data)
         return decodedData
@@ -146,11 +148,39 @@ public class APIClientService {
     /// responsibility to handle the information stored inside the `Data` object. If the output is
     /// known and it's not a blob, however, then the other `sendRequest` methods are
     /// more appropriate.
+    ///
     /// - Parameter request: The `URLRequest` to send.
     /// - Returns: A `Data` object that contains the blob.
     public func sendRequest(_ request: URLRequest) async throws -> Data {
-        let (data, _) = try await self.performRequest(request)
+        let data = try await self.performRequest(request)
         return data
+    }
+
+    /// Sends a raw file to a server.
+    ///
+    /// - Parameters:
+    ///   - request: The URL to send the request to.
+    ///   - data: The file object itself.
+    ///   - decodeTo: The type to decode the response into.
+    /// - Returns: An instance of the specified `Decodable` type.
+    public func sendRequest<T: Decodable>(_ request: URLRequest, withDataBody data: Data, decodeTo: T.Type) async throws -> T {
+        let urlRequest = request
+
+        // let (data, response) = try await
+        let (responseData, response) = try await urlSession.upload(for: urlRequest, from: data)
+
+        guard let httpResponse = response as? HTTPURLResponse else {
+            throw ATHTTPRequestError.errorGettingResponse
+        }
+
+        guard httpResponse.statusCode == 200 else {
+            let responseBody = String(data: data, encoding: .utf8) ?? "No response body"
+            print("HTTP Status Code: \(httpResponse.statusCode) - Response Body: \(responseBody)")
+            throw URLError(.badServerResponse)
+        }
+
+        let decodedData = try JSONDecoder().decode(T.self, from: responseData)
+        return decodedData
     }
 
     /// Sends a `URLRequest` and returns the raw JSON output as a `Dictionary`.
@@ -219,7 +249,7 @@ public class APIClientService {
     ///   - request: The `URLRequest` to send.
     ///   - body: An optional `Encodable` body to be encoded and attached to the request.
     /// - Returns: A tuple containing the data and the HTTPURLResponse.
-    private func performRequest(_ request: URLRequest, withEncodingBody body: Encodable? = nil) async throws -> (Data, HTTPURLResponse) {
+    private func performRequest(_ request: URLRequest, withEncodingBody body: Encodable? = nil) async throws -> Data {
         var urlRequest = request
 
         if let body = body {
@@ -230,22 +260,63 @@ public class APIClientService {
             }
         }
 
-        let (data, response) = try await urlSession.data(for: urlRequest)
+        do {
+            let (data, response) = try await urlSession.data(for: urlRequest)
 
-        guard let httpResponse = response as? HTTPURLResponse else {
-            throw ATHTTPRequestError.errorGettingResponse
+            if let httpResponse = response as? HTTPURLResponse {
+                switch httpResponse.statusCode {
+                    case 200:
+                        return data
+                    case 400:
+                        let errorResponse = try JSONDecoder().decode(ATHTTPResponseError.self, from: data)
+                        throw ATAPIError.badRequest(error: errorResponse)
+                    case 401:
+                        let wwwAuthenticateHeader = httpResponse.allHeaderFields["WWW-Authenticate"] as? String
+                        let errorResponse = try JSONDecoder().decode(ATHTTPResponseError.self, from: data)
+
+                        throw ATAPIError.unauthorized(error: errorResponse, wwwAuthenticate: wwwAuthenticateHeader)
+                    case 403:
+                        let errorResponse = try JSONDecoder().decode(ATHTTPResponseError.self, from: data)
+                        throw ATAPIError.forbidden(error: errorResponse)
+                    case 404:
+                        let errorResponse = try JSONDecoder().decode(ATHTTPResponseError.self, from: data)
+                        throw ATAPIError.notFound(error: errorResponse)
+                    case 409:
+                        let errorResponse = try JSONDecoder().decode(AppBskyLexicon.Video.JobStatusDefinition.self, from: data)
+                        throw ATJobStatusError.failedJob(error: errorResponse)
+                    case 413:
+                        let errorResponse = try JSONDecoder().decode(ATHTTPResponseError.self, from: data)
+                        throw ATAPIError.payloadTooLarge(error: errorResponse)
+                    case 429:
+                        let retryAfterHeader = httpResponse.allHeaderFields["Retry-After"] as? TimeInterval
+                        let errorResponse = try JSONDecoder().decode(ATHTTPResponseError.self, from: data)
+
+                        throw ATAPIError.tooManyRequests(error: errorResponse, retryAfter: retryAfterHeader)
+                    case 500:
+                        let errorResponse = try JSONDecoder().decode(ATHTTPResponseError.self, from: data)
+                        throw ATAPIError.internalServerError(error: errorResponse)
+                    case 501:
+                        let errorResponse = try JSONDecoder().decode(ATHTTPResponseError.self, from: data)
+                        throw ATAPIError.methodNotImplemented(error: errorResponse)
+                    case 502:
+                        throw ATAPIError.badGateway
+                    case 503:
+                        throw ATAPIError.serviceUnavailable
+                    case 504:
+                        throw ATAPIError.gatewayTimeout
+                    default:
+                        let errorResponse = String(data: data, encoding: .utf8) ?? "No response body"
+                        let errorCode = httpResponse.statusCode
+                        let httpHeaders = httpResponse.allHeaderFields as? [String: String] ?? [:]
+
+                        throw ATAPIError.unknown(error: errorResponse, errorCode: errorCode, errorData: data, httpHeaders: httpHeaders)
+                }
+            } else {
+                throw URLError(.badServerResponse)
+            }
+        } catch {
+            throw error
         }
-
-//        print("Status Code: \(httpResponse.statusCode)")  // Debugging line
-//        print("Response Headers: \(httpResponse.allHeaderFields)")  // Debugging line
-
-        guard httpResponse.statusCode == 200 else {
-            let responseBody = String(data: data, encoding: .utf8) ?? "No response body"
-            print("HTTP Status Code: \(httpResponse.statusCode) - Response Body: \(responseBody)")
-            throw URLError(.badServerResponse)
-        }
-
-        return (data, httpResponse)
     }
 
 // MARK: -
@@ -278,6 +349,8 @@ public class APIClientService {
             case "png": return "image/png"
             case "jpeg", "jpg": return "image/jpeg"
             case "webp": return "image/webp"
+            case "mp4": return "video/mp4"
+            case "mov": return "video/quicktime"
             default: return "application/octet-stream"
         }
     }

@@ -76,33 +76,6 @@ extension ComAtprotoLexicon.Label {
         /// encoded label."
         public let signature: Data?
 
-        public init(version: Int?, actorDID: String, atURI: String, cidHash: String?, name: String, isNegated: Bool?, timestamp: Date,
-                    expiresOn: Date?, signature: Data) {
-            self.version = version
-            self.actorDID = actorDID
-            self.atURI = atURI
-            self.cidHash = cidHash
-            self.name = name
-            self.isNegated = isNegated
-            self._timestamp = DateFormatting(wrappedValue: timestamp)
-            self._expiresOn = DateFormattingOptional(wrappedValue: expiresOn)
-            self.signature = signature
-        }
-
-        public init(from decoder: Decoder) throws {
-            let container = try decoder.container(keyedBy: CodingKeys.self)
-
-            self.version = try container.decodeIfPresent(Int.self, forKey: .version)
-            self.actorDID = try container.decode(String.self, forKey: .actorDID)
-            self.atURI = try container.decode(String.self, forKey: .atURI)
-            self.cidHash = try container.decodeIfPresent(String.self, forKey: .cidHash)
-            self.name = try container.decode(String.self, forKey: .name)
-            self.isNegated = try container.decodeIfPresent(Bool.self, forKey: .isNegated)
-            self.timestamp = try container.decode(DateFormatting.self, forKey: .timestamp).wrappedValue
-            self.expiresOn = try container.decodeIfPresent(DateFormattingOptional.self, forKey: .expiresOn)?.wrappedValue
-            self.signature = try container.decodeIfPresent(Data.self, forKey: .signature)
-        }
-
         public func encode(to encoder: Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
 

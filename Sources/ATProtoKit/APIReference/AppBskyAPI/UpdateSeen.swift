@@ -18,8 +18,8 @@ extension ATProtoKit {
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/notification/updateSeen.json
     ///
-    /// - Parameter seenAt: The date and time the notification was seen. Defaults to the date
-    /// and time the request was sent.
+    /// - Parameter seenAt: The date and time the notification was seen. Defaults to the date and
+    /// time the request was sent.
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.

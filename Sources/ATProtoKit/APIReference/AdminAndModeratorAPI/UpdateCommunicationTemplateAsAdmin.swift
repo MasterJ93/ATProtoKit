@@ -24,6 +24,7 @@ extension ATProtoKit {
     /// - Parameters:
     ///   - id: The ID of the communication template.
     ///   - name: The name of the communication template. Optional.
+    ///   - language: The language of the message. Optional.
     ///   - contentMarkdown: The content of the communication template. Optional.
     ///   - subject: The subject line of the message itself. Optional.
     ///   - updatedBy: The decentralized identifier (DID) of the user who updated the
@@ -36,6 +37,7 @@ extension ATProtoKit {
     public func updateCommunicationTemplate(
         _ id: String,
         name: String? = nil,
+        language: Locale?,
         contentMarkdown: String? = nil,
         subject: String? = nil,
         updatedBy: String? = nil,
@@ -54,6 +56,7 @@ extension ATProtoKit {
         let requestBody = ToolsOzoneLexicon.Communication.UpdateTemplateRequestBody(
             id: id,
             name: name,
+            language: language,
             contentMarkdown: contentMarkdown,
             subject: subject,
             updatedBy: updatedBy,

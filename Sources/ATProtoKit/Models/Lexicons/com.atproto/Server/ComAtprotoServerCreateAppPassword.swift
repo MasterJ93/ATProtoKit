@@ -59,20 +59,6 @@ extension ComAtprotoLexicon.Server {
         /// The date and time the App Password was created.
         @DateFormatting public var createdAt: Date
 
-        public init(name: String, password: String, createdAt: Date) {
-            self.name = name
-            self.password = password
-            self._createdAt = DateFormatting(wrappedValue: createdAt)
-        }
-
-        public init(from decoder: Decoder) throws {
-            let container = try decoder.container(keyedBy: CodingKeys.self)
-
-            self.name = try container.decode(String.self, forKey: .name)
-            self.password = try container.decode(String.self, forKey: .password)
-            self.createdAt = try container.decode(DateFormatting.self.self, forKey: .createdAt).wrappedValue
-        }
-
         public func encode(to encoder: Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
 

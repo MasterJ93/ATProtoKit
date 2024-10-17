@@ -44,32 +44,6 @@ extension AppBskyLexicon.Actor {
         @DateFormattingOptional public var createdAt: Date?
 
         @_documentation(visibility: private)
-        public init(actorDID: String, actorHandle: String, displayName: String?, avatarImageURL: URL?, associated: ProfileAssociatedDefinition?,
-                    viewer: ViewerStateDefinition?, labels: [ComAtprotoLexicon.Label.LabelDefinition]?, createdAt: Date?) {
-            self.actorDID = actorDID
-            self.actorHandle = actorHandle
-            self.displayName = displayName
-            self.avatarImageURL = avatarImageURL
-            self.associated = associated
-            self.viewer = viewer
-            self.labels = labels
-            self._createdAt = DateFormattingOptional(wrappedValue: createdAt)
-        }
-        
-        public init(from decoder: Decoder) throws {
-            let container = try decoder.container(keyedBy: CodingKeys.self)
-            
-            self.actorDID = try container.decode(String.self, forKey: .actorDID)
-            self.actorHandle = try container.decode(String.self, forKey: .actorHandle)
-            self.displayName = try container.decodeIfPresent(String.self, forKey: .displayName)
-            self.avatarImageURL = try container.decodeIfPresent(URL.self, forKey: .avatarImageURL)
-            self.associated = try container.decodeIfPresent(ProfileAssociatedDefinition.self, forKey: .associated)
-            self.viewer = try container.decodeIfPresent(ViewerStateDefinition.self, forKey: .viewer)
-            self.labels = try container.decodeIfPresent([ComAtprotoLexicon.Label.LabelDefinition].self, forKey: .labels)
-            self.createdAt = try container.decodeIfPresent(DateFormattingOptional.self, forKey: .createdAt)?.wrappedValue
-        }
-
-        @_documentation(visibility: private)
         public func encode(to encoder: Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
             
@@ -139,37 +113,6 @@ extension AppBskyLexicon.Actor {
 
         /// An array of labels created by the user. Optional.
         public var labels: [ComAtprotoLexicon.Label.LabelDefinition]?
-
-        @_documentation(visibility: private)
-        public init(actorDID: String, actorHandle: String, displayName: String?, description: String?, avatarImageURL: URL?,
-                    associated: ProfileAssociatedDefinition?, indexedAt: Date?, createdAt: Date?, viewer: ViewerStateDefinition?,
-                    labels: [ComAtprotoLexicon.Label.LabelDefinition]?) {
-            self.actorDID = actorDID
-            self.actorHandle = actorHandle
-            self.displayName = displayName
-            self.description = description
-            self.avatarImageURL = avatarImageURL
-            self.associated = associated
-            self._indexedAt = DateFormattingOptional(wrappedValue: indexedAt)
-            self._createdAt = DateFormattingOptional(wrappedValue: createdAt)
-            self.viewer = viewer
-            self.labels = labels
-        }
-        
-        public init(from decoder: Decoder) throws {
-            let container = try decoder.container(keyedBy: CodingKeys.self)
-            
-            self.actorDID = try container.decode(String.self, forKey: .actorDID)
-            self.actorHandle = try container.decode(String.self, forKey: .actorHandle)
-            self.displayName = try container.decodeIfPresent(String.self, forKey: .displayName)
-            self.description = try container.decodeIfPresent(String.self, forKey: .description)
-            self.avatarImageURL = try container.decodeIfPresent(URL.self, forKey: .avatarImageURL)
-            self.associated = try container.decodeIfPresent(ProfileAssociatedDefinition.self, forKey: .associated)
-            self.indexedAt = try container.decodeIfPresent(DateFormattingOptional.self, forKey: .indexedAt)?.wrappedValue
-            self.createdAt = try container.decodeIfPresent(DateFormattingOptional.self, forKey: .createdAt)?.wrappedValue
-            self.viewer = try container.decodeIfPresent(ViewerStateDefinition.self, forKey: .viewer)
-            self.labels = try container.decodeIfPresent([ComAtprotoLexicon.Label.LabelDefinition].self, forKey: .labels)
-        }
         
         @_documentation(visibility: private)
         public func encode(to encoder: Encoder) throws {
@@ -248,6 +191,9 @@ extension AppBskyLexicon.Actor {
         /// The associated profile view. Optional.
         public let associated: ProfileAssociatedDefinition?
 
+        /// The starter pack the user account used to join Bluesky. Optional.
+        public let joinedViaStarterPack: AppBskyLexicon.Graph.StarterpackRecord?
+
         /// The date the profile was last indexed. Optional.
         @DateFormattingOptional public var indexedAt: Date?
 
@@ -258,43 +204,9 @@ extension AppBskyLexicon.Actor {
         /// An array of labels created by the user. Optional.
         public var labels: [ComAtprotoLexicon.Label.LabelDefinition]?
 
-        @_documentation(visibility: private)
-        public init(actorDID: String, actorHandle: String, displayName: String?, description: String?, avatarImageURL: URL?, bannerImageURL: URL?,
-                    followerCount: Int?, followCount: Int?, postCount: Int?, associated: ProfileAssociatedDefinition?, indexedAt: Date?,
-                    viewer: ViewerStateDefinition?, labels: [ComAtprotoLexicon.Label.LabelDefinition]?) {
-            self.actorDID = actorDID
-            self.actorHandle = actorHandle
-            self.displayName = displayName
-            self.description = description
-            self.avatarImageURL = avatarImageURL
-            self.bannerImageURL = bannerImageURL
-            self.followerCount = followerCount
-            self.followCount = followCount
-            self.postCount = postCount
-            self.associated = associated
-            self._indexedAt = DateFormattingOptional(wrappedValue: indexedAt)
-            self.viewer = viewer
-            self.labels = labels
-        }
-        
-        public init(from decoder: Decoder) throws {
-            let container = try decoder.container(keyedBy: CodingKeys.self)
-            
-            self.actorDID = try container.decode(String.self, forKey: .actorDID)
-            self.actorHandle = try container.decode(String.self, forKey: .actorHandle)
-            self.displayName = try container.decodeIfPresent(String.self, forKey: .displayName)
-            self.description = try container.decodeIfPresent(String.self, forKey: .description)
-            self.avatarImageURL = try container.decodeIfPresent(URL.self, forKey: .avatarImageURL)
-            self.bannerImageURL = try container.decodeIfPresent(URL.self, forKey: .bannerImageURL)
-            self.followerCount = try container.decodeIfPresent(Int.self, forKey: .followerCount)
-            self.followCount = try container.decodeIfPresent(Int.self, forKey: .followCount)
-            self.postCount = try container.decodeIfPresent(Int.self, forKey: .postCount)
-            self.associated = try container.decodeIfPresent(ProfileAssociatedDefinition.self, forKey: .associated)
-            self.indexedAt = try container.decodeIfPresent(DateFormattingOptional.self, forKey: .indexedAt)?.wrappedValue
-            self.viewer = try container.decodeIfPresent(ViewerStateDefinition.self, forKey: .viewer)
-            self.labels = try container.decodeIfPresent([ComAtprotoLexicon.Label.LabelDefinition].self, forKey: .labels)
-        }
-        
+        /// A post record that's pinned to the profile. Optional.
+        public let pinnedPost: ComAtprotoLexicon.Repository.StrongReference?
+
         @_documentation(visibility: private)
         public func encode(to encoder: Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
@@ -315,9 +227,11 @@ extension AppBskyLexicon.Actor {
             try container.encodeIfPresent(self.followCount, forKey: .followCount)
             try container.encodeIfPresent(self.postCount, forKey: .postCount)
             try container.encodeIfPresent(self.associated, forKey: .associated)
+            try container.encodeIfPresent(self.joinedViaStarterPack, forKey: .joinedViaStarterPack)
             try container.encodeIfPresent(self._indexedAt, forKey: .indexedAt)
             try container.encodeIfPresent(self.viewer, forKey: .viewer)
             try container.encodeIfPresent(self.labels, forKey: .labels)
+            try container.encodeIfPresent(self.pinnedPost, forKey: .pinnedPost)
         }
         
         enum CodingKeys: String, CodingKey {
@@ -330,10 +244,12 @@ extension AppBskyLexicon.Actor {
             case followerCount = "followersCount"
             case followCount = "followsCount"
             case postCount = "postsCount"
+            case joinedViaStarterPack
             case associated
             case indexedAt
             case viewer
             case labels
+            case pinnedPost
         }
     }
 
@@ -650,17 +566,6 @@ extension AppBskyLexicon.Actor {
         @DateFormattingOptional public var birthDate: Date?
 
         @_documentation(visibility: private)
-        public init(birthDate: Date) {
-            self._birthDate = DateFormattingOptional(wrappedValue: birthDate)
-        }
-
-        public init(from decoder: Decoder) throws {
-            let container = try decoder.container(keyedBy: CodingKeys.self)
-
-            self.birthDate = try container.decodeIfPresent(DateFormattingOptional.self, forKey: .birthDate)?.wrappedValue
-        }
-
-        @_documentation(visibility: private)
         public func encode(to encoder: Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
 
@@ -910,25 +815,6 @@ extension AppBskyLexicon.Actor {
         @DateFormattingOptional public var expiresAt: Date?
 
         @_documentation(visibility: private)
-        public init(id: String?, value: String, targets: [MutedWordTarget], actorTarget: ActorTarget?, expiresAt: Date?) {
-            self.id = id
-            self.value = value
-            self.targets = targets
-            self.actorTarget = actorTarget
-            self._expiresAt = DateFormattingOptional(wrappedValue: expiresAt)
-        }
-
-        public init(from decoder: Decoder) throws {
-            let container = try decoder.container(keyedBy: CodingKeys.self)
-
-            self.id = try container.decodeIfPresent(String.self, forKey: .id)
-            self.value = try container.decode(String.self, forKey: .value)
-            self.targets = try container.decode([MutedWordTarget].self, forKey: .targets)
-            self.actorTarget = try container.decodeIfPresent(ActorTarget.self, forKey: .actorTarget)
-            self.expiresAt = try container.decodeIfPresent(DateFormattingOptional.self, forKey: .expiresAt)?.wrappedValue
-        }
-
-        @_documentation(visibility: private)
         public func encode(to encoder: Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
 
@@ -1052,11 +938,18 @@ extension AppBskyLexicon.Actor {
         /// An array of elements that the user will see. Optional.
         public let queuedNudges: [String]?
 
+        /// An array of NUXs (New User Experiences). Optional.
+        ///
+        /// - Note: According to the AT Protocol specifications: "Storage for NUXs the user
+        /// has encountered."
+        public let nexs: [NUXDefinition]?
+
         public func encode(to encoder: any Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
 
             try container.encodeIfPresent(self.activeProgressGuide, forKey: .activeProgressGuide)
             try truncatedEncodeIfPresent(self.queuedNudges, withContainer: &container, forKey: .queuedNudges, upToCharacterLength: 100, upToArrayLength: 1_000)
+            try truncatedEncodeIfPresent(self.nexs, withContainer: &container, forKey: .nexs, upToArrayLength: 100)
         }
     }
 
@@ -1078,6 +971,51 @@ extension AppBskyLexicon.Actor {
 
             try container.encode(self.guide, forKey: .guide)
             try truncatedEncode(self.guide, withContainer: &container, forKey: .guide, upToArrayLength: 100)
+        }
+    }
+
+    /// A definition model for a NUX.
+    ///
+    /// - Note: According to the AT Protocol specifications: "A new user experiences (NUX)
+    /// storage object"
+    ///
+    /// - SeeAlso: This is based on the [`app.bsky.actor.defs`][github] lexicon.
+    ///
+    /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/actor/defs.json
+    public struct NUXDefinition: Codable {
+
+        /// The ID of the NUX.
+        public let id: String
+
+        /// Indicated whether the experience was completed.
+        public var isCompleted: Bool = false
+
+        /// Data created for the NUX. Optional.
+        ///
+        /// - Note: According to the AT Protocol specifications: "Arbitrary data for the NUX.
+        /// The structure is defined by the NUX itself. Limited to 300 characters."
+        public let data: String?
+
+        /// The date and time the NUX expires. Optional.
+        ///
+        /// - Note: According to the AT Protocol specifications: "The date and time at which the
+        /// NUX will expire and should be considered completed."
+        @DateFormattingOptional public var expiresAt: Date?
+
+        public func encode(to encoder: any Encoder) throws {
+            var container = encoder.container(keyedBy: CodingKeys.self)
+
+            try truncatedEncode(self.id, withContainer: &container, forKey: .id, upToCharacterLength: 100)
+            try container.encode(self.isCompleted, forKey: .isCompleted)
+            try truncatedEncodeIfPresent(self.data, withContainer: &container, forKey: .data, upToCharacterLength: 300)
+            try container.encode(self._expiresAt, forKey: .expiresAt)
+        }
+
+        enum CodingKeys: String, CodingKey {
+            case id
+            case isCompleted = "completed"
+            case data
+            case expiresAt
         }
     }
 }

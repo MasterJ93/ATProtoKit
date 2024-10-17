@@ -27,5 +27,12 @@ extension AppBskyLexicon.Unspecced {
 
         /// An array of actors.
         public let actors: [SkeletonSearchActorDefinition]
+
+        /// The decentralized identifier (DID) of the user account related to the suggestions.
+        ///
+        /// - Note: According to the AT Protocol specifications: "DID of the account these
+        /// suggestions are relative to. If this is returned undefined, suggestions are based on
+        /// the viewer."
+        public let relativeToDID: String?
     }
 }

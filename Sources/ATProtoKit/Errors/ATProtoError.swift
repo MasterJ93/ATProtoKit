@@ -11,135 +11,94 @@ import Foundation
 public protocol ATProtoError: Error {}
 
 /// The base exception class for ATProtoKit's API requests.
-public enum ATAPIError: ATProtoError, Decodable {
+public enum ATAPIError: ATProtoError {
 
     /// Represents a bad request error (HTTP 400) with an associated message.
-    /// - Parameter message: The message received along side the error.
-    case badRequest(message: String?) // Error 400
+    /// - Parameter error: The error name and message.
+    case badRequest(error: ATHTTPResponseError) // Error 400
 
-    /// Represents an unauthorized error (HTTP 401) with an associated message.
-    /// - Parameter message: The message received along side the error.
-    case unauthorized(message: String?)
+    /// Represents an unauthorized error (HTTP 401) with an associated message and HTTP header.
+    /// - Parameters:
+    ///   - error: The error name and message.
+    ///   - wwwAuthenticate: The value for the `WWW-Authenticate` header. Optional.
+    case unauthorized(error: ATHTTPResponseError, wwwAuthenticate: String?)
 
     /// Represents a forbidden error (HTTP 403) with an associated message.
-    /// - Parameter message: The message received along side the error.
-    case forbidden(message: String?)
+    /// - Parameter error: The error name and message.
+    case forbidden(error: ATHTTPResponseError)
+
+    /// Represents a not found error (HTTP 404) with an associated message.
+    /// - Parameter error: The error name and message.
+    case notFound(error: ATHTTPResponseError)
 
     /// Represents a method not allowed error (HTTP 405) with an associated message.
-    /// - Parameter message: The message received along side the error.
-    case methodNotAllowed(message: String?)
+    /// - Parameter error: The error name and message.
+    case methodNotAllowed(error: ATHTTPResponseError)
 
     /// Represents a payload too large error (HTTP 413) with an associated message.
-    /// - Parameter message: The message received along side the error.
-    case payloadTooLarge(message: String?)
+    /// - Parameter error: The error name and message.
+    case payloadTooLarge(error: ATHTTPResponseError)
 
     /// Represents an upgrade required error (HTTP 426) with an associated message.
-    /// - Parameter message: The message received along side the error.
-    case upgradeRequired(message: String?)
+    /// - Parameter error: The error name and message.
+    case upgradeRequired(error: ATHTTPResponseError)
 
-    /// Represents a too many requests error (HTTP 429) with an associated message.
-    /// - Parameter message: The message received along side the error.
-    case tooManyRequests(message: String?)
+    /// Represents a too many requests error (HTTP 429) with an associated message and HTTP header.
+    /// - Parameters:
+    ///   - error: The error name and message.
+    ///   - retryAfter: The value for the `Retry-After` header. Optional.
+    case tooManyRequests(error: ATHTTPResponseError, retryAfter: TimeInterval?)
 
     /// Represents an internal server error (HTTP 500) with an associated message.
-    /// - Parameter message: The message received along side the error.
-    case internalServerError(message: String?)
+    /// - Parameter error: The error name and message.
+    case internalServerError(error: ATHTTPResponseError)
 
     /// Represents a method not implemented error (HTTP 501) with an associated message.
-    /// - Parameter message: The message received along side the error.
-    case methodNotImplemented(message: String?)
+    /// - Parameter error: The error name and message.
+    case methodNotImplemented(error: ATHTTPResponseError)
 
     /// Represents a bad gateway error (HTTP 502) with an associated message.
-    /// - Parameter message: The message received along side the error.
-    case badGateway(message: String?)
+    case badGateway
 
     /// Represents a service unavailable error (HTTP 503) with an associated message.
-    /// - Parameter message: The message received along side the error.
-    case serviceUnavailable(message: String?)
+    case serviceUnavailable
 
     /// Represents a gateway timeout error (HTTP 504) with an associated message.
-    /// - Parameter message: The message received along side the error.
-    case gatewayTimeout(message: String?)
+    case gatewayTimeout
 
     /// Represents an unknown error with an associated message.
-    /// - Parameter message: The message received along side the error.
-    case unknown(message: String?)
+    /// - Parameters:
+    ///   - error: The message received along side the error. Optional.
+    ///   - errorCode: The error code number Optional.
+    ///   - errorData: The raw JSON object of the error. Optional.
+    ///   - httpHeaders: The raw headers the come with the response. Optional.
+    ///
+    case unknown(error: String?, errorCode: Int? = nil, errorData: Data? = nil, httpHeaders: [String : String]? = nil)
+}
 
-    public init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
+/// An error type related to a failed upload job.
+/// 
+/// This would typically be used in a job status.
+public enum ATJobStatusError: Decodable, ATProtoError {
 
-        let errorType = try container.decode(String.self, forKey: .error)
-        let message = try container.decodeIfPresent(String.self, forKey: .message)
+    /// The job failed.
+    ///
+    /// The error code for this will be 409.
+    ///
+    /// - Parameter error: A job state, containing a filed up error and message.
+    case failedJob(error: AppBskyLexicon.Video.JobStatusDefinition)
 
-        switch errorType {
-            case 
-                "InvalidRequest",
-                "ExpiredToken",
-                "InvalidToken",
-                "BlockedActor",
-                "BlockedByActor",
-                "UnknownFeed",
-                "UnknownList",
-                "NotFound",
-                "BadQueryString",
-                "SubjectHasAction",
-                "RecordNotFound",
-                "RepoNotFound",
-                "InvalidSwap",
-                "AccountNotFound",
-                "InvalidEmail",
-                "InvalidHandle",
-                "InvalidPassword",
-                "InvalidInviteCode",
-                "HandleNotAvailable",
-                "UnsupportedDomain",
-                "UnresolvableDid",
-                "IncompatibleDidDoc",
-                "AccountTakedown",
-                "RepoTakendown",
-                "RepoDeactivated",
-                "RepoSuspended",
-                "DuplicateCreate",
-                "TokenRequired",
-                "FutureCursor",
-                "ConsumerTooSlow",
-                "AuthFactorTokenRequired",
-                "MemberAlreadyExists",
-                "MemberNotFound",
-                "CannotDeleteSelf",
-                "BadExpiration":
-                self = .badRequest(message: message)
-            case "Unauthorized":
-                self = .unauthorized(message: message)
-            case "Forbidden":
-                self = .forbidden(message: message)
-            case "MethodNotAllowed":
-                self = .methodNotAllowed(message: message)
-            case "PayloadTooLarge":
-                self = .payloadTooLarge(message: message)
-            case "UpgradeRequired":
-                self = .upgradeRequired(message: message)
-            case "TooManyRequests":
-                self = .tooManyRequests(message: message)
-            case "InternalServerError":
-                self = .internalServerError(message: message)
-            case "MethodNotImplemented":
-                self = .methodNotImplemented(message: message)
-            case "BadGateway":
-                self = .badGateway(message: message)
-            case "ServiceUnavailable":
-                self = .serviceUnavailable(message: message)
-            case "GatewayTimeout":
-                self = .gatewayTimeout(message: message)
-            default:
-                self = .unknown(message: message)
-        }
-    }
+    /// The video can't be uploaded because the user account has used up their upload limit
+    /// for today.
+    ///
+    /// - Parameter message: The message for the error.
+    case videoLimitExceeded(message: String)
 
-    enum CodingKeys: String, CodingKey {
-        case error
-        case message
-    }
+    /// The video can't be uploaded because the user account either has the ability to upload
+    /// videos disabld or because they have been banned from doing so.
+    ///
+    /// - Parameter message: The message for the error.
+    case permissionToUploadVideosDenied(message: String)
 }
 
 /// An error type related to issues with decentralized identifiers (DIDs).
@@ -324,8 +283,9 @@ public enum ATRequestPrepareError: ATProtoError {
     case invalidRecord
 }
 
-/// An error type related to issues surrounding HTTP requests and responses.
+/// An error type related to issues surrounding HTTP requests.
 public enum ATHTTPRequestError: ATProtoError {
+
     /// Unable to encode the request body.
     case unableToEncodeRequestBody
 
@@ -340,6 +300,16 @@ public enum ATHTTPRequestError: ATProtoError {
 
     /// The response may be invalid.
     case invalidResponse
+}
+
+/// An error type related to issues surrounding HTTP responses.
+public struct ATHTTPResponseError: Decodable, ATProtoError {
+
+    /// The name of the error.
+    public let error: String
+
+    /// The message for the error.
+    public let message: String
 }
 
 /// An error type specifically related to Bluesky (either before or after interacting with

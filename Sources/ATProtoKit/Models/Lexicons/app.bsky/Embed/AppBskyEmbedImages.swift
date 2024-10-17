@@ -59,9 +59,9 @@ extension AppBskyLexicon.Embed {
             public let altText: String
 
             /// The aspect ratio of the image. Optional.
-            public let aspectRatio: AspectRatio?
+            public let aspectRatio: AspectRatioDefinition?
 
-            public init(image: ComAtprotoLexicon.Repository.UploadBlobOutput, altText: String, aspectRatio: AspectRatio?) {
+            public init(image: ComAtprotoLexicon.Repository.UploadBlobOutput, altText: String, aspectRatio: AspectRatioDefinition?) {
                 self.image = image
                 self.altText = altText
                 self.aspectRatio = aspectRatio
@@ -71,29 +71,6 @@ extension AppBskyLexicon.Embed {
                 case image
                 case altText = "alt"
                 case aspectRatio
-            }
-        }
-
-        /// A data model for the aspect ratio definition.
-        ///
-        /// - Note: From the AT Protocol specification: "width:height represents an aspect ratio.
-        /// It may be approximate, and may not correspond to absolute dimensions in any
-        /// given unit."
-        ///
-        /// - SeeAlso: This is based on the [`app.bsky.embed.images`][github] lexicon.
-        ///
-        /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/embed/images.json
-        public struct AspectRatio: Codable {
-
-            /// The width of the image.
-            public let width: Int
-
-            /// The height of the image.
-            public let height: Int
-
-            public init(width: Int, height: Int) {
-                self.width = width
-                self.height = height
             }
         }
 
@@ -137,9 +114,9 @@ extension AppBskyLexicon.Embed {
             public let altText: String
 
             /// The aspect ratio of the image. Optional.
-            public let aspectRatio: AspectRatio?
+            public let aspectRatio: AspectRatioDefinition?
 
-            public init(thumbnailImageURL: URL, fullSizeImageURL: URL, altText: String, aspectRatio: AspectRatio?) {
+            public init(thumbnailImageURL: URL, fullSizeImageURL: URL, altText: String, aspectRatio: AspectRatioDefinition?) {
                 self.thumbnailImageURL = thumbnailImageURL
                 self.fullSizeImageURL = fullSizeImageURL
                 self.altText = altText

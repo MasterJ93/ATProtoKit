@@ -182,6 +182,24 @@ public class ATProtoTools {
         }
     }
 
+    /// Generates a random alphanumeric string with a specified length
+    ///
+    /// A maximum of 25 characters can be created for the string. This is useful for generating
+    /// random file names when uploading blobs into the server.
+    ///
+    /// - Parameter length: The number of characters the string will generate. Defaults to `8`.
+    /// - Returns: a string with each character being a random character, repeated to the
+    /// specified length.
+    public func generateRandomString(length: Int = 8) -> String {
+        let maxAllowedLength = 25
+        let characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+
+        // Ensure that the requested length does not exceed the maximum allowed limit
+        let finalLength = min(length, maxAllowedLength)
+
+        return String((0..<finalLength).compactMap { _ in characters.randomElement() })
+    }
+
     /// A structure for a record.
     public struct RecordQuery: Codable {
 

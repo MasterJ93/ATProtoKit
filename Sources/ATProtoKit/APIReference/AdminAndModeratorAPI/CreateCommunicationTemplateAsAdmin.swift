@@ -25,6 +25,7 @@ extension ATProtoAdmin {
     ///   - name: The name of the template.
     ///   - contentMarkdown: A Markdown-formatted content of the communitcation template.
     ///   - subject: The subject line of the communication template.
+    ///   - language: The language of the message. Optional.
     ///   - createdBy: The decentralized identifier (DID) of the creator of the
     ///   communication template. Optional.
     /// - Returns: A communication template.
@@ -35,6 +36,7 @@ extension ATProtoAdmin {
         named name: String,
         contentMarkdown: String,
         subject: String,
+        language: Locale,
         createdBy: String? = nil
     ) async throws -> ToolsOzoneLexicon.Communication.TemplateViewDefinition {
         guard session != nil,
@@ -51,6 +53,7 @@ extension ATProtoAdmin {
             name: name,
             contentMarkdown: contentMarkdown,
             subject: subject,
+            language: language,
             createdBy: createdBy
         )
 

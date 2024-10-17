@@ -22,7 +22,8 @@ extension ATProtoKit {
     ///   -  serviceDID: The decentralized identifier (DID) of the service.
     ///   - expirationTime: The exporation date of the session tokens expire. Optional.
     ///   Defaults to 60 seconds in the Unix Epoch format.
-    ///   - lexiconMethod: The Namespaced Identifier (NSID) of the lexicon that the token is bound to. Optional.
+    ///   - lexiconMethod: The Namespaced Identifier (NSID) of the lexicon that the token is
+    ///   bound to. Optional.
     /// - Returns: The signed token from the service that matches `serviceDID`.
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
@@ -47,7 +48,7 @@ extension ATProtoKit {
         ]
 
         if let expirationTime {
-            queryItems.append(("exp", "\(expirationTime)"))
+            queryItems.append(("exp", "\(Int(Date().timeIntervalSince1970) + expirationTime)"))
         }
 
         if let lexiconMethod {

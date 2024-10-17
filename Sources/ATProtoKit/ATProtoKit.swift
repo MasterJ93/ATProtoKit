@@ -114,7 +114,7 @@ extension ATProtoKitConfiguration {
 ///     }
 /// }
 /// ```
-public class ATProtoKit: ATProtoKitConfiguration {
+public class ATProtoKit: ATProtoKitConfiguration, ATRecordConfiguration {
 
     /// Represents an authenticated user session within the AT Protocol. Optional.
     public let session: UserSession?
@@ -122,15 +122,19 @@ public class ATProtoKit: ATProtoKitConfiguration {
     /// An array of record lexicon structs created by Bluesky.
     ///
     /// If `canUseBlueskyRecords` is set to `false`, these will not be used.
-    private let recordLexicons: [ATRecordProtocol.Type] = [
-        AppBskyLexicon.Feed.GeneratorRecord.self, AppBskyLexicon.Feed.LikeRecord.self, AppBskyLexicon.Feed.PostRecord.self,
-        AppBskyLexicon.Feed.RepostRecord.self, AppBskyLexicon.Feed.ThreadgateRecord.self, AppBskyLexicon.Graph.BlockRecord.self,
-        AppBskyLexicon.Graph.FollowRecord.self, AppBskyLexicon.Graph.ListRecord.self, AppBskyLexicon.Graph.ListBlockRecord.self,
-        AppBskyLexicon.Graph.ListItemRecord.self, AppBskyLexicon.Graph.StarterpackRecord.self, AppBskyLexicon.Labeler.ServiceRecord.self,
-        ChatBskyLexicon.Actor.DeclarationRecord.self]
+    public let recordLexicons: [ATRecordProtocol.Type] = [
+        AppBskyLexicon.Actor.ProfileRecord.self, AppBskyLexicon.Feed.GeneratorRecord.self, AppBskyLexicon.Feed.LikeRecord.self,
+        AppBskyLexicon.Feed.PostRecord.self, AppBskyLexicon.Feed.PostgateRecord.self, AppBskyLexicon.Feed.RepostRecord.self,
+        AppBskyLexicon.Feed.ThreadgateRecord.self, AppBskyLexicon.Graph.BlockRecord.self, AppBskyLexicon.Graph.FollowRecord.self,
+        AppBskyLexicon.Graph.ListRecord.self, AppBskyLexicon.Graph.ListBlockRecord.self, AppBskyLexicon.Graph.ListItemRecord.self,
+        AppBskyLexicon.Graph.StarterpackRecord.self, AppBskyLexicon.Labeler.ServiceRecord.self, ChatBskyLexicon.Actor.DeclarationRecord.self
+    ]
 
     /// Specifies the logger that will be used for emitting log messages.
     public private(set) var logger: Logger?
+
+    /// Internal state to track initialization completion.
+    public var initializationTask: Task<Void, Error>?
 
     /// Initializes a new instance of `ATProtoKit`.
     /// 
@@ -148,9 +152,11 @@ public class ATProtoKit: ATProtoKitConfiguration {
         self.session = session
         self.logger = session?.logger ?? logger
 
-        if canUseBlueskyRecords && !ATRecordTypeRegistry.areBlueskyRecordsRegistered {
-            _ = ATRecordTypeRegistry(types: self.recordLexicons)
-            ATRecordTypeRegistry.areBlueskyRecordsRegistered = false
+        Task {
+            if canUseBlueskyRecords && !(ATRecordTypeRegistry.areBlueskyRecordsRegistered) {
+                _ = await ATRecordTypeRegistry(types: self.recordLexicons)
+                await ATRecordTypeRegistry.setBlueskyRecordsRegistered(true)
+            }
         }
     }
 

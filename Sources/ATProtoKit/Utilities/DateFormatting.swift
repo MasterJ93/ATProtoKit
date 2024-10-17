@@ -101,11 +101,21 @@ struct CustomDateFormatter {
 public struct DateFormatting: Codable {
 
     /// The actual `Date` value being wrapped.
-    public var wrappedValue: Date
+    public var wrappedValue: Date {
+        get {
+            value
+        }
+        set {
+            value = newValue
+        }
+    }
+
+    /// A private pproperty that stores the `wrappedValue`'s value. Optional.
+    private var value: Date
 
     /// Initializes the property with a `Date` value.
     public init(wrappedValue: Date) {
-        self.wrappedValue = wrappedValue
+        self.value = wrappedValue
     }
 
     /// Decodes a `Date` object from a `String` using the `CustomDateFormatter`.
@@ -118,12 +128,13 @@ public struct DateFormatting: Codable {
         guard let date = CustomDateFormatter.shared.date(from: dateString) else {
             throw DecodingError.dataCorruptedError(in: container, debugDescription: "Date string does not match format expected by formatter.")
         }
-        self.wrappedValue = date
+        self.value = date
     }
 
     /// Encodes the `Date` object to a `String` using the `CustomDateFormatter`.
     public func encode(to encoder: Encoder) throws {
         var container = encoder.singleValueContainer()
+
         let dateString = CustomDateFormatter.shared.string(from: wrappedValue)
         try container.encode(dateString)
     }
@@ -173,11 +184,21 @@ public struct DateFormatting: Codable {
 public struct DateFormattingOptional: Codable {
 
     /// The optional `Date?` value being wrapped.
-    public var wrappedValue: Date?
+    public var wrappedValue: Date? {
+        get {
+            value
+        }
+        set {
+            value = newValue
+        }
+    }
+
+    /// A private pproperty that stores the `wrappedValue`'s value. Optional.
+    private var value: Date?
 
     /// Initializes the property with an optional `Date?` value.
     public init(wrappedValue: Date?) {
-        self.wrappedValue = wrappedValue
+        self.value = wrappedValue
     }
 
     /// Decodes an optional `Date?` object from a `String` using the `CustomDateFormatter`.
@@ -187,9 +208,9 @@ public struct DateFormattingOptional: Codable {
         let container = try decoder.singleValueContainer()
 
         if let dateString = try? container.decode(String.self) {
-            self.wrappedValue = CustomDateFormatter.shared.date(from: dateString)
+            self.value = CustomDateFormatter.shared.date(from: dateString)
         } else {
-            self.wrappedValue = nil
+            self.value = nil
         }
     }
 
@@ -198,7 +219,8 @@ public struct DateFormattingOptional: Codable {
     /// if `wrappedValue` is `nil`.
     public func encode(to encoder: Encoder) throws {
         var container = encoder.singleValueContainer()
-        if let date = wrappedValue, let dateString = CustomDateFormatter.shared.string(from: date) {
+
+        if let date = value, let dateString = CustomDateFormatter.shared.string(from: date) {
             try container.encode(dateString)
         } else {
             try container.encodeNil()

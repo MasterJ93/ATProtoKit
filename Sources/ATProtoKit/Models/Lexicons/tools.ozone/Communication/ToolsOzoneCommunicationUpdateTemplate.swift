@@ -26,6 +26,11 @@ extension ToolsOzoneLexicon.Communication {
         /// The name of the communication template. Optional.
         public let name: String?
 
+        /// The language of the message.
+        ///
+        /// - Note: According to the AT Protocol specifications: "Message language."
+        public let language: Locale?
+
         /// The content of the communication template. Optional.
         ///
         /// This may contain Markdown placeholders and variable placeholders.
@@ -44,6 +49,7 @@ extension ToolsOzoneLexicon.Communication {
         enum CodingKeys: String, CodingKey {
             case id
             case name
+            case language = "lang"
             case contentMarkdown
             case subject
             case updatedBy

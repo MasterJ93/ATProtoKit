@@ -36,11 +36,24 @@ extension ToolsOzoneLexicon.Communication {
         /// in emails."
         public let subject: String
 
+        /// The language of the message.
+        ///
+        /// - Note: According to the AT Protocol specifications: "Message language."
+        public let language: Locale?
+
         /// The decentralized identifier (DID) of the creator of the
         /// communication template. Optional.
         ///
         /// - Note: According to the AT Protocol specifications: "DID of the user who is creating
         /// the template."
         public let createdBy: String?
+
+        enum CodingKeys: String, CodingKey {
+            case name
+            case contentMarkdown
+            case subject
+            case language = "lang"
+            case createdBy
+        }
     }
 }

@@ -74,39 +74,6 @@ extension ComAtprotoLexicon.Admin {
         /// The date and time a status has been deactivated.
         @DateFormattingOptional public var deactivatedAt: Date?
 
-        public init(actorDID: String, handle: String, email: String?, relatedRecords: [UnknownType]?, indexedAt: Date,
-                    invitedBy: ComAtprotoLexicon.Server.InviteCodeDefinition?,
-                    invites: [ComAtprotoLexicon.Server.InviteCodeDefinition]?, areInvitesDisabled: Bool?, emailConfirmedAt: Date? = nil, inviteNote: String?,
-                    deactivatedAt: Date?) {
-            self.actorDID = actorDID
-            self.handle = handle
-            self.email = email
-            self.relatedRecords = relatedRecords
-            self._indexedAt = DateFormatting(wrappedValue: indexedAt)
-            self.invitedBy = invitedBy
-            self.invites = invites
-            self.areInvitesDisabled = areInvitesDisabled
-            self._emailConfirmedAt = DateFormattingOptional(wrappedValue: emailConfirmedAt)
-            self.inviteNote = inviteNote
-            self._deactivatedAt = DateFormattingOptional(wrappedValue: deactivatedAt)
-        }
-
-        public init(from decoder: Decoder) throws {
-            let container = try decoder.container(keyedBy: CodingKeys.self)
-
-            self.actorDID = try container.decode(String.self, forKey: .actorDID)
-            self.handle = try container.decode(String.self, forKey: .handle)
-            self.email = try container.decodeIfPresent(String.self, forKey: .email)
-            self.relatedRecords = try container.decodeIfPresent([UnknownType].self, forKey: .relatedRecords)
-            self.indexedAt = try container.decode(DateFormatting.self, forKey: .indexedAt).wrappedValue
-            self.invitedBy = try container.decodeIfPresent(ComAtprotoLexicon.Server.InviteCodeDefinition.self, forKey: .invitedBy)
-            self.invites = try container.decodeIfPresent([ComAtprotoLexicon.Server.InviteCodeDefinition].self, forKey: .invites)
-            self.areInvitesDisabled = try container.decodeIfPresent(Bool.self, forKey: .areInvitesDisabled)
-            self.emailConfirmedAt = try container.decodeIfPresent(DateFormattingOptional.self, forKey: .emailConfirmedAt)?.wrappedValue
-            self.inviteNote = try container.decodeIfPresent(String.self, forKey: .inviteNote)
-            self.deactivatedAt = try container.decodeIfPresent(DateFormattingOptional.self, forKey: .deactivatedAt)?.wrappedValue
-        }
-
         public func encode(to encoder: Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
 

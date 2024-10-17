@@ -55,26 +55,6 @@ extension AppBskyLexicon.Feed {
             /// The user that created the like record.
             public let actor: AppBskyLexicon.Actor.ProfileViewDefinition
 
-            public init(indexedAt: Date, createdAt: Date, actor: AppBskyLexicon.Actor.ProfileViewDefinition) {
-                self._indexedAt = DateFormatting(wrappedValue: indexedAt)
-                self._createdAt = DateFormatting(wrappedValue: createdAt)
-                self.actor = actor
-            }
-
-            public init(from decoder: Decoder) throws {
-                let container = try decoder.container(keyedBy: CodingKeys.self)
-                self.indexedAt = try container.decode(DateFormatting.self, forKey: .indexedAt).wrappedValue
-                self.createdAt = try container.decode(DateFormatting.self, forKey: .createdAt).wrappedValue
-                self.actor = try container.decode(AppBskyLexicon.Actor.ProfileViewDefinition.self, forKey: .actor)
-            }
-
-            public func encode(to encoder: Encoder) throws {
-                var container = encoder.container(keyedBy: CodingKeys.self)
-                try container.encode(self._indexedAt, forKey: .indexedAt)
-                try container.encode(self._createdAt, forKey: .createdAt)
-                try container.encode(self.actor, forKey: .actor)
-            }
-
             public enum CodingKeys: CodingKey {
                 case indexedAt
                 case createdAt

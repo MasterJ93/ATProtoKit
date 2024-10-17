@@ -103,6 +103,7 @@ extension AppBskyLexicon.Feed {
         public func encode(to encoder: Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
 
+            try container.encode(AppBskyLexicon.Feed.PostRecord.type, forKey: .type)
             try container.encode(self.text, forKey: .text)
             // Truncate `tags` to 3000 characters before encoding
             // `maxGraphemes`'s limit is 300, but `String.count` should respect that limit implictly
