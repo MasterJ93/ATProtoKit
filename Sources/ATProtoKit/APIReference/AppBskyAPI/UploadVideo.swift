@@ -27,7 +27,6 @@ extension ATProtoKit {
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func uploadVideo(_ video: Data) async throws -> AppBskyLexicon.Video.JobStatusDefinition {
         var attempts = 0
-        var delay: TimeInterval = 1.0
 
         guard session != nil,
               session?.accessToken != nil else {
@@ -96,9 +95,9 @@ extension ATProtoKit {
             } catch let error as ATAPIError {
                 switch error {
                     case .tooManyRequests(let requestError, let retryAfter):
-                        throw requestError
+                        throw ATAPIError.tooManyRequests(error: requestError, retryAfter: retryAfter)
                     case .unauthorized(let requestError, let wwwAuthenticate):
-                        throw requestError
+                        throw ATAPIError.unauthorized(error: requestError, wwwAuthenticate: wwwAuthenticate)
                     case .badRequest(let requestError),
                             .forbidden(let requestError),
                             .notFound(let requestError),
@@ -124,7 +123,7 @@ extension ATProtoKit {
                         }
                     case .unknown(error: let requestError, errorCode: let errorCode, errorData: let errorData, httpHeaders: let httpHeaders):
                         if attempts == maxRetryCount {
-                            throw error
+                            throw ATAPIError.unknown(error: requestError, errorCode: errorCode, errorData: errorData, httpHeaders: httpHeaders)
                         } else {
                             attempts += 1
                             try await Task.sleep(nanoseconds: UInt64(retryTimeDelay * 1_000_000_000))

@@ -210,7 +210,7 @@ extension ATProtoBluesky {
         } catch let uploadVideoError as ATAPIError {
             switch uploadVideoError {
                 case .unauthorized(error: let error, wwwAuthenticate: let wwwAuthenticate):
-                    throw error
+                    throw ATAPIError.unauthorized(error: error, wwwAuthenticate: wwwAuthenticate)
                 case .badRequest(error: let error),
                      .forbidden(error: let error),
                      .notFound(error: let error),
@@ -221,7 +221,7 @@ extension ATProtoBluesky {
                      .methodNotImplemented(error: let error):
                     throw error
                 case .tooManyRequests(error: let error, retryAfter: let retryAfter):
-                    throw error
+                    throw ATAPIError.tooManyRequests(error: error, retryAfter: retryAfter)
                 case .badGateway:
                     throw ATAPIError.badGateway
                 case .serviceUnavailable:
