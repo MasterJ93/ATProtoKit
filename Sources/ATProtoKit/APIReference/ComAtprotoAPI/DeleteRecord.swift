@@ -27,7 +27,7 @@ extension ATProtoKit {
     ///   - swapCommit: Swap the commit on the server with this current commit based on the CID
     ///   of the commit on the server.
     ///
-    ///   - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
+    /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func deleteRecord(
         repositoryDID: String,

@@ -15,8 +15,7 @@ extension ATProtoBlueskyChat {
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/chat/bsky/convo/getConvo.json
     ///
-    /// - Parameter members: An array of members within the conversation. Maximum amount is
-    /// 10 items.
+    ///- Parameter conversationID: The ID of the conversation.
     /// - Returns: The conversation between tto user accounts that matches `conversationID`.
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to

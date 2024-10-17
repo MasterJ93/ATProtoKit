@@ -28,6 +28,7 @@ extension ATProtoKit {
     ///   - limit: The number of items that can be in the list. Optional. Defaults to `25`.
     ///   - cursor: The mark used to indicate the starting point for the next set
     ///   of results. Optional.
+    ///  - pdsURL: The URL of the Personal Data Server (PDS). Optional.
     /// - Returns: An array of actors, with an optional cursor to expand the array. The output
     /// may also display the number of search results.
     ///

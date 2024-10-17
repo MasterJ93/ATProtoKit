@@ -25,7 +25,7 @@ extension ATProtoAdmin {
     ///   - codes: The invite codes to disable.
     ///   - accountDIDs: The decentralized identifiers (DIDs) of the user accounts.
     ///
-    ///   - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
+    /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func disableInviteCodes(
         codes: [String],

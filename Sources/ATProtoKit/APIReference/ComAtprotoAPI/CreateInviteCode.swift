@@ -22,8 +22,8 @@ extension ATProtoKit {
     ///
     /// - Parameters:
     ///   - codeCount: The number of invite codes to be created. Defaults to 1.
-    ///   - forAccount: The decentralized identifier (DIDs) of the user that can use the
-    ///   invite code. Optional.
+    ///   - account: The decentralized identifier (DIDs) of the user that can use the invite code.
+    ///   Optional.
     /// - Returns: The details of the newly-created invite code.
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to

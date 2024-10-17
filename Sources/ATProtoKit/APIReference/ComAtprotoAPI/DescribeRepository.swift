@@ -18,7 +18,9 @@ extension ATProtoKit {
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/repo/describeRepo.json
     ///
-    /// - Parameter repositoryDID: The decentralized identifier (DID) or handle of the repository.
+    /// - Parameters:
+    ///   - repositoryDID: The decentralized identifier (DID) or handle of the repository.
+    ///   - pdsURL: The URL of the Personal Data Server (PDS). Optional.
     /// - Returns: Some general information about the repository that matches `repositoryDID`.
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to

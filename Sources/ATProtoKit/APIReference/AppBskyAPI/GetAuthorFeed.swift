@@ -29,7 +29,7 @@ extension ATProtoKit {
     ///   - limit: The number of items the list will hold. Optional. Defaults to `50`.
     ///   - cursor: The mark used to indicate the starting point for the next set
     ///   of results. Optional.
-    ///   - filter: The supported post and/or repost combinations in responses.  Optional.
+    ///   - postFilter: The supported post and/or repost combinations in responses.  Optional.
     ///   Defaults to `.postsWithReplies`.
     ///   - shouldIncludePins: Indicates whether the output includes pinned posts. Optional.
     /// - Returns: An array of feeds created by the specified user account, with an optional cursor

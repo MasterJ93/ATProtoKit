@@ -33,7 +33,6 @@ extension ATProtoKit {
     ///   - query: The string used against a list of actors.
     ///   - limit: The number of suggested users to follow. Optional. Defaults to `50`. Can only
     ///   choose between `1` and `100`.
-    ///   - accessToken: The access token
     ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `nil`.
     ///   - shouldAuthenticate: Indicates whether the method will use the access token when
     ///   sending the request. Defaults to `false`.

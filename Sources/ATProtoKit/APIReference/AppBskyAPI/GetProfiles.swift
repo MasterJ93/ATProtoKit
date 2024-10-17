@@ -31,7 +31,6 @@ extension ATProtoKit {
     /// - Parameters:
     ///   - actors: An array of user account handles or decentralized identifiers (DID).
     ///   Current maximum length is 25 handles and/or DIDs.
-    ///   - accessToken: The access token of the user.
     ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `nil`.
     ///   - shouldAuthenticate: Indicates whether the method will use the access token when
     ///   sending the request. Defaults to `false`.

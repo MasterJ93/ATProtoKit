@@ -22,7 +22,8 @@ extension ATProtoKit {
     /// `AKProtoKit`'s end. For now, use the `shouldAuthenticate` parameter when
     /// using this method.
     ///
-    /// - Note: According to the AT Protocol specifications: "Find actors (profiles) matching search criteria. Does not require auth."
+    /// - Note: According to the AT Protocol specifications: "Find actors (profiles) matching
+    /// search criteria. Does not require auth."
     ///
     /// - SeeAlso: This is based on the [`app.bsky.actor.searchActors`][github] lexicon.
     ///
@@ -34,7 +35,6 @@ extension ATProtoKit {
     ///   Can only choose between 1 and 100.
     ///   - cursor: The mark used to indicate the starting point for the next set
     ///   of results. Optional.
-    ///   - accessToken: The access token
     ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `nil`.
     ///   - shouldAuthenticate: Indicates whether the method will use the access token
     ///   when sending the request. Defaults to `false`.

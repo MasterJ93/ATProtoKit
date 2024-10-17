@@ -24,7 +24,7 @@ extension ATProtoKit {
     ///   - writes: The write operation itself.
     ///   - swapCommit: Swaps out an operation based on the CID. Optional.
     ///
-    ///   - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
+    /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func applyWrites(
         _ repositoryDID: String,

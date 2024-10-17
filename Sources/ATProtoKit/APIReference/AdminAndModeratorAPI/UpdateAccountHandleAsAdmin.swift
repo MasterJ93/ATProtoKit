@@ -25,7 +25,7 @@ extension ATProtoAdmin {
     ///   - accountDID: The decentralized identifier (DID) of the user account.
     ///   - newAccountHandle: The new handle for the user account.
     ///
-    ///   - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
+    /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func updateAccountHandle(
         for accountDID: String,

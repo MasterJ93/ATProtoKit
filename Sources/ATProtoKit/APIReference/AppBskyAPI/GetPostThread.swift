@@ -24,8 +24,9 @@ extension ATProtoKit {
     ///   Defaults to `6`. Can be between `0` and `1000`.
     ///   - parentHeight: The number of parent layers that can be included in the result.
     ///   Optional. Defaults to `80`. Can be between `0` and `1000`.
-    ///   - accessToken: The token used to authenticate the user. Optional.
     ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `nil`.
+    ///  - shouldAuthenticate:Indicates whether the method will use the access token when
+    ///   sending the request. Defaults to `false`.
     /// - Returns: A post thread that matches the `postURI`.
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to

@@ -21,7 +21,7 @@ extension ATProtoKit {
     ///
     /// - Parameters:
     ///   - repositoryDID: The decentralized identifier (DID) or handle of the repository.
-    ///   - since: The revision of the repository to list blobs starting from. Optional.
+    ///   - sinceRevision: The revision of the repository to list blobs starting from. Optional.
     ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `nil`.
     /// - Returns: A .car file, containing CBOR-encoded data of the full repository.
     ///

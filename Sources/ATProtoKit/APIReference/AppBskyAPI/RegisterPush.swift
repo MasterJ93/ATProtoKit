@@ -24,7 +24,7 @@ extension ATProtoKit {
     ///   - platform: The platform of the client.
     ///   - appID: The identifier of the client.
     ///
-    ///   - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
+    /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func registerPush(
         serviceDID: String,
