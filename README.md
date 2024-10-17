@@ -72,7 +72,7 @@ I believe Bluesky and its accompanying AT Protocol gives the perfect balance bet
 You can use the Swift Package Manager to download and import the library into your project:
 ```swift
 dependencies: [
-    .package(url: "https://github.com/MasterJ93/ATProtoKit.git", from: "0.17.0")
+    .package(url: "https://github.com/MasterJ93/ATProtoKit.git", from: "0.18.0")
 ]
 ```
 
@@ -89,10 +89,7 @@ targets: [
 ```
 
 ## Roadmap
-The Projects page isn't set up yet, so it'll be a while before you can see the progress for this project. However, some of the goals include:
-- Making the library fully compatible for Linux, for both client-side and server-side applications.
-- Replacing SwiftSoup to a more laser-focused Swift package dedicated for the AT Protocol and Bluesky.
-- Adding a separate package for auto-generating lexicons based on the Swift API Design Guidelines, Swift best practices, and this project’s own API design guidelines.
+The Projects page isn't completed, but you can still view it through its [Projects](https://github.com/users/MasterJ93/projects/2) page.
 
 ## Quick Start
 As shown in the Example Usage, it all starts with `ATProtocolConfiguration`, which uses the handle, app password, and pdsURL to access and create a session:
@@ -129,10 +126,17 @@ To use ATProtoKit in your apps, your app should target the specific version numb
 - **visionOS** 1 or later.
 - **watchOS** 9 or later.
 
+For Linux, you need to use Swift 6.0 or later. At this time, use must use `@preconcurrency` when importing ATProtoKit. On Linux, the minimum requirements include:
+- **Ubuntu** 18.04
+- **CentOS** 7
+- **Red Hat UBI** 9
+- **Debian** 12
+- **Fedora** 39
+
 You can also use this project for any programs you make using Swift and running on **Docker**.
 
 > [!WARNING]
-> As of right now, Linux support is theoretically possible, but not guaranteed to be tested. The plan is to make it fully compatible with Linux by version 1.0, though this is not a required goal to get there. For other platforms (such as Android), this is also not tested, but should be theoretically possible. While it’s not a goal to make it fully compatible, contributions and feedback on the matter are welcomed.
+> As of right now, Windows support is theoretically possible, but not has not been tested to work. For other platforms (such as Android), this is also not tested, but should be theoretically possible. While it’s not a goal to make it fully compatible, contributions and feedback on the matter are welcomed.
 
 
 ## Submitting Contributions and Feedback
