@@ -59,7 +59,7 @@ extension ATProtoBluesky {
         var resolvedReplyTo: AppBskyLexicon.Feed.PostRecord.ReplyReference? = nil
         if let replyURI = replyTo {
             do {
-                resolvedReplyTo = try await ATProtoTools().resolveReplyReferences(parentURI: replyURI)
+                resolvedReplyTo = try await ATProtoTools().resolveReplyReferences(parentURI: replyURI, session: session)
             } catch {
                 throw error
             }
