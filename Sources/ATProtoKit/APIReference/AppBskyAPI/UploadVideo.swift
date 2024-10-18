@@ -34,7 +34,7 @@ extension ATProtoKit {
         }
 
         guard let serviceEndpoint = session?.didDocument?.service[0].serviceEndpoint,
-              let serviceEndpointHost = serviceEndpoint.host() else {
+              let serviceEndpointHost = serviceEndpoint.hostname() else {
             throw ATRequestPrepareError.invalidRequestURL
         }
 

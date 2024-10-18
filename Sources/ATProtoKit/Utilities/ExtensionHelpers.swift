@@ -158,3 +158,28 @@ extension Data {
         return [UInt8](self)
     }
 }
+
+// MARK: - URL Extension
+extension URL {
+
+    /// Returns the host component of the URL.
+    ///
+    /// This is the same as the standard `func host(percentEncoded: Bool = true) -> String?`
+    /// method, except for the `percentEncoding` argument. This is simply a method that works for
+    /// iOS and tvOS versions prior to iOS and tvOS 16.
+    ///
+    ///- Returns: The fragment component of the URL
+    public func hostname() -> String? {
+        let url = self
+
+        // Manually extract the hostname from the URL without using .host().
+        let hostname = url.absoluteString.split(separator: "//").last?.split(separator: "/").first
+
+        // Convert from Substring to a String.
+        if let hostname {
+            return String(hostname)
+        }
+        
+        return nil
+    }
+}
