@@ -42,16 +42,20 @@ public class ATFacetParser {
 
                 let nsRange = match.range(at: 1)
                 if let range = Range(nsRange, in: text) {
-                    let utf8Start = text.utf8.distance(from: text.utf8.startIndex, to: range.lowerBound.samePosition(in: text.utf8)!)
-                    let utf8End = text.utf8.distance(from: text.utf8.startIndex, to: range.upperBound.samePosition(in: text.utf8)!)
+                    if let lowerBound = range.lowerBound.samePosition(in: text.utf8),
+                       let upperBound = range.upperBound.samePosition(in: text.utf8) {
 
-                    let mentionText = String(text[range])
+                        let utf8Start = text.utf8.distance(from: text.utf8.startIndex, to: lowerBound)
+                        let utf8End = text.utf8.distance(from: text.utf8.startIndex, to: upperBound)
 
-                    spans.append([
-                        "start": utf8Start,
-                        "end": utf8End,
-                        "mention": mentionText
-                    ])
+                        let mentionText = String(text[range])
+
+                        spans.append([
+                            "start": utf8Start,
+                            "end": utf8End,
+                            "mention": mentionText
+                        ])
+                    }
                 }
             }
         } catch {
@@ -80,16 +84,20 @@ public class ATFacetParser {
 
                 let nsRange = match.range(at: 1)
                 if let range = Range(nsRange, in: text) {
-                    let utf8Start = text.utf8.distance(from: text.utf8.startIndex, to: range.lowerBound.samePosition(in: text.utf8)!)
-                    let utf8End = text.utf8.distance(from: text.utf8.startIndex, to: range.upperBound.samePosition(in: text.utf8)!)
+                    if let lowerBound = range.lowerBound.samePosition(in: text.utf8),
+                       let upperBound = range.upperBound.samePosition(in: text.utf8) {
 
-                    let linkText = String(text[range])
+                        let utf8Start = text.utf8.distance(from: text.utf8.startIndex, to: lowerBound)
+                        let utf8End = text.utf8.distance(from: text.utf8.startIndex, to: upperBound)
 
-                    spans.append([
-                        "start": utf8Start,
-                        "end": utf8End,
-                        "link": linkText
-                    ])
+                        let linkText = String(text[range])
+
+                        spans.append([
+                            "start": utf8Start,
+                            "end": utf8End,
+                            "link": linkText
+                        ])
+                    }
                 }
             }
         } catch {
@@ -118,16 +126,20 @@ public class ATFacetParser {
 
                 let nsRange = match.range(at: 1)
                 if let range = Range(nsRange, in: text) {
-                    let utf8Start = text.utf8.distance(from: text.utf8.startIndex, to: range.lowerBound.samePosition(in: text.utf8)!)
-                    let utf8End = text.utf8.distance(from: text.utf8.startIndex, to: range.upperBound.samePosition(in: text.utf8)!)
-
-                    let hashtagText = String(text[range])
-
-                    spans.append([
-                        "start": utf8Start,
-                        "end": utf8End,
-                        "tag": hashtagText
-                    ])
+                    if let lowerBound = range.lowerBound.samePosition(in: text.utf8),
+                       let upperBound = range.upperBound.samePosition(in: text.utf8) {
+                        
+                        let utf8Start = text.utf8.distance(from: text.utf8.startIndex, to: lowerBound)
+                        let utf8End = text.utf8.distance(from: text.utf8.startIndex, to: upperBound)
+                        
+                        let hashtagText = String(text[range])
+                        
+                        spans.append([
+                            "start": utf8Start,
+                            "end": utf8End,
+                            "tag": hashtagText
+                        ])
+                    }
                 }
             }
         } catch {
