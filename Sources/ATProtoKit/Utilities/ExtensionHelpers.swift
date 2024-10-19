@@ -170,16 +170,21 @@ extension URL {
     ///
     ///- Returns: The fragment component of the URL
     public func hostname() -> String? {
-        let url = self
-
-        // Manually extract the hostname from the URL without using .host().
-        let hostname = url.absoluteString.split(separator: "//").last?.split(separator: "/").first
-
-        // Convert from Substring to a String.
-        if let hostname {
-            return String(hostname)
+        let absoluteString = self.absoluteString
+        
+        // Find the range of "://" to extract the host component.
+        guard let schemeRangeEnd = absoluteString.range(of: "://")?.upperBound else {
+            return nil
         }
         
-        return nil
+        // Extract everything after the scheme.
+        let remainder = absoluteString[schemeRangeEnd...]
+        
+        // Find the first "/" or end of the string to isolate the host.
+        if let slashIndex = remainder.firstIndex(of: "/") {
+            return String(remainder[..<slashIndex])
+        } else {
+            return String(remainder)
+        }
     }
 }

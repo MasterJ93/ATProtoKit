@@ -89,6 +89,7 @@ The [Swift API Design Guidelines](https://www.swift.org/documentation/api-design
     - decentralized identifier (DID)
     - content identifer (CID)
     - Namespaced Identifier (NSID)
+    - Personal Data Server (PDS)
 
 ## Lexicon Models
 Lexicons are relevant to models and methods. Here are some general guidelines:
