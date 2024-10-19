@@ -30,32 +30,33 @@ public class ATFacetParser {
     public static func parseMentions(from text: String) -> [[String: Any]] {
         var spans = [[String: Any]]()
 
-        // Regex for grabbing @mentions.
-        // Based on Bluesky's regex.
+        // Regex for grabbing @mentions based on Bluesky's regex.
         let mentionRegex = "[\\s|^](@([a-zA-Z0-9]([a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\\.)+[a-zA-Z]([a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)"
 
         do {
             let regex = try NSRegularExpression(pattern: mentionRegex)
             let nsRange = NSRange(text.startIndex..<text.endIndex, in: text)
 
-            // Get the start and end positions of each match.
-            regex.enumerateMatches(in: text, options: [], range: nsRange) { match, _, _ in
-                guard let match = match,
-                      let range = Range(match.range(at: 1), in: text) else { return }
+            regex.enumerateMatches(in: text, range: nsRange) { match, _, _ in
+                guard let match = match else { return }
 
-                // Text must be in a UTF-8 encoded bytestring offset.
-                let utf8Text = text.utf8
-                let byteStart = utf8Text.distance(from: utf8Text.startIndex,
-                                                  to: utf8Text.index(utf8Text.startIndex, offsetBy: text.distance(from: text.startIndex, to: range.lowerBound)))
-                let byteEnd = utf8Text.distance(from: utf8Text.startIndex,
-                                                to: utf8Text.index(utf8Text.startIndex, offsetBy: text.distance(from: text.startIndex, to: range.upperBound)))
-                let mentionText = String(text[range])
+                let nsRange = match.range(at: 1)
+                if let range = Range(nsRange, in: text) {
+                    if let lowerBound = range.lowerBound.samePosition(in: text.utf8),
+                       let upperBound = range.upperBound.samePosition(in: text.utf8) {
 
-                spans.append([
-                    "start": byteStart,
-                    "end": byteEnd,
-                    "mention": mentionText
-                ])
+                        let utf8Start = text.utf8.distance(from: text.utf8.startIndex, to: lowerBound)
+                        let utf8End = text.utf8.distance(from: text.utf8.startIndex, to: upperBound)
+
+                        let mentionText = String(text[range])
+
+                        spans.append([
+                            "start": utf8Start,
+                            "end": utf8End,
+                            "mention": mentionText
+                        ])
+                    }
+                }
             }
         } catch {
             print("Invalid regex: \(error.localizedDescription)")
@@ -71,28 +72,33 @@ public class ATFacetParser {
     public static func parseURLs(from text: String) -> [[String: Any]] {
         var spans = [[String: Any]]()
 
-        // Regex for grabbing links.
-        // Don't know if it can get every possible link.
-        // Based on the regex Bluesky grabbed.
+        // Regular expression pattern for identifying URLs.
         let linkRegex = "[\\s|^](https?:\\/\\/(www\\.)?[-a-zA-Z0-9@:%._\\+~#=]{1,256}\\.[a-zA-Z0-9()]{1,6}\\b([-a-zA-Z0-9()@:%_\\+.~#?&//=]*[-a-zA-Z0-9@%_\\+~#//=])?)"
 
         do {
             let regex = try NSRegularExpression(pattern: linkRegex)
             let nsRange = NSRange(text.startIndex..<text.endIndex, in: text)
 
-            // Get the start and end positions of each match.
             regex.enumerateMatches(in: text, range: nsRange) { match, _, _ in
-                guard let match = match,
-                      let range = Range(match.range(at: 1), in: text) else { return }
-                let byteStart = text.distance(from: text.startIndex, to: range.lowerBound)
-                let byteEnd = text.distance(from: text.startIndex, to: range.upperBound)
-                let linkText = String(text[range])
+                guard let match = match else { return }
 
-                spans.append([
-                    "start": byteStart,
-                    "end": byteEnd,
-                    "link": linkText
-                ])
+                let nsRange = match.range(at: 1)
+                if let range = Range(nsRange, in: text) {
+                    if let lowerBound = range.lowerBound.samePosition(in: text.utf8),
+                       let upperBound = range.upperBound.samePosition(in: text.utf8) {
+
+                        let utf8Start = text.utf8.distance(from: text.utf8.startIndex, to: lowerBound)
+                        let utf8End = text.utf8.distance(from: text.utf8.startIndex, to: upperBound)
+
+                        let linkText = String(text[range])
+
+                        spans.append([
+                            "start": utf8Start,
+                            "end": utf8End,
+                            "link": linkText
+                        ])
+                    }
+                }
             }
         } catch {
             print("Invalid regex: \(error.localizedDescription)")
@@ -108,26 +114,33 @@ public class ATFacetParser {
     public static func parseHashtags(from text: String) -> [[String: Any]] {
         var spans = [[String: Any]]()
 
-        // Regex for grabbing #hashtags.
-        let hashtagRegex = "(?<!\\w)(#[a-zA-Z0-9_]+)"
+        // Regex pattern for identifying hashtags.
+        let hashtagRegex = "(?<!\\w)(#[\\p{L}\\p{M}\\p{N}_]+)"
 
         do {
             let regex = try NSRegularExpression(pattern: hashtagRegex)
             let nsRange = NSRange(text.startIndex..<text.endIndex, in: text)
 
-            // Get the start and end positions of each match.
             regex.enumerateMatches(in: text, range: nsRange) { match, _, _ in
-                guard let match = match,
-                      let range = Range(match.range(at: 1), in: text) else { return }
-                let byteStart = text.distance(from: text.startIndex, to: range.lowerBound)
-                let byteEnd = text.distance(from: text.startIndex, to: range.upperBound)
-                let hashtagText = String(text[range])
+                guard let match = match else { return }
 
-                spans.append([
-                    "start": byteStart,
-                    "end": byteEnd,
-                    "tag": hashtagText
-                ])
+                let nsRange = match.range(at: 1)
+                if let range = Range(nsRange, in: text) {
+                    if let lowerBound = range.lowerBound.samePosition(in: text.utf8),
+                       let upperBound = range.upperBound.samePosition(in: text.utf8) {
+                        
+                        let utf8Start = text.utf8.distance(from: text.utf8.startIndex, to: lowerBound)
+                        let utf8End = text.utf8.distance(from: text.utf8.startIndex, to: upperBound)
+                        
+                        let hashtagText = String(text[range])
+                        
+                        spans.append([
+                            "start": utf8Start,
+                            "end": utf8End,
+                            "tag": hashtagText
+                        ])
+                    }
+                }
             }
         } catch {
             print("Invalid regex: \(error.localizedDescription)")
