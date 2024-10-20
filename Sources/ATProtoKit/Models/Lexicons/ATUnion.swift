@@ -300,6 +300,9 @@ public struct ATUnion {
         /// An image that's been embedded.
         case embedImagesView(AppBskyLexicon.Embed.ImagesDefinition.View)
 
+        /// A video tht's been embedded.
+        case embedVideoView(AppBskyLexicon.Embed.VideoDefinition.View)
+
         /// An external link that's been embedded.
         case embedExternalView(AppBskyLexicon.Embed.ExternalDefinition.View)
 
@@ -308,6 +311,8 @@ public struct ATUnion {
 
             if let value = try? container.decode(AppBskyLexicon.Embed.ImagesDefinition.View.self) {
                 self = .embedImagesView(value)
+            } else if let value = try? container.decode(AppBskyLexicon.Embed.VideoDefinition.View.self) {
+                self = .embedVideoView(value)
             } else if let value = try? container.decode(AppBskyLexicon.Embed.ExternalDefinition.View.self) {
                 self = .embedExternalView(value)
             } else {
@@ -322,6 +327,8 @@ public struct ATUnion {
 
             switch self {
                 case .embedImagesView(let mediaView):
+                    try container.encode(mediaView)
+                case .embedVideoView(let mediaView):
                     try container.encode(mediaView)
                 case .embedExternalView(let mediaView):
                     try container.encode(mediaView)
