@@ -343,15 +343,15 @@ public struct ATUnion {
         case reasonRepost(AppBskyLexicon.Feed.ReasonRepostDefinition)
 
         /// A marker for pinned posts.
-        case reasonPinned(AppBskyLexicon.Feed.ReasonPinnedDefinition)
+        case reasonPin(AppBskyLexicon.Feed.ReasonPinDefinition)
 
         public init(from decoder: any Decoder) throws {
             let container = try decoder.singleValueContainer()
 
             if let value = try? container.decode(AppBskyLexicon.Feed.ReasonRepostDefinition.self) {
                 self = .reasonRepost(value)
-            } else if let value = try? container.decode(AppBskyLexicon.Feed.ReasonPinnedDefinition.self) {
-                self = .reasonPinned(value)
+            } else if let value = try? container.decode(AppBskyLexicon.Feed.ReasonPinDefinition.self) {
+                self = .reasonPin(value)
             } else {
                 throw DecodingError.typeMismatch(
                     ReasonRepostUnion.self, DecodingError.Context(
@@ -365,8 +365,8 @@ public struct ATUnion {
             switch self {
                 case .reasonRepost(let reasonRepost):
                     try container.encode(reasonRepost)
-                case .reasonPinned(let reasonPinned):
-                    try container.encode(reasonPinned)
+                case .reasonPin(let reasonPin):
+                    try container.encode(reasonPin)
             }
         }
     }
@@ -546,14 +546,14 @@ public struct ATUnion {
         case skeletonReasonRepost(AppBskyLexicon.Feed.SkeletonReasonRepostDefinition)
 
         /// A pin in a feed generator.
-        case skeletonReasonPin(AppBskyLexicon.Feed.SkeletonReasonPin)
+        case skeletonReasonPin(AppBskyLexicon.Feed.SkeletonReasonPinDefinition)
 
         public init(from decoder: any Decoder) throws {
             let container = try decoder.singleValueContainer()
 
             if let value = try? container.decode(AppBskyLexicon.Feed.SkeletonReasonRepostDefinition.self) {
                 self = .skeletonReasonRepost(value)
-            } else if let value = try? container.decode(AppBskyLexicon.Feed.SkeletonReasonPin.self) {
+            } else if let value = try? container.decode(AppBskyLexicon.Feed.SkeletonReasonPinDefinition.self) {
                 self = .skeletonReasonPin(value)
             } else {
                 throw DecodingError.typeMismatch(

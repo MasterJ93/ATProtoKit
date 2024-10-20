@@ -229,7 +229,7 @@ extension AppBskyLexicon.Feed {
     /// - SeeAlso: This is based on the [`app.bsky.feed.defs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/feed/defs.json
-    public struct ReasonPinnedDefinition: Codable {}
+    public struct ReasonPinDefinition: Codable {}
 
     /// A definition model for a hydrated version of a repost.
     ///
@@ -523,7 +523,7 @@ extension AppBskyLexicon.Feed {
     /// - SeeAlso: This is based on the [`app.bsky.feed.defs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/feed/defs.json
-    public struct SkeletonReasonPin: Codable {}
+    public struct SkeletonReasonPinDefinition: Codable {}
 
     /// A definition model for a feed threadgate view.
     ///
