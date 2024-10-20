@@ -88,8 +88,8 @@ extension ComAtprotoLexicon.Label {
             try truncatedEncode(self.name, withContainer: &container, forKey: .name, upToCharacterLength: 128)
 
             try container.encodeIfPresent(self.isNegated, forKey: .isNegated)
-            try container.encode(self._timestamp, forKey: .timestamp)
-            try container.encodeIfPresent(self._expiresOn, forKey: .expiresOn)
+            try container.encode(self.timestamp, forKey: .timestamp)
+            try container.encodeIfPresent(self.expiresOn, forKey: .expiresOn)
             try container.encodeIfPresent(self.signature, forKey: .signature)
         }
 

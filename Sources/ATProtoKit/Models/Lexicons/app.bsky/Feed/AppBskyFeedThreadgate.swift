@@ -32,7 +32,7 @@ extension AppBskyLexicon.Feed {
         public let post: String
 
         /// An array of rules used as an allowlist.
-        public let allow: [ATUnion.ThreadgateUnion]
+        public let allow: [ATUnion.ThreadgateUnion]?
 
         /// The date and time of the creation of the threadgate.
         @DateFormatting public var createdAt: Date
