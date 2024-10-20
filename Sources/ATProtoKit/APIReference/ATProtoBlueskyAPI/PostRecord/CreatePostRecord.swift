@@ -93,7 +93,7 @@ extension ATProtoBluesky {
         // Compiling all parts of the post into one.
         let postRecord = AppBskyLexicon.Feed.PostRecord(
             text: postText,
-            facets: await ATFacetParser.parseFacets(from: text, pdsURL: session.accessToken),
+            facets: await ATFacetParser.parseFacets(from: postText, pdsURL: session.accessToken),
             reply: resolvedReplyTo,
             embed: resolvedEmbed,
             languages: localeIdentifiers,
