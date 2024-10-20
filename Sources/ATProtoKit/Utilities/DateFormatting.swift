@@ -205,10 +205,11 @@ public struct DateFormattingOptional: Codable {
     /// 
     /// - Throws: If decoding fails or the value is `nil`, sets `wrappedValue` to `nil`.
     public init(from decoder: Decoder) throws {
-        let container = try decoder.singleValueContainer()
+        let container = try? decoder.singleValueContainer()
 
-        if let dateString = try? container.decode(String.self) {
-            self.value = CustomDateFormatter.shared.date(from: dateString)
+        if let dateString = try? container?.decode(String.self),
+           let date = CustomDateFormatter.shared.date(from: dateString) {
+            self.value = date
         } else {
             self.value = nil
         }
