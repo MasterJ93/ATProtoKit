@@ -64,7 +64,7 @@ extension ComAtprotoLexicon.Label {
         /// was created."
         @DateFormatting public var timestamp: Date
 
-        /// The date and time the label expires on.
+        /// The date and time the label expires on. Optional.
         ///
         /// - Note: According to the AT Protocol specifications: "Timestamp at which this label
         /// expires (no longer applies)."
@@ -75,6 +75,20 @@ extension ComAtprotoLexicon.Label {
         /// - Note: According to the AT Protocol specifications: "Signature of dag-cbor
         /// encoded label."
         public let signature: Data?
+
+        public init(from decoder: any Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+
+            self.version = try container.decodeIfPresent(Int.self, forKey: .version)
+            self.actorDID = try container.decode(String.self, forKey: .actorDID)
+            self.atURI = try container.decode(String.self, forKey: .atURI)
+            self.cidHash = try container.decodeIfPresent(String.self, forKey: .cidHash)
+            self.name = try container.decode(String.self, forKey: .name)
+            self.isNegated = try container.decodeIfPresent(Bool.self, forKey: .isNegated)
+            self._timestamp = try container.decode(DateFormatting.self, forKey: .timestamp)
+            self.expiresOn = try container.decodeIfPresent(DateFormattingOptional.self, forKey: .expiresOn)?.wrappedValue
+            self.signature = try container.decodeIfPresent(Data.self, forKey: .signature)
+        }
 
         public func encode(to encoder: Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
@@ -89,7 +103,7 @@ extension ComAtprotoLexicon.Label {
 
             try container.encodeIfPresent(self.isNegated, forKey: .isNegated)
             try container.encode(self.timestamp, forKey: .timestamp)
-            try container.encodeIfPresent(self.expiresOn, forKey: .expiresOn)
+            try container.encode(self.expiresOn, forKey: .expiresOn)
             try container.encodeIfPresent(self.signature, forKey: .signature)
         }
 

@@ -44,7 +44,7 @@ extension AppBskyLexicon.Feed {
             let container = try decoder.container(keyedBy: CodingKeys.self)
 
             self.post = try container.decode(String.self, forKey: .post)
-            self.allow = try container.decode([ATUnion.ThreadgateUnion].self, forKey: .allow)
+            self.allow = try container.decodeIfPresent([ATUnion.ThreadgateUnion].self, forKey: .allow)
             self.createdAt = try container.decode(DateFormatting.self, forKey: .createdAt).wrappedValue
             self.hiddenReplies = try container.decodeIfPresent([String].self, forKey: .hiddenReplies)
         }
@@ -53,7 +53,7 @@ extension AppBskyLexicon.Feed {
             var container = encoder.container(keyedBy: CodingKeys.self)
 
             try container.encode(self.post, forKey: .post)
-            try container.encode(self.allow, forKey: .allow)
+            try container.encodeIfPresent(self.allow, forKey: .allow)
             try container.encode(self._createdAt, forKey: .createdAt)
 
             try truncatedEncodeIfPresent(self.hiddenReplies, withContainer: &container, forKey: .hiddenReplies, upToArrayLength: 50)
