@@ -17,8 +17,8 @@ extension AppBskyLexicon.RichText {
     /// - SeeAlso: This is based on the [`app.bsky.richtext.facet`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/richtext/facet.json
-    public struct Facet: Codable {
-        
+    public struct Facet: Sendable, Codable {
+
         /// The range of characters related to the facet.
         public let index: ByteSlice
         
@@ -62,7 +62,7 @@ extension AppBskyLexicon.RichText {
         /// - SeeAlso: This is based on the [`app.bsky.richtext.facet`][github] lexicon.
         ///
         /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/richtext/facet.json
-        public struct ByteSlice: Codable {
+        public struct ByteSlice: Codable, Sendable {
             
             /// The start index of the byte slice.
             public let byteStart: Int
@@ -104,7 +104,7 @@ extension AppBskyLexicon.RichText {
         /// - SeeAlso: This is based on the [`app.bsky.richtext.facet`][github] lexicon.
         ///
         /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/richtext/facet.json
-        public struct Mention: FeatureCodable {
+        public struct Mention: Sendable, FeatureCodable {
             
             /// The identifier of the lexicon.
             ///
@@ -145,7 +145,7 @@ extension AppBskyLexicon.RichText {
         /// - SeeAlso: This is based on the [`app.bsky.richtext.facet`][github] lexicon.
         ///
         /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/richtext/facet.json
-        public struct Link: FeatureCodable {
+        public struct Link: Sendable, FeatureCodable {
             
             /// The identifier of the lexicon.
             ///
@@ -187,7 +187,7 @@ extension AppBskyLexicon.RichText {
         /// - SeeAlso: This is based on the [`app.bsky.richtext.facet`][github] lexicon.
         ///
         /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/richtext/facet.json
-        public struct Tag: FeatureCodable {
+        public struct Tag: Sendable, FeatureCodable {
             
             /// The identifier of the lexicon.
             ///

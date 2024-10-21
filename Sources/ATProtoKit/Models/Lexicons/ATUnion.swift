@@ -859,7 +859,7 @@ public struct ATUnion {
     }
 
     /// A reference containing the list of feature types.
-    public enum FacetFeatureUnion: Codable {
+    public enum FacetFeatureUnion: Sendable, Codable {
 
         /// The Mention feature.
         case mention(AppBskyLexicon.RichText.Facet.Mention)
