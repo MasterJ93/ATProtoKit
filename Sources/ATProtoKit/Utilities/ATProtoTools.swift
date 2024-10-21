@@ -25,6 +25,95 @@ import Regex
 /// Until then, if a method is better suited elsewhere, it will be immediately moved.
 public class ATProtoTools {
 
+    /// Determines whether the reply reference is valid.
+    ///
+    /// - Parameters:
+    ///   - reference: The reply reference object to check for validity.
+    ///   - session: The ``UserSession`` instance in relation to the reply. Optional.
+    ///   Defaults to `nil`.
+    /// - Returns: `true` if the references are valid, or `false` if one or both references
+    /// are invalid.
+    public func isValidReplyReference(_ reference: AppBskyLexicon.Feed.PostRecord.ReplyReference, session: UserSession? = nil) async -> Bool {
+        var rootRecord: RecordQuery? = nil
+        var parentRecord: RecordQuery? = nil
+
+        // Check if the root record is valid.
+        do {
+            rootRecord = try parseURI(reference.root.recordURI)
+
+            guard let repository = rootRecord?.repository,
+                  let collection = rootRecord?.collection,
+                  let recordKey = rootRecord?.recordKey else {
+                return false
+            }
+
+            _ = try await ATProtoKit().getRepositoryRecord(
+                from: repository,
+                collection: collection,
+                recordKey: recordKey,
+                pdsURL: session?.pdsURL
+            )
+        } catch {
+            return false
+        }
+
+        // Check if the parent record is valid.
+        do {
+            parentRecord = try parseURI(reference.parent.recordURI)
+
+            guard let repository = parentRecord?.repository,
+                  let collection = parentRecord?.collection,
+                  let recordKey = parentRecord?.recordKey else {
+                return false
+            }
+
+            _ = try await ATProtoKit().getRepositoryRecord(
+                from: repository,
+                collection: collection,
+                recordKey: recordKey,
+                pdsURL: session?.pdsURL
+            )
+        } catch {
+            return false
+        }
+
+        return true
+    }
+
+    /// A utility method for converting a ``RecordOutput`` into a ``ReplyReference``.
+    ///
+    /// - Parameters:
+    ///   - strongReference: The strong reference used to create the reply reference.
+    ///   - session: The ``UserSession`` instance in relation to the reply. Optional.
+    ///   Defaults to `nil`.
+    /// - Returns: A ``ReplyReference`` from the given post record.
+    /// - Throws: Either the ``ATAPIError`` error, or that the reply reference is invalid.
+    public func createReplyReference(from strongReference: ComAtprotoLexicon.Repository.StrongReference, session: UserSession) async throws -> AppBskyLexicon.Feed.PostRecord.ReplyReference {
+
+        do {
+            let recordQuery = try parseURI(strongReference.recordURI)
+
+            let repository = recordQuery.repository
+            let collection = recordQuery.collection
+            let recordKey = recordQuery.recordKey
+
+            let record = try await ATProtoKit().getRepositoryRecord(
+                from: repository,
+                collection: collection,
+                recordKey: recordKey,
+                pdsURL: session.pdsURL
+            )
+
+            guard let replyReference = record.value?.getRecord(ofType: AppBskyLexicon.Feed.PostRecord.self)?.reply else {
+                throw ATProtoBlueskyError.invalidReplyReference(message: "The reply reference is invalid.")
+            }
+
+            return replyReference
+        } catch {
+            throw error
+        }
+    }
+
     /// Resolves the reply references to prepare them for a later post record request.
     ///
     /// - Parameters:
@@ -66,7 +155,8 @@ public class ATProtoTools {
 
     private func getReplyReferenceWithRoot(
         _ replyReference: AppBskyLexicon.Feed.PostRecord.ReplyReference) async throws -> AppBskyLexicon.Feed.PostRecord.ReplyReference {
-        let rootRecord = try await fetchRecordForURI(replyReference.root.recordURI)
+            let rootRecord = try await fetchRecordForURI(replyReference.root.recordURI)
+            let parentRecord = try await fetchRecordForURI(replyReference.parent.recordURI)
 
         if let rootReferenceValue = rootRecord.value {
             switch rootReferenceValue {
@@ -119,7 +209,7 @@ public class ATProtoTools {
     ///   - uri: The URI to parse.
     ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `nil`.
     /// - Returns: A ``RecordQuery``.
-    internal func parseURI(_ uri: String,
+    public func parseURI(_ uri: String,
                            pdsURL: String = "https://bsky.app") throws -> RecordQuery {
         if uri.hasPrefix("at://") {
             let components = uri.split(separator: "/").map(String.init)
