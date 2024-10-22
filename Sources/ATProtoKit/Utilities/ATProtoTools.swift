@@ -88,10 +88,16 @@ public class ATProtoTools {
     ///   Defaults to `nil`.
     /// - Returns: A ``ReplyReference`` from the given post record.
     /// - Throws: Either the ``ATAPIError`` error, or that the reply reference is invalid.
-    public func createReplyReference(from strongReference: ComAtprotoLexicon.Repository.StrongReference, session: UserSession) async throws -> AppBskyLexicon.Feed.PostRecord.ReplyReference {
-
+    public func createReplyReference(
+        from strongReference: ComAtprotoLexicon.Repository.StrongReference,
+        session: UserSession
+    ) async throws -> AppBskyLexicon.Feed.PostRecord.ReplyReference {
         do {
-            let recordQuery = try parseURI(strongReference.recordURI)
+            // Parse the URI to retrieve post data.
+            let recordQuery = try parseURI(
+                strongReference.recordURI,
+                pdsURL: session.pdsURL ?? "https://bsky.social"
+            )
 
             let repository = recordQuery.repository
             let collection = recordQuery.collection
@@ -104,15 +110,78 @@ public class ATProtoTools {
                 pdsURL: session.pdsURL
             )
 
-            guard let replyReference = record.value?.getRecord(ofType: AppBskyLexicon.Feed.PostRecord.self)?.reply else {
-                throw ATProtoBlueskyError.invalidReplyReference(message: "The reply reference is invalid.")
+            guard let postRecord = record.value?.getRecord(ofType: AppBskyLexicon.Feed.PostRecord.self) else {
+                throw ATProtoBlueskyError.invalidReplyReference(
+                    message: "Failed to parse the post record."
+                )
             }
 
-            return replyReference
+            // Check if the current post is a reply to something.
+            if let reply = postRecord.reply {
+                // Attempt to find the true root reference.
+                let rootReference = try await resolveRoot(from: reply.root, session: session)
+
+                return AppBskyLexicon.Feed.PostRecord.ReplyReference(
+                    root: rootReference,
+                    parent: strongReference
+                )
+            } else {
+                // If there's no reply, treat this post as both the root and the parent.
+                return AppBskyLexicon.Feed.PostRecord.ReplyReference(
+                    root: strongReference,
+                    parent: strongReference
+                )
+            }
         } catch {
             throw error
         }
     }
+
+
+    /// Resolves the root reference of a post thread
+    ///
+    /// This is mainly used if the record is part of a reply thread and it's at least two levels
+    /// deep from the root record.
+    ///
+    /// - Parameters:
+    ///   - reference: The `StrongReference` of the post record to start the search.
+    ///   - session: The `UserSession` instance used for API communication.
+    ///
+    /// - Returns: The `StrongReference` representing the root of the thread.
+    ///
+    /// - Throws: An error if the record cannot be fetched or parsed.
+    private func resolveRoot(
+        from reference: ComAtprotoLexicon.Repository.StrongReference,
+        session: UserSession
+    ) async throws -> ComAtprotoLexicon.Repository.StrongReference {
+        // Parse the URI to retrieve the post data.
+        let recordQuery = try parseURI(reference.recordURI, pdsURL: session.pdsURL ?? "https://bsky.social")
+
+        // Fetch the post record from the repository.
+        let record = try await ATProtoKit().getRepositoryRecord(
+            from: recordQuery.repository,
+            collection: recordQuery.collection,
+            recordKey: recordQuery.recordKey,
+            pdsURL: session.pdsURL
+        )
+
+        guard let postRecord = record.value?.getRecord(ofType: AppBskyLexicon.Feed.PostRecord.self) else {
+            throw ATProtoBlueskyError.invalidReplyReference(
+                message: "Failed to parse the post record."
+            )
+        }
+
+        // If this post has a root reference, return it immediately.
+        if let reply = postRecord.reply {
+            print("Found root reference. Skipping further recursion.")
+            return reply.root
+        }
+
+        // If no root reference exists, return the provided reference as the root.
+        return reference
+    }
+
+
 
     /// Resolves the reply references to prepare them for a later post record request.
     ///
