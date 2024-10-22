@@ -25,6 +25,8 @@ import Regex
 /// Until then, if a method is better suited elsewhere, it will be immediately moved.
 public class ATProtoTools {
 
+    public init() {}
+
     /// Determines whether the reply reference is valid.
     ///
     /// - Parameters:
