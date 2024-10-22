@@ -68,7 +68,7 @@ extension ComAtprotoLexicon.Label {
         ///
         /// - Note: According to the AT Protocol specifications: "Timestamp at which this label
         /// expires (no longer applies)."
-        @DateFormattingOptional public var expiresOn: Date?
+//        @DateFormattingOptional public var expiresOn: Date?
 
         /// The DAG-CBOR-encoded signature. Optional.
         ///
@@ -86,7 +86,7 @@ extension ComAtprotoLexicon.Label {
             self.name = try container.decode(String.self, forKey: .name)
             self.isNegated = try container.decodeIfPresent(Bool.self, forKey: .isNegated)
             self._timestamp = try container.decode(DateFormatting.self, forKey: .timestamp)
-            self.expiresOn = try container.decodeIfPresent(DateFormattingOptional.self, forKey: .expiresOn)?.wrappedValue
+//            self.expiresOn = try container.decodeIfPresent(DateFormattingOptional.self, forKey: .expiresOn)?.wrappedValue
             self.signature = try container.decodeIfPresent(Data.self, forKey: .signature)
         }
 
@@ -103,7 +103,7 @@ extension ComAtprotoLexicon.Label {
 
             try container.encodeIfPresent(self.isNegated, forKey: .isNegated)
             try container.encode(self.timestamp, forKey: .timestamp)
-            try container.encode(self.expiresOn, forKey: .expiresOn)
+//            try container.encode(self.expiresOn, forKey: .expiresOn)
             try container.encodeIfPresent(self.signature, forKey: .signature)
         }
 
@@ -115,7 +115,7 @@ extension ComAtprotoLexicon.Label {
             case name = "val"
             case isNegated = "neg"
             case timestamp = "cts"
-            case expiresOn = "exp"
+//            case expiresOn = "exp"
             case signature = "sig"
         }
     }
