@@ -192,6 +192,7 @@ public class ATProtoTools {
     ///   - session: The ``UserSession`` instance in relation to the reply. Optional.
     ///   Defaults to `nil`.
     /// - Returns: A ``AppBskyLexicon/Feed/PostRecord/ReplyReference``.
+    @available(*, deprecated, renamed: "createReplyReference(from:session:)")
     public func resolveReplyReferences(parentURI: String, session: UserSession? = nil) async throws -> AppBskyLexicon.Feed.PostRecord.ReplyReference {
         let threadRecords = try await fetchRecordForURI(parentURI, session: session)
 
@@ -215,6 +216,7 @@ public class ATProtoTools {
         return createReplyReference(from: threadRecords)
     }
 
+    @available(*, deprecated, message: "This will be removed in the future.")
     private func decodeReplyReference(from unknown: [String: Any]) throws -> AppBskyLexicon.Feed.PostRecord.ReplyReference? {
         if let replyData = unknown["reply"] as? [String: Any] {
             let jsonData = try JSONSerialization.data(withJSONObject: replyData, options: [])
@@ -224,6 +226,7 @@ public class ATProtoTools {
         return nil
     }
 
+    @available(*, deprecated, message: "This will be removed in the future.")
     private func getReplyReferenceWithRoot(
         _ replyReference: AppBskyLexicon.Feed.PostRecord.ReplyReference) async throws -> AppBskyLexicon.Feed.PostRecord.ReplyReference {
             let rootRecord = try await fetchRecordForURI(replyReference.root.recordURI)
@@ -263,6 +266,7 @@ public class ATProtoTools {
     ///
     /// - Parameter record: The record to convert.
     /// - Returns: A ``ReplyReference``.
+    @available(*, deprecated, message: "This will be removed in the future.")
     public func createReplyReference(from record: ComAtprotoLexicon.Repository.GetRecordOutput) -> AppBskyLexicon.Feed.PostRecord.ReplyReference {
         let reference = ComAtprotoLexicon.Repository.StrongReference(recordURI: record.recordURI, cidHash: record.recordCID)
 
