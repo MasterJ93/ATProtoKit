@@ -263,7 +263,7 @@ public class ATProtoTools {
     ///
     /// - Parameter record: The record to convert.
     /// - Returns: A ``ReplyReference``.
-    private func createReplyReference(from record: ComAtprotoLexicon.Repository.GetRecordOutput) -> AppBskyLexicon.Feed.PostRecord.ReplyReference {
+    public func createReplyReference(from record: ComAtprotoLexicon.Repository.GetRecordOutput) -> AppBskyLexicon.Feed.PostRecord.ReplyReference {
         let reference = ComAtprotoLexicon.Repository.StrongReference(recordURI: record.recordURI, cidHash: record.recordCID)
 
         return AppBskyLexicon.Feed.PostRecord.ReplyReference(root: reference, parent: reference)
