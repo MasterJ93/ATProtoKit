@@ -82,13 +82,14 @@ public class ATProtoTools {
         return true
     }
 
-    /// A utility method for converting a ``RecordOutput`` into a ``ReplyReference``.
+    /// A utility method for converting a ``ComAtprotoLexicon/Repository/StrongReference``
+    /// into a ``AppBskyLexicon/Feed/PostRecord/ReplyReference``.
     ///
     /// - Parameters:
     ///   - strongReference: The strong reference used to create the reply reference.
     ///   - session: The ``UserSession`` instance in relation to the reply. Optional.
     ///   Defaults to `nil`.
-    /// - Returns: A ``ReplyReference`` from the given post record.
+    /// - Returns: A ``AppBskyLexicon/Feed/PostRecord/ReplyReference`` from the given post record.
     /// - Throws: Either the ``ATAPIError`` error, or that the reply reference is invalid.
     public func createReplyReference(
         from strongReference: ComAtprotoLexicon.Repository.StrongReference,
@@ -230,7 +231,7 @@ public class ATProtoTools {
     private func getReplyReferenceWithRoot(
         _ replyReference: AppBskyLexicon.Feed.PostRecord.ReplyReference) async throws -> AppBskyLexicon.Feed.PostRecord.ReplyReference {
             let rootRecord = try await fetchRecordForURI(replyReference.root.recordURI)
-            let parentRecord = try await fetchRecordForURI(replyReference.parent.recordURI)
+            _ = try await fetchRecordForURI(replyReference.parent.recordURI)
 
         if let rootReferenceValue = rootRecord.value {
             switch rootReferenceValue {
@@ -262,10 +263,11 @@ public class ATProtoTools {
         }
     }
 
-    /// A utility method for converting a ``RecordOutput`` into a ``ReplyReference``.
+    /// A utility method for converting a ``ComAtprotoLexicon/Repository/GetRecordOutput``
+    /// into a ``AppBskyLexicon/Feed/PostRecord/ReplyReference``.
     ///
     /// - Parameter record: The record to convert.
-    /// - Returns: A ``ReplyReference``.
+    /// - Returns: A ``AppBskyLexicon/Feed/PostRecord/ReplyReference``.
     @available(*, deprecated, message: "This will be removed in the future.")
     public func createReplyReference(from record: ComAtprotoLexicon.Repository.GetRecordOutput) -> AppBskyLexicon.Feed.PostRecord.ReplyReference {
         let reference = ComAtprotoLexicon.Repository.StrongReference(recordURI: record.recordURI, cidHash: record.recordCID)
@@ -279,7 +281,9 @@ public class ATProtoTools {
     /// start off with the URL of the Personal Data Server (PDS). Regardless of option, this method
     /// should be able to parse
     /// them and return a proper ``RecordQuery``. However, it's still important to validate the
-    /// record by using ``ATProtoKit/ATProtoKit/getRepositoryRecord(from:pdsURL:)``.
+    /// record by using
+    /// ``ATProtoKit/ATProtoKit/getRepositoryRecord(from:collection:recordKey:recordCID:pdsURL:)`.
+    /// 
     /// - Parameters:
     ///   - uri: The URI to parse.
     ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `nil`.
