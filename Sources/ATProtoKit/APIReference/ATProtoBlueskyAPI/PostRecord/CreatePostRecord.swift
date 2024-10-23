@@ -34,7 +34,7 @@ extension ATProtoBluesky {
     public func createPostRecord(
         text: String,
         locales: [Locale] = [],
-        replyTo: String? = nil,
+        replyTo: AppBskyLexicon.Feed.PostRecord.ReplyReference? = nil,
         embed: EmbedIdentifier? = nil,
         labels: ATUnion.PostSelfLabelsUnion? = nil,
         tags: [String]? = nil,
@@ -56,13 +56,16 @@ extension ATProtoBluesky {
         let postText = text.truncated(toLength: 300)
 
         // Replies
+        // Validate the reply reference if provided.
         var resolvedReplyTo: AppBskyLexicon.Feed.PostRecord.ReplyReference? = nil
-        if let replyURI = replyTo {
-            do {
-                resolvedReplyTo = try await ATProtoTools().resolveReplyReferences(parentURI: replyURI, session: session)
-            } catch {
-                throw error
+        if let replyReference = replyTo {
+            let isValid = await ATProtoTools().isValidReplyReference(replyReference, session: session)
+
+            guard isValid else {
+                throw ATProtoBlueskyError.invalidReplyReference(message: "The reply reference could not be validated.")
             }
+
+            resolvedReplyTo = replyReference
         }
 
         // Locales

@@ -76,6 +76,15 @@ public enum ATAPIError: ATProtoError {
     case unknown(error: String?, errorCode: Int? = nil, errorData: Data? = nil, httpHeaders: [String : String]? = nil)
 }
 
+/// An error type related to ``ATProtoBluesky``-related issues.
+public enum ATProtoBlueskyError: Decodable, ATProtoError {
+
+    /// The reply reference could not be validated.
+    ///
+    /// - Parameter message: The message of the error.
+    case invalidReplyReference(message: String)
+}
+
 /// An error type related to a failed upload job.
 /// 
 /// This would typically be used in a job status.
