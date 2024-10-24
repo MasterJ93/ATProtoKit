@@ -789,7 +789,7 @@ public struct ATUnion {
     }
 
     /// A reference containing the list of relationships of multiple user accounts.
-    public enum GetRelationshipsOutputRelationshipUnion: Codable {
+    public enum GetRelationshipsOutputRelationshipUnion: Sendable, Codable {
 
         /// The relationship between two user accounts.
         case relationship(AppBskyLexicon.Graph.RelationshipDefinition)

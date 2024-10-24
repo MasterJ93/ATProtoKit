@@ -49,7 +49,7 @@ import Foundation
 ///
 /// - Warning: All record types _must_ conform to this protocol. ATProtoKit will not be able to
 /// hold onto any `struct`s that don't conform to this protocol.
-public protocol ATRecordProtocol: Codable {
+public protocol ATRecordProtocol: Sendable, Codable {
 
     /// The Namespaced Identifier (NSID) of the record.
     static var type: String { get }
@@ -205,7 +205,7 @@ public actor ATRecordTypeRegistry {
 /// As shown above, the `records` property is of type `UnknownType`. By adding this, any `struct`s
 /// within the dictionary of ``ATRecordTypeRegistry/recordRegistry``  can be used to potentially
 /// decode and encode the JSON object.
-public enum UnknownType: Codable {
+public enum UnknownType: Sendable, Codable {
 
     /// Represents a decoded ``ATRecordProtocol``-conforming `struct`.
     case record(ATRecordProtocol)
@@ -214,7 +214,7 @@ public enum UnknownType: Codable {
     ///
     /// When this is used, the JSON object is converted to `[String: Any]` object. It's your
     /// responsibility to handle this properly.
-    case unknown([String: Any])
+    case unknown([String: CodableValue])
 
     /// Initializes `UnknownType` by attempting to decode a known record type or falling back
     /// to a raw dictionary.
@@ -276,24 +276,24 @@ public enum UnknownType: Codable {
     /// - A `[String: Any]` object.
     ///
     /// - Throws: A `DecodingError` if there's a type mismatch.
-    private static func decodeNestedDictionary(container: KeyedDecodingContainer<DynamicCodingKeys>) throws -> [String: Any] {
-        var dictionary = [String: Any]()
+    private static func decodeNestedDictionary(container: KeyedDecodingContainer<DynamicCodingKeys>) throws -> [String: CodableValue] {
+        var dictionary = [String: CodableValue]()
         for key in container.allKeys {
             if let value = try? container.decode(Bool.self, forKey: key) {
-                dictionary[key.stringValue] = value
+                dictionary[key.stringValue] = .bool(value)
             } else if let value = try? container.decode(Int.self, forKey: key) {
-                dictionary[key.stringValue] = value
+                dictionary[key.stringValue] = .int(value)
             } else if let value = try? container.decode(Double.self, forKey: key) {
-                dictionary[key.stringValue] = value
+                dictionary[key.stringValue] = .double(value)
             } else if let value = try? container.decode(String.self, forKey: key) {
-                dictionary[key.stringValue] = value
+                dictionary[key.stringValue] = .string(value)
             } else if let nestedContainer = try? container.nestedContainer(keyedBy: DynamicCodingKeys.self, forKey: key) {
-                dictionary[key.stringValue] = try decodeNestedDictionary(container: nestedContainer)
+                dictionary[key.stringValue] = .dictionary(try decodeNestedDictionary(container: nestedContainer))
             } else if let array = try? decodeArray(from: container, forKey: key) {
-                dictionary[key.stringValue] = array
+                dictionary[key.stringValue] = .array(array)
             } else {
                 throw DecodingError.typeMismatch(
-                    [String: Any].self,
+                    CodableValue.self,
                     DecodingError.Context(
                         codingPath: container.codingPath,
                         debugDescription: "Could not decode item at key \(key.stringValue)"))
@@ -310,23 +310,21 @@ public enum UnknownType: Codable {
     /// - An `[Any]` object.
     /// 
     /// - Throws: A `DecodingError` if there's a type mismatch.
-    private static func decodeArray(from container: KeyedDecodingContainer<DynamicCodingKeys>, forKey key: DynamicCodingKeys) throws -> [Any] {
+    private static func decodeArray(from container: KeyedDecodingContainer<DynamicCodingKeys>, forKey key: DynamicCodingKeys) throws -> [CodableValue] {
         var unkeyedContainer = try container.nestedUnkeyedContainer(forKey: key)
-        var array = [Any]()
+        var array = [CodableValue]()
 
         while !unkeyedContainer.isAtEnd {
             if let value = try? unkeyedContainer.decode(Bool.self) {
-                array.append(value)
+                array.append(.bool(value))
             } else if let value = try? unkeyedContainer.decode(Int.self) {
-                array.append(value)
+                array.append(.int(value))
             } else if let value = try? unkeyedContainer.decode(Double.self) {
-                array.append(value)
+                array.append(.double(value))
             } else if let value = try? unkeyedContainer.decode(String.self) {
-                array.append(value)
+                array.append(.string(value))
             } else if let nestedContainer = try? unkeyedContainer.nestedContainer(keyedBy: DynamicCodingKeys.self) {
-                array.append(try decodeNestedDictionary(container: nestedContainer))
-            } else if (try? unkeyedContainer.nestedUnkeyedContainer()) != nil {
-                array.append(try UnknownType.decodeNestedDictionary(container: container))
+                array.append(.dictionary(try decodeNestedDictionary(container: nestedContainer)))
             } else {
                 throw DecodingError.dataCorruptedError(in: unkeyedContainer, debugDescription: "Could not decode array element.")
             }
@@ -361,6 +359,72 @@ public enum UnknownType: Codable {
         var intValue: Int?
         init?(intValue: Int) {
             return nil
+        }
+    }
+}
+
+/// A type-safe and thread-safe representation of JSON-compatible values, used for encoding and
+/// decoding arbitrary JSON data.
+public enum CodableValue: Codable, Sendable {
+
+    /// Stores a `Bool` value.
+    case bool(Bool)
+
+    /// Stores an `Int` value.
+    case int(Int)
+
+    /// Stores a `Double` value.
+    case double(Double)
+
+    /// Stores a `String` value.
+    case string(String)
+
+    /// Stores an `Array` of `CodableValue` elements.
+    case array([CodableValue])
+
+    /// Stores a `Dictionary` with `String` keys and `CodableValue` values.
+    case dictionary([String: CodableValue])
+
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.singleValueContainer()
+
+        if let value = try? container.decode(Bool.self) {
+            self = .bool(value)
+        } else if let value = try? container.decode(Int.self) {
+            self = .int(value)
+        } else if let value = try? container.decode(Double.self) {
+            self = .double(value)
+        } else if let value = try? container.decode(String.self) {
+            self = .string(value)
+        } else if let value = try? container.decode([CodableValue].self) {
+            self = .array(value)
+        } else if let value = try? container.decode([String: CodableValue].self) {
+            self = .dictionary(value)
+        } else {
+            throw DecodingError.typeMismatch(
+                CodableValue.self,
+                DecodingError.Context(
+                    codingPath: container.codingPath,
+                    debugDescription: "Unsupported value"))
+        }
+    }
+
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.singleValueContainer()
+
+        switch self {
+            case .bool(let value):
+                try container.encode(value)
+            case .int(let value):
+                try container.encode(value)
+            case .double(let value):
+                try container.encode(value)
+            case .string(let value):
+                try container.encode(value)
+            case .array(let value):
+                try container.encode(value)
+            case .dictionary(let value):
+                try container.encode(value)
         }
     }
 }

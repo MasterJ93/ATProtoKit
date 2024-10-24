@@ -17,7 +17,7 @@ extension AppBskyLexicon.Feed {
     /// - SeeAlso: This is based on the [`app.bsky.feed.getRepostedBy`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/feed/getRepostedBy.json
-    public struct GetRepostedByOutput: Codable {
+    public struct GetRepostedByOutput: Sendable, Codable {
 
         /// The URI of the post record.
         public let postURI: String

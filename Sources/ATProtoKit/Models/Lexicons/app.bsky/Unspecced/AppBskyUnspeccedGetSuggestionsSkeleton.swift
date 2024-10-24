@@ -20,7 +20,7 @@ extension AppBskyLexicon.Unspecced {
     /// - SeeAlso: This is based on the [`app.bsky.unspecced.getSuggestionsSkeleton`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/unspecced/getSuggestionsSkeleton.json
-    public struct GetSuggestionsSkeletonOutput: Codable {
+    public struct GetSuggestionsSkeletonOutput: Sendable, Codable {
 
         /// The mark used to indicate the starting point for the next set of results. Optional.
         public let cursor: String?

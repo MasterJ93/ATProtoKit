@@ -14,7 +14,7 @@ extension AppBskyLexicon.Actor {
     /// - SeeAlso: This is based on the [`app.bsky.actor.defs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/actor/defs.json
-    public struct ProfileViewBasicDefinition: Codable {
+    public struct ProfileViewBasicDefinition: Sendable, Codable {
 
         /// The decentralized identifier (DID) of the user.
         public let actorDID: String
@@ -77,7 +77,7 @@ extension AppBskyLexicon.Actor {
     /// - SeeAlso: This is based on the [`app.bsky.actor.defs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/actor/defs.json
-    public struct ProfileViewDefinition: Codable {
+    public struct ProfileViewDefinition: Sendable, Codable {
 
         /// The decentralized identifier (DID) of the user.
         public let actorDID: String
@@ -258,7 +258,7 @@ extension AppBskyLexicon.Actor {
     /// - SeeAlso: This is based on the [`app.bsky.actor.defs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/actor/defs.json
-    public struct ProfileAssociatedDefinition: Codable {
+    public struct ProfileAssociatedDefinition: Sendable, Codable {
 
         /// The number of lists associated with the user. Optional.
         public let lists: Int?
@@ -284,7 +284,7 @@ extension AppBskyLexicon.Actor {
     /// - SeeAlso: This is based on the [`app.bsky.actor.defs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/actor/defs.json
-    public struct ViewerStateDefinition: Codable {
+    public struct ViewerStateDefinition: Sendable, Codable {
 
         /// Indicates whether the requesting account has been muted by the subject
         /// account. Optional.
@@ -335,7 +335,7 @@ extension AppBskyLexicon.Actor {
     /// - SeeAlso: This is based on the [`app.bsky.actor.defs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/actor/defs.json
-    public struct KnownFollowers: Codable {
+    public struct KnownFollowers: Sendable, Codable {
 
         /// The number of mutual followers related to the parent structure's specifications.
         public let count: Int
