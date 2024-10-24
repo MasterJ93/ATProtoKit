@@ -24,6 +24,18 @@ extension ToolsOzoneLexicon.Set {
         ///
         /// A maximum of 1,024 characters can be made.
         public let description: String?
+
+        public func encode(to encoder: any Encoder) throws {
+            var container = encoder.container(keyedBy: CodingKeys.self)
+
+            try truncatedEncode(self.name, withContainer: &container, forKey: .name, upToCharacterLength: 128)
+            try truncatedEncodeIfPresent(self.description, withContainer: &container, forKey: .description,upToCharacterLength: 1_024)
+        }
+
+        enum CodingKeys: CodingKey {
+            case name
+            case description
+        }
     }
 
     /// A definition model for a set view.
@@ -55,8 +67,8 @@ extension ToolsOzoneLexicon.Set {
         public func encode(to encoder: any Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
 
-            try container.encode(self.name, forKey: .name)
-            try container.encodeIfPresent(self.description, forKey: .description)
+            try truncatedEncode(self.name, withContainer: &container, forKey: .name, upToCharacterLength: 128)
+            try truncatedEncodeIfPresent(self.description, withContainer: &container, forKey: .description,upToCharacterLength: 1_024)
             try container.encode(self.setSize, forKey: .setSize)
             try container.encode(self.createdAt, forKey: .createdAt)
             try container.encode(self.updatedAt, forKey: .updatedAt)
