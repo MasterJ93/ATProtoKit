@@ -789,7 +789,7 @@ public struct ATUnion {
     }
 
     /// A reference containing the list of relationships of multiple user accounts.
-    public enum GetRelationshipsOutputRelationshipUnion: Codable {
+    public enum GetRelationshipsOutputRelationshipUnion: Sendable, Codable {
 
         /// The relationship between two user accounts.
         case relationship(AppBskyLexicon.Graph.RelationshipDefinition)
@@ -859,7 +859,7 @@ public struct ATUnion {
     }
 
     /// A reference containing the list of feature types.
-    public enum FacetFeatureUnion: Codable {
+    public enum FacetFeatureUnion: Sendable, Codable {
 
         /// The Mention feature.
         case mention(AppBskyLexicon.RichText.Facet.Mention)

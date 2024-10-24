@@ -17,7 +17,7 @@ extension AppBskyLexicon.Graph {
     /// - SeeAlso: This is based on the [`app.bsky.graph.getRelationships`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/graph/getRelationships.json
-    public struct GetRelationshipsOutput: Codable {
+    public struct GetRelationshipsOutput: Sendable, Codable {
 
         /// The decentralized identifier (DID) of the user account.
         public let actor: String?

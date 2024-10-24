@@ -20,7 +20,7 @@ extension AppBskyLexicon.Unspecced {
     /// - SeeAlso: This is based on the [`app.bsky.unspecced.getTaggedSuggestions`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/unspecced/getTaggedSuggestions.json
-    public struct GetTaggedSuggestionsOutput: Codable {
+    public struct GetTaggedSuggestionsOutput: Sendable, Codable {
 
         /// An array of suggestions.
         public let suggestions: [Suggestion]
@@ -33,7 +33,7 @@ extension AppBskyLexicon.Unspecced {
         /// - SeeAlso: This is based on the [`app.bsky.unspecced.getTaggedSuggestions`][github] lexicon.
         ///
         /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/unspecced/getTaggedSuggestions.json
-        public struct Suggestion: Codable {
+        public struct Suggestion: Sendable, Codable {
 
             /// The tag attached to the suggestion.
             public let tag: String
@@ -74,7 +74,7 @@ extension AppBskyLexicon.Unspecced {
 
             // Enums
             /// Indicates whether the subject of the suggestion is a feed generator or an actor (user).
-            public enum Subject: String, Codable {
+            public enum Subject: String, Sendable, Codable {
 
                 /// Indicates the subject of the suggestion is an actor (user).
                 case actor

@@ -340,7 +340,7 @@ extension AppBskyLexicon.Feed {
     /// - SeeAlso: This is based on the [`app.bsky.feed.defs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/feed/defs.json
-    public struct GeneratorViewDefinition: Codable {
+    public struct GeneratorViewDefinition: Sendable, Codable {
 
         /// The URI of the feed generator.
         public let feedURI: String
@@ -469,7 +469,7 @@ extension AppBskyLexicon.Feed {
     /// - SeeAlso: This is based on the [`app.bsky.feed.defs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/feed/defs.json
-    public struct GeneratorViewerStateDefinition: Codable {
+    public struct GeneratorViewerStateDefinition: Sendable, Codable {
 
         /// The URI of the viewer's like, if they liked the feed generator. Optional.
         public var likeURI: String?

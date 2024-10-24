@@ -35,7 +35,7 @@ extension AppBskyLexicon.Unspecced {
     /// - SeeAlso: This is based on the [`app.bsky.unspecced.defs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/unspecced/defs.json
-    public struct SkeletonSearchActorDefinition: Codable {
+    public struct SkeletonSearchActorDefinition: Sendable, Codable {
 
         /// The URI of the skeleton search actor.
         public let actorDID: String

@@ -98,7 +98,7 @@ struct CustomDateFormatter {
 /// }
 /// ```
 @propertyWrapper
-public struct DateFormatting: Codable {
+public struct DateFormatting: Sendable, Codable {
 
     /// The actual `Date` value being wrapped.
     public var wrappedValue: Date {
@@ -181,7 +181,7 @@ public struct DateFormatting: Codable {
 /// }
 /// ```
 @propertyWrapper
-public struct DateFormattingOptional: Codable {
+public struct DateFormattingOptional: Sendable, Codable {
 
     /// The optional `Date?` value being wrapped.
     public var wrappedValue: Date? {

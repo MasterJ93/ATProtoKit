@@ -17,7 +17,7 @@ extension AppBskyLexicon.Feed {
     /// - SeeAlso: This is based on the [`app.bsky.feed.getSuggestedFeeds`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/feed/getSuggestedFeeds.json
-    public struct GetSuggestedFeedsOutput: Codable {
+    public struct GetSuggestedFeedsOutput: Sendable, Codable {
 
         /// The mark used to indicate the starting point for the next set of result. Optional.
         public let cursor: String?
