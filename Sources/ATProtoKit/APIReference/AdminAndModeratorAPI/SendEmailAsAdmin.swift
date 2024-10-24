@@ -64,6 +64,7 @@ extension ATProtoAdmin {
                 contentTypeValue: "application/json",
                 authorizationValue: "Bearer \(accessToken)"
             )
+
             let response = try await APIClientService.shared.sendRequest(
                 request,
                 withEncodingBody: requestBody,

@@ -39,5 +39,23 @@ extension ATProtoAdmin {
             name: name,
             values: values
         )
+
+        do {
+            let request = APIClientService.createRequest(
+                forRequest: requestURL,
+                andMethod: .get,
+                acceptValue: "application/json",
+                contentTypeValue: nil,
+                authorizationValue: "Bearer \(accessToken)"
+            )
+
+            _ = try await APIClientService.shared.sendRequest(
+                request,
+                withEncodingBody: requestBody,
+                decodeTo: ToolsOzoneLexicon.Set.DeleteSetOutput.self
+            )
+        } catch {
+            throw error
+        }
     }
 }
