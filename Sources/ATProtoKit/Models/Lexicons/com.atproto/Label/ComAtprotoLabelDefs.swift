@@ -86,7 +86,7 @@ extension ComAtprotoLexicon.Label {
             self.name = try container.decode(String.self, forKey: .name)
             self.isNegated = try container.decodeIfPresent(Bool.self, forKey: .isNegated)
             self._timestamp = try container.decode(DateFormatting.self, forKey: .timestamp)
-//            self.expiresOn = try container.decodeIfPresent(DateFormattingOptional.self, forKey: .expiresOn)?.wrappedValue
+//            self._expiresOn = try container.decodeIfPresent(DateFormattingOptional.self, forKey: .expiresOn)?.wrappedValue
             self.signature = try container.decodeIfPresent(Data.self, forKey: .signature)
         }
 
