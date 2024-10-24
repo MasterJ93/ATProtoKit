@@ -19,7 +19,7 @@ extension ATProtoKit {
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/feed/searchPosts.json
     ///
     /// - Parameters:
-    ///   - searchQuery: The string being searched against. Lucene query syntax recommended.
+    ///   - query: The string being searched against. Lucene query syntax recommended.
     ///   - sortRanking: The ranking order for the results. Optional. Defaults to `.latest`.
     ///   - sinceDate: The date and time of the results of posts created after this
     ///   time. Optional.

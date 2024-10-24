@@ -22,7 +22,7 @@ extension ATProtoKit {
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/unspecced/searchPostsSkeleton.json
     ///
     /// - Parameters:
-    ///   - searchQuery: The string used for searching the users.
+    ///   - query: The string used for searching the users.
     ///   - sortRanking: The ranking order for the results. Optional. Defaults to `.latest`.
     ///   - sinceDate: The date and time of the results of posts created after this
     ///   time. Optional.
