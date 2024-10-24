@@ -54,6 +54,7 @@ extension ATProtoAdmin {
 
             let response = try await APIClientService.shared.sendRequest(
                 request,
+                withEncodingBody: requestBody,
                 decodeTo: ToolsOzoneLexicon.Set.SetViewDefinition.self
             )
 
