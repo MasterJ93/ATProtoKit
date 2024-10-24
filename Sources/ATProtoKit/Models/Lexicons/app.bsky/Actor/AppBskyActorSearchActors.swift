@@ -18,7 +18,7 @@ extension AppBskyLexicon.Actor {
     public struct SearchActorsOutput: Codable {
 
         /// The mark used to indicate the starting point for the next set of results. Optional.
-        public let cursor: String
+        public let cursor: String?
 
         /// An array of actors.
         public let actors: [ProfileViewDefinition]
