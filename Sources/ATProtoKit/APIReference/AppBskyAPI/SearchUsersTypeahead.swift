@@ -41,7 +41,7 @@ extension ATProtoKit {
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func searchUsersTypeahead(
-        by query: String,
+        matching query: String,
         limit: Int? = 10,
         pdsURL: String? = nil,
         shouldAuthenticate: Bool = false

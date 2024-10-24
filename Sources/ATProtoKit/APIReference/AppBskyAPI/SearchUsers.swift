@@ -43,7 +43,7 @@ extension ATProtoKit {
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func searchUsers(
-        by query: String,
+        matching query: String,
         limit: Int? = 25,
         cursor: String? = nil,
         pdsURL: String? = nil,

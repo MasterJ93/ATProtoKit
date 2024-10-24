@@ -35,7 +35,7 @@ extension ATProtoKit {
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func searchActorsSkeleton(
-        _ query: String,
+        matching query: String,
         viewerDID: String? = nil,
         canTypeAhead: Bool?,
         limit: Int? = 25,

@@ -31,7 +31,7 @@ extension ATProtoKit {
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func getPopularFeedGenerators(
-        _ query: String?,
+        matching query: String?,
         limit: Int? = 50,
         cursor: String? = nil
     ) async throws -> AppBskyLexicon.Unspecced.GetPopularFeedGeneratorsOutput {

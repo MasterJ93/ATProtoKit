@@ -49,7 +49,7 @@ extension ATProtoKit {
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func searchPostsSkeleton(
-        with searchQuery: String,
+        matching query: String,
         sortRanking: AppBskyLexicon.Unspecced.SearchPostsSkeleton.Sort? = .latest,
         sinceDate: Date? = nil,
         untilDate: Date? = nil,
@@ -70,7 +70,7 @@ extension ATProtoKit {
 
         var queryItems = [(String, String)]()
 
-        queryItems.append(("q", searchQuery))
+        queryItems.append(("q", query))
 
         if let sortRanking {
             queryItems.append(("sort", "\(sortRanking.rawValue)"))
