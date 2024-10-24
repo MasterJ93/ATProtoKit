@@ -42,7 +42,7 @@ extension AppBskyLexicon.Video {
         public let error: String?
 
         /// The message of the job. Optional.
-        public let message: String
+        public let message: String?
 
         enum CodingKeys: String, CodingKey {
             case jobID = "jobId"
@@ -59,6 +59,9 @@ extension AppBskyLexicon.Video {
 
             /// The job has been created.
             case jobStateCreated = "JOB_STATE_CREATED"
+
+            /// The job is currently encoding.
+            case jobStateEncoding = "JOB_STATE_ENCODING"
 
             /// The job is completed processing.
             case jobStateCompleted = "JOB_STATE_COMPLETED"
