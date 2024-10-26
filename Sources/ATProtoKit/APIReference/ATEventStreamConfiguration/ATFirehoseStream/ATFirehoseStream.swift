@@ -47,7 +47,7 @@ public class ATFirehoseStream: ATEventStreamConfiguration {
     ///   - urlSessionConfiguration: The configuration object that defines the behaviours and
     ///   polices for a URL session in the event stream. Defaults
     ///   to `URLSessionConfiguration.default`.
-    ///  - webSocketTask: The URL session task that communicates over the WebSockets
+    ///   - webSocketTask: The URL session task that communicates over the WebSockets
     ///  protocol standard.
     public required init(relayURL: String, namespacedIdentifiertURL: String, cursor: Int64?, sequencePosition: Int64?,
                   urlSessionConfiguration: URLSessionConfiguration = .default, webSocketTask: URLSessionWebSocketTask) async throws {

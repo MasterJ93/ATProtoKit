@@ -23,7 +23,7 @@ extension ATProtoKit {
     ///   - otherDIDs: An array of decentralized identifiers (DIDs) for the other user accounts
     ///   that the primary user account may be related to. Optional. Current maximum item length
     ///   is `50`.
-    ///  - pdsURL: The URL of the Personal Data Server (PDS). Optional.
+    ///   - pdsURL: The URL of the Personal Data Server (PDS). Optional.
     /// - Returns: The metadata which containing the relationship between mutliple user accounts,
     /// as well as the decentralized identifier (DID) of the user account that matched
     /// the `actorDID`.
