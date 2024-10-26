@@ -961,15 +961,14 @@ extension AppBskyLexicon.Actor {
     /// - SeeAlso: This is based on the [`app.bsky.actor.defs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/actor/defs.json
-    public struct BskyAppProgressGuide: Codable {
+    public struct BskyAppProgressGuideDefinition: Codable {
 
         /// The progress guide itself.
-        public let guide: [String]
+        public let guide: [BskyAppStatePreferencesDefinition]
 
         public func encode(to encoder: any Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
 
-            try container.encode(self.guide, forKey: .guide)
             try truncatedEncode(self.guide, withContainer: &container, forKey: .guide, upToArrayLength: 100)
         }
     }
