@@ -74,7 +74,7 @@ extension AppBskyLexicon.Graph {
     /// - SeeAlso: This is based on the [`app.bsky.graph.defs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/graph/defs.json
-    public struct ListViewDefinition: Codable {
+    public struct ListViewDefinition: Sendable, Codable {
 
         /// The URI of the user list.
         public let listURI: String
@@ -247,7 +247,7 @@ extension AppBskyLexicon.Graph {
     /// - SeeAlso: This is based on the [`app.bsky.graph.defs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/graph/defs.json
-    public struct StarterPackViewBasicDefinition: Codable {
+    public struct StarterPackViewBasicDefinition: Sendable, Codable {
 
         /// The URI of the starter pack.
         public let starterPackURI: String

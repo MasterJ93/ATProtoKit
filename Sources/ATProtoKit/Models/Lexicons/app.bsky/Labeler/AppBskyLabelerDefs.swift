@@ -14,7 +14,7 @@ extension AppBskyLexicon.Labeler {
     /// - SeeAlso: This is based on the [`app.bsky.labeler.defs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/labeler/defs.json
-    public struct LabelerViewDefinition: Codable {
+    public struct LabelerViewDefinition: Sendable, Codable {
 
         /// The URI of the labeler.
         public let labelerURI: String
@@ -129,7 +129,7 @@ extension AppBskyLexicon.Labeler {
     /// - SeeAlso: This is based on the [`app.bsky.labeler.defs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/labeler/defs.json
-    public struct LabelerViewerStateDefinition: Codable {
+    public struct LabelerViewerStateDefinition: Sendable, Codable {
 
         /// The URI of the like record, if the user liked the labeler.
         public let like: String
@@ -140,7 +140,7 @@ extension AppBskyLexicon.Labeler {
     /// - SeeAlso: This is based on the [`app.bsky.labeler.defs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/labeler/defs.json
-    public struct LabelerPolicies: Codable {
+    public struct LabelerPolicies: Sendable, Codable {
 
         /// An array of the labeler-published values.
         ///

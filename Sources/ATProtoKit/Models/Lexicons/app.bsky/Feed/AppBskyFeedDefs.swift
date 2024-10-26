@@ -321,7 +321,7 @@ extension AppBskyLexicon.Feed {
     /// - SeeAlso: This is based on the [`app.bsky.feed.defs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/feed/defs.json
-    public struct BlockedAuthorDefinition: Codable {
+    public struct BlockedAuthorDefinition: Sendable, Codable {
 
         /// The URI of the author.
         public let authorDID: String

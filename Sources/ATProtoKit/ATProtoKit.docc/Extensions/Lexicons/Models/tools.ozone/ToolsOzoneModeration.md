@@ -39,6 +39,14 @@
 
 - ``ToolsOzoneLexicon/Moderation/EmitEventRequestBody``
 
+### tools.ozone.moderation.getRecords
+
+- ``ToolsOzoneLexicon/Moderation/GetRecordsOutput``
+
+### tools.ozone.moderation.getRepos
+
+- ``ToolsOzoneLexicon/Moderation/GetRepositoriesOutput``
+
 ### tools.ozone.moderation.queryEvents
 
 - ``ToolsOzoneLexicon/Moderation/QueryEvents``

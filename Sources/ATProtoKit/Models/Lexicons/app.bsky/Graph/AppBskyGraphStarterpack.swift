@@ -89,8 +89,8 @@ extension AppBskyLexicon.Graph {
             case createdAt
         }
 
-        ///
-        public struct FeedItem: Codable {
+        /// A feed item.
+        public struct FeedItem: Sendable, Codable {
 
             /// The URI of the feed item.
             public let feedItemURI: String

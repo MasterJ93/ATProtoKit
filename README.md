@@ -17,7 +17,7 @@
 </div>
 <div align="center">
 
-[![Static Badge](https://img.shields.io/badge/Follow-%40cjrriley.com-0073fa?style=flat&logo=bluesky&labelColor=%23151e27&link=https%3A%2F%2Fbsky.app%2Fprofile%2Fcjrriley.com)](https://bsky.social/profile/cjrriley.com)
+[![Static Badge](https://img.shields.io/badge/Follow-%40cjrriley.com-0073fa?style=flat&logo=bluesky&labelColor=%23151e27&link=https%3A%2F%2Fbsky.app%2Fprofile%2Fcjrriley.com)](https://bsky.app/profile/cjrriley.com)
 
 </div>
 
@@ -72,7 +72,7 @@ I believe Bluesky and its accompanying AT Protocol gives the perfect balance bet
 You can use the Swift Package Manager to download and import the library into your project:
 ```swift
 dependencies: [
-    .package(url: "https://github.com/MasterJ93/ATProtoKit.git", from: "0.18.0")
+    .package(url: "https://github.com/MasterJ93/ATProtoKit.git", from: "0.19.0")
 ]
 ```
 

@@ -18,7 +18,7 @@ extension AppBskyLexicon.Embed {
     /// - SeeAlso: This is based on the [`app.bsky.embed.record`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/embed/record.json
-    public struct RecordDefinition: Codable {
+    public struct RecordDefinition: Sendable, Codable {
 
         /// The identifier of the lexicon.
         ///
@@ -39,7 +39,7 @@ extension AppBskyLexicon.Embed {
         /// - SeeAlso: This is based on the [`app.bsky.embed.record`][github] lexicon.
         ///
         /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/embed/record.json
-        public struct View: Codable {
+        public struct View: Sendable, Codable {
 
             /// The identifier of the lexicon.
             ///
@@ -60,7 +60,7 @@ extension AppBskyLexicon.Embed {
         /// - SeeAlso: This is based on the [`app.bsky.embed.record`][github] lexicon.
         ///
         /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/embed/record.json
-        public struct ViewRecord: Codable {
+        public struct ViewRecord: Sendable, Codable {
 
             /// The identifier of the lexicon.
             ///
@@ -123,7 +123,7 @@ extension AppBskyLexicon.Embed {
         /// - SeeAlso: This is based on the [`app.bsky.embed.record`][github] lexicon.
         ///
         /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/embed/record.json
-        public struct ViewNotFound: Codable {
+        public struct ViewNotFound: Sendable, Codable {
 
             /// The URI of the record.
             public let recordURI: String
@@ -142,7 +142,7 @@ extension AppBskyLexicon.Embed {
         /// - SeeAlso: This is based on the [`app.bsky.embed.record`][github] lexicon.
         ///
         /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/embed/record.json
-        public struct ViewBlocked: Codable {
+        public struct ViewBlocked: Sendable, Codable {
 
             /// The URI of the record.
             public let recordURI: String
@@ -165,7 +165,7 @@ extension AppBskyLexicon.Embed {
         /// - SeeAlso: This is based on the [`app.bsky.embed.record`][github] lexicon.
         ///
         /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/embed/record.json
-        public struct ViewDetached: Codable {
+        public struct ViewDetached: Sendable, Codable {
 
             /// The URI of the record.
             public let postURI: String
