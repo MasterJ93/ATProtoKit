@@ -14,46 +14,56 @@ public protocol ATProtoError: Error {}
 public enum ATAPIError: ATProtoError {
 
     /// Represents a bad request error (HTTP 400) with an associated message.
+    ///
     /// - Parameter error: The error name and message.
     case badRequest(error: ATHTTPResponseError) // Error 400
 
     /// Represents an unauthorized error (HTTP 401) with an associated message and HTTP header.
+    ///
     /// - Parameters:
     ///   - error: The error name and message.
     ///   - wwwAuthenticate: The value for the `WWW-Authenticate` header. Optional.
     case unauthorized(error: ATHTTPResponseError, wwwAuthenticate: String?)
 
     /// Represents a forbidden error (HTTP 403) with an associated message.
+    ///
     /// - Parameter error: The error name and message.
     case forbidden(error: ATHTTPResponseError)
 
     /// Represents a not found error (HTTP 404) with an associated message.
+    ///
     /// - Parameter error: The error name and message.
     case notFound(error: ATHTTPResponseError)
 
     /// Represents a method not allowed error (HTTP 405) with an associated message.
+    ///
     /// - Parameter error: The error name and message.
     case methodNotAllowed(error: ATHTTPResponseError)
 
     /// Represents a payload too large error (HTTP 413) with an associated message.
+    ///
     /// - Parameter error: The error name and message.
     case payloadTooLarge(error: ATHTTPResponseError)
 
     /// Represents an upgrade required error (HTTP 426) with an associated message.
+    ///
     /// - Parameter error: The error name and message.
     case upgradeRequired(error: ATHTTPResponseError)
 
     /// Represents a too many requests error (HTTP 429) with an associated message and HTTP header.
+    ///
     /// - Parameters:
     ///   - error: The error name and message.
     ///   - retryAfter: The value for the `Retry-After` header. Optional.
     case tooManyRequests(error: ATHTTPResponseError, retryAfter: TimeInterval?)
 
     /// Represents an internal server error (HTTP 500) with an associated message.
+    ///
     /// - Parameter error: The error name and message.
     case internalServerError(error: ATHTTPResponseError)
 
     /// Represents a method not implemented error (HTTP 501) with an associated message.
+    ///
     /// - Parameter error: The error name and message.
     case methodNotImplemented(error: ATHTTPResponseError)
 
@@ -67,6 +77,7 @@ public enum ATAPIError: ATProtoError {
     case gatewayTimeout
 
     /// Represents an unknown error with an associated message.
+    ///
     /// - Parameters:
     ///   - error: The message received along side the error. Optional.
     ///   - errorCode: The error code number Optional.
