@@ -125,7 +125,7 @@ extension ComAtprotoLexicon.Label {
     /// - SeeAlso: This is based on the [`com.atproto.label.defs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/label/defs.json
-    public struct SelfLabelsDefinition: Codable {
+    public struct SelfLabelsDefinition: Sendable, Codable {
 
         /// An array of self-defined tags on a record.
         ///
@@ -171,7 +171,7 @@ extension ComAtprotoLexicon.Label {
     /// - SeeAlso: This is based on the [`com.atproto.label.defs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/label/defs.json
-    public struct SelfLabelDefinition: Codable {
+    public struct SelfLabelDefinition: Sendable, Codable {
 
         /// A user-defined label.
         ///
@@ -202,7 +202,7 @@ extension ComAtprotoLexicon.Label {
     /// - SeeAlso: This is based on the [`com.atproto.label.defs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/label/defs.json
-    public struct LabelValueDefinition: Codable {
+    public struct LabelValueDefinition: Sendable, Codable {
 
         /// The value of the label.
         ///
@@ -268,7 +268,7 @@ extension ComAtprotoLexicon.Label {
 
         // Enums
         /// The visual indicator of the label that indicates the severity.
-        public enum Severity: String, Codable {
+        public enum Severity: String, Sendable, Codable {
 
             /// Indicates the labeler should only inform the user of the content.
             case inform
@@ -281,7 +281,7 @@ extension ComAtprotoLexicon.Label {
         }
 
         /// Indicates how much of the content should be hidden for the user.
-        public enum Blurs: String, Codable {
+        public enum Blurs: String, Sendable, Codable {
 
             /// Indicates the labeler should hide the entire content from the user.
             case content
@@ -295,7 +295,7 @@ extension ComAtprotoLexicon.Label {
         }
 
         /// The default setting for the label.
-        public enum DefaultSetting: String, Codable {
+        public enum DefaultSetting: String, Sendable, Codable {
 
             /// Indicates the user will ignore the label.
             case ignore
@@ -316,7 +316,7 @@ extension ComAtprotoLexicon.Label {
     /// - SeeAlso: This is based on the [`com.atproto.label.defs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/label/defs.json
-    public struct LabelValueDefinitionStringsDefinition: Codable {
+    public struct LabelValueDefinitionStringsDefinition: Sendable, Codable {
 
         /// The language code of the label's definition.
         ///
@@ -369,7 +369,7 @@ extension ComAtprotoLexicon.Label {
     /// - SeeAlso: This is based on the [`com.atproto.label.defs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/label/defs.json
-    public enum LabelValue: String, Codable {
+    public enum LabelValue: String, Sendable, Codable {
 
         /// Marked as hidden.
         case hide = "!hide"

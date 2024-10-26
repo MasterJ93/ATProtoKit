@@ -17,7 +17,7 @@ extension AppBskyLexicon.Embed {
     /// - SeeAlso: This is based on the [`app.bsky.embed.video`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/embed/video.json
-    public struct VideoDefinition: Codable {
+    public struct VideoDefinition: Sendable, Codable {
 
         /// The identifier of the lexicon.
         ///
@@ -62,7 +62,7 @@ extension AppBskyLexicon.Embed {
         /// - SeeAlso: This is based on the [`app.bsky.embed.video`][github] lexicon.
         ///
         /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/embed/video.json
-        public struct Caption: Codable {
+        public struct Caption: Sendable, Codable {
 
             /// The language the captions are written in.
             public let language: Locale
@@ -84,7 +84,7 @@ extension AppBskyLexicon.Embed {
         /// - SeeAlso: This is based on the [`app.bsky.embed.video`][github] lexicon.
         ///
         /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/embed/video.json
-        public struct View: Codable {
+        public struct View: Sendable, Codable {
 
             /// The CID hash of the video.
             public let videoCID: String

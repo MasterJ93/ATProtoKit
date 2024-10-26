@@ -120,7 +120,7 @@ public struct ATUnion {
     }
 
     /// A reference containing the list of the status of a record.
-    public enum RecordViewUnion: Codable {
+    public enum RecordViewUnion: Sendable, Codable {
 
         /// A normal record type.
         case viewRecord(AppBskyLexicon.Embed.RecordDefinition.ViewRecord)
@@ -197,7 +197,7 @@ public struct ATUnion {
     }
 
     /// A reference containing the list of the types of embeds.
-    public enum EmbedViewUnion: Codable {
+    public enum EmbedViewUnion: Sendable, Codable {
 
         /// The view of an external embed.
         case embedExternalView(AppBskyLexicon.Embed.ExternalDefinition.View)
@@ -253,7 +253,7 @@ public struct ATUnion {
     }
 
     /// A reference containing the list of the types of compatible media.
-    public enum RecordWithMediaUnion: Codable {
+    public enum RecordWithMediaUnion: Sendable, Codable {
 
         /// An image that will be embedded.
         case embedImages(AppBskyLexicon.Embed.ImagesDefinition)
@@ -295,7 +295,7 @@ public struct ATUnion {
     }
 
     /// A reference containing the list of the types of compatible media that can be viewed.
-    public enum MediaViewUnion: Codable {
+    public enum MediaViewUnion: Sendable, Codable {
 
         /// An image that's been embedded.
         case embedImagesView(AppBskyLexicon.Embed.ImagesDefinition.View)
@@ -575,7 +575,7 @@ public struct ATUnion {
     }
 
     /// A reference containing the list of user-defined labels for feed generators.
-    public enum GeneratorLabelsUnion: Codable {
+    public enum GeneratorLabelsUnion: Sendable, Codable {
 
         /// An array of user-defined labels.
         case selfLabels(ComAtprotoLexicon.Label.SelfLabelsDefinition)
@@ -636,7 +636,7 @@ public struct ATUnion {
     }
 
     /// A reference containing the list of types of embeds.
-    public enum PostEmbedUnion: Codable {
+    public enum PostEmbedUnion: Sendable, Codable {
 
         /// An image embed.
         case images(AppBskyLexicon.Embed.ImagesDefinition)
@@ -692,7 +692,7 @@ public struct ATUnion {
     }
 
     /// A reference containing the list of user-defined labels.
-    public enum PostSelfLabelsUnion: Codable {
+    public enum PostSelfLabelsUnion: Sendable, Codable {
 
         /// An array of user-defined labels.
         case selfLabels(ComAtprotoLexicon.Label.SelfLabelsDefinition)
@@ -719,7 +719,7 @@ public struct ATUnion {
         }
     }
 
-    public enum EmbeddingRulesUnion: Codable {
+    public enum EmbeddingRulesUnion: Sendable, Codable {
 
         case disabledRule(AppBskyLexicon.Feed.PostgateRecord)
 
@@ -746,7 +746,7 @@ public struct ATUnion {
     }
 
     /// A reference containing the list of thread rules for a post.
-    public enum ThreadgateUnion: Codable {
+    public enum ThreadgateUnion: Sendable, Codable {
 
         /// A rule that indicates whether users that the post author mentions can reply to the post.
         case mentionRule(AppBskyLexicon.Feed.ThreadgateRecord.MentionRule)
@@ -901,7 +901,7 @@ public struct ATUnion {
     }
 
     /// A reference containing the list of user-defined labels for feed generators.
-    public enum ListLabelsUnion: Codable {
+    public enum ListLabelsUnion: Sendable, Codable {
 
         /// An array of user-defined labels.
         case selfLabels(ComAtprotoLexicon.Label.SelfLabelsDefinition)

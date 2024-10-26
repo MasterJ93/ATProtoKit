@@ -17,7 +17,7 @@ extension AppBskyLexicon.Embed {
     /// - SeeAlso: This is based on the [`app.bsky.embed.external`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/embed/external.json
-    public struct ExternalDefinition: Codable {
+    public struct ExternalDefinition: Sendable, Codable {
 
         /// The identifier of the lexicon.
         ///
@@ -38,7 +38,7 @@ extension AppBskyLexicon.Embed {
         /// - SeeAlso: This is based on the [`app.bsky.embed.external`][github] lexicon.
         ///
         /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/embed/external.json
-        public struct External: Codable {
+        public struct External: Sendable, Codable {
 
             /// The URI of the external content.
             public let embedURI: String
@@ -68,7 +68,7 @@ extension AppBskyLexicon.Embed {
         /// - SeeAlso: This is based on the [`app.bsky.embed.external`][github] lexicon.
         ///
         /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/embed/external.json
-        public struct View: Codable {
+        public struct View: Sendable, Codable {
 
             /// The identifier of the lexicon.
             ///
@@ -85,7 +85,7 @@ extension AppBskyLexicon.Embed {
         }
 
         /// A data model for a definition for the external content.
-        public struct ViewExternal: Codable {
+        public struct ViewExternal: Sendable, Codable {
 
             /// The URI of the external content.
             public let embedURI: String

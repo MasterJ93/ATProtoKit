@@ -71,18 +71,18 @@ extension AppBskyLexicon.Feed {
         ///
         /// - Note: According to the AT Protocol specifications: "Allow replies from actors mentioned
         /// in your post."
-        public struct MentionRule: Codable {}
+        public struct MentionRule: Sendable, Codable {}
 
         /// A rule that indicates whether users that the post author is following can reply to the post.
         ///
         /// - Note: According to the AT Protocol specifications: "Allow replies from actors you follow."
-        public struct FollowingRule: Codable {}
+        public struct FollowingRule: Sendable, Codable {}
 
         /// A rule that indicates whether users that are on a specific list made by the post author can
         /// reply to the post.
         ///
         /// - Note: According to the AT Protocol specifications: "Allow replies from actors on a list."
-        public struct ListRule: Codable {
+        public struct ListRule: Sendable, Codable {
 
             /// The list itself.
             public let list: String

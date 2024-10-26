@@ -17,7 +17,7 @@ extension AppBskyLexicon.Embed {
     /// - SeeAlso: This is based on the [`app.bsky.embed.images`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/embed/images.json
-    public struct ImagesDefinition: Codable {
+    public struct ImagesDefinition: Sendable, Codable {
 
         /// The identifier of the lexicon.
         ///
@@ -44,7 +44,7 @@ extension AppBskyLexicon.Embed {
         /// - SeeAlso: This is based on the [`app.bsky.embed.images`][github] lexicon.
         ///
         /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/embed/images.json
-        public struct Image: Codable {
+        public struct Image: Sendable, Codable {
 
             /// The image that needs to be uploaded.
             ///
@@ -79,7 +79,7 @@ extension AppBskyLexicon.Embed {
         /// - SeeAlso: This is based on the [`app.bsky.embed.images`][github] lexicon.
         ///
         /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/embed/images.json
-        public struct View: Codable {
+        public struct View: Sendable, Codable {
 
             /// The identifier of the lexicon.
             ///
@@ -92,7 +92,7 @@ extension AppBskyLexicon.Embed {
         /// - SeeAlso: This is based on the [`app.bsky.embed.images`][github] lexicon.
         ///
         /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/embed/images.json
-        public struct ViewImage: Codable {
+        public struct ViewImage: Sendable, Codable {
 
             /// The URI of the image's thumbnail.
             ///

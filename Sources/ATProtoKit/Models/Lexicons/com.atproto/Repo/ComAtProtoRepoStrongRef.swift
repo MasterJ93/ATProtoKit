@@ -17,7 +17,7 @@ extension ComAtprotoLexicon.Repository {
     /// - SeeAlso: This is based on the [`com.atproto.repo.strongRef`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/repo/strongRef.json
-    public struct StrongReference: Codable {
+    public struct StrongReference: Sendable, Codable {
 
         /// The URI for the record.
         public let recordURI: String
