@@ -14,7 +14,7 @@ extension ChatBskyLexicon.Conversation {
     /// - SeeAlso: This is based on the [`chat.bsky.convo.leaveConvo`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/chat/bsky/convo/leaveConvo.json
-    public struct LeaveConversationRequestBody: Codable {
+    public struct LeaveConversationRequestBody: Sendable, Codable {
 
         /// The ID of the conversation.
         public let conversationID: String
@@ -29,7 +29,7 @@ extension ChatBskyLexicon.Conversation {
     /// - SeeAlso: This is based on the [`chat.bsky.convo.leaveConvo`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/chat/bsky/convo/leaveConvo.json
-    public struct LeaveConversationOutput: Codable {
+    public struct LeaveConversationOutput: Sendable, Codable {
 
         /// The ID of the conversation.
         public let conversationID: String

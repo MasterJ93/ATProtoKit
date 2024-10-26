@@ -10,10 +10,10 @@ import Foundation
 extension ComAtprotoLexicon.Repository {
 
     /// The main data model for a record blob.
-    public struct ListMissingBlobs: Codable {
+    public struct ListMissingBlobs: Sendable, Codable {
 
         /// A data model definition for a record blob.
-        public struct RecordBlob: Codable {
+        public struct RecordBlob: Sendable, Codable {
 
             /// The CID hash of the record.
             public let recordCID: String
@@ -31,7 +31,7 @@ extension ComAtprotoLexicon.Repository {
     /// - SeeAlso: This is based on the [`com.atproto.repo.listMissingBlobs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/repo/listMissingBlobs.json
-    public struct ListMissingBlobsOutput: Codable {
+    public struct ListMissingBlobsOutput: Sendable, Codable {
 
         /// An array of blobs.
         public let blobs: [ComAtprotoLexicon.Repository.ListMissingBlobs.RecordBlob]

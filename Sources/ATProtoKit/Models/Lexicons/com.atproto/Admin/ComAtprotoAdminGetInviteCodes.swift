@@ -14,7 +14,7 @@ extension ComAtprotoLexicon.Admin {
     /// - SeeAlso: This is based on the [`com.atproto.admin.getInviteCodes`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/admin/getInviteCodes.json
-    public struct GetInviteCodes: Codable {
+    public struct GetInviteCodes: Sendable, Codable {
 
         /// Sorts the invite codes by a particular order.
         public enum Sort {
@@ -34,7 +34,7 @@ extension ComAtprotoLexicon.Admin {
     /// - SeeAlso: This is based on the [`com.atproto.admin.getInviteCodes`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/admin/getInviteCodes.json
-    public struct GetInviteCodesOutput: Codable {
+    public struct GetInviteCodesOutput: Sendable, Codable {
 
         /// The mark used to indicate the starting point for the next set of results. Optional.
         public let cursor: String?

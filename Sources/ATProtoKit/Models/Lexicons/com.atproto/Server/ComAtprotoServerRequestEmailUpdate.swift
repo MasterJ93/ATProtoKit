@@ -17,7 +17,7 @@ extension ComAtprotoLexicon.Server {
     /// - SeeAlso: This is based on the [`com.atproto.server.requestEmailUpdate`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/server/requestEmailUpdate.json
-    public struct RequestEmailUpdateOutput: Codable {
+    public struct RequestEmailUpdateOutput: Sendable, Codable {
 
         /// Indicates whether a token is required.
         public let isTokenRequired: Bool

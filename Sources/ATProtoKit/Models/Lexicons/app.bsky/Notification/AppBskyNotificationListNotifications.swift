@@ -17,7 +17,7 @@ extension AppBskyLexicon.Notification {
     /// - SeeAlso: This is based on the [`app.bsky.notification.listNotifications`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/notification/listNotifications.json
-    public struct ListNotificationsOutput: Codable {
+    public struct ListNotificationsOutput: Sendable, Codable {
 
         /// The mark used to indicate the starting point for the next set of results. Optional.
         public let cursor: String?
@@ -44,7 +44,7 @@ extension AppBskyLexicon.Notification {
     /// - SeeAlso: This is based on the [`app.bsky.notification.listNotifications`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/notification/listNotifications.json
-    public struct Notification: Codable {
+    public struct Notification: Sendable, Codable {
 
         /// The URI of the notification.
         public let notificationURI: String
@@ -104,7 +104,7 @@ extension AppBskyLexicon.Notification {
 
         // Enums
         /// The kind of notification received.
-        public enum Reason: String, Codable {
+        public enum Reason: String, Sendable, Codable {
 
             /// Indicates the notification is about someone liking a post from the user account.
             case like

@@ -14,7 +14,7 @@ extension ChatBskyLexicon.Conversation {
     /// - SeeAlso: This is based on the [`chat.bsky.convo.unmuteConvo`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/chat/bsky/convo/unmuteConvo.json
-    public struct UnMuteConversationRequestBody: Codable {
+    public struct UnMuteConversationRequestBody: Sendable, Codable {
 
         /// The ID of the conversation.
         public let conversationID: String
@@ -29,7 +29,7 @@ extension ChatBskyLexicon.Conversation {
     /// - SeeAlso: This is based on the [`chat.bsky.convo.unmuteConvo`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/chat/bsky/convo/unmuteConvo.json
-    public struct UnmuteConversationOutput: Codable {
+    public struct UnmuteConversationOutput: Sendable, Codable {
 
         /// The conversation itself.
         public let conversationView: ConversationViewDefinition

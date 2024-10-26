@@ -17,7 +17,7 @@ extension AppBskyLexicon.Feed {
     /// - SeeAlso: This is based on the [`app.bsky.feed.getPostThread`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/feed/getPostThread.json
-    public struct GetPostThreadOutput: Codable {
+    public struct GetPostThreadOutput: Sendable, Codable {
 
         /// The post thread itself.
         public let thread: ATUnion.GetPostThreadOutputThreadUnion

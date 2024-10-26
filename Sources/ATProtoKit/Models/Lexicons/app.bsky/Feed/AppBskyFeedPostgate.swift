@@ -18,7 +18,7 @@ extension AppBskyLexicon.Feed {
     /// - SeeAlso: This is based on the [`app.bsky.feed.postgate`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/feed/postgate.json
-    public struct PostgateRecord: ATRecordProtocol {
+    public struct PostgateRecord: ATRecordProtocol, Sendable {
 
         /// The identifier of the lexicon.
         ///

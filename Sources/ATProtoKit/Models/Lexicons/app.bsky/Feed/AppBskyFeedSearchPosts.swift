@@ -10,7 +10,7 @@ import Foundation
 extension AppBskyLexicon.Feed {
 
     /// The main data model definition for the results of the post search query.
-    public struct SearchPosts: Codable {
+    public struct SearchPosts: Sendable, Codable {
 
         /// Determines the ranking order for the search results.
         ///
@@ -20,7 +20,7 @@ extension AppBskyLexicon.Feed {
         /// - SeeAlso: This is based on the [`app.bsky.feed.searchPosts`][github] lexicon.
         ///
         /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/feed/searchPosts.json
-        public enum SortRanking: String {
+        public enum SortRanking: String, Sendable {
 
             /// Indicates the results will be sorted by the top posts.
             case top
@@ -38,7 +38,7 @@ extension AppBskyLexicon.Feed {
     /// - SeeAlso: This is based on the [`app.bsky.feed.searchPosts`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/feed/searchPosts.json
-    public struct SearchPostsOutput: Codable {
+    public struct SearchPostsOutput: Sendable, Codable {
 
         /// The mark used to indicate the starting point for the next set of results. Optional.
         ///

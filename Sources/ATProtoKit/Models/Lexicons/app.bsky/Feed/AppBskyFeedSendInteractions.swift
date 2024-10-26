@@ -17,7 +17,7 @@ extension AppBskyLexicon.Feed {
     /// - SeeAlso: This is based on the [`app.bsky.feed.sendInteractions`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/feed/sendInteractions.json
-    public struct SendInteractionsRequestBody: Codable {
+    public struct SendInteractionsRequestBody: Sendable, Codable {
 
         /// An array of interactions.
         public let interactions: [InteractionDefinition]
@@ -28,5 +28,5 @@ extension AppBskyLexicon.Feed {
     /// - SeeAlso: This is based on the [`app.bsky.feed.sendInteractions`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/feed/sendInteractions.json
-    public struct SendInteractionsOutput: Codable {}
+    public struct SendInteractionsOutput: Sendable, Codable {}
 }

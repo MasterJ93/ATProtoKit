@@ -18,7 +18,7 @@ extension AppBskyLexicon.Feed {
     /// - SeeAlso: This is based on the [`app.bsky.feed.describeFeedGenerator`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/feed/describeFeedGenerator.json
-    public struct DescribeFeedGeneratorOutput: Codable {
+    public struct DescribeFeedGeneratorOutput: Sendable, Codable {
 
         /// The decentralized identifier (DID) of the feed generator.
         public let atDID: String
@@ -37,7 +37,7 @@ extension AppBskyLexicon.Feed {
 
         // Enums
         /// A data model definiion for the feed generator.
-        public struct Feed: Codable {
+        public struct Feed: Sendable, Codable {
 
             /// The URI of the feed.
             public let feedURI: String
@@ -48,7 +48,7 @@ extension AppBskyLexicon.Feed {
         }
 
         /// A data model definition for the Privacy Policy and Terms of Service URLs.
-        public struct Links: Codable {
+        public struct Links: Sendable, Codable {
 
             /// The URL to the Privacy Policy.
             public let privacyPolicy: URL

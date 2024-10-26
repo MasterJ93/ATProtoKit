@@ -18,7 +18,7 @@ extension AppBskyLexicon.Feed {
     /// - SeeAlso: This is based on the [`app.bsky.feed.threadgate`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/feed/threadgate.json
-    public struct ThreadgateRecord: ATRecordProtocol {
+    public struct ThreadgateRecord: ATRecordProtocol, Sendable {
 
         /// The identifier of the lexicon.
         ///

@@ -16,7 +16,7 @@ extension ToolsOzoneLexicon.Moderation {
     /// - SeeAlso: This is based on the [`tools.ozone.moderation.getRepos`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/tools/ozone/moderation/getRepos.json
-    public struct GetRepositoriesOutput: Codable {
+    public struct GetRepositoriesOutput: Sendable, Codable {
 
         /// An array of repositories.
         public let repositories: [String]

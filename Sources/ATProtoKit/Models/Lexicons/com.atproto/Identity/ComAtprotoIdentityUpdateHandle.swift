@@ -18,7 +18,7 @@ extension ComAtprotoLexicon.Identity {
     /// - SeeAlso: This is based on the [`com.atproto.identity.updateHandle`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/identity/updateHandle.json
-    public struct UpdateHandleRequestBody: Encodable {
+    public struct UpdateHandleRequestBody: Sendable, Encodable {
 
         /// The handle the user would like to change to.
         ///

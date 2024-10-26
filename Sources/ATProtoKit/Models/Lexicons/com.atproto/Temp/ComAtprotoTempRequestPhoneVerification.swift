@@ -20,7 +20,7 @@ extension ComAtprotoLexicon.Temp {
     /// - SeeAlso: This is based on the [`com.atproto.temp.requestPhoneVerification`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/temp/requestPhoneVerification.json
-    public struct RequestPhoneVerificationRequestBody: Codable {
+    public struct RequestPhoneVerificationRequestBody: Sendable, Codable {
 
         /// The user's mobile phone number.
         public let phoneNumber: String

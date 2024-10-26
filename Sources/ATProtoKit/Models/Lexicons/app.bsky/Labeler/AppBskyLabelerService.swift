@@ -17,7 +17,7 @@ extension AppBskyLexicon.Labeler {
     /// - SeeAlso: This is based on the [`app.bsky.labeler.service`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/labeler/service.json
-    public struct ServiceRecord: ATRecordProtocol {
+    public struct ServiceRecord: ATRecordProtocol, Sendable {
 
         /// The identifier of the lexicon.
         ///

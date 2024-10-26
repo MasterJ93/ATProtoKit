@@ -16,7 +16,7 @@ extension AppBskyLexicon.Video {
     /// - SeeAlso: This is based on the [`app.bsky.video.uploadVideo`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/video/getUploadLimits.json
-    public struct UploadVideoRequestBody: Codable {
+    public struct UploadVideoRequestBody: Sendable, Codable {
 
         /// The video file itself.
         public let video: Data
@@ -29,7 +29,7 @@ extension AppBskyLexicon.Video {
     /// - SeeAlso: This is based on the [`app.bsky.video.uploadVideo`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/video/getUploadLimits.json
-    public struct UploadVideoOutput: Codable {
+    public struct UploadVideoOutput: Sendable, Codable {
 
         /// An array of job statuses.
         public let jobStatus: AppBskyLexicon.Video.JobStatusDefinition

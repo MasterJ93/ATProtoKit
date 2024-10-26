@@ -18,7 +18,7 @@ extension AppBskyLexicon.Feed {
     /// - SeeAlso: This is based on the [`app.bsky.feed.generator`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/feed/generator.json
-    public struct GeneratorRecord: ATRecordProtocol {
+    public struct GeneratorRecord: ATRecordProtocol, Sendable {
 
         /// The identifier of the lexicon.
         ///

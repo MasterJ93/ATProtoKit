@@ -18,10 +18,10 @@ extension ComAtprotoLexicon.Sync {
     /// - SeeAlso: This is based on the [`com.atproto.sync.getRepoStatus`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/sync/getRepoStatus.json
-    public struct GetRepositoryStatus: Codable {
+    public struct GetRepositoryStatus: Sendable, Codable {
 
         /// The status of the repository.
-        public enum Status: String, Codable {
+        public enum Status: String, Sendable, Codable {
 
             /// Indicates the repository has been taken down.
             case takedown
@@ -42,7 +42,7 @@ extension ComAtprotoLexicon.Sync {
     /// - SeeAlso: This is based on the [`com.atproto.sync.getRepoStatus`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/sync/getRepoStatus.json
-    public struct GetRepositoryStatusOutput: Codable {
+    public struct GetRepositoryStatusOutput: Sendable, Codable {
 
         /// The decentralized identifier (DID) of the repository.
         public let repositoryDID: String

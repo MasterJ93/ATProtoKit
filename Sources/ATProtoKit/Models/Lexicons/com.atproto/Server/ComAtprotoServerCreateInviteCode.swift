@@ -16,7 +16,7 @@ extension ComAtprotoLexicon.Server {
     /// - SeeAlso: This is based on the [`com.atproto.server.createInviteCode`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/server/createInviteCode.json
-    public struct CreateInviteCodeRequestBody: Codable {
+    public struct CreateInviteCodeRequestBody: Sendable, Codable {
 
         /// The number of times the invite code(s) can be used.
         public let useCount: Int
@@ -36,7 +36,7 @@ extension ComAtprotoLexicon.Server {
     /// - SeeAlso: This is based on the [`com.atproto.server.createInviteCode`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/server/createInviteCode.json
-    public struct CreateInviteCodeOutput: Codable {
+    public struct CreateInviteCodeOutput: Sendable, Codable {
 
         /// An array of invite codes.
         public let code: [String]

@@ -14,7 +14,7 @@ extension ChatBskyLexicon.Conversation {
     /// - SeeAlso: This is based on the [`chat.bsky.convo.sendMessage`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/chat/bsky/convo/sendMessage.json
-    public struct SendMessageRequestBody: Codable {
+    public struct SendMessageRequestBody: Sendable, Codable {
 
         /// The ID of the conversation.
         public let conversationID: String

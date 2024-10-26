@@ -21,7 +21,7 @@ extension ComAtprotoLexicon.Temp {
     /// - SeeAlso: This is based on the [`com.atproto.temp.checkSignupQueue`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/temp/checkSignupQueue.json
-    public struct CheckSignupQueueOutput: Codable {
+    public struct CheckSignupQueueOutput: Sendable, Codable {
 
         /// Indicates whether the user with the queried username has been activated.
         public let isActivated: Bool

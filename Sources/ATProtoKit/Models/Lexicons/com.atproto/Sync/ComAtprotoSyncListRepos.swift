@@ -19,7 +19,7 @@ extension ComAtprotoLexicon.Sync {
     /// - SeeAlso: This is based on the [`com.atproto.sync.listRepos`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/sync/listRepos.json
-    public struct ListRepositoriesOutput: Codable {
+    public struct ListRepositoriesOutput: Sendable, Codable {
 
         /// The mark used to indicate the starting point for the next set of results. Optional.
         public let cursor: String?
@@ -34,7 +34,7 @@ extension ComAtprotoLexicon.Sync {
 
         // Enums
         /// A data model definition for a repository.
-        public struct Repository: Codable {
+        public struct Repository: Sendable, Codable {
 
             /// The decentralized identifier (DID) of the repository.
             public let repositoryDID: String

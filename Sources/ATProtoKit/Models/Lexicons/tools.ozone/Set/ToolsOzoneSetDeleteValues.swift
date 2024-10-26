@@ -17,7 +17,7 @@ extension ToolsOzoneLexicon.Set {
     /// - SeeAlso: This is based on the [`tools.ozone.set.deleteValues`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/tools/ozone/set/deleteValues.json
-    public struct DeleteValuesRequestBody:Codable {
+    public struct DeleteValuesRequestBody: Sendable, Codable {
 
         /// The name of the set.
         ///

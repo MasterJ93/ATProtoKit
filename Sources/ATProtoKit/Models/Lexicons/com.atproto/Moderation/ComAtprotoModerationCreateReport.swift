@@ -18,7 +18,7 @@ extension ComAtprotoLexicon.Moderation {
     /// - SeeAlso: This is based on the [`com.atproto.moderation.createReport`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/moderation/createReport.json
-    public struct CreateReportRequestBody: Codable {
+    public struct CreateReportRequestBody: Sendable, Codable {
 
         /// The reason for the report.
         ///
@@ -47,7 +47,7 @@ extension ComAtprotoLexicon.Moderation {
     /// - SeeAlso: This is based on the [`com.atproto.moderation.createReport`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/moderation/createReport.json
-    public struct CreateReportOutput: Codable {
+    public struct CreateReportOutput: Sendable, Codable {
 
         /// The ID of the report.
         public let id: Int

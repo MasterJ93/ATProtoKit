@@ -18,7 +18,7 @@ extension AppBskyLexicon.Graph {
     /// - SeeAlso: This is based on the [`app.bsky.graph.block`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/graph/block.json
-    public struct BlockRecord: ATRecordProtocol {
+    public struct BlockRecord: ATRecordProtocol, Sendable {
 
         /// The identifier of the lexicon.
         ///

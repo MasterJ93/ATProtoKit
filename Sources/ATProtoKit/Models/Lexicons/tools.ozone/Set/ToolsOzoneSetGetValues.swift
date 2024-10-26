@@ -16,7 +16,7 @@ extension ToolsOzoneLexicon.Set {
     /// - SeeAlso: This is based on the [`tools.ozone.set.getValues`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/tools/ozone/set/getValues.json
-    public struct GetValuesOutput: Codable {
+    public struct GetValuesOutput: Sendable, Codable {
 
         /// A view of the set.
         public let set: ToolsOzoneLexicon.Set.SetViewDefinition

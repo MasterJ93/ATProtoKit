@@ -24,7 +24,7 @@
 /// The above code will produce the following:
 /// ```swift
 /// extension ATUnion {
-///     public enum EmbedViewUnion: Codable {
+///     public enum EmbedViewUnion: Codable, Sendable {
 ///         case embedExternalView(AppBskyLexicon.Embed.ExternalDefinition.View)
 ///         case embedImagesView(AppBskyLexicon.Embed.ImagesDefinition.View)
 ///         case embedRecordView(AppBskyLexicon.Embed.RecordDefinition.View)

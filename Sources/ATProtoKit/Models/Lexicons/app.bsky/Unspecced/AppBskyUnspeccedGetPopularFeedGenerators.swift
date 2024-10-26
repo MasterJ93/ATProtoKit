@@ -20,7 +20,7 @@ extension AppBskyLexicon.Unspecced {
     /// - SeeAlso: This is based on the [`app.bsky.unspecced.getPopularFeedGenerators`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/unspecced/getPopularFeedGenerators.json
-    public struct GetPopularFeedGeneratorsOutput: Codable {
+    public struct GetPopularFeedGeneratorsOutput: Sendable, Codable {
 
         /// The mark used to indicate the starting point for the next set of result. Optional.
         public let cursor: String?

@@ -17,7 +17,7 @@ extension ToolsOzoneLexicon.Signature {
     /// - SeeAlso: This is based on the [`tools.ozone.signature.searchAccounts`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/tools/ozone/signature/searchAccounts.json
-    public struct SearchAccountsOutput: Codable {
+    public struct SearchAccountsOutput: Sendable, Codable {
 
         /// The mark used to indicate the starting point for the next set of results. Optional.
         public let cursor: String?

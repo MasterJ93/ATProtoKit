@@ -11,10 +11,10 @@ extension AppBskyLexicon.Notification {
 
 
     /// The main data model definition for registering push notifications.
-    public struct RegisterPush: Codable {
+    public struct RegisterPush: Sendable, Codable {
 
         /// Represents the platform for the push notifications.
-        public enum Platform: String, Codable {
+        public enum Platform: String, Sendable, Codable {
 
             /// Indicates iOS as the platform.
             case ios
@@ -36,7 +36,7 @@ extension AppBskyLexicon.Notification {
     /// - SeeAlso: This is based on the [`app.bsky.notification.registerPush`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/notification/registerPush.json
-    public struct RegisterPushRequestBody: Codable {
+    public struct RegisterPushRequestBody: Sendable, Codable {
 
         /// The decentralized identifier (DID) for the push notification request.
         public let serviceDID: String

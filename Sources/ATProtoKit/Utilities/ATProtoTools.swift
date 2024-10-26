@@ -376,7 +376,7 @@ public class ATProtoTools {
     }
 
     /// A structure for a record.
-    public struct RecordQuery: Codable {
+    public struct RecordQuery: Sendable, Codable {
 
         /// The handle or decentralized identifier (DID) of the repo."
         ///

@@ -10,7 +10,7 @@ import Foundation
 extension ToolsOzoneLexicon.Moderation {
 
     /// The main data model definition for listing all moderation events pertaining a subject.
-    public struct QueryEvents: Codable {
+    public struct QueryEvents: Sendable, Codable {
 
         /// Indicates the sorting direction for the array of moderation events.
         public enum SortDirection: String {
@@ -31,7 +31,7 @@ extension ToolsOzoneLexicon.Moderation {
     /// - SeeAlso: This is based on the [`tools.ozone.moderation.queryEvents`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/tools/ozone/moderation/queryEvents.json
-    public struct QueryEventsOutput: Codable {
+    public struct QueryEventsOutput: Sendable, Codable {
 
         /// The mark used to indicate the starting point for the next set of results. Optional.
         public let cursor: String?

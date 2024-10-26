@@ -17,8 +17,8 @@ extension AppBskyLexicon.Notification {
     /// - SeeAlso: This is based on the [`app.bsky.notification.putPreferences`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/notification/putPreferences.json
-    public struct PutNotificationRequestBody: Codable {
-        
+    public struct PutNotificationRequestBody: Sendable, Codable {
+
         /// Indicates whether the priority preference is enabled.
         public let isPriority: Bool
 

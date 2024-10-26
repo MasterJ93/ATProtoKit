@@ -17,7 +17,7 @@ extension AppBskyLexicon.Notification {
     /// - SeeAlso: This is based on the [`app.bsky.notification.getUnreadCount`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/notification/getUnreadCount.json
-    public struct GetUnreadCountOutput: Codable {
+    public struct GetUnreadCountOutput: Sendable, Codable {
 
         /// The number of unread notifications.
         public let count: Int

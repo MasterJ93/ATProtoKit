@@ -19,7 +19,7 @@ extension AppBskyLexicon.Graph {
     /// - SeeAlso: This is based on the [`app.bsky.graph.getSuggestedFollowsByActor`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/graph/getSuggestedFollowsByActor.json
-    public struct GetSuggestedFollowsByActorOutput: Codable {
+    public struct GetSuggestedFollowsByActorOutput: Sendable, Codable {
 
         /// An array of user accounts the requesting user account is suggested to follow.
         public let suggestions: [AppBskyLexicon.Actor.ProfileViewDefinition]

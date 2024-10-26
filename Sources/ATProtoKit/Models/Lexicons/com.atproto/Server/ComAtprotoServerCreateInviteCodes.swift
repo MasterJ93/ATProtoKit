@@ -16,7 +16,7 @@ extension ComAtprotoLexicon.Server {
     /// - SeeAlso: This is based on the [`com.atproto.server.createInviteCodes`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/server/createInviteCodes.json
-    public struct CreateInviteCodesRequestBody: Codable {
+    public struct CreateInviteCodesRequestBody: Sendable, Codable {
 
         /// The number of invite codes to create. Defaults to 1.
         public var codeCount: Int = 1
@@ -39,7 +39,7 @@ extension ComAtprotoLexicon.Server {
     /// - SeeAlso: This is based on the [`com.atproto.server.createInviteCodes`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/server/createInviteCodes.json
-    public struct CreateInviteCodesOutput: Codable {
+    public struct CreateInviteCodesOutput: Sendable, Codable {
 
         /// An array of invite codes.
         public let codes: [AccountCodes]
@@ -51,7 +51,7 @@ extension ComAtprotoLexicon.Server {
     /// - SeeAlso: This is based on the [`com.atproto.server.createInviteCodes`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/server/createInviteCodes.json
-    public struct AccountCodes: Codable {
+    public struct AccountCodes: Sendable, Codable {
 
         /// The account that holds the invite codes.
         ///

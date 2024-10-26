@@ -17,7 +17,7 @@ extension ComAtprotoLexicon.Repository {
     /// - SeeAlso: This is based on the [`com.atproto.repo.importRepo`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/repo/importRepo.json
-    public struct ImportRepositoryRequestBody: Codable {
+    public struct ImportRepositoryRequestBody: Sendable, Codable {
 
         /// The repository data in the form of a CAR file.
         public let repository: Data

@@ -17,7 +17,7 @@ extension AppBskyLexicon.Labeler {
     /// - SeeAlso: This is based on the [`app.bsky.labeler.getServices`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/labeler/getServices.json
-    public struct GetServicesOutput: Codable {
+    public struct GetServicesOutput: Sendable, Codable {
 
         /// A labeler view.
         public let views: ATUnion.GetServicesOutputViewsUnion

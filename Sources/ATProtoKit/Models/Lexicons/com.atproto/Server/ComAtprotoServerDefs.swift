@@ -14,7 +14,7 @@ extension ComAtprotoLexicon.Server {
     /// - SeeAlso: This is based on the [`com.atproto.server.defs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/server/defs.json
-    public struct InviteCodeDefinition: Codable {
+    public struct InviteCodeDefinition: Sendable, Codable {
 
         /// The actual invite code.
         public let code: String
@@ -65,7 +65,7 @@ extension ComAtprotoLexicon.Server {
     /// - SeeAlso: This is based on the [`com.atproto.server.defs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/server/defs.json
-    public struct InviteCodeUseDefinition: Codable {
+    public struct InviteCodeUseDefinition: Sendable, Codable {
 
         /// Who used the invite code.
         public let usedBy: String

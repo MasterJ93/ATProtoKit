@@ -18,7 +18,7 @@ extension ComAtprotoLexicon.Admin {
     /// - SeeAlso: This is based on the [`com.atproto.admin.disableInviteCodes`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/admin/disableInviteCodes.json
-    public struct DisableInviteCodesRequestBody: Codable {
+    public struct DisableInviteCodesRequestBody: Sendable, Codable {
 
         /// The invite codes to disable.
         public let codes: [String]

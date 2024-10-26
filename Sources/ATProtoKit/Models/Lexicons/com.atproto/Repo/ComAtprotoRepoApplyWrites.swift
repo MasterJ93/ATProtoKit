@@ -17,7 +17,7 @@ extension ComAtprotoLexicon.Repository {
     /// - SeeAlso: This is based on the [`com.atproto.repo.applyWrites`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/repo/applyWrites.json
-    public struct ApplyWrites: Codable {
+    public struct ApplyWrites: Sendable, Codable {
 
         /// A data model definition for a "Create" write operation.
         ///
@@ -27,7 +27,7 @@ extension ComAtprotoLexicon.Repository {
         /// - SeeAlso: This is based on the [`com.atproto.repo.applyWrites`][github] lexicon.
         ///
         /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/repo/applyWrites.json
-        public struct Create: Codable {
+        public struct Create: Sendable, Codable {
 
             /// The NSID of the collection.
             public let collection: String
@@ -61,7 +61,7 @@ extension ComAtprotoLexicon.Repository {
         /// - SeeAlso: This is based on the [`com.atproto.repo.applyWrites`][github] lexicon.
         ///
         /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/repo/applyWrites.json
-        public struct Update: Codable {
+        public struct Update: Sendable, Codable {
 
             /// The NSID of the collection.
             public let collection: String
@@ -87,7 +87,7 @@ extension ComAtprotoLexicon.Repository {
         /// - SeeAlso: This is based on the [`com.atproto.repo.applyWrites`][github] lexicon.
         ///
         /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/repo/applyWrites.json
-        public struct Delete: Codable {
+        public struct Delete: Sendable, Codable {
 
             /// The NSID of the collection.
             public let collection: String
@@ -106,7 +106,7 @@ extension ComAtprotoLexicon.Repository {
         /// - SeeAlso: This is based on the [`com.atproto.repo.applyWrites`][github] lexicon.
         ///
         /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/repo/applyWrites.json
-        public struct CreateResult: Codable {
+        public struct CreateResult: Sendable, Codable {
 
             /// The URI of the result of the "Create" write operation.
             public let uri: String
@@ -118,7 +118,7 @@ extension ComAtprotoLexicon.Repository {
             public let validationStatus: ValidationStatus?
 
             /// The status of the write operation's validation.
-            public enum ValidationStatus: String, Codable {
+            public enum ValidationStatus: String, Sendable, Codable {
 
                 /// Status is valid.
                 case valid
@@ -133,7 +133,7 @@ extension ComAtprotoLexicon.Repository {
         /// - SeeAlso: This is based on the [`com.atproto.repo.applyWrites`][github] lexicon.
         ///
         /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/repo/applyWrites.json
-        public struct UpdateResult: Codable {
+        public struct UpdateResult: Sendable, Codable {
 
             /// The URI of the result of the "Update" write operation.
             public let uri: String
@@ -145,7 +145,7 @@ extension ComAtprotoLexicon.Repository {
             public let validationStatus: ValidationStatus?
 
             /// The status of the write operation's validation.
-            public enum ValidationStatus: String, Codable {
+            public enum ValidationStatus: String, Sendable, Codable {
 
                 /// Status is valid.
                 case valid
@@ -160,7 +160,7 @@ extension ComAtprotoLexicon.Repository {
         /// - SeeAlso: This is based on the [`com.atproto.repo.applyWrites`][github] lexicon.
         ///
         /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/repo/applyWrites.json
-        public struct DeleteResult: Codable {}
+        public struct DeleteResult: Sendable, Codable {}
     }
 
     /// A request body model for applying batch CRUD transactions.
@@ -171,7 +171,7 @@ extension ComAtprotoLexicon.Repository {
     /// - SeeAlso: This is based on the [`com.atproto.repo.applyWrites`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/repo/applyWrites.json
-    public struct ApplyWritesRequestBody: Codable {
+    public struct ApplyWritesRequestBody: Sendable, Codable {
 
         /// The decentralized identifier (DID) or handle of the repository.
         ///
@@ -215,7 +215,7 @@ extension ComAtprotoLexicon.Repository {
     /// - SeeAlso: This is based on the [`com.atproto.repo.applyWrites`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/repo/applyWrites.json
-    public struct ApplyWritesOutput: Codable {
+    public struct ApplyWritesOutput: Sendable, Codable {
 
         /// The commit of the writes. Optional.
         public let commit: ComAtprotoLexicon.Repository.CommitMetaDefinition?
@@ -228,7 +228,7 @@ extension ComAtprotoLexicon.Repository {
 extension ATUnion {
 
     /// A reference containing the list of write operation results.
-    public enum ApplyWritesResultUnion: Codable {
+    public enum ApplyWritesResultUnion: Sendable, Codable {
         case createResult(ComAtprotoLexicon.Repository.ApplyWrites.CreateResult)
         case updateResult(ComAtprotoLexicon.Repository.ApplyWrites.UpdateResult)
         case deleteResult(ComAtprotoLexicon.Repository.ApplyWrites.DeleteResult)

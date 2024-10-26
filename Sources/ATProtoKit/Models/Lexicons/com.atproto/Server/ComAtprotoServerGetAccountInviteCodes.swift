@@ -14,7 +14,7 @@ extension ComAtprotoLexicon.Server {
     /// - SeeAlso: This is based on the [`com.atproto.server.getAccountInviteCodes`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/server/getAccountInviteCodes.json
-    public struct GetAccountInviteCodesOutput: Codable {
+    public struct GetAccountInviteCodesOutput: Sendable, Codable {
 
         /// An array of the user's invite codes.
         public let code: [ComAtprotoLexicon.Server.InviteCodeDefinition]

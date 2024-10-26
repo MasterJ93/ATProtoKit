@@ -16,7 +16,7 @@ extension AppBskyLexicon.Graph {
     /// - SeeAlso: This is based on the [`app.bsky.graph.getStarterPacks`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/graph/getStarterPacks.json
-    public struct GetStarterPacksOutput: Codable {
+    public struct GetStarterPacksOutput: Sendable, Codable {
 
         /// An array of starter pack records.
         public let starterPacks: [StarterPackViewBasicDefinition]

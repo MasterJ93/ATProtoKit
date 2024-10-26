@@ -17,7 +17,7 @@ extension ComAtprotoLexicon.Sync {
     /// - SeeAlso: This is based on the [`com.atproto.sync.getLatestCommit`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/sync/getLatestCommit.json
-    public struct GetLatestCommitOutput: Codable {
+    public struct GetLatestCommitOutput: Sendable, Codable {
 
         /// The commit CID of the repository.
         public let commitCID: String

@@ -17,7 +17,7 @@ extension AppBskyLexicon.Actor {
     /// - SeeAlso: This is based on the [`app.bsky.actor.putPreferences`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/actor/putPreferences.json
-    public struct PutPreferencesRequestBody: Codable {
+    public struct PutPreferencesRequestBody: Sendable, Codable {
 
         /// The identifier of the lexicon.
         ///

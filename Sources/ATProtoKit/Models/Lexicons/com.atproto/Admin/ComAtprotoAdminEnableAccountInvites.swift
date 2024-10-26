@@ -17,7 +17,7 @@ extension ComAtprotoLexicon.Admin {
     /// - SeeAlso: This is based on the [`com.atproto.admin.enableAccountInvites`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/admin/enableAccountInvites.json
-    public struct EnableAccountInvitesRequestBody: Codable {
+    public struct EnableAccountInvitesRequestBody: Sendable, Codable {
 
         /// The decentralized identifier (DID) of the account that will regain access to receiving
         /// invite codes.

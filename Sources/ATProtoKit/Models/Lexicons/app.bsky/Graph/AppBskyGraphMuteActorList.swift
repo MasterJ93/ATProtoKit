@@ -17,7 +17,7 @@ extension AppBskyLexicon.Graph {
     /// - SeeAlso: This is based on the [`app.bsky.graph.muteActorList`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/graph/muteActor.json
-    public struct MuteActorListRequestBody: Codable {
+    public struct MuteActorListRequestBody: Sendable, Codable {
 
         /// The URI of a list.
         public let listURI: String

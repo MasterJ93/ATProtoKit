@@ -18,7 +18,7 @@ extension ToolsOzoneLexicon.Communication {
     /// - SeeAlso: This is based on the [`tools.ozone.communication.updateTemplate`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/tools/ozone/communication/updateTemplate.json
-    public struct UpdateTemplateRequestBody: Codable {
+    public struct UpdateTemplateRequestBody: Sendable, Codable {
 
         /// The ID of the communication template.
         public let id: String

@@ -10,7 +10,7 @@ import Foundation
 extension ComAtprotoLexicon.Server {
 
     /// A data model for retrieving a description of the server.
-    public struct DescribeServer: Codable {
+    public struct DescribeServer: Sendable, Codable {
 
         /// A data model of service policy URLs.
         ///
@@ -20,7 +20,7 @@ extension ComAtprotoLexicon.Server {
         /// - SeeAlso: This is based on the [`com.atproto.server.describeServer`][github] lexicon.
         ///
         /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/server/describeServer.json
-        public struct ServicePolicyURLs: Codable {
+        public struct ServicePolicyURLs: Sendable, Codable {
 
             /// The URL for the server's Privacy Policy. Optional.
             public let privacyPolicyURL: URL?
@@ -39,7 +39,7 @@ extension ComAtprotoLexicon.Server {
         /// - SeeAlso: This is based on the [`com.atproto.server.describeServer`][github] lexicon.
         ///
         /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/server/describeServer.json
-        public struct ContactInformation: Codable {
+        public struct ContactInformation: Sendable, Codable {
 
             /// The email address users can use to contact the server owner.
             public let email: String
@@ -54,7 +54,7 @@ extension ComAtprotoLexicon.Server {
     /// - SeeAlso: This is based on the [`com.atproto.server.describeServer`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/server/describeServer.json
-    public struct DescribeServerOutput: Codable {
+    public struct DescribeServerOutput: Sendable, Codable {
 
         /// Indicates whether an invite code is required to join the server. Optional.
         ///

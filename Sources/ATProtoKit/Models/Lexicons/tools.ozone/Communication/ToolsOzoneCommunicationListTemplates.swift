@@ -17,7 +17,7 @@ extension ToolsOzoneLexicon.Communication {
     /// - SeeAlso: This is based on the [`tools.ozone.communication.listTemplates`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/tools/ozone/communication/listTemplates.json
-    public struct ListTemplatesOutput: Codable {
+    public struct ListTemplatesOutput: Sendable, Codable {
 
         /// An array of communication templates.
         public let communicationTemplates: [TemplateViewDefinition]

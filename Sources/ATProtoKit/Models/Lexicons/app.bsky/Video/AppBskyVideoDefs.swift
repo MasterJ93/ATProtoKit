@@ -14,7 +14,7 @@ extension AppBskyLexicon.Video {
     /// - SeeAlso: This is based on the [`app.bsky.video.defs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/video/defs.json
-    public struct JobStatusDefinition: Codable {
+    public struct JobStatusDefinition: Sendable, Codable {
 
         /// The job's ID.
         public let jobID: String
@@ -55,7 +55,7 @@ extension AppBskyLexicon.Video {
         }
 
         /// The state of the video processing job.
-        public enum State: String, Codable {
+        public enum State: String, Sendable, Codable {
 
             /// The job has been created.
             case jobStateCreated = "JOB_STATE_CREATED"

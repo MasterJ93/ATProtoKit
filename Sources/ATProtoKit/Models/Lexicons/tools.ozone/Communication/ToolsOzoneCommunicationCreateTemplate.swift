@@ -17,7 +17,7 @@ extension ToolsOzoneLexicon.Communication {
     /// - SeeAlso: This is based on the [`tools.ozone.communication.createTemplate`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/tools/ozone/communication/createTemplate.json
-    public struct CreateTemplateRequestBody: Codable {
+    public struct CreateTemplateRequestBody: Sendable, Codable {
 
         /// The name of the template.
         ///

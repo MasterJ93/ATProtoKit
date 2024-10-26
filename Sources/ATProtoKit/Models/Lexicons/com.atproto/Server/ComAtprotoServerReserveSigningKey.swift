@@ -19,7 +19,7 @@ extension ComAtprotoLexicon.Server {
     /// - SeeAlso: This is based on the [`com.atproto.server.reserveSigningKey`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/server/reserveSigningKey.json
-    public struct ReserveSigningKeyRequestBody: Codable {
+    public struct ReserveSigningKeyRequestBody: Sendable, Codable {
         /// The decentralized identifier (DID) of the repository that will use the signing key.
         ///
         /// - Note: According to the AT Protocol specifications: "The DID to reserve a key for."
@@ -35,7 +35,7 @@ extension ComAtprotoLexicon.Server {
     /// - SeeAlso: This is based on the [`com.atproto.server.reserveSigningKey`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/server/reserveSigningKey.json
-    public struct ReserveSigningKeyOutput: Codable {
+    public struct ReserveSigningKeyOutput: Sendable, Codable {
 
         /// The signing key itself.
         ///

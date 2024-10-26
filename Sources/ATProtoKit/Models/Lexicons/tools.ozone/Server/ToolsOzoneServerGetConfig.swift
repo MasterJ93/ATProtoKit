@@ -18,17 +18,17 @@ extension ToolsOzoneLexicon.Server {
     /// - SeeAlso: This is based on the [`tools.ozone.server.getConfig`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/tools/ozone/server/getConfig.json
-    public struct GetConfiguration: Codable {
+    public struct GetConfiguration: Sendable, Codable {
 
         /// The service configuration of the Ozone server.
-        public struct ServiceConfiguration: Codable {
-            
+        public struct ServiceConfiguration: Sendable, Codable {
+
             /// The URL of the service configuration. Optional.
             public let serviceURL: String?
         }
 
         /// The view configuration of the Ozone server.
-        public enum ViewerConfiguration: String, Codable {
+        public enum ViewerConfiguration: String, Sendable, Codable {
 
             /// Indicates an adminstrator role.
             case roleAdmin = "tools.ozone.team.defs#roleAdmin"
@@ -49,7 +49,7 @@ extension ToolsOzoneLexicon.Server {
     /// - SeeAlso: This is based on the [`tools.ozone.server.getConfig`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/tools/ozone/server/getConfig.json
-    public struct GetConfigurationOutput: Codable {
+    public struct GetConfigurationOutput: Sendable, Codable {
 
         /// The AppView configurations of the Ozone server.
         public let appview: GetConfiguration.ServiceConfiguration?

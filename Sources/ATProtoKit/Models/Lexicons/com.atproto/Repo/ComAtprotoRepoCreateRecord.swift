@@ -17,7 +17,7 @@ extension ComAtprotoLexicon.Repository {
     /// - SeeAlso: This is based on the [`com.atproto.repo.createRecord`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/repo/createRecord.json
-    public struct CreateRecordRequestBody: Codable {
+    public struct CreateRecordRequestBody: Sendable, Codable {
 
         /// The decentralized identifier (DID) or handle of the user account.
         ///
@@ -86,7 +86,7 @@ extension ComAtprotoLexicon.Repository {
     /// - SeeAlso: This is based on the [`com.atproto.repo.createRecord`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/repo/createRecord.json
-    public struct CreateRecordOutput: Codable {
+    public struct CreateRecordOutput: Sendable, Codable {
 
         /// The URI of the record.
         public let recordURI: String
@@ -101,7 +101,7 @@ extension ComAtprotoLexicon.Repository {
         public let validationStatus: ValidationStatus?
 
         /// The status of the write operation's validation.
-        public enum ValidationStatus: String, Codable {
+        public enum ValidationStatus: String, Sendable, Codable {
 
             /// Status is valid.
             case valid

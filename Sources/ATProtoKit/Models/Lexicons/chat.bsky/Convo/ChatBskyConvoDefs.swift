@@ -14,7 +14,7 @@ extension ChatBskyLexicon.Conversation {
     /// - SeeAlso: This is based on the [`chat.bsky.convo.defs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/chat/bsky/convo/defs.json
-    public struct MessageReferenceDefinition: Codable {
+    public struct MessageReferenceDefinition: Sendable, Codable {
 
         /// The decentralized identifier (DID) of the message.
         public let messageDID: String
@@ -37,7 +37,7 @@ extension ChatBskyLexicon.Conversation {
     /// - SeeAlso: This is based on the [`chat.bsky.convo.defs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/chat/bsky/convo/defs.json
-    public struct MessageInputDefinition: Codable {
+    public struct MessageInputDefinition: Sendable, Codable {
 
         /// The message text itself.
         ///
@@ -75,7 +75,7 @@ extension ChatBskyLexicon.Conversation {
     /// - SeeAlso: This is based on the [`chat.bsky.convo.defs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/chat/bsky/convo/defs.json
-    public struct MessageViewDefinition: Codable {
+    public struct MessageViewDefinition: Sendable, Codable {
 
         /// The ID of the message. Optional.
         public let messageID: String?
@@ -133,7 +133,7 @@ extension ChatBskyLexicon.Conversation {
     /// - SeeAlso: This is based on the [`chat.bsky.convo.defs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/chat/bsky/convo/defs.json
-    public struct DeletedMessageViewDefinition: Codable {
+    public struct DeletedMessageViewDefinition: Sendable, Codable {
 
         /// The ID of the message. Optional.
         public let messageID: String?
@@ -169,7 +169,7 @@ extension ChatBskyLexicon.Conversation {
     /// - SeeAlso: This is based on the [`chat.bsky.convo.defs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/chat/bsky/convo/defs.json
-    public struct MessageViewSenderDefinition: Codable {
+    public struct MessageViewSenderDefinition: Sendable, Codable {
 
         /// The decentralized identifier (DID) of the message.
         public let messageDID: String
@@ -184,7 +184,7 @@ extension ChatBskyLexicon.Conversation {
     /// - SeeAlso: This is based on the [`chat.bsky.convo.defs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/chat/bsky/convo/defs.json
-    public struct ConversationViewDefinition: Codable {
+    public struct ConversationViewDefinition: Sendable, Codable {
 
         /// The ID of the conversation.
         public let conversationID: String
@@ -219,7 +219,7 @@ extension ChatBskyLexicon.Conversation {
     /// - SeeAlso: This is based on the [`chat.bsky.convo.defs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/chat/bsky/convo/defs.json
-    public struct LogBeginConversationDefinition: Codable {
+    public struct LogBeginConversationDefinition: Sendable, Codable {
 
         /// The revision of the log.
         public let revision: String
@@ -238,7 +238,7 @@ extension ChatBskyLexicon.Conversation {
     /// - SeeAlso: This is based on the [`chat.bsky.convo.defs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/chat/bsky/convo/defs.json
-    public struct LogLeaveConversationDefinition: Codable {
+    public struct LogLeaveConversationDefinition: Sendable, Codable {
 
         /// The revision of the log.
         public let revision: String
@@ -257,7 +257,7 @@ extension ChatBskyLexicon.Conversation {
     /// - SeeAlso: This is based on the [`chat.bsky.convo.defs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/chat/bsky/convo/defs.json
-    public struct LogCreateMessageDefinition: Codable {
+    public struct LogCreateMessageDefinition: Sendable, Codable {
 
         /// The revision of the log.
         public let revision: String
@@ -280,7 +280,7 @@ extension ChatBskyLexicon.Conversation {
     /// - SeeAlso: This is based on the [`chat.bsky.convo.defs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/chat/bsky/convo/defs.json
-    public struct LogDeleteMessageDefinition: Codable {
+    public struct LogDeleteMessageDefinition: Sendable, Codable {
 
         /// The revision of the log.
         public let revision: String

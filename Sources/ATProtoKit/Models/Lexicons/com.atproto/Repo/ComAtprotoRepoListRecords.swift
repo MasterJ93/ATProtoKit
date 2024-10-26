@@ -17,7 +17,7 @@ extension ComAtprotoLexicon.Repository {
     /// - SeeAlso: This is based on the [`com.atproto.repo.listRecords`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/repo/listRecords.json
-    public struct ListRecordsOutput: Codable {
+    public struct ListRecordsOutput: Sendable, Codable {
 
         /// The mark used to indicate the starting point for the next set of result. Optional.
         public let cursor: String?

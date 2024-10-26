@@ -14,7 +14,7 @@ import Logging
 /// decentralized identifier (DID), authentication tokens, and optional user information such
 /// as email. It also references the user's DID document, which contains crucial
 /// AT Protocol-specific information.
-public struct UserSession: SessionProtocol {
+public struct UserSession: SessionProtocol, Sendable {
 
     /// The user's handle within the AT Protocol.
     public private(set) var handle: String
@@ -121,7 +121,7 @@ public struct UserSession: SessionProtocol {
 /// The DID document includes the decentralized identifier (DID), verification methods, and
 /// service endpoints necessary for interacting with the AT Protocol ecosystem, such as
 /// authentication and data storage locations.
-public struct DIDDocument: Codable {
+public struct DIDDocument: Sendable, Codable {
 
     /// An array of context URLs for the DID document, providing additional semantics for
     /// the properties.
@@ -153,7 +153,7 @@ public struct DIDDocument: Codable {
 
 /// Describes a method for verifying digital signatures in the AT Protocol, including the public
 /// signing key.
-public struct VerificationMethod: Codable {
+public struct VerificationMethod: Sendable, Codable {
 
     /// The unique identifier of the verification method.
     public var id: String
@@ -171,7 +171,7 @@ public struct VerificationMethod: Codable {
 
 /// Represents a service endpoint in a DID document, such as the
 /// Personal Data Server's (PDS) location.
-public struct ATService: Codable {
+public struct ATService: Sendable, Codable {
 
     /// The unique identifier of the service.
     public var id: String
@@ -189,7 +189,7 @@ public struct ATService: Codable {
 /// - Note: According to the AT Protocol specifications: "If active=false, this optional field
 /// indicates a possible reason for why the account is not active. If active=false and no status
 /// is supplied, then the host makes no claim for why the repository is no longer being hosted."
-public enum UserAccountStatus: String, Codable {
+public enum UserAccountStatus: String, Sendable, Codable {
 
     /// Indicates the user account is inactive due to a takedown.
     case takedown

@@ -20,7 +20,7 @@ extension ComAtprotoLexicon.Sync {
     /// - SeeAlso: This is based on the [`com.atproto.sync.subscribeRepos`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/sync/subscribeRepos.json
-    public struct SubscribeRepos: Codable {
+    public struct SubscribeRepos: Sendable, Codable {
 
     }
 }

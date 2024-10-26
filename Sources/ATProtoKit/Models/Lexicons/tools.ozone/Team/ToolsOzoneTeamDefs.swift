@@ -14,7 +14,7 @@ extension ToolsOzoneLexicon.Team {
     /// - SeeAlso: This is based on the [`tools.ozone.team.defs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/tools/ozone/team/defs.json
-    public struct MemberDefinition: Codable {
+    public struct MemberDefinition: Sendable, Codable {
 
         /// The decentralized identifier (DID) of the member.
         public let memberDID: String
@@ -49,7 +49,7 @@ extension ToolsOzoneLexicon.Team {
 
         // Enums
         /// The role that was given to the member.
-        public enum Role: String, Codable {
+        public enum Role: String, Sendable, Codable {
 
             /// A role that allows the member to access all of the actions.
             ///

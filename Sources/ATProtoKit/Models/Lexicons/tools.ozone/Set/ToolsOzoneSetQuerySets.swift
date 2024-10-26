@@ -16,10 +16,10 @@ extension ToolsOzoneLexicon.Set {
     /// - SeeAlso: This is based on the [`tools.ozone.set.querySets`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/tools/ozone/set/querySets.json
-    public struct QuerySets: Codable {
+    public struct QuerySets: Sendable, Codable {
 
         /// Defines sorting criteria for sets.
-        public enum SortBy: Codable {
+        public enum SortBy: Sendable, Codable {
 
             /// Sort by name.
             case name
@@ -35,7 +35,7 @@ extension ToolsOzoneLexicon.Set {
         ///
         /// - Note: According to the AT Protocol specifications: "Defaults to ascending order of
         /// name field."
-        public enum SortDirection: String, Codable {
+        public enum SortDirection: String, Sendable, Codable {
 
             /// Sorts items in alphabetical order.
             case ascending = "asc"
@@ -52,7 +52,7 @@ extension ToolsOzoneLexicon.Set {
     /// - SeeAlso: This is based on the [`tools.ozone.set.querySets`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/tools/ozone/set/querySets.json
-    public struct QuerySetsOutput: Codable {
+    public struct QuerySetsOutput: Sendable, Codable {
 
         /// An array of sets.
         public let sets: [ToolsOzoneLexicon.Set.SetViewDefinition]

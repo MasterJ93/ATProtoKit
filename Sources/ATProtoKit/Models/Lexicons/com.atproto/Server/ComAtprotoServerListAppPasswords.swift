@@ -16,7 +16,7 @@ extension ComAtprotoLexicon.Server {
     /// - SeeAlso: This is based on the [`com.atproto.server.listAppPasswords`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/server/listAppPasswords.json
-    public struct ListAppPasswordsOutput: Codable {
+    public struct ListAppPasswordsOutput: Sendable, Codable {
 
         /// An array of App Passwords.
         public let passwords: [AppPassword]
@@ -26,7 +26,7 @@ extension ComAtprotoLexicon.Server {
         /// - SeeAlso: This is based on the [`com.atproto.server.listAppPasswords`][github] lexicon.
         ///
         /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/server/listAppPasswords.json
-        public struct AppPassword: Codable {
+        public struct AppPassword: Sendable, Codable {
 
             /// The name associated with the App Password.
             public let name: String

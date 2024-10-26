@@ -14,7 +14,7 @@ extension ChatBskyLexicon.Conversation {
     /// - SeeAlso: This is based on the [`chat.bsky.convo.getConvoForMembers`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/chat/bsky/convo/getConvoForMembers.json
-    public struct GetConversationForMembersOutput: Codable {
+    public struct GetConversationForMembersOutput: Sendable, Codable {
 
         /// The conversation view.
         public let conversation: ConversationViewDefinition

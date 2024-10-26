@@ -69,7 +69,7 @@ extension AppBskyLexicon.Labeler {
     /// - SeeAlso: This is based on the [`app.bsky.labeler.defs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/labeler/defs.json
-    public struct LabelerViewDetailedDefinition: Codable {
+    public struct LabelerViewDetailedDefinition: Sendable, Codable {
 
         /// The URI of the labeler.
         public let labelerURI: String

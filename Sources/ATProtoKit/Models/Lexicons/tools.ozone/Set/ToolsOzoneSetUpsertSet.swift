@@ -16,7 +16,7 @@ extension ToolsOzoneLexicon.Set {
     /// - SeeAlso: This is based on the [`tools.ozone.set.upsertSet`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/tools/ozone/set/upsertSet.json
-    public struct UpsertSetRequestBody: Codable {
+    public struct UpsertSetRequestBody: Sendable, Codable {
 
         /// The name of the set.
         public let name: String

@@ -14,7 +14,7 @@ extension ChatBskyLexicon.Moderation {
     /// - SeeAlso: This is based on the [`chat.bsky.moderation.updateActorAccess`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/chat/bsky/moderation/updateActorAccess.json
-    public struct UpdateActorAccessRequestBody: Codable {
+    public struct UpdateActorAccessRequestBody: Sendable, Codable {
 
         /// The user account to change access to direct messages.
         public let actorDID: String

@@ -10,7 +10,7 @@ import Foundation
 extension ToolsOzoneLexicon.Moderation {
 
     /// The main data model definition for listing all moderation events pertaining a subject.
-    public struct QueryStatuses: Codable {
+    public struct QueryStatuses: Sendable, Codable {
 
         /// Indicates the sorting field for the moderation status array.
         public enum SortField: Codable {
@@ -22,7 +22,7 @@ extension ToolsOzoneLexicon.Moderation {
         case lastReviewedAt
         }
 
-        public enum SortDirection: String, Codable {
+        public enum SortDirection: String, Sendable, Codable {
 
             /// Indicates the moderation events will be sorted in ascending order.
             case ascending = "asc"
@@ -40,7 +40,7 @@ extension ToolsOzoneLexicon.Moderation {
     /// - SeeAlso: This is based on the [`tools.ozone.moderation.queryStatuses`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/tools/ozone/moderation/queryEvents.json
-    public struct QueryStatusesOutput: Codable {
+    public struct QueryStatusesOutput: Sendable, Codable {
 
         /// The mark used to indicate the starting point for the next set of results. Optional.
         public let cursor: String?

@@ -18,10 +18,10 @@ extension ToolsOzoneLexicon.Signature {
     /// - SeeAlso: This is based on the [`tools.ozone.signature.findRelatedAccounts`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/tools/ozone/signature/findRelatedAccounts.json
-    public struct FindRelatedAccounts: Codable {
+    public struct FindRelatedAccounts: Sendable, Codable {
 
         /// A definition model for related accounts.
-        public struct RelatedAccounts: Codable {
+        public struct RelatedAccounts: Sendable, Codable {
 
             /// An array of account views.
             public let accounts: [ComAtprotoLexicon.Admin.AccountViewDefinition]
@@ -40,7 +40,7 @@ extension ToolsOzoneLexicon.Signature {
     /// - SeeAlso: This is based on the [`tools.ozone.signature.findRelatedAccounts`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/tools/ozone/signature/findRelatedAccounts.json
-    public struct FindRelatedAccountsOutput: Codable {
+    public struct FindRelatedAccountsOutput: Sendable, Codable {
 
         /// The related user accounts that match the threat signature with the root user account.
         public let relatedAccounts: ToolsOzoneLexicon.Signature.FindRelatedAccounts.RelatedAccounts

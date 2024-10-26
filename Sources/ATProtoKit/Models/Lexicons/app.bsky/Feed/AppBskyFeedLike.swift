@@ -17,7 +17,7 @@ extension AppBskyLexicon.Feed {
     /// - SeeAlso: This is based on the [`app.bsky.feed.like`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/feed/like.json
-    public struct LikeRecord: ATRecordProtocol {
+    public struct LikeRecord: ATRecordProtocol, Sendable {
 
         /// The identifier of the lexicon.
         ///

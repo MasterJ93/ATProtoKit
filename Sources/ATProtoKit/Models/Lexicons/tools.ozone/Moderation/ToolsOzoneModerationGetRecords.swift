@@ -16,7 +16,7 @@ extension ToolsOzoneLexicon.Moderation {
     /// - SeeAlso: This is based on the [`tools.ozone.moderation.getRecords`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/tools/ozone/moderation/getRecords.json
-    public struct GetRecordsOutput: Codable {
+    public struct GetRecordsOutput: Sendable, Codable {
 
         /// An array of records that belong to the
         public var records: [String]

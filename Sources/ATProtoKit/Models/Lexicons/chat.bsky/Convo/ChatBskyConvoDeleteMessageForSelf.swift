@@ -14,7 +14,7 @@ extension ChatBskyLexicon.Conversation {
     /// - SeeAlso: This is based on the [`chat.bsky.convo.deleteMessageForSelf`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/chat/bsky/convo/deleteMessageForSelf.json
-    public struct DeleteMessageForSelfRequestBody: Codable {
+    public struct DeleteMessageForSelfRequestBody: Sendable, Codable {
 
         /// The ID of the conversation.
         public let conversationID: String
