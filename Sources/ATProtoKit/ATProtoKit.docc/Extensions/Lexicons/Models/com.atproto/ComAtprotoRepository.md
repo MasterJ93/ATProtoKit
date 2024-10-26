@@ -6,14 +6,21 @@
 
 - ``ComAtprotoLexicon/Repository/ApplyWrites``
 - ``ComAtprotoLexicon/Repository/ApplyWritesRequestBody``
+- ``ComAtprotoLexicon/Repository/ApplyWritesOutput``
 
 ### com.atproto.repo.createRecord
 
 - ``ComAtprotoLexicon/Repository/CreateRecordRequestBody``
+- ``ComAtprotoLexicon/Repository/CreateRecordOutput``
+
+### com.atproto.repo.defs
+
+- ``ComAtprotoLexicon/Repository/CommitMetaDefinition``
 
 ### com.atproto.repo.deleteRecord
 
 - ``ComAtprotoLexicon/Repository/DeleteRecordRequestBody``
+- ``ComAtprotoLexicon/Repository/DeleteRecordOutput``
 
 ### com.atproto.repo.describeRepo
 
@@ -40,6 +47,7 @@
 ### com.atproto.repo.putRecord
 
 - ``ComAtprotoLexicon/Repository/PutRecordRequestBody``
+- ``ComAtprotoLexicon/Repository/PutRecordOutput``
 
 ### com.atproto.repo.strongRef
 
@@ -49,4 +57,6 @@
 
 - ``ComAtprotoLexicon/Repository/ImageQuery``
 - ``ComAtprotoLexicon/Repository/UploadBlobRequestBody``
+- ``ComAtprotoLexicon/Repository/BlobContainer``
+- ``ComAtprotoLexicon/Repository/BlobContainer``
 - ``ComAtprotoLexicon/Repository/UploadBlobOutput``

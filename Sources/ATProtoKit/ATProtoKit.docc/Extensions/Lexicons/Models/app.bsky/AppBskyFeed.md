@@ -9,6 +9,7 @@
 - ``FeedViewPostDefinition``
 - ``ReplyReferenceDefinition``
 - ``ReasonRepostDefinition``
+- ``ReasonPinDefinition``
 - ``ThreadViewPostDefinition``
 - ``NotFoundPostDefinition``
 - ``BlockedPostDefinition``
@@ -17,6 +18,7 @@
 - ``GeneratorViewerStateDefinition``
 - ``SkeletonFeedPostDefinition``
 - ``SkeletonReasonRepostDefinition``
+- ``SkeletonReasonPinDefinition``
 - ``ThreadgateViewDefinition``
 - ``InteractionDefinition``
 

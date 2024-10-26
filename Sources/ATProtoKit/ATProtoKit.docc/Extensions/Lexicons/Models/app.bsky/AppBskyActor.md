@@ -26,6 +26,9 @@
 - ``HiddenPostsPreferencesDefinition``
 - ``LabelersPreferencesDefinition``
 - ``LabelersPreferenceItem``
+- ``BskyAppStatePreferencesDefinition``
+- ``BskyAppProgressGuideDefinition``
+- ``NUXDefinition``
 
 ### app.bsky.actor.getPreferences
 - ``GetPreferencesOutput``
