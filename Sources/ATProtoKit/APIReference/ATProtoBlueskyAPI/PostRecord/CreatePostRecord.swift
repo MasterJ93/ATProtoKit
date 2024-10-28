@@ -306,8 +306,12 @@ extension ATProtoBluesky {
 
     /// Scraps the website for the required information in order to attach to a record's embed at a
     /// later request.
-    ///
-    /// - Parameter url: The URL of the website.
+    /// 
+    /// - Parameters:
+    ///   - url: The URL of the website.
+    ///   - title: The title of the website.
+    ///   - description: The description of the website.
+    ///   - thumbnailImageURL: The URL of the thumbnail image. Optional.
     /// - Returns: An ``ATUnion/EmbedViewUnion`` which contains an ``AppBskyLexicon/Embed/ExternalDefinition`` for use
     /// in a record.
     public func buildExternalEmbed(from url: URL, title: String, description: String, thumbnailImageURL: URL?) async -> ATUnion.PostEmbedUnion? {
