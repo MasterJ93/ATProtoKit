@@ -327,6 +327,9 @@ extension ATProtoBluesky {
     /// the `cidHash` (CID) .
     /// - Returns: A strong reference, which contains a record's `recordURI` (URI) and the
     /// `cidHash` (CID) .
+    ///
+    /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
+    /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func addQuotePostToEmbed(_ strongReference: ComAtprotoLexicon.Repository.StrongReference) async throws -> ATUnion.PostEmbedUnion {
         let record = try await ATProtoTools().fetchRecordForURI(strongReference.recordURI)
         let reference = ComAtprotoLexicon.Repository.StrongReference(recordURI: record.recordURI, cidHash: record.recordCID)
@@ -364,15 +367,18 @@ extension ATProtoBluesky {
         case video(video: Data, captions: [Caption]? = nil, altText: String? = nil)
 
         /// Represents an external link to be embedded in the post.
+        ///
         /// - Parameter url: A `URL` pointing to the external content.
         case external(url: URL, title: String, description: String, thumbnailURL: URL?)
 
         /// Represents another post record that is to be embedded within the current post.
+        ///
         /// - Parameter strongReference: A `StrongReference` to the post record to be embedded,
         /// which contains a record's `recordURI` (URI) and the `cidHash` (CID) .
         case record(strongReference: ComAtprotoLexicon.Repository.StrongReference)
 
         /// Represents a post record accompanied by media, to be embedded within the current post.
+        ///
         /// - Parameters:
         ///   - record: An `EmbedRecord`, representing the post to be embedded.
         ///   - media: A `MediaUnion`, representing the media content associated with the post.
