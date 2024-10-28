@@ -79,7 +79,7 @@ extension ATProtoBluesky {
                     case .images(let images):
                         resolvedEmbed = try await uploadImages(images, pdsURL: sessionURL, accessToken: session.accessToken)
                     case .external(let url, let title, let description, let thumbnailImageURL):
-                        resolvedEmbed = await buildExternalEmbed(from: url, title: title, description: description, thumbnailImageURL: thumbnailImageURL)
+                        resolvedEmbed = await buildExternalEmbed(from: url, title: title, description: description, thumbnailImageURL: thumbnailImageURL, session: session)
                     case .record(let record):
                         resolvedEmbed = try await addQuotePostToEmbed(record)
                     case .recordWithMedia(let record, let media):
@@ -311,20 +311,49 @@ extension ATProtoBluesky {
 
     /// Scraps the website for the required information in order to attach to a record's embed at a
     /// later request.
-    /// 
+    ///
     /// - Parameters:
     ///   - url: The URL of the website.
     ///   - title: The title of the website.
     ///   - description: The description of the website.
     ///   - thumbnailImageURL: The URL of the thumbnail image. Optional.
+    ///   - session: The ``UserSession`` object.
     /// - Returns: An ``ATUnion/EmbedViewUnion`` which contains an ``AppBskyLexicon/Embed/ExternalDefinition`` for use
     /// in a record.
-    public func buildExternalEmbed(from url: URL, title: String, description: String, thumbnailImageURL: URL?) async -> ATUnion.PostEmbedUnion? {
+    public func buildExternalEmbed(from url: URL, title: String, description: String, thumbnailImageURL: URL? = nil, session: UserSession) async -> ATUnion.PostEmbedUnion? {
+        // Attempt to load the thumbnail image, if provided.
+        let image: Data? = {
+            guard let thumbnailImageURL,
+                  let data = try? Data(contentsOf: thumbnailImageURL),
+                  data.count <= 1_000_000 else { return nil }
+            return data
+        }()
 
-        // Temporary comment until it's time to work on this part of the library.
-//        let external = EmbedExternal(external: External(embedURI: "", title: "", description: "", thumbnailImage: UploadBlobOutput(type: <#T##String?#>, reference: <#T##BlobReference#>, mimeType: <#T##String#>, size: <#T##Int#>)))
-//        return .external(external)
-        return nil
+        // Optional upload of the thumbnail image if it exists.
+        var thumbnailImage: ComAtprotoLexicon.Repository.UploadBlobOutput? = nil
+
+        if let pdsURL = session.pdsURL, let imageData = image {
+            thumbnailImage = try? await APIClientService.shared.uploadBlob(
+                pdsURL: pdsURL,
+                accessToken: session.accessToken,
+                filename: "\(ATProtoTools().generateRandomString())_thumbnail.jpg",
+                imageData: imageData
+            ).blob
+
+        } else {
+            thumbnailImage = nil
+        }
+
+
+        let embedExternal = AppBskyLexicon.Embed.ExternalDefinition(
+            external: AppBskyLexicon.Embed.ExternalDefinition.External(
+                embedURI: url,
+                title: title,
+                description: description,
+                thumbnailImage: thumbnailImage ?? nil
+            )
+        )
+        return .external(embedExternal)
     }
 
     /// Grabs and validates a post record to attach to a record's embed at a later request.
@@ -344,7 +373,7 @@ extension ATProtoBluesky {
     }
     
     /// Represents the different types of content that can be embedded in a post record.
-    /// 
+    ///  
     /// `EmbedIdentifier` provides a unified interface for specifying embeddable content,
     /// simplifying the process of attaching images, external links, other post records, or media
     /// to a post. By abstracting the details of each embed type, it allows methods like
@@ -373,8 +402,12 @@ extension ATProtoBluesky {
 
         /// Represents an external link to be embedded in the post.
         ///
-        /// - Parameter url: A `URL` pointing to the external content.
-        case external(url: URL, title: String, description: String, thumbnailURL: URL?)
+        /// - Parameters:
+        ///   - url: A `URL` pointing to the external content.
+        ///   - title: The title of the external content.
+        ///   - description: The description of the external content.
+        ///   - thumbnailURL: The URL of the thumbnail image. Optional. Defaults to `nil`.
+        case external(url: URL, title: String, description: String, thumbnailURL: URL? = nil)
 
         /// Represents another post record that is to be embedded within the current post.
         ///
