@@ -21,7 +21,7 @@ extension AppBskyLexicon.Feed {
         /// The identifier of the lexicon.
         ///
         /// - Warning: The value must not change.
-        public static private(set) var type: String = "app.bsky.feed.post"
+        public static let type: String = "app.bsky.feed.post"
 
         /// The text contained in the post.
         ///

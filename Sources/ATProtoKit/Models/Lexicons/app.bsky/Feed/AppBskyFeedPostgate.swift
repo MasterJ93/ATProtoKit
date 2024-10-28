@@ -23,7 +23,7 @@ extension AppBskyLexicon.Feed {
         /// The identifier of the lexicon.
         ///
         /// - Warning: The value must not change.
-        public static var type: String = "app.bsky.feed.postgate"
+        public static let type: String = "app.bsky.feed.postgate"
 
         /// The date and time the post was created.
         @DateFormatting public var createdAt: Date

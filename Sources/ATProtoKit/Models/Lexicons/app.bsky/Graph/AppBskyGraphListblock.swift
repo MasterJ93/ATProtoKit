@@ -22,7 +22,7 @@ extension AppBskyLexicon.Graph {
         /// The identifier of the lexicon.
         ///
         /// - Warning: The value must not change.
-        public static private(set) var type: String = "app.bsky.graph.listblock"
+        public static let type: String = "app.bsky.graph.listblock"
 
         /// The decentralized identifier (DID) of the moderator list record.
         ///

@@ -23,7 +23,7 @@ extension AppBskyLexicon.Graph {
         /// The identifier of the lexicon.
         ///
         /// - Warning: The value must not change.
-        public static private(set) var type: String = "app.bsky.graph.list"
+        public static let type: String = "app.bsky.graph.list"
 
         /// The name of the list.
         ///

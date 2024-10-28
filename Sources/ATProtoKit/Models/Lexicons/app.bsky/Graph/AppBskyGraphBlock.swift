@@ -23,7 +23,7 @@ extension AppBskyLexicon.Graph {
         /// The identifier of the lexicon.
         ///
         /// - Warning: The value must not change.
-        public static private(set) var type: String = "app.bsky.graph.block"
+        public static let type: String = "app.bsky.graph.block"
 
         /// The decentralized identifier(DID) of the subject that has been blocked.
         ///

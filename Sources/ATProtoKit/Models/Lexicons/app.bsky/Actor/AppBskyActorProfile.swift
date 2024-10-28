@@ -22,7 +22,7 @@ extension AppBskyLexicon.Actor {
         /// The identifier of the lexicon.
         ///
         /// - Warning: The value must not change.
-        public static private(set) var type: String = "app.bsky.actor.profile"
+        public static let type: String = "app.bsky.actor.profile"
 
         /// The display name of the profile. Optional.
         public let displayName: String?

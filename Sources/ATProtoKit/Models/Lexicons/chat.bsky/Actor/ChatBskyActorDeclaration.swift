@@ -22,7 +22,7 @@ extension ChatBskyLexicon.Actor {
         /// The identifier of the lexicon.
         ///
         /// - Warning: The value must not change.
-        public private(set) static var type: String = "chat.bsky.actor.declaration"
+        public static let type: String = "chat.bsky.actor.declaration"
 
         /// Establishes rule for who can message the user account.
         public let allowIncoming: AllIncoming

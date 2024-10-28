@@ -22,7 +22,7 @@ extension AppBskyLexicon.Feed {
         /// The identifier of the lexicon.
         ///
         /// - Warning: The value must not change.
-        public static private(set) var type: String = "app.bsky.feed.like"
+        public static let type: String = "app.bsky.feed.like"
 
         /// The strong reference of the like.
         ///

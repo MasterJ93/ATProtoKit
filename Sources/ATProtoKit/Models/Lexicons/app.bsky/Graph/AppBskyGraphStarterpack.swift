@@ -22,7 +22,7 @@ extension AppBskyLexicon.Graph {
         /// The identifier of the lexicon.
         ///
         /// - Warning: The value must not change.
-        public static var type: String = "app.bsky.graph.starterpack"
+        public static let type: String = "app.bsky.graph.starterpack"
 
         /// The name of the starter pack.
         ///

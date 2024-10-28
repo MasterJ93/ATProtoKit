@@ -23,7 +23,7 @@ extension AppBskyLexicon.Feed {
         /// The identifier of the lexicon.
         ///
         /// - Warning: The value must not change.
-        public static private(set) var type: String = "app.bsky.feed.generator"
+        public static let type: String = "app.bsky.feed.generator"
 
         /// The decentralized identifier (DID) of the feed.
         public let feedDID: String
