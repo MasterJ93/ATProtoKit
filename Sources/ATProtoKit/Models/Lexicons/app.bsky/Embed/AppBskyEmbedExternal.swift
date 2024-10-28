@@ -41,7 +41,7 @@ extension AppBskyLexicon.Embed {
         public struct External: Sendable, Codable {
 
             /// The URI of the external content.
-            public let embedURI: String
+            public let embedURI: URL
 
             /// The title of the external content.
             public let title: String
