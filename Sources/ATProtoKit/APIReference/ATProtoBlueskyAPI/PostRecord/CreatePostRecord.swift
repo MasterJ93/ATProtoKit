@@ -78,8 +78,8 @@ extension ATProtoBluesky {
                 switch embedUnion {
                     case .images(let images):
                         resolvedEmbed = try await uploadImages(images, pdsURL: sessionURL, accessToken: session.accessToken)
-                    case .external(let external):
-                        resolvedEmbed = try await buildExternalEmbed(from: external)
+                    case .external(let url, let title, let description, let thumbnailImageURL):
+                        resolvedEmbed = try await buildExternalEmbed(from: url, title: title, description: description, thumbnailImageURL: thumbnailImageURL)
                     case .record(let record):
                         resolvedEmbed = try await addQuotePostToEmbed(record)
                     case .recordWithMedia(let record, let media):
