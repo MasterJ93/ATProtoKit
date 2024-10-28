@@ -220,13 +220,15 @@ public class ATFacetParser {
                 group.addTask {
                     // Unless something is wrong with `parseHashtags()`, this is unlikely to fail.
                     guard let tag = hashtag["tag"] as? String else { return }
-                    print("Hashtag: \(tag)")
+                    // rid us of this meddlesome "#" character
+                    let unhashedTag = String(tag.dropFirst())
+                    print("Hashtag: \(unhashedTag)")
 
                     if let start = hashtag["start"] as? Int,
                        let end = hashtag["end"] as? Int {
                         let hashTagFacet = AppBskyLexicon.RichText.Facet(
                             index: AppBskyLexicon.RichText.Facet.ByteSlice(byteStart: start, byteEnd: end),
-                            features: [.tag(AppBskyLexicon.RichText.Facet.Tag(tag: tag))]
+                            features: [.tag(AppBskyLexicon.RichText.Facet.Tag(tag: unhashedTag))]
                         )
 
                         await facets.append(hashTagFacet)
