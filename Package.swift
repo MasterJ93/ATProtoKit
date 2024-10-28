@@ -38,6 +38,9 @@ let package = Package(
                 "ATMacro",
                 .product(name: "Logging", package: "swift-log"),
                 .product(name: "SwiftCBOR", package: "swiftcbor")
+            ],
+            swiftSettings: [
+                .enableExperimentalFeature("StrictConcurrency")
             ]
         ),
 
