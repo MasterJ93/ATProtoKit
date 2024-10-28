@@ -14,10 +14,10 @@
 /// ```swift
 /// extension ATUnion {
 ///     #ATUnionBuilder(named: "EmbedViewUnion", containing: [
-///         "embedExternalView": AppBskyLexicon.Embed.ExternalDefinition.View.Type,
-///         "embedImagesView": AppBskyLexicon.Embed.ImagesDefinition.View.Type,
-///         "embedRecordView": AppBskyLexicon.Embed.RecordDefinition.View.Type,
-///         "embedRecordWithMediaView": AppBskyLexicon.Embed.RecordWithMediaDefinition.View.Type
+///         "embedExternalView": "AppBskyLexicon.Embed.ExternalDefinition.View",
+///         "embedImagesView": "AppBskyLexicon.Embed.ImagesDefinition.View",
+///         "embedRecordView": "AppBskyLexicon.Embed.RecordDefinition.View",
+///         "embedRecordWithMediaView": "AppBskyLexicon.Embed.RecordWithMediaDefinition.View"
 ///}
 /// ```
 ///
