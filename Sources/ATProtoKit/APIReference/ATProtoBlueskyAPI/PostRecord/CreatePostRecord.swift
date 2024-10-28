@@ -287,7 +287,12 @@ extension ATProtoBluesky {
         if let captions = captions {
             print("Beginning caption collection...")
             for caption in captions {
-                let blobReference = try await APIClientService.shared.uploadBlob(pdsURL: pdsURL, accessToken: accessToken, filename: "caption.vtt", imageData: caption.file)
+                let blobReference = try await APIClientService.shared.uploadBlob(
+                    pdsURL: pdsURL,
+                    accessToken: accessToken,
+                    filename: "\(ATProtoTools().generateRandomString())_caption.vtt",
+                    imageData: caption.file
+                )
 
                 captionReferences.append(AppBskyLexicon.Embed.VideoDefinition.Caption(language: caption.language, file: blobReference.blob))
             }
