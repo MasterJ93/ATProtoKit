@@ -310,7 +310,7 @@ extension ATProtoBluesky {
     /// - Parameter url: The URL of the website.
     /// - Returns: An ``ATUnion/EmbedViewUnion`` which contains an ``AppBskyLexicon/Embed/ExternalDefinition`` for use
     /// in a record.
-    public func buildExternalEmbed(from url: URL) async throws -> ATUnion.PostEmbedUnion? {
+    public func buildExternalEmbed(from url: URL, title: String, description: String, thumbnailImageURL: URL?) async -> ATUnion.PostEmbedUnion? {
 
         // Temporary comment until it's time to work on this part of the library.
 //        let external = EmbedExternal(external: External(embedURI: "", title: "", description: "", thumbnailImage: UploadBlobOutput(type: <#T##String?#>, reference: <#T##BlobReference#>, mimeType: <#T##String#>, size: <#T##Int#>)))
@@ -361,7 +361,7 @@ extension ATProtoBluesky {
 
         /// Represents an external link to be embedded in the post.
         /// - Parameter url: A `URL` pointing to the external content.
-        case external(url: URL)
+        case external(url: URL, title: String, description: String, thumbnailURL: URL?)
 
         /// Represents another post record that is to be embedded within the current post.
         /// - Parameter strongReference: A `StrongReference` to the post record to be embedded,
