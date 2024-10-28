@@ -17,7 +17,7 @@ extension AppBskyLexicon.Feed {
     /// - SeeAlso: This is based on the [`app.bsky.feed.getLikes`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/feed/getLikes.json
-    public struct GetLikesOutput: Codable {
+    public struct GetLikesOutput: Sendable, Codable {
 
         /// The URI of the record.
         public let recordURI: String
@@ -44,7 +44,7 @@ extension AppBskyLexicon.Feed {
         /// - SeeAlso: This is based on the [`app.bsky.feed.getLikes`][github] lexicon.
         ///
         /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/feed/getLikes.json
-        public struct Like: Codable {
+        public struct Like: Sendable, Codable {
 
             /// The date and time the like record was indexed.
             @DateFormatting public var indexedAt: Date

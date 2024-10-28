@@ -14,7 +14,7 @@ extension ChatBskyLexicon.Conversation {
     /// - SeeAlso: This is based on the [`chat.bsky.convo.updateRead`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/chat/bsky/convo/updateRead.json
-    public struct UpdateReadRequestBody: Codable {
+    public struct UpdateReadRequestBody: Sendable, Codable {
 
         /// The ID of the conversation to be marked as read.
         public let conversationID: String
@@ -33,7 +33,7 @@ extension ChatBskyLexicon.Conversation {
     /// - SeeAlso: This is based on the [`chat.bsky.convo.updateRead`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/chat/bsky/convo/updateRead.json
-    public struct UpdateReadOutput: Codable {
+    public struct UpdateReadOutput: Sendable, Codable {
 
         /// The conversation itself.
         public let conversationView: ConversationViewDefinition

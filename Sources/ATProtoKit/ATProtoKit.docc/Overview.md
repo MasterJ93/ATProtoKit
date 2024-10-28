@@ -94,6 +94,7 @@ ATProtoKit is fully open source under the [MIT license](https://github.com/Maste
 
 ### UnknownType
 - ``UnknownType``
+- ``CodableValue``
 - <doc:getRecordTutorial>
 
 ### Interacting With Users

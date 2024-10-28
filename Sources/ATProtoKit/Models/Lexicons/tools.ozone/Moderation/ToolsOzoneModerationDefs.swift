@@ -14,7 +14,7 @@ extension ToolsOzoneLexicon.Moderation {
     /// - SeeAlso: This is based on the [`tools.ozone.moderation.defs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/tools/ozone/moderation/defs.json
-    public struct ModerationEventViewDefinition: Codable {
+    public struct ModerationEventViewDefinition: Sendable, Codable {
 
         /// The ID of the moderator's event view.
         public let id: Int
@@ -70,7 +70,7 @@ extension ToolsOzoneLexicon.Moderation {
     /// - SeeAlso: This is based on the [`tools.ozone.moderation.defs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/tools/ozone/moderation/defs.json
-    public struct EventViewDetailDefinition: Codable {
+    public struct EventViewDetailDefinition: Sendable, Codable {
 
         /// The ID of the moderator's event view.
         public let id: Int
@@ -116,7 +116,7 @@ extension ToolsOzoneLexicon.Moderation {
     /// - SeeAlso: This is based on the [`tools.ozone.moderation.defs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/tools/ozone/moderation/defs.json
-    public struct SubjectStatusViewDefinition: Codable {
+    public struct SubjectStatusViewDefinition: Sendable, Codable {
 
         /// The ID of the status view.
         public let id: Int
@@ -236,7 +236,7 @@ extension ToolsOzoneLexicon.Moderation {
     /// - SeeAlso: This is based on the [`tools.ozone.moderation.defs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/tools/ozone/moderation/defs.json
-    public enum SubjectReviewStateDefinition: String, Codable {
+    public enum SubjectReviewStateDefinition: String, Sendable, Codable {
 
         /// Moderator review status of a subject: Open. Indicates that the subject needs to be
         /// reviewed by a moderator.
@@ -269,7 +269,7 @@ extension ToolsOzoneLexicon.Moderation {
     /// - SeeAlso: This is based on the [`tools.ozone.moderation.defs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/tools/ozone/moderation/defs.json
-    public struct EventTakedownDefinition: Codable {
+    public struct EventTakedownDefinition: Sendable, Codable {
 
         /// Any additional comments for the takedown event. Optional.
         ///
@@ -299,7 +299,7 @@ extension ToolsOzoneLexicon.Moderation {
     /// - SeeAlso: This is based on the [`tools.ozone.moderation.defs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/tools/ozone/moderation/defs.json
-    public struct EventReverseTakedownDefinition: Codable {
+    public struct EventReverseTakedownDefinition: Sendable, Codable {
 
         /// Any comments for the reverse takedown event. Optional.
         ///
@@ -315,7 +315,7 @@ extension ToolsOzoneLexicon.Moderation {
     /// - SeeAlso: This is based on the [`tools.ozone.moderation.defs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/tools/ozone/moderation/defs.json
-    public struct EventResolveAppealDefinition: Codable {
+    public struct EventResolveAppealDefinition: Sendable, Codable {
 
         /// Any comments for the moderator's appeal resolution event. Optional.
         ///
@@ -330,7 +330,7 @@ extension ToolsOzoneLexicon.Moderation {
     /// - SeeAlso: This is based on the [`tools.ozone.moderation.defs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/tools/ozone/moderation/defs.json
-    public struct EventCommentDefinition: Codable {
+    public struct EventCommentDefinition: Sendable, Codable {
 
         /// Any comment for the moderator's comment event.
         public let comment: String
@@ -353,7 +353,7 @@ extension ToolsOzoneLexicon.Moderation {
     /// - SeeAlso: This is based on the [`tools.ozone.moderation.defs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/tools/ozone/moderation/defs.json
-    public struct EventReportDefinition: Codable {
+    public struct EventReportDefinition: Sendable, Codable {
 
         /// Any comments for the moderator's report event. Optional.
         public var comment: String?
@@ -376,7 +376,7 @@ extension ToolsOzoneLexicon.Moderation {
     /// - SeeAlso: This is based on the [`tools.ozone.moderation.defs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/tools/ozone/moderation/defs.json
-    public struct EventLabelDefinition: Codable {
+    public struct EventLabelDefinition: Sendable, Codable {
 
         /// Any comments for the moderator's label event. Optional.
         public let comment: String?
@@ -399,7 +399,7 @@ extension ToolsOzoneLexicon.Moderation {
     /// - SeeAlso: This is based on the [`tools.ozone.moderation.defs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/tools/ozone/moderation/defs.json
-    public struct EventAcknowledgeDefinition: Codable {
+    public struct EventAcknowledgeDefinition: Sendable, Codable {
 
         /// Any comments for the moderator's acknowledge event. Optional.
         public var comment: String?
@@ -410,7 +410,7 @@ extension ToolsOzoneLexicon.Moderation {
     /// - SeeAlso: This is based on the [tools.ozone.moderation.defs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/tools/ozone/moderation/defs.json
-    public struct EventEscalateDefinition: Codable {
+    public struct EventEscalateDefinition: Sendable, Codable {
 
         /// Any additional comments for escalating a report. Optional.
         public var comment: String?
@@ -423,7 +423,7 @@ extension ToolsOzoneLexicon.Moderation {
     /// - SeeAlso: This is based on the [`tools.ozone.moderation.defs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/tools/ozone/moderation/defs.json
-    public struct EventMuteDefinition: Codable {
+    public struct EventMuteDefinition: Sendable, Codable {
 
         /// Any additional comments for the mute event. Optional.
         public var comment: String?
@@ -442,7 +442,7 @@ extension ToolsOzoneLexicon.Moderation {
     /// - SeeAlso: This is based on the [`tools.ozone.moderation.defs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/tools/ozone/moderation/defs.json
-    public struct EventUnmuteDefinition: Codable {
+    public struct EventUnmuteDefinition: Sendable, Codable {
 
         /// Any comments for the moderator's unmute event. Optional.
         ///
@@ -459,7 +459,7 @@ extension ToolsOzoneLexicon.Moderation {
     /// - SeeAlso: This is based on the [`tools.ozone.moderation.defs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/tools/ozone/moderation/defs.json
-    public struct EventMuteReporterDefinition: Codable {
+    public struct EventMuteReporterDefinition: Sendable, Codable {
 
         /// Indicates how long the account should remain muted (in hours).
         ///
@@ -479,7 +479,7 @@ extension ToolsOzoneLexicon.Moderation {
     /// - SeeAlso: This is based on the [`tools.ozone.moderation.defs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/tools/ozone/moderation/defs.json
-    public struct EventUnmuteReporterDefinition: Codable {
+    public struct EventUnmuteReporterDefinition: Sendable, Codable {
 
         /// Any additional comments about the event.
         ///
@@ -495,7 +495,7 @@ extension ToolsOzoneLexicon.Moderation {
     /// - SeeAlso: This is based on the [`tools.ozone.moderation.defs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/tools/ozone/moderation/defs.json
-    public struct EventEmailDefinition: Codable {
+    public struct EventEmailDefinition: Sendable, Codable {
 
         /// The subject line of the email.
         ///
@@ -524,7 +524,7 @@ extension ToolsOzoneLexicon.Moderation {
     /// - SeeAlso: This is based on the [`tools.ozone.moderation.defs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/tools/ozone/moderation/defs.json
-    public struct EventDivertDefinition: Codable {
+    public struct EventDivertDefinition: Sendable, Codable {
 
         /// Any additional comments about the diversion.
         public let comment: String?
@@ -537,7 +537,7 @@ extension ToolsOzoneLexicon.Moderation {
     /// - SeeAlso: This is based on the [`com.atproto.admin.defs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/admin/defs.json
-    public struct EventTagDefinition: Codable {
+    public struct EventTagDefinition: Sendable, Codable {
 
         /// An array of tags to be added to the user.
         ///
@@ -567,7 +567,7 @@ extension ToolsOzoneLexicon.Moderation {
     /// - SeeAlso: This is based on the [`com.atproto.admin.defs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/admin/defs.json
-    public struct RepositoryViewDefinition: Codable {
+    public struct RepositoryViewDefinition: Sendable, Codable {
 
         /// The decentralized identifier (DID) of the user.
         public let actorDID: String
@@ -639,7 +639,7 @@ extension ToolsOzoneLexicon.Moderation {
     /// - SeeAlso: This is based on the [`tools.ozone.moderation.defs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/admin/defs.json
-    public struct RepositoryViewDetailDefinition: Codable {
+    public struct RepositoryViewDetailDefinition: Sendable, Codable {
 
         /// The decentralized identifier (DID) of the user.
         public let actorDID: String
@@ -726,7 +726,7 @@ extension ToolsOzoneLexicon.Moderation {
     /// - SeeAlso: This is based on the [`tools.ozone.moderation.defs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/admin/defs.json
-    public struct RepositoryViewNotFoundDefinition: Codable {
+    public struct RepositoryViewNotFoundDefinition: Sendable, Codable {
 
         /// The decentralized identifier (DID) of the repository.
         public let repositoryDID: String
@@ -741,7 +741,7 @@ extension ToolsOzoneLexicon.Moderation {
     /// - SeeAlso: This is based on the [`tools.ozone.moderation.defs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/admin/defs.json
-    public struct RecordViewDefinition: Codable {
+    public struct RecordViewDefinition: Sendable, Codable {
 
         /// The URI of the record.
         public let recordURI: String
@@ -810,7 +810,7 @@ extension ToolsOzoneLexicon.Moderation {
     /// - SeeAlso: This is based on the [`tools.ozone.moderation.defs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/admin/defs.json
-    public struct RecordViewDetailDefinition: Codable {
+    public struct RecordViewDetailDefinition: Sendable, Codable {
 
         /// The URI of a record.
         public let recordURI: String
@@ -884,7 +884,7 @@ extension ToolsOzoneLexicon.Moderation {
     /// - SeeAlso: This is based on the [`tools.ozone.moderation.defs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/admin/defs.json
-    public struct RecordViewNotFoundDefinition: Codable {
+    public struct RecordViewNotFoundDefinition: Sendable, Codable {
 
         /// The URI of the record.
         public let recordURI: String
@@ -905,7 +905,7 @@ extension ToolsOzoneLexicon.Moderation {
     /// - SeeAlso: This is based on the [`tools.ozone.moderation.defs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/admin/defs.json
-    public struct ModerationDefinition: Codable {
+    public struct ModerationDefinition: Sendable, Codable {
 
         /// The status of the subject. Optional.
         ///
@@ -928,7 +928,7 @@ extension ToolsOzoneLexicon.Moderation {
     /// - SeeAlso: This is based on the [`com.atproto.admin.defs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/admin/defs.json
-    public struct ModerationDetailDefinition: Codable {
+    public struct ModerationDetailDefinition: Sendable, Codable {
 
         /// The status of the subject. Optional.
         ///
@@ -945,7 +945,7 @@ extension ToolsOzoneLexicon.Moderation {
     /// - SeeAlso: This is based on the [`com.atproto.admin.defs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/admin/defs.json
-    public struct BlobViewDefinition: Codable {
+    public struct BlobViewDefinition: Sendable, Codable {
 
         /// The CID hash of the blob.
         public let cidHash: String
@@ -991,7 +991,7 @@ extension ToolsOzoneLexicon.Moderation {
     /// - SeeAlso: This is based on the [`tools.ozone.moderation.defs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/admin/defs.json
-    public struct ImageDetailsDefinition: Codable {
+    public struct ImageDetailsDefinition: Sendable, Codable {
 
         /// The width of the image.
         public let width: Int
@@ -1005,7 +1005,7 @@ extension ToolsOzoneLexicon.Moderation {
     /// - SeeAlso: This is based on the [`tools.ozone.moderation.defs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/admin/defs.json
-    public struct VideoDetailsDefinition: Codable {
+    public struct VideoDetailsDefinition: Sendable, Codable {
 
         /// The width of the video.
         public let width: Int

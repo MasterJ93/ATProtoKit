@@ -14,7 +14,7 @@ extension ToolsOzoneLexicon.Communication {
     /// - SeeAlso: This is based on the [`tools.ozone.communication.defs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/tools/ozone/communication/defs.json
-    public struct TemplateViewDefinition: Codable {
+    public struct TemplateViewDefinition: Sendable, Codable {
 
         /// The ID of the communication template.
         public let id: Int

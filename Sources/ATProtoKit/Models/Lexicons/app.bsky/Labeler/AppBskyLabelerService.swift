@@ -17,12 +17,12 @@ extension AppBskyLexicon.Labeler {
     /// - SeeAlso: This is based on the [`app.bsky.labeler.service`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/labeler/service.json
-    public struct ServiceRecord: ATRecordProtocol {
+    public struct ServiceRecord: ATRecordProtocol, Sendable {
 
         /// The identifier of the lexicon.
         ///
         /// - Warning: The value must not change.
-        public static private(set) var type: String = "app.bsky.labeler.service"
+        public static let type: String = "app.bsky.labeler.service"
 
         /// The policies the labeler service adheres to.
         public let policies: LabelerPolicies

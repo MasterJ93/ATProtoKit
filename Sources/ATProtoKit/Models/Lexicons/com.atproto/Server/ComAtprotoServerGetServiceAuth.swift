@@ -17,7 +17,7 @@ extension ComAtprotoLexicon.Server {
     /// - SeeAlso: This is based on the [`com.atproto.server.getServiceAuth`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/server/getServiceAuth.json
-    public struct GetServiceAuthOutput: Codable {
+    public struct GetServiceAuthOutput: Sendable, Codable {
 
         /// The token for the requested service.
         public let token: String

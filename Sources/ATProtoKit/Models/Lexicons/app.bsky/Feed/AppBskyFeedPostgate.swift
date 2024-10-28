@@ -18,12 +18,12 @@ extension AppBskyLexicon.Feed {
     /// - SeeAlso: This is based on the [`app.bsky.feed.postgate`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/feed/postgate.json
-    public struct PostgateRecord: ATRecordProtocol {
+    public struct PostgateRecord: ATRecordProtocol, Sendable {
 
         /// The identifier of the lexicon.
         ///
         /// - Warning: The value must not change.
-        public static var type: String = "app.bsky.feed.postgate"
+        public static let type: String = "app.bsky.feed.postgate"
 
         /// The date and time the post was created.
         @DateFormatting public var createdAt: Date

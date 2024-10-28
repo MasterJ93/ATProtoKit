@@ -18,7 +18,7 @@ extension ComAtprotoLexicon.Server {
     /// - SeeAlso: This is based on the [`com.atproto.server.checkAccountStatus`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/server/checkAccountStatus.json
-    public struct CheckAccountStatusOutput: Codable {
+    public struct CheckAccountStatusOutput: Sendable, Codable {
 
         /// Indicates whether the user's account has been activated.
         public let isActivated: Bool

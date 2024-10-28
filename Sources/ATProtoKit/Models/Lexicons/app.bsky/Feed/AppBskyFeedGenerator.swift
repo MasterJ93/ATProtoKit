@@ -18,12 +18,12 @@ extension AppBskyLexicon.Feed {
     /// - SeeAlso: This is based on the [`app.bsky.feed.generator`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/feed/generator.json
-    public struct GeneratorRecord: ATRecordProtocol {
+    public struct GeneratorRecord: ATRecordProtocol, Sendable {
 
         /// The identifier of the lexicon.
         ///
         /// - Warning: The value must not change.
-        public static private(set) var type: String = "app.bsky.feed.generator"
+        public static let type: String = "app.bsky.feed.generator"
 
         /// The decentralized identifier (DID) of the feed.
         public let feedDID: String

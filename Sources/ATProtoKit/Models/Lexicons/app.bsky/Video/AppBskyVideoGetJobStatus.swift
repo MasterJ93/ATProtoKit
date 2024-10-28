@@ -17,8 +17,8 @@ extension AppBskyLexicon.Video {
     /// - SeeAlso: This is based on the [`app.bsky.video.getJobStatus`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/video/getJobStatus.json
-    public struct GetJobStatusOutput: Codable {
-        
+    public struct GetJobStatusOutput: Sendable, Codable {
+
         /// The status of the video processing job.
         public let jobStatus: AppBskyLexicon.Video.JobStatusDefinition
     }

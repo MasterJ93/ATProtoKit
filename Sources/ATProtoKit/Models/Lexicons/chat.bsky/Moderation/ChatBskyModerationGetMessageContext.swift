@@ -14,7 +14,7 @@ extension ChatBskyLexicon.Moderation {
     /// - SeeAlso: This is based on the [`chat.bsky.moderation.getMessageContext`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/chat/bsky/moderation/getMessageContext.json
-    public struct GetMessageContextOutput: Codable {
+    public struct GetMessageContextOutput: Sendable, Codable {
 
         /// An array of messages.
         public let messages: [ATUnion.GetMessageContextOutputMessagesUnion]

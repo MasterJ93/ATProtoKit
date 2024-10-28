@@ -31,7 +31,7 @@ import SwiftDiagnostics
 /// The above code will produce the following:
 /// ```swift
 /// extension ATUnion {
-///     public enum EmbedViewUnion: Codable {
+///     public enum EmbedViewUnion: Codable, Sendable {
 ///         case embedExternalView(AppBskyLexicon.Embed.ExternalDefinition.View)
 ///         case embedImagesView(AppBskyLexicon.Embed.ImagesDefinition.View)
 ///         case embedRecordView(AppBskyLexicon.Embed.RecordDefinition.View)
@@ -111,7 +111,7 @@ public struct ATUnionBuilderMacro: DeclarationMacro {
                 }
             }
 
-        let enumDecl = try EnumDeclSyntax("public enum \(raw: string): Decodable") {
+        let enumDecl = try EnumDeclSyntax("public enum \(raw: string): Codable, Sendable") {
             for argumentKeyValuePair in argumentKeyValuePairs {
                 try EnumCaseDeclSyntax("case \(raw: argumentKeyValuePair.0)(\(raw: argumentKeyValuePair.1))")
             }

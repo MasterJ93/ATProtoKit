@@ -14,7 +14,7 @@ extension ToolsOzoneLexicon.Signature {
     /// - SeeAlso: This is based on the [`tools.ozone.signature.defs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/tools/ozone/signature/defs.json
-    public struct SignatureDetailDefinition: Codable {
+    public struct SignatureDetailDefinition: Sendable, Codable {
 
         /// The property of the signature details. Optional.
         public let property: String?

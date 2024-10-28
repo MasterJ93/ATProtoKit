@@ -17,7 +17,7 @@ extension ComAtprotoLexicon.Admin {
     /// - SeeAlso: This is based on the [`com.atproto.admin.sendEmail`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/admin/sendEmail.json
-    public struct SendEmailRequestBody: Codable {
+    public struct SendEmailRequestBody: Sendable, Codable {
 
         /// The decentralized identifier (DID) of the recipient.
         public let recipientDID: String
@@ -51,7 +51,7 @@ extension ComAtprotoLexicon.Admin {
     /// - SeeAlso: This is based on the [`com.atproto.admin.sendEmail`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/admin/sendEmail.json
-    public struct SendEmailOutput: Codable {
+    public struct SendEmailOutput: Sendable, Codable {
 
         /// Indicates whether the email has been sent.
         public let isSent: Bool

@@ -3,6 +3,8 @@
 ## Topics
 
 - ``ATAPIError``
+- ``ATProtoBlueskyError``
+- ``ATJobStatusError``
 - ``ATDIDError``
 - ``ATHandleError``
 - ``ATNSIDError``

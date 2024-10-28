@@ -17,12 +17,12 @@ extension AppBskyLexicon.Actor {
     /// - SeeAlso: This is based on the [`app.bsky.actor.profile`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/actor/profile.json
-    public struct ProfileRecord: ATRecordProtocol {
+    public struct ProfileRecord: ATRecordProtocol, Sendable {
 
         /// The identifier of the lexicon.
         ///
         /// - Warning: The value must not change.
-        public static private(set) var type: String = "app.bsky.actor.profile"
+        public static let type: String = "app.bsky.actor.profile"
 
         /// The display name of the profile. Optional.
         public let displayName: String?

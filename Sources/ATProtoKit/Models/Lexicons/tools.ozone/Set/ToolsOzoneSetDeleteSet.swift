@@ -17,7 +17,7 @@ extension ToolsOzoneLexicon.Set {
     /// - SeeAlso: This is based on the [`tools.ozone.set.deleteSet`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/tools/ozone/set/deleteSet.json
-    public struct DeleteSetRequestBody: Codable {
+    public struct DeleteSetRequestBody: Sendable, Codable {
 
         /// The name of the set.
         ///
@@ -33,5 +33,5 @@ extension ToolsOzoneLexicon.Set {
     /// - SeeAlso: This is based on the [`tools.ozone.set.deleteSet`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/tools/ozone/set/deleteSet.json
-    public struct DeleteSetOutput: Codable {}
+    public struct DeleteSetOutput: Sendable, Codable {}
 }

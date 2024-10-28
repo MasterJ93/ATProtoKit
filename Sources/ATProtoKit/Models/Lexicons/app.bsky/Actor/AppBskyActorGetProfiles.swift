@@ -17,7 +17,7 @@ extension AppBskyLexicon.Actor {
     /// - SeeAlso: This is based on the [`app.bsky.actor.getProfiles`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/actor/getProfiles.json
-    public struct GetProfilesOutput: Codable {
+    public struct GetProfilesOutput: Sendable, Codable {
 
         /// An array of detailed profile views for several users.
         public let profiles: [ProfileViewDetailedDefinition]

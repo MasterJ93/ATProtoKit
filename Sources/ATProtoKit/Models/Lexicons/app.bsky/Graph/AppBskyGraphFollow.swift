@@ -17,12 +17,12 @@ extension AppBskyLexicon.Graph {
     /// - SeeAlso: This is based on the [`app.bsky.graph.follow`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/graph/follow.json
-    public struct FollowRecord: ATRecordProtocol {
+    public struct FollowRecord: ATRecordProtocol, Sendable {
 
         /// The identifier of the lexicon.
         ///
         /// - Warning: The value must not change.
-        public static private(set) var type: String = "app.bsky.graph.follow"
+        public static let type: String = "app.bsky.graph.follow"
 
         /// The subject that the user account wants to "follow."
         public let subjectDID: String

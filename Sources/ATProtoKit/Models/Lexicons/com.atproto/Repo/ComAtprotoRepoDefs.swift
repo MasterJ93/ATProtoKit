@@ -14,7 +14,7 @@ extension ComAtprotoLexicon.Repository {
     /// - SeeAlso: This is based on the [`com.atproto.repo.defs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/repo/defs.json
-    public struct CommitMetaDefinition: Codable {
+    public struct CommitMetaDefinition: Sendable, Codable {
 
         /// The CID of the commit.
         public let commitCID: String

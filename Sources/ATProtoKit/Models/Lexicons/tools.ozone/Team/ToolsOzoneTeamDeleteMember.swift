@@ -17,7 +17,7 @@ extension ToolsOzoneLexicon.Team {
     /// - SeeAlso: This is based on the [`tools.ozone.team.deleteMember`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/tools/ozone/team/deleteMember.json
-    public struct DeleteMemberRequestBody: Codable {
+    public struct DeleteMemberRequestBody: Sendable, Codable {
 
         /// The decentralized identifier (DID) of the member.
         public let memberDID: String

@@ -18,7 +18,7 @@ extension AppBskyLexicon.Graph {
     /// - SeeAlso: This is based on the [`app.bsky.graph.muteThread`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/graph/muteThread.json
-    public struct MuteThreadRequestBody: Codable {
+    public struct MuteThreadRequestBody: Sendable, Codable {
 
         /// The URI of the root of the post.
         public let root: String

@@ -17,7 +17,7 @@ extension ToolsOzoneLexicon.Team {
     /// - SeeAlso: This is based on the [`tools.ozone.team.updateMember`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/tools/ozone/team/updateMember.json
-    public struct UpdateMemberRequestBody: Codable {
+    public struct UpdateMemberRequestBody: Sendable, Codable {
 
         /// The decentralized identifier (DID) of the member.
         public let memberDID: String

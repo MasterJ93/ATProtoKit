@@ -17,7 +17,7 @@ extension ToolsOzoneLexicon.Team {
     /// - SeeAlso: This is based on the [`tools.ozone.team.listMembers`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/tools/ozone/team/listMembers.json
-    public struct ListMembersOutput: Codable {
+    public struct ListMembersOutput: Sendable, Codable {
 
         /// The mark used to indicate the starting point for the next set of results. Optional.
         public let cursor: String?

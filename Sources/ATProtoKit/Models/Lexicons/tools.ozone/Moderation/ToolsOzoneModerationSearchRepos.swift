@@ -17,7 +17,7 @@ extension ToolsOzoneLexicon.Moderation {
     /// - SeeAlso: This is based on the [`tools.ozone.moderation.searchRepos`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/tools/ozone/moderation/searchRepos.json
-    public struct SearchRepositoryOutput: Codable {
+    public struct SearchRepositoryOutput: Sendable, Codable {
 
         /// The mark used to indicate the starting point for the next set of results. Optional.
         public let cursor: String?

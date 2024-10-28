@@ -16,7 +16,7 @@ extension ComAtprotoLexicon.Admin {
     /// - SeeAlso: This is based on the [`com.atproto.admin.getAccountInfos`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/admin/getAccountInfos.json
-    public struct GetAccountInfosOutput: Codable {
+    public struct GetAccountInfosOutput: Sendable, Codable {
 
         /// An array of user account information.
         public let infos: [AccountViewDefinition]

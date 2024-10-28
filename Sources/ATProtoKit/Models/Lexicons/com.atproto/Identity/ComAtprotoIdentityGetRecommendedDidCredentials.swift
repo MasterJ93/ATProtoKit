@@ -18,7 +18,7 @@ extension ComAtprotoLexicon.Identity {
     /// - SeeAlso: This is based on the [`com.atproto.identity.getRecommendedDidCredentials`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/identity/getRecommendedDidCredentials.json
-    public struct GetRecommendedDidCredentialsOutput: Codable {
+    public struct GetRecommendedDidCredentialsOutput: Sendable, Codable {
 
         /// The rotation keys recommended to be added in the DID document. Optional.
         ///

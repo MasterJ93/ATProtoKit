@@ -10,10 +10,10 @@ import Foundation
 extension ChatBskyLexicon.Moderation {
 
     /// The main data model for getting the user account's metadata.
-    public struct GetActorMetadata: Codable {
+    public struct GetActorMetadata: Sendable, Codable {
 
         /// The metadata given to the moderator.
-        public struct Metadata: Codable {
+        public struct Metadata: Sendable, Codable {
 
             /// The number of messages sent from the user account.
             public let messagesSent: Int
@@ -41,7 +41,7 @@ extension ChatBskyLexicon.Moderation {
     /// - SeeAlso: This is based on the [`chat.bsky.moderation.getActorMetadata`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/chat/bsky/moderation/getActorMetadata.json
-    public struct GetActorMetadataOutput: Codable {
+    public struct GetActorMetadataOutput: Sendable, Codable {
 
         /// The metadata that reflects the past day.
         public let dayMetadata: GetActorMetadata.Metadata

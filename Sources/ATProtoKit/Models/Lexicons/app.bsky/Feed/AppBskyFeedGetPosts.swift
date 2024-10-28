@@ -18,7 +18,7 @@ extension AppBskyLexicon.Feed {
     /// - SeeAlso: This is based on the [`app.bsky.feed.getPosts`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/feed/getPosts.json
-    public struct GetPostsOutput: Codable {
+    public struct GetPostsOutput: Sendable, Codable {
 
         /// An array of hydrated posts.
         public let posts: [PostViewDefinition]

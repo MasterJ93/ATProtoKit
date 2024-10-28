@@ -16,12 +16,12 @@ extension AppBskyLexicon.Feed {
     /// - SeeAlso: This is based on the [`app.bsky.feed.post`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/feed/post.json
-    public struct PostRecord: ATRecordProtocol {
+    public struct PostRecord: ATRecordProtocol, Sendable {
 
         /// The identifier of the lexicon.
         ///
         /// - Warning: The value must not change.
-        public static private(set) var type: String = "app.bsky.feed.post"
+        public static let type: String = "app.bsky.feed.post"
 
         /// The text contained in the post.
         ///

@@ -17,7 +17,7 @@ extension AppBskyLexicon.Graph {
     /// - SeeAlso: This is based on the [`app.bsky.graph.muteActor`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/graph/muteActor.json
-    public struct MuteActorRequestBody: Codable {
+    public struct MuteActorRequestBody: Sendable, Codable {
 
         /// The decentralized identifier (DID) or handle of a user account.
         public let actorDID: String

@@ -17,7 +17,7 @@ extension AppBskyLexicon.Notification {
     /// - SeeAlso: This is based on the [`app.bsky.notification.updateSeen`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/notification/updateSeen.json
-    public struct UpdateSeenRequestBody: Codable {
+    public struct UpdateSeenRequestBody: Sendable, Codable {
 
         /// The date and time the notification was seen by the user account.
         @DateFormatting public var seenAt: Date

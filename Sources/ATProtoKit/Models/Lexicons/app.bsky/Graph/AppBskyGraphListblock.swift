@@ -17,12 +17,12 @@ extension AppBskyLexicon.Graph {
     /// - SeeAlso: This is based on the [`app.bsky.graph.listblock`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/graph/listblock.json
-    public struct ListBlockRecord: ATRecordProtocol {
+    public struct ListBlockRecord: ATRecordProtocol, Sendable {
 
         /// The identifier of the lexicon.
         ///
         /// - Warning: The value must not change.
-        public static private(set) var type: String = "app.bsky.graph.listblock"
+        public static let type: String = "app.bsky.graph.listblock"
 
         /// The decentralized identifier (DID) of the moderator list record.
         ///

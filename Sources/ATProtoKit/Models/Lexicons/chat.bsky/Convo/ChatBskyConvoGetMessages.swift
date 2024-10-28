@@ -14,7 +14,7 @@ extension ChatBskyLexicon.Conversation {
     /// - SeeAlso: This is based on the [`chat.bsky.convo.getMessages`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/chat/bsky/convo/getMessages.json
-    public struct GetMessagesOutput: Codable {
+    public struct GetMessagesOutput: Sendable, Codable {
 
         /// The mark used to indicate the starting point for the next set of results. Optional.
         public let cursor: String?

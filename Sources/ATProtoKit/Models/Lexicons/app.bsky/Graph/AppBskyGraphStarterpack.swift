@@ -17,12 +17,12 @@ extension AppBskyLexicon.Graph {
     /// - SeeAlso: This is based on the [`app.bsky.graph.starterpack`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/graph/starterpack.json
-    public struct StarterpackRecord: ATRecordProtocol {
+    public struct StarterpackRecord: ATRecordProtocol, Sendable {
 
         /// The identifier of the lexicon.
         ///
         /// - Warning: The value must not change.
-        public static var type: String = "app.bsky.graph.starterpack"
+        public static let type: String = "app.bsky.graph.starterpack"
 
         /// The name of the starter pack.
         ///

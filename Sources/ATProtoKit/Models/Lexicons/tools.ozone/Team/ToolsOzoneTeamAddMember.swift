@@ -17,7 +17,7 @@ extension ToolsOzoneLexicon.Team {
     /// - SeeAlso: This is based on the [`tools.ozone.team.addMember`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/tools/ozone/team/addMember.json
-    public struct AddMemberRequestBody: Codable {
+    public struct AddMemberRequestBody: Sendable, Codable {
 
         /// The decentralized identifier (DID) of the member.
         public let memberDID: String

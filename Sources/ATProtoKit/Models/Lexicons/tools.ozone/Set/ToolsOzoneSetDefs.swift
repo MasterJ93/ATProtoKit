@@ -13,7 +13,7 @@ extension ToolsOzoneLexicon.Set {
     /// - SeeAlso: This is based on the [`tools.ozone.set.defs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/tools/ozone/set/defs.json
-    public struct SetDefinition: Codable {
+    public struct SetDefinition: Sendable, Codable {
 
         /// The name of the set.
         ///
@@ -43,7 +43,7 @@ extension ToolsOzoneLexicon.Set {
     /// - SeeAlso: This is based on the [`tools.ozone.set.defs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/tools/ozone/set/defs.json
-    public struct SetViewDefinition: Codable {
+    public struct SetViewDefinition: Sendable, Codable {
 
         /// The name of the set.
         ///

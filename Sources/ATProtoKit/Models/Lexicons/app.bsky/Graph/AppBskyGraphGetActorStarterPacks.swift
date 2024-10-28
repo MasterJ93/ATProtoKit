@@ -17,7 +17,7 @@ extension AppBskyLexicon.Graph {
     /// - SeeAlso: This is based on the [`app.bsky.graph.getActorStarterPacks`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/graph/getActorStarterPacks.json
-    public struct GetActorStarterPacksOutput: Codable {
+    public struct GetActorStarterPacksOutput: Sendable, Codable {
 
         /// The mark used to indicate the starting point for the next set of results. Optional.
         public let cursor: String?

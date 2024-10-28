@@ -17,7 +17,7 @@ extension AppBskyLexicon.Graph {
     /// - SeeAlso: This is based on the [`app.bsky.graph.getFollows`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/graph/getFollows.json
-    public struct GetFollowsOutput: Codable {
+    public struct GetFollowsOutput: Sendable, Codable {
 
         /// The user account itself.
         public let subject: AppBskyLexicon.Actor.ProfileViewDefinition

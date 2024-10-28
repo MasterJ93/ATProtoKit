@@ -10,7 +10,7 @@ import Foundation
 extension AppBskyLexicon.Feed {
 
     /// The main data model seeing the user account's posts and reposts.
-    public struct GetAuthorFeed: Codable {
+    public struct GetAuthorFeed: Sendable, Codable {
 
         /// Indicates the kind of combinations of posts and reposts for the feed's array.
         ///
@@ -40,7 +40,7 @@ extension AppBskyLexicon.Feed {
     /// - SeeAlso: This is based on the [`app.bsky.feed.getAuthorFeed`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/feed/getAuthorFeed.json
-    public struct GetAuthorFeedOutput: Codable {
+    public struct GetAuthorFeedOutput: Sendable, Codable {
 
         /// The mark used to indicate the starting point for the next set of result. Optional.
         public let cursor: String?

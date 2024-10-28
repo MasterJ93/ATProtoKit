@@ -14,14 +14,14 @@ extension ChatBskyLexicon.Conversation {
     /// - SeeAlso: This is based on the [`chat.bsky.convo.sendMessageBatch`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/chat/bsky/convo/sendMessageBatch.json
-    public struct SendMessageBatch: Codable {
+    public struct SendMessageBatch: Sendable, Codable {
 
         /// A message batch object.
         ///
         /// - SeeAlso: This is based on the [`chat.bsky.convo.sendMessageBatch`][github] lexicon.
         ///
         /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/chat/bsky/convo/sendMessageBatch.json
-        public struct MessageBatchItem: Codable {
+        public struct MessageBatchItem: Sendable, Codable {
 
             /// The ID of the conversation.
             public let conversationID: String
@@ -41,7 +41,7 @@ extension ChatBskyLexicon.Conversation {
     /// - SeeAlso: This is based on the [`chat.bsky.convo.sendMessageBatch`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/chat/bsky/convo/sendMessageBatch.json
-    public struct SendMessageBatchRequestBody: Codable {
+    public struct SendMessageBatchRequestBody: Sendable, Codable {
 
         /// An array of messages.
         public let items: [SendMessageBatch.MessageBatchItem]
@@ -58,7 +58,7 @@ extension ChatBskyLexicon.Conversation {
     /// - SeeAlso: This is based on the [`chat.bsky.convo.sendMessageBatch`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/chat/bsky/convo/sendMessageBatch.json
-    public struct SendMessageBatchOutput: Codable {
+    public struct SendMessageBatchOutput: Sendable, Codable {
 
         /// An array of message views.
         public let items: [MessageViewDefinition]

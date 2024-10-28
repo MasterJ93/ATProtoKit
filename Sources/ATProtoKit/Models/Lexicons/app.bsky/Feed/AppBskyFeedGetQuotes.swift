@@ -17,7 +17,7 @@ extension AppBskyLexicon.Feed {
     /// - SeeAlso: This is based on the [`app.bsky.feed.getPostThread`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/feed/getPostThread.json
-    public struct GetQuotesOutput: Codable {
+    public struct GetQuotesOutput: Sendable, Codable {
 
         /// The URI of the given post.
         public let postURI: String

@@ -14,7 +14,7 @@ extension ChatBskyLexicon.Conversation {
     /// - SeeAlso: This is based on the [`chat.bsky.convo.listConvos`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/chat/bsky/convo/listConvos.json
-    public struct ListConversationsOutput: Codable {
+    public struct ListConversationsOutput: Sendable, Codable {
 
         /// The mark used to indicate the starting point for the next set of results. Optional.
         public let cursor: String

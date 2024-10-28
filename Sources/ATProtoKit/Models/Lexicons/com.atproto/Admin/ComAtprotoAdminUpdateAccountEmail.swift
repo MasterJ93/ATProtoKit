@@ -17,7 +17,7 @@ extension ComAtprotoLexicon.Admin {
     /// - SeeAlso: This is based on the [`com.atproto.admin.updateAccountEmail`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/admin/updateAccountEmail.json
-    public struct UpdateAccountEmailRequestBody: Codable {
+    public struct UpdateAccountEmailRequestBody: Sendable, Codable {
 
         /// The decentralized identifier (DID) of the account.
         public let accountDID: String

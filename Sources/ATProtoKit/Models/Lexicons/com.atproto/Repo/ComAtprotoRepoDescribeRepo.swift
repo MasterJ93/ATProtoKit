@@ -17,7 +17,7 @@ extension ComAtprotoLexicon.Repository {
     /// - SeeAlso: This is based on the [`com.atproto.repo.describeRepo`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/repo/describeRepo.json
-    public struct DescribeRepositoryOutput: Codable {
+    public struct DescribeRepositoryOutput: Sendable, Codable {
 
         /// The handle of the repository.
         public let repositoryHandle: String

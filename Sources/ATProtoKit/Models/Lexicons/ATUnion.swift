@@ -11,7 +11,7 @@ import Foundation
 public struct ATUnion {
 
     /// A reference containing the list of preferences.
-    public enum ActorPreferenceUnion: Codable {
+    public enum ActorPreferenceUnion: Sendable, Codable {
 
         /// The "Adult Content" preference.
         case adultContent(AppBskyLexicon.Actor.AdultContentPreferencesDefinition)
@@ -337,7 +337,7 @@ public struct ATUnion {
     }
 
     /// A reference containing the list of reposts.
-    public enum ReasonRepostUnion: Codable {
+    public enum ReasonRepostUnion: Sendable, Codable {
 
         /// A very stripped down version of a repost.
         case reasonRepost(AppBskyLexicon.Feed.ReasonRepostDefinition)
@@ -372,7 +372,7 @@ public struct ATUnion {
     }
 
     /// A reference containing the list of the states of a post.
-    public enum ReplyReferenceRootUnion: Codable {
+    public enum ReplyReferenceRootUnion: Sendable, Codable {
 
         /// The view of a post.
         case postView(AppBskyLexicon.Feed.PostViewDefinition)
@@ -414,7 +414,7 @@ public struct ATUnion {
     }
 
     /// A reference containing the list of the states of a post.
-    public enum ReplyReferenceParentUnion: Codable {
+    public enum ReplyReferenceParentUnion: Sendable, Codable {
 
         /// The view of a post.
         case postView(AppBskyLexicon.Feed.PostViewDefinition)
@@ -456,7 +456,7 @@ public struct ATUnion {
     }
 
     /// A reference containing the list of the states of a thread post parent.
-    public indirect enum ThreadViewPostParentUnion: Codable {
+    public indirect enum ThreadViewPostParentUnion: Sendable, Codable {
 
         /// The view of a post thread.
         case threadViewPost(AppBskyLexicon.Feed.ThreadViewPostDefinition)
@@ -498,7 +498,7 @@ public struct ATUnion {
     }
 
     /// A reference containing the list of the states of a thread post reply.
-    public indirect enum ThreadViewPostRepliesUnion: Codable {
+    public indirect enum ThreadViewPostRepliesUnion: Sendable, Codable {
 
         /// The view of a post thread.
         case threadViewPost(AppBskyLexicon.Feed.ThreadViewPostDefinition)
@@ -540,7 +540,7 @@ public struct ATUnion {
     }
 
     /// A reference containing the list of reposts.
-    public enum SkeletonReasonRepostUnion: Codable {
+    public enum SkeletonReasonRepostUnion: Sendable, Codable {
 
         /// A very stripped down version of a repost.
         case skeletonReasonRepost(AppBskyLexicon.Feed.SkeletonReasonRepostDefinition)
@@ -607,7 +607,7 @@ public struct ATUnion {
     }
 
     /// A reference containing the list of the states of a thread post reply.
-    public enum GetPostThreadOutputThreadUnion: Codable {
+    public enum GetPostThreadOutputThreadUnion: Sendable, Codable {
 
         /// The view of a post thread.
         case threadViewPost(AppBskyLexicon.Feed.ThreadViewPostDefinition)
@@ -824,7 +824,7 @@ public struct ATUnion {
     }
 
     /// A reference containing the list of labeler views.
-    public enum GetServicesOutputViewsUnion: Codable {
+    public enum GetServicesOutputViewsUnion: Sendable, Codable {
 
         /// A labeler view.
         case labelerView(AppBskyLexicon.Labeler.LabelerViewDefinition)
@@ -929,7 +929,7 @@ public struct ATUnion {
     }
 
     /// A reference containing the list of message embeds.
-    public enum MessageInputEmbedUnion: Codable {
+    public enum MessageInputEmbedUnion: Sendable, Codable {
 
         /// A record within the embed.
         case record(AppBskyLexicon.Embed.RecordDefinition)
@@ -957,7 +957,7 @@ public struct ATUnion {
     }
 
     /// A reference containing the list of message embeds.
-    public enum MessageViewEmbedUnion: Codable {
+    public enum MessageViewEmbedUnion: Sendable, Codable {
 
         /// A record within the embed.
         case record(AppBskyLexicon.Embed.RecordDefinition.View)
@@ -985,7 +985,7 @@ public struct ATUnion {
     }
 
     /// A reference containing the list of messages.
-    public enum ConversationViewLastMessageUnion: Codable {
+    public enum ConversationViewLastMessageUnion: Sendable, Codable {
 
         /// A message view.
         case messageView(ChatBskyLexicon.Conversation.MessageViewDefinition)
@@ -1020,7 +1020,7 @@ public struct ATUnion {
     }
 
     /// A reference containing the list of messages.
-    public enum LogCreateMessageUnion: Codable {
+    public enum LogCreateMessageUnion: Sendable, Codable {
 
         /// A message view.
         case messageView(ChatBskyLexicon.Conversation.MessageViewDefinition)
@@ -1055,7 +1055,7 @@ public struct ATUnion {
     }
 
     /// A reference containing the list of messages.
-    public enum LogDeleteMessageUnion: Codable {
+    public enum LogDeleteMessageUnion: Sendable, Codable {
 
         /// A message view.
         case messageView(ChatBskyLexicon.Conversation.MessageViewDefinition)
@@ -1090,7 +1090,7 @@ public struct ATUnion {
     }
 
     /// A reference containing the list of message logs.
-    public enum MessageLogsUnion: Codable {
+    public enum MessageLogsUnion: Sendable, Codable {
 
         /// A log entry for beginning the coversation.
         case logBeginConversation(ChatBskyLexicon.Conversation.LogBeginConversationDefinition)
@@ -1139,7 +1139,7 @@ public struct ATUnion {
     }
 
     /// A reference containing the list of messages.
-    public enum GetMessagesOutputMessagesUnion: Codable {
+    public enum GetMessagesOutputMessagesUnion: Sendable, Codable {
 
         /// A message view.
         case messageView(ChatBskyLexicon.Conversation.MessageViewDefinition)
@@ -1174,7 +1174,7 @@ public struct ATUnion {
     }
 
     /// A reference containing the list of messages.
-    public enum GetMessageContextOutputMessagesUnion: Codable {
+    public enum GetMessageContextOutputMessagesUnion: Sendable, Codable {
 
         /// A message view.
         case messageView(ChatBskyLexicon.Conversation.MessageViewDefinition)
@@ -1209,7 +1209,7 @@ public struct ATUnion {
     }
 
     /// A reference containing the list of repository references.
-    public enum AdminGetSubjectStatusUnion: Codable {
+    public enum AdminGetSubjectStatusUnion: Sendable, Codable {
 
         /// A repository reference.
         case repositoryReference(ComAtprotoLexicon.Admin.RepositoryReferenceDefinition)
@@ -1251,7 +1251,7 @@ public struct ATUnion {
     }
 
     /// A reference containing the list of repository references.
-    public enum AdminUpdateSubjectStatusUnion: Codable {
+    public enum AdminUpdateSubjectStatusUnion: Sendable, Codable {
 
         /// A repository reference.
         case repositoryReference(ComAtprotoLexicon.Admin.RepositoryReferenceDefinition)
@@ -1293,7 +1293,7 @@ public struct ATUnion {
     }
 
     /// A reference containing the list of repository references.
-    public enum CreateReportSubjectUnion: Codable {
+    public enum CreateReportSubjectUnion: Sendable, Codable {
 
         /// A repository reference.
         case repositoryReference(ComAtprotoLexicon.Admin.RepositoryReferenceDefinition)
@@ -1328,7 +1328,7 @@ public struct ATUnion {
     }
 
     /// A reference containing the list of write operations.
-    public enum ApplyWritesUnion: Codable {
+    public enum ApplyWritesUnion: Sendable, Codable {
 
         /// A "Create" write operation.
         case create(ComAtprotoLexicon.Repository.ApplyWrites.Create)
@@ -1370,7 +1370,7 @@ public struct ATUnion {
     }
 
     /// A reference containing the list of event views.
-    public enum ModerationEventViewUnion: Codable {
+    public enum ModerationEventViewUnion: Sendable, Codable {
 
         /// A takedown event.
         case moderationEventTakedown(ToolsOzoneLexicon.Moderation.EventTakedownDefinition)
@@ -1496,7 +1496,7 @@ public struct ATUnion {
     }
 
     /// A reference containing the list of repository references.
-    public enum ModerationEventViewSubjectUnion: Codable {
+    public enum ModerationEventViewSubjectUnion: Sendable, Codable {
 
         /// A repository reference.
         case repositoryReference(ComAtprotoLexicon.Admin.RepositoryReferenceDefinition)
@@ -1538,7 +1538,7 @@ public struct ATUnion {
     }
 
     /// A reference containing the list of moderator events.
-    public enum ModerationEventViewDetailUnion: Codable {
+    public enum ModerationEventViewDetailUnion: Sendable, Codable {
 
         /// A takedown event.
         case moderationEventTakedown(ToolsOzoneLexicon.Moderation.EventTakedownDefinition)
@@ -1629,7 +1629,7 @@ public struct ATUnion {
     }
 
     /// A reference containing the list of repository references.
-    public enum ModerationEventViewDetailSubjectUnion: Codable {
+    public enum ModerationEventViewDetailSubjectUnion: Sendable, Codable {
 
         /// A repository reference.
         case repositoryReference(ComAtprotoLexicon.Admin.RepositoryReferenceDefinition)
@@ -1671,7 +1671,7 @@ public struct ATUnion {
     }
 
     /// A reference containing the list of repository references.
-    public enum SubjectStatusViewSubjectUnion: Codable {
+    public enum SubjectStatusViewSubjectUnion: Sendable, Codable {
 
         /// A repository reference.
         case repositoryReference(ComAtprotoLexicon.Admin.RepositoryReferenceDefinition)
@@ -1706,7 +1706,7 @@ public struct ATUnion {
     }
 
     /// A reference containing the list of the types of media details.
-    public enum BlobViewDetailUnion: Codable {
+    public enum BlobViewDetailUnion: Sendable, Codable {
 
         /// The details for an image.
         case mediaImageDetails(ToolsOzoneLexicon.Moderation.ImageDetailsDefinition)
@@ -1741,7 +1741,7 @@ public struct ATUnion {
     }
 
     /// A reference containing the list of event views.
-    public enum EmitEventUnion: Codable {
+    public enum EmitEventUnion: Sendable, Codable {
 
         /// A takedown event.
         case moderationEventTakedown(ToolsOzoneLexicon.Moderation.EventTakedownDefinition)
@@ -1860,7 +1860,7 @@ public struct ATUnion {
     }
 
     /// A reference containing the list of repository references.
-    public enum EmitEventSubjectUnion: Codable {
+    public enum EmitEventSubjectUnion: Sendable, Codable {
 
         /// A repository reference.
         case repositoryReference(ComAtprotoLexicon.Admin.RepositoryReferenceDefinition)

@@ -16,7 +16,7 @@ extension ToolsOzoneLexicon.Communication {
     /// - SeeAlso: This is based on the [`tools.ozone.communication.deleteTemplate`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/tools/ozone/communication/deleteTemplate.json
-    public struct DeleteTemplateRequestBody: Codable {
+    public struct DeleteTemplateRequestBody: Sendable, Codable {
 
         /// The ID of the communication template.
         public let id: String

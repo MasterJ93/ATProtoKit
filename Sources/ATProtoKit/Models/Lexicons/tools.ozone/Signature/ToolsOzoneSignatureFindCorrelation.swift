@@ -17,7 +17,7 @@ extension ToolsOzoneLexicon.Signature {
     /// - SeeAlso: This is based on the [`tools.ozone.signature.findCorrelation`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/tools/ozone/signature/findCorrelation.json
-    public struct FindCorrelationOutput: Codable {
+    public struct FindCorrelationOutput: Sendable, Codable {
 
         /// An array of details for each signature.
         public let details: [ToolsOzoneLexicon.Signature.SignatureDetailDefinition]

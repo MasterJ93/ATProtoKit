@@ -14,7 +14,7 @@ extension ChatBskyLexicon.Conversation {
     /// - SeeAlso: This is based on the [`chat.bsky.convo.muteConvo`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/chat/bsky/convo/muteConvo.json
-    public struct MuteConversationRequestBody: Codable {
+    public struct MuteConversationRequestBody: Sendable, Codable {
 
         /// The ID of the conversation.
         public let conversationID: String
@@ -29,7 +29,7 @@ extension ChatBskyLexicon.Conversation {
     /// - SeeAlso: This is based on the [`chat.bsky.convo.muteConvo`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/chat/bsky/convo/muteConvo.json
-    public struct MuteConversationOutput: Codable {
+    public struct MuteConversationOutput: Sendable, Codable {
 
         /// The conversation the user account has successfully muted.
         public let conversation: ConversationViewDefinition

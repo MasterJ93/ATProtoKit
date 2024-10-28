@@ -20,7 +20,7 @@ extension ComAtprotoLexicon.Moderation {
     ///   Clarifications from Bluesky are needed in order to fully understand this item.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/moderation/defs.json
-    public enum ReasonTypeDefinition: String, Codable {
+    public enum ReasonTypeDefinition: String, Sendable, Codable {
 
         /// Indicates spam as the reason.
         ///

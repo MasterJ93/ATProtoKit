@@ -18,7 +18,7 @@ extension AppBskyLexicon.Actor {
     /// - SeeAlso: This is based on the [`app.bsky.actor.getPreferences`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/actor/getPreferences.json
-    public struct GetPreferencesOutput: Codable {
+    public struct GetPreferencesOutput: Sendable, Codable {
 
         /// The array of preferences in the user's account.
         public let preference: PreferencesDefinition

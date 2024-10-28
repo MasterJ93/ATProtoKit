@@ -14,7 +14,7 @@ extension ComAtprotoLexicon.Admin {
     /// - SeeAlso: This is based on the [`com.atproto.admin.defs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/admin/defs.json
-    public struct StatusAttributesDefinition: Codable {
+    public struct StatusAttributesDefinition: Sendable, Codable {
 
         /// Indicates whether the status attributes are being applied.
         public let isApplied: Bool
@@ -33,7 +33,7 @@ extension ComAtprotoLexicon.Admin {
     /// - SeeAlso: This is based on the [`com.atproto.admin.defs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/admin/defs.json
-    public struct AccountViewDefinition: Codable {
+    public struct AccountViewDefinition: Sendable, Codable {
 
         /// The decentralized identifier (DID) of the user.
         public let actorDID: String
@@ -110,7 +110,7 @@ extension ComAtprotoLexicon.Admin {
     /// - SeeAlso: This is based on the [`com.atproto.admin.defs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/admin/defs.json
-    public struct RepositoryReferenceDefinition: Codable {
+    public struct RepositoryReferenceDefinition: Sendable, Codable {
 
         /// The decentralized identifier (DID) of the repository.
         public let repositoryDID: String
@@ -125,7 +125,7 @@ extension ComAtprotoLexicon.Admin {
     /// - SeeAlso: This is based on the [`com.atproto.admin.defs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/admin/defs.json
-    public struct RepositoryBlobReferenceDefinition: Codable {
+    public struct RepositoryBlobReferenceDefinition: Sendable, Codable {
 
         /// The decentralized identifier (DID) of the blob reference.
         public let blobDID: String

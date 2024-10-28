@@ -17,12 +17,12 @@ extension ChatBskyLexicon.Actor {
     /// - SeeAlso: This is based on the [`chat.bsky.actor.declaration`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/chat/bsky/actor/declaration.json
-    public struct DeclarationRecord: ATRecordProtocol {
+    public struct DeclarationRecord: ATRecordProtocol, Sendable {
 
         /// The identifier of the lexicon.
         ///
         /// - Warning: The value must not change.
-        public private(set) static var type: String = "chat.bsky.actor.declaration"
+        public static let type: String = "chat.bsky.actor.declaration"
 
         /// Establishes rule for who can message the user account.
         public let allowIncoming: AllIncoming

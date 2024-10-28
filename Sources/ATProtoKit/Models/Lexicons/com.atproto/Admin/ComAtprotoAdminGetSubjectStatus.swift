@@ -17,7 +17,7 @@ extension ComAtprotoLexicon.Admin {
     /// - SeeAlso: This is based on the [`com.atproto.admin.getSubjectStatus`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/admin/getSubjectStatus.json
-    public struct GetSubjectStatusOutput: Codable {
+    public struct GetSubjectStatusOutput: Sendable, Codable {
 
         /// The subject itself.
         public let subject: ATUnion.AdminGetSubjectStatusUnion

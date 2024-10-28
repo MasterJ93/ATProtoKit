@@ -17,7 +17,7 @@ extension ComAtprotoLexicon.Sync {
     /// - SeeAlso: This is based on the [`com.atproto.sync.listBlobs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/sync/listBlobs.json
-    public struct ListBlobsOutput: Codable {
+    public struct ListBlobsOutput: Sendable, Codable {
 
         /// The mark used to indicate the starting point for the next set of results. Optional.
         public let cursor: String?

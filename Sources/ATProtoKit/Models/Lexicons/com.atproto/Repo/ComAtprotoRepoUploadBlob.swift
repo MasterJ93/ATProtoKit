@@ -10,7 +10,7 @@ import Foundation
 extension ComAtprotoLexicon.Repository {
 
     /// The main data model definition for the image's query.
-    public struct ImageQuery: Encodable {
+    public struct ImageQuery: Sendable, Encodable {
 
         /// The data of the image.
         public let imageData: Data
@@ -38,7 +38,7 @@ extension ComAtprotoLexicon.Repository {
     /// - SeeAlso: This is based on the [`com.atproto.repo.uploadBlob`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/repo/uploadBlob.json
-    public struct UploadBlobRequestBody: Codable {}
+    public struct UploadBlobRequestBody: Sendable, Codable {}
 
     // MARK: -
     // TODO: Find a way to remove BlobContainer without breaking the JSON encoding.

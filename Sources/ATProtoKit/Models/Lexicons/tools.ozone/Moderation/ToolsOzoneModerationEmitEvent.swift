@@ -16,7 +16,7 @@ extension ToolsOzoneLexicon.Moderation {
     /// - SeeAlso: This is based on the [`tools.ozone.moderation.emitEvent`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/tools/ozone/moderation/emitEvent.json
-    public struct EmitEventRequestBody: Codable {
+    public struct EmitEventRequestBody: Sendable, Codable {
 
         /// The type of event the moderator is taking,
         public let event: ATUnion.EmitEventUnion

@@ -17,12 +17,12 @@ extension AppBskyLexicon.Graph {
     /// - SeeAlso: This is based on the [`app.bsky.graph.listitem`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/graph/listitem.json
-    public struct ListItemRecord: ATRecordProtocol {
+    public struct ListItemRecord: ATRecordProtocol, Sendable {
 
         /// The identifier of the lexicon.
         ///
         /// - Warning: The value must not change.
-        public static private(set) var type: String = "app.bsky.graph.listitem"
+        public static let type: String = "app.bsky.graph.listitem"
 
         /// The decentralized identifier (DID) of the account that's in a list.
         ///

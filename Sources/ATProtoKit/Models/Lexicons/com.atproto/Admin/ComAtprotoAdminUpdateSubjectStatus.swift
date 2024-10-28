@@ -17,7 +17,7 @@ extension ComAtprotoLexicon.Admin {
     /// - SeeAlso: This is based on the [`com.atproto.admin.updateSubjectStatus`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/admin/updateSubjectStatus.json
-    public struct UpdateSubjectStatusRequestBody: Codable {
+    public struct UpdateSubjectStatusRequestBody: Sendable, Codable {
 
         /// The subject associated with the subject status.
         public let subject: ATUnion.AdminUpdateSubjectStatusUnion
@@ -37,7 +37,7 @@ extension ComAtprotoLexicon.Admin {
     /// - SeeAlso: This is based on the [`com.atproto.admin.updateSubjectStatus`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/admin/updateSubjectStatus.json
-    public struct UpdateSubjectStatusOutput: Codable {
+    public struct UpdateSubjectStatusOutput: Sendable, Codable {
 
         /// The subject associated with the subject status.
         public let subject: ATUnion.AdminUpdateSubjectStatusUnion

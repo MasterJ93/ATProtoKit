@@ -17,7 +17,7 @@ extension ComAtprotoLexicon.Repository {
     /// - SeeAlso: This is based on the [`com.atproto.repo.deleteRecord`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/repo/deleteRecord.json
-    public struct DeleteRecordRequestBody: Codable {
+    public struct DeleteRecordRequestBody: Sendable, Codable {
 
         /// The decentralized identifier (DID) or handle of the user account.
         ///
@@ -67,7 +67,7 @@ extension ComAtprotoLexicon.Repository {
     /// - SeeAlso: This is based on the [`com.atproto.repo.deleteRecord`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/repo/deleteRecord.json
-    public struct DeleteRecordOutput: Codable {
+    public struct DeleteRecordOutput: Sendable, Codable {
 
         /// The commit of the record. Optional.
         public let recordCommit: ComAtprotoLexicon.Repository.CommitMetaDefinition?

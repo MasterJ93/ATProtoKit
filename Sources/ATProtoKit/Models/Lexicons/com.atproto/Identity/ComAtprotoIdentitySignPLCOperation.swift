@@ -17,7 +17,7 @@ extension ComAtprotoLexicon.Identity {
     /// - SeeAlso: This is based on the [`com.atproto.identity.signPlcOperation`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/identity/signPlcOperation.json
-    public struct SignPLCOperationRequestBody: Codable {
+    public struct SignPLCOperationRequestBody: Sendable, Codable {
 
         /// A token received from
         /// ``ATProtoKit/ATProtoKit/requestPLCOperationSignature()``. Optional.
@@ -47,7 +47,7 @@ extension ComAtprotoLexicon.Identity {
     /// - SeeAlso: This is based on the [`com.atproto.identity.signPlcOperation`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/identity/signPlcOperation.json
-    public struct SignPLCOperationOutput: Codable {
+    public struct SignPLCOperationOutput: Sendable, Codable {
 
         /// The operation itself.
         public let operation: UnknownType

@@ -16,7 +16,7 @@ extension ComAtprotoLexicon.Server {
     /// - SeeAlso: This is based on the [`com.atproto.server.createAppPassword`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/server/createAppPassword.json
-    public struct CreateAppPasswordRequestBody: Codable {
+    public struct CreateAppPasswordRequestBody: Sendable, Codable {
 
         /// The name given to the App Password to help distingush it from others.
         ///
@@ -45,7 +45,7 @@ extension ComAtprotoLexicon.Server {
     /// - SeeAlso: This is based on the [`com.atproto.server.createAppPassword`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/server/createAppPassword.json
-    public struct CreateAppPasswordOutput: Codable {
+    public struct CreateAppPasswordOutput: Sendable, Codable {
 
         /// The name given to the App Password to help distingush it from others.
         ///

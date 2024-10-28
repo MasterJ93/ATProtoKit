@@ -18,5 +18,5 @@ extension ComAtprotoLexicon.Sync {
     /// - SeeAlso: This is based on the [`com.atproto.sync.getBlocks`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/sync/getBlocks.json
-    public struct GetBlocksOutput: Codable {}
+    public struct GetBlocksOutput: Sendable, Codable {}
 }

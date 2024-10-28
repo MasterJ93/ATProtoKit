@@ -17,7 +17,7 @@ extension AppBskyLexicon.Unspecced {
     /// - SeeAlso: This is based on the [`app.bsky.unspecced.defs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/unspecced/defs.json
-    public struct SkeletonSearchPostDefinition: Codable {
+    public struct SkeletonSearchPostDefinition: Sendable, Codable {
 
         /// The URI of the skeleton search post.
         public let postURI: String
