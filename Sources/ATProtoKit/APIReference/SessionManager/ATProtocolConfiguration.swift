@@ -39,9 +39,6 @@ public class ATProtocolConfiguration: ProtocolConfiguration {
     /// Specifies the highest level of logs that will be outputted. Optional. Defaults to `.info`.
     public let logLevel: Logger.Level?
 
-    /// Specifies the logger that will be used for emitting log messages.
-    private static var sharedLogger: Logger?
-
     /// The number of times a request can be attempted before it's considered a failure.
     ///
     /// By default, ATProtoKit will retry a request attempt for 1 second.
@@ -77,19 +74,20 @@ public class ATProtocolConfiguration: ProtocolConfiguration {
         logCategory: String? = nil,
         logLevel: Logger.Level? = .info
     ) {
-            self.handle = handle
-            self.appPassword = appPassword
-            self.pdsURL = !pdsURL.isEmpty ? pdsURL : "https://bsky.social"
-            self.configuration = configuration
-            self.logIdentifier = logIdentifier ?? Bundle.main.bundleIdentifier ?? "com.cjrriley.ATProtoKit"
-            self.logCategory = logCategory ?? "ATProtoKit"
-            self.logLevel = logLevel
+        self.handle = handle
+        self.appPassword = appPassword
+        self.pdsURL = !pdsURL.isEmpty ? pdsURL : "https://bsky.social"
+        self.configuration = configuration
+        self.logIdentifier = logIdentifier ?? Bundle.main.bundleIdentifier ?? "com.cjrriley.ATProtoKit"
+        self.logCategory = logCategory ?? "ATProtoKit"
+        self.logLevel = logLevel
 
-            setupLog(logCategory, logLevel)
+        self.logger = nil
+        self.logger = setupLog(logCategory, logLevel)
 
-            Task { [configuration] in
-                await APIClientService.shared.configure(with: configuration)
-            }
+        Task { [configuration] in
+            await APIClientService.shared.configure(with: configuration)
+        }
     }
 
     /// Initializes a new instance of `ATProtocolConfiguration`, which assembles an a session
@@ -130,25 +128,23 @@ public class ATProtocolConfiguration: ProtocolConfiguration {
         self.logLevel = logLevel
     }
 
-    /// Private method to set up logger.
+    /// Private method to set up the logger.
     ///
     /// - Parameters:
     ///   - logCategory: The catergory of the logger. Optional.
     ///   - logLevel: The level of the logger. Optional.
-    fileprivate func setupLog(_ logCategory: String?, _ logLevel: Logger.Level?) {
-        if ATProtocolConfiguration.sharedLogger == nil {
-            #if canImport(os)
-            LoggingSystem.bootstrap { label in
-                ATLogHandler(subsystem: label, category: logCategory ?? "ATProtoKit")
-            }
-            #else
-            LoggingSystem.bootstrap(StreamLogHandler.standardOutput)
-            #endif
-
-            ATProtocolConfiguration.sharedLogger = Logger(label: self.logIdentifier ?? "com.cjrriley.ATProtoKit")
-            ATProtocolConfiguration.sharedLogger?.logLevel = logLevel ?? .info
+    fileprivate func setupLog(_ logCategory: String?, _ logLevel: Logger.Level?) -> Logger {
+        #if canImport(os)
+        LoggingSystem.bootstrap { label in
+            ATLogHandler(subsystem: label, category: logCategory ?? "ATProtoKit")
         }
+        #else
+        LoggingSystem.bootstrap(StreamLogHandler.standardOutput)
+        #endif
 
-        self.logger = ATProtocolConfiguration.sharedLogger
+        var sharedLogger = Logger(label: self.logIdentifier ?? "com.cjrriley.ATProtoKit")
+        sharedLogger.logLevel = logLevel ?? .info
+        
+        return sharedLogger
     }
 }
