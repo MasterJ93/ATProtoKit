@@ -82,7 +82,6 @@ public class ATProtocolConfiguration: ProtocolConfiguration {
         self.logCategory = logCategory ?? "ATProtoKit"
         self.logLevel = logLevel
 
-        self.logger = nil
         self.logger = setupLog(logCategory, logLevel)
 
         Task { [configuration] in
