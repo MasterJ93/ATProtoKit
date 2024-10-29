@@ -87,8 +87,8 @@ public class ATProtocolConfiguration: ProtocolConfiguration {
 
             setupLog(logCategory, logLevel)
 
-            Task {
-                await APIClientService.shared.configure(with: self.configuration)
+            Task { [configuration] in
+                await APIClientService.shared.configure(with: configuration)
             }
     }
 
