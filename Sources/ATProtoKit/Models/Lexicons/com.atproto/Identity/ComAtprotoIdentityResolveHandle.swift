@@ -17,6 +17,6 @@ extension ComAtprotoLexicon.Identity {
     public struct ResolveHandleOutput: Sendable, Decodable {
 
         /// The resolved handle's decentralized identifier (DID).
-        public let handleDID: String
+        public let did: String
     }
 }
