@@ -187,7 +187,7 @@ public class ATFacetParser {
 
                         let mentionFacet = AppBskyLexicon.RichText.Facet(
                             index: AppBskyLexicon.RichText.Facet.ByteSlice(byteStart: start, byteEnd: end),
-                            features: [.mention(AppBskyLexicon.RichText.Facet.Mention(did: mentionResult.handleDID))])
+                            features: [.mention(AppBskyLexicon.RichText.Facet.Mention(did: mentionResult.did))])
 
                         await facets.append(mentionFacet)
                     } catch {
