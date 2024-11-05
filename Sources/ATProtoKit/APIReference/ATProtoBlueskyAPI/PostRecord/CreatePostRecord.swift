@@ -13,8 +13,191 @@ extension ATProtoBluesky {
     ///
     /// This can be used instead of creating your own method if you wish not to do so.
     ///
-    /// - Bug: Creating a record that contains a record and media at the same time has yet to
-    /// be implemented.
+    /// ## Creating a Post
+    /// After you authenticate into Bluesky, you can create a post by using the `text` field:
+    /// ```swift
+    /// do {
+    ///     let postResult = try await atProtoBluesky.createPostRecord(text: "Just tried out the new coffee shop in town ☕️ — highly recommend the cold brew!")
+    ///
+    ///     print(postResult)
+    /// } catch {
+    ///     throw error
+    /// }
+    /// ```
+    /// If your post is longer than 300 characters, the method will only take the first 300
+    /// characters, discarding the rest.
+    ///
+    /// Bluesky will automatically set the language of the post to English, but if you need to
+    /// manually set it, you can use the `locales` argument:
+    /// ```swift
+    /// do {
+    ///     let postResult = try await atProtoBluesky.createPostRecord(
+    ///         text: "Première promenade d'automne 🍂. Les couleurs sont magnifiques cette année!",
+    ///         locales: [Locale(identifier: "fr_FR")]
+    ///     )
+    ///
+    ///     print(postResult)
+    /// } catch {
+    ///     throw error
+    /// }
+    /// ```
+    ///
+    /// You can add up to three locales at once; only the first three items will be added as this
+    /// is the limit mandated by Bluesky.
+    ///
+    /// ## Adding Embedded Content
+    /// You can embed various kinds of content in your post, from media to external links,
+    /// to other records.
+    ///
+    /// ### Images
+    /// Use ``ComAtprotoLexicon/Repository/ImageQuery`` to add details to the image, such as
+    /// alt text, then attach it to the post record.
+    ///
+    /// ```swift
+    /// do {
+    ///     let image = ComAtprotoLexicon.Repository.ImageQuery(
+    ///                     imageData: Data(contentsOf: "/path/to/file/cat.jpg"),
+    ///                     fileName: "cat.jpg",
+    ///                     altText: "A cat looking annoyed, waring a hat."
+    ///                 )
+    ///
+    ///     let postResult = try await atProtoBluesky.createPostRecord(
+    ///         text: "I don't think my cat likes her new hat... 🙃",
+    ///         embed: .images(
+    ///             images: [image]
+    ///         )
+    ///     )
+    ///
+    ///     print(postResult)
+    /// } catch {
+    ///     throw error
+    /// }
+    /// ```
+    ///
+    /// Up to four images can be attached to a post. All images need to be a .jpg format.
+    ///
+    /// ### Videos
+    /// Similar to images, you can add videos to a post.
+    ///
+    /// ```swift
+    /// let videoURL = URL(string: "/path/to/file/beach.mp4")
+    ///
+    /// do {
+    ///     let postResult = try await atProtoBluesky.createPostRecord(
+    ///         text: "The waves on the beach are looking as beautiful as ever.",
+    ///         embed: .video(video: Data(contentsOf: videoFileURL))
+    ///     )
+    ///
+    ///     print(postResult)
+    /// } catch {
+    ///     throw error
+    /// }
+    /// ```
+    ///
+    /// Only one video can be added to a post, can be 50 MB or less, and must use the .mp4 format.
+    /// You can upload up to 25 videos per day and the 25 videos can't exceed a total of 500 MB
+    /// for the day.
+    ///
+    /// ### External Links
+    /// You can attach a website card to the post.
+    ///
+    /// ```swift
+    /// do {
+    ///     let externalLinkBuilder = ExternalLinkBuilder(link: "https://www.youtube.com/watch?v=dQw4w9WgXcQ") // Replace this with your own implementation.
+    ///     guard let externalLinkThumbnailURL = externalLinkBuilder.thumbnailURL else { return }
+    ///
+    ///     let postResult = try await atProtoBluesky.createPostRecord(
+    ///         text: "Really glad to hear his talk in person!",
+    ///         embed: .external(
+    ///             url: externalLinkBuilder.url,
+    ///             title: externalLinkBuilder.title,
+    ///             description: externalLinkBuilder.description,
+    ///             thumbnailURL: externalLinkThumbnailURL
+    ///         )
+    ///     )
+    ///
+    ///     print(postResult)
+    /// } catch {
+    ///     throw error
+    /// }
+    /// ```
+    ///
+    /// If there are any links in the post's text, the method will not convert it into a
+    /// website card; you will need to manually achieve this.
+    ///
+    /// ## Creating a Quote Post
+    /// Quote posts are also embeds: you simply need to embed the record's strong reference to it.
+    ///
+    /// ```swift
+    /// do {
+    ///     let strongReference = ComAtprotoLexicon.Repository.StrongReference(recordURI: record.uri, cidHash: record.cid)
+    ///
+    ///     let postResult = try await atProtoBluesky.createPostRecord(
+    ///         text: "Me whenever I look at my email:",
+    ///         embed: .record(strongReference: strongReference)
+    ///     )
+    ///
+    ///     print(postResult)
+    /// } catch {
+    ///     throw error
+    /// }
+    /// ```
+    ///
+    /// Only one record can be embedded. This isn't limited to post records, though: you can embed
+    /// any Bluesky-related record that you wish.
+    ///
+    /// ## Creating a Reply
+    /// To create a reply, pass the reply reference of the post's reply reference to the post record.
+    ///
+    /// ```swift
+    /// do {
+    ///     let replyReference = try await ATProtoTools().createReplyReference(
+    ///         from: parentPost,
+    ///         session: session
+    ///     )
+    ///
+    ///     let postResult = try await atProtoBluesky.createPostRecord(
+    ///         text: "I also like pancakes.",
+    ///         replyTo: replyReference
+    ///     )
+    ///
+    ///     print(postResult)
+    /// } catch {
+    ///     throw error
+    /// }
+    /// ```
+    ///
+    /// If you want to create a thread of posts, use
+    /// ``ATProtoTools/createReplyReference(from:session:)`` to create the reply reference and
+    /// pass that over to `replyTo`:
+    ///
+    /// ```swift
+    /// do {
+    ///     let threadPost = try await atProtoBluesky.createPostRecord(
+    ///         text: "I like waffles."
+    ///     )
+    ///
+    ///     print("Replying...")
+    ///
+    ///     let firstReplyReference = try await ATProtoTools().createReplyReference(from: threadPost, session: session)
+    ///
+    ///     let threadPost2 = try await atProtoBluesky.createPostRecord(
+    ///         text: "I also like pancakes.",
+    ///         replyTo: firstReplyReference
+    ///     )
+    ///
+    ///     print("Second reply...")
+    ///
+    ///     let secondReplyReference = try await ATProtoTools().createReplyReference(from: threadPost2, session: session)
+    ///
+    ///     let threadPost3 = try await atProtoBluesky.createPostRecord(
+    ///         text: "I also like ice cream.",
+    ///         replyTo: secondReplyReference
+    ///     )
+    /// } catch {
+    ///     throw error
+    /// }
+    /// ```
     ///
     /// - Parameters:
     ///   - text: The text that's directly displayed in the post record. Current limit is
