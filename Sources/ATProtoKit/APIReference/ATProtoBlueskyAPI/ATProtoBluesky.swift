@@ -24,16 +24,16 @@ extension ATProtoBluesky {
     public protocol ExternalLinkMetadata: Sendable {
 
         /// The URL of the external link.
-        let url: URL { get }
+        var url: URL { get }
 
-        /// The title of the external link.
-        let title: String { get }
+        /// The title of the external link. Optional.
+        var title: String? { get }
 
         /// The description of the external link. Optional.
-        let description: String? { get }
+        var description: String? { get }
 
         /// The URL of the thumbnail image. Optional.
-        let thumbnailURL: URL? { get }
+        var thumbnailURL: URL? { get }
 
         
         /// Fills the properties of the `struct` conforming
