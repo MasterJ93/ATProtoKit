@@ -393,7 +393,7 @@ public actor APIClientService {
         var value: String {
             switch self {
                 case .default:
-                    return "ATProtoKit/0.20.0 (iOS; 18.1)"
+                    return "ATProtoKit/\(versionNumber) (\(osNameAndVersion)"
                 case .custom(let customUserAgent):
                     return "\(customUserAgent) ATProtoKit/0.20.0"
                 case .none:
