@@ -401,7 +401,8 @@ public actor APIClientService {
             }
         }
 
-        private var osNameAndVersion: String {
+        /// Gets the operating system's name and version number.
+        public var osNameAndVersion: String {
             #if os(macOS)
             return "macOS; \(grabAppleOSVersion)"
             #elseif os(iOS)
