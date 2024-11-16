@@ -370,10 +370,10 @@ public actor APIClientService {
         /// recommended approach.
         ///
         /// ```
-        /// /2.1 (iOS; 18.1) ATProtoKit/0.20.0
+        /// Skyline 2.1 (iOS; 18.1) ATProtoKit/0.20.0
         /// ```
         ///
-        /// - `d`: Name of the client.
+        /// - `Skyline`: Name of the client.
         /// - `2.1`: This is the version number of your client.
         /// - `iOS`: The operating system the client is running on.
         /// - `18.1`: The version number of the operating system.
@@ -395,7 +395,7 @@ public actor APIClientService {
                 case .default:
                     return "ATProtoKit/\(versionNumber) (\(osNameAndVersion)"
                 case .custom(let customUserAgent):
-                    return "\(customUserAgent) ATProtoKit/0.20.0"
+                    return "\(customUserAgent) ATProtoKit/\(versionNumber)"
                 case .none:
                     return ""
             }
