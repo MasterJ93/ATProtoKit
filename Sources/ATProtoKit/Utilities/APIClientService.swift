@@ -381,7 +381,7 @@ public actor APIClientService {
         /// - `0.20.0`: The version ATProtoKit is the client is currently running on.
         ///
         /// - Note: The "ATProtoKit" name and its version number will always be displayed,
-        /// so there's no need to
+        /// so there's no need to add it yourself.
         case custom(userAgent: String)
 
         /// No User Agent will be provided.
