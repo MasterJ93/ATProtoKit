@@ -52,6 +52,7 @@ public actor APIClientService {
     ///   - labelersValue: The `atproto-accept-labelers` value. Optional.
     ///   - isRelatedToBskyChat: Indicates whether to use the "atproto-proxy" header for
     ///   the value specific to Bluesky DMs. Optional. Defaults to `false`.
+    ///  - userAgent: The user agent of the client. Defaults to `.default`.
     /// - Returns: A configured `URLRequest` instance.
     public static func createRequest(forRequest requestURL: URL, andMethod httpMethod: HTTPMethod, acceptValue: String? = "application/json",
                                      contentTypeValue: String? = "application/json", authorizationValue: String? = nil,
@@ -96,7 +97,6 @@ public actor APIClientService {
         }
         return httpBody
     }
-
 
     /// Sets query items for a given URL.
     ///
@@ -424,7 +424,7 @@ public actor APIClientService {
         /// Grabs the Apple OS's name and version number.
         ///
         /// - Note: Only works on iOS, iPadOS, tvOS, watchOS, or visionOS.
-        private var grabAppleOSVersion: String {
+        public var grabAppleOSVersion: String {
             #if os(macOS) || os(iOS) || os(tvOS) || os(watchOS) || os(visionOS)
             let majorVersion = ProcessInfo.processInfo.operatingSystemVersion.majorVersion
             let minorVersion = ProcessInfo.processInfo.operatingSystemVersion.minorVersion
