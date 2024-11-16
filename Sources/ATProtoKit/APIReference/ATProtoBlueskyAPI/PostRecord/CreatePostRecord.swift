@@ -238,7 +238,7 @@ extension ATProtoBluesky {
         // Truncate the number of characters to 300.
         let postText = text.truncated(toLength: 300)
 
-        let facets = await ATFacetParser.parseFacets(from: postText, pdsURL: session.accessToken)
+        let facets = await ATFacetParser.parseFacets(from: postText, pdsURL: session.pdsURL ?? "https://bsky.social")
 
         // Replies
         // Validate the reply reference if provided.
@@ -282,7 +282,7 @@ extension ATProtoBluesky {
         // Compiling all parts of the post into one.
         let postRecord = AppBskyLexicon.Feed.PostRecord(
             text: postText,
-            facets: await ATFacetParser.parseFacets(from: postText, pdsURL: session.pdsURL ?? "https://bsky.social"),
+            facets: facets,
             reply: resolvedReplyTo,
             embed: resolvedEmbed,
             languages: localeIdentifiers,
