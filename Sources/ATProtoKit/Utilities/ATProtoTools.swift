@@ -375,6 +375,132 @@ public class ATProtoTools {
         return String((0..<finalLength).compactMap { _ in characters.randomElement() })
     }
 
+    /// An enum that determines the User Agent for the client.
+    public enum UserAgent {
+
+        /// A default User Agent will be provided.
+        ///
+        /// - Note: Example: `ATProtoKit/0.20.0 (iOS; 18.1)`
+        case `default`
+
+        /// A custom User Agent will be provided.
+        ///
+        /// When creating a user agent, it's good to create a specific structure. Here's a
+        /// recommended approach.
+        ///
+        /// ```
+        /// Skyline 2.1 (iOS; 18.1) ATProtoKit/0.20.0
+        /// ```
+        ///
+        /// - `Skyline`: Name of the client.
+        /// - `2.1`: This is the version number of your client.
+        /// - `iOS`: The operating system the client is running on.
+        /// - `18.1`: The version number of the operating system.
+        /// - `ATProtoKit`: This ATProtocol client.
+        /// - `0.20.0`: The version ATProtoKit is the client is currently running on.
+        ///
+        /// - Note: The "ATProtoKit" name and its version number will always be displayed,
+        /// so there's no need to add it yourself.
+        case custom(userAgent: String)
+
+        /// No User Agent will be provided.
+        ///
+        /// - Warning: It's recommended that you _don't_ use this for production use. Only use
+        /// this if you need to test things.
+        case none
+
+        var value: String {
+            switch self {
+                case .default:
+                    return "ATProtoKit/\(versionNumber) (\(osNameAndVersion)"
+                case .custom(let customUserAgent):
+                    return "\(customUserAgent) ATProtoKit/\(versionNumber)"
+                case .none:
+                    return ""
+            }
+        }
+
+        /// Gets the operating system's name and version number.
+        public var osNameAndVersion: String {
+            #if os(macOS)
+            return "macOS; \(grabAppleOSVersion)"
+            #elseif os(iOS)
+            return "iOS; \(grabAppleOSVersion)"
+            #elseif os(tvOS)
+            return "tvOS; \(grabAppleOSVersion)"
+            #elseif os(watchOS)
+            return "watchOS; \(grabAppleOSVersion)"
+            #elseif os(visionOS)
+            return "visionOS; \(grabAppleOSVersion)"
+            #elseif os(Linux)
+            return "\(grabLinuxVersion)"
+            #elseif os(Windows)
+            return "\(grabLinuxVersion)"
+            #else
+            return "UnknownOS"
+            #endif
+        }
+
+        /// Grabs the Apple OS's name and version number.
+        ///
+        /// - Note: Only works on iOS, iPadOS, tvOS, watchOS, or visionOS.
+        public var grabAppleOSVersion: String {
+            #if os(macOS) || os(iOS) || os(tvOS) || os(watchOS) || os(visionOS)
+            let majorVersion = ProcessInfo.processInfo.operatingSystemVersion.majorVersion
+            let minorVersion = ProcessInfo.processInfo.operatingSystemVersion.minorVersion
+            let patchVersion = ProcessInfo.processInfo.operatingSystemVersion.minorVersion
+
+            return "\(majorVersion).\(minorVersion).\(patchVersion)"
+            #endif
+        }
+
+        /// Grabs the Linux distro's name and version number.
+        ///
+        /// - Note: Only works on Linux.
+        private var grabLinuxVersion: String {
+            guard let osReleaseContents = try? String(contentsOfFile: "/etc/os-release") else {
+                return "Linux"
+            }
+
+            var linuxName: String = "Linux"
+            var versionNumber: String?
+
+            let lines = osReleaseContents.split(separator: "\n")
+
+            for line in lines {
+                let parts = line.split(separator: "=", maxSplits: 1).map { String($0).trimmingCharacters(in: .whitespacesAndNewlines) }
+
+                guard parts.count == 2 else { continue }
+
+                // Check if the "key" is equal to "NAME". If so, set `linuxName`.
+                if parts[0] == "NAME" {
+                    linuxName = parts[1].replacingOccurrences(of: "\"", with: "")
+                }
+
+                // Check if the "key" is equal to "VERSION_ID". If so, set `versionNumber`.
+                if parts[0] == "VERSION_ID" {
+                    versionNumber = parts[1].replacingOccurrences(of: "\"", with: "")
+                }
+            }
+
+            // Return the formatted OS name with version if available
+            return versionNumber != nil ? "\(linuxName) \(versionNumber!)" : linuxName
+        }
+
+        /// Grabs the Windows number and build.
+        ///
+        /// - Note: Only works on Windows.
+        /// - Bug: At this time, it's only able to figure out whether Windows is being used
+        /// or not. There's currently no easy way to determine if it's Windows 10, 11, or some
+        /// other version.
+        private var grabWindowsVersion: String {
+            #if os(Windows)
+            return "Windows"
+            #endif
+            return "UnknownOS"
+        }
+    }
+
     /// A structure for a record.
     public struct RecordQuery: Sendable, Codable {
 
