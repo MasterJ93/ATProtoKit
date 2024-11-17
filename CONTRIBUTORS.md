@@ -17,6 +17,9 @@ Thank you for supporting `ATProtoKit`. Right now, it's just me at the moment, bu
 - Aaron Vegh
   - GitHub: aaronvegh
   - Bluesky: @aaronvegh.bsky.social
+- Rhys Morgan
+  - GitHub: rhysm94
+  - Bluesky: @rhysm.wales
 
 ## Security Contributions
 If you've submitted any security contributions and they've been resolved, your name will be listed in here, along with:
