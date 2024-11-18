@@ -192,6 +192,9 @@ public class ATProtoBluesky: ATProtoKitConfiguration {
     /// from the `ATProtoKit` instance.
     public var urlSessionConfiguration: URLSessionConfiguration = .default
 
+    /// The ``ATLinkBuilder`` object used to grab the metadata for preview link cards. Optional.
+    public let linkBuilder: ATLinkBuilder?
+
     /// Specifies the logger that will be used for emitting log messages.
     public private(set) var logger: Logger?
 
@@ -201,10 +204,13 @@ public class ATProtoBluesky: ATProtoKitConfiguration {
     /// Initializes a new instance of `ATProtoBluesky`.
     /// - Parameters:
     ///   - atProtoKitInstance: Represents the instance of ``ATProtoKit/ATProtoKit``.
+    ///   - linkBuilder: The ``ATLinkBuilder`` object used to grab the metadata for preview
+    ///   link cards. Optional.
     ///   - logger: Specifies the identifier for managing log outputs. Optional.
     ///   Defaults to the project's `CFBundleIdentifier`.
-    public init(atProtoKitInstance: ATProtoKit, linkbuilder: ATLinkBuilder, logger: Logger? = nil) {
+    public init(atProtoKitInstance: ATProtoKit, linkbuilder: ATLinkBuilder? = nil, logger: Logger? = nil) {
         self.atProtoKitInstance = atProtoKitInstance
+        self.linkBuilder = linkbuilder
         self.session = self.atProtoKitInstance.session ?? nil
         self.logger = self.atProtoKitInstance.session?.logger ?? logger
     }
