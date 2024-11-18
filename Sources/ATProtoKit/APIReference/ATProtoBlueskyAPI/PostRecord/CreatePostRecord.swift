@@ -265,16 +265,36 @@ extension ATProtoBluesky {
             do {
                 switch embedUnion {
                     case .images(let images):
-                        resolvedEmbed = try await uploadImages(images, pdsURL: sessionURL, accessToken: session.accessToken)
+                        resolvedEmbed = try await uploadImages(
+                            images,
+                            pdsURL: sessionURL,
+                            accessToken: session.accessToken
+                        )
                     case .external(let url, let title, let description, let thumbnailImageURL):
-                        resolvedEmbed = await buildExternalEmbed(from: url, title: title, description: description, thumbnailImageURL: thumbnailImageURL, session: session)
+                        resolvedEmbed = await buildExternalEmbed(
+                            from: url,
+                            title: title,
+                            description: description,
+                            thumbnailImageURL: thumbnailImageURL,
+                            session: session
+                        )
                     case .record(let record):
                         resolvedEmbed = try await addQuotePostToEmbed(record)
                     case .recordWithMedia(let record, let media):
-                        let recordWithMediaDefinition = AppBskyLexicon.Embed.RecordWithMediaDefinition(record: record, media: media)
+                        let recordWithMediaDefinition = AppBskyLexicon.Embed.RecordWithMediaDefinition(
+                            record: record,
+                            media: media
+                        )
+
                         resolvedEmbed = .recordWithMedia(recordWithMediaDefinition)
                     case .video(let video, let captions, let altText):
-                        resolvedEmbed = try await buildVideo(video, with: captions, altText: altText, pdsURL: sessionURL, accessToken: session.accessToken)
+                        resolvedEmbed = try await buildVideo(
+                            video,
+                            with: captions,
+                            altText: altText,
+                            pdsURL: sessionURL,
+                            accessToken: session.accessToken
+                        )
                 }
             } catch {
                 throw error
