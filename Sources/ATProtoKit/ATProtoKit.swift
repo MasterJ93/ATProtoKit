@@ -203,7 +203,7 @@ public class ATProtoBluesky: ATProtoKitConfiguration {
     ///   - atProtoKitInstance: Represents the instance of ``ATProtoKit/ATProtoKit``.
     ///   - logger: Specifies the identifier for managing log outputs. Optional.
     ///   Defaults to the project's `CFBundleIdentifier`.
-    public init(atProtoKitInstance: ATProtoKit, logger: Logger? = nil) {
+    public init(atProtoKitInstance: ATProtoKit, linkbuilder: ATLinkBuilder, logger: Logger? = nil) {
         self.atProtoKitInstance = atProtoKitInstance
         self.session = self.atProtoKitInstance.session ?? nil
         self.logger = self.atProtoKitInstance.session?.logger ?? logger
