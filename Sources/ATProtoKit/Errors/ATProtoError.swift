@@ -83,7 +83,6 @@ public enum ATAPIError: ATProtoError {
     ///   - errorCode: The error code number Optional.
     ///   - errorData: The raw JSON object of the error. Optional.
     ///   - httpHeaders: The raw headers the come with the response. Optional.
-    ///
     case unknown(error: String?, errorCode: Int? = nil, errorData: Data? = nil, httpHeaders: [String : String]? = nil)
 }
 
@@ -94,6 +93,25 @@ public enum ATProtoBlueskyError: Decodable, ATProtoError {
     ///
     /// - Parameter message: The message of the error.
     case invalidReplyReference(message: String)
+}
+
+/// An error type related to ``ATProtoBluesky/ATLinkBuilder``-related issues.
+public enum ATLinkBuilderError: Decodable, ATProtoError {
+
+    /// The URL was invalid.
+    ///
+    /// - Parameter message: The message of the error.
+    case invalidURL(message: String)
+
+    /// The URL provided could not be found.
+    ///
+    /// - Parameter message: The message of the error.
+    case urlNotFound(message: String)
+
+    /// An unknown error has occured.
+    ///
+    /// - Parameter message: The message of the error.
+    case unknownError(message: String)
 }
 
 /// An error type related to a failed upload job.
