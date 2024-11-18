@@ -17,7 +17,9 @@ extension ATProtoBluesky {
     /// After you authenticate into Bluesky, you can create a post by using the `text` field:
     /// ```swift
     /// do {
-    ///     let postResult = try await atProtoBluesky.createPostRecord(text: "Just tried out the new coffee shop in town ☕️ — highly recommend the cold brew!")
+    ///     let postResult = try await atProtoBluesky.createPostRecord(
+    ///         text: "Just tried out the new coffee shop in town ☕️ — highly recommend the cold brew!"
+    ///     )
     ///
     ///     print(postResult)
     /// } catch {
