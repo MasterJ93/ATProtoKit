@@ -174,71 +174,6 @@ public class ATProtoKit: ATProtoKitConfiguration, ATRecordConfiguration {
     }
 }
 
-/// A class containing all administrator and moderator functionality of the `ATProtoKit`
-/// API library.
-///
-/// `ATProtoAdmin` works similarly to the ``ATProtoKit/ATProtoKit`` class, but dedicated for
-/// API calls related for administrators and moderators. More specifically,
-/// API calls that work with the `com.atproto.admin.*` and `com.atproto.ozone.*` lexicons.
-///
-/// Instantiating `ATProtoAdmin` is required to use any of the methods. To get the access token, an
-/// instance of ``ATProtocolConfiguration`` is required:
-///
-/// ```swift
-/// let config = ATProtocolConfiguration(handle: "example.bsky.social", appPassword: "hunter2")
-/// ```
-/// ``ATProtocolConfiguration/authenticate(authenticationFactorToken:)`` should then be used to
-/// get information about the session. The result is handed over to the `ATProtoAdmin`'s instance:
-///```swift
-/// Task {
-///     do {
-///         let session = try await config.authenticate()
-///
-///         print("Access token: \(session.accessToken)")
-///     } catch {
-///         print("Error: \(error)")
-///     }
-/// }
-/// ```
-public class ATProtoAdmin: ATProtoKitConfiguration {
-
-    /// Represents an authenticated user session within the AT Protocol. Optional.
-    public let session: UserSession?
-
-    /// An instance of `URLSessionConfiguration`.
-    ///
-    /// Please directly add the the `URLSessionConfiguration` instance onto the property if it's
-    /// a custom value.
-    ///
-    /// ```swift
-    /// let config = ATProtocolConfiguration(handle: "example.bsky.social", appPassword: "hunter2")
-    ///
-    /// Task {
-    ///     do {
-    ///         let atProtoAdmin = ATProtoAdmin(session: session)
-    ///
-    ///         atProtoAdmin.urlSessionConfiguration = config.configuration
-    ///     } catch {
-    ///         // Error...
-    ///     }
-    /// }
-    /// ```
-    public var urlSessionConfiguration: URLSessionConfiguration = .default
-
-    /// Specifies the logger that will be used for emitting log messages.
-    public private(set) var logger: Logger?
-
-    /// Initializes a new instance of `ATProtoAdmin`.
-    /// - Parameters:
-    ///   - session: The authenticated user session within the AT Protocol.
-    ///   - logger: Specifies the identifier for managing log outputs. Optional.
-    ///   Defaults to the project's `CFBundleIdentifier`.
-    public init(session: UserSession? = nil, logger: Logger? = nil) {
-        self.session = session
-        self.logger = session?.logger ?? logger
-    }
-}
-
 /// The base class that handles all direct Bluesky-related functionality of the ATProtoKit
 /// API library.
 ///
@@ -308,5 +243,70 @@ public class ATProtoBlueskyChat: ATProtoKitConfiguration {
         self.atProtoKitInstance = atProtoKitInstance
         self.session = self.atProtoKitInstance.session ?? nil
         self.logger = self.atProtoKitInstance.session?.logger ?? logger
+    }
+}
+
+/// A class containing all administrator and moderator functionality of the `ATProtoKit`
+/// API library.
+///
+/// `ATProtoAdmin` works similarly to the ``ATProtoKit/ATProtoKit`` class, but dedicated for
+/// API calls related for administrators and moderators. More specifically,
+/// API calls that work with the `com.atproto.admin.*` and `com.atproto.ozone.*` lexicons.
+///
+/// Instantiating `ATProtoAdmin` is required to use any of the methods. To get the access token, an
+/// instance of ``ATProtocolConfiguration`` is required:
+///
+/// ```swift
+/// let config = ATProtocolConfiguration(handle: "example.bsky.social", appPassword: "hunter2")
+/// ```
+/// ``ATProtocolConfiguration/authenticate(authenticationFactorToken:)`` should then be used to
+/// get information about the session. The result is handed over to the `ATProtoAdmin`'s instance:
+///```swift
+/// Task {
+///     do {
+///         let session = try await config.authenticate()
+///
+///         print("Access token: \(session.accessToken)")
+///     } catch {
+///         print("Error: \(error)")
+///     }
+/// }
+/// ```
+public class ATProtoAdmin: ATProtoKitConfiguration {
+
+    /// Represents an authenticated user session within the AT Protocol. Optional.
+    public let session: UserSession?
+
+    /// An instance of `URLSessionConfiguration`.
+    ///
+    /// Please directly add the the `URLSessionConfiguration` instance onto the property if it's
+    /// a custom value.
+    ///
+    /// ```swift
+    /// let config = ATProtocolConfiguration(handle: "example.bsky.social", appPassword: "hunter2")
+    ///
+    /// Task {
+    ///     do {
+    ///         let atProtoAdmin = ATProtoAdmin(session: session)
+    ///
+    ///         atProtoAdmin.urlSessionConfiguration = config.configuration
+    ///     } catch {
+    ///         // Error...
+    ///     }
+    /// }
+    /// ```
+    public var urlSessionConfiguration: URLSessionConfiguration = .default
+
+    /// Specifies the logger that will be used for emitting log messages.
+    public private(set) var logger: Logger?
+
+    /// Initializes a new instance of `ATProtoAdmin`.
+    /// - Parameters:
+    ///   - session: The authenticated user session within the AT Protocol.
+    ///   - logger: Specifies the identifier for managing log outputs. Optional.
+    ///   Defaults to the project's `CFBundleIdentifier`.
+    public init(session: UserSession? = nil, logger: Logger? = nil) {
+        self.session = session
+        self.logger = session?.logger ?? logger
     }
 }
