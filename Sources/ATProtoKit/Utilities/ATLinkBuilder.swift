@@ -10,8 +10,8 @@ import Foundation
 /// A protocol used to easily access the metadata for a website.
 ///
 /// To use this protocol, attach it to a `struct` of your creation, then implement
-/// ``ATProtoBluesky/ExternalLinkMetadata/grabMetadata(from:)`` based on whatever method you
-/// would use to access the title.
+/// ``ATLinkBuilder/grabMetadata(from:)`` based on whatever method you would use to access
+/// the title.
 ///
 /// The `url` property would simply be the link captured from the `link` arguement, so you can
 /// simply pass through that argument as the `url` property.
