@@ -21,18 +21,15 @@ import Foundation
 /// some other means (e.g.: the beginning of an article in the webpage).
 public protocol ATLinkBuilder: Sendable {
 
-    /// The URL of the external link.
-    var url: URL { get }
-
     /// Fills the properties of the `struct` conforming to `ATLinkBuilder`.
     ///
-    /// This method should be able to access the link and then populate the contents of
-    /// ``url``, ``title``, ``description``, and optionally, ``thumbnailURL``.
+    /// This method should be able to access the link and then populate the contents of the URL,
+    /// title, description, and (optionally) a URL of the thumbnail image.
     ///
     /// - Parameter link: The URL to get the metadata.
     /// - Returns: A tuple which contains the title, description, and (optionally) the
     /// thumbnail URL of the link.
     ///
     /// - Throws: The URL doesn't exist or is invalid.
-    func grabMetadata(from link: URL) async throws -> (title: String, description: String, thumbnailURL: URL?)
+    func grabMetadata(from link: URL) async throws -> (url: URL, title: String, description: String, thumbnailURL: URL?)
 }
