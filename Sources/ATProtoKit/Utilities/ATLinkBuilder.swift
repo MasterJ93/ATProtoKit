@@ -19,7 +19,7 @@ import Foundation
 /// The `description` property is an optional property since some websites may not contain one.
 /// It's recommended that you either add some text saying not description is provided, or by
 /// some other means (e.g.: the beginning of an article in the webpage).
-public protocol ATLinkBuilder: Sendable {
+public protocol ATLinkBuilder {
 
     /// Fills the properties of the `struct` conforming to `ATLinkBuilder`.
     ///
