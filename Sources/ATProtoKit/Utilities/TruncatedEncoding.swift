@@ -8,7 +8,12 @@
 import Foundation
 
 /// A protocol that defines a method for truncating an object.
-internal protocol Truncatable {
+public protocol Truncatable {
+
+    /// Truncates the object to the specified length.
+    ///
+    /// - Parameter length: The maximum number of items the object can have.
+    /// - Returns: The truncated object.
     func truncated(toLength length: Int) -> Self
 }
 
@@ -25,7 +30,7 @@ internal protocol Truncatable {
 ///
 /// - Throws: `EncodingError.invalidValue` if the given value is invalid in the current context
 /// for this format.
-internal func truncatedEncode<T: CodingKey, Element: Truncatable & Encodable>(_ value: Element,
+public func truncatedEncode<T: CodingKey, Element: Truncatable & Encodable>(_ value: Element,
                                                                               withContainer container: inout KeyedEncodingContainer<T>,
                                                                               forKey key: T,
                                                                               upToCharacterLength characterLength: Int? = nil,
@@ -74,7 +79,7 @@ internal func truncatedEncode<T: CodingKey, Element: Truncatable & Encodable>(_ 
 ///
 /// - Throws: `EncodingError.invalidValue` if the given value is invalid in the current context
 /// for this format.
-internal func truncatedEncodeIfPresent<T: CodingKey, Element: Truncatable & Encodable>(_ value: Element?,
+public func truncatedEncodeIfPresent<T: CodingKey, Element: Truncatable & Encodable>(_ value: Element?,
                                                                                        withContainer container: inout KeyedEncodingContainer<T>,
                                                                                        forKey key: T,
                                                                                        upToCharacterLength characterLength: Int? = nil,
