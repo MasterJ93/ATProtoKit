@@ -173,6 +173,7 @@ public func encodeDateIfPresent<T: CodingKey>(_ date: Date?, with container: ino
 ///     try container.encode(self._indexedAt, forKey: .indexedAt)
 /// }
 /// ```
+@available(*, deprecated, message: "Use encodeDate(from:) instead.")
 @propertyWrapper
 public struct DateFormatting: Sendable, Codable {
 
@@ -256,6 +257,7 @@ public struct DateFormatting: Sendable, Codable {
 ///     try container.encodeIfPresent(self._indexedAt, forKey: .indexedAt)
 /// }
 /// ```
+@available(*, deprecated, message: "Use encodeDateIfPresent(from:) instead.")
 @propertyWrapper
 public struct DateFormattingOptional: Sendable, Codable {
 
