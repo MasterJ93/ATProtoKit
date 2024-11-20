@@ -528,7 +528,13 @@ extension ATProtoBluesky {
     ///   - session: The ``UserSession`` object.
     /// - Returns: An ``ATUnion/EmbedViewUnion`` which contains an ``AppBskyLexicon/Embed/ExternalDefinition`` for use
     /// in a record.
-    public func buildExternalEmbed(from url: URL, title: String, description: String, thumbnailImageURL: URL? = nil, session: UserSession) async -> ATUnion.PostEmbedUnion? {
+    public func buildExternalEmbed(
+        from url: URL,
+        title: String,
+        description: String?,
+        thumbnailImageURL: URL? = nil,
+        session: UserSession
+    ) async -> ATUnion.PostEmbedUnion? {
         // Attempt to load the thumbnail image, if provided.
         let image: Data? = {
             guard let thumbnailImageURL,
@@ -557,7 +563,7 @@ extension ATProtoBluesky {
             external: AppBskyLexicon.Embed.ExternalDefinition.External(
                 embedURI: url,
                 title: title,
-                description: description,
+                description: description ?? "",
                 thumbnailImage: thumbnailImage ?? nil
             )
         )
