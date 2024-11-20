@@ -260,8 +260,8 @@ public enum UnknownType: Sendable, Codable {
     /// - Parameter type: An ``ATRecordProtocol``-conforming type.
     /// - Returns: An instance of the specified record type if the `UnknownType` contains a record
     /// of that type.
-    public func getRecord<T: ATRecordProtocol>(ofType type: T.Type) -> T? {
-        guard case .record(let record as T) = self else {
+    public func getRecord<Record: ATRecordProtocol>(ofType type: Record.Type) -> Record? {
+        guard case .record(let record as Record) = self else {
             return nil
         }
 
