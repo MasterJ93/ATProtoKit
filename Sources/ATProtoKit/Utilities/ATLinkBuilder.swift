@@ -31,5 +31,5 @@ public protocol ATLinkBuilder {
     /// thumbnail URL of the link.
     ///
     /// - Throws: The URL doesn't exist or is invalid.
-    func grabMetadata(from link: URL) async throws -> (url: URL, title: String, description: String, thumbnailURL: URL?)
+    func grabMetadata(from link: URL) async throws -> (url: URL, title: String, description: String?, thumbnailURL: URL?)
 }
