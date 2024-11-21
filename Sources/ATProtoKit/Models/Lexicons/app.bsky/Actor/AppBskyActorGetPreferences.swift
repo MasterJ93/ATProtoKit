@@ -22,5 +22,9 @@ extension AppBskyLexicon.Actor {
 
         /// The array of preferences in the user's account.
         public let preference: PreferencesDefinition
+      
+        public init(from decoder: any Decoder) throws {
+          self.preference = try .init(from: decoder)
+        }
     }
 }
