@@ -58,7 +58,6 @@ struct CustomDateFormatter {
     }
 }
 
-// MARK: Deprecated property wrappers -
 /// Decodes a non-optional date string using the provided `CustomDateFormatter`.
 ///
 /// This is used as a replacement of `decode(_:forKey:)` specifically for `Date` objects.
@@ -134,7 +133,7 @@ public func encodeDateIfPresent<T: CodingKey>(_ date: Date?, with container: ino
     }
 }
 
-// TODO: Find a way to merge `DateFormatting` with `DateFormattingOptional` in order to remove duplicated code.
+// MARK: Deprecated property wrappers -
 /// A property wrapper for encoding and decoding `Date` objects with the ISO8601 format.
 ///
 /// When using `@DateFormatting`, you first need to add it to a `Date` property. It must be of type
