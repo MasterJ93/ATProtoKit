@@ -35,6 +35,11 @@ extension ATProtoKit {
         limit: Int? = 50,
         cursor: String? = nil
     ) async throws -> AppBskyLexicon.Unspecced.GetPopularFeedGeneratorsOutput {
+        guard session != nil,
+              let accessToken = session?.accessToken else {
+            throw ATRequestPrepareError.missingActiveSession
+        }
+
         guard let sessionURL = session?.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/app.bsky.unspecced.getPopularFeedGenerators") else {
             throw ATRequestPrepareError.invalidRequestURL
@@ -68,7 +73,7 @@ extension ATProtoKit {
                 andMethod: .get,
                 acceptValue: "application/json",
                 contentTypeValue: nil,
-                authorizationValue: nil
+                authorizationValue: "Bearer \(accessToken)"
             )
             let response = try await APIClientService.shared.sendRequest(
                 request,
