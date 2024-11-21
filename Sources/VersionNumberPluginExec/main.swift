@@ -13,7 +13,14 @@ if arguments.count < 2 {
     print("missing arguments")
 }
 
-let outputURL = URL(filePath: CommandLine.arguments[1])
+let filePath = CommandLine.arguments[1]
+let outputURL: URL
+
+if #available(iOS 16, *) {
+    outputURL = URL(filePath: filePath)
+} else {
+    outputURL = URL(fileURLWithPath: filePath)
+}
 
 var generatedCode = """
     //
@@ -55,7 +62,7 @@ guard let generatedCode = generatedCode.data(using: .utf8) else {
 try generatedCode.write(to: outputURL, options: .atomic)
 
 
-@available(macOS 13.00.0, *)
+@available(macOS 13.0.0, *)
 enum CodeGeneratorError: Error {
     case invalidArguments
     case invalidData
