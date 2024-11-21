@@ -285,26 +285,37 @@ public struct ATLexiconModelMacro: MemberMacro {
         var decodedVariables: String = ""
 
         for propertyMap in propertyMaps {
-            // Check if the property type is `Date` or `Date?`.
-            var propertyNameVariable: String = "\(propertyMap.name)"
-            let decodeFunctionDecl: String = "decode"
+            let propertyNameVariable: String = "\(propertyMap.name)"
+            var decodeFunctionDecl: String = "decode"
             var decodedType: String = "\(propertyMap.type)"
             let propertyName: String = "\(propertyMap.name)"
 
-            if propertyMap.type == "Date" {
-                decodedType = "DateFormatting"
-                propertyNameVariable = "_\(propertyMap.name)"
+            // Check if the property type is `Date` or `Date?`.
+            switch propertyMap.type {
+                case "Date", "Date?":
+
+                    if !propertyMap.isOptional {
+                        decodedVariables.append(
+                            "self.\(propertyName) = try decodeDate(from: container, forKey: .\(propertyName))\n"
+                        )
+                    } else {
+                        decodedVariables.append(
+                            "self.\(propertyName) = try decodeDateIfPresent(from: container, forKey: .\(propertyName))\n"
+                        )
+                    }
+
+                    continue
+                default:
+                    break
             }
 
             if propertyMap.isArray {
-                decodedType = "\(decodedType)"
+                decodedType = "[\(decodedType)]"
             }
 
-            if decodedType != "DateFormatting" {
-                // Remove the trailing '?' if it exists
-                decodedType = decodedType.hasSuffix("?") ? String(decodedType.dropLast()) : decodedType
-            } else {
-                decodedType = "DateFormattingOptional"
+            if propertyMap.isOptional {
+                decodeFunctionDecl.append("IfPresent")
+                decodedType = decodedType.replacingOccurrences(of: "?", with: "")
             }
 
             decodedVariables.append(
@@ -348,6 +359,25 @@ public struct ATLexiconModelMacro: MemberMacro {
                 if var arrayItems = propertyMap.arrayItems, !arrayItems.isEmpty {
                     arrayItems = ", upToArrayLength: \(arrayItems)"
                 }
+            }
+
+            // Check if the property type is `Date` or `Date?`.
+            switch propertyMap.type {
+                case "Date", "Date?":
+
+                    if !propertyMap.isOptional {
+                        encodedVariables.append(
+                            "try encodeDate(\(propertyNameVariable), with: &container, forKey: .\(propertyNameVariable)\n"
+                        )
+                    } else {
+                        encodedVariables.append(
+                            "try encodeDateIfPresent(\(propertyNameVariable), with: &container, forKey: .\(propertyNameVariable)\n"
+                        )
+                    }
+
+                    continue
+                default:
+                    break
             }
 
             // Check if the type is an array.
