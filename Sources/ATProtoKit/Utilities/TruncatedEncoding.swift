@@ -31,10 +31,10 @@ public protocol Truncatable {
 /// - Throws: `EncodingError.invalidValue` if the given value is invalid in the current context
 /// for this format.
 public func truncatedEncode<T: CodingKey, Element: Truncatable & Encodable>(_ value: Element,
-                                                                              withContainer container: inout KeyedEncodingContainer<T>,
-                                                                              forKey key: T,
-                                                                              upToCharacterLength characterLength: Int? = nil,
-                                                                              upToArrayLength arrayLength: Int? = nil) throws {
+                                                                            withContainer container: inout KeyedEncodingContainer<T>,
+                                                                            forKey key: T,
+                                                                            upToCharacterLength characterLength: Int? = nil,
+                                                                            upToArrayLength arrayLength: Int? = nil) throws {
     if let arrayValue = value as? [Element] {
         // Truncate the array if `upToArrayLength` is specified
         var truncatedArray = arrayValue
@@ -80,10 +80,10 @@ public func truncatedEncode<T: CodingKey, Element: Truncatable & Encodable>(_ va
 /// - Throws: `EncodingError.invalidValue` if the given value is invalid in the current context
 /// for this format.
 public func truncatedEncodeIfPresent<T: CodingKey, Element: Truncatable & Encodable>(_ value: Element?,
-                                                                                       withContainer container: inout KeyedEncodingContainer<T>,
-                                                                                       forKey key: T,
-                                                                                       upToCharacterLength characterLength: Int? = nil,
-                                                                                       upToArrayLength arrayLength: Int? = nil) throws {
+                                                                                     withContainer container: inout KeyedEncodingContainer<T>,
+                                                                                     forKey key: T,
+                                                                                     upToCharacterLength characterLength: Int? = nil,
+                                                                                     upToArrayLength arrayLength: Int? = nil) throws {
     if let value = value {
         if let arrayValue = value as? [Element] {
             // Truncate the array if `upToArrayLength` is specified
