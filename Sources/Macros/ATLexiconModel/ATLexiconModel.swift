@@ -39,13 +39,13 @@ public struct ATLexiconModelMacro: MemberMacro {
         }
 
         var argumentDictionary = buildDictionary(from: arguments)
-        let mapProperties = try mapProperties(from: members, dictionary: &argumentDictionary)
+        let mappedProperties = try mapProperties(from: members, dictionary: &argumentDictionary)
 
         var initFuncDecl: InitializerDeclSyntax
         var decodeFuncDecl: InitializerDeclSyntax
         var encodeFuncDecl: FunctionDeclSyntax
 
-        let initFuncDeclVariables = try initializeProperties(using: mapProperties)
+        let initFuncDeclVariables = try initializeProperties(using: mappedProperties)
 
 //        let initFuncSignatureCheck = extractAndValidateSignature(signatureLines: initializers, expectedSignature: initFuncDeclVariables.0)
 
@@ -60,7 +60,7 @@ public struct ATLexiconModelMacro: MemberMacro {
         decodeFuncDecl = try InitializerDeclSyntax("public init(from decoder: Decoder) throws") {
             try VariableDeclSyntax("let container = try decoder.container(keyedBy: CodingKeys.self)").with(\.trailingTrivia, .newlines(2))
 
-            for decodedProperty in try decodeProperties(using: mapProperties) {
+            for decodedProperty in try decodeProperties(using: mappedProperties) {
                 decodedProperty
             }
         }.with(\.leadingTrivia, .newlines(2))
@@ -70,7 +70,7 @@ public struct ATLexiconModelMacro: MemberMacro {
         encodeFuncDecl = try FunctionDeclSyntax("public func encode(to encoder: Encoder) throws") {
             try VariableDeclSyntax("var container = encoder.container(keyedBy: CodingKeys.self)").with(\.trailingTrivia, .newlines(2))
 
-            for encodedProperty in try encodeProperties(using: mapProperties) {
+            for encodedProperty in try encodeProperties(using: mappedProperties) {
                 encodedProperty
             }
         }
@@ -82,6 +82,11 @@ public struct ATLexiconModelMacro: MemberMacro {
         ]
     }
 
+    /// Builds a dictionary containing each property in the `struct` for easier digestion later.
+    ///
+    /// - Parameter arguments: The array of properties to use for building the dictionary.
+    /// - Returns: A `Dictionary`, where the key is a `String` and the value is a tuple of two
+    /// `String?` values.
     private static func buildDictionary(from arguments: LabeledExprListSyntax) -> [String : (String?, String?)] {
         var argumentKeyValuePairs: [String : (String?, String?)] = [:]
 
