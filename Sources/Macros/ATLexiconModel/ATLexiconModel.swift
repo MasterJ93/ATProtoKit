@@ -45,7 +45,7 @@ public struct ATLexiconModelMacro: MemberMacro {
         var decodeFuncDecl: InitializerDeclSyntax
         var encodeFuncDecl: FunctionDeclSyntax
 
-        let initFuncDeclVariables = try initializeProperties(using: mappedProperties)
+        let initFuncDeclVariables = initializeProperties(using: mappedProperties)
 
 //        let initFuncSignatureCheck = extractAndValidateSignature(signatureLines: initializers, expectedSignature: initFuncDeclVariables.0)
 
@@ -70,7 +70,7 @@ public struct ATLexiconModelMacro: MemberMacro {
         encodeFuncDecl = try FunctionDeclSyntax("public func encode(to encoder: Encoder) throws") {
             try VariableDeclSyntax("var container = encoder.container(keyedBy: CodingKeys.self)").with(\.trailingTrivia, .newlines(2))
 
-            for encodedProperty in try encodeProperties(using: mappedProperties) {
+            for encodedProperty in encodeProperties(using: mappedProperties) {
                 encodedProperty
             }
         }
@@ -85,8 +85,9 @@ public struct ATLexiconModelMacro: MemberMacro {
     /// Builds a dictionary containing each property in the `struct` for easier digestion later.
     ///
     /// - Parameter arguments: The array of properties to use for building the dictionary.
-    /// - Returns: A `Dictionary`, where the key is a `String` and the value is a tuple of two
-    /// `String?` values.
+    /// - Returns: A `Dictionary`, where the key is the property name and the value is a tuple of
+    /// two `String?` values; the first `String` value represents the maximum number of characters
+    /// in a `String` and the second value representing the maximum number of items in an `Array`.
     private static func buildDictionary(from arguments: LabeledExprListSyntax) -> [String : (String?, String?)] {
         var argumentKeyValuePairs: [String : (String?, String?)] = [:]
 
@@ -114,6 +115,14 @@ public struct ATLexiconModelMacro: MemberMacro {
         return argumentKeyValuePairs
     }
 
+    /// Maps out the properties in a `struct` to a more digestable format.
+    ///
+    /// - Parameters:
+    ///   - members: An array of all properties attached to the `struct`.
+    ///   - dictionary: The dictionary of properties that have a constraint in `String` values
+    ///   and/or `Array` items.
+    /// - Returns: An `Array` of ``PropertyMap``.
+    /// - Throws: An error if `members` and `dictionary` have a mismatch.
     private static func mapProperties(from members: MemberBlockItemListSyntax, dictionary: inout [String: (String?, String?)]) throws -> [PropertyMap] {
         let propertyAccessModifierDecl = members.compactMap { $0.decl.as(VariableDeclSyntax.self)?.modifiers.first?.name.text ?? "none" }
         let propertyBindingSpecifierDecl = members.compactMap { $0.decl.as(VariableDeclSyntax.self)?.bindingSpecifier.text }
@@ -190,6 +199,16 @@ public struct ATLexiconModelMacro: MemberMacro {
         return propertyMaps
     }
 
+    /// Checks for a key in a dictionary, retrieves its value, and removes the key-value pair
+    /// if found.
+    ///
+    /// - Parameters:
+    ///   - dictionary: A mutable dictionary.
+    ///   - key: The key to search for.
+    /// - Returns: A tuple, which contains the following:\
+    /// \- `found`: Determines whether there's a match.\
+    /// \- `key`: The key (if found).\
+    /// \- `value`: The associated value (if found).
     private static func checkAndRemoveKey(
         from dictionary: inout [String: (String?, String?)],
         key: String
@@ -203,7 +222,13 @@ public struct ATLexiconModelMacro: MemberMacro {
         }
     }
 
-    private static func initializeProperties(using propertyMaps: [PropertyMap]) throws -> (String, [DeclSyntax]) {
+    /// Generates the initializer function's signature and body.
+    ///
+    /// - Parameter propertyMaps: An array of ``PropertyMap``.
+    /// - Returns: A tuple of a `String` and an array of `DeclSyntax`; the `String` contains the
+    /// method's signature, and the array of `DeclSyntax` contains each of the properties in the
+    /// `DeclSyntax`'s format.
+    private static func initializeProperties(using propertyMaps: [PropertyMap]) -> (String, [DeclSyntax]) {
         var declSyntax: [DeclSyntax] = []
 
         var initSignature: String = ""
@@ -249,6 +274,11 @@ public struct ATLexiconModelMacro: MemberMacro {
         return false
     }
 
+    /// Generates code to decode properties from a `Decoder`.
+    ///
+    /// - Parameter propertyMaps: An array of ``PropertyMap``.
+    /// - Returns: An array of `DeclSyntax`, which contains the properties formatted with
+    /// that object.
     private static func decodeProperties(using propertyMaps: [PropertyMap]) throws -> [DeclSyntax] {
         var declSyntax: [DeclSyntax] = []
 
@@ -288,7 +318,12 @@ public struct ATLexiconModelMacro: MemberMacro {
         return declSyntax
     }
 
-    private static func encodeProperties(using propertyMaps: [PropertyMap]) throws -> [DeclSyntax] {
+    /// Generates code to decode properties from an `Encoder`.
+    ///
+    /// - Parameter propertyMaps: An array of ``PropertyMap``.
+    /// - Returns: An array of `DeclSyntax`, which contains the properties formatted with
+    /// that object.
+    private static func encodeProperties(using propertyMaps: [PropertyMap]) -> [DeclSyntax] {
         var declSyntax: [DeclSyntax] = []
 
         var encodedVariables: String = ""
