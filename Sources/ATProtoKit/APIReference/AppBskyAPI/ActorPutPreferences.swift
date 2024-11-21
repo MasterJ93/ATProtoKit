@@ -34,7 +34,7 @@ extension ATProtoKit {
         }
 
         let requestBody = AppBskyLexicon.Actor.PutPreferencesRequestBody(
-            preferences: preferences.preferences
+            preferences: preferences
         )
 
         do {

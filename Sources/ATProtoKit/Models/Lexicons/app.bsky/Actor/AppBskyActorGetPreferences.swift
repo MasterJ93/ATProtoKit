@@ -21,6 +21,6 @@ extension AppBskyLexicon.Actor {
     public struct GetPreferencesOutput: Sendable, Codable {
 
         /// The array of preferences in the user's account.
-        public let preference: PreferencesDefinition
+        public let preferences: PreferencesDefinition
     }
 }
