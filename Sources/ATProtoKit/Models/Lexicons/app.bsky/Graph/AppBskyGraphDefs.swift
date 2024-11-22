@@ -276,7 +276,21 @@ extension AppBskyLexicon.Graph {
         public let labels: [ComAtprotoLexicon.Label.LabelDefinition]?
 
         /// The late time the user list was indexed. Optional.
-        @DateFormatting public var indexedAt: Date
+        public let indexedAt: Date
+
+        public init(from decoder: any Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+
+            self.starterPackURI = try container.decode(String.self, forKey: CodingKeys.starterPackURI)
+            self.starterPackCID = try container.decode(String.self, forKey: .starterPackCID)
+            self.starterPackRecord = try container.decode(UnknownType.self, forKey: .starterPackRecord)
+            self.creator = try container.decode(AppBskyLexicon.Actor.ProfileViewBasicDefinition.self, forKey: .creator)
+            self.listItemCount = try container.decodeIfPresent(Int.self, forKey: .listItemCount)
+            self.joinedWeekCount = try container.decodeIfPresent(Int.self, forKey: .joinedWeekCount)
+            self.joinedAllTimeCount = try container.decodeIfPresent(Int.self, forKey: .joinedAllTimeCount)
+            self.labels = try container.decodeIfPresent([ComAtprotoLexicon.Label.LabelDefinition].self, forKey: .labels)
+            self.indexedAt = try decodeDate(from: container, forKey: .indexedAt)
+        }
 
         public func encode(to encoder: any Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
@@ -289,7 +303,7 @@ extension AppBskyLexicon.Graph {
             try container.encodeIfPresent(self.joinedWeekCount, forKey: .joinedWeekCount)
             try container.encodeIfPresent(self.joinedAllTimeCount, forKey: .joinedAllTimeCount)
             try container.encodeIfPresent(self.labels, forKey: .labels)
-            try container.encode(self._indexedAt, forKey: .indexedAt)
+            try encodeDate(self.indexedAt, with: &container, forKey: .indexedAt)
         }
 
         enum CodingKeys: String, CodingKey {

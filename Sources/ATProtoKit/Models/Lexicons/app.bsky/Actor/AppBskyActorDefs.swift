@@ -358,16 +358,7 @@ extension AppBskyLexicon.Actor {
     /// - SeeAlso: This is based on the [`app.bsky.actor.defs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/actor/defs.json
-    public struct PreferencesDefinition: Sendable, Codable {
-
-        /// An array of different preferences the user can set.
-        public let preferences: [ATUnion.ActorPreferenceUnion]
-
-        @_documentation(visibility: private)
-        public init(preferences: [ATUnion.ActorPreferenceUnion]) {
-            self.preferences = preferences
-        }
-    }
+    public typealias PreferencesDefinition = [ATUnion.ActorPreferenceUnion]
 
     /// A definition model for an "Adult Content" preference.
     ///

@@ -94,6 +94,10 @@ extension AppBskyLexicon.Graph {
 
             /// The URI of the feed item.
             public let feedItemURI: String
+
+            enum CodingKeys: String, CodingKey {
+                case feedItemURI = "uri"
+            }
         }
     }
 }

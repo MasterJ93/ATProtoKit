@@ -382,44 +382,30 @@ extension AppBskyLexicon.Feed {
         public var viewer: GeneratorViewerStateDefinition?
 
         /// The last time the feed generator was indexed.
-        @DateFormatting public var indexedAt: Date
+        public var indexedAt: Date
 
-//        public init(feedURI: String, cidHash: String, feedDID: String, creator: AppBskyLexicon.Actor.ProfileViewDefinition, displayName: String,
-//                    description: String?, descriptionFacets: [AppBskyLexicon.RichText.Facet]?, avatarImageURL: URL?, likeCount: Int?,
-//                    canAcceptInteractions: Bool?, labels: [ComAtprotoLexicon.Label.LabelDefinition]?,
-//                    viewer: GeneratorViewerStateDefinition?, indexedAt: Date) {
-//            self.feedURI = feedURI
-//            self.cidHash = cidHash
-//            self.feedDID = feedDID
-//            self.creator = creator
-//            self.displayName = displayName
-//            self.description = description
-//            self.descriptionFacets = descriptionFacets
-//            self.avatarImageURL = avatarImageURL
-//            self.likeCount = likeCount
-//            self.canAcceptInteractions = canAcceptInteractions
-//            self.labels = labels
-//            self.viewer = viewer
-//            self._indexedAt = DateFormatting(wrappedValue: indexedAt)
-//        }
+        public init(from decoder: any Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
 
-//        public init(from decoder: Decoder) throws {
-//            let container = try decoder.container(keyedBy: CodingKeys.self)
-//
-//            self.feedURI = try container.decode(String.self, forKey: .feedURI)
-//            self.cidHash = try container.decode(String.self, forKey: .cidHash)
-//            self.feedDID = try container.decode(String.self, forKey: .feedDID)
-//            self.creator = try container.decode(AppBskyLexicon.Actor.ProfileViewDefinition.self, forKey: .creator)
-//            self.displayName = try container.decode(String.self, forKey: .displayName)
-//            self.description = try container.decodeIfPresent(String.self, forKey: .description)
-//            self.descriptionFacets = try container.decodeIfPresent([AppBskyLexicon.RichText.Facet].self, forKey: .descriptionFacets)
-//            self.avatarImageURL = try container.decodeIfPresent(URL.self, forKey: .avatarImageURL)
-//            self.likeCount = try container.decodeIfPresent(Int.self, forKey: .likeCount)
-//            self.canAcceptInteractions = try container.decodeIfPresent(Bool.self, forKey: .canAcceptInteractions)
-//            self.labels = try container.decodeIfPresent([ComAtprotoLexicon.Label.LabelDefinition].self, forKey: .labels)
-//            self.viewer = try container.decodeIfPresent(GeneratorViewerStateDefinition.self, forKey: .viewer)
-//            self.indexedAt = try container.decode(DateFormatting.self, forKey: .indexedAt).wrappedValue
-//        }
+            self.feedURI = try container.decode(String.self, forKey: .feedURI)
+            self.cidHash = try container.decode(String.self, forKey: .cidHash)
+            self.feedDID = try container.decode(String.self, forKey: .feedDID)
+            self.creator = try container
+                .decode(AppBskyLexicon.Actor.ProfileViewDefinition.self, forKey: .creator)
+            self.displayName = try container.decode(String.self, forKey: .displayName)
+            self.description = try container.decodeIfPresent(String.self, forKey: .description)
+            self.descriptionFacets = try container
+                .decodeIfPresent([AppBskyLexicon.RichText.Facet].self, forKey: .descriptionFacets)
+            self.avatarImageURL = try container.decodeIfPresent(URL.self, forKey: .avatarImageURL)
+            self.likeCount = try container.decodeIfPresent(Int.self, forKey: .likeCount)
+            self.canAcceptInteractions = try container
+                .decodeIfPresent(Bool.self, forKey: .canAcceptInteractions)
+            self.labels = try container
+                .decodeIfPresent([ComAtprotoLexicon.Label.LabelDefinition].self, forKey: .labels)
+            self.viewer = try container
+                .decodeIfPresent(AppBskyLexicon.Feed.GeneratorViewerStateDefinition.self, forKey: .viewer)
+            self.indexedAt = try decodeDate(from: container, forKey: .indexedAt)
+        }
 
         public func encode(to encoder: Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
@@ -444,7 +430,7 @@ extension AppBskyLexicon.Feed {
             try container.encodeIfPresent(self.canAcceptInteractions, forKey: .canAcceptInteractions)
             try container.encodeIfPresent(self.labels, forKey: .labels)
             try container.encodeIfPresent(self.viewer, forKey: .viewer)
-            try container.encode(self._indexedAt, forKey: .indexedAt)
+            try encodeDate(self.indexedAt, with: &container, forKey: .indexedAt)
         }
 
         enum CodingKeys: String, CodingKey {
