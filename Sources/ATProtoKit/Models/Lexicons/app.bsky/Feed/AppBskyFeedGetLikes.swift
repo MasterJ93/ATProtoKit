@@ -47,13 +47,21 @@ extension AppBskyLexicon.Feed {
         public struct Like: Sendable, Codable {
 
             /// The date and time the like record was indexed.
-            @DateFormatting public var indexedAt: Date
+            public let indexedAt: Date
 
             /// The date and time the like record was created.
-            @DateFormatting public var createdAt: Date
+            public let createdAt: Date
 
             /// The user that created the like record.
             public let actor: AppBskyLexicon.Actor.ProfileViewDefinition
+
+            public init(from decoder: any Decoder) throws {
+                let container = try decoder.container(keyedBy: CodingKeys.self)
+
+                self.indexedAt = try decodeDate(from: container, forKey: .indexedAt)
+                self.createdAt = try decodeDate(from: container, forKey: .createdAt)
+                self.actor = try container.decode(AppBskyLexicon.Actor.ProfileViewDefinition.self, forKey: .actor)
+            }
 
             public enum CodingKeys: CodingKey {
                 case indexedAt

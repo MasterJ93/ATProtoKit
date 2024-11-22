@@ -56,19 +56,7 @@ extension AppBskyLexicon.Feed {
         public let labels: ATUnion.GeneratorLabelsUnion?
 
         /// The date and time the feed was created.
-        @DateFormatting public var createdAt: Date
-
-        public init(feedDID: String, displayName: String, description: String?, descriptionFacets: [AppBskyLexicon.RichText.Facet]?, avatarImageURL: URL?,
-                    canAcceptInteractions: Bool?, labels: ATUnion.GeneratorLabelsUnion?, createdAt: Date) {
-            self.feedDID = feedDID
-            self.displayName = displayName
-            self.description = description
-            self.descriptionFacets = descriptionFacets
-            self.avatarImageURL = avatarImageURL
-            self.canAcceptInteractions = canAcceptInteractions
-            self.labels = labels
-            self._createdAt = DateFormatting(wrappedValue: createdAt)
-        }
+        public let createdAt: Date
 
         public init(from decoder: Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
@@ -80,7 +68,7 @@ extension AppBskyLexicon.Feed {
             self.avatarImageURL = try container.decodeIfPresent(URL.self, forKey: .avatarImageURL)
             self.canAcceptInteractions = try container.decodeIfPresent(Bool.self, forKey: .canAcceptInteractions)
             self.labels = try container.decodeIfPresent(ATUnion.GeneratorLabelsUnion.self, forKey: .labels)
-            self.createdAt = try container.decode(DateFormatting.self, forKey: .createdAt).wrappedValue
+            self.createdAt = try decodeDate(from: container, forKey: .createdAt)
         }
 
         public func encode(to encoder: Encoder) throws {
@@ -97,7 +85,7 @@ extension AppBskyLexicon.Feed {
             try container.encodeIfPresent(self.avatarImageURL, forKey: .avatarImageURL)
             try container.encodeIfPresent(self.canAcceptInteractions, forKey: .canAcceptInteractions)
             try container.encodeIfPresent(self.labels, forKey: .labels)
-            try container.encode(self._createdAt, forKey: .createdAt)
+            try encodeDate(self.createdAt, with: &container, forKey: .createdAt)
         }
 
         enum CodingKeys: String, CodingKey {

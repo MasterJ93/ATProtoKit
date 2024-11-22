@@ -73,7 +73,7 @@ extension AppBskyLexicon.Feed {
         ///
         /// - Note: According to the AT Protocol specifications: "Client-declared timestamp when this
         /// post was originally created."
-        @DateFormatting public var createdAt: Date
+        public let createdAt: Date
 
         public init(text: String, facets: [AppBskyLexicon.RichText.Facet]?, reply: ReplyReference?, embed: ATUnion.PostEmbedUnion?, languages: [String]?,
                     labels: ATUnion.PostSelfLabelsUnion?, tags: [String]?, createdAt: Date) {
@@ -84,7 +84,7 @@ extension AppBskyLexicon.Feed {
             self.languages = languages
             self.labels = labels
             self.tags = tags
-            self._createdAt = DateFormatting(wrappedValue: createdAt)
+            self.createdAt = createdAt
         }
 
         public init(from decoder: Decoder) throws {
@@ -97,7 +97,7 @@ extension AppBskyLexicon.Feed {
             self.languages = try container.decodeIfPresent([String].self, forKey: .languages)
             self.labels = try container.decodeIfPresent(ATUnion.PostSelfLabelsUnion.self, forKey: .labels)
             self.tags = try container.decodeIfPresent([String].self, forKey: .tags)
-            self.createdAt = try container.decode(DateFormatting.self, forKey: .createdAt).wrappedValue
+            self.createdAt = try decodeDate(from: container, forKey: .createdAt)
         }
 
         public func encode(to encoder: Encoder) throws {
@@ -120,7 +120,7 @@ extension AppBskyLexicon.Feed {
             // Then, truncate `tags` to 8 items before encoding
             try truncatedEncodeIfPresent(self.tags, withContainer: &container, forKey: .tags, upToCharacterLength: 64, upToArrayLength: 8)
 
-            try container.encode(self._createdAt, forKey: .createdAt)
+            try encodeDate(self.createdAt, with: &container, forKey: .createdAt)
         }
 
         enum CodingKeys: String, CodingKey {

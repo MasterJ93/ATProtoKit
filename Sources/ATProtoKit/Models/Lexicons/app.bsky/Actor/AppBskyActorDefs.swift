@@ -41,7 +41,20 @@ extension AppBskyLexicon.Actor {
         public let labels: [ComAtprotoLexicon.Label.LabelDefinition]?
 
         /// The date and time the profile was created. Optional.
-        @DateFormattingOptional public var createdAt: Date?
+        public let createdAt: Date?
+
+        public init(from decoder: any Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+
+            self.actorDID = try container.decode(String.self, forKey: .actorDID)
+            self.actorHandle = try container.decode(String.self, forKey: .actorHandle)
+            self.displayName = try container.decodeIfPresent(String.self, forKey: .displayName)
+            self.avatarImageURL = try container.decodeIfPresent(URL.self, forKey: .avatarImageURL)
+            self.associated = try container.decodeIfPresent(AppBskyLexicon.Actor.ProfileAssociatedDefinition.self, forKey: .associated)
+            self.viewer = try container.decodeIfPresent(AppBskyLexicon.Actor.ViewerStateDefinition.self, forKey: .viewer)
+            self.labels = try container.decodeIfPresent([ComAtprotoLexicon.Label.LabelDefinition].self, forKey: .labels)
+            self.createdAt = try decodeDateIfPresent(from: container, forKey: .createdAt)
+        }
 
         @_documentation(visibility: private)
         public func encode(to encoder: Encoder) throws {
@@ -57,7 +70,7 @@ extension AppBskyLexicon.Actor {
             try container.encodeIfPresent(self.associated, forKey: .associated)
             try container.encodeIfPresent(self.viewer, forKey: .viewer)
             try container.encodeIfPresent(self.labels, forKey: .labels)
-            try container.encodeIfPresent(self.createdAt, forKey: .createdAt)
+            try encodeDateIfPresent(self.createdAt, with: &container, forKey: .createdAt)
         }
 
         enum CodingKeys: String, CodingKey {
@@ -102,10 +115,10 @@ extension AppBskyLexicon.Actor {
         public var associated: ProfileAssociatedDefinition?
 
         /// The date the profile was last indexed. Optional.
-        @DateFormattingOptional public var indexedAt: Date?
+        public var indexedAt: Date?
 
         /// The date and time the profile was created. Optional.
-        @DateFormattingOptional public var createdAt: Date?
+        public var createdAt: Date?
 
         /// The list of metadata relating to the requesting account's relationship with the subject
         /// account. Optional.
@@ -113,7 +126,22 @@ extension AppBskyLexicon.Actor {
 
         /// An array of labels created by the user. Optional.
         public var labels: [ComAtprotoLexicon.Label.LabelDefinition]?
-        
+
+        public init(from decoder: any Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+
+            self.actorDID = try container.decode(String.self, forKey: .actorDID)
+            self.actorHandle = try container.decode(String.self, forKey: .actorHandle)
+            self.displayName = try container.decodeIfPresent(String.self, forKey: .displayName)
+            self.description = try container.decodeIfPresent(String.self, forKey: .description)
+            self.avatarImageURL = try container.decodeIfPresent(URL.self, forKey: .avatarImageURL)
+            self.associated = try container.decodeIfPresent(AppBskyLexicon.Actor.ProfileAssociatedDefinition.self, forKey: .associated)
+            self.indexedAt = try decodeDateIfPresent(from: container, forKey: .indexedAt)
+            self.createdAt = try decodeDateIfPresent(from: container, forKey: .createdAt)
+            self.viewer = try container.decodeIfPresent(AppBskyLexicon.Actor.ViewerStateDefinition.self, forKey: .viewer)
+            self.labels = try container.decodeIfPresent([ComAtprotoLexicon.Label.LabelDefinition].self, forKey: .labels)
+        }
+
         @_documentation(visibility: private)
         public func encode(to encoder: Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
@@ -130,8 +158,8 @@ extension AppBskyLexicon.Actor {
             try truncatedEncodeIfPresent(self.description, withContainer: &container, forKey: .description, upToCharacterLength: 256)
             try container.encodeIfPresent(self.avatarImageURL, forKey: .avatarImageURL)
             try container.encodeIfPresent(self.associated, forKey: .associated)
-            try container.encodeIfPresent(self._indexedAt, forKey: .indexedAt)
-            try container.encodeIfPresent(self._createdAt, forKey: .createdAt)
+            try encodeDateIfPresent(self.indexedAt, with: &container, forKey: .indexedAt)
+            try encodeDateIfPresent(self.createdAt, with: &container, forKey: .createdAt)
             try container.encodeIfPresent(self.viewer, forKey: .viewer)
             try container.encodeIfPresent(self.labels, forKey: .labels)
         }
@@ -195,7 +223,7 @@ extension AppBskyLexicon.Actor {
         public let joinedViaStarterPack: AppBskyLexicon.Graph.StarterpackRecord?
 
         /// The date the profile was last indexed. Optional.
-        @DateFormattingOptional public var indexedAt: Date?
+        public let indexedAt: Date?
 
         /// The list of metadata relating to the requesting account's relationship with the subject
         /// account. Optional.
@@ -228,7 +256,7 @@ extension AppBskyLexicon.Actor {
             try container.encodeIfPresent(self.postCount, forKey: .postCount)
             try container.encodeIfPresent(self.associated, forKey: .associated)
             try container.encodeIfPresent(self.joinedViaStarterPack, forKey: .joinedViaStarterPack)
-            try container.encodeIfPresent(self._indexedAt, forKey: .indexedAt)
+            try encodeDateIfPresent(self.indexedAt, with: &container, forKey: .indexedAt)
             try container.encodeIfPresent(self.viewer, forKey: .viewer)
             try container.encodeIfPresent(self.labels, forKey: .labels)
             try container.encodeIfPresent(self.pinnedPost, forKey: .pinnedPost)
@@ -554,13 +582,19 @@ extension AppBskyLexicon.Actor {
         /// The birth date of the user. Optional.
         ///
         /// - Note: From the AT Protocol specification: "The birth date of account owner."
-        @DateFormattingOptional public var birthDate: Date?
+        public var birthDate: Date?
+
+        public init(from decoder: any Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+
+            self.birthDate = try decodeDateIfPresent(from: container, forKey: .birthDate)
+        }
 
         @_documentation(visibility: private)
         public func encode(to encoder: Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
 
-            try container.encodeIfPresent(self._birthDate, forKey: .birthDate)
+            try encodeDateIfPresent(self.birthDate, with: &container, forKey: .birthDate)
         }
 
         enum CodingKeys: String, CodingKey {
@@ -803,7 +837,17 @@ extension AppBskyLexicon.Actor {
         ///
         /// - Note: According to the AT Protocol specifications: "The date and time at which the
         /// muted word will expire and no longer be applied."
-        @DateFormattingOptional public var expiresAt: Date?
+        public let expiresAt: Date?
+
+        public init(from decoder: any Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+
+            self.id = try container.decodeIfPresent(String.self, forKey: .id)
+            self.value = try container.decode(String.self, forKey: .value)
+            self.targets = try container.decode([AppBskyLexicon.Actor.MutedWordTarget].self, forKey: .targets)
+            self.actorTarget = try container.decodeIfPresent(AppBskyLexicon.Actor.MutedWord.ActorTarget.self, forKey: .actorTarget)
+            self.expiresAt = try decodeDateIfPresent(from: container, forKey: .expiresAt)
+        }
 
         @_documentation(visibility: private)
         public func encode(to encoder: Encoder) throws {
@@ -815,7 +859,7 @@ extension AppBskyLexicon.Actor {
             try truncatedEncode(self.value, withContainer: &container, forKey: .value, upToCharacterLength: 100)
             try container.encode(self.targets, forKey: .targets)
             try container.encodeIfPresent(self.actorTarget, forKey: .actorTarget)
-            try container.encodeIfPresent(self._expiresAt, forKey: .expiresAt)
+            try encodeDateIfPresent(self.expiresAt, with: &container, forKey: .expiresAt)
         }
 
         enum CodingKeys: CodingKey {
@@ -990,7 +1034,16 @@ extension AppBskyLexicon.Actor {
         ///
         /// - Note: According to the AT Protocol specifications: "The date and time at which the
         /// NUX will expire and should be considered completed."
-        @DateFormattingOptional public var expiresAt: Date?
+        public let expiresAt: Date?
+
+        public init(from decoder: any Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+
+            self.id = try container.decode(String.self, forKey: .id)
+            self.isCompleted = try container.decode(Bool.self, forKey: .isCompleted)
+            self.data = try container.decodeIfPresent(String.self, forKey: .data)
+            self.expiresAt = try decodeDateIfPresent(from: container, forKey: .expiresAt)
+        }
 
         public func encode(to encoder: any Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
@@ -998,7 +1051,7 @@ extension AppBskyLexicon.Actor {
             try truncatedEncode(self.id, withContainer: &container, forKey: .id, upToCharacterLength: 100)
             try container.encode(self.isCompleted, forKey: .isCompleted)
             try truncatedEncodeIfPresent(self.data, withContainer: &container, forKey: .data, upToCharacterLength: 300)
-            try container.encode(self._expiresAt, forKey: .expiresAt)
+            try encodeDateIfPresent(self.expiresAt, with: &container, forKey: .expiresAt)
         }
 
         enum CodingKeys: String, CodingKey {

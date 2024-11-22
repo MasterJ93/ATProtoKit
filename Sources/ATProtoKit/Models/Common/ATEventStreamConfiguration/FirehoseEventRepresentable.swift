@@ -94,8 +94,36 @@ public struct FirehoseFrameCommitMessage: Decodable {
     ///
     /// - Note: According to the AT Protocol specifications: "Timestamp of when this message
     /// was originally broadcast."
-    @DateFormatting public var timestamp: Date
+    public let timestamp: Date
 
+    public init(from decoder: any Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+
+        self.sequence = try container.decode(Int.self, forKey: .sequence)
+        self.isTooBig = try container.decode(Bool.self, forKey: .isTooBig)
+        self.repository = try container.decode(String.self, forKey: .repository)
+        self.commitCID = try container.decode(String.self, forKey: .commitCID)
+        self.revision = try container.decode(String.self, forKey: .revision)
+        self.since = try container.decode(String.self, forKey: .since)
+        self.blocks = try container.decode(Data.self, forKey: .blocks)
+        self.repositoryOperations = try container.decode([FirehoseEventRepositoryOperation].self, forKey: .repositoryOperations)
+        self.blobIdentifiers = try container.decode([String].self, forKey: .blobIdentifiers)
+        self.timestamp = try decodeDate(from: container, forKey: .timestamp)
+    }
+
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        
+        try container.encode(self.sequence, forKey: .sequence)
+        try container.encode(self.isTooBig, forKey: .isTooBig)
+        try container.encode(self.repository, forKey: .repository)
+        try container.encode(self.commitCID, forKey: .commitCID)
+        try container.encode(self.revision, forKey: .revision)
+        try container.encode(self.since, forKey: .since)
+        try container.encode(self.blocks, forKey: .blocks)
+        try container.encode(blobIdentifiers, forKey: .blobIdentifiers)
+        try encodeDate(self.timestamp, with: &container, forKey: .timestamp)
+    }
 
     enum CodingKeys: String, CodingKey {
         case sequence = "seq"
@@ -175,7 +203,15 @@ public struct FirehoseFrameIdentityMessage: Decodable {
     public let accountDID: String
 
     /// The date and time the event was broadcast.
-    @DateFormatting public var timestamp: Date
+    public let timestamp: Date
+
+    public init(from decoder: any Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+
+        self.sequence = try container.decode(Int.self, forKey: .sequence)
+        self.accountDID = try container.decode(String.self, forKey: .accountDID)
+        self.timestamp = try decodeDate(from: container, forKey: .timestamp)
+    }
 
     enum CodingKeys: String, CodingKey {
         case sequence = "seq"
@@ -206,7 +242,16 @@ public struct FirehoseFrameHandleMessage: Decodable {
     public let newHandle: String
 
     /// The date and time the event was broadcast.
-    @DateFormatting public var timestamp: Date
+    public let timestamp: Date
+
+    public init(from decoder: any Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+
+        self.sequence = try container.decode(Int.self, forKey: .sequence)
+        self.accountDID = try container.decode(String.self, forKey: .accountDID)
+        self.newHandle = try container.decode(String.self, forKey: .newHandle)
+        self.timestamp = try decodeDate(from: container, forKey: .timestamp)
+    }
 
     enum CodingKeys: String, CodingKey {
         case sequence = "seq"
@@ -238,7 +283,16 @@ public struct FirehoseFrameMigrateMessage: Decodable {
     public let migrateTo: String?
 
     /// The date and time the event was broadcast.
-    @DateFormatting public var timestamp: Date
+    public let timestamp: Date
+
+    public init(from decoder: any Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+
+        self.sequence = try container.decode(Int.self, forKey: .sequence)
+        self.accountDID = try container.decode(String.self, forKey: .accountDID)
+        self.migrateTo = try container.decodeIfPresent(String.self, forKey: .migrateTo)
+        self.timestamp = try decodeDate(from: container, forKey: .timestamp)
+    }
 
     enum CodingKeys: String, CodingKey {
         case sequence = "seq"
@@ -267,7 +321,15 @@ public struct FirehoseFrameTombstoneMessage: Decodable {
     public let accountDID: String
 
     /// The date and time the event was broadcast.
-    @DateFormatting public var timestamp: Date
+    public let timestamp: Date
+
+    public init(from decoder: any Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+
+        self.sequence = try container.decode(Int.self, forKey: .sequence)
+        self.accountDID = try container.decode(String.self, forKey: .accountDID)
+        self.timestamp = try decodeDate(from: container, forKey: .timestamp)
+    }
 
     enum CodingKeys: String, CodingKey {
         case sequence = "seq"

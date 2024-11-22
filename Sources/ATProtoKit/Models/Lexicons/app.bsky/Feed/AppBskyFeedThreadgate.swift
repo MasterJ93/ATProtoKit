@@ -35,17 +35,24 @@ extension AppBskyLexicon.Feed {
         public let allow: [ATUnion.ThreadgateUnion]?
 
         /// The date and time of the creation of the threadgate.
-        @DateFormatting public var createdAt: Date
+        public let createdAt: Date
 
         /// An array of hidden replies in the form of URIs. Optional.
         public let hiddenReplies: [String]?
+
+        public init(post: String, allow: [ATUnion.ThreadgateUnion]?, createdAt: Date, hiddenReplies: [String]?) {
+            self.post = post
+            self.allow = allow
+            self.createdAt = createdAt
+            self.hiddenReplies = hiddenReplies
+        }
 
         public init(from decoder: Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
 
             self.post = try container.decode(String.self, forKey: .post)
             self.allow = try container.decodeIfPresent([ATUnion.ThreadgateUnion].self, forKey: .allow)
-            self.createdAt = try container.decode(DateFormatting.self, forKey: .createdAt).wrappedValue
+            self.createdAt = try decodeDate(from: container, forKey: .createdAt)
             self.hiddenReplies = try container.decodeIfPresent([String].self, forKey: .hiddenReplies)
         }
 
@@ -54,7 +61,7 @@ extension AppBskyLexicon.Feed {
 
             try container.encode(self.post, forKey: .post)
             try container.encodeIfPresent(self.allow, forKey: .allow)
-            try container.encode(self._createdAt, forKey: .createdAt)
+            try encodeDate(self.createdAt, with: &container, forKey: .createdAt)
 
             try truncatedEncodeIfPresent(self.hiddenReplies, withContainer: &container, forKey: .hiddenReplies, upToArrayLength: 50)
         }

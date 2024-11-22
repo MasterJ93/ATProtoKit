@@ -100,7 +100,39 @@ extension AppBskyLexicon.Embed {
             public let embeds: [ATUnion.EmbedViewUnion]?
 
             /// The date the record was last indexed.
-            @DateFormatting public var indexedAt: Date
+            public let indexedAt: Date
+
+            public init(from decoder: any Decoder) throws {
+                let container = try decoder.container(keyedBy: CodingKeys.self)
+
+                self.recordURI = try container.decode(String.self, forKey: .recordURI)
+                self.cidHash = try container.decode(String.self, forKey: .cidHash)
+                self.author = try container.decode(AppBskyLexicon.Actor.ProfileViewBasicDefinition.self, forKey: .author)
+                self.value = try container.decode(UnknownType.self, forKey: .value)
+                self.labels = try container.decodeIfPresent([ComAtprotoLexicon.Label.LabelDefinition].self, forKey: .labels)
+                self.replyCount = try container.decodeIfPresent(Int.self, forKey: .replyCount)
+                self.repostCount = try container.decodeIfPresent(Int.self, forKey: .repostCount)
+                self.likeCount = try container.decodeIfPresent(Int.self, forKey: .likeCount)
+                self.quoteCount = try container.decodeIfPresent(Int.self, forKey: .quoteCount)
+                self.embeds = try container.decodeIfPresent([ATUnion.EmbedViewUnion].self, forKey: .embeds)
+                self.indexedAt = try decodeDate(from: container, forKey: .indexedAt)
+            }
+
+            public func encode(to encoder: any Encoder) throws {
+                var container = encoder.container(keyedBy: CodingKeys.self)
+
+                try container.encode(self.recordURI, forKey: .recordURI)
+                try container.encode(self.cidHash, forKey: .cidHash)
+                try container.encode(self.author, forKey: .author)
+                try container.encode(self.value, forKey: .value)
+                try container.encodeIfPresent(self.labels, forKey: .labels)
+                try container.encodeIfPresent(self.replyCount, forKey: .replyCount)
+                try container.encodeIfPresent(self.repostCount, forKey: .repostCount)
+                try container.encodeIfPresent(self.likeCount, forKey: .likeCount)
+                try container.encodeIfPresent(self.quoteCount, forKey: .quoteCount)
+                try container.encodeIfPresent(self.embeds, forKey: .embeds)
+                try encodeDate(self.indexedAt, with: &container, forKey: .indexedAt)
+            }
 
             enum CodingKeys: String, CodingKey {
                 case type = "$type"

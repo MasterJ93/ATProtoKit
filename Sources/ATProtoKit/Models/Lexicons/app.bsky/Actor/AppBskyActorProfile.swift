@@ -62,7 +62,33 @@ extension AppBskyLexicon.Actor {
         public let pinnedPost: ComAtprotoLexicon.Repository.StrongReference?
 
         /// The date and time the profile was created. Optional.
-        @DateFormattingOptional public var createdAt: Date?
+        public let createdAt: Date?
+
+        public init(from decoder: any Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+
+            self.displayName = try container.decodeIfPresent(String.self, forKey: .displayName)
+            self.description = try container.decodeIfPresent(String.self, forKey: .description)
+            self.avatarBlob = try container.decodeIfPresent(ComAtprotoLexicon.Repository.BlobContainer.self, forKey: .avatarBlob)
+            self.bannerBlob = try container.decodeIfPresent(ComAtprotoLexicon.Repository.BlobContainer.self, forKey: .bannerBlob)
+            self.labels = try container.decodeIfPresent([ComAtprotoLexicon.Label.SelfLabelsDefinition].self, forKey: .labels)
+            self.joinedViaStarterPack = try container.decodeIfPresent(ComAtprotoLexicon.Repository.StrongReference.self, forKey: .joinedViaStarterPack)
+            self.createdAt = try decodeDateIfPresent(from: container, forKey: .createdAt)
+            self.pinnedPost = try container.decodeIfPresent(ComAtprotoLexicon.Repository.StrongReference.self, forKey: .pinnedPost)
+        }
+
+        public func encode(to encoder: any Encoder) throws {
+            var container = encoder.container(keyedBy: CodingKeys.self)
+
+            try container.encodeIfPresent(self.displayName, forKey: .displayName)
+            try container.encodeIfPresent(self.description, forKey: .description)
+            try container.encodeIfPresent(self.avatarBlob, forKey: .avatarBlob)
+            try container.encodeIfPresent(self.bannerBlob, forKey: .bannerBlob)
+            try container.encodeIfPresent(self.labels, forKey: .labels)
+            try container.encodeIfPresent(self.joinedViaStarterPack, forKey: .joinedViaStarterPack)
+            try encodeDateIfPresent(self.createdAt, with: &container, forKey: .createdAt)
+            try container.encodeIfPresent(self.pinnedPost, forKey: .pinnedPost)
+        }
 
         enum CodingKeys: String, CodingKey {
             case displayName

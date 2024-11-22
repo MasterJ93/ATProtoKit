@@ -26,7 +26,7 @@ extension AppBskyLexicon.Feed {
         public static let type: String = "app.bsky.feed.postgate"
 
         /// The date and time the post was created.
-        @DateFormatting public var createdAt: Date
+        public let createdAt: Date
 
         /// The URI of the post.
         public let postURI: String
@@ -40,10 +40,26 @@ extension AppBskyLexicon.Feed {
         /// An array of rules for embedding the post. Optional.
         public let embeddingRules: [ATUnion.EmbeddingRulesUnion]?
 
+        public init(createdAt: Date, postURI: String, detachedEmbeddingURIs: [String]?, embeddingRules: [ATUnion.EmbeddingRulesUnion]?) {
+            self.createdAt = createdAt
+            self.postURI = postURI
+            self.detachedEmbeddingURIs = detachedEmbeddingURIs
+            self.embeddingRules = embeddingRules
+        }
+
+        public init(from decoder: any Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+
+            self.createdAt = try decodeDate(from: container, forKey: .createdAt)
+            self.postURI = try container.decode(String.self, forKey: .postURI)
+            self.detachedEmbeddingURIs = try container.decodeIfPresent([String].self, forKey: .detachedEmbeddingURIs)
+            self.embeddingRules = try container.decodeIfPresent([ATUnion.EmbeddingRulesUnion].self, forKey: .embeddingRules)
+        }
+
         public func encode(to encoder: any Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
 
-            try container.encode(self._createdAt, forKey: .createdAt)
+            try encodeDate(self.createdAt, with: &container, forKey: .createdAt)
             try container.encode(self.postURI, forKey: .postURI)
 
             try truncatedEncodeIfPresent(self.detachedEmbeddingURIs, withContainer: &container, forKey: .detachedEmbeddingURIs, upToArrayLength: 50)

@@ -44,7 +44,7 @@ extension AppBskyLexicon.Feed {
         public let quoteCount: Int?
 
         /// The last time the post has been indexed.
-        @DateFormatting public var indexedAt: Date
+        public var indexedAt: Date
 
         /// The viewer's interaction with the post. Optional.
         public let viewer: ViewerStateDefinition?
@@ -54,6 +54,42 @@ extension AppBskyLexicon.Feed {
 
         /// The ruleset of who can reply to the post. Optional.
         public let threadgate: ThreadgateViewDefinition?
+
+        public init(from decoder: any Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+
+            self.postURI = try container.decode(String.self, forKey: .postURI)
+            self.cidHash = try container.decode(String.self, forKey: .cidHash)
+            self.author = try container.decode(AppBskyLexicon.Actor.ProfileViewBasicDefinition.self, forKey: .author)
+            self.record = try container.decode(UnknownType.self, forKey: .record)
+            self.embed = try container.decodeIfPresent(ATUnion.EmbedViewUnion.self, forKey: .embed)
+            self.replyCount = try container.decodeIfPresent(Int.self, forKey: .replyCount)
+            self.repostCount = try container.decodeIfPresent(Int.self, forKey: .repostCount)
+            self.likeCount = try container.decodeIfPresent(Int.self, forKey: .likeCount)
+            self.quoteCount = try container.decodeIfPresent(Int.self, forKey: .quoteCount)
+            self.indexedAt = try decodeDate(from: container, forKey: .indexedAt)
+            self.viewer = try container.decodeIfPresent(AppBskyLexicon.Feed.ViewerStateDefinition.self, forKey: .viewer)
+            self.labels = try container.decodeIfPresent([ComAtprotoLexicon.Label.LabelDefinition].self, forKey: .labels)
+            self.threadgate = try container.decodeIfPresent(AppBskyLexicon.Feed.ThreadgateViewDefinition.self, forKey: .threadgate)
+        }
+
+        public func encode(to encoder: any Encoder) throws {
+            var container = encoder.container(keyedBy: CodingKeys.self)
+
+            try container.encode(self.postURI, forKey: .postURI)
+            try container.encode(self.cidHash, forKey: .cidHash)
+            try container.encode(self.author, forKey: .author)
+            try container.encode(self.record, forKey: .record)
+            try container.encodeIfPresent(self.embed, forKey: .embed)
+            try container.encodeIfPresent(self.replyCount, forKey: .replyCount)
+            try container.encodeIfPresent(self.repostCount, forKey: .repostCount)
+            try container.encodeIfPresent(self.likeCount, forKey: .likeCount)
+            try container.encodeIfPresent(self.quoteCount, forKey: .quoteCount)
+            try encodeDateIfPresent(self.indexedAt, with: &container, forKey: .indexedAt)
+            try container.encodeIfPresent(self.viewer, forKey: .viewer)
+            try container.encodeIfPresent(self.labels, forKey: .labels)
+            try container.encodeIfPresent(self.threadgate, forKey: .threadgate)
+        }
 
         enum CodingKeys: String, CodingKey {
             case postURI = "uri"
@@ -204,7 +240,7 @@ extension AppBskyLexicon.Feed {
         public let by: AppBskyLexicon.Actor.ProfileViewBasicDefinition
 
         /// The last time the repost was indexed.
-        @DateFormatting public var indexedAt: Date
+        public let indexedAt: Date
 
 //        public init(by: AppBskyLexicon.Actor.ProfileViewBasicDefinition, indexedAt: Date) {
 //            self.by = by
@@ -217,6 +253,20 @@ extension AppBskyLexicon.Feed {
 //            self.by = try container.decode(AppBskyLexicon.Actor.ProfileViewBasicDefinition.self, forKey: .by)
 //            self.indexedAt = try container.decode(DateFormatting.self, forKey: .indexedAt).wrappedValue
 //        }
+
+        public init(from decoder: any Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+
+            self.by = try container.decode(AppBskyLexicon.Actor.ProfileViewBasicDefinition.self, forKey: .by)
+            self.indexedAt = try decodeDate(from: container, forKey: .indexedAt)
+        }
+
+        public func encode(to encoder: any Encoder) throws {
+            var container = encoder.container(keyedBy: CodingKeys.self)
+
+            try container.encode(self.by, forKey: .by)
+            try encodeDate(self.indexedAt, with: &container, forKey: .indexedAt)
+        }
 
         enum CodingKeys: CodingKey {
             case by
