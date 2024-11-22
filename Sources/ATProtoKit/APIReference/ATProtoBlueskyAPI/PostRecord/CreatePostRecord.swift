@@ -299,6 +299,21 @@ extension ATProtoBluesky {
             } catch {
                 throw error
             }
+        } else if let linkbuilder = self.linkBuilder {
+            do {
+                // Resolve the link, generate the metadata, and populate the external embed.
+                let resolvedLink = try await grabURL(from: facets, linkbuilder: linkbuilder)
+
+                resolvedEmbed = await buildExternalEmbed(
+                    from: resolvedLink.url,
+                    title: resolvedLink.title,
+                    description: resolvedLink.description,
+                    thumbnailImageURL: resolvedLink.thumbnailURL,
+                    session: session
+                )
+            } catch {
+                throw error
+            }
         }
 
         // Compiling all parts of the post into one.
@@ -635,5 +650,34 @@ extension ATProtoBluesky {
         ///   - record: An `EmbedRecord`, representing the post to be embedded.
         ///   - media: A `MediaUnion`, representing the media content associated with the post.
         case recordWithMedia(record: AppBskyLexicon.Embed.RecordDefinition, media: ATUnion.RecordWithMediaUnion)
+    }
+
+    // MARK: Helper methods -
+
+    /// Grabs a URL from an array of facets.
+    ///
+    /// - Parameters:
+    ///   - facets: The array of facets.
+    ///   - linkbuilder: The ``ATLinkBuilder`` object that's being passed through.
+    /// - Returns: A tuple which contains the title, description, and (optionally) the
+    /// thumbnail URL of the link.
+    ///
+    /// - Throws: The URL doesn't exist or is invalid.
+    public func grabURL(
+        from facets: [AppBskyLexicon.RichText.Facet],
+        linkbuilder: ATLinkBuilder
+    ) async throws -> (url: URL, title: String, description: String?, thumbnailURL: URL?) {
+        // Try to get the first link from the array of facets.
+        for facet in facets {
+            // There will always only be one item in the array.
+            if let linkFeature = facet.features.first,
+               case let .link(link) = linkFeature,
+               let url = URL(string: link.uri) {
+                // Attempt to grab metadata using the link builder
+                return try await linkbuilder.grabMetadata(from: url)
+            }
+        }
+        // If no valid link is found, throw an appropriate error
+        throw URLError(.badURL)
     }
 }
