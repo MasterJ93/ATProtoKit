@@ -41,8 +41,8 @@ let package = Package(
             ],
             swiftSettings: [
                 .enableExperimentalFeature("StrictConcurrency")
-            ],
-            plugins: ["VersionNumberPlugin"]
+            ]
+//            plugins: ["VersionNumberPlugin"]
         ),
 
         // Macro implementation that performs the source transformations
@@ -58,13 +58,13 @@ let package = Package(
             dependencies: [
                 "Macros"
             ]
-        ),
-        .executableTarget(name: "VersionNumberPluginExec"),
-        .plugin(
-            name: "VersionNumberPlugin",
-            capability: .buildTool(),
-            dependencies: ["VersionNumberPluginExec"]
         )
+//        .executableTarget(name: "VersionNumberPluginExec"),
+//        .plugin(
+//            name: "VersionNumberPlugin",
+//            capability: .buildTool(),
+//            dependencies: ["VersionNumberPluginExec"]
+//        )
 
 //        .testTarget(
 //            name: "ATProtoKitTests",

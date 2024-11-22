@@ -23,11 +23,11 @@ public class ATProtocolConfiguration: ProtocolConfiguration {
     /// An instance of `URLSessionConfiguration`.
     public let configuration: URLSessionConfiguration
 
-    /// The user agent of the client. Defaults to `.default`.
-    ///
-    /// - Note: For more information about user agents in ATProtoKit, go to
-    /// ``ATProtoTools/UserAgent``.
-    public let userAgent: ATProtoTools.UserAgent
+//    /// The user agent of the client. Defaults to `.default`.
+//    ///
+//    /// - Note: For more information about user agents in ATProtoKit, go to
+//    /// ``ATProtoTools/UserAgent``.
+//    public let userAgent: ATProtoTools.UserAgent
 
     /// Specifies the logger that will be used for emitting log messages.
     public private(set) var logger: Logger?
@@ -77,7 +77,7 @@ public class ATProtocolConfiguration: ProtocolConfiguration {
         appPassword: String,
         pdsURL: String = "https://bsky.social",
         configuration: URLSessionConfiguration = .default,
-        userAgent: ATProtoTools.UserAgent = .default,
+//        userAgent: ATProtoTools.UserAgent = .default,
         logIdentifier: String? = nil,
         logCategory: String? = nil,
         logLevel: Logger.Level? = .info
@@ -86,7 +86,7 @@ public class ATProtocolConfiguration: ProtocolConfiguration {
         self.appPassword = appPassword
         self.pdsURL = !pdsURL.isEmpty ? pdsURL : "https://bsky.social"
         self.configuration = configuration
-        self.userAgent = userAgent
+//        self.userAgent = userAgent
         self.logIdentifier = logIdentifier ?? Bundle.main.bundleIdentifier ?? "com.cjrriley.ATProtoKit"
         self.logCategory = logCategory ?? "ATProtoKit"
         self.logLevel = logLevel
@@ -124,7 +124,7 @@ public class ATProtocolConfiguration: ProtocolConfiguration {
     public init(
         service: String,
         configuration: URLSessionConfiguration = .default,
-        userAgent: ATProtoTools.UserAgent = .default,
+//        userAgent: ATProtoTools.UserAgent = .default,
         logIdentifier: String? = nil,
         logCategory: String? = nil,
         logLevel: Logger.Level? = .info
@@ -133,7 +133,7 @@ public class ATProtocolConfiguration: ProtocolConfiguration {
         self.appPassword = ""
         self.pdsURL = service
         self.configuration = configuration
-        self.userAgent = userAgent
+//        self.userAgent = userAgent
         self.logIdentifier = logIdentifier ?? Bundle.main.bundleIdentifier ?? "com.cjrriley.ATProtoKit"
         self.logCategory = logCategory ?? "ATProtoKit"
         self.logLevel = logLevel
