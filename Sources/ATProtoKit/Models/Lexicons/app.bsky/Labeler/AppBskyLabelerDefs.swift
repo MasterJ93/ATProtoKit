@@ -32,11 +32,33 @@ extension AppBskyLexicon.Labeler {
         public let viewer: LabelerViewerStateDefinition?
 
         /// The date and time the labeler was last indexed.
-        @DateFormatting public var indexedAt: Date
+        public let indexedAt: Date
 
         /// An array of labels. Optional.
         public let labels: [ComAtprotoLexicon.Label.LabelDefinition]?
 
+        public init(labelerURI: String, labelerCIDHash: String, creator: AppBskyLexicon.Actor.ProfileViewDefinition, likeCount: Int?,
+                    viewer: LabelerViewerStateDefinition?, indexedAt: Date, labels: [ComAtprotoLexicon.Label.LabelDefinition]?) {
+            self.labelerURI = labelerURI
+            self.labelerCIDHash = labelerCIDHash
+            self.creator = creator
+            self.likeCount = likeCount
+            self.viewer = viewer
+            self.indexedAt = indexedAt
+            self.labels = labels
+        }
+
+        public init(from decoder: any Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+
+            self.labelerURI = try container.decode(String.self, forKey: .labelerURI)
+            self.labelerCIDHash = try container.decode(String.self, forKey: .labelerCIDHash)
+            self.creator = try container.decode(AppBskyLexicon.Actor.ProfileViewDefinition.self, forKey: .creator)
+            self.likeCount = try container.decodeIfPresent(Int.self, forKey: .likeCount)
+            self.viewer = try container.decodeIfPresent(AppBskyLexicon.Labeler.LabelerViewerStateDefinition.self, forKey: .viewer)
+            self.indexedAt = try decodeDate(from: container, forKey: .indexedAt)
+            self.labels = try container.decodeIfPresent([ComAtprotoLexicon.Label.LabelDefinition].self, forKey: .labels)
+        }
         public func encode(to encoder: any Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
 
@@ -49,7 +71,7 @@ extension AppBskyLexicon.Labeler {
                 try container.encode(likeCount, forKey: .likeCount)
             }
             try container.encodeIfPresent(self.viewer, forKey: .viewer)
-            try container.encode(self._indexedAt, forKey: .indexedAt)
+            try encodeDate(self.indexedAt, with: &container, forKey: .indexedAt)
             try container.encodeIfPresent(self.labels, forKey: .labels)
         }
 
@@ -90,10 +112,36 @@ extension AppBskyLexicon.Labeler {
         public let viewer: AppBskyLexicon.Labeler.LabelerViewerStateDefinition?
 
         /// The date and time the labeler was last indexed.
-        @DateFormatting public var indexedAt: Date
+        public let indexedAt: Date
 
         /// An array of labels. Optional.
         public let labels: [ComAtprotoLexicon.Label.LabelDefinition]?
+
+        public init(labelerURI: String, labelerCIDHash: String, creator: AppBskyLexicon.Actor.ProfileViewDefinition, policies: LabelerPolicies,
+                    likeCount: Int?, viewer: AppBskyLexicon.Labeler.LabelerViewerStateDefinition?, indexedAt: Date,
+                    labels: [ComAtprotoLexicon.Label.LabelDefinition]?) {
+            self.labelerURI = labelerURI
+            self.labelerCIDHash = labelerCIDHash
+            self.creator = creator
+            self.policies = policies
+            self.likeCount = likeCount
+            self.viewer = viewer
+            self.indexedAt = indexedAt
+            self.labels = labels
+        }
+
+        public init(from decoder: any Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+
+            self.labelerURI = try container.decode(String.self, forKey: .labelerURI)
+            self.labelerCIDHash = try container.decode(String.self, forKey: .labelerCIDHash)
+            self.creator = try container.decode(AppBskyLexicon.Actor.ProfileViewDefinition.self, forKey: .creator)
+            self.policies = try container.decode(AppBskyLexicon.Labeler.LabelerPolicies.self, forKey: .policies)
+            self.likeCount = try container.decodeIfPresent(Int.self, forKey: .likeCount)
+            self.viewer = try container.decodeIfPresent(AppBskyLexicon.Labeler.LabelerViewerStateDefinition.self, forKey: .viewer)
+            self.indexedAt = try decodeDate(from: container, forKey: .indexedAt)
+            self.labels = try container.decodeIfPresent([ComAtprotoLexicon.Label.LabelDefinition].self, forKey: .labels)
+        }
 
         public func encode(to encoder: any Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
@@ -108,7 +156,7 @@ extension AppBskyLexicon.Labeler {
                 try container.encode(likeCount, forKey: .likeCount)
             }
             try container.encodeIfPresent(self.viewer, forKey: .viewer)
-            try container.encode(self._indexedAt, forKey: .indexedAt)
+            try encodeDate(self.indexedAt, with: &container, forKey: .indexedAt)
             try container.encodeIfPresent(self.labels, forKey: .labels)
         }
 

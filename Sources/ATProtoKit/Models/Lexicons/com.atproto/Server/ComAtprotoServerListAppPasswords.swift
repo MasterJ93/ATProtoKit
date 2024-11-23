@@ -32,17 +32,31 @@ extension ComAtprotoLexicon.Server {
             public let name: String
 
             /// The date and date the App Password was created.
-            @DateFormatting public var createdAt: Date
+            public let createdAt: Date
 
             /// Indicates whether this App Password can be used to access sensitive content from
             /// the user account.
             public let isPrivileged: Bool?
 
+            public init(name: String, createdAt: Date, isPrivileged: Bool?) {
+                self.name = name
+                self.createdAt = createdAt
+                self.isPrivileged = isPrivileged
+            }
+
+            public init(from decoder: any Decoder) throws {
+                let container = try decoder.container(keyedBy: CodingKeys.self)
+
+                self.name = try container.decode(String.self, forKey: .name)
+                self.createdAt = try decodeDate(from: container, forKey: .createdAt)
+                self.isPrivileged = try container.decodeIfPresent(Bool.self, forKey: .isPrivileged)
+            }
+
             public func encode(to encoder: Encoder) throws {
                 var container = encoder.container(keyedBy: CodingKeys.self)
 
                 try container.encode(self.name, forKey: .name)
-                try container.encode(self._createdAt, forKey: .createdAt)
+                try encodeDate(self.createdAt, with: &container, forKey: .createdAt)
                 try container.encodeIfPresent(self.isPrivileged, forKey: .isPrivileged)
             }
 

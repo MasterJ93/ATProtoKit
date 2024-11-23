@@ -54,7 +54,7 @@ extension ComAtprotoLexicon.Admin {
         public var relatedRecords: [UnknownType]?
 
         /// The date and time the user was last indexed.
-        @DateFormatting public var indexedAt: Date
+        public let indexedAt: Date
 
         /// The invite code used by the user to sign up. Optional.
         public var invitedBy: ComAtprotoLexicon.Server.InviteCodeDefinition?
@@ -66,13 +66,55 @@ extension ComAtprotoLexicon.Admin {
         public var areInvitesDisabled: Bool?
 
         /// The date and time the email of the user was confirmed. Optional.
-        @DateFormattingOptional public var emailConfirmedAt: Date?
+        public let emailConfirmedAt: Date?
 
         /// Any notes related to inviting the user. Optional.
         public var inviteNote: String?
 
         /// The date and time a status has been deactivated.
-        @DateFormattingOptional public var deactivatedAt: Date?
+        public let deactivatedAt: Date?
+
+        public init(
+            actorDID: String,
+            handle: String,
+            email: String? = nil,
+            relatedRecords: [UnknownType]? = nil,
+            indexedAt: Date,
+            invitedBy: ComAtprotoLexicon.Server.InviteCodeDefinition? = nil,
+            invites: [ComAtprotoLexicon.Server.InviteCodeDefinition]? = nil,
+            areInvitesDisabled: Bool? = nil,
+            emailConfirmedAt: Date?,
+            inviteNote: String? = nil,
+            deactivatedAt: Date?
+        ) {
+            self.actorDID = actorDID
+            self.handle = handle
+            self.email = email
+            self.relatedRecords = relatedRecords
+            self.indexedAt = indexedAt
+            self.invitedBy = invitedBy
+            self.invites = invites
+            self.areInvitesDisabled = areInvitesDisabled
+            self.emailConfirmedAt = emailConfirmedAt
+            self.inviteNote = inviteNote
+            self.deactivatedAt = deactivatedAt
+        }
+
+        public init(from decoder: any Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+
+            self.actorDID = try container.decode(String.self, forKey: .actorDID)
+            self.handle = try container.decode(String.self, forKey: .handle)
+            self.email = try container.decodeIfPresent(String.self, forKey: .email)
+            self.relatedRecords = try container.decodeIfPresent([UnknownType].self, forKey: .relatedRecords)
+            self.indexedAt = try decodeDate(from: container, forKey: .indexedAt)
+            self.invitedBy = try container.decodeIfPresent(ComAtprotoLexicon.Server.InviteCodeDefinition.self, forKey: .invitedBy)
+            self.invites = try container.decodeIfPresent([ComAtprotoLexicon.Server.InviteCodeDefinition].self, forKey: .invites)
+            self.areInvitesDisabled = try container.decodeIfPresent(Bool.self, forKey: .areInvitesDisabled)
+            self.emailConfirmedAt = try decodeDateIfPresent(from: container, forKey: .emailConfirmedAt)
+            self.inviteNote = try container.decodeIfPresent(String.self, forKey: .inviteNote)
+            self.deactivatedAt = try decodeDateIfPresent(from: container, forKey: .deactivatedAt)
+        }
 
         public func encode(to encoder: Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
@@ -81,13 +123,13 @@ extension ComAtprotoLexicon.Admin {
             try container.encode(self.handle, forKey: .handle)
             try container.encodeIfPresent(self.email, forKey: .email)
             try container.encodeIfPresent(self.relatedRecords, forKey: .relatedRecords)
-            try container.encode(self._indexedAt, forKey: .indexedAt)
+            try encodeDate(self.indexedAt, with: &container, forKey: .indexedAt)
             try container.encodeIfPresent(self.invitedBy, forKey: .invitedBy)
             try container.encodeIfPresent(self.invites, forKey: .invites)
             try container.encodeIfPresent(self.areInvitesDisabled, forKey: .areInvitesDisabled)
-            try container.encode(self._emailConfirmedAt, forKey: .emailConfirmedAt)
+            try encodeDateIfPresent(self.emailConfirmedAt, with: &container, forKey: .emailConfirmedAt)
             try container.encodeIfPresent(self.inviteNote, forKey: .inviteNote)
-            try container.encodeIfPresent(self._deactivatedAt, forKey: .deactivatedAt)
+            try encodeDateIfPresent(self.deactivatedAt, with: &container, forKey: .deactivatedAt)
         }
 
         enum CodingKeys: String, CodingKey {

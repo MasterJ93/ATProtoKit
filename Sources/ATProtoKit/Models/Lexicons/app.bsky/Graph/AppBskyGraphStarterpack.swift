@@ -46,7 +46,7 @@ extension AppBskyLexicon.Graph {
         public let feeds: [FeedItem]?
 
         /// The date the starter pack was created..
-        @DateFormatting public var createdAt: Date
+        public let createdAt: Date
 
         public init(name: String, description: String?, descriptionFacets: [AppBskyLexicon.RichText.Facet]?, listURI: String, feeds: [FeedItem],
                     createdAt: Date) {
@@ -55,7 +55,7 @@ extension AppBskyLexicon.Graph {
             self.descriptionFacets = descriptionFacets
             self.listURI = listURI
             self.feeds = feeds
-            self._createdAt = DateFormatting(wrappedValue: createdAt)
+            self.createdAt = createdAt
         }
 
         public init(from decoder: any Decoder) throws {
@@ -66,7 +66,7 @@ extension AppBskyLexicon.Graph {
             self.descriptionFacets = try container.decodeIfPresent([AppBskyLexicon.RichText.Facet].self, forKey: .descriptionFacets)
             self.listURI = try container.decode(String.self, forKey: .listURI)
             self.feeds = try container.decodeIfPresent([FeedItem].self, forKey: .feeds)
-            self.createdAt = try container.decode(DateFormatting.self, forKey: .createdAt).wrappedValue
+            self.createdAt = try decodeDate(from: container, forKey: .createdAt)
         }
 
         public func encode(to encoder: any Encoder) throws {
@@ -77,7 +77,7 @@ extension AppBskyLexicon.Graph {
             try container.encodeIfPresent(self.descriptionFacets, forKey: .descriptionFacets)
             try container.encode(self.listURI, forKey: .listURI)
             try truncatedEncodeIfPresent(self.feeds, withContainer: &container, forKey: .feeds, upToArrayLength: 3)
-            try container.encode(self._createdAt, forKey: .createdAt)
+            try encodeDate(self.createdAt, with: &container, forKey: .createdAt)
         }
 
         enum CodingKeys: String, CodingKey {

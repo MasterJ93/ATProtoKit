@@ -101,7 +101,30 @@ extension ChatBskyLexicon.Conversation {
         public let sender: String
 
         /// The date and time the message was seen.
-        @DateFormatting public var seenAt: Date
+        public let seenAt: Date
+
+        public init(messageID: String?, revision: String, text: String, facets: [AppBskyLexicon.RichText.Facet]?, embeds: [ATUnion.MessageViewEmbedUnion]?,
+                    sender: String, seenAt: Date) {
+            self.messageID = messageID
+            self.revision = revision
+            self.text = text
+            self.facets = facets
+            self.embeds = embeds
+            self.sender = sender
+            self.seenAt = seenAt
+        }
+
+        public init(from decoder: any Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+
+            self.messageID = try container.decodeIfPresent(String.self, forKey: .messageID)
+            self.revision = try container.decode(String.self, forKey: .revision)
+            self.text = try container.decode(String.self, forKey: .text)
+            self.facets = try container.decodeIfPresent([AppBskyLexicon.RichText.Facet].self, forKey: .facets)
+            self.embeds = try container.decodeIfPresent([ATUnion.MessageViewEmbedUnion].self, forKey: .embeds)
+            self.sender = try container.decode(String.self, forKey: .sender)
+            self.seenAt = try decodeDate(from: container, forKey: .seenAt)
+        }
 
         public func encode(to encoder: any Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
@@ -114,7 +137,7 @@ extension ChatBskyLexicon.Conversation {
             try container.encodeIfPresent(self.facets, forKey: .facets)
             try container.encodeIfPresent(self.embeds, forKey: .embeds)
             try container.encode(self.sender, forKey: .sender)
-            try container.encode(self._seenAt, forKey: .seenAt)
+            try encodeDate(self.seenAt, with: &container, forKey: .seenAt)
         }
 
         public enum CodingKeys: String, CodingKey {
@@ -145,7 +168,23 @@ extension ChatBskyLexicon.Conversation {
         public let sender: String
 
         /// The date and time the message was seen.
-        @DateFormatting public var seenAt: Date
+        public let seenAt: Date
+
+        public init(messageID: String?, revision: String, sender: String, seenAt: Date) {
+            self.messageID = messageID
+            self.revision = revision
+            self.sender = sender
+            self.seenAt = seenAt
+        }
+
+        public init(from decoder: any Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+
+            self.messageID = try container.decodeIfPresent(String.self, forKey: .messageID)
+            self.revision = try container.decode(String.self, forKey: .revision)
+            self.sender = try container.decode(String.self, forKey: .sender)
+            self.seenAt = try decodeDate(from: container, forKey: .seenAt)
+        }
 
         public func encode(to encoder: any Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
@@ -153,7 +192,7 @@ extension ChatBskyLexicon.Conversation {
             try container.encodeIfPresent(self.messageID, forKey: .messageID)
             try container.encode(self.revision, forKey: .revision)
             try container.encode(self.sender, forKey: .sender)
-            try container.encode(self._seenAt, forKey: .seenAt)
+            try encodeDate(self.seenAt, with: &container, forKey: .seenAt)
         }
 
         enum CodingKeys: String, CodingKey {

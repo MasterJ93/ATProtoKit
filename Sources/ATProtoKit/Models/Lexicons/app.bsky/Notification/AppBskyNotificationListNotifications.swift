@@ -29,7 +29,32 @@ extension AppBskyLexicon.Notification {
         public let isPriority: Bool?
 
         /// The date and time the notification was last seen. Optional.
-        @DateFormattingOptional public var seenAt: Date?
+        public let seenAt: Date?
+
+        public init(cursor: String?, notifications: [Notification], isPriority: Bool?, seenAt: Date?) {
+            self.cursor = cursor
+            self.notifications = notifications
+            self.isPriority = isPriority
+            self.seenAt = seenAt
+        }
+
+        public init(from decoder: any Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+
+            self.cursor = try container.decodeIfPresent(String.self, forKey: .cursor)
+            self.notifications = try container.decode([AppBskyLexicon.Notification.Notification].self, forKey: .notifications)
+            self.isPriority = try container.decodeIfPresent(Bool.self, forKey: .isPriority)
+            self.seenAt = try decodeDateIfPresent(from: container, forKey: .seenAt)
+        }
+
+        public func encode(to encoder: any Encoder) throws {
+            var container = encoder.container(keyedBy: CodingKeys.self)
+
+            try container.encodeIfPresent(self.cursor, forKey: .cursor)
+            try container.encode(self.notifications, forKey: .notifications)
+            try container.encodeIfPresent(self.isPriority, forKey: .isPriority)
+            try encodeDateIfPresent(self.seenAt, with: &container, forKey: .seenAt)
+        }
 
         enum CodingKeys: String, CodingKey {
             case cursor
@@ -71,7 +96,34 @@ extension AppBskyLexicon.Notification {
         public let isRead: Bool
 
         /// The date and time the notification was last indexed.
-        @DateFormatting public var indexedAt: Date
+        public let indexedAt: Date
+
+        public init(notificationURI: String, notificationCID: String, notificationAuthor: String, notificationReason: Reason, reasonSubjectURI: String?,
+                    record: UnknownType, isRead: Bool, indexedAt: Date, labels: [ComAtprotoLexicon.Label.LabelDefinition]?) {
+            self.notificationURI = notificationURI
+            self.notificationCID = notificationCID
+            self.notificationAuthor = notificationAuthor
+            self.notificationReason = notificationReason
+            self.reasonSubjectURI = reasonSubjectURI
+            self.record = record
+            self.isRead = isRead
+            self.indexedAt = indexedAt
+            self.labels = labels
+        }
+
+        public init(from decoder: any Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+
+            self.notificationURI = try container.decode(String.self, forKey: .notificationURI)
+            self.notificationCID = try container.decode(String.self, forKey: .notificationCID)
+            self.notificationAuthor = try container.decode(String.self, forKey: .notificationAuthor)
+            self.notificationReason = try container.decode(AppBskyLexicon.Notification.Notification.Reason.self, forKey: .notificationReason)
+            self.reasonSubjectURI = try container.decodeIfPresent(String.self, forKey: .reasonSubjectURI)
+            self.record = try container.decode(UnknownType.self, forKey: .record)
+            self.isRead = try container.decode(Bool.self, forKey: .isRead)
+            self.indexedAt = try decodeDate(from: container, forKey: .indexedAt)
+            self.labels = try container.decodeIfPresent([ComAtprotoLexicon.Label.LabelDefinition].self, forKey: .labels)
+        }
 
         /// An array of labels. Optional.
         public let labels: [ComAtprotoLexicon.Label.LabelDefinition]?
@@ -86,7 +138,7 @@ extension AppBskyLexicon.Notification {
             try container.encodeIfPresent(self.reasonSubjectURI, forKey: .reasonSubjectURI)
             try container.encode(self.record, forKey: .record)
             try container.encode(self.isRead, forKey: .isRead)
-            try container.encode(self._indexedAt, forKey: .indexedAt)
+            try encodeDate(self.indexedAt, with: &container, forKey: .indexedAt)
             try container.encodeIfPresent(self.labels, forKey: .labels)
         }
 

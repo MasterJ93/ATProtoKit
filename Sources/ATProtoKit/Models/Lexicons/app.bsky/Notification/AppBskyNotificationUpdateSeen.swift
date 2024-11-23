@@ -20,12 +20,22 @@ extension AppBskyLexicon.Notification {
     public struct UpdateSeenRequestBody: Sendable, Codable {
 
         /// The date and time the notification was seen by the user account.
-        @DateFormatting public var seenAt: Date
+        public let seenAt: Date
+
+        public init(seenAt: Date) {
+            self.seenAt = seenAt
+        }
+
+        public init(from decoder: any Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+
+            self.seenAt = try decodeDate(from: container, forKey: .seenAt)
+        }
 
         public func encode(to encoder: any Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
 
-            try container.encode(self._seenAt, forKey: .seenAt)
+            try encodeDate(self.seenAt, with: &container, forKey: .seenAt)
         }
 
         enum CodingKeys: CodingKey {

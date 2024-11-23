@@ -50,7 +50,7 @@ extension AppBskyLexicon.Graph {
         public let labels: ATUnion.ListLabelsUnion
 
         /// The date and time the list was created.
-        @DateFormatting public var createdAt: Date
+        public let createdAt: Date
 
         public init(name: String, purpose: ListPurpose, description: String?, descriptionFacets: [AppBskyLexicon.RichText.Facet]?,
                     avatarImage: ComAtprotoLexicon.Repository.UploadBlobOutput?, labels: ATUnion.ListLabelsUnion, createdAt: Date) {
@@ -60,7 +60,7 @@ extension AppBskyLexicon.Graph {
             self.descriptionFacets = descriptionFacets
             self.avatarImage = avatarImage
             self.labels = labels
-            self._createdAt = DateFormatting(wrappedValue: createdAt)
+            self.createdAt = createdAt
         }
 
         public init(from decoder: any Decoder) throws {
@@ -72,7 +72,7 @@ extension AppBskyLexicon.Graph {
             self.descriptionFacets = try container.decodeIfPresent([AppBskyLexicon.RichText.Facet].self, forKey: .descriptionFacets)
             self.avatarImage = try container.decodeIfPresent(ComAtprotoLexicon.Repository.UploadBlobOutput.self, forKey: .avatarImage)
             self.labels = try container.decode(ATUnion.ListLabelsUnion.self, forKey: .labels)
-            self.createdAt = try container.decode(DateFormatting.self, forKey: .createdAt).wrappedValue
+            self.createdAt = try decodeDate(from: container, forKey: .createdAt)
         }
 
         public func encode(to encoder: any Encoder) throws {
@@ -84,7 +84,7 @@ extension AppBskyLexicon.Graph {
             try container.encodeIfPresent(self.descriptionFacets, forKey: .descriptionFacets)
             try container.encodeIfPresent(self.avatarImage, forKey: .avatarImage)
             try container.encode(self.labels, forKey: .labels)
-            try container.encode(self._createdAt, forKey: .createdAt)
+            try encodeDate(self.createdAt, with: &container, forKey: .createdAt)
         }
 
         enum CodingKeys: String, CodingKey {

@@ -31,25 +31,25 @@ extension AppBskyLexicon.Graph {
         public let subjectDID: String
 
         /// The date and time the record was created.
-        @DateFormatting public var createdAt: Date
+        public let createdAt: Date
 
         public init(subjectDID: String, createdAt: Date) {
             self.subjectDID = subjectDID
-            self._createdAt = DateFormatting(wrappedValue: createdAt)
+            self.createdAt = createdAt
         }
 
         public init(from decoder: any Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
 
             self.subjectDID = try container.decode(String.self, forKey: .subjectDID)
-            self.createdAt = try container.decode(DateFormatting.self, forKey: .createdAt).wrappedValue
+            self.createdAt = try decodeDate(from: container, forKey: .createdAt)
         }
 
         public func encode(to encoder: any Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
 
             try container.encode(self.subjectDID, forKey: .subjectDID)
-            try container.encode(self._createdAt, forKey: .createdAt)
+            try encodeDate(self.createdAt, with: &container, forKey: .createdAt)
         }
 
         enum CodingKeys: String, CodingKey {

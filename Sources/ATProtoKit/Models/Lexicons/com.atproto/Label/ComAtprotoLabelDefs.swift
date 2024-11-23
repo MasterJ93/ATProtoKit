@@ -62,13 +62,13 @@ extension ComAtprotoLexicon.Label {
         ///
         /// - Note: According to the AT Protocol specifications: "Timestamp when this label
         /// was created."
-        @DateFormatting public var timestamp: Date
+        public let timestamp: Date
 
         /// The date and time the label expires on. Optional.
         ///
         /// - Note: According to the AT Protocol specifications: "Timestamp at which this label
         /// expires (no longer applies)."
-//        @DateFormattingOptional public var expiresOn: Date?
+        public let expiresOn: Date?
 
         /// The DAG-CBOR-encoded signature. Optional.
         ///
@@ -85,8 +85,8 @@ extension ComAtprotoLexicon.Label {
             self.cidHash = try container.decodeIfPresent(String.self, forKey: .cidHash)
             self.name = try container.decode(String.self, forKey: .name)
             self.isNegated = try container.decodeIfPresent(Bool.self, forKey: .isNegated)
-            self._timestamp = try container.decode(DateFormatting.self, forKey: .timestamp)
-//            self._expiresOn = try container.decodeIfPresent(DateFormattingOptional.self, forKey: .expiresOn)?.wrappedValue
+            self.timestamp = try decodeDate(from: container, forKey: .timestamp)
+            self.expiresOn = try decodeDateIfPresent(from: container, forKey: .expiresOn)
             self.signature = try container.decodeIfPresent(Data.self, forKey: .signature)
         }
 
@@ -102,8 +102,8 @@ extension ComAtprotoLexicon.Label {
             try truncatedEncode(self.name, withContainer: &container, forKey: .name, upToCharacterLength: 128)
 
             try container.encodeIfPresent(self.isNegated, forKey: .isNegated)
-            try container.encode(self.timestamp, forKey: .timestamp)
-//            try container.encode(self.expiresOn, forKey: .expiresOn)
+            try encodeDate(self.timestamp, with: &container, forKey: .timestamp)
+            try encodeDateIfPresent(self.expiresOn, with: &container, forKey: .expiresOn)
             try container.encodeIfPresent(self.signature, forKey: .signature)
         }
 
@@ -115,7 +115,7 @@ extension ComAtprotoLexicon.Label {
             case name = "val"
             case isNegated = "neg"
             case timestamp = "cts"
-//            case expiresOn = "exp"
+            case expiresOn = "exp"
             case signature = "sig"
         }
     }

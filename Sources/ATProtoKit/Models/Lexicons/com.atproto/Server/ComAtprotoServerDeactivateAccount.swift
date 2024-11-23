@@ -25,12 +25,22 @@ extension ComAtprotoLexicon.Server {
         ///
         /// - Note: According to the AT Protocol specifications: "A recommendation to server as
         /// to how long they should hold onto the deactivated account before deleting."
-        @DateFormatting public var deleteAfter: Date
+        public let deleteAfter: Date
+
+        public init(deleteAfter: Date) {
+            self.deleteAfter = deleteAfter
+        }
+
+        public init(from decoder: any Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+
+            self.deleteAfter = try decodeDate(from: container, forKey: .deleteAfter)
+        }
 
         public func encode(to encoder: Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
 
-            try container.encode(self.deleteAfter, forKey: .deleteAfter)
+            try encodeDate(self.deleteAfter, with: &container, forKey: .deleteAfter)
         }
 
         enum CodingKeys: CodingKey {

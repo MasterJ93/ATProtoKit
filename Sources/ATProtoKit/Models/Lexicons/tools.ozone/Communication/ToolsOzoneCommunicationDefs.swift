@@ -54,10 +54,37 @@ extension ToolsOzoneLexicon.Communication {
         public let lastUpdatedBy: String
 
         /// The date and time the communication template was created.
-        @DateFormatting public var createdAt: Date
+        public let createdAt: Date
 
         /// The date and time the communication template was updated.
-        @DateFormatting public var updatedAt: Date
+        public let updatedAt: Date
+
+        public init(id: Int, name: String, subject: String? = nil, contentMarkdown: String, isDisabled: Bool, language: Locale?, lastUpdatedBy: String,
+                    createdAt: Date, updatedAt: Date) {
+            self.id = id
+            self.name = name
+            self.subject = subject
+            self.contentMarkdown = contentMarkdown
+            self.isDisabled = isDisabled
+            self.language = language
+            self.lastUpdatedBy = lastUpdatedBy
+            self.createdAt = createdAt
+            self.updatedAt = updatedAt
+        }
+
+        public init(from decoder: any Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+
+            self.id = try container.decode(Int.self, forKey: .id)
+            self.name = try container.decode(String.self, forKey: .name)
+            self.subject = try container.decodeIfPresent(String.self, forKey: .subject)
+            self.contentMarkdown = try container.decode(String.self, forKey: .contentMarkdown)
+            self.isDisabled = try container.decode(Bool.self, forKey: .isDisabled)
+            self.language = try container.decodeIfPresent(Locale.self, forKey: .language)
+            self.lastUpdatedBy = try container.decode(String.self, forKey: .lastUpdatedBy)
+            self.createdAt = try decodeDate(from: container, forKey: .createdAt)
+            self.updatedAt = try decodeDate(from: container, forKey: .updatedAt)
+        }
 
         public func encode(to encoder: Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
@@ -68,8 +95,8 @@ extension ToolsOzoneLexicon.Communication {
             try container.encode(self.contentMarkdown, forKey: .contentMarkdown)
             try container.encode(self.isDisabled, forKey: .isDisabled)
             try container.encode(self.lastUpdatedBy, forKey: .lastUpdatedBy)
-            try container.encode(self._createdAt, forKey: .createdAt)
-            try container.encode(self._updatedAt, forKey: .updatedAt)
+            try encodeDate(self.createdAt, with: &container, forKey: .createdAt)
+            try encodeDate(self.updatedAt, with: &container, forKey: .updatedAt)
         }
 
         enum CodingKeys: String, CodingKey {

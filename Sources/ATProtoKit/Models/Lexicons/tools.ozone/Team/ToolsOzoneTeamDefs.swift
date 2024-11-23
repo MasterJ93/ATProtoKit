@@ -26,16 +26,51 @@ extension ToolsOzoneLexicon.Team {
         public let profile: AppBskyLexicon.Actor.ProfileViewDetailedDefinition?
 
         /// The date and time the member was created. Optional.
-        @DateFormattingOptional public var createdAt: Date?
+        public let createdAt: Date?
 
         /// The date and time the member was updated. Optional.
-        @DateFormattingOptional public var updatedAt: Date?
+        public let updatedAt: Date?
 
         /// The user account that updated the member. Optional.
         public let lastUpdatedBy: String?
 
         /// The current role that was given to the member.
         public let role: String
+
+        public init(memberDID: String, isDisabled: Bool?, profile: AppBskyLexicon.Actor.ProfileViewDetailedDefinition?, createdAt: Date?,
+                    updatedAt: Date? = nil, lastUpdatedBy: String?, role: String) {
+            self.memberDID = memberDID
+            self.isDisabled = isDisabled
+            self.profile = profile
+            self.createdAt = createdAt
+            self.updatedAt = updatedAt
+            self.lastUpdatedBy = lastUpdatedBy
+            self.role = role
+        }
+
+        public init(from decoder: any Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+
+            self.memberDID = try container.decode(String.self, forKey: .memberDID)
+            self.isDisabled = try container.decodeIfPresent(Bool.self, forKey: .isDisabled)
+            self.profile = try container.decodeIfPresent(AppBskyLexicon.Actor.ProfileViewDetailedDefinition.self, forKey: .profile)
+            self.createdAt = try decodeDateIfPresent(from: container, forKey: .createdAt)
+            self.updatedAt = try decodeDateIfPresent(from: container, forKey: .updatedAt)
+            self.lastUpdatedBy = try container.decodeIfPresent(String.self, forKey: .lastUpdatedBy)
+            self.role = try container.decode(String.self, forKey: .role)
+        }
+
+        public func encode(to encoder: any Encoder) throws {
+            var container = encoder.container(keyedBy: CodingKeys.self)
+
+            try container.encode(self.memberDID, forKey: .memberDID)
+            try container.encodeIfPresent(self.isDisabled, forKey: .isDisabled)
+            try container.encodeIfPresent(self.profile, forKey: .profile)
+            try encodeDateIfPresent(self.createdAt, with: &container, forKey: .createdAt)
+            try encodeDateIfPresent(self.updatedAt, with: &container, forKey: .updatedAt)
+            try container.encodeIfPresent(self.lastUpdatedBy, forKey: .lastUpdatedBy)
+            try container.encode(self.role, forKey: .role)
+        }
 
         enum CodingKeys: String, CodingKey {
             case memberDID = "did"

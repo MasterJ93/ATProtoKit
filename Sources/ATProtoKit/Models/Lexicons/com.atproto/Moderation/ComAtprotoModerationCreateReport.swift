@@ -71,7 +71,28 @@ extension ComAtprotoLexicon.Moderation {
         public let reportedBy: String
 
         /// The date and time the report was created.
-        @DateFormatting public var createdAt: Date
+        public let createdAt: Date
+
+        public init(id: Int, reasonType: ComAtprotoLexicon.Moderation.ReasonTypeDefinition, reason: String?, subject: ATUnion.CreateReportSubjectUnion,
+                    reportedBy: String, createdAt: Date) {
+            self.id = id
+            self.reasonType = reasonType
+            self.reason = reason
+            self.subject = subject
+            self.reportedBy = reportedBy
+            self.createdAt = createdAt
+        }
+
+        public init(from decoder: any Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+
+            self.id = try container.decode(Int.self, forKey: .id)
+            self.reasonType = try container.decode(ComAtprotoLexicon.Moderation.ReasonTypeDefinition.self, forKey: .reasonType)
+            self.reason = try container.decodeIfPresent(String.self, forKey: .reason)
+            self.subject = try container.decode(ATUnion.CreateReportSubjectUnion.self, forKey: .subject)
+            self.reportedBy = try container.decode(String.self, forKey: .reportedBy)
+            self.createdAt = try decodeDate(from: container, forKey: .createdAt)
+        }
 
         public func encode(to encoder: Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
@@ -84,7 +105,7 @@ extension ComAtprotoLexicon.Moderation {
             try truncatedEncodeIfPresent(self.reason, withContainer: &container, forKey: .reason, upToCharacterLength: 2_000)
             try container.encode(self.subject, forKey: .subject)
             try container.encode(self.reportedBy, forKey: .reportedBy)
-            try container.encode(self._createdAt, forKey: .createdAt)
+            try encodeDate(self.createdAt, with: &container, forKey: .createdAt)
         }
 
         public enum CodingKeys: CodingKey {
