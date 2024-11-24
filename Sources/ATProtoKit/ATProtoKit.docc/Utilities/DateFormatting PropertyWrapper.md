@@ -102,6 +102,9 @@ public struct UserProfile: ATRecordProtocol {
 
 
 ## Topics
+### CustomDateFormatter
+- ``CustomDateFormatter``
+
 ### Decodable Methods
 - ``decodeDate(from:forKey:)``
 - ``decodeDateIfPresent(from:forKey:)``
