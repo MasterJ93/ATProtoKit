@@ -29,8 +29,8 @@ public class ATProtocolConfiguration: ProtocolConfiguration {
 //    /// ``ATProtoTools/UserAgent``.
 //    public let userAgent: ATProtoTools.UserAgent
 
-    /// Specifies the logger that will be used for emitting log messages.
-    public private(set) var logger: Logger?
+    /// Specifies the logger that will be used for emitting log messages. Optional.
+    private static let loggerManager = LogBootstrapConfiguration()
 
     /// Specifies the identifier for managing log outputs. Optional. Defaults to the
     /// project's `CFBundleIdentifier`.
@@ -91,9 +91,8 @@ public class ATProtocolConfiguration: ProtocolConfiguration {
         self.logCategory = logCategory ?? "ATProtoKit"
         self.logLevel = logLevel
 
-        self.logger = setupLog(logCategory, logLevel)
-
         Task { [configuration] in
+            await ATProtocolConfiguration.loggerManager.setupLog(logCategory: logCategory, logLevel: logLevel, logIdentifier: logIdentifier)
             await APIClientService.shared.configure(with: configuration)
         }
     }
@@ -139,23 +138,8 @@ public class ATProtocolConfiguration: ProtocolConfiguration {
         self.logLevel = logLevel
     }
 
-    /// Private method to set up the logger.
-    ///
-    /// - Parameters:
-    ///   - logCategory: The catergory of the logger. Optional.
-    ///   - logLevel: The level of the logger. Optional.
-    fileprivate func setupLog(_ logCategory: String?, _ logLevel: Logger.Level?) -> Logger {
-        #if canImport(os)
-        LoggingSystem.bootstrap { label in
-            ATLogHandler(subsystem: label, category: logCategory ?? "ATProtoKit")
-        }
-        #else
-        LoggingSystem.bootstrap(StreamLogHandler.standardOutput)
-        #endif
-
-        var sharedLogger = Logger(label: self.logIdentifier ?? "com.cjrriley.ATProtoKit")
-        sharedLogger.logLevel = logLevel ?? .info
-        
-        return sharedLogger
+    /// Retrieves the current logger for usage.
+    public static func getLogger() async -> Logger {
+        return await loggerManager.getLogger()
     }
 }

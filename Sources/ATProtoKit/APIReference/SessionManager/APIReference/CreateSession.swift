@@ -51,10 +51,7 @@ extension ATProtocolConfiguration {
                 decodeTo: UserSession.self
             )
             response.pdsURL = self.pdsURL
-
-            if self.logger != nil {
-                response.logger = self.logger
-            }
+            response.logger = await ATProtocolConfiguration.getLogger()
 
             if self.maxRetryCount != nil {
                 response.maxRetryCount = self.maxRetryCount
