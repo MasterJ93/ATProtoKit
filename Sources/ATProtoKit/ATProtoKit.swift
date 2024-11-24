@@ -146,7 +146,6 @@ public class ATProtoKit: ATProtoKitConfiguration, ATRecordConfiguration {
     ///   - session: The authenticated user session within the AT Protocol. Optional.
     ///   - canUseBlueskyRecords: Indicates whether Bluesky's lexicons should be used.
     ///   Defaults to `true`.
-    ///   - logger: Specifies the identifier for managing log outputs. Optional.
     public init(session: UserSession? = nil, canUseBlueskyRecords: Bool = true) {
         self.session = session
         self.logger = session?.logger
