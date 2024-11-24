@@ -146,11 +146,10 @@ public class ATProtoKit: ATProtoKitConfiguration, ATRecordConfiguration {
     ///   - session: The authenticated user session within the AT Protocol. Optional.
     ///   - canUseBlueskyRecords: Indicates whether Bluesky's lexicons should be used.
     ///   Defaults to `true`.
-    ///   - logger: Specifies the identifier for managing log outputs. Optional. Defaults
-    ///   to the project's `CFBundleIdentifier`.
-    public init(session: UserSession? = nil, canUseBlueskyRecords: Bool = true, logger: Logger? = nil) {
+    ///   - logger: Specifies the identifier for managing log outputs. Optional.
+    public init(session: UserSession? = nil, canUseBlueskyRecords: Bool = true) {
         self.session = session
-        self.logger = session?.logger ?? logger
+        self.logger = session?.logger
 
         Task { [recordLexicons] in
             if canUseBlueskyRecords && !(ATRecordTypeRegistry.areBlueskyRecordsRegistered) {
@@ -206,9 +205,7 @@ public class ATProtoBluesky: ATProtoKitConfiguration {
     ///   - atProtoKitInstance: Represents the instance of ``ATProtoKit/ATProtoKit``.
     ///   - linkBuilder: The ``ATLinkBuilder`` object used to grab the metadata for preview
     ///   link cards. Optional.
-    ///   - logger: Specifies the identifier for managing log outputs. Optional.
-    ///   Defaults to the project's `CFBundleIdentifier`.
-    public init(atProtoKitInstance: ATProtoKit, linkbuilder: ATLinkBuilder? = nil, logger: Logger? = nil) {
+    public init(atProtoKitInstance: ATProtoKit, linkbuilder: ATLinkBuilder? = nil) {
         self.atProtoKitInstance = atProtoKitInstance
         self.linkBuilder = linkbuilder
         self.session = self.atProtoKitInstance.session ?? nil
@@ -245,10 +242,10 @@ public class ATProtoBlueskyChat: ATProtoKitConfiguration {
     ///   - atProtoKitInstance: Represents the instance of ``ATProtoKit/ATProtoKit``.
     ///   - logger: Specifies the identifier for managing log outputs. Optional.
     ///   Defaults to the project's `CFBundleIdentifier`.
-    public init(atProtoKitInstance: ATProtoKit, logger: Logger? = nil) {
+    public init(atProtoKitInstance: ATProtoKit) {
         self.atProtoKitInstance = atProtoKitInstance
         self.session = self.atProtoKitInstance.session ?? nil
-        self.logger = self.atProtoKitInstance.session?.logger ?? logger
+        self.logger = self.atProtoKitInstance.session?.logger
     }
 }
 
@@ -311,8 +308,8 @@ public class ATProtoAdmin: ATProtoKitConfiguration {
     ///   - session: The authenticated user session within the AT Protocol.
     ///   - logger: Specifies the identifier for managing log outputs. Optional.
     ///   Defaults to the project's `CFBundleIdentifier`.
-    public init(session: UserSession? = nil, logger: Logger? = nil) {
+    public init(session: UserSession? = nil) {
         self.session = session
-        self.logger = session?.logger ?? logger
+        self.logger = session?.logger
     }
 }
