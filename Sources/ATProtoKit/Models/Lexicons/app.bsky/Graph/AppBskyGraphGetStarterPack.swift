@@ -19,6 +19,6 @@ extension AppBskyLexicon.Graph {
     public struct GetStarterPackOutput: Sendable, Codable {
 
         /// A starter pack record.
-        public let starterPack: [StarterPackViewDefinition]
+        public let starterPack: AppBskyLexicon.Graph.StarterPackViewDefinition
     }
 }

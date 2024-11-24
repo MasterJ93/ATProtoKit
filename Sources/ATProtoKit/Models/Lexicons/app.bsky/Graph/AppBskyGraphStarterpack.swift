@@ -43,13 +43,13 @@ extension AppBskyLexicon.Graph {
         public let listURI: String
 
         /// An array of feeds.
-        public let feeds: [FeedItem]?
+        public let feeds: [AppBskyLexicon.Feed.GeneratorViewDefinition]?
 
         /// The date the starter pack was created..
         public let createdAt: Date
 
-        public init(name: String, description: String?, descriptionFacets: [AppBskyLexicon.RichText.Facet]?, listURI: String, feeds: [FeedItem],
-                    createdAt: Date) {
+        public init(name: String, description: String?, descriptionFacets: [AppBskyLexicon.RichText.Facet]?, listURI: String,
+                    feeds: [AppBskyLexicon.Feed.GeneratorViewDefinition], createdAt: Date) {
             self.name = name
             self.description = description
             self.descriptionFacets = descriptionFacets
@@ -65,7 +65,7 @@ extension AppBskyLexicon.Graph {
             self.description = try container.decodeIfPresent(String.self, forKey: .description)
             self.descriptionFacets = try container.decodeIfPresent([AppBskyLexicon.RichText.Facet].self, forKey: .descriptionFacets)
             self.listURI = try container.decode(String.self, forKey: .listURI)
-            self.feeds = try container.decodeIfPresent([FeedItem].self, forKey: .feeds)
+            self.feeds = try container.decodeIfPresent([AppBskyLexicon.Feed.GeneratorViewDefinition].self, forKey: .feeds)
             self.createdAt = try decodeDate(from: container, forKey: .createdAt)
         }
 
@@ -89,15 +89,5 @@ extension AppBskyLexicon.Graph {
             case createdAt
         }
 
-        /// A feed item.
-        public struct FeedItem: Sendable, Codable {
-
-            /// The URI of the feed item.
-            public let feedItemURI: String
-
-            enum CodingKeys: String, CodingKey {
-                case feedItemURI = "uri"
-            }
-        }
     }
 }
