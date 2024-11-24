@@ -95,7 +95,7 @@ public enum ATProtoBlueskyError: Decodable, ATProtoError {
     case invalidReplyReference(message: String)
 }
 
-/// An error type related to ``ATProtoBluesky/ATLinkBuilder``-related issues.
+/// An error type related to ``ATLinkBuilder``-related issues.
 public enum ATLinkBuilderError: Decodable, ATProtoError {
 
     /// The URL was invalid.

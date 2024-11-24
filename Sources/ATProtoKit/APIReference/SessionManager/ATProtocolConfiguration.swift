@@ -65,7 +65,6 @@ public class ATProtocolConfiguration: ProtocolConfiguration {
     ///   - appPassword: The app password of the user's account.
     ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `nil`.
     ///   - configuration: An instance of `URLSessionConfiguration`. Optional.
-    ///   - userAgent: The user agent of the client. Defaults to `.default`.
     ///   - logIdentifier: Specifies the identifier for managing log outputs. Optional. Defaults
     ///   to the project's `CFBundleIdentifier`.
     ///   - logCategory: Specifies the category name the logs in the logger within ATProtoKit will
@@ -113,7 +112,6 @@ public class ATProtocolConfiguration: ProtocolConfiguration {
     /// - Parameters:
     ///   - service: The web address of the service.
     ///   - configuration: An instance of `URLSessionConfiguration`. Optional.
-    ///   - userAgent: The user agent of the client. Defaults to `.default`.
     ///   - logIdentifier: Specifies the identifier for managing log outputs. Optional. Defaults
     ///   to the project's `CFBundleIdentifier`.
     ///   - logCategory: Specifies the category name the logs in the logger within ATProtoKit will

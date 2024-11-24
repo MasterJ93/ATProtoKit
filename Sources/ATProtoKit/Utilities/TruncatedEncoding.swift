@@ -26,7 +26,10 @@ public protocol Truncatable {
 ///   - value: The value to encode.
 ///   - container: The container to encode the value into.
 ///   - key: The key to associate with the encoded value.
-///   - length: The maximum length to which the value should be truncated before encoding.
+///   - characterLength: The maximum length of characters a `String` value can have
+///   before encoding. Optional. Defaults to `nil`.
+///   - arrayLength: The maximum length of items an `Array` can have before encoding. Optional.
+///   Defaults to `nil`.
 ///
 /// - Throws: `EncodingError.invalidValue` if the given value is invalid in the current context
 /// for this format.
@@ -74,8 +77,10 @@ public func truncatedEncode<T: CodingKey, Element: Truncatable & Encodable>(_ va
 ///   - value: The optional value to encode if present.
 ///   - container: The container to encode the value into.
 ///   - key: The key to associate with the encoded value.
-///   - length: The maximum length to which the value should be truncated before encoding,
-///   if present.
+///   - characterLength: The maximum length of characters a `String` value can have
+///   before encoding. Optional. Defaults to `nil`.
+///   - arrayLength: The maximum length of items an `Array` can have before encoding. Optional.
+///   Defaults to `nil`.
 ///
 /// - Throws: `EncodingError.invalidValue` if the given value is invalid in the current context
 /// for this format.

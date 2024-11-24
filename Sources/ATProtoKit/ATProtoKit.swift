@@ -202,7 +202,7 @@ public class ATProtoBluesky: ATProtoKitConfiguration {
     /// Initializes a new instance of `ATProtoBluesky`.
     /// - Parameters:
     ///   - atProtoKitInstance: Represents the instance of ``ATProtoKit/ATProtoKit``.
-    ///   - linkBuilder: The ``ATLinkBuilder`` object used to grab the metadata for preview
+    ///   - linkbuilder: The ``ATLinkBuilder`` object used to grab the metadata for preview
     ///   link cards. Optional.
     public init(atProtoKitInstance: ATProtoKit, linkbuilder: ATLinkBuilder? = nil) {
         self.atProtoKitInstance = atProtoKitInstance
@@ -237,9 +237,9 @@ public class ATProtoBlueskyChat: ATProtoKitConfiguration {
     internal let atProtoKitInstance: ATProtoKit
 
     /// Initializes a new instance of `ATProtoBlueskyChat`.
+    ///
     /// - Parameters:
     ///   - atProtoKitInstance: Represents the instance of ``ATProtoKit/ATProtoKit``.
-    ///   - logger: Specifies the identifier for managing log outputs. Optional.
     ///   Defaults to the project's `CFBundleIdentifier`.
     public init(atProtoKitInstance: ATProtoKit) {
         self.atProtoKitInstance = atProtoKitInstance
@@ -305,7 +305,6 @@ public class ATProtoAdmin: ATProtoKitConfiguration {
     /// Initializes a new instance of `ATProtoAdmin`.
     /// - Parameters:
     ///   - session: The authenticated user session within the AT Protocol.
-    ///   - logger: Specifies the identifier for managing log outputs. Optional.
     ///   Defaults to the project's `CFBundleIdentifier`.
     public init(session: UserSession? = nil) {
         self.session = session
