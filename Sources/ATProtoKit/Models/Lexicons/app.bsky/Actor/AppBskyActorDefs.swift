@@ -235,6 +235,48 @@ extension AppBskyLexicon.Actor {
         /// A post record that's pinned to the profile. Optional.
         public let pinnedPost: ComAtprotoLexicon.Repository.StrongReference?
 
+        public init(actorDID: String, actorHandle: String, displayName: String? = nil, description: String? = nil, avatarImageURL: URL? = nil,
+                    bannerImageURL: URL? = nil, followerCount: Int? = nil, followCount: Int? = nil, postCount: Int? = nil,
+                    associated: ProfileAssociatedDefinition?, joinedViaStarterPack: AppBskyLexicon.Graph.StarterpackRecord?, indexedAt: Date?,
+                    viewer: ViewerStateDefinition? = nil, labels: [ComAtprotoLexicon.Label.LabelDefinition]? = nil,
+                    pinnedPost: ComAtprotoLexicon.Repository.StrongReference?) {
+            self.actorDID = actorDID
+            self.actorHandle = actorHandle
+            self.displayName = displayName
+            self.description = description
+            self.avatarImageURL = avatarImageURL
+            self.bannerImageURL = bannerImageURL
+            self.followerCount = followerCount
+            self.followCount = followCount
+            self.postCount = postCount
+            self.associated = associated
+            self.joinedViaStarterPack = joinedViaStarterPack
+            self.indexedAt = indexedAt
+            self.viewer = viewer
+            self.labels = labels
+            self.pinnedPost = pinnedPost
+        }
+
+        public init(from decoder: any Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+
+            self.actorDID = try container.decode(String.self, forKey: .actorDID)
+            self.actorHandle = try container.decode(String.self, forKey: .actorHandle)
+            self.displayName = try container.decodeIfPresent(String.self, forKey: .displayName)
+            self.description = try container.decodeIfPresent(String.self, forKey: .description)
+            self.avatarImageURL = try container.decodeIfPresent(URL.self, forKey: .avatarImageURL)
+            self.bannerImageURL = try container.decodeIfPresent(URL.self, forKey: .bannerImageURL)
+            self.followerCount = try container.decodeIfPresent(Int.self, forKey: .followerCount)
+            self.followCount = try container.decodeIfPresent(Int.self, forKey: .followCount)
+            self.postCount = try container.decodeIfPresent(Int.self, forKey: .postCount)
+            self.joinedViaStarterPack = try container.decodeIfPresent(AppBskyLexicon.Graph.StarterpackRecord.self, forKey: .joinedViaStarterPack)
+            self.associated = try container.decodeIfPresent(AppBskyLexicon.Actor.ProfileAssociatedDefinition.self, forKey: .associated)
+            self.indexedAt = try decodeDateIfPresent(from: container, forKey: .indexedAt)
+            self.viewer = try container.decodeIfPresent(AppBskyLexicon.Actor.ViewerStateDefinition.self, forKey: .viewer)
+            self.labels = try container.decodeIfPresent([ComAtprotoLexicon.Label.LabelDefinition].self, forKey: .labels)
+            self.pinnedPost = try container.decodeIfPresent(ComAtprotoLexicon.Repository.StrongReference.self, forKey: .pinnedPost)
+        }
+
         @_documentation(visibility: private)
         public func encode(to encoder: Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
