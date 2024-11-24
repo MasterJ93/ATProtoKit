@@ -340,13 +340,13 @@ extension AppBskyLexicon.Graph {
     public struct StarterPackViewBasicDefinition: Sendable, Codable {
 
         /// The URI of the starter pack.
-        public let starterPackURI: String
+        public let uri: String
 
         /// The content identifier (CID) of the starter pack.
-        public let starterPackCID: String
+        public let cid: String
 
         /// The starter pack record itself.
-        public let starterPackRecord: UnknownType
+        public let record: UnknownType
 
         /// The creator of the starter pack.
         public let creator: AppBskyLexicon.Actor.ProfileViewBasicDefinition
@@ -371,9 +371,9 @@ extension AppBskyLexicon.Graph {
         public init(from decoder: any Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
 
-            self.starterPackURI = try container.decode(String.self, forKey: CodingKeys.starterPackURI)
-            self.starterPackCID = try container.decode(String.self, forKey: .starterPackCID)
-            self.starterPackRecord = try container.decode(UnknownType.self, forKey: .starterPackRecord)
+            self.uri = try container.decode(String.self, forKey: CodingKeys.uri)
+            self.cid = try container.decode(String.self, forKey: .cid)
+            self.record = try container.decode(UnknownType.self, forKey: .record)
             self.creator = try container.decode(AppBskyLexicon.Actor.ProfileViewBasicDefinition.self, forKey: .creator)
             self.listItemCount = try container.decodeIfPresent(Int.self, forKey: .listItemCount)
             self.joinedWeekCount = try container.decodeIfPresent(Int.self, forKey: .joinedWeekCount)
@@ -385,9 +385,9 @@ extension AppBskyLexicon.Graph {
         public func encode(to encoder: any Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
 
-            try container.encode(self.starterPackURI, forKey: .starterPackURI)
-            try container.encode(self.starterPackCID, forKey: .starterPackCID)
-            try container.encode(self.starterPackRecord, forKey: .starterPackRecord)
+            try container.encode(self.uri, forKey: .uri)
+            try container.encode(self.cid, forKey: .cid)
+            try container.encode(self.record, forKey: .record)
             try container.encode(self.creator, forKey: .creator)
             try container.encodeIfPresent(self.listItemCount, forKey: .listItemCount)
             try container.encodeIfPresent(self.joinedWeekCount, forKey: .joinedWeekCount)
@@ -396,10 +396,10 @@ extension AppBskyLexicon.Graph {
             try encodeDate(self.indexedAt, with: &container, forKey: .indexedAt)
         }
 
-        enum CodingKeys: String, CodingKey {
-            case starterPackURI = "uri"
-            case starterPackCID = "cid"
-            case starterPackRecord = "record"
+        enum CodingKeys: CodingKey {
+            case uri
+            case cid
+            case record
             case creator
             case listItemCount
             case joinedWeekCount

@@ -146,6 +146,7 @@ public struct ATUnion {
         /// A starter pack view.
         case starterPackViewBasic(AppBskyLexicon.Graph.StarterPackViewBasicDefinition)
 
+        // TODO: Find a way to keep the if statement order inline with the lexicon ordering without creating an issue where the labelerView is decoding a starter pack.
         public init(from decoder: Decoder) throws {
             let container = try decoder.singleValueContainer()
 
@@ -161,10 +162,10 @@ public struct ATUnion {
                 self = .generatorView(value)
             } else if let value = try? container.decode(AppBskyLexicon.Graph.ListViewDefinition.self) {
                 self = .listView(value)
-            } else if let value = try? container.decode(AppBskyLexicon.Labeler.LabelerViewDefinition.self) {
-                self = .labelerView(value)
             } else if let value = try? container.decode(AppBskyLexicon.Graph.StarterPackViewBasicDefinition.self) {
                 self = .starterPackViewBasic(value)
+            } else if let value = try? container.decode(AppBskyLexicon.Labeler.LabelerViewDefinition.self) {
+                self = .labelerView(value)
             } else {
                 throw DecodingError.typeMismatch(
                     RecordViewUnion.self, DecodingError.Context(

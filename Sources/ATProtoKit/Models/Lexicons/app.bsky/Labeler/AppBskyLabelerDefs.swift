@@ -17,10 +17,10 @@ extension AppBskyLexicon.Labeler {
     public struct LabelerViewDefinition: Sendable, Codable {
 
         /// The URI of the labeler.
-        public let labelerURI: String
+        public let uri: String
 
         /// The CID hash of the labeler.
-        public let labelerCIDHash: String
+        public let cid: String
 
         /// The creator of the labeler.
         public let creator: AppBskyLexicon.Actor.ProfileViewDefinition
@@ -37,10 +37,10 @@ extension AppBskyLexicon.Labeler {
         /// An array of labels. Optional.
         public let labels: [ComAtprotoLexicon.Label.LabelDefinition]?
 
-        public init(labelerURI: String, labelerCIDHash: String, creator: AppBskyLexicon.Actor.ProfileViewDefinition, likeCount: Int?,
+        public init(uri: String, cid: String, creator: AppBskyLexicon.Actor.ProfileViewDefinition, likeCount: Int?,
                     viewer: LabelerViewerStateDefinition?, indexedAt: Date, labels: [ComAtprotoLexicon.Label.LabelDefinition]?) {
-            self.labelerURI = labelerURI
-            self.labelerCIDHash = labelerCIDHash
+            self.uri = uri
+            self.cid = cid
             self.creator = creator
             self.likeCount = likeCount
             self.viewer = viewer
@@ -51,8 +51,8 @@ extension AppBskyLexicon.Labeler {
         public init(from decoder: any Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
 
-            self.labelerURI = try container.decode(String.self, forKey: .labelerURI)
-            self.labelerCIDHash = try container.decode(String.self, forKey: .labelerCIDHash)
+            self.uri = try container.decode(String.self, forKey: .uri)
+            self.cid = try container.decode(String.self, forKey: .cid)
             self.creator = try container.decode(AppBskyLexicon.Actor.ProfileViewDefinition.self, forKey: .creator)
             self.likeCount = try container.decodeIfPresent(Int.self, forKey: .likeCount)
             self.viewer = try container.decodeIfPresent(AppBskyLexicon.Labeler.LabelerViewerStateDefinition.self, forKey: .viewer)
@@ -62,8 +62,8 @@ extension AppBskyLexicon.Labeler {
         public func encode(to encoder: any Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
 
-            try container.encode(self.labelerURI, forKey: .labelerURI)
-            try container.encode(self.labelerCIDHash, forKey: .labelerCIDHash)
+            try container.encode(self.uri, forKey: .uri)
+            try container.encode(self.cid, forKey: .cid)
             try container.encode(self.creator, forKey: .creator)
 
             // Assuming `likeCount` is not nil, only encode it if it's 0 or higher
@@ -75,9 +75,9 @@ extension AppBskyLexicon.Labeler {
             try container.encodeIfPresent(self.labels, forKey: .labels)
         }
 
-        enum CodingKeys: String, CodingKey {
-            case labelerURI = "uri"
-            case labelerCIDHash = "cid"
+        enum CodingKeys: CodingKey {
+            case uri
+            case cid
             case creator
             case likeCount
             case viewer
