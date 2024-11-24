@@ -83,6 +83,7 @@ ATProtoKit is fully open source under the [MIT license](https://github.com/Maste
 - ``ToolsOzoneLexicon``
 - ``ATRecordProtocol``
 - ``ATRecordTypeRegistry``
+- ``ATRecordConfiguration``
 - ``ATUnion``
 
 @Comment {

@@ -4,6 +4,7 @@
 
 - ``ATAPIError``
 - ``ATProtoBlueskyError``
+- ``ATLinkBuilderError``
 - ``ATJobStatusError``
 - ``ATDIDError``
 - ``ATHandleError``

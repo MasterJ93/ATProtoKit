@@ -231,7 +231,7 @@ public actor ATRecordTypeRegistry {
 ///     public let reasonSubjectURI: String?
 ///     public let record: UnknownType // Records will be stored here.
 ///     public let isRead: Bool
-///     @DateFormatting public var indexedAt: Date
+///     public var indexedAt: Date
 ///     public let labels: [Label]?
 /// }
 /// ```
