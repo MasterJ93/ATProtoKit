@@ -132,7 +132,41 @@ public actor ATRecordTypeRegistry {
     /// - Parameter types: An array of ``ATRecordProtocol``-conforming `struct`s.
     public init(types: [ATRecordProtocol.Type]) async {
         for type in types {
-            ATRecordTypeRegistry.recordRegistry[String(describing: type.type)] = type
+            let typeKey = String(describing: type.type)
+
+            // Check if the key already exists
+            if ATRecordTypeRegistry.recordRegistry[typeKey] != nil {
+                // Optionally, log or handle the duplicate case
+                print("Record type '\(typeKey)' is already registered. Skipping.")
+                continue
+            }
+
+            // Add the new type to the registry
+            ATRecordTypeRegistry.recordRegistry[typeKey] = type
+        }
+    }
+
+    /// Initializes the registry with an array of record types from Bluesky.
+    ///
+    /// - Note: This must only be used for the main`ATProtoKit` `class` and only for
+    /// Bluesky-specific record lexicon models.
+    ///
+    /// - Parameter types: An array of ``ATRecordProtocol``-conforming `struct`s.
+    package init(blueskyLexiconTypes: [ATRecordProtocol.Type]) async {
+        guard !ATRecordTypeRegistry.areBlueskyRecordsRegistered else { return }
+
+        for type in blueskyLexiconTypes {
+            let typeKey = String(describing: type.type)
+
+            // Check if the key already exists
+            if ATRecordTypeRegistry.recordRegistry[typeKey] != nil {
+                // Optionally, log or handle the duplicate case
+                print("Record type '\(typeKey)' is already registered. Skipping.")
+                continue
+            }
+
+            // Add the new type to the registry
+            ATRecordTypeRegistry.recordRegistry[typeKey] = type
         }
     }
 

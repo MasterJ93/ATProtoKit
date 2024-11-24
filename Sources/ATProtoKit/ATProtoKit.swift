@@ -152,7 +152,7 @@ public class ATProtoKit: ATProtoKitConfiguration, ATRecordConfiguration {
 
         Task { [recordLexicons] in
             if canUseBlueskyRecords && !(ATRecordTypeRegistry.areBlueskyRecordsRegistered) {
-                _ = await ATRecordTypeRegistry(types: recordLexicons)
+                _ = await ATRecordTypeRegistry(blueskyLexiconTypes: recordLexicons)
                 await ATRecordTypeRegistry.setBlueskyRecordsRegistered(true)
             }
         }
