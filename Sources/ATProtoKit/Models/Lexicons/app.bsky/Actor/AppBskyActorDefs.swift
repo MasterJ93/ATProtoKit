@@ -569,7 +569,7 @@ extension AppBskyLexicon.Actor {
     public struct SavedFeedPreferencesVersion2Definition: Sendable, Codable {
 
         /// An array of saved feed generators.
-        public let items: SavedFeed
+        public let items: [SavedFeed]
     }
 
     /// A definition model for a "Saved Feeds" preference.
