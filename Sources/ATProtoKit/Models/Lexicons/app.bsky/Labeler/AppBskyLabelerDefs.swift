@@ -16,6 +16,11 @@ extension AppBskyLexicon.Labeler {
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/labeler/defs.json
     public struct LabelerViewDefinition: Sendable, Codable {
 
+        /// The identifier of the lexicon.
+        ///
+        /// - Warning: The value must not change.
+        public let type: String = "app.bsky.labeler.defs#labelerView"
+        
         /// The URI of the labeler.
         public let uri: String
 
@@ -50,6 +55,11 @@ extension AppBskyLexicon.Labeler {
 
         public init(from decoder: any Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
+            
+            let decodedType = try container.decode(String.self, forKey: .type)
+            if decodedType != type {
+                throw DecodingError.typeMismatch(LabelerViewDefinition.self, .init(codingPath: [CodingKeys.type], debugDescription: "type did not match expected type \(type)"))
+            }
 
             self.uri = try container.decode(String.self, forKey: .uri)
             self.cid = try container.decode(String.self, forKey: .cid)
@@ -75,7 +85,8 @@ extension AppBskyLexicon.Labeler {
             try container.encodeIfPresent(self.labels, forKey: .labels)
         }
 
-        enum CodingKeys: CodingKey {
+        enum CodingKeys: String, CodingKey {
+            case type = "$type"
             case uri
             case cid
             case creator
