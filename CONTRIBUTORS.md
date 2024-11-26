@@ -20,6 +20,11 @@ Thank you for supporting `ATProtoKit`. Right now, it's just me at the moment, bu
 - Rhys Morgan
   - GitHub: rhysm94
   - Bluesky: @rhysm.wales
+- Thomas Ricouard
+  - GitHub: Dimillian
+  - Bluesky: @dimillian.app
+- Andy Lin
+ - GitHub: @andylin2004
 
 ## Security Contributions
 If you've submitted any security contributions and they've been resolved, your name will be listed in here, along with:
