@@ -33,7 +33,7 @@ extension ATProtoKit {
         withLimitOf limit: Int? = 50,
         priority: Bool?,
         cursor: String? = nil,
-        seenAt: Date = Date()
+        seenAt: Date? = nil
     ) async throws -> AppBskyLexicon.Notification.ListNotificationsOutput {
         guard session != nil,
               let accessToken = session?.accessToken else {
@@ -60,11 +60,10 @@ extension ATProtoKit {
             queryItems.append(("cursor", cursor))
         }
 
-        guard let formattedSeenAt = CustomDateFormatter.shared.string(from: seenAt) else {
-            throw ATRequestPrepareError.invalidFormat
+        if let seenAt, let formattedSeenAt = CustomDateFormatter.shared.string(from: seenAt) {
+            queryItems.append(("seenAt", formattedSeenAt))
         }
 
-        queryItems.append(("seenAt", formattedSeenAt))
 
         let queryURL: URL
 
