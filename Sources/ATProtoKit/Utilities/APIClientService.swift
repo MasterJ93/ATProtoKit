@@ -68,7 +68,7 @@ public actor APIClientService {
 
         /// This needs to be updated manually or read from a central location
         ///  To get truly accurate version would need to read from Package.resolved and I haven't found a way to do so
-        let atProtoVersion = "ATProtoKit/2.0.0"
+        let atProtoVersion = "ATProtoKit/0.21.0"
 
         let userAgent = "\(executable)/\(appVersion) (\(bundle); build:\(appBuild); \(osNameVersion)) \(atProtoVersion)"
 
