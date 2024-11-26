@@ -8,7 +8,7 @@
 import Foundation
 
 /// A structure for custom date formatting to and from the ISO8601 format.
-public struct CustomDateFormatter {
+public struct CustomDateFormatter: Sendable {
 
     /// A shared, singleton instance for global access.
     static let shared = CustomDateFormatter()
