@@ -78,7 +78,7 @@ extension AppBskyLexicon.Notification {
         public let notificationCID: String
 
         /// The author of the record contained in the notification.
-        public let notificationAuthor: String
+        public let notificationAuthor: AppBskyLexicon.Actor.ProfileViewBasicDefinition
 
         /// The kind of notification received.
         ///
@@ -98,7 +98,7 @@ extension AppBskyLexicon.Notification {
         /// The date and time the notification was last indexed.
         public let indexedAt: Date
 
-        public init(notificationURI: String, notificationCID: String, notificationAuthor: String, notificationReason: Reason, reasonSubjectURI: String?,
+        public init(notificationURI: String, notificationCID: String, notificationAuthor: AppBskyLexicon.Actor.ProfileViewBasicDefinition, notificationReason: Reason, reasonSubjectURI: String?,
                     record: UnknownType, isRead: Bool, indexedAt: Date, labels: [ComAtprotoLexicon.Label.LabelDefinition]?) {
             self.notificationURI = notificationURI
             self.notificationCID = notificationCID
@@ -116,7 +116,7 @@ extension AppBskyLexicon.Notification {
 
             self.notificationURI = try container.decode(String.self, forKey: .notificationURI)
             self.notificationCID = try container.decode(String.self, forKey: .notificationCID)
-            self.notificationAuthor = try container.decode(String.self, forKey: .notificationAuthor)
+            self.notificationAuthor = try container.decode(AppBskyLexicon.Actor.ProfileViewBasicDefinition.self, forKey: .notificationAuthor)
             self.notificationReason = try container.decode(AppBskyLexicon.Notification.Notification.Reason.self, forKey: .notificationReason)
             self.reasonSubjectURI = try container.decodeIfPresent(String.self, forKey: .reasonSubjectURI)
             self.record = try container.decode(UnknownType.self, forKey: .record)
