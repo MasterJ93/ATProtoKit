@@ -16,9 +16,12 @@ import Foundation
 /// The `url` property would simply be the link captured from the `link` arguement, so you can
 /// simply pass through that argument as the `url` property.
 ///
-/// The `description` property is an optional property since some websites may not contain one.
+/// The `description` property is optional since some websites may not contain one.
 /// It's recommended that you either add some text saying not description is provided, or by
 /// some other means (e.g.: the beginning of an article in the webpage).
+///
+/// - Note: For more information about using this `protocol`, please read the [Creating Link Previews
+/// with ATLinkBuilder](<doc:ATLinkBuilderProtocol>) article.
 public protocol ATLinkBuilder {
 
     /// Fills the properties of the `struct` conforming to `ATLinkBuilder`.

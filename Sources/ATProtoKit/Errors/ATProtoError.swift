@@ -103,10 +103,10 @@ public enum ATLinkBuilderError: Decodable, ATProtoError {
     /// - Parameter message: The message of the error.
     case invalidURL(message: String)
 
-    /// The URL provided could not be found.
+    /// The server or website had a bad response.
     ///
     /// - Parameter message: The message of the error.
-    case urlNotFound(message: String)
+    case badServerResponse(message: String)
 
     /// An unknown error has occured.
     ///

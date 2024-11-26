@@ -8,7 +8,7 @@
 import Foundation
 
 extension ATProtoBluesky {
-
+    
     /// A convenience method to create a post record to user account in Bluesky.
     ///
     /// This can be used instead of creating your own method if you wish not to do so.
@@ -104,23 +104,34 @@ extension ATProtoBluesky {
     /// You can attach a website card to the post.
     ///
     /// ```swift
-    /// do {
-    ///     let externalLinkBuilder = ExternalLinkBuilder(link: "https://www.youtube.com/watch?v=dQw4w9WgXcQ") // Replace this with your own implementation.
-    ///     guard let externalLinkThumbnailURL = externalLinkBuilder.thumbnailURL else { return }
+    /// Task {
+    ///     print("Starting application...")
     ///
-    ///     let postResult = try await atProtoBluesky.createPostRecord(
-    ///         text: "Really glad to hear his talk in person!",
-    ///         embed: .external(
-    ///             url: externalLinkBuilder.url,
-    ///             title: externalLinkBuilder.title,
-    ///             description: externalLinkBuilder.description,
-    ///             thumbnailURL: externalLinkThumbnailURL
+    ///     do {
+    ///         let session = try await config.authenticate()
+    ///
+    ///         let externalLinkBuilder = ExternalLinkBuilder()
+    ///
+    ///         guard let link = URL(string: "https://www.youtube.com/watch?v=dQw4w9WgXcQ") else { return }
+    ///         let metadata = try await linkBuilder.grabMetadata(from: link)
+    ///
+    ///         let atProto = ATProtoKit(session: session)
+    ///         let atProtoBluesky = ATProtoBluesky(atProtoKitInstance: atProto)
+    ///
+    ///         let postResult = try await atProtoBluesky.createPostRecord(
+    ///             text: "Really glad to hear his talk in person!",
+    ///             embed: .external(
+    ///                 url: metadata.url,
+    ///                 title: metadata.title,
+    ///                 description: metadata.description ?? "No description given.",
+    ///                 thumbnailURL: metadata.thumbnailURL
+    ///             )
     ///         )
-    ///     )
     ///
-    ///     print(postResult)
-    /// } catch {
-    ///     throw error
+    ///         print("Post Result: \(postResult)")
+    ///     } catch {
+    ///         throw error
+    ///     }
     /// }
     /// ```
     ///
