@@ -65,6 +65,7 @@ public protocol ATRecordProtocol: Sendable, Codable {
     init(from decoder: Decoder) throws
 }
 
+/// A configuration protocol for managing record lexicons.
 public protocol ATRecordConfiguration {
 
     /// An array of record lexicon structs created by Bluesky.
