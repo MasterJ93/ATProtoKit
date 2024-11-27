@@ -29,5 +29,11 @@ extension ComAtprotoLexicon.Server {
 
         /// A token used for Two-Factor Authentication. Optional.
         let authenticationFactorToken: String?
+
+        enum CodingKeys: String, CodingKey {
+            case identifier
+            case password
+            case authenticationFactorToken = "authFactorToken"
+        }
     }
 }
