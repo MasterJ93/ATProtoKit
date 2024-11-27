@@ -16,7 +16,6 @@ extension ATProtoBluesky {
     ///
     /// This can be either the URI of the record, or the full record object itself.
     public func deleteRepostRecord(_ record: RecordIdentifier) async throws {
-        // in testing, I have found that I can use the preexisting deleteLikeRecord function to delete a repost without any issues.
-        try await deleteLikeRecord(record)
+        try await deleteActionRecord(record)
     }
 }
