@@ -40,7 +40,7 @@ let package = Package(
                 .product(name: "SwiftCBOR", package: "swiftcbor")
             ],
             swiftSettings: [
-                .enableExperimentalFeature("StrictConcurrency")
+//                .enableExperimentalFeature("StrictConcurrency")
             ]
 //            plugins: ["VersionNumberPlugin"]
         ),
