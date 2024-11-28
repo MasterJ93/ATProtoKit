@@ -169,18 +169,6 @@ public class ATFacetParser {
                         // Remove the `@` from the handle.
                         let notATHandle = String(handle.dropFirst())
 
-//                        if let did = try await self.retrieveDID(from: notATHandle, pdsURL: pdsURL),
-//                           let start = mention["start"] as? Int,
-//                           let end = mention["end"] as? Int {
-//
-//                            let mentionFacet = Facet(
-//                                index: ByteSlice(byteStart: start, byteEnd: end),
-//                                features: [.mention(Mention(did: did))]
-//                            )
-//
-//                            await facets.append(mentionFacet)
-//                        }
-
                         let mentionResult = try await ATProtoKit().resolveHandle(from: notATHandle, pdsURL: pdsURL)
 
                         guard let start = mention["start"] as? Int, let end = mention["end"] as? Int else { return }
