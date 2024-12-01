@@ -29,7 +29,7 @@ extension ATProtocolConfiguration {
     public func getSession(
         by accessToken: String,
         pdsURL: String? = nil
-    ) async throws -> SessionResponse {
+    ) async throws -> UserSession {
         guard let sessionURL = pdsURL != nil ? pdsURL : self.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.server.getSession") else {
             throw ATRequestPrepareError.invalidRequestURL
@@ -41,10 +41,21 @@ extension ATProtocolConfiguration {
                 andMethod: .get,
                 authorizationValue: "Bearer \(accessToken)"
             )
-            let response = try await APIClientService.shared.sendRequest(
+            var response = try await APIClientService.shared.sendRequest(
                 request,
-                decodeTo: SessionResponse.self
+                decodeTo: UserSession.self
             )
+
+            response.pdsURL = self.pdsURL
+            response.logger = await ATProtocolConfiguration.getLogger()
+
+            if self.maxRetryCount != nil {
+                response.maxRetryCount = self.maxRetryCount
+            }
+
+            if self.retryTimeDelay != nil {
+                response.retryTimeDelay = self.retryTimeDelay
+            }
 
             return response
         } catch {

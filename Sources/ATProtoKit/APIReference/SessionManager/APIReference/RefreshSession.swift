@@ -43,6 +43,7 @@ extension ATProtocolConfiguration {
                 request,
                 decodeTo: UserSession.self
             )
+
             response.pdsURL = self.pdsURL
             response.logger = await ATProtocolConfiguration.getLogger()
 

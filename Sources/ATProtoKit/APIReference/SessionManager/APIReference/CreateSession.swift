@@ -50,6 +50,7 @@ extension ATProtocolConfiguration {
                 withEncodingBody: credentials,
                 decodeTo: UserSession.self
             )
+
             response.pdsURL = self.pdsURL
             response.logger = await ATProtocolConfiguration.getLogger()
 
