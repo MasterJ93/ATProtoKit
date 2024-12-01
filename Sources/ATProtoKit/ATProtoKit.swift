@@ -180,7 +180,7 @@ public class ATProtoKit: ATProtoKitConfiguration, ATRecordConfiguration {
 ///
 /// With some exceptions, the main functionality includes adding, putting, and deleting a record.
 public class ATProtoBluesky: ATProtoKitConfiguration {
-    
+
     /// Represents an authenticated user session within the AT Protocol. Optional.
     public private(set) var session: UserSession?
 

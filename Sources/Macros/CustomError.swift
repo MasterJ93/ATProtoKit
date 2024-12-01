@@ -10,7 +10,7 @@ import SwiftCompilerPlugin
 import SwiftSyntax
 import SwiftSyntaxBuilder
 import SwiftSyntaxMacros
-import SwiftDiagnostics
+@preconcurrency import SwiftDiagnostics
 
 enum CustomError: Error, CustomStringConvertible {
     case message(String)
