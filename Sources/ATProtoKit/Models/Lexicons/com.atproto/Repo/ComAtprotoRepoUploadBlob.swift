@@ -9,25 +9,6 @@ import Foundation
 
 extension ComAtprotoLexicon.Repository {
 
-    /// The main data model definition for the image's query.
-    public struct ImageQuery: Sendable, Encodable {
-
-        /// The data of the image.
-        public let imageData: Data
-
-        /// The file name of the image.
-        public let fileName: String
-
-        /// The alt text of the image,
-        public let altText: String?
-
-        public init(imageData: Data, fileName: String, altText: String?) {
-            self.imageData = imageData
-            self.fileName = fileName
-            self.altText = altText
-        }
-    }
-
     /// A request body model for uploading a blob.
     ///
     /// - Note: According to the AT Protocol specifications: "Upload a new blob, to be referenced

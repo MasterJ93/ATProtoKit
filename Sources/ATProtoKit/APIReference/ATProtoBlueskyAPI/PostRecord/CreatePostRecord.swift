@@ -52,7 +52,7 @@ extension ATProtoBluesky {
     /// to other records.
     ///
     /// ### Images
-    /// Use ``ComAtprotoLexicon/Repository/ImageQuery`` to add details to the image, such as
+    /// Use ``ATProtoTools/ImageQuery`` to add details to the image, such as
     /// alt text, then attach it to the post record.
     ///
     /// ```swift
@@ -352,14 +352,15 @@ extension ATProtoBluesky {
     /// Uploads images to the AT Protocol for attaching to a record at a later request.
     ///
     /// - Parameters:
-    ///   - images: The ``ComAtprotoLexicon/Repository/ImageQuery`` that contains the image data. Current limit is 4 images.
+    ///   - images: The ``ATProtoTools/ImageQuery`` that contains the image data. Current limit is
+    ///   4 images.
     ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `https://bsky.social`.
     ///   - accessToken: The access token used to authenticate to the user.
     /// - Returns: An ``ATUnion/EmbedViewUnion``, which contains an array of ``AppBskyLexicon/Embed/ImagesDefinition``s for
     /// use in a record.
     ///
     /// - Important: Each image can only be 1 MB in size.
-    public func uploadImages(_ images: [ComAtprotoLexicon.Repository.ImageQuery], pdsURL: String = "https://bsky.social",
+    public func uploadImages(_ images: [ATProtoTools.ImageQuery], pdsURL: String = "https://bsky.social",
                              accessToken: String) async throws -> ATUnion.PostEmbedUnion {
         var embedImages = [AppBskyLexicon.Embed.ImagesDefinition.Image]()
 
@@ -624,9 +625,9 @@ extension ATProtoBluesky {
 
         /// Represents a set of images to be embedded in the post.
         ///
-        /// - Parameter images: An array of `ImageQuery` objects, each containing the image data,
+        /// - Parameter images: An array of ``ATProtoTools/ImageQuery`` objects, each containing the image data,
         /// metadata, and filenames of the image.
-        case images(images: [ComAtprotoLexicon.Repository.ImageQuery])
+        case images(images: [ATProtoTools.ImageQuery])
 
         /// Represents a video to be embedded in the post.
         ///
