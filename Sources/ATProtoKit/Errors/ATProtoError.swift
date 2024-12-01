@@ -54,7 +54,7 @@ public enum ATAPIError: ATProtoError {
     ///
     /// - Parameters:
     ///   - error: The error name and message.
-    ///   - retryAfter: The value for the `Retry-After` header. Optional.
+    ///   - retryAfter: The value for the `ratelimit-reset` header. Optional.
     case tooManyRequests(error: ATHTTPResponseError, retryAfter: TimeInterval?)
 
     /// Represents an internal server error (HTTP 500) with an associated message.
