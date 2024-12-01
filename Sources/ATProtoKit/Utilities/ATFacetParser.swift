@@ -10,19 +10,6 @@ import Foundation
 /// A utility class designed for parsing various elements like mentions, URLs, and hashtags from text.
 public class ATFacetParser {
 
-    /// Manages a collection of ``AppBskyLexicon/RichText/Facet`` objects, providing thread-safe append operations.
-    actor FacetsActor {
-
-        /// The collection of ``AppBskyLexicon/RichText/Facet`` objects.
-        var facets = [AppBskyLexicon.RichText.Facet]()
-
-        /// Appends a new ``AppBskyLexicon/RichText/Facet`` to the collection in a thread-safe manner.
-        /// - Parameter facet: Parameter facet: The ``AppBskyLexicon/RichText/Facet`` to append.
-        func append(_ facet: AppBskyLexicon.RichText.Facet) {
-            facets.append(facet)
-        }
-    }
-
     /// Parses mentions from a given text and returns them along with their positions.
     /// - Parameter text: The text to parse for mentions.
     /// - Returns: An array of `Dictionary`s containing the start and end positions of each mention
@@ -156,76 +143,77 @@ public class ATFacetParser {
     /// - Returns: An array of ``AppBskyLexicon/RichText/Facet`` objects representing the structured data elements found
     /// in the text.
     public static func parseFacets(from text: String, pdsURL: String = "https://bsky.social") async -> [AppBskyLexicon.RichText.Facet] {
-        let facets = FacetsActor()
+        // Results for mentions, URLs, and hashtags
+        async let mentionFacets = parseMentionFacets(from: text, pdsURL: pdsURL)
+        async let urlFacets = parseURLFacets(from: text)
+        async let hashtagFacets = parseHashtagFacets(from: text)
 
-        await withTaskGroup(of: Void.self) { group in
-            for mention in self.parseMentions(from: text) {
-                group.addTask {
-                    do {
-                        // Unless something is wrong with `parseMentions()`, this is unlikely to fail.
-                        guard let handle = mention["mention"] as? String else { return }
-                        print("Mention text: \(handle)")
+        // Await and combine results
+        let allFacets = await (mentionFacets + urlFacets + hashtagFacets)
+        return allFacets
+    }
 
-                        // Remove the `@` from the handle.
-                        let notATHandle = String(handle.dropFirst())
+    private static func parseMentionFacets(from text: String, pdsURL: String) async -> [AppBskyLexicon.RichText.Facet] {
+        var facets = [AppBskyLexicon.RichText.Facet]()
+        for mention in parseMentions(from: text) {
+            do {
+                // Unless something is wrong with `parseMentions()`, this is unlikely to fail.
+                guard let handle = mention["mention"] as? String else { continue }
+                print("Mention text: \(handle)")
 
-                        let mentionResult = try await ATProtoKit().resolveHandle(from: notATHandle, pdsURL: pdsURL)
+                // Remove the `@` from the handle.
+                let notATHandle = String(handle.dropFirst())
 
-                        guard let start = mention["start"] as? Int, let end = mention["end"] as? Int else { return }
+                let mentionResult = try await ATProtoKit().resolveHandle(from: notATHandle, pdsURL: pdsURL)
 
-                        let mentionFacet = AppBskyLexicon.RichText.Facet(
-                            index: AppBskyLexicon.RichText.Facet.ByteSlice(byteStart: start, byteEnd: end),
-                            features: [.mention(AppBskyLexicon.RichText.Facet.Mention(did: mentionResult.did))])
+                guard let start = mention["start"] as? Int, let end = mention["end"] as? Int else { continue }
 
-                        await facets.append(mentionFacet)
-                    } catch {
-                        print("Error: \(error)")
-                    }
-                }
-            }
-
-            // Grab all of the URLs and add them to the facet.
-            for link in self.parseURLs(from: text) {
-                group.addTask {
-                    // Unless something is wrong with `parseURLs()`, this is unlikely to fail.
-                    guard let url = link["link"] as? String else { return }
-                    print("URL: \(link)")
-
-                    if let start = link["start"] as? Int,
-                       let end = link["end"] as? Int {
-                        let linkFacet = AppBskyLexicon.RichText.Facet(
-                            index: AppBskyLexicon.RichText.Facet.ByteSlice(byteStart: start, byteEnd: end),
-                            features: [.link(AppBskyLexicon.RichText.Facet.Link(uri: url))]
-                        )
-
-                        await facets.append(linkFacet)
-                    }
-                }
-            }
-
-            // Grab all of the hashtags and add them to the facet.
-            for hashtag in self.parseHashtags(from: text) {
-                group.addTask {
-                    // Unless something is wrong with `parseHashtags()`, this is unlikely to fail.
-                    guard let tag = hashtag["tag"] as? String else { return }
-                    // rid us of this meddlesome "#" character
-                    let unhashedTag = String(tag.dropFirst())
-                    print("Hashtag: \(unhashedTag)")
-
-                    if let start = hashtag["start"] as? Int,
-                       let end = hashtag["end"] as? Int {
-                        let hashTagFacet = AppBskyLexicon.RichText.Facet(
-                            index: AppBskyLexicon.RichText.Facet.ByteSlice(byteStart: start, byteEnd: end),
-                            features: [.tag(AppBskyLexicon.RichText.Facet.Tag(tag: unhashedTag))]
-                        )
-
-                        await facets.append(hashTagFacet)
-                    }
-                }
+                facets.append(AppBskyLexicon.RichText.Facet(
+                    index: AppBskyLexicon.RichText.Facet.ByteSlice(byteStart: start, byteEnd: end),
+                    features: [.mention(AppBskyLexicon.RichText.Facet.Mention(did: mentionResult.did))]
+                ))
+            } catch {
+                print("Error resolving mention: \(error)")
             }
         }
+        return facets
+    }
 
-        return await facets.facets
+    private static func parseURLFacets(from text: String) async -> [AppBskyLexicon.RichText.Facet] {
+        var facets = [AppBskyLexicon.RichText.Facet]()
+        for link in parseURLs(from: text) {
+            // Unless something is wrong with `parseURLs()`, this is unlikely to fail.
+            guard let url = link["link"] as? String,
+                  let start = link["start"] as? Int,
+                  let end = link["end"] as? Int else { continue }
+            print("URL: \(link)")
+
+            facets.append(AppBskyLexicon.RichText.Facet(
+                index: AppBskyLexicon.RichText.Facet.ByteSlice(byteStart: start, byteEnd: end),
+                features: [.link(AppBskyLexicon.RichText.Facet.Link(uri: url))]
+            ))
+        }
+        return facets
+    }
+
+    private static func parseHashtagFacets(from text: String) async -> [AppBskyLexicon.RichText.Facet] {
+        var facets = [AppBskyLexicon.RichText.Facet]()
+        for hashtag in parseHashtags(from: text) {
+            // Unless something is wrong with `parseHashtags()`, this is unlikely to fail.
+            guard let tag = hashtag["tag"] as? String,
+                  let start = hashtag["start"] as? Int,
+                  let end = hashtag["end"] as? Int else { continue }
+
+            // rid us of this meddlesome "#" character
+            let unhashedTag = String(tag.dropFirst())
+            print("Hashtag: \(unhashedTag)")
+
+            facets.append(AppBskyLexicon.RichText.Facet(
+                index: AppBskyLexicon.RichText.Facet.ByteSlice(byteStart: start, byteEnd: end),
+                features: [.tag(AppBskyLexicon.RichText.Facet.Tag(tag: unhashedTag))]
+            ))
+        }
+        return facets
     }
 }
 
