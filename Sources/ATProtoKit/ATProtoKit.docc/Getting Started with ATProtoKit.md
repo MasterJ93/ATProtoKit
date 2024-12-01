@@ -72,3 +72,33 @@ print(postResult)
 ```
 
 You should see the post in your Bluesky account once you run this code. When the method successfully completes, you'll receive a ``ComAtprotoLexicon/Repository/StrongReference`` object that contains the URI of the record (``ComAtprotoLexicon/Repository/StrongReference/recordURI``) and the content identifier hash of the record (``ComAtprotoLexicon/Repository/StrongReference/cidHash``).
+
+### View Your Own Posts
+
+To view your own posts, you can use ``ATProtoKit/ATProtoKit/getAuthorFeed(by:limit:cursor:postFilter:shouldIncludePins:)`` and use ``UserSession/handle`` in the first argument:
+
+```swift
+let myFeed = try await atProto.getAuthorFeed(by: "lucy.bsky.social")
+print("Feed: \(myFeed)")
+```
+
+By default, it will grab the first 50 posts from you, including replies, and without the pinned post. However, you can tweak that with the `limit`, `postFilter`, and `shouldIncludePins` arguments. You can also poll more posts if a singular call reaches its limit by using ``AppBskyLexicon/Feed/GetAuthorFeedOutput/cursor`` with the next API call:
+
+```swift
+let myFeed = try await atProto.getAuthorFeed(
+    by: "lucy.bsky.social",
+    limit: 100
+)
+
+print("Feed (first 100 posts): \(myFeed)")
+
+// To get the next 100 posts, call the method again,
+// but attach the `cursor` as an argument.
+
+let myFeedExtended = try await atProto.getAuthorFeed(
+    by: "lucy.bsky.social",
+    limit: 100,
+    cursor: myFeed.cursor
+)
+
+print("Feed (next 100 posts): \(myFeedExtended)")
