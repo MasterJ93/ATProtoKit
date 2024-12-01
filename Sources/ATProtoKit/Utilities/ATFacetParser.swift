@@ -155,6 +155,7 @@ public class ATFacetParser {
 
     private static func parseMentionFacets(from text: String, pdsURL: String) async -> [AppBskyLexicon.RichText.Facet] {
         var facets = [AppBskyLexicon.RichText.Facet]()
+
         for mention in parseMentions(from: text) {
             do {
                 // Unless something is wrong with `parseMentions()`, this is unlikely to fail.
@@ -181,6 +182,7 @@ public class ATFacetParser {
 
     private static func parseURLFacets(from text: String) async -> [AppBskyLexicon.RichText.Facet] {
         var facets = [AppBskyLexicon.RichText.Facet]()
+
         for link in parseURLs(from: text) {
             // Unless something is wrong with `parseURLs()`, this is unlikely to fail.
             guard let url = link["link"] as? String,
@@ -198,6 +200,7 @@ public class ATFacetParser {
 
     private static func parseHashtagFacets(from text: String) async -> [AppBskyLexicon.RichText.Facet] {
         var facets = [AppBskyLexicon.RichText.Facet]()
+
         for hashtag in parseHashtags(from: text) {
             // Unless something is wrong with `parseHashtags()`, this is unlikely to fail.
             guard let tag = hashtag["tag"] as? String,
