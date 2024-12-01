@@ -57,7 +57,7 @@ extension ATProtoBluesky {
     ///
     /// ```swift
     /// do {
-    ///     let image = ComAtprotoLexicon.Repository.ImageQuery(
+    ///     let image = ATProtoTools.ImageQuery(
     ///                     imageData: Data(contentsOf: "/path/to/file/cat.jpg"),
     ///                     fileName: "cat.jpg",
     ///                     altText: "A cat looking annoyed, waring a hat."
@@ -356,8 +356,8 @@ extension ATProtoBluesky {
     ///   4 images.
     ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `https://bsky.social`.
     ///   - accessToken: The access token used to authenticate to the user.
-    /// - Returns: An ``ATUnion/EmbedViewUnion``, which contains an array of ``AppBskyLexicon/Embed/ImagesDefinition``s for
-    /// use in a record.
+    /// - Returns: An ``ATUnion/EmbedViewUnion``, which contains an array of
+    /// ``AppBskyLexicon/Embed/ImagesDefinition``s for use in a record.
     ///
     /// - Important: Each image can only be 1 MB in size.
     public func uploadImages(_ images: [ATProtoTools.ImageQuery], pdsURL: String = "https://bsky.social",
@@ -625,8 +625,8 @@ extension ATProtoBluesky {
 
         /// Represents a set of images to be embedded in the post.
         ///
-        /// - Parameter images: An array of ``ATProtoTools/ImageQuery`` objects, each containing the image data,
-        /// metadata, and filenames of the image.
+        /// - Parameter images: An array of ``ATProtoTools/ImageQuery`` objects, each containing
+        /// the image data, metadata, and filenames of the image.
         case images(images: [ATProtoTools.ImageQuery])
 
         /// Represents a video to be embedded in the post.

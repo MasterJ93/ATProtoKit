@@ -6,7 +6,7 @@ Sign in with a Bluesky account, send a post, and view the account's posts.
     @PageImage(
         purpose: icon, 
         source: "bluesky_logo", 
-        alt: "A technology icon representing the ATProtoKit framework.")
+        alt: "The Bluesky logo as a butterfly in white.")
     @PageColor(blue)
 }
 
