@@ -1,4 +1,4 @@
-// swift-tools-version: 5.9
+// swift-tools-version: 6.0
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 
 import PackageDescription
@@ -39,7 +39,6 @@ let package = Package(
                 .product(name: "Logging", package: "swift-log"),
                 .product(name: "SwiftCBOR", package: "swiftcbor")
             ]
-//            plugins: ["VersionNumberPlugin"]
         ),
 
         // Macro implementation that performs the source transformations
@@ -56,15 +55,15 @@ let package = Package(
                 "Macros"
             ]
         )
-//        .executableTarget(name: "VersionNumberPluginExec"),
-//        .plugin(
-//            name: "VersionNumberPlugin",
-//            capability: .buildTool(),
-//            dependencies: ["VersionNumberPluginExec"]
-//        )
+        //        .plugin(
+        //            name: "VersionNumberPlugin",
+        //            capability: .buildTool(),
+        //            dependencies: ["VersionNumberPluginExec"]
+        //        )
 
-//        .testTarget(
-//            name: "ATProtoKitTests",
-//            dependencies: ["ATProtoKit"]),
+        //        .testTarget(
+        //            name: "ATProtoKitTests",
+        //            dependencies: ["ATProtoKit"]),
     ]
 )
+
