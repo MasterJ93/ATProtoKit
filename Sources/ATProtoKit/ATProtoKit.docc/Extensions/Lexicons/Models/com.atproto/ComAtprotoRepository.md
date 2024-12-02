@@ -55,7 +55,6 @@
 
 ### com.atproto.repo.uploadBlob
 
-- ``ComAtprotoLexicon/Repository/ImageQuery``
 - ``ComAtprotoLexicon/Repository/UploadBlobRequestBody``
 - ``ComAtprotoLexicon/Repository/BlobContainer``
 - ``ComAtprotoLexicon/Repository/BlobContainer``
