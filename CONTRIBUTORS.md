@@ -24,7 +24,14 @@ Thank you for supporting `ATProtoKit`. Right now, it's just me at the moment, bu
   - GitHub: Dimillian
   - Bluesky: @dimillian.app
 - Andy Lin
- - GitHub: @andylin2004
+  - GitHub: @andylin2004
+
+## Special Thanks
+If you've helped me substainally in an issue I was having, then you may be asked if I can add you to this list. I'll ask for your first and last name (or alias), your GitHub, and Bluesky handle.
+
+- Michael Freiwald
+  - GithUb: mfreiwald
+  - Bluesky: @freiwald.dev‬
 
 ## Security Contributions
 If you've submitted any security contributions and they've been resolved, your name will be listed in here, along with:
