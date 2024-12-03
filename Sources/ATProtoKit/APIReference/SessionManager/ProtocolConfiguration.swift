@@ -22,6 +22,11 @@ public protocol ProtocolConfiguration {
     /// session creation, refresh, and deletion.
     var pdsURL: String { get }
 
+    /// The object attached to the configuration class that holds the session. Optional.
+    ///
+    /// This also includes things such as retry limits and logging.
+    var session: UserSession? { get }
+
     /// Attempts to authenticate with the PDS using the `handle` and `appPassword`.
     ///
     /// This method should implement the necessary logic to authenticate the user against the PDS,
