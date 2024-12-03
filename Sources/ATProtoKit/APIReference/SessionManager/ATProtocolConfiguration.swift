@@ -57,6 +57,9 @@ public class ATProtocolConfiguration: ProtocolConfiguration {
     /// the server.
     public var retryTimeDelay: TimeInterval?
 
+    /// The session attached to the configuration. Optional.
+    public var session: UserSession?
+
     /// Initializes a new instance of `ATProtocolConfiguration`, which assembles a new session
     /// for the user account.
     ///
