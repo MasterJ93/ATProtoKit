@@ -11,6 +11,10 @@ extension ATProtocolConfiguration {
 
     /// Refreshes the user's session using a refresh token.
     ///
+    /// When the method completes, ``ATProtocolConfiguration/session`` will be updated with a
+    /// new instance of an authenticated user session within the AT Protocol. It may also have
+    /// logging information, as well as the URL of the Personal Data Server (PDS).
+    ///
     /// - Note: According to the AT Protocol specifications: "Refresh an authentication session.
     /// Requires auth using the 'refreshJwt' (not the 'accessJwt')."
     ///
@@ -29,7 +33,7 @@ extension ATProtocolConfiguration {
     public func refreshSession(
         using refreshToken: String,
         pdsURL: String? = nil
-    ) async throws -> UserSession {
+    ) async throws {
         guard let sessionURL = pdsURL != nil ? pdsURL : self.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.server.refreshSession") else {
             throw ATRequestPrepareError.invalidRequestURL
@@ -55,7 +59,7 @@ extension ATProtocolConfiguration {
                 response.retryTimeDelay = self.retryTimeDelay
             }
 
-            return response
+            self.session = response
         } catch {
             throw error
         }
