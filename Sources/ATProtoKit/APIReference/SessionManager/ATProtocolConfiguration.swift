@@ -9,7 +9,7 @@ import Foundation
 import Logging
 
 /// Manages authentication and session operations for the a user account in the ATProtocol.
-public class ATProtocolConfiguration: ProtocolConfiguration {
+public class ATProtocolConfiguration: SessionConfiguration {
 
     /// The user's handle identifier in their account.
     public var handle: String

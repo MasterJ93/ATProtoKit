@@ -1,14 +1,14 @@
 //
-//  ProtocolConfiguration.swift
-//  
+//  SessionConfiguration.swift
+//
 //
 //  Created by Christopher Jr Riley on 2024-01-06.
 //
 
 import Foundation
 
-/// Defines the requirements for protocol configurations within ATProtoKit.
-public protocol ProtocolConfiguration {
+/// Defines the requirements for session configurations within ATProtoKit.
+public protocol SessionConfiguration {
 
     /// The user's unique handle used for authentication purposes.
     var handle: String { get }
