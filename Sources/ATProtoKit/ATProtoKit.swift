@@ -225,6 +225,7 @@ public class ATProtoBluesky: ATProtoKitConfiguration {
     ///   link cards. Optional.
     public init(atProtoKitInstance: ATProtoKit, linkbuilder: ATLinkBuilder? = nil) {
         self.atProtoKitInstance = atProtoKitInstance
+        self.sessionConfiguration = atProtoKitInstance.sessionConfiguration
         self.linkBuilder = linkbuilder
         self.logger = self.atProtoKitInstance.session?.logger ?? logger
     }
@@ -265,6 +266,7 @@ public class ATProtoBlueskyChat: ATProtoKitConfiguration {
     ///   Defaults to the project's `CFBundleIdentifier`.
     public init(atProtoKitInstance: ATProtoKit) {
         self.atProtoKitInstance = atProtoKitInstance
+        self.sessionConfiguration = atProtoKitInstance.sessionConfiguration
         self.logger = self.atProtoKitInstance.session?.logger
     }
 }
@@ -331,7 +333,8 @@ public class ATProtoAdmin: ATProtoKitConfiguration {
     /// - Parameters:
     ///   - session: The authenticated user session within the AT Protocol.
     ///   Defaults to the project's `CFBundleIdentifier`.
-    public init(session: UserSession? = nil) {
+    public init(sessionConfiguration: SessionConfiguration? = nil) {
+        self.sessionConfiguration = sessionConfiguration
         self.logger = session?.logger
     }
 }
