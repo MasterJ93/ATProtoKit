@@ -11,6 +11,10 @@ extension ATProtocolConfiguration {
 
     /// Fetches an existing session using an access token.
     ///
+    /// When the method completes, ``ATProtocolConfiguration/session`` will be updated with an
+    /// instance of an authenticated user session within the AT Protocol. It may also have logging
+    /// information, as well as the URL of the Personal Data Server (PDS).
+    ///
     /// - Note: According to the AT Protocol specifications: "Get information about the current
     /// auth session. Requires auth."
     ///
@@ -29,7 +33,7 @@ extension ATProtocolConfiguration {
     public func getSession(
         by accessToken: String,
         pdsURL: String? = nil
-    ) async throws -> UserSession {
+    ) async throws {
         guard let sessionURL = pdsURL != nil ? pdsURL : self.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.server.getSession") else {
             throw ATRequestPrepareError.invalidRequestURL
@@ -41,23 +45,37 @@ extension ATProtocolConfiguration {
                 andMethod: .get,
                 authorizationValue: "Bearer \(accessToken)"
             )
-            var response = try await APIClientService.shared.sendRequest(
+            let response = try await APIClientService.shared.sendRequest(
                 request,
-                decodeTo: UserSession.self
+                decodeTo: SessionResponse.self
             )
 
-            response.pdsURL = self.pdsURL
-            response.logger = await ATProtocolConfiguration.getLogger()
+            guard let session = self.session else {
+                // TODO: Add a "No session found" error.
+                throw ATNSIDError.notEnoughSegments
+            }
+
+            var userSession = UserSession(
+                handle: response.handle,
+                sessionDID: response.sessionDID,
+                isEmailAuthenticationFactorEnabled: response.isEmailAuthenticationFactorEnabled,
+                accessToken: session.accessToken,
+                refreshToken: session.refreshToken,
+                isActive: response.isActive,
+                status: response.status)
+
+            userSession.pdsURL = session.pdsURL
+            userSession.logger = await ATProtocolConfiguration.getLogger()
 
             if self.maxRetryCount != nil {
-                response.maxRetryCount = self.maxRetryCount
+                userSession.maxRetryCount = session.maxRetryCount
             }
 
             if self.retryTimeDelay != nil {
-                response.retryTimeDelay = self.retryTimeDelay
+                userSession.retryTimeDelay = session.retryTimeDelay
             }
 
-            return response
+            self.session = userSession
         } catch {
             throw error
         }
