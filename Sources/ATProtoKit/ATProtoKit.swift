@@ -3,22 +3,34 @@ import Logging
 
 /// Defines a protocol for configurations in the `ATProtoKit` API library.
 ///
-/// `ATProtoKitConfiguration` defines the basic requirements for any configuration class or
-/// structure within `ATProtoKit`. Any class that conforms to this protocol must be geared for
-/// sending API calls to the AT Protocol. Creating a class that conforms to this is useful if you
-/// have additional lexicons specific to the service you're running.
+/// `ATProtoKitConfiguration` defines the basic requirements for any class that may hold
+/// exicon methods.  Any class that conforms to this protocol must be geared for sending API calls
+/// to the AT Protocol. Creating a class that conforms to this is useful if you have additional
+/// lexicons specific to the service you're running.
 ///
 /// For logging-related tasks, make sure you set up the logging instide the `init()` method
 /// and attach it to the `logger` property.
 /// ```swift
-/// public init(session: UserSession? = nil, logIdentifier: String? = nil, logCategory: String?, logLevel: Logger.Level? = .info) {
+/// public init(sessionConfiguration: ProtocolConfiguration? = nil, logIdentifier: String? = nil, logCategory: String?, logLevel: Logger.Level? = .info) {
 ///     self.session = session
 ///     self.logger = session?.logger ?? logger
 /// }
 /// ```
 public protocol ATProtoKitConfiguration {
 
+    /// Represents an object used for managing sessions.
+    var sessionConfiguration: ProtocolConfiguration? { get }
+
     /// Represents an authenticated user session within the AT Protocol. Optional.
+    ///
+    /// This would be received by the ``ATProtoKitConfiguration/sessionConfiguration`` object.
+    /// Make this property a computed property when adding this to your class.
+    ///
+    /// ```swift
+    /// public var session: UserSession? {
+    ///     return sessionConfiguration.session
+    /// }
+    /// ```
     var session: UserSession? { get }
 
     /// Specifies the logger that will be used for emitting log messages. Optional.
