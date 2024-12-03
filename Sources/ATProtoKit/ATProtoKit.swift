@@ -11,15 +11,14 @@ import Logging
 /// For logging-related tasks, make sure you set up the logging instide the `init()` method
 /// and attach it to the `logger` property.
 /// ```swift
-/// public init(sessionConfiguration: ProtocolConfiguration? = nil, logIdentifier: String? = nil, logCategory: String?, logLevel: Logger.Level? = .info) {
-///     self.session = session
+/// public init(sessionConfiguration: SessionConfiguration? = nil, logIdentifier: String? = nil, logCategory: String?, logLevel: Logger.Level? = .info) {
 ///     self.logger = session?.logger ?? logger
 /// }
 /// ```
 public protocol ATProtoKitConfiguration {
 
     /// Represents an object used for managing sessions.
-    var sessionConfiguration: ProtocolConfiguration? { get }
+    var sessionConfiguration: SessionConfiguration? { get }
 
     /// Represents an authenticated user session within the AT Protocol. Optional.
     ///
@@ -128,9 +127,6 @@ extension ATProtoKitConfiguration {
 /// ```
 public class ATProtoKit: ATProtoKitConfiguration, ATRecordConfiguration {
 
-    /// Represents an authenticated user session within the AT Protocol. Optional.
-    public let session: UserSession?
-
     /// An array of record lexicon structs created by Bluesky.
     ///
     /// If `canUseBlueskyRecords` is set to `false`, these will not be used.
@@ -148,6 +144,13 @@ public class ATProtoKit: ATProtoKitConfiguration, ATRecordConfiguration {
     /// Internal state to track initialization completion.
     public var initializationTask: Task<Void, Error>?
 
+    public let sessionConfiguration: SessionConfiguration?
+
+    /// Represents an authenticated user session within the AT Protocol. Optional.
+    public var session: UserSession? {
+        return sessionConfiguration?.session
+    }
+
     /// Initializes a new instance of `ATProtoKit`.
     /// 
     /// This will also handle some of the logging-related setup. The identifier will either be your
@@ -158,8 +161,7 @@ public class ATProtoKit: ATProtoKitConfiguration, ATRecordConfiguration {
     ///   - session: The authenticated user session within the AT Protocol. Optional.
     ///   - canUseBlueskyRecords: Indicates whether Bluesky's lexicons should be used.
     ///   Defaults to `true`.
-    public init(session: UserSession? = nil, canUseBlueskyRecords: Bool = true) {
-        self.session = session
+    public init(sessionConfiguration: UserSession? = nil, canUseBlueskyRecords: Bool = true) {
         self.logger = session?.logger
 
         Task { [recordLexicons] in
@@ -193,9 +195,6 @@ public class ATProtoKit: ATProtoKitConfiguration, ATRecordConfiguration {
 /// With some exceptions, the main functionality includes adding, putting, and deleting a record.
 public class ATProtoBluesky: ATProtoKitConfiguration {
 
-    /// Represents an authenticated user session within the AT Protocol. Optional.
-    public private(set) var session: UserSession?
-
     /// An instance of `URLSessionConfiguration`.
     ///
     /// - Note: This class will automatically grab the custom `URLSessionConfiguration` instance
@@ -208,6 +207,13 @@ public class ATProtoBluesky: ATProtoKitConfiguration {
     /// Specifies the logger that will be used for emitting log messages.
     public private(set) var logger: Logger?
 
+    public let sessionConfiguration: SessionConfiguration?
+
+    /// Represents an authenticated user session within the AT Protocol. Optional.
+    public var session: UserSession? {
+        return sessionConfiguration?.session
+    }
+
     /// Represents the instance of ``ATProtoKit/ATProtoKit``.
     internal let atProtoKitInstance: ATProtoKit
 
@@ -219,7 +225,6 @@ public class ATProtoBluesky: ATProtoKitConfiguration {
     public init(atProtoKitInstance: ATProtoKit, linkbuilder: ATLinkBuilder? = nil) {
         self.atProtoKitInstance = atProtoKitInstance
         self.linkBuilder = linkbuilder
-        self.session = self.atProtoKitInstance.session ?? nil
         self.logger = self.atProtoKitInstance.session?.logger ?? logger
     }
 }
@@ -233,9 +238,6 @@ public class ATProtoBluesky: ATProtoKitConfiguration {
 /// privileges. Failure to do so will result in an error.
 public class ATProtoBlueskyChat: ATProtoKitConfiguration {
 
-    /// Represents an authenticated user session within the AT Protocol. Optional.
-    public private(set) var session: UserSession?
-
     /// An instance of `URLSessionConfiguration`.
     ///
     /// - Note: This class will automatically grab the custom `URLSessionConfiguration` instance
@@ -244,6 +246,13 @@ public class ATProtoBlueskyChat: ATProtoKitConfiguration {
 
     /// Specifies the logger that will be used for emitting log messages.
     public private(set) var logger: Logger?
+
+    public let sessionConfiguration: SessionConfiguration?
+
+    /// Represents an authenticated user session within the AT Protocol. Optional.
+    public var session: UserSession? {
+        return sessionConfiguration?.session
+    }
 
     /// Represents the instance of ``ATProtoKit/ATProtoKit``.
     internal let atProtoKitInstance: ATProtoKit
@@ -255,7 +264,6 @@ public class ATProtoBlueskyChat: ATProtoKitConfiguration {
     ///   Defaults to the project's `CFBundleIdentifier`.
     public init(atProtoKitInstance: ATProtoKit) {
         self.atProtoKitInstance = atProtoKitInstance
-        self.session = self.atProtoKitInstance.session ?? nil
         self.logger = self.atProtoKitInstance.session?.logger
     }
 }
@@ -288,9 +296,6 @@ public class ATProtoBlueskyChat: ATProtoKitConfiguration {
 /// ```
 public class ATProtoAdmin: ATProtoKitConfiguration {
 
-    /// Represents an authenticated user session within the AT Protocol. Optional.
-    public let session: UserSession?
-
     /// An instance of `URLSessionConfiguration`.
     ///
     /// Please directly add the the `URLSessionConfiguration` instance onto the property if it's
@@ -314,12 +319,18 @@ public class ATProtoAdmin: ATProtoKitConfiguration {
     /// Specifies the logger that will be used for emitting log messages.
     public private(set) var logger: Logger?
 
+    public let sessionConfiguration: SessionConfiguration?
+
+    /// Represents an authenticated user session within the AT Protocol. Optional.
+    public var session: UserSession? {
+        return sessionConfiguration?.session
+    }
+
     /// Initializes a new instance of `ATProtoAdmin`.
     /// - Parameters:
     ///   - session: The authenticated user session within the AT Protocol.
     ///   Defaults to the project's `CFBundleIdentifier`.
     public init(session: UserSession? = nil) {
-        self.session = session
         self.logger = session?.logger
     }
 }
