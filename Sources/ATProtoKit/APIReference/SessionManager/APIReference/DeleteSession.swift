@@ -9,7 +9,7 @@ import Foundation
 
 extension ATProtocolConfiguration {
 
-    /// Refreshes the user's session using a refresh token.
+    /// Deletes the user session.
     ///
     /// - Note: According to the AT Protocol specifications: "Delete the current session.
     /// Requires auth."
@@ -44,6 +44,8 @@ extension ATProtocolConfiguration {
                 request,
                 withEncodingBody: nil
             )
+
+            self.session = nil
         } catch {
             throw error
         }
