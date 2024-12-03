@@ -15,6 +15,10 @@ extension ATProtocolConfiguration {
     /// is required to be used. If the user is inputting their App Password, then the parameter
     /// shouldn't be used.
     ///
+    /// When the method completes, ``ATProtocolConfiguration/session`` will be updated with an
+    /// instance of an authenticated user session within the AT Protocol. It may also have logging
+    /// information, as well as the URL of the Personal Data Server (PDS).
+    ///
     /// - Note: According to the AT Protocol specifications: "Handle or other identifier supported
     /// by the server for the authenticating user."
     ///
@@ -29,7 +33,7 @@ extension ATProtocolConfiguration {
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
-    public func authenticate(authenticationFactorToken: String? = nil) async throws -> UserSession {
+    public func authenticate(authenticationFactorToken: String? = nil) async throws {
         guard let requestURL = URL(string: "\(self.pdsURL)/xrpc/com.atproto.server.createSession") else {
             throw ATRequestPrepareError.invalidRequestURL
         }
@@ -62,7 +66,7 @@ extension ATProtocolConfiguration {
                 response.retryTimeDelay = self.retryTimeDelay
             }
 
-            return response
+            self.session = response
         } catch {
             throw error
         }

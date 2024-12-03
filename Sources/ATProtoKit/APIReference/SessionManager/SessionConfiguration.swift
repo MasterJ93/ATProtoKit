@@ -40,5 +40,5 @@ public protocol SessionConfiguration {
     /// have logging information, as well as the URL of the Personal Data Server (PDS).
     ///
     /// - Throws: An error if there are issues creating the request or communicating with the PDS.
-    func authenticate(authenticationFactorToken: String?) async throws -> UserSession
+    func authenticate(authenticationFactorToken: String?) async throws
 }
