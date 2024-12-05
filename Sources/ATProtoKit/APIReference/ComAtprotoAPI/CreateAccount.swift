@@ -80,7 +80,7 @@ extension ATProtoKit {
                 contentTypeValue: nil,
                 authorizationValue: nil
             )
-            var response = try await APIClientService.shared.sendRequest(
+            let response = try await APIClientService.shared.sendRequest(
                 request,
                 withEncodingBody: requestBody,
                 decodeTo: ComAtprotoLexicon.Server.CreateAccountOutput.self
