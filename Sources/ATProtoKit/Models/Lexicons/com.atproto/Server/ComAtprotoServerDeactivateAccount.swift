@@ -19,7 +19,7 @@ extension ComAtprotoLexicon.Server {
     /// - SeeAlso: This is based on the [`com.atproto.server.deactivateAccount`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/server/deactivateAccount.json
-    public struct DeactivateAccountRequestBody: Codable {
+    public struct DeactivateAccountRequestBody: Sendable, Codable {
 
         /// The date and time of when the server should delete the account.
         ///

@@ -16,7 +16,7 @@ extension ComAtprotoLexicon.Server {
     /// - SeeAlso: This is based on the [`com.atproto.server.resetPassword`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/server/resetPassword.json
-    public struct ResetPasswordRequestBody: Codable {
+    public struct ResetPasswordRequestBody: Sendable, Codable {
 
         /// The token used to reset the password.
         public let token: String

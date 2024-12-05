@@ -16,7 +16,7 @@ extension ComAtprotoLexicon.Server {
     /// - SeeAlso: This is based on the [`com.atproto.server.revokeAppPassword`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/server/revokeAppPassword.json
-    public struct RevokeAppPasswordRequestBody: Codable {
+    public struct RevokeAppPasswordRequestBody: Sendable, Codable {
 
         /// The name associated with the App Password.
         public let appPasswordName: String

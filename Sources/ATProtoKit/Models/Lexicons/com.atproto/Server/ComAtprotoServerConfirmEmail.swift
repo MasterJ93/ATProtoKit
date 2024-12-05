@@ -16,7 +16,7 @@ extension ComAtprotoLexicon.Server {
     /// - SeeAlso: This is based on the [`com.atproto.server.confirmEmail`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/server/confirmEmail.json
-    public struct ConfirmEmailRequestBody: Codable {
+    public struct ConfirmEmailRequestBody: Sendable, Codable {
 
         /// The email of the user.
         public let email: String

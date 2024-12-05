@@ -16,7 +16,7 @@ extension ComAtprotoLexicon.Server {
     /// - SeeAlso: This is based on the [`com.atproto.server.updateEmail`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/server/updateEmail.json
-    public struct UpdateEmailRequestBody: Codable {
+    public struct UpdateEmailRequestBody: Sendable, Codable {
 
         /// The email associated with the user's account.
         public let email: String

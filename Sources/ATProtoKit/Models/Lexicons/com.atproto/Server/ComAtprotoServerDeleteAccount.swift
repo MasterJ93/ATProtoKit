@@ -17,7 +17,7 @@ extension ComAtprotoLexicon.Server {
     /// - SeeAlso: This is based on the [`com.atproto.server.deleteAccount`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/server/deleteAccount.json
-    public struct DeleteAccountRequestBody: Codable {
+    public struct DeleteAccountRequestBody: Sendable, Codable {
 
         /// The decentralized identifier (DID) of the account.
         public let accountDID: String

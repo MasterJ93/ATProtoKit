@@ -17,7 +17,7 @@ extension ComAtprotoLexicon.Server {
     /// - SeeAlso: This is based on the [`com.atproto.server.requestPasswordReset`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/server/requestPasswordReset.json
-    public struct RequestPasswordResetRequestBody: Codable {
+    public struct RequestPasswordResetRequestBody: Sendable, Codable {
 
         /// The email address associated with the user's account.
         public let email: String

@@ -18,5 +18,5 @@ extension ComAtprotoLexicon.Server {
     /// - SeeAlso: This is based on the [`com.atproto.server.activateAccount`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/server/activateAccount.json
-    public struct ActivateAccountRequestBody: Codable {}
+    public struct ActivateAccountRequestBody: Sendable, Codable {}
 }
