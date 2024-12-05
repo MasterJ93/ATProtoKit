@@ -11,6 +11,10 @@ extension ATProtoKit {
 
     /// Deletes a session from the user account.
     ///
+    /// It's best to use ``ATProtocolConfiguration`` or another ``SessionConfiguration``-conforming
+    /// `class` instead of using this method directly. If you're making a `class` that conforms to
+    /// ``SessionConfiguration``, be sure to use this with the method used for deleting a session.
+    ///
     /// - Note: According to the AT Protocol specifications: "Delete the current session.
     /// Requires auth."
     ///

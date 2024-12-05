@@ -11,6 +11,11 @@ extension ATProtoKit {
 
     /// Refreshes the user's session using a refresh token.
     ///
+    /// It's best to use ``ATProtocolConfiguration`` or another ``SessionConfiguration``-conforming
+    /// `class` instead of using this method directly. If you're making a `class` that conforms to
+    /// ``SessionConfiguration``, be sure to use this with the method used for refreshing
+    /// a session.
+    ///
     /// - Note: According to the AT Protocol specifications: "Refresh an authentication session.
     /// Requires auth using the 'refreshJwt' (not the 'accessJwt')."
     ///

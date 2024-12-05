@@ -11,6 +11,10 @@ extension ATProtoKit {
 
     /// Gets the session information for the user account.
     ///
+    /// It's best to use ``ATProtocolConfiguration`` or another ``SessionConfiguration``-conforming
+    /// `class` instead of using this method directly. If you're making a `class` that conforms to
+    /// ``SessionConfiguration``, be sure to use this with the method used for getting a session.
+    ///
     /// - Note: According to the AT Protocol specifications: "Get information about the current
     /// auth session. Requires auth."
     ///
