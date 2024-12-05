@@ -37,8 +37,10 @@ extension ATProtoKit {
     ///   - password: The password the user will use for the account. Optional.
     ///   - recoveryKey: DID PLC rotation key (aka, recovery key) to be included in PLC
     ///   creation operation. Optional.
-    ///   - plcOp: A signed DID PLC operation to be submitted as part of importing an existing
-    ///   account to this instance. Optional.
+    ///   - plcOperation: A signed DID PLC operation to be submitted as part of importing an
+    ///   existing account to this instance. Optional.
+    ///  - pdsURL: The URL of the Personal Data Server (PDS). Optional.
+    ///  Defaults to `https://bsky.social`.
     /// - Returns: An instance of an authenticated user session within the AT Protocol. It may also
     /// have logging information, as well as the URL of the Personal Data Server (PDS).
     ///

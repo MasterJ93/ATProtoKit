@@ -36,8 +36,6 @@ public protocol SessionConfiguration {
     ///
     /// - Parameter authenticationFactorToken: A token used for
     /// Two-Factor Authentication. Optional.
-    /// - Returns: An instance of an authenticated user session within the AT Protocol. It may also
-    /// have logging information, as well as the URL of the Personal Data Server (PDS).
     ///
     /// - Throws: An error if there are issues creating the request or communicating with the PDS.
     func authenticate(authenticationFactorToken: String?) async throws

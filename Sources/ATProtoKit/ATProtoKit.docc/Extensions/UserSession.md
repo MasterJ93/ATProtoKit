@@ -10,7 +10,7 @@ This is based loosely based on the [`com.atproto.server.createSession`][github] 
 
 - ``SessionProtocol``
 - ``SessionResponse``
-- ``ProtocolConfiguration``
+- ``SessionConfiguration``
 - ``DIDDocument``
 - ``VerificationMethod``
 - ``ATService``

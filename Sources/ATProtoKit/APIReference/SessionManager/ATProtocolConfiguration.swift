@@ -256,8 +256,6 @@ public class ATProtocolConfiguration: SessionConfiguration {
     ///
     /// - Parameter authenticationFactorToken: A token used for
     /// Two-Factor Authentication. Optional.
-    /// - Returns: An instance of an authenticated user session within the AT Protocol. It may also
-    /// have logging information, as well as the URL of the Personal Data Server (PDS).
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
@@ -316,8 +314,6 @@ public class ATProtocolConfiguration: SessionConfiguration {
     /// - Parameters:
     ///   - accessToken: The access token for the session.
     ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `nil`.
-    /// - Returns: An instance of the session-related information what contains a session response
-    /// within the AT Protocol.
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
@@ -388,8 +384,6 @@ public class ATProtocolConfiguration: SessionConfiguration {
     /// - Parameters:
     ///   - refreshToken: The refresh token for the session.
     ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `nil`.
-    /// - Returns: An instance of an authenticated user session within the AT Protocol. It may also
-    /// have logging information, as well as the URL of the Personal Data Server (PDS).
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.

@@ -158,7 +158,7 @@ public class ATProtoKit: ATProtoKitConfiguration, ATRecordConfiguration {
     /// `com.cjrriley.ATProtoKit`. However, you can manually override this.
     /// 
     /// - Parameters:
-    ///   - session: The authenticated user session within the AT Protocol. Optional.
+    ///   - sessionConfiguration: The authenticated user session within the AT Protocol. Optional.
     ///   - canUseBlueskyRecords: Indicates whether Bluesky's lexicons should be used.
     ///   Defaults to `true`.
     public init(sessionConfiguration: SessionConfiguration? = nil, canUseBlueskyRecords: Bool = true) {
@@ -331,7 +331,7 @@ public class ATProtoAdmin: ATProtoKitConfiguration {
 
     /// Initializes a new instance of `ATProtoAdmin`.
     /// - Parameters:
-    ///   - session: The authenticated user session within the AT Protocol.
+    ///   - sessionConfiguration: The authenticated user session within the AT Protocol. Optional.
     ///   Defaults to the project's `CFBundleIdentifier`.
     public init(sessionConfiguration: SessionConfiguration? = nil) {
         self.sessionConfiguration = sessionConfiguration
