@@ -20,7 +20,7 @@ extension AppBskyLexicon.Feed {
         /// - SeeAlso: This is based on the [`app.bsky.feed.searchPosts`][github] lexicon.
         ///
         /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/feed/searchPosts.json
-        public enum SortRanking: String, Sendable {
+        public enum SortRanking: String, Sendable, Codable {
 
             /// Indicates the results will be sorted by the top posts.
             case top
