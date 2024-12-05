@@ -103,7 +103,7 @@ extension ComAtprotoLexicon.Server {
         public let isActive: Bool?
 
         /// Indicates the possible reason for why the user account is inactive. Optional.
-        public let status: CreateSession.UserAccountStatus
+        public let status: CreateSession.UserAccountStatus?
 
 
         enum CodingKeys: String, CodingKey {
