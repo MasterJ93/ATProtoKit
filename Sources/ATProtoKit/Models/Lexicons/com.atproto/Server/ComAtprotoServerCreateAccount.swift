@@ -17,7 +17,7 @@ extension ComAtprotoLexicon.Server {
     /// - SeeAlso: This is based on the [`com.atproto.server.createAccount`][github] lexicon.
     ///
     /// [github]: https://docs.bsky.app/docs/api/com-atproto-server-create-account
-    public struct CreateAccountRequestBody: Codable {
+    public struct CreateAccountRequestBody: Sendable, Codable {
 
         /// The email of the user. Optional.
         public var email: String?
@@ -89,6 +89,46 @@ extension ComAtprotoLexicon.Server {
             case password
             case recoveryKey
             case plcOp
+        }
+    }
+
+    /// An output model for creating an account.
+    ///
+    /// - Note: According to the AT Protocol specifications: "Create an account. Implemented
+    /// by PDS."
+    ///
+    /// - SeeAlso: This is based on the [`com.atproto.server.createAccount`][github] lexicon.
+    ///
+    /// [github]: https://docs.bsky.app/docs/api/com-atproto-server-create-account
+    public struct CreateAccountOutput: Sendable, Codable {
+
+        /// The access token of the user account.
+        public let accessToken: String
+
+        /// The refresh token of the user account.
+        public let refreshToken: String
+
+        /// The handle of the user account.
+        public let handle: String
+
+        /// The decentralized identifier (DID), serving as a persistent and long-term account
+        /// identifier according to the W3C standard.
+        ///
+        /// - Note: According to the AT Protocol specifications: "The DID of the new account."
+        public let did: String
+
+        /// The DID document associated with the user, which contains AT Protocol-specific
+        /// information. Optional.
+        ///
+        /// - Note: According to the AT Protocol specifications: "Complete DID document."
+        public let didDocument: UnknownType?
+
+        enum CodingKeys: String, CodingKey {
+            case accessToken = "accessJwt"
+            case refreshToken = "refreshJwt"
+            case handle
+            case did
+            case didDocument = "didDoc"
         }
     }
 }
