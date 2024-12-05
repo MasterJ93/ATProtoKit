@@ -70,8 +70,8 @@ extension ComAtprotoLexicon.Server {
         public let status: String?
 
         enum CodingKeys: String, CodingKey {
-            case accessToken
-            case refreshToken
+            case accessToken = "accessJwt"
+            case refreshToken = "refreshJwt"
             case handle
             case did
             case didDocument = "didDoc"
