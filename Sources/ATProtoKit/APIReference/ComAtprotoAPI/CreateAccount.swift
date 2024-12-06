@@ -39,7 +39,7 @@ extension ATProtoKit {
     ///   creation operation. Optional.
     ///   - plcOperation: A signed DID PLC operation to be submitted as part of importing an
     ///   existing account to this instance. Optional.
-    ///  - pdsURL: The URL of the Personal Data Server (PDS). Optional.
+    ///   - pdsURL: The URL of the Personal Data Server (PDS). Optional.
     ///  Defaults to `https://bsky.social`.
     /// - Returns: An instance of an authenticated user session within the AT Protocol. It may also
     /// have logging information, as well as the URL of the Personal Data Server (PDS).
