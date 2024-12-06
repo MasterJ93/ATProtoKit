@@ -44,6 +44,7 @@ ATProtoKit is fully open source under the [MIT license](https://github.com/Maste
 
 ## What's New in ATProtoKit
 @Links(visualStyle: detailedGrid) {
+    - <doc:0210AuthFlowChange>
     - <doc:getRecordTutorial>
     - <doc:ATProtoIdentifiers>
     - <doc:Getting-Started-with-ATProtoKit>
