@@ -358,7 +358,7 @@ public class ATProtocolConfiguration: SessionConfiguration {
         do {
             guard let refreshToken = self.session?.refreshToken else { return }
 
-            let response = try await ATProtoKit().refreshSession(
+            _ = try await ATProtoKit().refreshSession(
                 refreshToken: refreshToken,
                 pdsURL: self.pdsURL
             )
