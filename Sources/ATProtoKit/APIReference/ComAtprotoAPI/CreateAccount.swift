@@ -11,11 +11,11 @@ extension ATProtoKit {
 
     /// Creates an account in the AT Protocol.
     ///
-    /// - Note: `plcOp` may be updated when full account migration is implemented.
+    /// - Note: `plcOperation` may be updated when full account migration is implemented.
     ///
-    /// - Bug: `plcOp` is currently broken: there's nothing that can be used for this at the
-    /// moment while Bluesky continues to work on account migration. Until everything settles
-    /// and they have a concrete example of what to do, don't use it. In the meantime, leave it
+    /// - Bug: `plcOperation` is currently broken: there's nothing that can be used for this at the
+    /// moment while Bluesky continues to work on account migration. Until everything settles and
+    /// they have a concrete example of what to do, don't use it. In the meantime, leave it
     /// at `nil`.
     ///
     /// - Note: According to the AT Protocol specifications: "Create an account. Implemented
