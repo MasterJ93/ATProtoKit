@@ -249,39 +249,58 @@ public class ATProtocolConfiguration: SessionConfiguration {
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func authenticate(authenticationFactorToken: String? = nil) async throws {
-        guard let requestURL = URL(string: "\(self.pdsURL)/xrpc/com.atproto.server.createSession") else {
-            throw ATRequestPrepareError.invalidRequestURL
-        }
-
-        let credentials = ComAtprotoLexicon.Server.CreateSessionRequestBody(
-            identifier: handle,
-            password: appPassword,
-            authenticationFactorToken: authenticationFactorToken
-        )
-
         do {
-            let request = APIClientService.createRequest(
-                forRequest: requestURL,
-                andMethod: .post
-            )
-            var response = try await APIClientService.shared.sendRequest(
-                request,
-                withEncodingBody: credentials,
-                decodeTo: UserSession.self
+            let response = try await ATProtoKit().createSession(
+                with: self.handle,
+                and: self.password,
+                authenticationFactorToken: authenticationFactorToken,
+                pdsURL: self.pdsURL
             )
 
-            response.pdsURL = self.pdsURL
-            response.logger = await ATProtocolConfiguration.getLogger()
+            // Convert `response.didDocument` to `UserSession.didDocument`.
+            var decodedDidDocument: DIDDocument? = nil
 
-            if self.maxRetryCount != nil {
-                response.maxRetryCount = self.maxRetryCount
+            if let didDocument = response.didDocument,
+               let jsonData = try didDocument.toJSON() {
+                do {
+                    let decoder = JSONDecoder()
+                    decodedDidDocument = try decoder.decode(DIDDocument.self, from: jsonData)
+                } catch {
+                    throw error
+                }
             }
 
-            if self.retryTimeDelay != nil {
-                response.retryTimeDelay = self.retryTimeDelay
+            var status: UserAccountStatus? = nil
+
+            switch response.status {
+                case .suspended:
+                    status = .suspended
+                case .takedown:
+                    status = .takedown
+                case .deactivated:
+                    status = .deactivated
+                default:
+                    status = nil
             }
 
-            self.session = response
+            let userSession = UserSession(
+                handle: response.handle,
+                sessionDID: response.did,
+                email: response.email,
+                isEmailConfirmed: response.isEmailConfirmed,
+                isEmailAuthenticationFactorEnabled: response.isEmailAuthenticatedFactor,
+                accessToken: response.accessToken,
+                refreshToken: response.refreshToken,
+                didDocument: decodedDidDocument,
+                isActive: response.isActive,
+                status: status,
+                pdsURL: self.pdsURL,
+                logger: await ATProtocolConfiguration.getLogger(),
+                maxRetryCount: self.maxRetryCount,
+                retryTimeDelay: self.retryTimeDelay
+            )
+
+            self.session = userSession
         } catch {
             throw error
         }
