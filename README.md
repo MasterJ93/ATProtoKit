@@ -36,9 +36,9 @@ Task {
     print("Starting application...")
 
     do {
-        let session = try await config.authenticate()
+        try await config.authenticate()
 
-        let atProto = ATProtoKit(session: session)
+        let atProto = ATProtoKit(sessionConfiguration: config)
         let atProtoBluesky = ATProtoBluesky(atProtoKitInstance: atProto)
 
         let postResult = try await atProtoBluesky.createPostRecord(text: "Hello Bluesky!")
@@ -61,7 +61,6 @@ I believe Bluesky and its accompanying AT Protocol gives the perfect balance bet
 - [x] A RichText helper to parse text into the applicable facets.
 - [ ] Easily identify and validate different identifiers.
 - [ ] A powerful Firehose API that retrieves and filters events and records in real-time.
-- [ ] An HTML-parsing system to grab search engine-friendly elements for embeds.
 - [x] A logging tool for easy debugging.
 
 > [!NOTE]
@@ -108,10 +107,11 @@ This session contains all of the elements you need, such as the access and refre
 ```swift
 Task {
     do {
-        let session = try await config.authenticate()
+        // The session object is contained in the `ATProtocolConfiguration` object:
+        try await config.authenticate()
 
-        print("Result (Access Token): \(session.accessToken)")
-        print("Result (Refresh Token): \(session.refreshToken)")
+        print("Result (Access Token): \(config.session?.accessToken)")
+        print("Result (Refresh Token): \(config.session?.refreshToken)")
     } catch {
         print("Error: \(error)")
     }

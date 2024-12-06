@@ -28,18 +28,18 @@ Then, you can create a session with the ``ATProtocolConfiguration/authenticate(a
 
 ```swift
 Task {
-    let session = try await config.authenticate()
+    try await config.authenticate()
 }
 ```
 
-You can use a `do-catch` block to get the ``UserSession`` instance (if the session was successfully created) or handle the error (if an error occured):
+You can use a `do-catch` block to create the ``UserSession`` object (if the session was successfully created) or handle the error (if an error occured):
 
 ```swift
 let config = ATProtocolConfiguration(handle: "lucy.bsky.social", appPassword: "hunter2")
 
 Task {
     do {
-        let session = try await config.authenticate()
+        try await config.authenticate()
 
         // Handle the success.
     } catch {
@@ -52,10 +52,10 @@ Task {
 
 ``UserSession`` will contain, among other things, the access and refresh tokens. ATProtoKit abstracts this away for you so you don't need to add it every time you use a method that requires an active session.
 
-You can then create an ``ATProtoKit/ATProtoKit`` instance, where you can insert the ``UserSession`` object in the `result` parameter:
+You can then create an ``ATProtoKit/ATProtoKit`` instance, where you can insert the ``ATProtocolConfiguration`` object in the `sessionConfiguration` parameter:
 
 ```swift
-let atProto = ATProtoKit(session: result)
+let atProto = ATProtoKit(sessionConfiguration: config)
 ```
 
 ### Creating a post

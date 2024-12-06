@@ -26,9 +26,9 @@ Task {
     print("Starting application...")
 
     do {
-        let session = try await config.authenticate()
+        try await config.authenticate()
 
-        let atProto = ATProtoKit(session: session)
+        let atProto = ATProtoKit(sessionConfiguration: config)
         let atProtoBluesky = ATProtoBluesky(atProtoKitInstance: atProto)
 
         let postResult = try await atProtoBluesky.createPostRecord(text: "Hello Bluesky!")
