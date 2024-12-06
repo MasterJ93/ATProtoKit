@@ -1,5 +1,7 @@
 # 0.20 to 0.21 Authentication Flow Migration
 
+Learn about how to set up your project with the new authentication flow changes.
+
 With the release of 0.21.0 comes a new migration flow for ATProtoKit developers. This change is fairly small, but this article will still cover what to expect in order to clear any confusion.
 
 ## Authentication Flow
