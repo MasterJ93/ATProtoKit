@@ -190,48 +190,52 @@ public class ATProtocolConfiguration: SessionConfiguration {
         recoveryKey: String? = nil,
         plcOperation: UnknownType? = nil
     ) async throws -> UserSession {
-        guard let requestURL = URL(string: "\(self.pdsURL)/xrpc/com.atproto.server.createAccount") else {
-            throw ATRequestPrepareError.invalidRequestURL
-        }
-
-        let requestBody = ComAtprotoLexicon.Server.CreateAccountRequestBody(
-            email: email,
-            handle: handle,
-            existingDID: existingDID,
-            inviteCode: inviteCode,
-            verificationCode: verificationCode,
-            verificationPhone: verificationPhone,
-            password: password,
-            recoveryKey: recoveryKey,
-            plcOp: plcOp
-        )
-
         do {
-            let request = APIClientService.createRequest(
-                forRequest: requestURL,
-                andMethod: .post,
-                acceptValue: nil,
-                contentTypeValue: nil,
-                authorizationValue: nil
-            )
-            var response = try await APIClientService.shared.sendRequest(
-                request,
-                withEncodingBody: requestBody,
-                decodeTo: UserSession.self
+            let response = try await ATProtoKit().createAccount(
+                email: email,
+                handle: handle,
+                existingDID: existingDID,
+                inviteCode: inviteCode,
+                verificationCode: verificationCode,
+                verificationPhone: verificationPhone,
+                password: password,
+                recoveryKey: recoveryKey,
+                plcOperation: plcOperation,
+                pdsURL: self.pdsURL
             )
 
-            response.pdsURL = self.pdsURL
-            response.logger = await ATProtocolConfiguration.getLogger()
+            // Convert `response.didDocument` to `UserSession.didDocument`.
+            var decodedDidDocument: DIDDocument? = nil
 
-            if self.maxRetryCount != nil {
-                response.maxRetryCount = self.maxRetryCount
+            if let didDocument = response.didDocument,
+               let jsonData = try didDocument.toJSON() {
+                do {
+                    let decoder = JSONDecoder()
+                    decodedDidDocument = try decoder.decode(DIDDocument.self, from: jsonData)
+                } catch {
+                    throw error
+                }
             }
 
-            if self.retryTimeDelay != nil {
-                response.retryTimeDelay = self.retryTimeDelay
-            }
 
-            return response
+            let userSession = UserSession(
+                handle: response.handle,
+                sessionDID: response.did,
+                email: email,
+                isEmailConfirmed: nil,
+                isEmailAuthenticationFactorEnabled: nil,
+                accessToken: response.accessToken,
+                refreshToken: response.refreshToken,
+                didDocument: decodedDidDocument,
+                isActive: nil,
+                status: nil,
+                pdsURL: self.pdsURL,
+                logger: await ATProtocolConfiguration.getLogger(),
+                maxRetryCount: self.maxRetryCount,
+                retryTimeDelay: self.retryTimeDelay
+            )
+
+            return userSession
         } catch {
             throw error
         }
