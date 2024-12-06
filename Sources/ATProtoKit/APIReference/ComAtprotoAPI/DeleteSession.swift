@@ -23,13 +23,13 @@ extension ATProtoKit {
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/server/deleteSession.json
     ///
     /// - Parameters:
-    ///   - accessToken: The access token for the session.
+    ///   - refreshToken: The refresh token for the session.
     ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `nil`.
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func deleteSession(
-        accessToken: String,
+        refreshToken: String,
         pdsURL: String = "https://bsky.social"
     ) async throws {
         guard let requestURL = URL(string: "\(pdsURL)/xrpc/com.atproto.server.deleteSession") else {
@@ -39,11 +39,10 @@ extension ATProtoKit {
         do {
             let request = APIClientService.createRequest(forRequest: requestURL,
                                                          andMethod: .post,
-                                                         authorizationValue: "Bearer \(accessToken)")
+                                                         authorizationValue: "Bearer \(refreshToken)")
 
             _ = try await APIClientService.shared.sendRequest(
-                request,
-                decodeTo: ComAtprotoLexicon.Server.RefreshSessionOutput.self
+                request
             )
         } catch {
             throw error

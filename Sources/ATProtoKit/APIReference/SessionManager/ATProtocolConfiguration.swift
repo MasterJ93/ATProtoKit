@@ -361,12 +361,14 @@ public class ATProtocolConfiguration: SessionConfiguration {
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func deleteSession() async throws {
         do {
-            guard let accessToken = self.session?.accessToken else { return }
+            guard let refreshToken = self.session?.refreshToken else { return }
 
             _ = try await ATProtoKit().deleteSession(
-                accessToken: accessToken,
+                refreshToken: refreshToken,
                 pdsURL: self.pdsURL
             )
+
+            self.session = nil
         } catch {
             throw error
         }
