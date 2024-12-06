@@ -14,8 +14,8 @@ public class ATProtocolConfiguration: SessionConfiguration {
     /// The user's handle identifier in their account.
     public var handle: String
 
-    /// The app password of the user's account.
-    public var appPassword: String
+    /// The password of the user's account.
+    public var password: String
 
     /// The URL of the Personal Data Server (PDS).
     public var pdsURL: String
@@ -85,7 +85,7 @@ public class ATProtocolConfiguration: SessionConfiguration {
         logLevel: Logger.Level? = .info
     ) {
         self.handle = handle
-        self.appPassword = appPassword
+        self.password = appPassword
         self.pdsURL = !pdsURL.isEmpty ? pdsURL : "https://bsky.social"
         self.configuration = configuration
 //        self.userAgent = userAgent
@@ -130,7 +130,7 @@ public class ATProtocolConfiguration: SessionConfiguration {
         logLevel: Logger.Level? = .info
     ) {
         self.handle = ""
-        self.appPassword = ""
+        self.password = ""
         self.pdsURL = service
         self.configuration = configuration
 //        self.userAgent = userAgent
@@ -209,7 +209,6 @@ public class ATProtocolConfiguration: SessionConfiguration {
                     throw error
                 }
             }
-
 
             let userSession = UserSession(
                 handle: response.handle,

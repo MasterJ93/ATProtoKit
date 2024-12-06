@@ -14,7 +14,7 @@ public protocol SessionConfiguration {
     var handle: String { get }
 
     /// The app password associated with the user's account, used for authentication.
-    var appPassword: String { get }
+    var password: String { get }
 
     /// The base URL of the Personal Data Server (PDS) with which the AT Protocol interacts.
     ///
