@@ -303,6 +303,29 @@ public enum UnknownType: Sendable, Codable {
         return record
     }
 
+    /// Converts the output into raw JSON data.
+    ///
+    /// - Returns: A `Data` object containing the raw JSON representation of the data. If there is
+    /// no data in any of the cases, the method returns `nil`.
+    public func toJSON() throws -> Data? {
+        do {
+            switch self {
+                case let .record(record):
+                    let encoder = JSONEncoder()
+                    encoder.outputFormatting = [.prettyPrinted]
+
+                    return try encoder.encode(record)
+                case let .unknown(dictionary):
+                    let encoder = JSONEncoder()
+                    encoder.outputFormatting = [.prettyPrinted]
+
+                    return try encoder.encode(dictionary)
+            }
+        } catch {
+            return nil
+        }
+    }
+
     /// Decodes a nested dictionary from an unknown JSON object.
     ///
     /// This is essential to decode truly unknown types.
