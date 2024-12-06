@@ -153,13 +153,6 @@ public class ATProtocolConfiguration: SessionConfiguration {
     /// and they have a concrete example of what to do, don't use it. In the meantime, leave it
     /// at `nil`.
     ///
-    /// - Note: According to the AT Protocol specifications: "Create an account. Implemented
-    /// by PDS."
-    ///
-    /// - SeeAlso: This is based on the [`com.atproto.server.createAccount`][github] lexicon.
-    ///
-    /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/server/createAccount.json
-    ///
     /// - Parameters:
     ///   - email: The email of the user. Optional
     ///   - handle: The handle the user wishes to use.
@@ -251,13 +244,6 @@ public class ATProtocolConfiguration: SessionConfiguration {
     /// instance of an authenticated user session within the AT Protocol. It may also have logging
     /// information, as well as the URL of the Personal Data Server (PDS).
     ///
-    /// - Note: According to the AT Protocol specifications: "Handle or other identifier supported
-    /// by the server for the authenticating user."
-    ///
-    /// - SeeAlso: This is based on the [`com.atproto.server.createSession`][github] lexicon.
-    ///
-    /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/server/createSession.json
-    ///
     /// - Parameter authenticationFactorToken: A token used for
     /// Two-Factor Authentication. Optional.
     ///
@@ -307,17 +293,6 @@ public class ATProtocolConfiguration: SessionConfiguration {
     /// When the method completes, ``ATProtocolConfiguration/session`` will be updated with an
     /// instance of an authenticated user session within the AT Protocol. It may also have logging
     /// information, as well as the URL of the Personal Data Server (PDS).
-    ///
-    /// - Note: According to the AT Protocol specifications: "Get information about the current
-    /// auth session. Requires auth."
-    ///
-    /// - SeeAlso: This is based on the [`com.atproto.server.getSession`][github] lexicon.
-    ///
-    /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/server/getSession.json
-    ///
-    /// - Parameters:
-    ///   - accessToken: The access token for the session.
-    ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `nil`.
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
@@ -378,13 +353,6 @@ public class ATProtocolConfiguration: SessionConfiguration {
     /// new instance of an authenticated user session within the AT Protocol. It may also have
     /// logging information, as well as the URL of the Personal Data Server (PDS).
     ///
-    /// - Note: According to the AT Protocol specifications: "Refresh an authentication session.
-    /// Requires auth using the 'refreshJwt' (not the 'accessJwt')."
-    ///
-    /// - SeeAlso: This is based on the [`com.atproto.server.refreshSession`][github] lexicon.
-    ///
-    /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/server/refreshSession.json
-    ///
     /// - Parameters:
     ///   - refreshToken: The refresh token for the session.
     ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `nil`.
@@ -427,13 +395,6 @@ public class ATProtocolConfiguration: SessionConfiguration {
     }
 
     /// Deletes the user session.
-    ///
-    /// - Note: According to the AT Protocol specifications: "Delete the current session.
-    /// Requires auth."
-    ///
-    /// - SeeAlso: This is based on the [`com.atproto.server.deleteSession`][github] lexicon.
-    ///
-    /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/server/deleteSession.json
     ///
     /// - Parameters:
     ///   - accessToken: The access token for the session.
