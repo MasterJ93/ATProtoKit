@@ -172,8 +172,8 @@ public class ATProtocolConfiguration: SessionConfiguration {
     ///   - password: The password the user will use for the account. Optional.
     ///   - recoveryKey: DID PLC rotation key (aka, recovery key) to be included in PLC
     ///   creation operation. Optional.
-    ///   - plcOp: A signed DID PLC operation to be submitted as part of importing an existing
-    ///   account to this instance. Optional.
+    ///   - plcOperation: A signed DID PLC operation to be submitted as part of importing an
+    ///   existing account to this instance. Optional.
     /// - Returns: An instance of an authenticated user session within the AT Protocol. It may also
     /// have logging information, as well as the URL of the Personal Data Server (PDS).
     ///
@@ -188,7 +188,7 @@ public class ATProtocolConfiguration: SessionConfiguration {
         verificationPhone: String? = nil,
         password: String? = nil,
         recoveryKey: String? = nil,
-        plcOp: UnknownType? = nil
+        plcOperation: UnknownType? = nil
     ) async throws -> UserSession {
         guard let requestURL = URL(string: "\(self.pdsURL)/xrpc/com.atproto.server.createAccount") else {
             throw ATRequestPrepareError.invalidRequestURL
