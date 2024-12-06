@@ -400,5 +400,16 @@ public class ATProtocolConfiguration: SessionConfiguration {
         } catch {
             throw error
         }
+
+        do {
+            guard let accessToken = self.session?.accessToken else { return }
+
+            _ = try await ATProtoKit().deleteSession(
+                accessToken: accessToken,
+                pdsURL: self.pdsURL
+            )
+        } catch {
+            throw error
+        }
     }
 }
