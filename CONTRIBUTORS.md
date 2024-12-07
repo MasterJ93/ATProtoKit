@@ -25,6 +25,10 @@ Thank you for supporting `ATProtoKit`. Right now, it's just me at the moment, bu
   - Bluesky: @dimillian.app
 - Andy Lin
   - GitHub: @andylin2004
+- Adam Rowe
+  - GitHub: airowe
+  - Bluesky: @airowe.bsky.social
+  - Email: adaminsley@gmail.com
 
 ## Special Thanks
 If you've helped me substainally in an issue I was having, then you may be asked if I can add you to this list. I'll ask for your first and last name (or alias), your GitHub, and Bluesky handle.
