@@ -124,6 +124,11 @@ extension AppBskyLexicon.Embed {
         /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/embed/images.json
         public struct ViewImage: Sendable, Codable {
 
+            /// The identifier of the lexicon.
+            ///
+            /// - Warning: The value must not change. An array of images to be viewed.
+            public let type: String = "app.bsky.embed.images#viewImage"
+
             /// The URI of the image's thumbnail.
             ///
             /// - Note: From the AT Protocol specification: "Fully-qualified URL where a thumbnail
@@ -153,7 +158,18 @@ extension AppBskyLexicon.Embed {
                 self.aspectRatio = aspectRatio
             }
 
+            public func encode(to encoder: any Encoder) throws {
+                var container = encoder.container(keyedBy: CodingKeys.self)
+
+                try container.encode(self.type, forKey: .type)
+                try container.encode(self.thumbnailImageURL, forKey: .thumbnailImageURL)
+                try container.encode(self.fullSizeImageURL, forKey: .fullSizeImageURL)
+                try container.encode(self.altText, forKey: .altText)
+                try container.encodeIfPresent(self.aspectRatio, forKey: .aspectRatio)
+            }
+
             enum CodingKeys: String, CodingKey {
+                case type = "$type"
                 case thumbnailImageURL = "thumb"
                 case fullSizeImageURL = "fullsize"
                 case altText = "alt"

@@ -40,6 +40,11 @@ extension AppBskyLexicon.Embed {
         /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/embed/external.json
         public struct External: Sendable, Codable {
 
+            /// The identifier of the lexicon.
+            ///
+            /// - Warning: The value must not change.
+            public let type: String = "app.bsky.embed.external#external"
+
             /// The URI of the external content.
             public let embedURI: URL
 
@@ -56,6 +61,7 @@ extension AppBskyLexicon.Embed {
             public let thumbnailImage: ComAtprotoLexicon.Repository.UploadBlobOutput?
 
             enum CodingKeys: String, CodingKey {
+                case type = "$type"
                 case embedURI = "uri"
                 case title
                 case description
@@ -87,6 +93,11 @@ extension AppBskyLexicon.Embed {
         /// A data model for a definition for the external content.
         public struct ViewExternal: Sendable, Codable {
 
+            /// The identifier of the lexicon.
+            ///
+            /// - Warning: The value must not change.
+            public let type: String = "app.bsky.embed.external#viewExternal"
+
             /// The URI of the external content.
             public let embedURI: String
 
@@ -100,6 +111,7 @@ extension AppBskyLexicon.Embed {
             public let thumbnailImageURL: URL?
 
             enum CodingKeys: String, CodingKey {
+                case type = "$type"
                 case embedURI = "uri"
                 case title
                 case description

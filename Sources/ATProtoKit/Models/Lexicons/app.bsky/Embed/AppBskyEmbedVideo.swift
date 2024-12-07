@@ -64,6 +64,11 @@ extension AppBskyLexicon.Embed {
         /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/embed/video.json
         public struct Caption: Sendable, Codable {
 
+            /// The identifier of the lexicon.
+            ///
+            /// - Warning: The value must not change.
+            public let type: String = "app.bsky.embed.video#caption"
+
             /// The language the captions are written in.
             public let language: Locale
 
@@ -74,6 +79,7 @@ extension AppBskyLexicon.Embed {
             public let file: ComAtprotoLexicon.Repository.UploadBlobOutput
 
             enum CodingKeys: String, CodingKey {
+                case type = "$type"
                 case language = "lang"
                 case file
             }
@@ -85,6 +91,11 @@ extension AppBskyLexicon.Embed {
         ///
         /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/embed/video.json
         public struct View: Sendable, Codable {
+
+            /// The identifier of the lexicon.
+            ///
+            /// - Warning: The value must not change.
+            public let type: String = "app.bsky.embed.video#view"
 
             /// The CID hash of the video.
             public let videoCID: String
@@ -101,7 +112,37 @@ extension AppBskyLexicon.Embed {
             /// The aspect ratio of the video. Optional.
             public let aspectRatio: AspectRatioDefinition?
 
+            public init(videoCID: String, playlistURI: String, thumbnailImageURL: String?, altText: String?, aspectRatio: AspectRatioDefinition?) {
+                self.videoCID = videoCID
+                self.playlistURI = playlistURI
+                self.thumbnailImageURL = thumbnailImageURL
+                self.altText = altText
+                self.aspectRatio = aspectRatio
+            }
+
+            public init(from decoder: any Decoder) throws {
+                let container = try decoder.container(keyedBy: CodingKeys.self)
+
+                self.videoCID = try container.decode(String.self, forKey: .videoCID)
+                self.playlistURI = try container.decode(String.self, forKey: .playlistURI)
+                self.thumbnailImageURL = try container.decodeIfPresent(String.self, forKey: .thumbnailImageURL)
+                self.altText = try container.decodeIfPresent(String.self, forKey: .altText)
+                self.aspectRatio = try container.decodeIfPresent(AppBskyLexicon.Embed.AspectRatioDefinition.self, forKey: .aspectRatio)
+            }
+
+            public func encode(to encoder: any Encoder) throws {
+                var container = encoder.container(keyedBy: CodingKeys.self)
+
+                try container.encode(self.type, forKey: .type)
+                try container.encode(self.videoCID, forKey: .videoCID)
+                try container.encode(self.playlistURI, forKey: .playlistURI)
+                try container.encodeIfPresent(self.thumbnailImageURL, forKey: .thumbnailImageURL)
+                try container.encodeIfPresent(self.altText, forKey: .altText)
+                try container.encodeIfPresent(self.aspectRatio, forKey: .aspectRatio)
+            }
+
             enum CodingKeys: String, CodingKey {
+                case type = "$type"
                 case videoCID = "cid"
                 case playlistURI = "playlist"
                 case thumbnailImageURL = "thumbnail"

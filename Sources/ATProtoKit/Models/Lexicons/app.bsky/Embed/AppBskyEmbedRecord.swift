@@ -157,6 +157,11 @@ extension AppBskyLexicon.Embed {
         /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/embed/record.json
         public struct ViewNotFound: Sendable, Codable {
 
+            /// The identifier of the lexicon.
+            ///
+            /// - Warning: The value must not change.
+            public let type: String = "app.bsky.embed.record#viewNotFound"
+
             /// The URI of the record.
             public let recordURI: String
 
@@ -164,6 +169,7 @@ extension AppBskyLexicon.Embed {
             public let isRecordNotFound: Bool
 
             enum CodingKeys: String, CodingKey {
+                case type = "$type"
                 case recordURI = "uri"
                 case isRecordNotFound = "notFound"
             }
@@ -175,6 +181,11 @@ extension AppBskyLexicon.Embed {
         ///
         /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/embed/record.json
         public struct ViewBlocked: Sendable, Codable {
+
+            /// The identifier of the lexicon.
+            ///
+            /// - Warning: The value must not change.
+            public let type: String = "app.bsky.embed.record#viewBlocked"
 
             /// The URI of the record.
             public let recordURI: String
@@ -199,6 +210,11 @@ extension AppBskyLexicon.Embed {
         /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/embed/record.json
         public struct ViewDetached: Sendable, Codable {
 
+            /// The identifier of the lexicon.
+            ///
+            /// - Warning: The value must not change.
+            public let type: String = "app.bsky.embed.record#viewDetached"
+
             /// The URI of the record.
             public let postURI: String
 
@@ -206,6 +222,7 @@ extension AppBskyLexicon.Embed {
             public let isRecordDetached: Bool
 
             enum CodingKeys: String, CodingKey {
+                case type = "$type"
                 case postURI = "uri"
                 case isRecordDetached = "detached"
             }
