@@ -46,6 +46,11 @@ extension AppBskyLexicon.Embed {
         /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/embed/images.json
         public struct Image: Sendable, Codable {
 
+            /// The identifier of the lexicon.
+            ///
+            /// - Warning: The value must not change.
+            public let type: String = "app.bsky.embed.images#image"
+
             /// The image that needs to be uploaded.
             ///
             /// - Warning: The image size can't be higher than 1 MB. Failure to do so will result
@@ -84,7 +89,32 @@ extension AppBskyLexicon.Embed {
             /// The identifier of the lexicon.
             ///
             /// - Warning: The value must not change. An array of images to be viewed.
+            public let type: String = "app.bsky.embed.images#view"
+
+            /// An array of images.
             public let images: [ViewImage]
+
+            public init(images: [ViewImage]) {
+                self.images = images
+            }
+
+            public init(from decoder: any Decoder) throws {
+                let container = try decoder.container(keyedBy: CodingKeys.self)
+
+                self.images = try container.decode([AppBskyLexicon.Embed.ImagesDefinition.ViewImage].self, forKey: .images)
+            }
+
+            public func encode(to encoder: any Encoder) throws {
+                var container = encoder.container(keyedBy: CodingKeys.self)
+
+                try container.encode(self.type, forKey: .type)
+                try truncatedEncode(self.images, withContainer: &container, forKey: .images, upToArrayLength: 4)
+            }
+
+            public enum CodingKeys: CodingKey {
+                case type
+                case images
+            }
         }
 
         /// A data model for a definition related to viewing an image.
