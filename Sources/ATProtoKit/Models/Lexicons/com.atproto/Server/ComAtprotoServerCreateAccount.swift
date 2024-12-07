@@ -64,10 +64,10 @@ extension ComAtprotoLexicon.Server {
         /// is implemented. Optional.
         ///
         /// - Note: The above documentation is taken directly from the AT Protocol apecifications.
-        public var plcOp: UnknownType?
+        public var plcOperation: UnknownType?
 
         public init(email: String?, handle: String, existingDID: String?, inviteCode: String?, verificationCode: String?, verificationPhone: String?,
-                    password: String?, recoveryKey: String?, plcOp: UnknownType?) {
+                    password: String?, recoveryKey: String?, plcOperation: UnknownType?) {
             self.email = email
             self.handle = handle
             self.existingDID = existingDID
@@ -76,7 +76,7 @@ extension ComAtprotoLexicon.Server {
             self.verificationPhone = verificationCode
             self.password = password
             self.recoveryKey = recoveryKey
-            self.plcOp = plcOp
+            self.plcOperation = plcOperation
         }
 
         enum CodingKeys: String, CodingKey {
@@ -88,7 +88,7 @@ extension ComAtprotoLexicon.Server {
             case verificationPhone
             case password
             case recoveryKey
-            case plcOp
+            case plcOperation = "plcOp"
         }
     }
 

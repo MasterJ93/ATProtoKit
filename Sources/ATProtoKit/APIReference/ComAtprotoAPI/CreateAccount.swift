@@ -71,7 +71,7 @@ extension ATProtoKit {
             verificationPhone: verificationPhone,
             password: password,
             recoveryKey: recoveryKey,
-            plcOp: plcOperation
+            plcOperation: plcOperation
         )
 
         do {
