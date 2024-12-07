@@ -78,8 +78,13 @@ You should see the post in your Bluesky account once you run this code. When the
 To view your own posts, you can use ``ATProtoKit/ATProtoKit/getAuthorFeed(by:limit:cursor:postFilter:shouldIncludePins:)`` and use ``UserSession/handle`` in the first argument:
 
 ```swift
-let myFeed = try await atProto.getAuthorFeed(by: "lucy.bsky.social")
-print("Feed: \(myFeed)")
+do {
+    guard let session = atProto.session else { return }
+    let myFeed = try await atProto.getAuthorFeed(by: session.handle)
+    print("Feed: \(myFeed)")
+} catch {
+    throw error
+}
 ```
 
 By default, it will grab the first 50 posts from you, including replies, and without the pinned post. However, you can tweak that with the `limit`, `postFilter`, and `shouldIncludePins` arguments. You can also poll more posts if a singular call reaches its limit by using ``AppBskyLexicon/Feed/GetAuthorFeedOutput/cursor`` with the next API call:
