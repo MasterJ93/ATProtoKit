@@ -9,7 +9,7 @@ import Foundation
 
 extension ComAtprotoLexicon.Server {
 
-/// A request body model for revoking a password.
+    /// A request body model for revoking a password.
     ///
     /// - Note: According to the AT Protocol specifications: "Revoke an App Password by name."
     ///

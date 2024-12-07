@@ -16,7 +16,7 @@ extension ComAtprotoLexicon.Server {
     ///
     /// - SeeAlso: This is based on the [`com.atproto.server.getSession`][github] lexicon.
     ///
-    /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/server/getSession.json
+    /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/server/refreshSession.json
     public struct RefreshSession: Sendable, Codable {
 
         /// Indicates the status of the user account if it's inactivate.

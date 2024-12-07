@@ -11,7 +11,8 @@ extension ComAtprotoLexicon.Server {
 
     /// A request body model for confirming emails.
     ///
-    /// - Note: According to the AT Protocol specifications: "Confirm an email using a token from com.atproto.server.requestEmailConfirmation."
+    /// - Note: According to the AT Protocol specifications: "Confirm an email using a token
+    /// from com.atproto.server.requestEmailConfirmation."
     ///
     /// - SeeAlso: This is based on the [`com.atproto.server.confirmEmail`][github] lexicon.
     ///

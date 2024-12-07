@@ -10,6 +10,10 @@ import Foundation
 extension ComAtprotoLexicon.Server {
 
     /// A data model for retrieving a description of the server.
+    ///
+    /// - SeeAlso: This is based on the [`com.atproto.server.describeServer`][github] lexicon.
+    ///
+    /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/server/describeServer.json
     public struct DescribeServer: Sendable, Codable {
 
         /// A data model of service policy URLs.

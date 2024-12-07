@@ -16,7 +16,7 @@ extension ComAtprotoLexicon.Server {
     ///
     /// - SeeAlso: This is based on the [`com.atproto.server.createAccount`][github] lexicon.
     ///
-    /// [github]: https://docs.bsky.app/docs/api/com-atproto-server-create-account
+    /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/server/createAccount.json
     public struct CreateAccountRequestBody: Sendable, Codable {
 
         /// The email of the user. Optional.
@@ -99,7 +99,7 @@ extension ComAtprotoLexicon.Server {
     ///
     /// - SeeAlso: This is based on the [`com.atproto.server.createAccount`][github] lexicon.
     ///
-    /// [github]: https://docs.bsky.app/docs/api/com-atproto-server-create-account
+    /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/server/createAccount.json
     public struct CreateAccountOutput: Sendable, Codable {
 
         /// The access token of the user account.
