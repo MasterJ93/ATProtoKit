@@ -133,6 +133,14 @@ public func encodeDateIfPresent<T: CodingKey>(_ date: Date?, with container: ino
     }
 }
 
+extension KeyedDecodingContainer where K : CodingKey {
+
+}
+
+extension KeyedEncodingContainer where K : CodingKey {
+
+}
+
 // MARK: Deprecated property wrappers -
 /// A property wrapper for encoding and decoding `Date` objects with the ISO8601 format.
 ///

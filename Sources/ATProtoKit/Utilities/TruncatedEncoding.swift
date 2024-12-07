@@ -119,3 +119,7 @@ public func truncatedEncodeIfPresent<T: CodingKey, Element: Truncatable & Encoda
         }
     }
 }
+
+extension KeyedEncodingContainer where K : CodingKey {
+    
+}
