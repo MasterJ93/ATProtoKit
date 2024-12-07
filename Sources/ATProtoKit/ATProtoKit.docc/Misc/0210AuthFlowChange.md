@@ -52,11 +52,16 @@ Here are the changes being made:
 - ``ATProtocolConfiguration/authenticate(authenticationFactorToken:)`` no longer returns anything.
   - Due to the above change, you can now have the option to authenticate before or after creating the main `ATProtoKit` `class`.
 - ``ATProtocolConfiguration`` now accesses the following via proxy methods:
-  - ``ATProtoKit/ATProtoKit/createSession(with:and:authenticationFactorToken:pdsURL:)`` is accessed via the ``ATProtocolConfiguration/authenticate(authenticationFactorToken:)`` proxy method.
-  - ``ATProtoKit/ATProtoKit/getSession(by:pdsURL:)`` is accessed via the ``ATProtocolConfiguration/getSession(by:pdsURL:)`` proxy method.
-  - ``ATProtoKit/ATProtoKit/refreshSession(refreshToken:pdsURL:)`` is accessed via the ``ATProtocolConfiguration/refreshSession()`` proxy method.
-  - ``ATProtoKit/ATProtoKit/deleteSession(refreshToken:pdsURL:)`` is accessed via the ``ATProtocolConfiguration/deleteSession()`` proxy method.
-  - ``ATProtoKit/ATProtoKit/createAccount(email:handle:existingDID:inviteCode:verificationCode:verificationPhone:password:recoveryKey:plcOperation:pdsURL:)`` is accessed via the ``ATProtocolConfiguration/createAccount(email:handle:existingDID:inviteCode:verificationCode:verificationPhone:password:recoveryKey:plcOperation:)`` proxy method.
+
+`ATProtoKit` method|Proxy Method
+---:|:---
+``ATProtoKit/ATProtoKit/createSession(with:and:authenticationFactorToken:pdsURL:)``|``ATProtocolConfiguration/authenticate(authenticationFactorToken:)``
+``ATProtoKit/ATProtoKit/getSession(by:pdsURL:)``|``ATProtocolConfiguration/getSession(by:pdsURL:)``
+``ATProtoKit/ATProtoKit/refreshSession(refreshToken:pdsURL:)``| ``ATProtocolConfiguration/refreshSession()``
+``ATProtoKit/ATProtoKit/deleteSession(refreshToken:pdsURL:)``|``ATProtocolConfiguration/deleteSession()``
+``ATProtoKit/ATProtoKit/createAccount(email:handle:existingDID:inviteCode:verificationCode:verificationPhone:password:recoveryKey:plcOperation:pdsURL:)``| ``ATProtocolConfiguration/createAccount(email:handle:existingDID:inviteCode:verificationCode:verificationPhone:password:recoveryKey:plcOperation:)``
+
+
 
 ---
 
