@@ -90,12 +90,13 @@ extension ATProtoBluesky {
     /// Identifies the record based on the specific information provided.
     ///
     /// `RecordIdentifier` provides a unified interface for specifying how the record is defined.
-    /// This allows methods like ``deleteActionRecord(_:)`` to handle the backend of how to grab the
-    /// details of the record so it can delete it.
     public enum RecordIdentifier {
+
         /// The record object itself.
+        ///
         /// - Parameter recordQuery: the record object.
         case recordQuery(recordQuery: ATProtoTools.RecordQuery)
+
         /// The URI of the record.
         case recordURI(atURI: String)
     }
