@@ -166,7 +166,12 @@ extension AppBskyLexicon.Graph {
             
             let decodedType = try container.decode(String.self, forKey: .type)
             if decodedType != type {
-                throw DecodingError.typeMismatch(ListViewDefinition.self, .init(codingPath: [CodingKeys.type], debugDescription: "type did not match expected type \(type)"))
+                throw DecodingError.typeMismatch(
+                    ListViewDefinition.self,
+                    .init(codingPath: [CodingKeys.type],
+                          debugDescription: "type did not match expected type \(type)"
+                         )
+                )
             }
                  
             self.uri = try container.decode(String.self, forKey: .uri)
