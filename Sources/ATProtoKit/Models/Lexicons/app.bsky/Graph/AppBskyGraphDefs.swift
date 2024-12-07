@@ -245,13 +245,13 @@ extension AppBskyLexicon.Graph {
     public struct StarterPackViewDefinition: Sendable, Codable {
 
         /// The URI of the starter pack.
-        public let starterPackURI: String
+        public let uri: String
 
         /// The content identifier (CID) of the starter pack.
-        public let starterPackCID: String
+        public let cid: String
 
         /// The starter pack record itself.
-        public let starterPackRecord: UnknownType
+        public let record: UnknownType
 
         /// The creator of the starter pack.
         public let creator: AppBskyLexicon.Actor.ProfileViewBasicDefinition
@@ -279,13 +279,13 @@ extension AppBskyLexicon.Graph {
         /// The late time the user list was indexed. Optional.
         public let indexedAt: Date
 
-        public init(starterPackURI: String, starterPackCID: String, starterPackRecord: UnknownType, creator: AppBskyLexicon.Actor.ProfileViewBasicDefinition,
+        public init(uri: String, cid: String, record: UnknownType, creator: AppBskyLexicon.Actor.ProfileViewBasicDefinition,
             list: AppBskyLexicon.Graph.ListViewBasicDefinition?, listItemsSample: [AppBskyLexicon.Graph.ListItemViewDefinition]?,
                     feeds: [AppBskyLexicon.Feed.GeneratorViewDefinition]?, joinedWeekCount: Int?, joinedAllTimeCount: Int?,
                     labels: [ComAtprotoLexicon.Label.LabelDefinition]?, indexedAt: Date) {
-            self.starterPackURI = starterPackURI
-            self.starterPackCID = starterPackCID
-            self.starterPackRecord = starterPackRecord
+            self.uri = uri
+            self.cid = cid
+            self.record = record
             self.creator = creator
             self.list = list
             self.listItemsSample = listItemsSample
@@ -299,9 +299,9 @@ extension AppBskyLexicon.Graph {
         public init(from decoder: any Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
 
-            self.starterPackURI = try container.decode(String.self, forKey: .starterPackURI)
-            self.starterPackCID = try container.decode(String.self, forKey: .starterPackCID)
-            self.starterPackRecord = try container.decode(UnknownType.self, forKey: .starterPackRecord)
+            self.uri = try container.decode(String.self, forKey: .uri)
+            self.cid = try container.decode(String.self, forKey: .cid)
+            self.record = try container.decode(UnknownType.self, forKey: .record)
             self.creator = try container.decode(AppBskyLexicon.Actor.ProfileViewBasicDefinition.self, forKey: .creator)
             self.list = try container.decodeIfPresent(AppBskyLexicon.Graph.ListViewBasicDefinition.self, forKey: .list)
             self.listItemsSample = try container.decodeIfPresent([AppBskyLexicon.Graph.ListItemViewDefinition].self, forKey: .listItemsSample)
@@ -315,9 +315,9 @@ extension AppBskyLexicon.Graph {
         public func encode(to encoder: any Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
 
-            try container.encode(self.starterPackURI, forKey: .starterPackURI)
-            try container.encode(self.starterPackCID, forKey: .starterPackCID)
-            try container.encode(self.starterPackRecord, forKey: .starterPackRecord)
+            try container.encode(self.uri, forKey: .uri)
+            try container.encode(self.cid, forKey: .cid)
+            try container.encode(self.record, forKey: .record)
             try container.encode(self.creator, forKey: .creator)
             try container.encodeIfPresent(self.list, forKey: .list)
             try truncatedEncodeIfPresent(self.listItemsSample, withContainer: &container, forKey: .listItemsSample, upToCharacterLength: 12)
@@ -329,9 +329,9 @@ extension AppBskyLexicon.Graph {
         }
 
         enum CodingKeys: String, CodingKey {
-            case starterPackURI = "uri"
-            case starterPackCID = "cid"
-            case starterPackRecord = "record"
+            case uri = "uri"
+            case cid = "cid"
+            case record
             case creator
             case list
             case listItemsSample
