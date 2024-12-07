@@ -43,8 +43,8 @@ extension AppBskyLexicon.Graph {
         /// The late time the user list was indexed. Optional.
         public let indexedAt: Date?
 
-        init(actorURI: String, cidHash: String, name: String, purpose: ListPurpose, avatarImageURL: URL?, listItemCount: Int?,
-             viewer: ListViewerStateDefinition? = nil, indexedAt: Date?) {
+        public init(actorURI: String, cidHash: String, name: String, purpose: ListPurpose, avatarImageURL: URL?, listItemCount: Int?,
+                    viewer: ListViewerStateDefinition? = nil, indexedAt: Date?) {
             self.actorURI = actorURI
             self.cidHash = cidHash
             self.name = name
