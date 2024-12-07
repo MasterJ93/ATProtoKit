@@ -24,7 +24,7 @@ Thank you for supporting `ATProtoKit`. Right now, it's just me at the moment, bu
   - GitHub: Dimillian
   - Bluesky: @dimillian.app
 - Andy Lin
-  - GitHub: @andylin2004
+  - GitHub: andylin2004
 - Adam Rowe
   - GitHub: airowe
   - Bluesky: @airowe.bsky.social
