@@ -102,3 +102,4 @@ let myFeedExtended = try await atProto.getAuthorFeed(
 )
 
 print("Feed (next 100 posts): \(myFeedExtended)")
+```
