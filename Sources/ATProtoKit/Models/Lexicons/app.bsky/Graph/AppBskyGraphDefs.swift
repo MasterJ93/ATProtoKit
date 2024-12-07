@@ -20,7 +20,7 @@ extension AppBskyLexicon.Graph {
         public let actorURI: String
 
         /// The CID of a user list.
-        public let cidHash: String
+        public let cid: String
 
         /// The name of the list.
         public let name: String
@@ -43,10 +43,10 @@ extension AppBskyLexicon.Graph {
         /// The late time the user list was indexed. Optional.
         public let indexedAt: Date?
 
-        public init(actorURI: String, cidHash: String, name: String, purpose: ListPurpose, avatarImageURL: URL?, listItemCount: Int?,
+        public init(actorURI: String, cid: String, name: String, purpose: ListPurpose, avatarImageURL: URL?, listItemCount: Int?,
                     viewer: ListViewerStateDefinition? = nil, indexedAt: Date?) {
             self.actorURI = actorURI
-            self.cidHash = cidHash
+            self.cid = cid
             self.name = name
             self.purpose = purpose
             self.avatarImageURL = avatarImageURL
@@ -59,7 +59,7 @@ extension AppBskyLexicon.Graph {
             let container = try decoder.container(keyedBy: CodingKeys.self)
 
             self.actorURI = try container.decode(String.self, forKey: .actorURI)
-            self.cidHash = try container.decode(String.self, forKey: .cidHash)
+            self.cid = try container.decode(String.self, forKey: .cid)
             self.name = try container.decode(String.self, forKey: .name)
             self.purpose = try container.decode(AppBskyLexicon.Graph.ListPurpose.self, forKey: .purpose)
             self.avatarImageURL = try container.decodeIfPresent(URL.self, forKey: .avatarImageURL)
@@ -72,7 +72,7 @@ extension AppBskyLexicon.Graph {
             var container = encoder.container(keyedBy: CodingKeys.self)
 
             try container.encode(self.actorURI, forKey: .actorURI)
-            try container.encode(self.cidHash, forKey: .cidHash)
+            try container.encode(self.cid, forKey: .cid)
             try container.encode(self.name, forKey: .name)
             try truncatedEncode(self.name, withContainer: &container, forKey: .name, upToCharacterLength: 64)
             try container.encode(self.purpose, forKey: .purpose)
@@ -84,12 +84,12 @@ extension AppBskyLexicon.Graph {
 
         enum CodingKeys: String, CodingKey {
             case actorURI = "uri"
-            case cidHash = "cid"
+            case cid
             case name = "name"
             case purpose = "purpose"
             case avatarImageURL = "avatar"
             case listItemCount
-            case viewer = "viewer"
+            case viewer
             case indexedAt
         }
     }
@@ -107,10 +107,10 @@ extension AppBskyLexicon.Graph {
         public let type: String = "app.bsky.graph.defs#listView"
         
         /// The URI of the user list.
-        public let listURI: String
+        public let uri: String
 
         /// The CID of the user list.
-        public let cidHash: String
+        public let cid: String
 
         /// The creator of the user list.
         public let creator: AppBskyLexicon.Actor.ProfileViewDefinition
@@ -145,11 +145,11 @@ extension AppBskyLexicon.Graph {
         /// The late time the user list was indexed.
         public let indexedAt: Date
 
-        public init(listURI: String, cidHash: String, creator: AppBskyLexicon.Actor.ProfileViewDefinition, name: String, purpose: ListPurpose,
+        public init(uri: String, cid: String, creator: AppBskyLexicon.Actor.ProfileViewDefinition, name: String, purpose: ListPurpose,
             description: String? = nil, descriptionFacets: [AppBskyLexicon.RichText.Facet]? = nil, avatarImageURL: URL? = nil, listItemCount: Int?,
             viewer: ListViewerStateDefinition? = nil, indexedAt: Date) {
-            self.listURI = listURI
-            self.cidHash = cidHash
+            self.uri = uri
+            self.cid = cid
             self.creator = creator
             self.name = name
             self.purpose = purpose
@@ -169,8 +169,8 @@ extension AppBskyLexicon.Graph {
                 throw DecodingError.typeMismatch(ListViewDefinition.self, .init(codingPath: [CodingKeys.type], debugDescription: "type did not match expected type \(type)"))
             }
                  
-            self.listURI = try container.decode(String.self, forKey: .listURI)
-            self.cidHash = try container.decode(String.self, forKey: .cidHash)
+            self.uri = try container.decode(String.self, forKey: .uri)
+            self.cid = try container.decode(String.self, forKey: .cid)
             self.creator = try container.decode(AppBskyLexicon.Actor.ProfileViewDefinition.self, forKey: .creator)
             self.name = try container.decode(String.self, forKey: .name)
             self.purpose = try container.decode(AppBskyLexicon.Graph.ListPurpose.self, forKey: .purpose)
@@ -185,8 +185,8 @@ extension AppBskyLexicon.Graph {
         public func encode(to encoder: Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
 
-            try container.encode(self.listURI, forKey: .listURI)
-            try container.encode(self.cidHash, forKey: .cidHash)
+            try container.encode(self.uri, forKey: .uri)
+            try container.encode(self.cid, forKey: .cid)
             try container.encode(self.creator, forKey: .creator)
             // Truncate `name` to 64 characters before encoding.
             try truncatedEncode(self.name, withContainer: &container, forKey: .name, upToCharacterLength: 64)
@@ -204,8 +204,8 @@ extension AppBskyLexicon.Graph {
 
         enum CodingKeys: String, CodingKey {
             case type = "$type"
-            case listURI = "uri"
-            case cidHash = "cid"
+            case uri
+            case cid
             case creator = "creator"
             case name = "name"
             case purpose = "purpose"
@@ -213,8 +213,8 @@ extension AppBskyLexicon.Graph {
             case descriptionFacets = "descriptionFacets"
             case avatarImageURL = "avatar"
             case listItemCount
-            case viewer = "viewer"
-            case indexedAt = "indexedAt"
+            case viewer
+            case indexedAt
         }
     }
 
@@ -464,7 +464,7 @@ extension AppBskyLexicon.Graph {
         /// Indicates whether the user is muted. Optional.
         public var isMuted: Bool?
 
-        /// The URI of the block record if the user has blocked the user list. Optional
+        /// The URI of the block record if the user has blocked the user list. Optional.
         public var blockedURI: String?
 
         enum CodingKeys: String, CodingKey {
@@ -498,8 +498,8 @@ extension AppBskyLexicon.Graph {
     /// A definition model for a graph relationship between two user accounts.
     ///
     /// - Note: According to the AT Protocol specifications: "lists the bi-directional graph
-    /// relationships between one actor (not indicated in the object), and the target actors (the DID
-    /// included in the object)"
+    /// relationships between one actor (not indicated in the object), and the target actors (the
+    /// DID included in the object)"
     ///
     /// - SeeAlso: This is based on the [`app.bsky.graph.defs`][github] lexicon.
     ///
