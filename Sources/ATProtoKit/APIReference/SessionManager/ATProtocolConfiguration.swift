@@ -316,10 +316,7 @@ public class ATProtocolConfiguration: SessionConfiguration {
     /// (if there is one) or `nil` (if there isn't one).
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
-    public func getSession(
-        by accessToken: String,
-        pdsURL: String? = nil
-    ) async throws -> ComAtprotoLexicon.Server.GetSessionOutput? {
+    public func getSession() async throws -> ComAtprotoLexicon.Server.GetSessionOutput? {
         do {
             guard let session = self.session?.accessToken else { return nil }
 
