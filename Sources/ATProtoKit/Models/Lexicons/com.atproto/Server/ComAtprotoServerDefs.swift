@@ -104,14 +104,14 @@ extension ComAtprotoLexicon.Server {
         public init(from decoder: any Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
 
-            self.usedBy = try container.decode(String.self, forKey: ComAtprotoLexicon.Server.InviteCodeUseDefinition.CodingKeys.usedBy)
+            self.usedBy = try container.decode(String.self, forKey: .usedBy)
             self.usedAt = try decodeDate(from: container, forKey: .usedAt)
         }
 
         public func encode(to encoder: any Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
 
-            try container.encode(self.usedBy, forKey: ComAtprotoLexicon.Server.InviteCodeUseDefinition.CodingKeys.usedBy)
+            try container.encode(self.usedBy, forKey: .usedBy)
             try encodeDate(self.usedAt, with: &container, forKey: .usedAt)
         }
 
