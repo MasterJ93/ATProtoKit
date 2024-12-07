@@ -35,10 +35,12 @@ This will automatically create the custom initializer, as well as the custom dec
 ## Manual Entry
 
 If you rather write the custom initializers and methods manually, you can do so as well. When creating the custom initializers and methods, you'll want to replace the following methods with the custom ones:
-- Replace `decode(_:forKey:)` with ``decodeDate(from:forKey:)``.
-- Replace `decodeIfPresent(_:forKey:)` with ``decodeDateIfPresent(from:forKey:)``.
-- Replace `encode(_:forKey:)` with ``encodeDate(_:with:forKey:)``.
-- Replace `encodeIfPresent(_:forKey:)` with ``encodeDateIfPresent(_:with:forKey:)``.
+Replace|With...
+---:|:---
+`decode(_:forKey:)`|``decodeDate(from:forKey:)``
+`decodeIfPresent(_:forKey:)`|``decodeDateIfPresent(from:forKey:)``
+`encode(_:forKey:)`|``encodeDate(_:with:forKey:)``
+`encodeIfPresent(_:forKey:)`|``encodeDateIfPresent(_:with:forKey:)``
 
 ```swift
 public struct UserProfile: ATRecordProtocol {

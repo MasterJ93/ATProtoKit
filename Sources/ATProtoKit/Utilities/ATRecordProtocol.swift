@@ -149,7 +149,7 @@ public actor ATRecordTypeRegistry {
 
     /// Initializes the registry with an array of record types from Bluesky.
     ///
-    /// - Note: This must only be used for the main`ATProtoKit` `class` and only for
+    /// - Note: This must only be used for the main `ATProtoKit` `class` and only for
     /// Bluesky-specific record lexicon models.
     ///
     /// - Parameter types: An array of ``ATRecordProtocol``-conforming `struct`s.
@@ -238,7 +238,7 @@ public actor ATRecordTypeRegistry {
 /// ```
 /// 
 /// As shown above, the `records` property is of type `UnknownType`. By adding this, any `struct`s
-/// within the dictionary of ``ATRecordTypeRegistry/recordRegistry``  can be used to potentially
+/// within the dictionary of ``ATRecordTypeRegistry/recordRegistry`` can be used to potentially
 /// decode and encode the JSON object.
 public enum UnknownType: Sendable, Codable {
 

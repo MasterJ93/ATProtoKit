@@ -56,7 +56,7 @@ Here are the changes being made:
 `ATProtoKit` method|Proxy Method
 ---:|:---
 ``ATProtoKit/ATProtoKit/createSession(with:and:authenticationFactorToken:pdsURL:)``|``ATProtocolConfiguration/authenticate(authenticationFactorToken:)``
-``ATProtoKit/ATProtoKit/getSession(by:pdsURL:)``|``ATProtocolConfiguration/getSession(by:pdsURL:)``
+``ATProtoKit/ATProtoKit/getSession(by:pdsURL:)``|``ATProtocolConfiguration/getSession()
 ``ATProtoKit/ATProtoKit/refreshSession(refreshToken:pdsURL:)``| ``ATProtocolConfiguration/refreshSession()``
 ``ATProtoKit/ATProtoKit/deleteSession(refreshToken:pdsURL:)``|``ATProtocolConfiguration/deleteSession()``
 ``ATProtoKit/ATProtoKit/createAccount(email:handle:existingDID:inviteCode:verificationCode:verificationPhone:password:recoveryKey:plcOperation:pdsURL:)``| ``ATProtocolConfiguration/createAccount(email:handle:existingDID:inviteCode:verificationCode:verificationPhone:password:recoveryKey:plcOperation:)``

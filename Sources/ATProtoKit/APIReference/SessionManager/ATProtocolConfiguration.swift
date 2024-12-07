@@ -106,10 +106,10 @@ public class ATProtocolConfiguration: SessionConfiguration {
     /// handle or password.
     ///
     /// - Important: ``ATProtocolConfiguration/authenticate(authenticationFactorToken:)``,
-    /// ``ATProtocolConfiguration/createAccount(email:handle:existingDID:inviteCode:verificationCode:verificationPhone:password:recoveryKey:plcOp:)``,
-    /// ``ATProtocolConfiguration/deleteSession(using:pdsURL:)``,
-    /// ``ATProtocolConfiguration/getSession(by:pdsURL:)``, and
-    /// ``ATProtocolConfiguration/refreshSession(using:pdsURL:)`` will not work when initializing
+    /// ``ATProtocolConfiguration/createAccount(email:handle:existingDID:inviteCode:verificationCode:verificationPhone:password:recoveryKey:plcOperation:)``,
+    /// ``ATProtocolConfiguration/deleteSession()``,
+    /// ``ATProtocolConfiguration/getSession()``, and
+    /// ``ATProtocolConfiguration/deleteSession()`` will not work when initializing
     /// ATProtocolConfiguration with this initializer.
     ///
     /// - Parameters:
