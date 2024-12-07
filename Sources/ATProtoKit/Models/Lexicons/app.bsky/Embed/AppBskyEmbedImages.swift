@@ -111,8 +111,8 @@ extension AppBskyLexicon.Embed {
                 try truncatedEncode(self.images, withContainer: &container, forKey: .images, upToArrayLength: 4)
             }
 
-            public enum CodingKeys: CodingKey {
-                case type
+            public enum CodingKeys: String, CodingKey {
+                case type = "$type"
                 case images
             }
         }
