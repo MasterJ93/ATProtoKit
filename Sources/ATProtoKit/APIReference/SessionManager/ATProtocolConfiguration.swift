@@ -23,12 +23,6 @@ public class ATProtocolConfiguration: SessionConfiguration {
     /// An instance of `URLSessionConfiguration`.
     public let configuration: URLSessionConfiguration
 
-//    /// The user agent of the client. Defaults to `.default`.
-//    ///
-//    /// - Note: For more information about user agents in ATProtoKit, go to
-//    /// ``ATProtoTools/UserAgent``.
-//    public let userAgent: ATProtoTools.UserAgent
-
     /// Specifies the logger that will be used for emitting log messages. Optional.
     private static let loggerManager = LogBootstrapConfiguration()
 
