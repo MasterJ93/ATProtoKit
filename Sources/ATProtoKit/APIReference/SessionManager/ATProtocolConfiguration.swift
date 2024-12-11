@@ -102,7 +102,7 @@ public class ATProtocolConfiguration: SessionConfiguration {
     /// - Important: ``ATProtocolConfiguration/authenticate(authenticationFactorToken:)``,
     /// ``ATProtocolConfiguration/createAccount(email:handle:existingDID:inviteCode:verificationCode:verificationPhone:password:recoveryKey:plcOperation:)``,
     /// ``ATProtocolConfiguration/deleteSession()``,
-    /// ``ATProtocolConfiguration/getSession()``, and
+    /// ``ATProtocolConfiguration/getSession(by:)``, and
     /// ``ATProtocolConfiguration/deleteSession()`` will not work when initializing
     /// ATProtocolConfiguration with this initializer.
     ///
@@ -301,21 +301,26 @@ public class ATProtocolConfiguration: SessionConfiguration {
     }
 
     /// Fetches an existing session using an access token.
-    ///
+    /// 
     /// When the method completes, ``ATProtocolConfiguration/session`` will be updated with an
     /// instance of an authenticated user session within the AT Protocol. It may also have logging
     /// information, as well as the URL of the Personal Data Server (PDS).
+    ///
+    /// - Parameter accessToken: The access token used for the session. Optional.
+    /// Defaults to `nil`.
     ///
     /// - Returns: Information of the user account's current session straight from the service
     /// (if there is one) or `nil` (if there isn't one).
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
-    public func getSession() async throws -> ComAtprotoLexicon.Server.GetSessionOutput? {
+    public func getSession(by accessToken: String? = nil) async throws -> ComAtprotoLexicon.Server.GetSessionOutput? {
         do {
-            guard let session = self.session?.accessToken else { return nil }
+            // Check if accessToken has anything inserted. If not, use the accessToken from the UserSession object.
+            guard let sessionToken = accessToken ?? self.session?.accessToken else { return nil }
+            guard sessionToken == sessionToken else { return nil }
 
             let response = try await ATProtoKit().getSession(
-                by: session,
+                by: sessionToken,
                 pdsURL: self.pdsURL
             )
 
@@ -331,16 +336,24 @@ public class ATProtocolConfiguration: SessionConfiguration {
     /// new instance of an authenticated user session within the AT Protocol. It may also have
     /// logging information, as well as the URL of the Personal Data Server (PDS).
     ///
+    /// - Parameter refreshToken: The refresh token used for the session. Optional.
+    /// Defaults to `nil`.
+    ///
+    /// - Returns: Information of the user account's new session.
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
-    public func refreshSession() async throws {
+    public func refreshSession(by refreshToken: String? = nil) async throws -> ComAtprotoLexicon.Server.RefreshSessionOutput? {
         do {
-            guard let refreshToken = self.session?.refreshToken else { return }
+            // Check if accessToken has anything inserted. If not, use the accessToken from the UserSession object.
+            guard let sessionToken = refreshToken ?? self.session?.refreshToken else { return nil }
+            guard sessionToken == sessionToken else { return nil }
 
-            _ = try await ATProtoKit().refreshSession(
-                refreshToken: refreshToken,
+            let response = try await ATProtoKit().refreshSession(
+                refreshToken: sessionToken,
                 pdsURL: self.pdsURL
             )
+
+            return response
         } catch {
             throw error
         }
