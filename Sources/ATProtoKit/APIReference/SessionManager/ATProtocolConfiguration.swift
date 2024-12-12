@@ -317,7 +317,6 @@ public class ATProtocolConfiguration: SessionConfiguration {
         do {
             // Check if accessToken has anything inserted. If not, use the accessToken from the UserSession object.
             guard let sessionToken = accessToken ?? self.session?.accessToken else { return nil }
-            guard sessionToken == sessionToken else { return nil }
 
             let response = try await ATProtoKit().getSession(
                 by: sessionToken,
@@ -346,7 +345,6 @@ public class ATProtocolConfiguration: SessionConfiguration {
         do {
             // Check if accessToken has anything inserted. If not, use the accessToken from the UserSession object.
             guard let sessionToken = refreshToken ?? self.session?.refreshToken else { return nil }
-            guard sessionToken == sessionToken else { return nil }
 
             let response = try await ATProtoKit().refreshSession(
                 refreshToken: sessionToken,
