@@ -225,6 +225,9 @@ extension AppBskyLexicon.Actor {
         /// The date the profile was last indexed. Optional.
         public let indexedAt: Date?
 
+        /// The date and time the profile was created. Optional.
+        public let createdAt: Date?
+
         /// The list of metadata relating to the requesting account's relationship with the subject
         /// account. Optional.
         public var viewer: ViewerStateDefinition?
@@ -238,7 +241,7 @@ extension AppBskyLexicon.Actor {
         public init(actorDID: String, actorHandle: String, displayName: String? = nil, description: String? = nil, avatarImageURL: URL? = nil,
                     bannerImageURL: URL? = nil, followerCount: Int? = nil, followCount: Int? = nil, postCount: Int? = nil,
                     associated: ProfileAssociatedDefinition?, joinedViaStarterPack: AppBskyLexicon.Graph.StarterpackRecord?, indexedAt: Date?,
-                    viewer: ViewerStateDefinition? = nil, labels: [ComAtprotoLexicon.Label.LabelDefinition]? = nil,
+                    createdAt: Date?, viewer: ViewerStateDefinition? = nil, labels: [ComAtprotoLexicon.Label.LabelDefinition]? = nil,
                     pinnedPost: ComAtprotoLexicon.Repository.StrongReference?) {
             self.actorDID = actorDID
             self.actorHandle = actorHandle
@@ -252,6 +255,7 @@ extension AppBskyLexicon.Actor {
             self.associated = associated
             self.joinedViaStarterPack = joinedViaStarterPack
             self.indexedAt = indexedAt
+            self.createdAt = createdAt
             self.viewer = viewer
             self.labels = labels
             self.pinnedPost = pinnedPost
@@ -272,6 +276,7 @@ extension AppBskyLexicon.Actor {
             self.joinedViaStarterPack = try container.decodeIfPresent(AppBskyLexicon.Graph.StarterpackRecord.self, forKey: .joinedViaStarterPack)
             self.associated = try container.decodeIfPresent(AppBskyLexicon.Actor.ProfileAssociatedDefinition.self, forKey: .associated)
             self.indexedAt = try decodeDateIfPresent(from: container, forKey: .indexedAt)
+            self.createdAt = try decodeDateIfPresent(from: container, forKey: .createdAt)
             self.viewer = try container.decodeIfPresent(AppBskyLexicon.Actor.ViewerStateDefinition.self, forKey: .viewer)
             self.labels = try container.decodeIfPresent([ComAtprotoLexicon.Label.LabelDefinition].self, forKey: .labels)
             self.pinnedPost = try container.decodeIfPresent(ComAtprotoLexicon.Repository.StrongReference.self, forKey: .pinnedPost)
@@ -299,6 +304,7 @@ extension AppBskyLexicon.Actor {
             try container.encodeIfPresent(self.associated, forKey: .associated)
             try container.encodeIfPresent(self.joinedViaStarterPack, forKey: .joinedViaStarterPack)
             try encodeDateIfPresent(self.indexedAt, with: &container, forKey: .indexedAt)
+            try encodeDateIfPresent(self.createdAt, with: &container, forKey: .createdAt)
             try container.encodeIfPresent(self.viewer, forKey: .viewer)
             try container.encodeIfPresent(self.labels, forKey: .labels)
             try container.encodeIfPresent(self.pinnedPost, forKey: .pinnedPost)
@@ -317,6 +323,7 @@ extension AppBskyLexicon.Actor {
             case joinedViaStarterPack
             case associated
             case indexedAt
+            case createdAt
             case viewer
             case labels
             case pinnedPost
