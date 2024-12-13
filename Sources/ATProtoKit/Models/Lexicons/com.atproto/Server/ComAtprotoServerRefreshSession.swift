@@ -61,7 +61,7 @@ extension ComAtprotoLexicon.Server {
         public let did: String
 
         /// The DID document of the session. Optional.
-        public let didDocument: String?
+        public let didDocument: UnknownType?
 
         /// Indicates whether the user account is active. Optional.
         public let isActive: Bool?
