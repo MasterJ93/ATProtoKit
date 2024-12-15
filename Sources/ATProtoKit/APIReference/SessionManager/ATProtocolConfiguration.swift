@@ -365,7 +365,7 @@ public class ATProtocolConfiguration: SessionConfiguration {
             sessionToken = token
         } else {
             do {
-                try await self.authenticate()
+                try await self.authenticate(authenticationFactorToken: authenticationFactorToken)
             } catch {
                 throw error
             }
@@ -386,7 +386,7 @@ public class ATProtocolConfiguration: SessionConfiguration {
                     if error.error == "ExpiredToken" {
                         // If the token expires, re-authenticate.
                         do {
-                            try await self.authenticate()
+                            try await self.authenticate(authenticationFactorToken: authenticationFactorToken)
 
                             // Then, try refreshing the token again.
                             let response = try await ATProtoKit().refreshSession(
