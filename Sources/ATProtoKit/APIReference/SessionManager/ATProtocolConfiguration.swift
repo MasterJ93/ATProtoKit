@@ -334,30 +334,75 @@ public class ATProtocolConfiguration: SessionConfiguration {
 
     /// Refreshes the user's session using a refresh token.
     ///
+    /// If the refresh token is invalid, the method will re-authenticate and try again.
+    ///
+    /// - Note: If the method throws an error saying that an authentication token is required,
+    /// re-trying the method with the `authenticationFactorToken` argument filled should
+    /// solve the issue.
+    ///
     /// When the method completes, ``ATProtocolConfiguration/session`` will be updated with a
     /// new instance of an authenticated user session within the AT Protocol. It may also have
     /// logging information, as well as the URL of the Personal Data Server (PDS).
     ///
-    /// - Parameter refreshToken: The refresh token used for the session. Optional.
-    /// Defaults to `nil`.
+    /// - Parameters:
+    ///   - refreshToken: The refresh token used for the session. Optional.
+    ///   Defaults to `nil`.
+    ///   - authenticationFactorToken: A token used for Two-Factor Authentication. Optional.
+    ///   Defaults to `nil`.
     ///
     /// - Returns: Information of the user account's new session.
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
-    public func refreshSession(by refreshToken: String? = nil) async throws -> ComAtprotoLexicon.Server.RefreshSessionOutput? {
-        do {
-            // Check if accessToken has anything inserted. If not, use the accessToken from the UserSession object.
-            guard let sessionToken = refreshToken ?? self.session?.refreshToken else { return nil }
-            guard sessionToken == sessionToken else { return nil }
+    public func refreshSession(
+        by refreshToken: String? = nil,
+        authenticationFactorToken: String? = nil
+    ) async throws -> ComAtprotoLexicon.Server.RefreshSessionOutput {
+        var sessionToken: String = ""
 
+        if let token = refreshToken {
+            sessionToken = token
+        } else if let token = self.session?.refreshToken {
+            sessionToken = token
+        } else {
+            do {
+                try await self.authenticate()
+            } catch {
+                throw error
+            }
+        }
+
+        do {
             let response = try await ATProtoKit().refreshSession(
                 refreshToken: sessionToken,
                 pdsURL: self.pdsURL
             )
 
             return response
-        } catch {
-            throw error
+        } catch let apiError as ATAPIError {
+            // If the token expires, re-authenticate and try refreshing the token again.
+            switch apiError {
+                case .badRequest(let error):
+                    // If the token expires, re-authenticate.
+                    if error.error == "ExpiredToken" {
+                        // If the token expires, re-authenticate.
+                        do {
+                            try await self.authenticate()
+
+                            // Then, try refreshing the token again.
+                            let response = try await ATProtoKit().refreshSession(
+                                refreshToken: sessionToken,
+                                pdsURL: self.pdsURL
+                            )
+
+                            return response
+                        } catch {
+                            throw error
+                        }
+                    }
+                    throw apiError
+                default:
+                    throw apiError
+            }
         }
     }
 
