@@ -424,4 +424,24 @@ public class ATProtocolConfiguration: SessionConfiguration {
             throw error
         }
     }
+    /// Converts the DID document from an ``UnknownType`` object to a ``DIDDocument`` object.
+    ///
+    /// - Parameter didDocument: The DID document as an ``UnknownType`` object. Optional.
+    /// Defaults to `nil`.
+    /// - Returns: A ``DIDDocument`` object (if there's a value) or `nil` (if not).
+    private func convertDIDDocument(_ didDocument: UnknownType? = nil) -> DIDDocument? {
+        var decodedDidDocument: DIDDocument? = nil
+
+        do {
+            if let didDocument = didDocument,
+               let jsonData = try didDocument.toJSON() {
+                let decoder = JSONDecoder()
+                decodedDidDocument = try decoder.decode(DIDDocument.self, from: jsonData)
+            }
+        } catch {
+            return nil
+        }
+
+        return decodedDidDocument
+    }
 }
