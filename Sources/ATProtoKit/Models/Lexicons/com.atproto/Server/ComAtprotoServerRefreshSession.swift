@@ -67,7 +67,7 @@ extension ComAtprotoLexicon.Server {
         public let isActive: Bool?
 
         /// Indicates the possible reason for why the user account is inactive. Optional.
-        public let status: String?
+        public let status: RefreshSession.UserAccountStatus?
 
         enum CodingKeys: String, CodingKey {
             case accessToken = "accessJwt"

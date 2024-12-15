@@ -301,7 +301,10 @@ public class ATProtocolConfiguration: SessionConfiguration {
     }
 
     /// Fetches an existing session using an access token.
-    /// 
+    ///
+    /// If the access token is invalud, then a new one will be created, either by refeshing a
+    /// session, or by re-authenticating.
+    ///
     /// When the method completes, ``ATProtocolConfiguration/session`` will be updated with an
     /// instance of an authenticated user session within the AT Protocol. It may also have logging
     /// information, as well as the URL of the Personal Data Server (PDS).
@@ -309,8 +312,7 @@ public class ATProtocolConfiguration: SessionConfiguration {
     /// - Parameter accessToken: The access token used for the session. Optional.
     /// Defaults to `nil`.
     ///
-    /// - Returns: Information of the user account's current session straight from the service
-    /// (if there is one) or `nil` (if there isn't one).
+    /// - Returns: Information of the user account's current session straight from the service.
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func getSession(by accessToken: String? = nil) async throws -> ComAtprotoLexicon.Server.GetSessionOutput? {
