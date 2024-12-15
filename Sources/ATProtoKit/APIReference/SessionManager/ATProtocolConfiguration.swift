@@ -302,7 +302,7 @@ public class ATProtocolConfiguration: SessionConfiguration {
 
     /// Fetches an existing session using an access token.
     ///
-    /// If the access token is invalud, then a new one will be created, either by refeshing a
+    /// If the access token is invalid, then a new one will be created, either by refeshing a
     /// session, or by re-authenticating.
     ///
     /// When the method completes, ``ATProtocolConfiguration/session`` will be updated with an
