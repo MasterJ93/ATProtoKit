@@ -345,10 +345,14 @@ public actor APIClientService {
                         let errorResponse = try JSONDecoder().decode(ATHTTPResponseError.self, from: data)
                         throw ATAPIError.payloadTooLarge(error: errorResponse)
                     case 429:
-                        let retryAfterHeader = httpResponse.allHeaderFields["ratelimit-reset"] as? TimeInterval
+                        let retryAfterValue: TimeInterval? = if let retryAfterHeader = httpResponse.allHeaderFields["ratelimit-reset"] as? String {
+                            TimeInterval(retryAfterHeader)
+                        } else {
+                            nil
+                        }
                         let errorResponse = try JSONDecoder().decode(ATHTTPResponseError.self, from: data)
 
-                        throw ATAPIError.tooManyRequests(error: errorResponse, retryAfter: retryAfterHeader)
+                        throw ATAPIError.tooManyRequests(error: errorResponse, retryAfter: retryAfterValue)
                     case 500:
                         let errorResponse = try JSONDecoder().decode(ATHTTPResponseError.self, from: data)
                         throw ATAPIError.internalServerError(error: errorResponse)
