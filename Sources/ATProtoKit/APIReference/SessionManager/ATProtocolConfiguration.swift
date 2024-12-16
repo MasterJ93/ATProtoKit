@@ -408,14 +408,28 @@ public class ATProtocolConfiguration: SessionConfiguration {
 
     /// Deletes the user session.
     ///
+    /// - Note: If you rely on ``ATProtocolConfiguration/session`` for managing the session,
+    /// there's no need to use the `refreshToken` argument.
+    /// 
+    /// - Parameter refreshToken: The refresh token used for the session. Optional.
+    /// Defaults to `nil`.
+    ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
-    public func deleteSession() async throws {
+    public func deleteSession(with refreshToken: String? = nil) async throws {
         do {
-            guard let refreshToken = self.session?.refreshToken else { return }
+            var token: String
+
+            if let refreshToken = refreshToken {
+                token = refreshToken
+            } else if let sessionToken = self.session?.refreshToken {
+                token = sessionToken
+            } else {
+                return
+            }
 
             _ = try await ATProtoKit().deleteSession(
-                refreshToken: refreshToken,
+                refreshToken: token,
                 pdsURL: self.pdsURL
             )
 
