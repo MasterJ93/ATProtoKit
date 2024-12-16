@@ -68,7 +68,7 @@ extension ATProtoKit {
         }
 
         if let postFilter {
-            queryItems.append(("filter", "\(postFilter)"))
+            queryItems.append(("filter", "\(postFilter.rawValue)"))
         }
 
         if let shouldIncludePins {
