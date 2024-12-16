@@ -340,6 +340,9 @@ public class ATProtocolConfiguration: SessionConfiguration {
     /// re-trying the method with the `authenticationFactorToken` argument filled should
     /// solve the issue.
     ///
+    /// - Note: If you rely on ``ATProtocolConfiguration/session`` for managing the session,
+    /// there's no need to use the `refreshToken` argument.
+    ///
     /// When the method completes, ``ATProtocolConfiguration/session`` will be updated with a
     /// new instance of an authenticated user session within the AT Protocol. It may also have
     /// logging information, as well as the URL of the Personal Data Server (PDS).
