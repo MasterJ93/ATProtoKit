@@ -66,7 +66,7 @@ extension ATProtoAdmin {
         }
 
         if let sortDirection {
-            queryItems.append(("sortDirection", "\(sortDirection)"))
+            queryItems.append(("sortDirection", "\(sortDirection.rawValue)"))
         }
 
         let queryURL: URL

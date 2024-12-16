@@ -146,7 +146,7 @@ extension ATProtoAdmin {
 
         // sortDirection
         if let sortDirection {
-            queryItems.append(("sortDirection", "\(sortDirection)"))
+            queryItems.append(("sortDirection", "\(sortDirection.rawValue)"))
         }
 
         // isTakenDown (takendown)
