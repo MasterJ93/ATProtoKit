@@ -241,9 +241,12 @@ public enum UserAccountStatus: String, Sendable, Codable {
     /// - Parameter status: A ``ComAtprotoLexicon/Server/RefreshSession/UserAccountStatus`` value.
     public init(from status: ComAtprotoLexicon.Server.RefreshSession.UserAccountStatus) {
         switch status {
-            case .suspended: self = .suspended
-            case .takedown: self = .takedown
-            case .deactivated: self = .deactivated
+            case .suspended:
+                self = .suspended
+            case .takedown:
+                self = .takedown
+            case .deactivated:
+                self = .deactivated
         }
     }
 }
