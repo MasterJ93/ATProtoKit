@@ -199,4 +199,51 @@ public enum UserAccountStatus: String, Sendable, Codable {
 
     /// Indicates the user account is inactivate due to a deactivation.
     case deactivated
+
+    /// Creates an instance of ``UserAccountStatus`` from a
+    /// ``ComAtprotoLexicon/Server/GetSession/UserAccountStatus`` object.
+    ///
+    /// This initializer maps the cases of
+    /// ``ComAtprotoLexicon/Server/GetSession/UserAccountStatus`` to their applicable
+    /// ``UserAccountStatus`` cases.
+    ///
+    /// ```swift
+    /// let getSessionStatus = ComAtprotoLexicon.Server.GetSession.UserAccountStatus.suspended
+    /// let status = UserAccountStatus(from: getSessionStatus)
+    /// print(status) // Optional(.suspended)
+    /// ```
+    ///
+    /// - Parameter status: A ``ComAtprotoLexicon/Server/GetSession/UserAccountStatus`` value.
+    public init(from status: ComAtprotoLexicon.Server.GetSession.UserAccountStatus) {
+        switch status {
+            case .suspended:
+                self = .suspended
+            case .takedown:
+                self = .takedown
+            case .deactivated:
+                self = .deactivated
+        }
+    }
+
+    /// Creates an instance of ``UserAccountStatus`` from a
+    /// ``ComAtprotoLexicon/Server/RefreshSession/UserAccountStatus`` object.
+    ///
+    /// This initializer maps the cases of
+    /// ``ComAtprotoLexicon/Server/RefreshSession/UserAccountStatus`` to their applicable
+    /// ``UserAccountStatus`` cases.
+    ///
+    /// ```swift
+    /// let refreshSessionStatus = ComAtprotoLexicon.Server.RefreshSession.UserAccountStatus.suspended
+    /// let status = UserAccountStatus(from: refreshSessionStatus)
+    /// print(status) // .suspended
+    /// ```
+    ///
+    /// - Parameter status: A ``ComAtprotoLexicon/Server/RefreshSession/UserAccountStatus`` value.
+    public init(from status: ComAtprotoLexicon.Server.RefreshSession.UserAccountStatus) {
+        switch status {
+            case .suspended: self = .suspended
+            case .takedown: self = .takedown
+            case .deactivated: self = .deactivated
+        }
+    }
 }
