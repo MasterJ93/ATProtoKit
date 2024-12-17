@@ -210,7 +210,7 @@ public enum UserAccountStatus: String, Sendable, Codable {
     /// ```swift
     /// let getSessionStatus = ComAtprotoLexicon.Server.GetSession.UserAccountStatus.suspended
     /// let status = UserAccountStatus(from: getSessionStatus)
-    /// print(status) // Optional(.suspended)
+    /// print(status) // UserAccountStatus.suspended
     /// ```
     ///
     /// - Parameter status: A ``ComAtprotoLexicon/Server/GetSession/UserAccountStatus`` value.
@@ -235,7 +235,7 @@ public enum UserAccountStatus: String, Sendable, Codable {
     /// ```swift
     /// let refreshSessionStatus = ComAtprotoLexicon.Server.RefreshSession.UserAccountStatus.suspended
     /// let status = UserAccountStatus(from: refreshSessionStatus)
-    /// print(status) // .suspended
+    /// print(status) // UserAccountStatus.suspended
     /// ```
     ///
     /// - Parameter status: A ``ComAtprotoLexicon/Server/RefreshSession/UserAccountStatus`` value.
