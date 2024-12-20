@@ -361,6 +361,7 @@ public class ATProtocolConfiguration: SessionConfiguration {
         authenticationFactorToken: String? = nil
     ) async throws -> ComAtprotoLexicon.Server.RefreshSessionOutput {
         var sessionToken: String = ""
+        let refreshedSession: ComAtprotoLexicon.Server.RefreshSessionOutput
 
         if let token = refreshToken {
             sessionToken = token
@@ -391,13 +392,34 @@ public class ATProtocolConfiguration: SessionConfiguration {
                         do {
                             try await self.authenticate(authenticationFactorToken: authenticationFactorToken)
 
-                            // Then, try refreshing the token again.
-                            let response = try await ATProtoKit().refreshSession(
-                                refreshToken: sessionToken,
-                                pdsURL: self.pdsURL
-                            )
+                            let retrievedSession = try await self.getSession(by: session?.accessToken)
 
-                            return response
+                            var refreshedSessionStatus: ComAtprotoLexicon.Server.RefreshSession.UserAccountStatus? = nil
+
+                            switch retrievedSession.status {
+                                case .suspended:
+                                    refreshedSessionStatus = .suspended
+                                case .takedown:
+                                    refreshedSessionStatus = .takedown
+                                case .deactivated:
+                                    refreshedSessionStatus = .deactivated
+                                default:
+                                    refreshedSessionStatus = nil
+                            }
+
+                            if let session = session {
+                                refreshedSession = ComAtprotoLexicon.Server.RefreshSessionOutput(
+                                    accessToken: session.accessToken,
+                                    refreshToken: session.refreshToken,
+                                    handle: session.handle,
+                                    did: session.sessionDID,
+                                    didDocument: retrievedSession.didDocument,
+                                    isActive: session.isActive,
+                                    status: refreshedSessionStatus
+                                )
+
+                                return refreshedSession
+                            }
                         } catch {
                             throw error
                         }
