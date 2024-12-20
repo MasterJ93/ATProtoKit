@@ -378,6 +378,15 @@ public struct WebSocketFrameMessageError: Decodable, ATProtoError {
     public let message: String?
 }
 
+/// An error type related to ``ATProtocolConfiguration``.
+public enum ATProtocolConfigurationError: ATProtoError {
+
+    /// No token was found.
+    ///
+    /// - Parameter message: The message for the error.
+    case noSessionToken(message: String)
+}
+
 /// An error type related to CBOR processing issues.
 public enum CBORProcessingError: Error {
     
