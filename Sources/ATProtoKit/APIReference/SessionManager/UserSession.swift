@@ -214,7 +214,7 @@ public enum UserAccountStatus: String, Sendable, Codable {
     /// ```
     ///
     /// - Parameter status: A ``ComAtprotoLexicon/Server/GetSession/UserAccountStatus`` value.
-    public init(from status: ComAtprotoLexicon.Server.GetSession.UserAccountStatus) {
+    public init?(from status: ComAtprotoLexicon.Server.GetSession.UserAccountStatus?) {
         switch status {
             case .suspended:
                 self = .suspended
@@ -222,6 +222,8 @@ public enum UserAccountStatus: String, Sendable, Codable {
                 self = .takedown
             case .deactivated:
                 self = .deactivated
+            default:
+                return nil
         }
     }
 
@@ -239,7 +241,7 @@ public enum UserAccountStatus: String, Sendable, Codable {
     /// ```
     ///
     /// - Parameter status: A ``ComAtprotoLexicon/Server/RefreshSession/UserAccountStatus`` value.
-    public init(from status: ComAtprotoLexicon.Server.RefreshSession.UserAccountStatus) {
+    public init?(from status: ComAtprotoLexicon.Server.RefreshSession.UserAccountStatus?) {
         switch status {
             case .suspended:
                 self = .suspended
@@ -247,6 +249,8 @@ public enum UserAccountStatus: String, Sendable, Codable {
                 self = .takedown
             case .deactivated:
                 self = .deactivated
+            default:
+                return nil
         }
     }
 }
