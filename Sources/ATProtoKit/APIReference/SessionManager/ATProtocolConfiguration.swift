@@ -502,4 +502,43 @@ public class ATProtocolConfiguration: SessionConfiguration {
 
         return decodedDidDocument
     }
+
+// MARK: - getSession Helpers
+    /// Validates and retrieves a valid access token from the provided argument or the session object.
+    ///
+    /// - Parameter accessToken: An optional access token to validate.
+    /// - Returns: A valid access token.
+    ///
+    /// - Throws: An `ATProtoError` if no access token is available.
+    private func getValidAccessToken(from accessToken: String?) throws -> String {
+        if let token = accessToken {
+            return token
+        }
+
+        if let token = self.session?.accessToken {
+            return token
+        }
+
+        throw ATProtocolConfigurationError.noSessionToken(message: "No session token available.")
+    }
+
+// MARK: - refreshSession Helpers
+    /// Validates and retrieves a valid access token from the provided argument or the session object.
+    ///
+    /// - Parameter accessToken: An optional access token to validate.
+    /// - Returns: A valid access token.
+    ///
+    /// - Throws: An `ATProtoError` if no access token is available.
+    private func getValidRefreshToken(from refreshToken: String?) throws -> String {
+        if let token = refreshToken {
+            return token
+        }
+
+        if let token = self.session?.refreshToken {
+            return token
+        }
+
+        throw ATProtocolConfigurationError.noSessionToken(message: "No session token available.")
+    }
+
 }
