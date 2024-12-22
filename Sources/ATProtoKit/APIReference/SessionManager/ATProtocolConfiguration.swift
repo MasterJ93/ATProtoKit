@@ -305,30 +305,32 @@ public class ATProtocolConfiguration: SessionConfiguration {
     /// If the access token is invalid, then a new one will be created, either by refeshing a
     /// session, or by re-authenticating.
     ///
-    /// When the method completes, ``ATProtocolConfiguration/session`` will be updated with an
-    /// instance of an authenticated user session within the AT Protocol. It may also have logging
-    /// information, as well as the URL of the Personal Data Server (PDS).
-    ///
     /// - Parameter accessToken: The access token used for the session. Optional.
     /// Defaults to `nil`.
     ///
     /// - Returns: Information of the user account's current session straight from the service.
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
-    public func getSession(by accessToken: String? = nil) async throws -> ComAtprotoLexicon.Server.GetSessionOutput? {
-        do {
-            // Check if accessToken has anything inserted. If not, use the accessToken from the UserSession object.
-            guard let sessionToken = accessToken ?? self.session?.accessToken else { return nil }
-            guard sessionToken == sessionToken else { return nil }
+    public func getSession(
+        by accessToken: String? = nil,
+        authenticationFactorToken: String? = nil
+    ) async throws -> ComAtprotoLexicon.Server.GetSessionOutput {
+        let sessionToken = try getValidAccessToken(from: accessToken)
 
+        do {
             let response = try await ATProtoKit().getSession(
                 by: sessionToken,
                 pdsURL: self.pdsURL
             )
 
             return response
-        } catch {
-            throw error
+        } catch let apiError as ATAPIError {
+            guard case .badRequest(let errorDetails) = apiError,
+                  errorDetails.error == "ExpiredToken" else {
+                throw apiError
+            }
+
+            return try await handleExpiredTokenFromGetSession(authenticationFactorToken: authenticationFactorToken)
         }
     }
 
@@ -384,50 +386,12 @@ public class ATProtocolConfiguration: SessionConfiguration {
             return response
         } catch let apiError as ATAPIError {
             // If the token expires, re-authenticate and try refreshing the token again.
-            switch apiError {
-                case .badRequest(let error):
-                    // If the token expires, re-authenticate.
-                    if error.error == "ExpiredToken" {
-                        // If the token expires, re-authenticate.
-                        do {
-                            try await self.authenticate(authenticationFactorToken: authenticationFactorToken)
-
-                            let retrievedSession = try await self.getSession(by: session?.accessToken)
-
-                            var refreshedSessionStatus: ComAtprotoLexicon.Server.RefreshSession.UserAccountStatus? = nil
-
-                            switch retrievedSession.status {
-                                case .suspended:
-                                    refreshedSessionStatus = .suspended
-                                case .takedown:
-                                    refreshedSessionStatus = .takedown
-                                case .deactivated:
-                                    refreshedSessionStatus = .deactivated
-                                default:
-                                    refreshedSessionStatus = nil
-                            }
-
-                            if let session = session {
-                                refreshedSession = ComAtprotoLexicon.Server.RefreshSessionOutput(
-                                    accessToken: session.accessToken,
-                                    refreshToken: session.refreshToken,
-                                    handle: session.handle,
-                                    did: session.sessionDID,
-                                    didDocument: retrievedSession.didDocument,
-                                    isActive: session.isActive,
-                                    status: refreshedSessionStatus
-                                )
-
-                                return refreshedSession
-                            }
-                        } catch {
-                            throw error
-                        }
-                    }
-                    throw apiError
-                default:
-                    throw apiError
+            guard case .badRequest(let errorDetails) = apiError,
+                  errorDetails.error == "ExpiredToken" else {
+                throw apiError
             }
+
+            return try await handleExpiredTokenFromRefreshSession(authenticationFactorToken: authenticationFactorToken)
         }
     }
 
