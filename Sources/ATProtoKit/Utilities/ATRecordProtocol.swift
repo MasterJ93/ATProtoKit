@@ -485,4 +485,38 @@ public enum CodableValue: Codable, Sendable {
                 try container.encode(value)
         }
     }
+
+    /// Converts an `Any` type to a `CodableValue` type.
+    ///
+    /// - Parameter value: The value to convert.
+    /// - Returns: A `CodableValue` value.
+    ///
+    /// - Throws: A `DecodingError` where the value was not supported.
+    public static func fromAny(_ value: Any) throws -> CodableValue {
+        switch value {
+            case let boolValue as Bool:
+                return .bool(boolValue)
+            case let intValue as Int:
+                return .int(intValue)
+            case let doubleValue as Double:
+                return .double(doubleValue)
+            case let stringValue as String:
+                return .string(stringValue)
+            case let arrayValue as [Any]:
+                let codableArray = try arrayValue.map { try CodableValue.fromAny($0) }
+                return .array(codableArray)
+            case let dictValue as [String: Any]:
+                var codableDict = [String: CodableValue]()
+
+                for (key, nestedValue) in dictValue {
+                    codableDict[key] = try CodableValue.fromAny(nestedValue)
+                }
+                return .dictionary(codableDict)
+            default:
+                throw DecodingError.typeMismatch(
+                    CodableValue.self,
+                    DecodingError.Context(codingPath: [], debugDescription: "Unsupported value type \(type(of: value))")
+                )
+        }
+    }
 }

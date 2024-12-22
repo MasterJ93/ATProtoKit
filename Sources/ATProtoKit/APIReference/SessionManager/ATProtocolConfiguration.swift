@@ -464,22 +464,7 @@ public class ATProtocolConfiguration: SessionConfiguration {
         }
     }
 
-    /// Validates and retrieves a valid access token from the provided argument or the session object.
-    ///
-    /// - Parameter accessToken: An optional access token to validate.
-    /// - Returns: A valid access token.
-    ///
-    /// - Throws: An `ATProtoError` if no access token is available.
-    private func getValidAccessToken(from accessToken: String?) throws -> String {
-        if let token = accessToken {
-            return token
-        }
-
-        if let token = self.session?.accessToken {
-            return token
-        }
-
-        throw ATProtocolConfigurationError.noSessionToken(message: "No session token available.")
+// MARK: - Common Helpers
     }
 
     /// Converts the DID document from an ``UnknownType`` object to a ``DIDDocument`` object.
