@@ -363,7 +363,6 @@ public class ATProtocolConfiguration: SessionConfiguration {
         authenticationFactorToken: String? = nil
     ) async throws -> ComAtprotoLexicon.Server.RefreshSessionOutput {
         var sessionToken: String = ""
-        let refreshedSession: ComAtprotoLexicon.Server.RefreshSessionOutput
 
         if let token = refreshToken {
             sessionToken = token
@@ -484,7 +483,7 @@ public class ATProtocolConfiguration: SessionConfiguration {
         authenticationFactorToken: String? = nil
     ) async throws -> ComAtprotoLexicon.Server.GetSessionOutput {
         do {
-            let refreshedSession = try await self.refreshSession(authenticationFactorToken: authenticationFactorToken)
+            _ = try await self.refreshSession(authenticationFactorToken: authenticationFactorToken)
 
             guard let session = self.session else {
                 throw ATProtocolConfigurationError.noSessionToken(message: "No session token found after re-authentication attempt.")
