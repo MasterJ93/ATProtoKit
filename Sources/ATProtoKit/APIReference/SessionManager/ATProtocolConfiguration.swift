@@ -507,6 +507,75 @@ public class ATProtocolConfiguration: SessionConfiguration {
         throw ATProtocolConfigurationError.noSessionToken(message: "No session token available.")
     }
 
+    /// Handles re-authentication and session refresh when the token is expired.
+    ///
+    /// - Parameter authenticationFactorToken: A token used for Two-Factor Authentication.
+    /// Optional. Defaults to `nil`.
+    /// - Returns: A refreshed session object.
+    ///
+    /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
+    /// ``ATAPIError``, ``ATRequestPrepareError``, and
+    /// ``ATProtocolConfigurationError`` for more details.
+    private func handleExpiredTokenFromGetSession(
+        authenticationFactorToken: String? = nil
+    ) async throws -> ComAtprotoLexicon.Server.GetSessionOutput {
+        do {
+            let refreshedSession = try await self.refreshSession(authenticationFactorToken: authenticationFactorToken)
+
+            guard let session = self.session else {
+                throw ATProtocolConfigurationError.noSessionToken(message: "No session token found after re-authentication attempt.")
+            }
+
+            var refreshedSessionStatus: ComAtprotoLexicon.Server.GetSession.UserAccountStatus? = nil
+
+            // UserAccountStatus conversion.
+            let sessionStatus = session.status
+            switch sessionStatus {
+                case .suspended:
+                    refreshedSessionStatus = .suspended
+                case .takedown:
+                    refreshedSessionStatus = .takedown
+                case .deactivated:
+                    refreshedSessionStatus = .deactivated
+                default:
+                    refreshedSessionStatus = nil
+            }
+
+            // DIDDocument conversion.
+            let encoder = JSONEncoder()
+            encoder.outputFormatting = .prettyPrinted
+
+            let jsonData = try encoder.encode(session.didDocument)
+
+            guard let rawDictionary = try JSONSerialization.jsonObject(with: jsonData, options: []) as? [String: Any] else {
+                throw DecodingError.dataCorrupted(
+                    DecodingError.Context(codingPath: [], debugDescription: "Failed to serialize DIDDocument into [String: Any].")
+                )
+            }
+
+            var codableDictionary = [String: CodableValue]()
+            for (key, value) in rawDictionary {
+                codableDictionary[key] = try CodableValue.fromAny(value)
+            }
+
+            let didDocument = UnknownType.unknown(codableDictionary)
+
+            return ComAtprotoLexicon.Server
+                .GetSessionOutput(
+                    handle: session.handle,
+                    did: session.sessionDID,
+                    email: session.email,
+                    isEmailConfirmed: session.isEmailConfirmed,
+                    isEmailAuthenticationFactor: session.isEmailAuthenticationFactorEnabled,
+                    didDocument: didDocument,
+                    isActive: session.isActive,
+                    status: refreshedSessionStatus
+                )
+        } catch {
+            throw error
+        }
+    }
+
 // MARK: - refreshSession Helpers
     /// Validates and retrieves a valid access token from the provided argument or the session object.
     ///
@@ -526,4 +595,70 @@ public class ATProtocolConfiguration: SessionConfiguration {
         throw ATProtocolConfigurationError.noSessionToken(message: "No session token available.")
     }
 
+    /// Handles re-authentication and session refresh when the token is expired.
+    ///
+    /// - Parameter authenticationFactorToken: A token used for Two-Factor Authentication.
+    /// Optional. Defaults to `nil`.
+    /// - Returns: A refreshed session object.
+    ///
+    /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
+    /// ``ATAPIError``, ``ATRequestPrepareError``, and
+    /// ``ATProtocolConfigurationError`` for more details.
+    private func handleExpiredTokenFromRefreshSession(
+        authenticationFactorToken: String? = nil
+    ) async throws -> ComAtprotoLexicon.Server.RefreshSessionOutput {
+        do {
+            try await self.authenticate(authenticationFactorToken: authenticationFactorToken)
+
+            guard let session = self.session else {
+                throw ATProtocolConfigurationError.noSessionToken(message: "No session token found after re-authentication attempt.")
+            }
+
+            var refreshedSessionStatus: ComAtprotoLexicon.Server.RefreshSession.UserAccountStatus? = nil
+
+            // UserAccountStatus conversion.
+            let sessionStatus = session.status
+            switch sessionStatus {
+                case .suspended:
+                    refreshedSessionStatus = .suspended
+                case .takedown:
+                    refreshedSessionStatus = .takedown
+                case .deactivated:
+                    refreshedSessionStatus = .deactivated
+                default:
+                    refreshedSessionStatus = nil
+            }
+
+            // DIDDocument conversion.
+            let encoder = JSONEncoder()
+            encoder.outputFormatting = .prettyPrinted
+
+            let jsonData = try encoder.encode(session.didDocument)
+
+            guard let rawDictionary = try JSONSerialization.jsonObject(with: jsonData, options: []) as? [String: Any] else {
+                throw DecodingError.dataCorrupted(
+                    DecodingError.Context(codingPath: [], debugDescription: "Failed to serialize DIDDocument into [String: Any].")
+                )
+            }
+
+            var codableDictionary = [String: CodableValue]()
+            for (key, value) in rawDictionary {
+                codableDictionary[key] = try CodableValue.fromAny(value)
+            }
+
+            let didDocument = UnknownType.unknown(codableDictionary)
+
+            return ComAtprotoLexicon.Server.RefreshSessionOutput(
+                accessToken: session.accessToken,
+                refreshToken: session.refreshToken,
+                handle: session.handle,
+                did: session.sessionDID,
+                didDocument: didDocument,
+                isActive: session.isActive,
+                status: refreshedSessionStatus
+            )
+        } catch {
+            throw error
+        }
+    }
 }
