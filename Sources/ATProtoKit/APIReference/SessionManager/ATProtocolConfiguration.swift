@@ -428,8 +428,6 @@ public class ATProtocolConfiguration: SessionConfiguration {
     }
 
 // MARK: - Common Helpers
-    }
-
     /// Converts the DID document from an ``UnknownType`` object to a ``DIDDocument`` object.
     ///
     /// - Parameter didDocument: The DID document as an ``UnknownType`` object. Optional.
