@@ -181,7 +181,7 @@ public actor APIClientService {
     ///   - body: An optional `Encodable` body to be encoded and attached to the request.
     ///   - decodeTo: The type to decode the response into.
     /// - Returns: An instance of the specified `Decodable` type.
-    public func sendRequest<T: Decodable>(_ request: URLRequest, withEncodingBody body: Encodable? = nil, decodeTo: T.Type) async throws -> T {
+    public func sendRequest<T: Decodable>(_ request: URLRequest, withEncodingBody body: (Encodable & Sendable)? = nil, decodeTo: T.Type) async throws -> T {
         let data = try await self.performRequest(request, withEncodingBody: body)
 
         let decodedData = try JSONDecoder().decode(T.self, from: data)
@@ -193,7 +193,7 @@ public actor APIClientService {
     /// - Parameters:
     ///   - request: The `URLRequest` to send.
     ///   - body: An optional `Encodable` body to be encoded and attached to the request.
-    public func sendRequest(_ request: URLRequest, withEncodingBody body: Encodable? = nil) async throws {
+    public func sendRequest(_ request: URLRequest, withEncodingBody body: (Encodable & Sendable)? = nil) async throws {
         _ = try await self.performRequest(request, withEncodingBody: body)
     }
 
@@ -306,7 +306,7 @@ public actor APIClientService {
     ///   - request: The `URLRequest` to send.
     ///   - body: An optional `Encodable` body to be encoded and attached to the request.
     /// - Returns: A tuple containing the data and the HTTPURLResponse.
-    private func performRequest(_ request: URLRequest, withEncodingBody body: Encodable? = nil) async throws -> Data {
+    private func performRequest(_ request: URLRequest, withEncodingBody body: (Encodable & Sendable)? = nil) async throws -> Data {
         var urlRequest = request
 
         if let body = body {
