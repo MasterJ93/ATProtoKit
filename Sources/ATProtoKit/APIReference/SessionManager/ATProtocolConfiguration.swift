@@ -101,9 +101,9 @@ public class ATProtocolConfiguration: SessionConfiguration {
     ///
     /// - Important: ``ATProtocolConfiguration/authenticate(authenticationFactorToken:)``,
     /// ``ATProtocolConfiguration/createAccount(email:handle:existingDID:inviteCode:verificationCode:verificationPhone:password:recoveryKey:plcOperation:)``,
-    /// ``ATProtocolConfiguration/deleteSession()``,
-    /// ``ATProtocolConfiguration/getSession(by:)``, and
-    /// ``ATProtocolConfiguration/deleteSession()`` will not work when initializing
+    /// ``ATProtocolConfiguration/getSession(by:authenticationFactorToken:)``,
+    /// ``ATProtocolConfiguration/refreshSession(by:authenticationFactorToken:)``and
+    /// ``ATProtocolConfiguration/deleteSession(with:)`` will not work when initializing
     /// ATProtocolConfiguration with this initializer.
     ///
     /// - Parameters:
@@ -305,9 +305,10 @@ public class ATProtocolConfiguration: SessionConfiguration {
     /// If the access token is invalid, then a new one will be created, either by refeshing a
     /// session, or by re-authenticating.
     ///
-    /// - Parameter accessToken: The access token used for the session. Optional.
-    /// Defaults to `nil`.
-    ///
+    /// - Parameters:
+    ///   - accessToken: The access token used for the session. Optional.
+    ///   Defaults to `nil`.
+    ///   - authenticationFactorToken: A token used for Two-Factor Authentication. Optional.
     /// - Returns: Information of the user account's current session straight from the service.
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
