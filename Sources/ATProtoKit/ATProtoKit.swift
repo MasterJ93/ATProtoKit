@@ -117,7 +117,7 @@ extension ATProtoKitConfiguration {
 /// ```swift
 /// Task {
 ///     do {
-///         let session = try await config.authenticate()
+///         try await config.authenticate()
 ///
 ///         print("Access token: \(session.accessToken)")
 ///     } catch {
@@ -289,7 +289,7 @@ public class ATProtoBlueskyChat: ATProtoKitConfiguration {
 ///```swift
 /// Task {
 ///     do {
-///         let session = try await config.authenticate()
+///         try await config.authenticate()
 ///
 ///         print("Access token: \(session.accessToken)")
 ///     } catch {
@@ -309,7 +309,9 @@ public class ATProtoAdmin: ATProtoKitConfiguration {
     ///
     /// Task {
     ///     do {
-    ///         let atProtoAdmin = ATProtoAdmin(session: session)
+    ///         try await config.authenticate()
+    ///
+    ///         let atProtoAdmin = ATProtoAdmin(sessionConfiguration: session)
     ///
     ///         atProtoAdmin.urlSessionConfiguration = config.configuration
     ///     } catch {

@@ -15,4 +15,5 @@
 - ``ATBlueskyError``
 - ``ATEventStreamError``
 - ``WebSocketFrameMessageError``
+- ``ATProtocolConfigurationError``
 - ``CBORProcessingError``
