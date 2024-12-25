@@ -91,6 +91,7 @@ extension AppBskyLexicon.Actor {
         }
 
         enum CodingKeys: String, CodingKey {
+            case type = "$type"
             case displayName
             case description
             case avatarBlob = "avatar"

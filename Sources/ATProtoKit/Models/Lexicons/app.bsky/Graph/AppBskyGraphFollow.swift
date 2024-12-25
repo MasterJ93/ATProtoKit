@@ -50,6 +50,7 @@ extension AppBskyLexicon.Graph {
         }
 
         enum CodingKeys: String, CodingKey {
+            case type = "$type"
             case subjectDID = "subject"
             case createdAt
         }

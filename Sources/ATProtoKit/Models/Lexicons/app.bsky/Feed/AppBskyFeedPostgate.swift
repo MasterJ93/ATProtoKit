@@ -68,6 +68,7 @@ extension AppBskyLexicon.Feed {
         }
 
         enum CodingKeys: String, CodingKey {
+            case type = "$type"
             case createdAt
             case postURI = "post"
             case detachedEmbeddingURIs = "detachedEmbeddingUris"

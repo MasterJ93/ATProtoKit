@@ -27,7 +27,23 @@ extension ChatBskyLexicon.Actor {
         /// Establishes rule for who can message the user account.
         public let allowIncoming: AllIncoming
 
+        public init(allowIncoming: AllIncoming) {
+            self.allowIncoming = allowIncoming
+        }
+
+        public init(from decoder: any Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+
+            self.allowIncoming = try container.decode(ChatBskyLexicon.Actor.DeclarationRecord.AllIncoming.self, forKey: .allowIncoming)
+        }
+
+        public func encode(to encoder: any Encoder) throws {
+            var container = encoder.container(keyedBy: CodingKeys.self)
+            try container.encode(self.allowIncoming, forKey: .allowIncoming)
+        }
+
         enum CodingKeys: String, CodingKey {
+            case type = "$type"
             case allowIncoming
         }
 
