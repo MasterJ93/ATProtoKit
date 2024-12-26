@@ -156,7 +156,11 @@ public class ATProtoKit: ATProtoKitConfiguration, ATRecordConfiguration {
     /// This will also handle some of the logging-related setup. The identifier will either be your
     /// project's `CFBundleIdentifier` or an identifier named
     /// `com.cjrriley.ATProtoKit`. However, you can manually override this.
-    /// 
+    ///
+    /// - Important: This initializer may potentially block the thread if
+    /// `canUseBlueskyRecords` is `true`. In this case, it's a good idea to move the initializer
+    /// to a `Task` block in order to prevent that from happening.
+    ///
     /// - Parameters:
     ///   - sessionConfiguration: The authenticated user session within the AT Protocol. Optional.
     ///   - canUseBlueskyRecords: Indicates whether Bluesky's lexicons should be used.
@@ -165,12 +169,22 @@ public class ATProtoKit: ATProtoKitConfiguration, ATRecordConfiguration {
         self.sessionConfiguration = sessionConfiguration
         self.logger = session?.logger
 
+        // This is to fix a bug from the following issue: https://github.com/MasterJ93/ATProtoKit/issues/75
+        // The thread may be blocked if the code within the Task block doesn't complete in a reasonable timeframe.
+        // This should hopefully be a temporary fix until there's a better solution that doesn't block the
+        // UI-related threads.
+        let semaphore = DispatchSemaphore(value: 0)
+
         Task { [recordLexicons] in
             if canUseBlueskyRecords && !(ATRecordTypeRegistry.areBlueskyRecordsRegistered) {
                 _ = await ATRecordTypeRegistry(blueskyLexiconTypes: recordLexicons)
                 await ATRecordTypeRegistry.setBlueskyRecordsRegistered(true)
             }
+
+            semaphore.signal()
         }
+
+        semaphore.wait()
     }
 
     /// Determines the appropriate Personal Data Server (PDS) URL.
