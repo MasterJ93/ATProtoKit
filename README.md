@@ -128,11 +128,12 @@ To use ATProtoKit in your apps, your app should target the specific version numb
 - **visionOS** 1 or later.
 - **watchOS** 9 or later.
 
-For Linux, you need to use Swift 6.0 or later. At this time, you must use `@preconcurrency` when importing ATProtoKit. On Linux, the minimum requirements include:
-- **Ubuntu** 18.04
-- **Red Hat UBI** 9
+For Linux, you need to use Swift 6.0 or later. On Linux, the minimum requirements include:
+- **Amazon Linux** 2
 - **Debian** 12
 - **Fedora** 39
+- **Red Hat UBI** 9
+- **Ubuntu** 20.04
 
 You can also use this project for any programs you make using Swift and running on **Docker**.
 
