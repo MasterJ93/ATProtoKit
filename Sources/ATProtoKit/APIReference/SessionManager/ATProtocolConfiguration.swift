@@ -383,6 +383,49 @@ public class ATProtocolConfiguration: SessionConfiguration {
                 pdsURL: self.pdsURL
             )
 
+            var decodedDidDocument: DIDDocument? = nil
+
+            if let didDocument = response.didDocument,
+               let jsonData = try didDocument.toJSON() {
+                do {
+                    let decoder = JSONDecoder()
+                    decodedDidDocument = try decoder.decode(DIDDocument.self, from: jsonData)
+                } catch {
+                    throw error
+                }
+            }
+
+            var status: UserAccountStatus? = nil
+
+            switch response.status {
+                case .suspended:
+                    status = .suspended
+                case .takedown:
+                    status = .takedown
+                case .deactivated:
+                    status = .deactivated
+                default:
+                    status = nil
+            }
+
+            let userSession = UserSession(
+                handle: response.handle,
+                sessionDID: response.did,
+                email: session?.email ?? nil,
+                isEmailConfirmed: session?.isEmailConfirmed ?? nil,
+                isEmailAuthenticationFactorEnabled: session?.isEmailAuthenticationFactorEnabled ?? nil,
+                accessToken: response.accessToken,
+                refreshToken: response.refreshToken,
+                didDocument: decodedDidDocument,
+                isActive: response.isActive,
+                status: status,
+                pdsURL: session?.pdsURL ?? nil,
+                logger: await ATProtocolConfiguration.getLogger(),
+                maxRetryCount: self.maxRetryCount,
+                retryTimeDelay: self.retryTimeDelay
+            )
+
+            self.session = userSession
             return response
         } catch let apiError as ATAPIError {
             // If the token expires, re-authenticate and try refreshing the token again.
