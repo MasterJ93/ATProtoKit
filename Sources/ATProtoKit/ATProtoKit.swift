@@ -157,6 +157,13 @@ public class ATProtoKit: ATProtoKitConfiguration, ATRecordConfiguration {
     /// project's `CFBundleIdentifier` or an identifier named
     /// `com.cjrriley.ATProtoKit`. However, you can manually override this.
     ///
+    /// If you're using methods such as
+    /// ``ATProtoKit/ATProtoKit/createAccount(email:handle:existingDID:inviteCode:verificationCode:verificationPhone:password:recoveryKey:plcOperation:pdsURL:)``
+    /// or ``ATProtoKit/ATProtoKit/getSession(by:pdsURL:)``, be sure to set
+    /// `canUseBlueskyRecords` to false. While the initializer does check to see if the records
+    /// have been added, it's best not to invoke it, esepcially if you're using ATProtoKit for a
+    /// generic AT Protocol service that doesn't use Bluesky records.
+    ///
     /// - Important: This initializer may potentially block the thread if
     /// `canUseBlueskyRecords` is `true`. In this case, it's a good idea to move the initializer
     /// to a `Task` block in order to prevent that from happening.
