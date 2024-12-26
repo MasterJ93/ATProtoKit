@@ -310,7 +310,7 @@ public class ATProtoAdmin: ATProtoKitConfiguration {
     /// Task {
     ///     do {
     ///         try await config.authenticate()
-    ///
+    /// 
     ///         let atProtoAdmin = ATProtoAdmin(sessionConfiguration: session)
     ///
     ///         atProtoAdmin.urlSessionConfiguration = config.configuration

@@ -59,7 +59,7 @@ I believe Bluesky and its accompanying AT Protocol gives the perfect balance bet
 - [x] Written with adherence to the Swift API Design Guidelines.
 - [ ] Well-written documentation for all of the AT Protocol and Bluesky APIs.
 - [x] A RichText helper to parse text into the applicable facets.
-- [ ] Easily identify and validate different identifiers.
+- [ ] Easily validate different identifiers.
 - [ ] A powerful Firehose API that retrieves and filters events and records in real-time.
 - [x] A logging tool for easy debugging.
 
@@ -110,8 +110,10 @@ Task {
         // The session object is contained in the `ATProtocolConfiguration` object:
         try await config.authenticate()
 
-        print("Result (Access Token): \(config.session?.accessToken)")
-        print("Result (Refresh Token): \(config.session?.refreshToken)")
+        if let session = config.session {
+            print("Result (Access Token): \(session.accessToken)")
+            print("Result (Refresh Token): \(session.refreshToken)")
+        }
     } catch {
         print("Error: \(error)")
     }

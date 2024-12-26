@@ -14,6 +14,10 @@ import Logging
 /// decentralized identifier (DID), authentication tokens, and optional user information such
 /// as email. It also references the user's DID document, which contains crucial
 /// AT Protocol-specific information.
+///
+/// This is based loosely based on the [`com.atproto.server.createSession`][github] lexicon.
+///
+/// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/server/createSession.json
 public struct UserSession: SessionProtocol, Sendable {
 
     /// The user's handle within the AT Protocol.
