@@ -178,7 +178,7 @@ public class ATProtocolConfiguration: SessionConfiguration {
         plcOperation: UnknownType? = nil
     ) async throws -> UserSession {
         do {
-            let response = try await ATProtoKit().createAccount(
+            let response = try await ATProtoKit(canUseBlueskyRecords: false).createAccount(
                 email: email,
                 handle: handle,
                 existingDID: existingDID,
@@ -244,7 +244,7 @@ public class ATProtocolConfiguration: SessionConfiguration {
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func authenticate(authenticationFactorToken: String? = nil) async throws {
         do {
-            let response = try await ATProtoKit().createSession(
+            let response = try await ATProtoKit(canUseBlueskyRecords: false).createSession(
                 with: self.handle,
                 and: self.password,
                 authenticationFactorToken: authenticationFactorToken,
@@ -319,7 +319,7 @@ public class ATProtocolConfiguration: SessionConfiguration {
         let sessionToken = try getValidAccessToken(from: accessToken)
 
         do {
-            let response = try await ATProtoKit().getSession(
+            let response = try await ATProtoKit(canUseBlueskyRecords: false).getSession(
                 by: sessionToken,
                 pdsURL: self.pdsURL
             )
@@ -378,7 +378,7 @@ public class ATProtocolConfiguration: SessionConfiguration {
         }
 
         do {
-            let response = try await ATProtoKit().refreshSession(
+            let response = try await ATProtoKit(canUseBlueskyRecords: false).refreshSession(
                 refreshToken: sessionToken,
                 pdsURL: self.pdsURL
             )
@@ -460,7 +460,7 @@ public class ATProtocolConfiguration: SessionConfiguration {
                 return
             }
 
-            _ = try await ATProtoKit().deleteSession(
+            _ = try await ATProtoKit(canUseBlueskyRecords: false).deleteSession(
                 refreshToken: token,
                 pdsURL: self.pdsURL
             )
