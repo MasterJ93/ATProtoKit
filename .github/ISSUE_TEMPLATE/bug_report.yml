@@ -38,10 +38,14 @@ body:
   - type: dropdown
     id: operating-system
     attributes:
-      label: What operating systems did you experience this bug? (We'll count Docker as an operating system.)
+      label: What operating systems did you experience this bug?
       multiple: true
       options:
         - macOS
+        - iOS/iPadOS
+        - tvOS
+        - visionOS
+        - watchOS
         - Linux
         - Docker
         - Other
@@ -51,7 +55,7 @@ body:
     id: os-version
     attributes:
       label: Operating System Version
-      description: For each operating system, give us the version numbers. For "Linux," state what distro you're using. For "Other," state what operating system you're using. For "Docker," state what version you're using.
+      description: For each operating system, give us the version numbers. For "Linux," state what distro you're using. For "Other," state what operating system you're using. For "Docker," state what version and Linux distro you're using.
     validations:
       required: true
   - type: input

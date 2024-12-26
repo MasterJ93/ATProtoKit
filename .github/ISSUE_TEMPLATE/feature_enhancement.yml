@@ -11,7 +11,7 @@ body:
     id: summary
     attributes:
       label: Summary
-      description: Summarize the enchancement in one or two sentences.
+      description: Summarize the enhancement in one or two sentences.
   - type: textarea
     id: pain-points
     attributes:
