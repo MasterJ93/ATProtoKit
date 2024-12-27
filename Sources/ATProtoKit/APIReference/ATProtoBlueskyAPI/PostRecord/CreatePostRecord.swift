@@ -267,7 +267,14 @@ extension ATProtoBluesky {
         }
 
         // Locales
-        let localeIdentifiers = locales.isEmpty ? nil : locales.map { $0.identifier }
+        let localeIdentifiers: [String]?
+        if #available(iOS 16, *) {
+            localeIdentifiers = locales.isEmpty ? nil : locales.compactMap {
+                $0.language.languageCode?.identifier
+            }
+        } else {
+            localeIdentifiers = locales.isEmpty ? nil : locales.compactMap { $0.languageCode }
+        }
 
         // Embed
         var resolvedEmbed: ATUnion.PostEmbedUnion? = nil
