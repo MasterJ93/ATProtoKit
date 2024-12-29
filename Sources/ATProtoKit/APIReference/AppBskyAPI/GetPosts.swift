@@ -24,12 +24,12 @@ extension ATProtoKit {
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/feed/getPosts.json
     ///
-    /// - Parameter postURIs: An array of URIs of post records.
+    /// - Parameter uris: An array of URIs of post records.
     /// - Returns: An array of hydrated posts.
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
-    public func getPosts(_ postURIs: [String]) async throws -> AppBskyLexicon.Feed.GetPostsOutput {
+    public func getPosts(_ uris: [String]) async throws -> AppBskyLexicon.Feed.GetPostsOutput {
         guard session != nil,
               let accessToken = session?.accessToken else {
             throw ATRequestPrepareError.missingActiveSession
@@ -43,7 +43,7 @@ extension ATProtoKit {
         var queryItems = [(String, String)]()
 
         // Cap the array to 25 items.
-        let cappedURIArray = postURIs.prefix(25)
+        let cappedURIArray = uris.prefix(25)
         queryItems += cappedURIArray.map { ("uris", $0) }
 
         let queryURL: URL

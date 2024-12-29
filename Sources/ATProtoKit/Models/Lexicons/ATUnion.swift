@@ -722,12 +722,12 @@ public struct ATUnion {
 
     public enum EmbeddingRulesUnion: Sendable, Codable {
 
-        case disabledRule(AppBskyLexicon.Feed.PostgateRecord)
+        case disabledRule(AppBskyLexicon.Feed.PostgateRecord.DisableRule)
 
         public init(from decoder: any Decoder) throws {
             let container = try decoder.singleValueContainer()
 
-            if let value = try? container.decode(AppBskyLexicon.Feed.PostgateRecord.self) {
+            if let value = try? container.decode(AppBskyLexicon.Feed.PostgateRecord.DisableRule.self) {
                 self = .disabledRule(value)
             } else {
                 throw DecodingError.typeMismatch(

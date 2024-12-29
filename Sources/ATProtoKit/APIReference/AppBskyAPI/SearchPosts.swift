@@ -10,14 +10,14 @@ import Foundation
 extension ATProtoKit {
 
     /// Retrieves the results of a search query.
-    /// 
+    ///
     /// - Note: According to the AT Protocol specifications: "Find posts matching search criteria,
     /// returning views of those posts."
-    ///
+    /// 
     /// - SeeAlso: This is based on the [`app.bsky.feed.searchPosts`][github] lexicon.
-    ///
+    /// 
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/feed/searchPosts.json
-    ///
+    /// 
     /// - Parameters:
     ///   - query: The string being searched against. Lucene query syntax recommended.
     ///   - sortRanking: The ranking order for the results. Optional. Defaults to `.latest`.
@@ -34,14 +34,15 @@ extension ATProtoKit {
     ///   specific domain. Optional.
     ///   - url: Filters result to posts containing facet and embed links that point to this
     ///   URL. Optional.
-    ///   - tags: An array of tags to be used against the results. Optional.
+    ///   - tags: An array of tags to be used against the results. Optional. Current maximum length
+    ///   is 64 items.
     ///   - limit: The number of suggested users to follow. Optional. Defaults to `25`.
     ///   Can only choose between `1` and `100`.
     ///   - cursor: The mark used to indicate the starting point for the next set
     ///   of results. Optional.
     /// - Returns: An array of post records in the results, with an optional cursor to expand
     /// the array. The output may also display the total number of search results.
-    ///
+    /// 
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func searchPosts(
@@ -105,7 +106,8 @@ extension ATProtoKit {
         }
 
         if let tags {
-            queryItems += tags.map { ("tag", $0) }
+            let cappedTagsArray = tags.prefix(64)
+            queryItems += cappedTagsArray.map { ("tag", $0) }
         }
 
         if let limit {

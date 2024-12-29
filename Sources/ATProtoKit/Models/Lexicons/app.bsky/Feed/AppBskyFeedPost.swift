@@ -105,19 +105,12 @@ extension AppBskyLexicon.Feed {
 
             try container.encode(AppBskyLexicon.Feed.PostRecord.type, forKey: .type)
             try container.encode(self.text, forKey: .text)
-            // Truncate `tags` to 3000 characters before encoding
-            // `maxGraphemes`'s limit is 300, but `String.count` should respect that limit implictly
             try truncatedEncode(self.text, withContainer: &container, forKey: .text, upToCharacterLength: 300)
             try container.encodeIfPresent(self.facets, forKey: .facets)
             try container.encodeIfPresent(self.reply, forKey: .reply)
             try container.encodeIfPresent(self.embed, forKey: .embed)
-            // Truncate `langs` to 3 items before encoding.
             try truncatedEncodeIfPresent(self.languages, withContainer: &container, forKey: .languages, upToArrayLength: 3)
             try container.encodeIfPresent(self.labels, forKey: .labels)
-
-            // Truncate `tags` to 640 characters before encoding
-            // `maxGraphemes`'s limit is 64, but `String.count` should respect that limit implictly
-            // Then, truncate `tags` to 8 items before encoding
             try truncatedEncodeIfPresent(self.tags, withContainer: &container, forKey: .tags, upToCharacterLength: 64, upToArrayLength: 8)
 
             try encodeDate(self.createdAt, with: &container, forKey: .createdAt)

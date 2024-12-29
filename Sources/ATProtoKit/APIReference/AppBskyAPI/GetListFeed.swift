@@ -9,8 +9,8 @@ import Foundation
 
 extension ATProtoKit {
 
-    /// Retireves recent posts and reposts from a given feed.
-    /// 
+    /// Retireves recent posts and reposts from a given list feed.
+    ///
     /// - Note: According to the AT Protocol specifications: "Get a feed of recent posts from a
     /// list (posts and reposts from any actors on the list). Does not require auth."
     ///
@@ -19,8 +19,8 @@ extension ATProtoKit {
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/feed/getListFeed.json
     ///
     /// - Parameters:
-    ///   - listURI: The URI of the feed.
-    ///   - limit: limit: The number of suggested users to follow. Optional. Defaults to `50`.
+    ///   - uri: The URI of a list.
+    ///   - limit: The number of suggested users to follow. Optional. Defaults to `50`.
     ///   Can only choose between `1` and `100`.
     ///   - cursor: The mark used to indicate the starting point for the next set
     ///   of results. Optional.
@@ -31,7 +31,7 @@ extension ATProtoKit {
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func getListFeed(
-        from listURI: String,
+        from uri: String,
         limit: Int? = 50,
         cursor: String? = nil,
         accessToken: String? = nil,
@@ -44,7 +44,7 @@ extension ATProtoKit {
 
         var queryItems = [(String, String)]()
 
-        queryItems.append(("list", listURI))
+        queryItems.append(("list", uri))
 
         if let limit {
             let finalLimit = max(1, min(limit, 100))

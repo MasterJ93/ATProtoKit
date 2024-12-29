@@ -21,7 +21,7 @@ extension AppBskyLexicon.Feed {
     public struct DescribeFeedGeneratorOutput: Sendable, Codable {
 
         /// The decentralized identifier (DID) of the feed generator.
-        public let atDID: String
+        public let did: String
 
         /// An array of feed generators.
         public let feeds: [Feed]
@@ -29,8 +29,8 @@ extension AppBskyLexicon.Feed {
         /// The URL of the Privacy Policy and Terms of Service. Optional.
         public let links: Links?
 
-        enum CodingKeys: String, CodingKey {
-            case atDID = "did"
+        enum CodingKeys: CodingKey {
+            case did
             case feeds
             case links
         }
@@ -40,10 +40,10 @@ extension AppBskyLexicon.Feed {
         public struct Feed: Sendable, Codable {
 
             /// The URI of the feed.
-            public let feedURI: String
+            public let uri: String
 
-            enum CodingKeys: String, CodingKey {
-                case feedURI = "uri"
+            enum CodingKeys: CodingKey {
+                case uri
             }
         }
 
@@ -51,10 +51,10 @@ extension AppBskyLexicon.Feed {
         public struct Links: Sendable, Codable {
 
             /// The URL to the Privacy Policy.
-            public let privacyPolicy: URL
+            public let privacyPolicy: URL?
 
             /// The URL to the Terms of Service.
-            public let termsOfService: URL
+            public let termsOfService: URL?
         }
     }
 }

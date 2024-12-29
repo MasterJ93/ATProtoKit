@@ -32,12 +32,18 @@ extension AppBskyLexicon.Feed {
         public let post: String
 
         /// An array of rules used as an allowlist.
+        ///
+        /// - Important: Current maximum length is 5 items.
         public let allow: [ATUnion.ThreadgateUnion]?
 
         /// The date and time of the creation of the threadgate.
         public let createdAt: Date
 
         /// An array of hidden replies in the form of URIs. Optional.
+        ///
+        /// - Important: Current maximum length is 50 items.
+        ///
+        /// - Note: According to the AT Protocol specifications: "List of hidden reply URIs."
         public let hiddenReplies: [String]?
 
         public init(post: String, allow: [ATUnion.ThreadgateUnion]?, createdAt: Date, hiddenReplies: [String]?) {

@@ -31,13 +31,17 @@ extension AppBskyLexicon.Feed {
         /// The URI of the post.
         public let postURI: String
 
-        /// An array of URIs belonging to posts that the `postURI`'s auther has detached. Optional.
+        /// An array of URIs belonging to posts that the `postURI`'s author has detached. Optional.
+        ///
+        /// - Important: Current maximum length is 50 items.
         ///
         /// - Note: According to the AT Protocol specifications: "List of AT-URIs embedding this
         /// post that the author has detached from."
         public let detachedEmbeddingURIs: [String]?
 
         /// An array of rules for embedding the post. Optional.
+        ///
+        /// - Important: Current maximum length is 5 items.
         public let embeddingRules: [ATUnion.EmbeddingRulesUnion]?
 
         public init(createdAt: Date, postURI: String, detachedEmbeddingURIs: [String]?, embeddingRules: [ATUnion.EmbeddingRulesUnion]?) {
@@ -61,9 +65,7 @@ extension AppBskyLexicon.Feed {
 
             try encodeDate(self.createdAt, with: &container, forKey: .createdAt)
             try container.encode(self.postURI, forKey: .postURI)
-
             try truncatedEncodeIfPresent(self.detachedEmbeddingURIs, withContainer: &container, forKey: .detachedEmbeddingURIs, upToArrayLength: 50)
-
             try truncatedEncodeIfPresent(self.embeddingRules, withContainer: &container, forKey: .embeddingRules, upToArrayLength: 5)
         }
 
@@ -74,5 +76,10 @@ extension AppBskyLexicon.Feed {
             case detachedEmbeddingURIs = "detachedEmbeddingUris"
             case embeddingRules
         }
+
+        /// A marker that disables the embedding of this post.
+        ///
+        /// - Note: According to the AT Protocol specifications: "Disables embedding of this post."
+        public struct DisableRule: Codable, Sendable {}
     }
 }

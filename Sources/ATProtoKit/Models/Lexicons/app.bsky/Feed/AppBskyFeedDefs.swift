@@ -17,10 +17,10 @@ extension AppBskyLexicon.Feed {
     public struct PostViewDefinition: Sendable, Codable {
 
         /// The URI of the post.
-        public let postURI: String
+        public let uri: String
 
-        /// The CID of the post.
-        public let cidHash: String
+        /// The CID hash of the post.
+        public let cid: String
 
         /// The author of the post. This will give the basic details of the post author.
         public let author: AppBskyLexicon.Actor.ProfileViewBasicDefinition
@@ -58,8 +58,8 @@ extension AppBskyLexicon.Feed {
         public init(from decoder: any Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
 
-            self.postURI = try container.decode(String.self, forKey: .postURI)
-            self.cidHash = try container.decode(String.self, forKey: .cidHash)
+            self.uri = try container.decode(String.self, forKey: .uri)
+            self.cid = try container.decode(String.self, forKey: .cid)
             self.author = try container.decode(AppBskyLexicon.Actor.ProfileViewBasicDefinition.self, forKey: .author)
             self.record = try container.decode(UnknownType.self, forKey: .record)
             self.embed = try container.decodeIfPresent(ATUnion.EmbedViewUnion.self, forKey: .embed)
@@ -76,8 +76,8 @@ extension AppBskyLexicon.Feed {
         public func encode(to encoder: any Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
 
-            try container.encode(self.postURI, forKey: .postURI)
-            try container.encode(self.cidHash, forKey: .cidHash)
+            try container.encode(self.uri, forKey: .uri)
+            try container.encode(self.cid, forKey: .cid)
             try container.encode(self.author, forKey: .author)
             try container.encode(self.record, forKey: .record)
             try container.encodeIfPresent(self.embed, forKey: .embed)
@@ -91,9 +91,9 @@ extension AppBskyLexicon.Feed {
             try container.encodeIfPresent(self.threadgate, forKey: .threadgate)
         }
 
-        enum CodingKeys: String, CodingKey {
-            case postURI = "uri"
-            case cidHash = "cid"
+        enum CodingKeys: CodingKey {
+            case uri
+            case cid
             case author
             case record
             case embed
@@ -160,31 +160,18 @@ extension AppBskyLexicon.Feed {
         /// The reply reference for the post, if it's a reply. Optional.
         public var reply: ReplyReferenceDefinition?
 
-        // TODO: Check to see if this documentation is correct.
-        /// The user who reposted the post. Optional.
+        /// Determines whether the repost is a normal repost or pinned. Optional.
+        ///
+        /// - Important: Current maximum length is 300 characters.
         public var reason: ATUnion.ReasonRepostUnion?
 
         /// The feed generator's context. Optional
         ///
+        /// - Important: Current maximum length is 2,000 characters (these are raw characters).
+        ///
         /// - Note: According to the AT Protocol specifications: "Context provided by
         /// feed generator that may be passed back alongside interactions."
         public let feedContext: String?
-
-//        public init(post: PostViewDefinition, reply: ReplyReferenceDefinition?, reason: ATUnion.ReasonRepostUnion?, feedContext: String?) {
-//            self.post = post
-//            self.reply = reply
-//            self.reason = reason
-//            self.feedContext = feedContext
-//        }
-
-//        public init(from decoder: any Decoder) throws {
-//            let container = try decoder.container(keyedBy: CodingKeys.self)
-//
-//            self.post = try container.decode(PostViewDefinition.self, forKey: .post)
-//            self.reply = try container.decodeIfPresent(ReplyReferenceDefinition.self, forKey: .reply)
-//            self.reason = try container.decodeIfPresent(ATUnion.ReasonRepostUnion.self, forKey: .reason)
-//            self.feedContext = try container.decodeIfPresent(String.self, forKey: .feedContext)
-//        }
 
         public func encode(to encoder: any Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
@@ -192,8 +179,6 @@ extension AppBskyLexicon.Feed {
             try container.encode(self.post, forKey: .post)
             try container.encodeIfPresent(self.reply, forKey: .reply)
             try container.encodeIfPresent(self.reason, forKey: .reason)
-            // Truncate `description` to 2000 characters before encoding
-            // `maxGraphemes`'s limit is 300, but `String.count` should respect that limit
             try truncatedEncodeIfPresent(self.feedContext, withContainer: &container, forKey: .feedContext, upToCharacterLength: 300)
         }
 
@@ -215,10 +200,9 @@ extension AppBskyLexicon.Feed {
         /// The original post of the thread.
         public let root: ATUnion.ReplyReferenceRootUnion
 
-        // TODO: Fix up the note's message.
         /// The direct post that the user's post is replying to.
         ///
-        /// - Note: If `parent` and `root` are identical, the post is a direct reply to the
+        /// If `parent` and `root` are identical, the post is a direct reply to the
         /// original post of the thread.
         public let parent: ATUnion.ReplyReferenceParentUnion
 
@@ -239,20 +223,8 @@ extension AppBskyLexicon.Feed {
         /// The basic details of the user who reposted the post.
         public let by: AppBskyLexicon.Actor.ProfileViewBasicDefinition
 
-        /// The last time the repost was indexed.
+        /// The date and time the repost was last indexed.
         public let indexedAt: Date
-
-//        public init(by: AppBskyLexicon.Actor.ProfileViewBasicDefinition, indexedAt: Date) {
-//            self.by = by
-//            self._indexedAt = DateFormatting(wrappedValue: indexedAt)
-//        }
-
-//        public init(from decoder: Decoder) throws {
-//            let container = try decoder.container(keyedBy: CodingKeys.self)
-//
-//            self.by = try container.decode(AppBskyLexicon.Actor.ProfileViewBasicDefinition.self, forKey: .by)
-//            self.indexedAt = try container.decode(DateFormatting.self, forKey: .indexedAt).wrappedValue
-//        }
 
         public init(from decoder: any Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
@@ -309,19 +281,7 @@ extension AppBskyLexicon.Feed {
         public let feedURI: String
 
         /// Indicates whether the post wasn't found. Defaults to `true`.
-        public let isNotFound: Bool
-
-//        public init(feedURI: String, isNotFound: Bool = true) {
-//            self.feedURI = feedURI
-//            self.isNotFound = isNotFound
-//        }
-//
-//        public init(from decoder: Decoder) throws {
-//            let container = try decoder.container(keyedBy: CodingKeys.self)
-//
-//            feedURI = try container.decode(String.self, forKey: .feedURI)
-//            isNotFound = (try? container.decodeIfPresent(Bool.self, forKey: .isNotFound)) ?? true
-//        }
+        public let isNotFound: Bool = true
 
         enum CodingKeys: String, CodingKey {
             case feedURI = "uri"
@@ -373,14 +333,14 @@ extension AppBskyLexicon.Feed {
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/feed/defs.json
     public struct BlockedAuthorDefinition: Sendable, Codable {
 
-        /// The URI of the author.
-        public let authorDID: String
+        /// The decentralized identifier (DID)  of the author.
+        public let did: String
 
         /// The viewer state of the user. Optional.
         public var viewer: AppBskyLexicon.Actor.ViewerStateDefinition?
 
-        enum CodingKeys: String, CodingKey {
-            case authorDID = "did"
+        enum CodingKeys: CodingKey {
+            case did
             case viewer
         }
     }
@@ -395,8 +355,8 @@ extension AppBskyLexicon.Feed {
         /// The URI of the feed generator.
         public let feedURI: String
 
-        /// The CID of the feed generator.
-        public let cidHash: String
+        /// The CID hash of the feed generator.
+        public let cid: String
 
         /// The decentralized identifier (DID) of the feed generator.
         public let feedDID: String
@@ -408,6 +368,8 @@ extension AppBskyLexicon.Feed {
         public let displayName: String
 
         /// The description of the feed generator. Optional.
+        ///
+        /// - Important: Current maximum length is 300 characters.
         public var description: String?
 
         /// An array of the facets within the feed generator's description.
@@ -438,22 +400,17 @@ extension AppBskyLexicon.Feed {
             let container = try decoder.container(keyedBy: CodingKeys.self)
 
             self.feedURI = try container.decode(String.self, forKey: .feedURI)
-            self.cidHash = try container.decode(String.self, forKey: .cidHash)
+            self.cid = try container.decode(String.self, forKey: .cid)
             self.feedDID = try container.decode(String.self, forKey: .feedDID)
-            self.creator = try container
-                .decode(AppBskyLexicon.Actor.ProfileViewDefinition.self, forKey: .creator)
+            self.creator = try container.decode(AppBskyLexicon.Actor.ProfileViewDefinition.self, forKey: .creator)
             self.displayName = try container.decode(String.self, forKey: .displayName)
             self.description = try container.decodeIfPresent(String.self, forKey: .description)
-            self.descriptionFacets = try container
-                .decodeIfPresent([AppBskyLexicon.RichText.Facet].self, forKey: .descriptionFacets)
+            self.descriptionFacets = try container.decodeIfPresent([AppBskyLexicon.RichText.Facet].self, forKey: .descriptionFacets)
             self.avatarImageURL = try container.decodeIfPresent(URL.self, forKey: .avatarImageURL)
             self.likeCount = try container.decodeIfPresent(Int.self, forKey: .likeCount)
-            self.canAcceptInteractions = try container
-                .decodeIfPresent(Bool.self, forKey: .canAcceptInteractions)
-            self.labels = try container
-                .decodeIfPresent([ComAtprotoLexicon.Label.LabelDefinition].self, forKey: .labels)
-            self.viewer = try container
-                .decodeIfPresent(AppBskyLexicon.Feed.GeneratorViewerStateDefinition.self, forKey: .viewer)
+            self.canAcceptInteractions = try container.decodeIfPresent(Bool.self, forKey: .canAcceptInteractions)
+            self.labels = try container.decodeIfPresent([ComAtprotoLexicon.Label.LabelDefinition].self, forKey: .labels)
+            self.viewer = try container.decodeIfPresent(AppBskyLexicon.Feed.GeneratorViewerStateDefinition.self, forKey: .viewer)
             self.indexedAt = try decodeDate(from: container, forKey: .indexedAt)
         }
 
@@ -461,15 +418,11 @@ extension AppBskyLexicon.Feed {
             var container = encoder.container(keyedBy: CodingKeys.self)
 
             try container.encode(self.feedURI, forKey: .feedURI)
-            try container.encode(self.cidHash, forKey: .cidHash)
+            try container.encode(self.cid, forKey: .cid)
             try container.encode(self.feedDID, forKey: .feedDID)
             try container.encode(self.creator, forKey: .creator)
             try container.encode(self.displayName, forKey: .displayName)
-
-            // Truncate `description` to 3000 characters before encoding
-            // `maxGraphemes`'s limit is 300, but `String.count` should respect that limit
             try truncatedEncodeIfPresent(self.description, withContainer: &container, forKey: .description, upToCharacterLength: 300)
-
             try container.encodeIfPresent(self.descriptionFacets, forKey: .descriptionFacets)
             try container.encodeIfPresent(self.avatarImageURL, forKey: .avatarImageURL)
 
@@ -485,7 +438,7 @@ extension AppBskyLexicon.Feed {
 
         enum CodingKeys: String, CodingKey {
             case feedURI = "uri"
-            case cidHash = "cid"
+            case cid
             case feedDID = "did"
             case creator
             case displayName
@@ -531,9 +484,18 @@ extension AppBskyLexicon.Feed {
         /// The indication that the post was a repost. Optional.
         public var reason: ATUnion.SkeletonReasonRepostUnion?
 
+        /// The feed generator's context. Optional
+        ///
+        /// - Important: Current maximum length is 2,000 characters (these are raw characters).
+        ///
+        /// - Note: According to the AT Protocol specifications: "Context provided by
+        /// feed generator that may be passed back alongside interactions."
+        public let feedContext: String?
+
         enum CodingKeys: String, CodingKey {
             case postURI = "post"
             case reason
+            case feedContext
         }
     }
 
@@ -547,10 +509,10 @@ extension AppBskyLexicon.Feed {
         /// The URI of the repost.
         ///
         /// This property uniquely identifies the repost itself, separate from the original post's URI.
-        public let repostURI: String
+        public let uri: String
 
         enum CodingKeys: String, CodingKey {
-            case repostURI = "repost"
+            case uri = "repost"
         }
     }
 
@@ -571,8 +533,8 @@ extension AppBskyLexicon.Feed {
         /// The URI of the feed's threadgate.
         public let threadgateURI: String
 
-        /// The CID of the feed's threadgate.
-        public let cidHash: String
+        /// The CID hash of the feed's threadgate.
+        public let cid: String
 
         /// The record of the feed's threadgate
         public let record: UnknownType
@@ -583,7 +545,7 @@ extension AppBskyLexicon.Feed {
 
         enum CodingKeys: String, CodingKey {
             case threadgateURI = "uri"
-            case cidHash = "cid"
+            case cid
             case record = "record"
             case lists = "lists"
         }
@@ -596,44 +558,30 @@ extension AppBskyLexicon.Feed {
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/feed/defs.json
     public struct InteractionDefinition: Sendable, Codable {
 
-        /// The item itself. Optional.
-        public let item: String?
+        /// The URI of the item itself. Optional.
+        public let itemURI: String?
 
         /// The interaction event of the feed generator. Optional.
         public let event: Event?
 
         /// The feed generator's context. Optional.
         ///
+        /// - Important: Current maximum length is 2,000 characters (these are raw characters).
+        ///
         /// - Note: According to the AT Protocol specifications: "Context on a feed item that was
         /// originally supplied by the feed generator on getFeedSkeleton."
         public let feedContext: String?
 
-//        public init(item: String, event: Event, feedContext: String) {
-//            self.item = item
-//            self.event = event
-//            self.feedContext = feedContext
-//        }
-
-//        public init(from decoder: any Decoder) throws {
-//            let container = try decoder.container(keyedBy: CodingKeys.self)
-//
-//            self.item = try container.decode(String.self, forKey: .item)
-//            self.event = try container.decode(Event.self, forKey: .event)
-//            self.feedContext = try container.decode(String.self, forKey: .feedContext)
-//        }
-
         public func encode(to encoder: any Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
 
-            try container.encode(self.item, forKey: .item)
+            try container.encode(self.itemURI, forKey: .itemURI)
             try container.encode(self.event, forKey: .event)
-            // Truncate `description` to 2000 characters before encoding
-            // `maxGraphemes`'s limit is 300, but `String.count` should respect that limit
             try truncatedEncodeIfPresent(self.feedContext, withContainer: &container, forKey: .feedContext, upToCharacterLength: 300)
         }
 
-        enum CodingKeys: CodingKey {
-            case item
+        enum CodingKeys: String, CodingKey {
+            case itemURI = "uri"
             case event
             case feedContext
         }

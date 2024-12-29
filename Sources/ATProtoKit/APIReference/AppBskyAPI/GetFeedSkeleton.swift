@@ -23,7 +23,7 @@ extension ATProtoKit {
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/feed/getFeedSkeleton.json
     ///
     /// - Parameters:
-    ///   - feedURI: The URI of the feed generator.
+    ///   - uri: The URI of the feed generator.
     ///   - limit: The number of items that can be in the list. Optional. Defaults to `50`.
     ///   - cursor: The mark used to indicate the starting point for the next set
     ///   of results. Optional.
@@ -33,7 +33,7 @@ extension ATProtoKit {
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public static func getFeedSkeleton(
-        _ feedURI: String,
+        by uri: String,
         limit: Int? = 50,
         cursor: String? = nil,
         pdsURL: String
@@ -48,7 +48,7 @@ extension ATProtoKit {
 
         var queryItems = [(String, String)]()
 
-        queryItems.append(("feed", feedURI))
+        queryItems.append(("feed", uri))
 
         let queryURL: URL
 

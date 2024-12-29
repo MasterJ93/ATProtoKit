@@ -20,7 +20,7 @@ extension ATProtoKit {
     ///
     /// - Parameters:
     ///   - postURI: The URI of the post record.
-    ///   - postCID: The CID hasg of the post record. Optional.
+    ///   - postCID: The CID hash of the post record. Optional.
     ///   - limit: The number of items that can be in the list. Optional. Defaults to `50`.
     ///   - cursor: The mark used to indicate the starting point for the next set
     ///   of results. Optional.

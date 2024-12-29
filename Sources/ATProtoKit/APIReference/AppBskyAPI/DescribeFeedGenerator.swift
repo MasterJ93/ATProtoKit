@@ -19,7 +19,7 @@ extension ATProtoKit {
     /// 
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/feed/describeFeedGenerator.json
     /// 
-    ///  - Parameter pdsURL: The URL of the Personal Data Server (PDS). Optional.
+    /// - Parameter pdsURL: The URL of the Personal Data Server (PDS). Optional.
     /// - Returns:The details of a feed generator, including its decentralized identifier (DID),
     /// feed URIs, and policy information.
     /// 

@@ -36,15 +36,18 @@ extension AppBskyLexicon.Feed {
 
         /// The description of the feed. Optional.
         ///
-        /// - Important: Current maximum lenth is 300 characters. This library will automatically
-        /// truncate the `String` to the maximum length if it does go over the limit.
+        /// - Important: Current maximum length is 300 characters.
         public let description: String?
 
         /// An array of the facets within the feed generator's description. Optional.
         public let descriptionFacets: [AppBskyLexicon.RichText.Facet]?
 
         /// The URL of the avatar image. Optional.
-        public let avatarImageURL: URL?
+        ///
+        /// - Note: Only JPEGs and PNGs are accepted.
+        ///
+        /// - Important: Current maximum file size 1,000,000 bytes (1 MB).
+        public let avatarImageBlob: ComAtprotoLexicon.Repository.BlobContainer??
 
         /// Indicates whether the feed generator can accept interactions.
         ///
@@ -65,7 +68,7 @@ extension AppBskyLexicon.Feed {
             self.displayName = try container.decode(String.self, forKey: .displayName)
             self.description = try container.decodeIfPresent(String.self, forKey: .description)
             self.descriptionFacets = try container.decodeIfPresent([AppBskyLexicon.RichText.Facet].self, forKey: .descriptionFacets)
-            self.avatarImageURL = try container.decodeIfPresent(URL.self, forKey: .avatarImageURL)
+            self.avatarImageBlob = try container.decodeIfPresent(ComAtprotoLexicon.Repository.BlobContainer?.self, forKey: .avatarImageBlob)
             self.canAcceptInteractions = try container.decodeIfPresent(Bool.self, forKey: .canAcceptInteractions)
             self.labels = try container.decodeIfPresent(ATUnion.GeneratorLabelsUnion.self, forKey: .labels)
             self.createdAt = try decodeDate(from: container, forKey: .createdAt)
@@ -75,14 +78,10 @@ extension AppBskyLexicon.Feed {
             var container = encoder.container(keyedBy: CodingKeys.self)
 
             try container.encode(self.feedDID, forKey: .feedDID)
-            // Truncate `displayName` to 240 characters before encoding
-            // `maxGraphemes`'s limit is 24, but `String.count` should respect that limit implictly
             try truncatedEncode(self.displayName, withContainer: &container, forKey: .description, upToCharacterLength: 24)
-            // Truncate `displayName` to 3,000 characters before encoding
-            // `maxGraphemes`'s limit is 300, but `String.count` should respect that limit implictly
             try truncatedEncodeIfPresent(self.description, withContainer: &container, forKey: .description, upToCharacterLength: 300)
             try container.encodeIfPresent(self.descriptionFacets, forKey: .descriptionFacets)
-            try container.encodeIfPresent(self.avatarImageURL, forKey: .avatarImageURL)
+            try container.encodeIfPresent(self.avatarImageBlob, forKey: .avatarImageBlob)
             try container.encodeIfPresent(self.canAcceptInteractions, forKey: .canAcceptInteractions)
             try container.encodeIfPresent(self.labels, forKey: .labels)
             try encodeDate(self.createdAt, with: &container, forKey: .createdAt)
@@ -94,7 +93,7 @@ extension AppBskyLexicon.Feed {
             case displayName
             case description
             case descriptionFacets
-            case avatarImageURL = "avatar"
+            case avatarImageBlob = "avatar"
             case canAcceptInteractions = "acceptsInteractions"
             case labels
             case createdAt
