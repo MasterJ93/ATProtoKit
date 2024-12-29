@@ -1,5 +1,5 @@
 //
-//  SearchUsers.swift
+//  SearchActors.swift
 //
 //
 //  Created by Christopher Jr Riley on 2024-02-23.
@@ -42,7 +42,7 @@ extension ATProtoKit {
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
-    public func searchUsers(
+    public func searchActors(
         matching query: String,
         limit: Int? = 25,
         cursor: String? = nil,

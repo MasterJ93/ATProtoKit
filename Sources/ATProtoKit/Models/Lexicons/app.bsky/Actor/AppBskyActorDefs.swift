@@ -33,8 +33,8 @@ extension AppBskyLexicon.Actor {
         /// The associated profile view. Optional.
         public let associated: ProfileAssociatedDefinition?
 
-        /// The list of metadata relating to the requesting account's relationship with the subject
-        /// account. Optional.
+        /// The list of metadata relating to the requesting account's relationship with the
+        /// subject account. Optional.
         public let viewer: ViewerStateDefinition?
 
         /// An array of labels created by the user. Optional.
@@ -62,9 +62,6 @@ extension AppBskyLexicon.Actor {
             
             try container.encode(self.actorDID, forKey: .actorDID)
             try container.encode(self.actorHandle, forKey: .actorHandle)
-            
-            // Truncate `displayName` to 640 characters before encoding
-            // `maxGraphemes`'s limit is 64, but `String.count` should respect that limit implictly
             try truncatedEncodeIfPresent(self.displayName, withContainer: &container, forKey: .displayName, upToCharacterLength: 64)
             try container.encodeIfPresent(self.avatarImageURL, forKey: .avatarImageURL)
             try container.encodeIfPresent(self.associated, forKey: .associated)
@@ -101,31 +98,31 @@ extension AppBskyLexicon.Actor {
         /// The display name of the user's profile. Optional.
         ///
         /// - Important: Current maximum length is 64 characters.
-        public var displayName: String?
+        public let displayName: String?
 
         /// The description of the user's profile. Optional.
         ///
         /// - Important: Current maximum length is 256 characters.
-        public var description: String?
+        public let description: String?
 
         /// The avatar image URL of a user's profile. Optional.
         public let avatarImageURL: URL?
 
         /// The associated profile view. Optional.
-        public var associated: ProfileAssociatedDefinition?
+        public let associated: ProfileAssociatedDefinition?
 
         /// The date the profile was last indexed. Optional.
-        public var indexedAt: Date?
+        public let indexedAt: Date?
 
         /// The date and time the profile was created. Optional.
-        public var createdAt: Date?
+        public let createdAt: Date?
 
-        /// The list of metadata relating to the requesting account's relationship with the subject
-        /// account. Optional.
-        public var viewer: ViewerStateDefinition?
+        /// The list of metadata relating to the requesting account's relationship with the
+        /// subject account. Optional.
+        public let viewer: ViewerStateDefinition?
 
         /// An array of labels created by the user. Optional.
-        public var labels: [ComAtprotoLexicon.Label.LabelDefinition]?
+        public let labels: [ComAtprotoLexicon.Label.LabelDefinition]?
 
         public init(from decoder: any Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
@@ -148,13 +145,7 @@ extension AppBskyLexicon.Actor {
             
             try container.encode(self.actorDID, forKey: .actorDID)
             try container.encode(self.actorHandle, forKey: .actorHandle)
-            
-            // Truncate `displayName` to 640 characters before encoding
-            // `maxGraphemes`'s limit is 64, but `String.count` should respect that limit implictly
             try truncatedEncodeIfPresent(self.displayName, withContainer: &container, forKey: .displayName, upToCharacterLength: 64)
-
-            // Truncate `description` to 2560 characters before encoding
-            // `maxGraphemes`'s limit is 256, but `String.count` should respect that limit
             try truncatedEncodeIfPresent(self.description, withContainer: &container, forKey: .description, upToCharacterLength: 256)
             try container.encodeIfPresent(self.avatarImageURL, forKey: .avatarImageURL)
             try container.encodeIfPresent(self.associated, forKey: .associated)
@@ -194,27 +185,27 @@ extension AppBskyLexicon.Actor {
         /// The display name of the user's profile. Optional.
         ///
         /// - Important: Current maximum length is 64 characters.
-        public var displayName: String?
+        public let displayName: String?
 
         /// The description of the user's profile. Optional.
         ///
         /// - Important: Current maximum length is 256 characters.
-        public var description: String?
+        public let description: String?
 
         /// The avatar image URL of a user's profile. Optional.
-        public var avatarImageURL: URL?
+        public let avatarImageURL: URL?
 
         /// The banner image URL of a user's profile. Optional.
-        public var bannerImageURL: URL?
+        public let bannerImageURL: URL?
 
         /// The number of followers a user has. Optional.
-        public var followerCount: Int?
+        public let followerCount: Int?
 
         /// The number of accounts the user follows. Optional.
-        public var followCount: Int?
+        public let followCount: Int?
 
         /// The number of posts the user has. Optional.
-        public var postCount: Int?
+        public let postCount: Int?
 
         /// The associated profile view. Optional.
         public let associated: ProfileAssociatedDefinition?
@@ -228,12 +219,12 @@ extension AppBskyLexicon.Actor {
         /// The date and time the profile was created. Optional.
         public let createdAt: Date?
 
-        /// The list of metadata relating to the requesting account's relationship with the subject
-        /// account. Optional.
-        public var viewer: ViewerStateDefinition?
+        /// The list of metadata relating to the requesting account's relationship with the
+        /// subject account. Optional.
+        public let viewer: ViewerStateDefinition?
 
         /// An array of labels created by the user. Optional.
-        public var labels: [ComAtprotoLexicon.Label.LabelDefinition]?
+        public let labels: [ComAtprotoLexicon.Label.LabelDefinition]?
 
         /// A post record that's pinned to the profile. Optional.
         public let pinnedPost: ComAtprotoLexicon.Repository.StrongReference?
@@ -288,13 +279,7 @@ extension AppBskyLexicon.Actor {
             
             try container.encode(self.actorDID, forKey: .actorDID)
             try container.encode(self.actorHandle, forKey: .actorHandle)
-            
-            // Truncate `displayName` to 640 characters before encoding
-            // `maxGraphemes`'s limit is 64, but `String.count` should respect that limit implictly
             try truncatedEncodeIfPresent(self.displayName, withContainer: &container, forKey: .displayName, upToCharacterLength: 64)
-
-            // Truncate `description` to 2560 characters before decoding
-            // `maxGraphemes`'s limit is 256, but `String.count` should respect that limit
             try truncatedEncodeIfPresent(self.description, withContainer: &container, forKey: .description, upToCharacterLength: 256)
             try container.encodeIfPresent(self.avatarImageURL, forKey: .avatarImageURL)
             try container.encodeIfPresent(self.bannerImageURL, forKey: .bannerImageURL)
@@ -343,13 +328,50 @@ extension AppBskyLexicon.Actor {
         /// The number of feed generators associated with the user. Optional.
         public let feedGenerators: Int?
 
+        /// The number of starter packs associated with the user. Optional.
+        public let starterPacks: Int?
+
         /// Indicates whether the user account is a labeler. Optional.
         public let isActorLabeler: Bool?
-        
+
+        ///
+        public let chats: ProfileAssociatedChatDefinition?
+
         enum CodingKeys: String, CodingKey {
             case lists
             case feedGenerators = "feedgens"
+            case starterPacks
             case isActorLabeler = "labeler"
+            case chats = "chat"
+        }
+    }
+
+    /// A definition model for an actor's associated chat profile.
+    ///
+    /// - SeeAlso: This is based on the [`app.bsky.actor.defs`][github] lexicon.
+    ///
+    /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/actor/defs.json
+    public struct ProfileAssociatedChatDefinition: Sendable, Codable {
+
+        /// Indicates what messages can be allowed into the user account's chat inbox.
+        public let allowIncoming: String
+
+        enum CodingKeys: String, CodingKey {
+            case allowIncoming
+        }
+
+        /// Indicates what messages can be allowed into the user account's chat inbox.
+        public enum AllowIncoming: String, Codable {
+
+            /// Indicates that all messages can be allowed in the inbox with no restrictions.
+            case allow
+
+            /// Indicates that no messages can be allowed in the inbox.
+            case none
+
+            /// Indicates that all messages can be allowed if it belongs to someone the
+            /// user account is following the owner of the message.
+            case following
         }
     }
 
@@ -418,14 +440,14 @@ extension AppBskyLexicon.Actor {
         public let count: Int
 
         /// An array of user accounts that follow the viewer.
+        ///
+        /// - Important: Current maximum length is 5 items.
         public let followers: [ProfileViewBasicDefinition]
 
         public func encode(to encoder: any Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
 
             try container.encode(self.count, forKey: .count)
-
-            // Truncate `displayName` to 5 items before encoding
             try truncatedEncode(self.followers, withContainer: &container, forKey: .followers, upToArrayLength: 5)
         }
     }
@@ -482,7 +504,7 @@ extension AppBskyLexicon.Actor {
         ///
         /// - Note: According to the AT Protocol specifications: "Which labeler does this
         /// preference apply to? If undefined, applies globally."
-        public let labelerDID: String?
+        public let did: String?
 
         /// The name of the content label.
         public let label: String
@@ -491,33 +513,33 @@ extension AppBskyLexicon.Actor {
         public let visibility: Visibility
 
         @_documentation(visibility: private)
-        public init(labelerDID: String?, label: String, visibility: Visibility) {
-            self.labelerDID = labelerDID
+        public init(did: String?, label: String, visibility: Visibility) {
+            self.did = did
             self.label = label
             self.visibility = visibility
+        }
+
+        enum CodingKeys: String, CodingKey {
+            case type = "$type"
+            case did = "Did"
+            case label
+            case visibility
         }
 
         /// Determines how visible a label's content is.
         public enum Visibility: String, Sendable, Codable {
 
             /// Indicates the content can be ignored.
-            case ignore = "ignore"
+            case ignore
 
             /// Indicates the content can be seen without restriction.
-            case show = "show"
+            case show
 
             /// Indicates the content can be seen, but will ask if the user wants to view it.
-            case warn = "warn"
+            case warn
 
             /// Indicates the content is fully invisible by the user.
-            case hide = "hide"
-        }
-
-        enum CodingKeys: String, CodingKey {
-            case type = "$type"
-            case labelerDID = "labelerDid"
-            case label
-            case visibility
+            case hide
         }
     }
 
@@ -528,6 +550,11 @@ extension AppBskyLexicon.Actor {
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/actor/defs.json
     public struct SavedFeed: Sendable, Codable {
 
+        /// The identifier of the lexicon.
+        ///
+        /// - Warning: The value must not change.
+        public let type: String = "app.bsky.actor.defs#savedFeed"
+
         /// The ID for the saved feed.
         public let feedID: String
 
@@ -535,7 +562,7 @@ extension AppBskyLexicon.Actor {
         ///
         /// This is usually referring to the location of the feed in context to the
         /// user account's choice of placement within Bluesky.
-        public let type: FeedType
+        public let feedType: FeedType
 
         /// The value of the saved feed generator.
         public let value: String
@@ -561,8 +588,9 @@ extension AppBskyLexicon.Actor {
         }
 
         enum CodingKeys: String, CodingKey {
+            case type = "$type"
             case feedID = "id"
-            case type
+            case feedType
             case value
             case isPinned = "pinned"
         }
@@ -575,8 +603,18 @@ extension AppBskyLexicon.Actor {
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/actor/defs.json
     public struct SavedFeedPreferencesVersion2Definition: Sendable, Codable {
 
+        /// The identifier of the lexicon.
+        ///
+        /// - Warning: The value must not change.
+        public let type: String = "app.bsky.actor.defs#savedFeedsPrefV2"
+
         /// An array of saved feed generators.
         public let items: [SavedFeed]
+
+        enum CodingKeys: String, CodingKey {
+            case type = "$type"
+            case items
+        }
     }
 
     /// A definition model for a "Saved Feeds" preference.
@@ -597,7 +635,6 @@ extension AppBskyLexicon.Actor {
         /// An array of feed URIs that have been saved.
         public let saved: [String]
 
-        // TODO: Find out more about what this does.
         /// The index number of the timeline for the list of feeds. Optional.
         public var timelineIndex: Int?
 
@@ -675,14 +712,15 @@ extension AppBskyLexicon.Actor {
         /// - Note: From the AT Protocol specification: "Hide replies in the feed."
         public let areRepliesHidden: Bool?
 
-        /// Indicates whether replies from users you don't follow are hidden from the user. Optional.
+        /// Indicates whether replies from users you don't follow are hidden from
+        /// the user. Optional.
         ///
         /// - Note: From the AT Protocol specification: "Hide replies in the feed if they are not
         /// by followed users."
         public let areUnfollowedRepliesHidden: Bool?
 
-        /// Indicates how many likes a post needs in order for the user to see the
-        /// reply. Optional.
+        /// Indicates how many likes a post needs in order for the user to see
+        /// the reply. Optional.
         ///
         /// - Note: From the AT Protocol specification: "Hide replies in the feed if they do not
         /// have this number of likes."
@@ -736,17 +774,21 @@ extension AppBskyLexicon.Actor {
         public enum SortingMode: String, Sendable, Codable {
 
             /// Indicates the thread will be sorted from the oldest post.
-            case oldest = "oldest"
+            case oldest
 
             /// Indicates the thread will be sorted from the newest post.
-            case newest = "newest"
+            case newest
 
             /// Indicates the thread will be sorted from the posts with the most number
             /// of likes.
             case mostLikes = "most-likes"
 
             /// Indicates the thread will be completely random.
-            case random = "random"
+            case random
+
+            // TODO: Find out what specifically this sorts threads by.
+            /// Indicates the thread will be sorted by "hotness".
+            case hotness
         }
 
         enum CodingKeys: String, CodingKey {
@@ -773,7 +815,7 @@ extension AppBskyLexicon.Actor {
         /// - Note: According to AT Protocol's specifications: "A list of tags which describe the
         /// account owner's interests gathered during onboarding."
         ///
-        /// - Important: Current maximum limit is 100 tags. Current maximum length for each tag
+        /// - Important: Current maximum limit is 100 items. Current maximum length for each item
         /// name is 64 characters.
         public let tags: [String]
 
@@ -792,9 +834,6 @@ extension AppBskyLexicon.Actor {
         public func encode(to encoder: Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
 
-            // Truncate `tags` to 640 characters before encoding.
-            // `maxGraphemes`'s limit is 64, but `String.count` should respect that limit implictly.
-            // Then, truncate `tags` to 100 items before encoding.
             try truncatedEncode(self.tags, withContainer: &container, forKey: .tags, upToCharacterLength: 64, upToArrayLength: 100)
         }
 
@@ -864,6 +903,11 @@ extension AppBskyLexicon.Actor {
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/actor/defs.json
     public struct MutedWord: Sendable, Codable {
+
+        /// The identifier of the lexicon.
+        ///
+        /// - Warning: The value must not change.
+        public let type: String = "app.bsky.actor.defs#mutedWord"
 
         /// The ID of the muted word.
         public let id: String?
@@ -946,11 +990,11 @@ extension AppBskyLexicon.Actor {
         ///
         /// - Note: According to the AT Protocol specifications: "A list of words the account
         /// owner has muted."
-        public let mutedItems: [MutedWord]
+        public let items: [MutedWord]
 
         enum CodingKeys: String, CodingKey {
             case type = "$type"
-            case mutedItems = "items"
+            case items
         }
     }
 
@@ -997,10 +1041,10 @@ extension AppBskyLexicon.Actor {
     public struct LabelersPreferenceItem: Sendable, Codable {
 
         /// The decentralized identifier (DID) of the labeler.
-        public let labelerDID: String
+        public let did: String
 
         enum CodingKeys: String, CodingKey {
-            case labelerDID = "did"
+            case did
         }
     }
 
@@ -1020,20 +1064,23 @@ extension AppBskyLexicon.Actor {
         public let activeProgressGuide: String?
 
         /// An array of elements that the user will see. Optional.
+        ///
+        /// - Important: Current maximum limit is 1,000 items. Current maximum length for each
+        /// item name is 100 characters.
         public let queuedNudges: [String]?
 
         /// An array of NUXs (New User Experiences). Optional.
         ///
         /// - Note: According to the AT Protocol specifications: "Storage for NUXs the user
         /// has encountered."
-        public let nexs: [NUXDefinition]?
+        public let nuxs: [NUXDefinition]?
 
         public func encode(to encoder: any Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
 
             try container.encodeIfPresent(self.activeProgressGuide, forKey: .activeProgressGuide)
             try truncatedEncodeIfPresent(self.queuedNudges, withContainer: &container, forKey: .queuedNudges, upToCharacterLength: 100, upToArrayLength: 1_000)
-            try truncatedEncodeIfPresent(self.nexs, withContainer: &container, forKey: .nexs, upToArrayLength: 100)
+            try truncatedEncodeIfPresent(self.nuxs, withContainer: &container, forKey: .nuxs, upToArrayLength: 100)
         }
     }
 
@@ -1048,6 +1095,8 @@ extension AppBskyLexicon.Actor {
     public struct BskyAppProgressGuideDefinition: Sendable, Codable {
 
         /// The progress guide itself.
+        ///
+        /// - Important: Current maximum length is 100 characters.
         public let guide: [BskyAppStatePreferencesDefinition]
 
         public func encode(to encoder: any Encoder) throws {
@@ -1074,6 +1123,8 @@ extension AppBskyLexicon.Actor {
         public var isCompleted: Bool = false
 
         /// Data created for the NUX. Optional.
+        ///
+        /// - Important: Current maximum length is 300 characters.
         ///
         /// - Note: According to the AT Protocol specifications: "Arbitrary data for the NUX.
         /// The structure is defined by the NUX itself. Limited to 300 characters."

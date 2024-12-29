@@ -19,7 +19,7 @@ extension ATProtoKit {
     /// normal URL isn't used for unauthenticated API calls.\
     ///\
     /// If you need profiles of several users, it's best to use
-    /// ``getProfiles(_:pdsURL:shouldAuthenticate:)``.
+    /// ``getProfiles(for:pdsURL:shouldAuthenticate:)(_:pdsURL:shouldAuthenticate:))`` instead.
     ///
     /// - Note: According to the AT Protocol specifications: "Get detailed profile view of an
     /// actor. Does not require auth, but contains relevant metadata with auth."
@@ -38,7 +38,7 @@ extension ATProtoKit {
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func getProfile(
-        _ actor: String,
+        for actor: String,
         pdsURL: String? = nil,
         shouldAuthenticate: Bool = false
     ) async throws -> AppBskyLexicon.Actor.ProfileViewDetailedDefinition {

@@ -1,5 +1,5 @@
 //
-//  SearchUsersTypeahead.swift
+//  SearchActorsTypeahead.swift
 //
 //
 //  Created by Christopher Jr Riley on 2024-02-23.
@@ -13,6 +13,10 @@ extension ATProtoKit {
     ///
     /// This will search for the display names, descriptions, and handles within the
     /// user profiles.
+    ///
+    /// You can also use search operators within the `query` parameter to further filter
+    /// the results. For example, typing "from:me" can filter the results by the user account's
+    /// own content.
     ///
     /// - Note: `viewerDID` will be ignored in public or unauthenticated queries.
     ///
@@ -40,7 +44,7 @@ extension ATProtoKit {
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
-    public func searchUsersTypeahead(
+    public func searchActorsTypeahead(
         matching query: String,
         limit: Int? = 10,
         pdsURL: String? = nil,

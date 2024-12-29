@@ -9,8 +9,8 @@ import Foundation
 
 extension ATProtoKit {
 
-    /// Receive the preferences of a given user.
-    /// 
+    /// Receive the preferences of a given user account.
+    ///
     /// - Note: According to the AT Protocol specifications: "Get private preferences attached
     /// to the current account. Expected use is synchronization between multiple devices, and
     /// import/export during account migration. Requires auth."
