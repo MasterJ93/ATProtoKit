@@ -8,6 +8,7 @@
 - ``ProfileViewDefinition``
 - ``ProfileViewDetailedDefinition``
 - ``ProfileAssociatedDefinition``
+- ``ProfileAssociatedChatDefinition``
 - ``ViewerStateDefinition``
 - ``KnownFollowers``
 - ``PreferencesDefinition``

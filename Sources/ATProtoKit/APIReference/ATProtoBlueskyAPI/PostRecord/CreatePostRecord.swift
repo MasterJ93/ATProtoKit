@@ -381,7 +381,7 @@ extension ATProtoBluesky {
             let blobReference = try await APIClientService.shared.uploadBlob(pdsURL: pdsURL, accessToken: accessToken, filename: image.fileName,
                                                                              imageData: image.imageData)
 
-            let embedImage = AppBskyLexicon.Embed.ImagesDefinition.Image(image: blobReference.blob, altText: image.altText ?? "", aspectRatio: nil)
+            let embedImage = AppBskyLexicon.Embed.ImagesDefinition.Image(imageBlob: blobReference.blob, altText: image.altText ?? "", aspectRatio: nil)
             embedImages.append(embedImage)
         }
 
@@ -536,7 +536,7 @@ extension ATProtoBluesky {
                     imageData: caption.file
                 )
 
-                captionReferences.append(AppBskyLexicon.Embed.VideoDefinition.Caption(language: caption.language, file: blobReference.blob))
+                captionReferences.append(AppBskyLexicon.Embed.VideoDefinition.Caption(language: caption.language, fileBlob: blobReference.blob))
             }
         }
 
@@ -595,7 +595,7 @@ extension ATProtoBluesky {
 
         let embedExternal = AppBskyLexicon.Embed.ExternalDefinition(
             external: AppBskyLexicon.Embed.ExternalDefinition.External(
-                embedURI: url,
+                uri: url,
                 title: title,
                 description: description ?? "",
                 thumbnailImage: thumbnailImage ?? nil

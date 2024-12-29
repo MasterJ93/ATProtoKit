@@ -55,7 +55,7 @@ extension AppBskyLexicon.Embed {
             ///
             /// - Warning: The image size can't be higher than 1 MB. Failure to do so will result
             /// in the image failing to upload.
-            public let image: ComAtprotoLexicon.Repository.UploadBlobOutput
+            public let imageBlob: ComAtprotoLexicon.Repository.UploadBlobOutput
 
             /// The alternative text for the image.
             ///
@@ -66,14 +66,14 @@ extension AppBskyLexicon.Embed {
             /// The aspect ratio of the image. Optional.
             public let aspectRatio: AspectRatioDefinition?
 
-            public init(image: ComAtprotoLexicon.Repository.UploadBlobOutput, altText: String, aspectRatio: AspectRatioDefinition?) {
-                self.image = image
+            public init(imageBlob: ComAtprotoLexicon.Repository.UploadBlobOutput, altText: String, aspectRatio: AspectRatioDefinition?) {
+                self.imageBlob = imageBlob
                 self.altText = altText
                 self.aspectRatio = aspectRatio
             }
 
             enum CodingKeys: String, CodingKey {
-                case image
+                case imageBlob = "image"
                 case altText = "alt"
                 case aspectRatio
             }
@@ -92,6 +92,8 @@ extension AppBskyLexicon.Embed {
             public let type: String = "app.bsky.embed.images#view"
 
             /// An array of images.
+            ///
+            /// - Important: Current maximum limit is 4 items.
             public let images: [ViewImage]
 
             public init(images: [ViewImage]) {

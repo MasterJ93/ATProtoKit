@@ -68,10 +68,10 @@ extension AppBskyLexicon.Embed {
             public let type: String = "app.bsky.embed.record#viewRecord"
 
             /// The URI of the record.
-            public let recordURI: String
+            public let uri: String
 
-            /// The CID of the record.
-            public let cidHash: String
+            /// The CID hash of the record.
+            public let cid: String
 
             /// The creator of the record.
             public let author: AppBskyLexicon.Actor.ProfileViewBasicDefinition
@@ -105,8 +105,8 @@ extension AppBskyLexicon.Embed {
             public init(from decoder: any Decoder) throws {
                 let container = try decoder.container(keyedBy: CodingKeys.self)
 
-                self.recordURI = try container.decode(String.self, forKey: .recordURI)
-                self.cidHash = try container.decode(String.self, forKey: .cidHash)
+                self.uri = try container.decode(String.self, forKey: .uri)
+                self.cid = try container.decode(String.self, forKey: .cid)
                 self.author = try container.decode(AppBskyLexicon.Actor.ProfileViewBasicDefinition.self, forKey: .author)
                 self.value = try container.decode(UnknownType.self, forKey: .value)
                 self.labels = try container.decodeIfPresent([ComAtprotoLexicon.Label.LabelDefinition].self, forKey: .labels)
@@ -121,8 +121,8 @@ extension AppBskyLexicon.Embed {
             public func encode(to encoder: any Encoder) throws {
                 var container = encoder.container(keyedBy: CodingKeys.self)
 
-                try container.encode(self.recordURI, forKey: .recordURI)
-                try container.encode(self.cidHash, forKey: .cidHash)
+                try container.encode(self.uri, forKey: .uri)
+                try container.encode(self.cid, forKey: .cid)
                 try container.encode(self.author, forKey: .author)
                 try container.encode(self.value, forKey: .value)
                 try container.encodeIfPresent(self.labels, forKey: .labels)
@@ -136,8 +136,8 @@ extension AppBskyLexicon.Embed {
 
             enum CodingKeys: String, CodingKey {
                 case type = "$type"
-                case recordURI = "uri"
-                case cidHash = "cid"
+                case uri
+                case cid
                 case author
                 case value
                 case labels
@@ -145,7 +145,7 @@ extension AppBskyLexicon.Embed {
                 case repostCount
                 case likeCount
                 case quoteCount
-                case embeds = "embeds"
+                case embeds
                 case indexedAt
             }
         }
@@ -163,14 +163,14 @@ extension AppBskyLexicon.Embed {
             public let type: String = "app.bsky.embed.record#viewNotFound"
 
             /// The URI of the record.
-            public let recordURI: String
+            public let uri: String
 
             /// Indicates whether the record was found.
             public let isRecordNotFound: Bool
 
             enum CodingKeys: String, CodingKey {
                 case type = "$type"
-                case recordURI = "uri"
+                case uri
                 case isRecordNotFound = "notFound"
             }
         }
@@ -188,7 +188,7 @@ extension AppBskyLexicon.Embed {
             public let type: String = "app.bsky.embed.record#viewBlocked"
 
             /// The URI of the record.
-            public let recordURI: String
+            public let uri: String
 
             /// Indicates whether the record has been blocked.
             public let isRecordBlocked: Bool
@@ -197,7 +197,7 @@ extension AppBskyLexicon.Embed {
             public let recordAuthor: AppBskyLexicon.Feed.BlockedAuthorDefinition
 
             enum CodingKeys: String, CodingKey {
-                case recordURI = "uri"
+                case uri
                 case isRecordBlocked = "blocked"
                 case recordAuthor = "author"
             }

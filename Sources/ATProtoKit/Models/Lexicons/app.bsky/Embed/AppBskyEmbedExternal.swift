@@ -22,7 +22,7 @@ extension AppBskyLexicon.Embed {
         /// The identifier of the lexicon.
         ///
         /// - Warning: The value must not change.
-        public let type: String = "app.bsky.embed.external"
+        public let type: String = "app.bsky.embed.external#main"
 
         /// The external content needed to be embeeded.
         public let external: External
@@ -46,7 +46,7 @@ extension AppBskyLexicon.Embed {
             public let type: String = "app.bsky.embed.external#external"
 
             /// The URI of the external content.
-            public let embedURI: URL
+            public let uri: URL
 
             /// The title of the external content.
             public let title: String
@@ -62,7 +62,7 @@ extension AppBskyLexicon.Embed {
 
             enum CodingKeys: String, CodingKey {
                 case type = "$type"
-                case embedURI = "uri"
+                case uri
                 case title
                 case description
                 case thumbnailImage = "thumb"
@@ -99,7 +99,7 @@ extension AppBskyLexicon.Embed {
             public let type: String = "app.bsky.embed.external#viewExternal"
 
             /// The URI of the external content.
-            public let embedURI: String
+            public let uri: String
 
             /// The title of the external content.
             public let title: String
@@ -112,7 +112,7 @@ extension AppBskyLexicon.Embed {
 
             enum CodingKeys: String, CodingKey {
                 case type = "$type"
-                case embedURI = "uri"
+                case uri
                 case title
                 case description
                 case thumbnailImageURL = "thumb"

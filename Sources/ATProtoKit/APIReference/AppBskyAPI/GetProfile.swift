@@ -19,7 +19,7 @@ extension ATProtoKit {
     /// normal URL isn't used for unauthenticated API calls.\
     ///\
     /// If you need profiles of several users, it's best to use
-    /// ``getProfiles(for:pdsURL:shouldAuthenticate:)(_:pdsURL:shouldAuthenticate:))`` instead.
+    /// ``getProfiles(for:pdsURL:shouldAuthenticate:)`` instead.
     ///
     /// - Note: According to the AT Protocol specifications: "Get detailed profile view of an
     /// actor. Does not require auth, but contains relevant metadata with auth."

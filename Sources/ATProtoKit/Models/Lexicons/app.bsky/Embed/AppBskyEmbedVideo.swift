@@ -25,15 +25,23 @@ extension AppBskyLexicon.Embed {
         public let type: String = "app.bsky.embed.video"
 
         /// The video itself.
+        ///
+        /// Only .mp4 files can be accepted.
+        ///
+        /// - Important: Current maximum size is 50,000,000 bytes (50 MB).
         public let video: ComAtprotoLexicon.Repository.UploadBlobOutput
 
         /// An array of captions in various languages provided for the video. Optional.
+        ///
+        /// - Important: Current maximum length is 20 items.
         ///
         /// - Note: According to the AT Protocol specifications: "Alt text description of the
         /// video, for accessibility."
         public let captions: [Caption]?
 
         /// The alt text provided for the video. Optional.
+        ///
+        /// - Important: Current maximum length is 1,000 characters.
         public let altText: String?
 
         /// The aspect ratio of the video. Optional.
@@ -76,12 +84,12 @@ extension AppBskyLexicon.Embed {
             ///
             /// - Important: The file must be in a .vtt format and can not exceed
             /// 20,000 bytes (or 2 KB).
-            public let file: ComAtprotoLexicon.Repository.UploadBlobOutput
+            public let fileBlob: ComAtprotoLexicon.Repository.UploadBlobOutput
 
             enum CodingKeys: String, CodingKey {
                 case type = "$type"
                 case language = "lang"
-                case file
+                case fileBlob = "file"
             }
         }
 
@@ -98,7 +106,7 @@ extension AppBskyLexicon.Embed {
             public let type: String = "app.bsky.embed.video#view"
 
             /// The CID hash of the video.
-            public let videoCID: String
+            public let cid: String
 
             /// The playlist the video resides in.
             public let playlistURI: String
@@ -112,8 +120,8 @@ extension AppBskyLexicon.Embed {
             /// The aspect ratio of the video. Optional.
             public let aspectRatio: AspectRatioDefinition?
 
-            public init(videoCID: String, playlistURI: String, thumbnailImageURL: String?, altText: String?, aspectRatio: AspectRatioDefinition?) {
-                self.videoCID = videoCID
+            public init(cid: String, playlistURI: String, thumbnailImageURL: String?, altText: String?, aspectRatio: AspectRatioDefinition?) {
+                self.cid = cid
                 self.playlistURI = playlistURI
                 self.thumbnailImageURL = thumbnailImageURL
                 self.altText = altText
@@ -123,7 +131,7 @@ extension AppBskyLexicon.Embed {
             public init(from decoder: any Decoder) throws {
                 let container = try decoder.container(keyedBy: CodingKeys.self)
 
-                self.videoCID = try container.decode(String.self, forKey: .videoCID)
+                self.cid = try container.decode(String.self, forKey: .cid)
                 self.playlistURI = try container.decode(String.self, forKey: .playlistURI)
                 self.thumbnailImageURL = try container.decodeIfPresent(String.self, forKey: .thumbnailImageURL)
                 self.altText = try container.decodeIfPresent(String.self, forKey: .altText)
@@ -134,7 +142,7 @@ extension AppBskyLexicon.Embed {
                 var container = encoder.container(keyedBy: CodingKeys.self)
 
                 try container.encode(self.type, forKey: .type)
-                try container.encode(self.videoCID, forKey: .videoCID)
+                try container.encode(self.cid, forKey: .cid)
                 try container.encode(self.playlistURI, forKey: .playlistURI)
                 try container.encodeIfPresent(self.thumbnailImageURL, forKey: .thumbnailImageURL)
                 try container.encodeIfPresent(self.altText, forKey: .altText)
@@ -143,7 +151,7 @@ extension AppBskyLexicon.Embed {
 
             enum CodingKeys: String, CodingKey {
                 case type = "$type"
-                case videoCID = "cid"
+                case cid
                 case playlistURI = "playlist"
                 case thumbnailImageURL = "thumbnail"
                 case altText = "alt"
