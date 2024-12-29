@@ -786,8 +786,12 @@ extension AppBskyLexicon.Actor {
             /// Indicates the thread will be completely random.
             case random
 
-            // TODO: Find out what specifically this sorts threads by.
-            /// Indicates the thread will be sorted by "hotness".
+            /// Indicates the threads are sorted by an algorithm that balances engagement with recency.
+            /// - SeeAlso: Inpired by [Lemmy's algorithm][lemmy]. You can view Bluesky's current
+            /// implementation in their [repo][bsky_repo].
+            ///
+            /// [lemmy]:https://join-lemmy.org/docs/contributors/07-ranking-algo.html
+            /// [bsky_repo]:https://github.com/bluesky-social/social-app/blob/c6d26a0a9c6606cccaee38adb535be257f19809d/src/state/queries/post-thread.ts#L312
             case hotness
         }
 
