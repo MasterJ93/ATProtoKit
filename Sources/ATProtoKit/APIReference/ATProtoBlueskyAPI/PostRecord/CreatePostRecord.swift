@@ -268,7 +268,7 @@ extension ATProtoBluesky {
 
         // Locales
         let localeIdentifiers: [String]?
-        if #available(iOS 16, *) {
+        if #available(macOS 13, iOS 16, tvOS 16, watchOS 9, *) {
             localeIdentifiers = locales.isEmpty ? nil : locales.compactMap {
                 $0.language.languageCode?.identifier
             }
