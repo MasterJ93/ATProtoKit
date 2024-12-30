@@ -13,7 +13,7 @@ extension ATProtoKit {
     /// 
     /// - Note: As of now, the `algorithm` value only supports a reverse-chonological order, and
     /// so the use cases of this are limited. It's best to use methods such as
-    /// ``getFeedGenerators(_:)`` and combine them with this method if you want to tweak how
+    /// ``getFeedGenerators(by:)`` and combine them with this method if you want to tweak how
     /// the timeline works.
     ///
     /// - Note: According to the AT Protocol specifications: "Get a view of the requesting

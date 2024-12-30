@@ -6,6 +6,12 @@
 
 - ``SkeletonSearchPostDefinition``
 - ``SkeletonSearchActorDefinition``
+- ``SkeletonSearchStarterPackDefinition``
+- ``TrendingTopic``
+
+### app.bsky.unspecced.getConfig
+
+- ``GetConfigOutput``
 
 ### app.bsky.unspecced.getPopularFeedGenerators
 
@@ -19,6 +25,10 @@
 
 - ``GetTaggedSuggestionsOutput``
 
+### app.bsky.unspecced.getTrendingTopics
+
+- ``GetTrendingTopicsOutput``
+
 ### app.bsky.unspecced.searchActorsSkeleton
 
 - ``SearchActorsSkeletonOutput``
@@ -27,3 +37,7 @@
 
 - ``SearchPostsSkeleton``
 - ``SearchPostsSkeletonOutput``
+
+### app.bsky.unspecced.searchStarterPacksSkeleton
+
+- ``SearchStarterPackSkeletonOutput``

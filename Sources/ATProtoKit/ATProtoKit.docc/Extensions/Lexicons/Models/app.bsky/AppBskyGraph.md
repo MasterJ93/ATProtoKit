@@ -102,6 +102,10 @@
 
 - ``MuteThreadRequestBody``
 
+### app.bsky.graph.searchStarterPack
+
+- ``SearchStarterPacksOutput``
+
 ### app.bsky.graph.starterpack
 
 - ``StarterpackRecord``
