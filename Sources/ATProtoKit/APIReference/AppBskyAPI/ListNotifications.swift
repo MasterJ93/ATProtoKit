@@ -19,8 +19,10 @@ extension ATProtoKit {
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/notification/listNotifications.json
     ///
     /// - Parameters:
+    ///   - reason: A reason that matches the
+    ///   ``AppBskyLexicon/Notification/Notification/reason-swift.property``. Optional.
     ///   - limit: The number of invite codes in the list. Optional. Defaults to `50`.
-    ///   - priority: Indicates whether the notification is a priority. Optional.
+    ///   - isPriority: Indicates whether the notification is a priority. Optional.
     ///   - cursor: The mark used to indicate the starting point for the next set
     ///   of results. Optional.
     ///   - seenAt: The date and time the notification was seen. Defaults to the date and time the
@@ -30,8 +32,9 @@ extension ATProtoKit {
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func listNotifications(
-        withLimitOf limit: Int? = 50,
-        priority: Bool?,
+        with reason: String? = nil,
+        limit: Int? = 50,
+        isPriority: Bool?,
         cursor: String? = nil,
         seenAt: Date? = nil
     ) async throws -> AppBskyLexicon.Notification.ListNotificationsOutput {
@@ -47,13 +50,17 @@ extension ATProtoKit {
 
         var queryItems = [(String, String)]()
 
+        if let reason {
+            queryItems.append(("reason", "\(reason)"))
+        }
+
         if let limit {
             let finalLimit = max(1, min(limit, 100))
             queryItems.append(("limit", "\(finalLimit)"))
         }
 
-        if let priority {
-            queryItems.append(("priority", "\(priority)"))
+        if let isPriority {
+            queryItems.append(("priority", "\(isPriority)"))
         }
 
         if let cursor {

@@ -19,9 +19,9 @@ extension ATProtoKit {
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/notification/getUnreadCount.json
     ///
     /// - Parameters:
+    ///   - priority: Indicates whether the notification is a priority. Optional.
     ///   - seenAt: The date and time the notifications were seen. Defaults to the date and
     ///   time the request was sent.
-    ///   - priority: Indicates whether the notification is a priority. Optional.
     /// - Returns: The number of unread notifications.
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to

@@ -72,24 +72,24 @@ extension AppBskyLexicon.Notification {
     public struct Notification: Sendable, Codable {
 
         /// The URI of the notification.
-        public let notificationURI: String
+        public let uri: String
 
         /// The CID hash of the notification.
-        public let notificationCID: String
+        public let cid: String
 
         /// The author of the record contained in the notification.
-        public let notificationAuthor: AppBskyLexicon.Actor.ProfileViewBasicDefinition
+        public let author: AppBskyLexicon.Actor.ProfileViewBasicDefinition
 
         /// The kind of notification received.
         ///
         /// - Note: According to the AT Protocol specifications: "Expected values are 'like',
         /// 'repost', 'follow', 'mention', 'reply', 'quote', and 'starterpack-joined'."
-        public let notificationReason: Reason
+        public let reason: Reason
 
         /// The URI of the subject in the notification. Optional.
         public let reasonSubjectURI: String?
 
-        /// The record itself that's attached to the notification.
+        /// The record that's attached to the notification.
         public let record: UnknownType
 
         /// Indicates whether or not this notification was read.
@@ -98,12 +98,15 @@ extension AppBskyLexicon.Notification {
         /// The date and time the notification was last indexed.
         public let indexedAt: Date
 
-        public init(notificationURI: String, notificationCID: String, notificationAuthor: AppBskyLexicon.Actor.ProfileViewBasicDefinition, notificationReason: Reason, reasonSubjectURI: String?,
+        /// An array of labels for the notication. Optional.
+        public let labels: [ComAtprotoLexicon.Label.LabelDefinition]?
+
+        public init(uri: String, cid: String, author: AppBskyLexicon.Actor.ProfileViewBasicDefinition, reason: Reason, reasonSubjectURI: String?,
                     record: UnknownType, isRead: Bool, indexedAt: Date, labels: [ComAtprotoLexicon.Label.LabelDefinition]?) {
-            self.notificationURI = notificationURI
-            self.notificationCID = notificationCID
-            self.notificationAuthor = notificationAuthor
-            self.notificationReason = notificationReason
+            self.uri = uri
+            self.cid = cid
+            self.author = author
+            self.reason = reason
             self.reasonSubjectURI = reasonSubjectURI
             self.record = record
             self.isRead = isRead
@@ -114,10 +117,10 @@ extension AppBskyLexicon.Notification {
         public init(from decoder: any Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
 
-            self.notificationURI = try container.decode(String.self, forKey: .notificationURI)
-            self.notificationCID = try container.decode(String.self, forKey: .notificationCID)
-            self.notificationAuthor = try container.decode(AppBskyLexicon.Actor.ProfileViewBasicDefinition.self, forKey: .notificationAuthor)
-            self.notificationReason = try container.decode(AppBskyLexicon.Notification.Notification.Reason.self, forKey: .notificationReason)
+            self.uri = try container.decode(String.self, forKey: .uri)
+            self.cid = try container.decode(String.self, forKey: .cid)
+            self.author = try container.decode(AppBskyLexicon.Actor.ProfileViewBasicDefinition.self, forKey: .author)
+            self.reason = try container.decode(AppBskyLexicon.Notification.Notification.Reason.self, forKey: .reason)
             self.reasonSubjectURI = try container.decodeIfPresent(String.self, forKey: .reasonSubjectURI)
             self.record = try container.decode(UnknownType.self, forKey: .record)
             self.isRead = try container.decode(Bool.self, forKey: .isRead)
@@ -125,16 +128,13 @@ extension AppBskyLexicon.Notification {
             self.labels = try container.decodeIfPresent([ComAtprotoLexicon.Label.LabelDefinition].self, forKey: .labels)
         }
 
-        /// An array of labels. Optional.
-        public let labels: [ComAtprotoLexicon.Label.LabelDefinition]?
-
         public func encode(to encoder: any Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
 
-            try container.encode(self.notificationURI, forKey: .notificationURI)
-            try container.encode(self.notificationCID, forKey: .notificationCID)
-            try container.encode(self.notificationAuthor, forKey: .notificationAuthor)
-            try container.encode(self.notificationReason, forKey: .notificationReason)
+            try container.encode(self.uri, forKey: .uri)
+            try container.encode(self.cid, forKey: .cid)
+            try container.encode(self.author, forKey: .author)
+            try container.encode(self.reason, forKey: .reason)
             try container.encodeIfPresent(self.reasonSubjectURI, forKey: .reasonSubjectURI)
             try container.encode(self.record, forKey: .record)
             try container.encode(self.isRead, forKey: .isRead)
@@ -143,10 +143,10 @@ extension AppBskyLexicon.Notification {
         }
 
         enum CodingKeys: String, CodingKey {
-            case notificationURI = "uri"
-            case notificationCID = "cid"
-            case notificationAuthor = "author"
-            case notificationReason = "reason"
+            case uri
+            case cid
+            case author
+            case reason
             case reasonSubjectURI = "reasonSubject"
             case record
             case isRead

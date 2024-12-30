@@ -18,11 +18,11 @@ extension ATProtoKit {
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/notification/putPreferences.json
     ///
-    /// - Parameter priority: Indicates whether the priority preference is enabled.
+    /// - Parameter isPriority: Indicates whether the priority preference is enabled.
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
-    public func putPreferences(priority: Bool) async throws {
+    public func putPreferences(isPriority: Bool) async throws {
         guard session != nil,
               let accessToken = session?.accessToken else {
             throw ATRequestPrepareError.missingActiveSession
@@ -34,7 +34,7 @@ extension ATProtoKit {
         }
 
         let requestBody = AppBskyLexicon.Notification.PutNotificationRequestBody(
-            isPriority: priority
+            isPriority: isPriority
         )
 
         do {
