@@ -22,7 +22,7 @@ extension ATProtoKit {
     ///   - labelerDIDs: An array of decentralized identifiers (DIDs) of labeler services.
     ///   - isDetailed: Indicates whether the information is detailed. Optional.
     ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `nil`.
-    /// - Returns: A labeler view.
+    /// - Returns: An array of labeler views.
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
