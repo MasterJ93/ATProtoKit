@@ -29,7 +29,7 @@ extension AppBskyLexicon.Feed {
         ///
         /// - Note: According to the AT Protocol specifications: "Reference (AT-URI) to the
         /// post record."
-        public let post: String
+        public let postURI: String
 
         /// An array of rules used as an allowlist.
         ///
@@ -46,8 +46,8 @@ extension AppBskyLexicon.Feed {
         /// - Note: According to the AT Protocol specifications: "List of hidden reply URIs."
         public let hiddenReplies: [String]?
 
-        public init(post: String, allow: [ATUnion.ThreadgateUnion]?, createdAt: Date, hiddenReplies: [String]?) {
-            self.post = post
+        public init(postURI: String, allow: [ATUnion.ThreadgateUnion]?, createdAt: Date, hiddenReplies: [String]?) {
+            self.postURI = postURI
             self.allow = allow
             self.createdAt = createdAt
             self.hiddenReplies = hiddenReplies
@@ -56,7 +56,7 @@ extension AppBskyLexicon.Feed {
         public init(from decoder: Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
 
-            self.post = try container.decode(String.self, forKey: .post)
+            self.postURI = try container.decode(String.self, forKey: .postURI)
             self.allow = try container.decodeIfPresent([ATUnion.ThreadgateUnion].self, forKey: .allow)
             self.createdAt = try decodeDate(from: container, forKey: .createdAt)
             self.hiddenReplies = try container.decodeIfPresent([String].self, forKey: .hiddenReplies)
@@ -65,7 +65,7 @@ extension AppBskyLexicon.Feed {
         public func encode(to encoder: Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
 
-            try container.encode(self.post, forKey: .post)
+            try container.encode(self.postURI, forKey: .postURI)
             try container.encodeIfPresent(self.allow, forKey: .allow)
             try encodeDate(self.createdAt, with: &container, forKey: .createdAt)
 
@@ -74,7 +74,7 @@ extension AppBskyLexicon.Feed {
 
         enum CodingKeys: String, CodingKey {
             case type = "$type"
-            case post
+            case postURI = "post"
             case allow
             case createdAt
             case hiddenReplies
