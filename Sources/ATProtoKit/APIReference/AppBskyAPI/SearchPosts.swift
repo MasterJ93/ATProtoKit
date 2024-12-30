@@ -143,6 +143,5 @@ extension ATProtoKit {
         } catch {
             throw error
         }
-
     }
 }

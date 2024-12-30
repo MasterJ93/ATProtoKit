@@ -35,7 +35,7 @@ extension ATProtoKit {
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func getSuggestionsSkeleton(
-        viewerDID: String?,
+        viewerDID: String? = nil,
         limit: Int? = 50,
         cursor: String? = nil,
         relativeToDID: String? = nil

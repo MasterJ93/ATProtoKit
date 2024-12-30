@@ -29,10 +29,17 @@ extension AppBskyLexicon.Unspecced {
         public let actors: [SkeletonSearchActorDefinition]
 
         /// The decentralized identifier (DID) of the user account related to the suggestions.
+        /// Optional.
         ///
         /// - Note: According to the AT Protocol specifications: "DID of the account these
         /// suggestions are relative to. If this is returned undefined, suggestions are based on
         /// the viewer."
         public let relativeToDID: String?
+
+        enum CodingKeys: String, CodingKey {
+            case cursor
+            case actors
+            case relativeToDID = "relativeToDid"
+        }
     }
 }
