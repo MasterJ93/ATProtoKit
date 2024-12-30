@@ -11,18 +11,18 @@ extension ATProtoKit {
 
     /// Unmutes a thread.
     /// 
-    /// - Note: According to the AT Protocol specifications: ""Unmutes the specified thread.
+    /// - Note: According to the AT Protocol specifications: "Unmutes the specified thread.
     /// Requires auth"
     /// 
     /// - SeeAlso: This is based on the [`app.bsky.graph.unmuteThread`][github] lexicon.
     /// 
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/graph/unmuteThread.json
     /// 
-    /// - Parameter root: The URI of the root of the post.
+    /// - Parameter rootURI: The URI of the root of the post.
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
-    public func unmuteThread(_ root: String) async throws {
+    public func unmuteThread(_ rootURI: String) async throws {
         guard session != nil,
               let accessToken = session?.accessToken else {
             throw ATRequestPrepareError.missingActiveSession
@@ -34,7 +34,7 @@ extension ATProtoKit {
         }
 
         let requestBody = AppBskyLexicon.Graph.UnmuteThreadRequestBody(
-            root: root
+            rootURI: rootURI
         )
 
         do {

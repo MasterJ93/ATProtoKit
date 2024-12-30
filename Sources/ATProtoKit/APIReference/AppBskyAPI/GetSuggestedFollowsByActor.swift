@@ -19,13 +19,13 @@ extension ATProtoKit {
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/graph/getSuggestedFollowsByActor.json
     ///
-    /// - Parameter actorDID: The decentralized identifier (DID) or handle of the user account
-    /// that the suggestions are based on.
+    /// - Parameter actor: The AT Identifier or handle of the user account that the suggestions
+    /// are based on.
     /// - Returns: An array of user accounts the requesting user account is suggested to follow.
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
-    public func getSuggestedFollowsByActor(_ actorDID: String) async throws -> AppBskyLexicon.Graph.GetSuggestedFollowsByActorOutput {
+    public func getSuggestedFollowsByActor(_ actor: String) async throws -> AppBskyLexicon.Graph.GetSuggestedFollowsByActorOutput {
         guard session != nil,
               let accessToken = session?.accessToken else {
             throw ATRequestPrepareError.missingActiveSession
@@ -38,7 +38,7 @@ extension ATProtoKit {
 
         var queryItems = [(String, String)]()
 
-        queryItems.append(("actor", actorDID))
+        queryItems.append(("actor", actor))
 
         let queryURL: URL
 

@@ -18,12 +18,11 @@ extension ATProtoKit {
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/graph/unmuteActor.json
     ///
-    /// - Parameter actorDID: The decentralized identifier (DID) or handle of a
-    /// user account.
+    /// - Parameter actor: The AT Identifier or handle of a user account.
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
-    public func unmuteActor(_ actorDID: String) async throws {
+    public func unmuteActor(_ actor: String) async throws {
         guard session != nil,
               let accessToken = session?.accessToken else {
             throw ATRequestPrepareError.missingActiveSession
@@ -35,7 +34,7 @@ extension ATProtoKit {
         }
 
         let requestBody = AppBskyLexicon.Graph.UnmuteActorRequestBody(
-            actorDID: actorDID
+            actor: actor
         )
 
         do {

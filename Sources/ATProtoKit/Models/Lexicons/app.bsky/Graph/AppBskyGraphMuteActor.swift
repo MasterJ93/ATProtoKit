@@ -19,11 +19,11 @@ extension AppBskyLexicon.Graph {
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/graph/muteActor.json
     public struct MuteActorRequestBody: Sendable, Codable {
 
-        /// The decentralized identifier (DID) or handle of a user account.
-        public let actorDID: String
+        /// The AT Identifier or handle of a user account.
+        public let actor: String
 
-        enum CodingKeys: String, CodingKey {
-            case actorDID = "actor"
+        enum CodingKeys: CodingKey {
+            case actor
         }
     }
 }

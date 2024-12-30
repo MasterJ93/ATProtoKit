@@ -28,6 +28,11 @@ extension AppBskyLexicon.Graph {
         ///
         /// - Note: According to the AT Protocol specifications: "If true, response has fallen-back
         /// to generic results, and is not scoped using relativeToDid"
-        public let isFallback: Bool?
+        public let isFallback: Bool? = false
+
+        enum CodingKeys: CodingKey {
+            case suggestions
+            case isFallback
+        }
     }
 }

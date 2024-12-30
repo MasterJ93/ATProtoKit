@@ -20,9 +20,14 @@ extension AppBskyLexicon.Graph {
     public struct GetRelationshipsOutput: Sendable, Codable {
 
         /// The decentralized identifier (DID) of the user account.
-        public let actor: String?
+        public let actorDID: String?
 
         /// The metadata containing the relationship between mutliple user accounts.
         public let relationships: [ATUnion.GetRelationshipsOutputRelationshipUnion]
+
+        enum CodingKeys: String, CodingKey {
+            case actorDID = "actor"
+            case relationships
+        }
     }
 }

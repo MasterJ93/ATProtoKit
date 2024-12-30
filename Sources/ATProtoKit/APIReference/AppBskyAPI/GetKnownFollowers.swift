@@ -19,7 +19,7 @@ extension ATProtoKit {
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/graph/getKnownFollowers.json
     /// 
     /// - Parameters:
-    ///   - actor: The user account to check for mutual followers.
+    ///   - actor: The AT Identifier of the user account to check for mutual followers.
     ///   - limit: The number of items the list will hold. Optional. Defaults to `50`.
     ///   - cursor: The mark used to indicate the starting point for the next set
     ///   of results. Optional.

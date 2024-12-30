@@ -23,12 +23,11 @@ extension AppBskyLexicon.Graph {
         public let cid: String
 
         /// The name of the list.
+        ///
+        /// - Important: Current maximum length is 64 characters.
         public let name: String
 
         /// The purpose of the user list.
-        ///
-        /// - Important: Current maximum length is 64 characters. This library will truncate the
-        /// `String` to the maximum number of characters if it does go over.
         public let purpose: ListPurpose
 
         /// The avatar image URL of the user list. Optional.
@@ -117,8 +116,7 @@ extension AppBskyLexicon.Graph {
 
         /// The name of the user list.
         ///
-        /// - Important: Current maximum length is 64 characters. This library will truncate the
-        /// `String` to the maximum number of characters if it does go over.
+        /// - Important: Current maximum length is 64 characters.
         public let name: String
 
         /// The purpose of the user list.
@@ -126,8 +124,7 @@ extension AppBskyLexicon.Graph {
 
         /// The description of the user list. Optional.
         ///
-        /// - Important: Current maximum length is 300 characters. This library will truncate the
-        /// `String` to the maximum number of characters if it does go over.
+        /// - Important: Current maximum length is 300 characters.
         public var description: String?
 
         /// An array of facets contained in the post's text. Optional.
@@ -193,12 +190,8 @@ extension AppBskyLexicon.Graph {
             try container.encode(self.uri, forKey: .uri)
             try container.encode(self.cid, forKey: .cid)
             try container.encode(self.creator, forKey: .creator)
-            // Truncate `name` to 64 characters before encoding.
             try truncatedEncode(self.name, withContainer: &container, forKey: .name, upToCharacterLength: 64)
             try container.encode(self.purpose, forKey: .purpose)
-
-            // Truncate `description` to 3000 characters before encoding
-            // `maxGraphemes`'s limit is 300, but `String.count` should respect that limit
             try truncatedEncodeIfPresent(self.description, withContainer: &container, forKey: .description, upToCharacterLength: 300)
             try container.encodeIfPresent(self.descriptionFacets, forKey: .descriptionFacets)
             try container.encodeIfPresent(self.avatarImageURL, forKey: .avatarImageURL)
@@ -265,9 +258,13 @@ extension AppBskyLexicon.Graph {
         public let list: AppBskyLexicon.Graph.ListViewBasicDefinition?
 
         /// An array of list items. Optional.
+        ///
+        /// - Important: Current maximum length is 12 items.
         public let listItemsSample: [AppBskyLexicon.Graph.ListItemViewDefinition]?
 
         /// An array of feeds. Optional.
+        ///
+        /// - Important: Current maximum length is 3 items.
         public let feeds: [AppBskyLexicon.Feed.GeneratorViewDefinition]?
 
         /// The number of users that have joined the service through the starter pack within the

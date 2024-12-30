@@ -20,6 +20,6 @@ extension AppBskyLexicon.Graph {
     public struct UnmuteThreadRequestBody: Sendable, Codable {
 
         /// The URI of the root of the post.
-        public let root: String
+        public let rootURI: String
     }
 }

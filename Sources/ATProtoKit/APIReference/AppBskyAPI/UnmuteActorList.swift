@@ -18,11 +18,11 @@ extension ATProtoKit {
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/graph/unmuteActorList.json
     ///
-    /// - Parameter listURI: The URI of a list.
+    /// - Parameter uri: The URI of a list.
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
-    public func unmuteActorList(_ listURI: String) async throws {
+    public func unmuteActorList(_ uri: String) async throws {
         guard session != nil,
               let accessToken = session?.accessToken else {
             throw ATRequestPrepareError.missingActiveSession
@@ -34,7 +34,7 @@ extension ATProtoKit {
         }
 
         let requestBody = AppBskyLexicon.Graph.UnmuteActorListRequestBody(
-            listURI: listURI
+            listURI: uri
         )
 
         do {
