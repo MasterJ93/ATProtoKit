@@ -28,8 +28,8 @@ extension ATProtoAdmin {
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func disableInviteCodes(
-        codes: [String],
-        accountDIDs: [String]
+        _ codes: [String],
+        for accountDIDs: [String]
     ) async throws {
         guard session != nil,
               let accessToken = session?.accessToken else {

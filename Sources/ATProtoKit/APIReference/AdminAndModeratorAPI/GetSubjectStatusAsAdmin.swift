@@ -22,7 +22,7 @@ extension ATProtoAdmin {
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/admin/getSubjectStatus.json
     ///
     /// - Parameters:
-    ///   - subjectDID: The decentralized identifier (DID) of the subject.
+    ///   - did: The decentralized identifier (DID) of the subject.
     ///   - subjectURI: The URI of the subject.
     ///   - subjectBlobCIDHash: The CID hash of the blob for the subject.
     /// - Returns: The status of a subject.
@@ -30,7 +30,7 @@ extension ATProtoAdmin {
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func getSubjectStatus(
-        _ subjectDID: String,
+        _ did: String,
         subjectURI: String,
         subjectBlobCIDHash: String
     ) async throws -> ComAtprotoLexicon.Admin.GetSubjectStatusOutput {
@@ -45,7 +45,7 @@ extension ATProtoAdmin {
         }
 
         let queryItems = [
-            ("did", subjectDID),
+            ("did", did),
             ("uri", subjectURI),
             ("blob", subjectBlobCIDHash)
         ]

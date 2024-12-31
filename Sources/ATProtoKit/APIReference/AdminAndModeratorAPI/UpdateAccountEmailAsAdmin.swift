@@ -22,13 +22,13 @@ extension ATProtoAdmin {
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/admin/updateAccountEmail.json
     ///
     /// - Parameters:
-    ///   - accountDID: The decentralized identifier (DID) of the user account.
+    ///   - account: The AT Identifier ot decentralized identifier (DID) of the user account.
     ///   - newEmail: The new email address the user wants to change to.
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func updateAccountEmail(
-        for accountDID: String,
+        for account: String,
         newEmail: String
     ) async throws {
         guard session != nil,
@@ -42,7 +42,7 @@ extension ATProtoAdmin {
         }
 
         let requestBody = ComAtprotoLexicon.Admin.UpdateAccountEmailRequestBody(
-            accountDID: accountDID,
+            account: account,
             accountEmail: newEmail
         )
 

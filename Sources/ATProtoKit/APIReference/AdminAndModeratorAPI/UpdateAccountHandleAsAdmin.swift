@@ -22,13 +22,13 @@ extension ATProtoAdmin {
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/admin/updateAccountHandle.json
     ///
     /// - Parameters:
-    ///   - accountDID: The decentralized identifier (DID) of the user account.
+    ///   - did: The decentralized identifier (DID) of the user account.
     ///   - newAccountHandle: The new handle for the user account.
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func updateAccountHandle(
-        for accountDID: String,
+        for did: String,
         newAccountHandle: String
     ) async throws {
         guard session != nil,
@@ -42,7 +42,7 @@ extension ATProtoAdmin {
         }
 
         let requestBody = ComAtprotoLexicon.Admin.UpdateAccountHandleRequestBody(
-            accountDID: accountDID,
+            accountDID: did,
             accountHandle: newAccountHandle
         )
 

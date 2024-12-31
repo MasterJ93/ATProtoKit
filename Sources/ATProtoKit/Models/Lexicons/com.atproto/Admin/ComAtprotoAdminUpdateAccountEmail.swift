@@ -19,14 +19,14 @@ extension ComAtprotoLexicon.Admin {
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/admin/updateAccountEmail.json
     public struct UpdateAccountEmailRequestBody: Sendable, Codable {
 
-        /// The decentralized identifier (DID) of the account.
-        public let accountDID: String
+        /// The AT Identifier or decentralized identifier (DID) of the account.
+        public let account: String
 
         /// The new email account the user wants to change to.
         public let accountEmail: String
 
         enum CodingKeys: String, CodingKey {
-            case accountDID = "account"
+            case account
             case accountEmail = "email"
         }
     }

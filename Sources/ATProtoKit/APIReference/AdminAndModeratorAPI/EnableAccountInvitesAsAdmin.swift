@@ -24,14 +24,14 @@ extension ATProtoAdmin {
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/admin/enableAccountInvites.json
     ///
     /// - Parameters:
-    ///   - accountDID: The decentralized identifier (DID) of the user's account.
+    ///   - did: The decentralized identifier (DID) of the user's account.
     ///   - note: A note as to why the user account is getting the ability to receive invite
     ///   codes reinstated. Optional.
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func enableAccountInvites(
-        for accountDID: String,
+        for did: String,
         note: String? = nil
     ) async throws {
         guard session != nil,
@@ -45,7 +45,7 @@ extension ATProtoAdmin {
         }
 
         let requestBody = ComAtprotoLexicon.Admin.EnableAccountInvitesRequestBody(
-            accountDID: accountDID,
+            accountDID: did,
             note: note
         )
 

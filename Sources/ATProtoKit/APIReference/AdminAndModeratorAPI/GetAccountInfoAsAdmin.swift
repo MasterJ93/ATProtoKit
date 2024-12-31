@@ -23,12 +23,12 @@ extension ATProtoAdmin {
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/admin/getAccountInfo.json
     ///
-    /// - Parameter accountDID: The decentralized identifier (DID) of the user account.
+    /// - Parameter did: The decentralized identifier (DID) of the user account.
     /// - Returns: An account view.
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
-    public func getAccountInfo(_ accountDID: String) async throws -> ComAtprotoLexicon.Admin.AccountViewDefinition {
+    public func getAccountInfo(for did: String) async throws -> ComAtprotoLexicon.Admin.AccountViewDefinition {
         guard session != nil,
               let accessToken = session?.accessToken else {
             throw ATRequestPrepareError.missingActiveSession
@@ -40,7 +40,7 @@ extension ATProtoAdmin {
         }
 
         let queryItems = [
-            ("did", accountDID)
+            ("did", did)
         ]
 
         let queryURL: URL

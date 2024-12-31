@@ -74,6 +74,9 @@ extension ComAtprotoLexicon.Admin {
         /// The date and time a status has been deactivated.
         public let deactivatedAt: Date?
 
+        /// The threat signature of the account. Optional.
+        public let threatSignature: ComAtprotoLexicon.Admin.ThreatSignatureDefinition?
+
         public init(
             actorDID: String,
             handle: String,
@@ -85,7 +88,8 @@ extension ComAtprotoLexicon.Admin {
             areInvitesDisabled: Bool? = nil,
             emailConfirmedAt: Date?,
             inviteNote: String? = nil,
-            deactivatedAt: Date?
+            deactivatedAt: Date?,
+            threatSignature: ComAtprotoLexicon.Admin.ThreatSignatureDefinition? = nil
         ) {
             self.actorDID = actorDID
             self.handle = handle
@@ -98,6 +102,7 @@ extension ComAtprotoLexicon.Admin {
             self.emailConfirmedAt = emailConfirmedAt
             self.inviteNote = inviteNote
             self.deactivatedAt = deactivatedAt
+            self.threatSignature = threatSignature
         }
 
         public init(from decoder: any Decoder) throws {
@@ -114,6 +119,7 @@ extension ComAtprotoLexicon.Admin {
             self.emailConfirmedAt = try decodeDateIfPresent(from: container, forKey: .emailConfirmedAt)
             self.inviteNote = try container.decodeIfPresent(String.self, forKey: .inviteNote)
             self.deactivatedAt = try decodeDateIfPresent(from: container, forKey: .deactivatedAt)
+            self.threatSignature = try container.decodeIfPresent(ComAtprotoLexicon.Admin.ThreatSignatureDefinition.self, forKey: .threatSignature)
         }
 
         public func encode(to encoder: Encoder) throws {
@@ -130,6 +136,7 @@ extension ComAtprotoLexicon.Admin {
             try encodeDateIfPresent(self.emailConfirmedAt, with: &container, forKey: .emailConfirmedAt)
             try container.encodeIfPresent(self.inviteNote, forKey: .inviteNote)
             try encodeDateIfPresent(self.deactivatedAt, with: &container, forKey: .deactivatedAt)
+            try container.encodeIfPresent(self.threatSignature, forKey: .threatSignature)
         }
 
         enum CodingKeys: String, CodingKey {
@@ -144,6 +151,7 @@ extension ComAtprotoLexicon.Admin {
             case emailConfirmedAt
             case inviteNote
             case deactivatedAt
+            case threatSignature
         }
     }
 
@@ -183,5 +191,19 @@ extension ComAtprotoLexicon.Admin {
             case cidHash = "cid"
             case recordURI = "recordUri"
         }
+    }
+
+    /// A definition model for a threat signature.
+    ///
+    /// - SeeAlso: This is based on the [`com.atproto.admin.defs`][github] lexicon.
+    ///
+    /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/admin/defs.json
+    public struct ThreatSignatureDefinition: Sendable, Codable {
+
+        /// The property of the threat signature.
+        public let property: String
+
+        /// The value of the threat signature.
+        public let value: String
     }
 }

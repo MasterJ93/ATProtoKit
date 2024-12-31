@@ -10,7 +10,7 @@ import Foundation
 extension ATProtoAdmin {
 
     /// Updates the password of a user account as an administrator.
-    /// 
+    ///
     /// - Note: According to the AT Protocol specifications: "Update the password for a user
     /// account as an administrator."
     ///
@@ -19,13 +19,13 @@ extension ATProtoAdmin {
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/admin/updateAccountPassword.json
     ///
     /// - Parameters:
-    ///   - accountDID: The decentralized identifier (DID) of the user account.
+    ///   - did: The decentralized identifier (DID) of the user account.
     ///   - newPassword: The new password for the user account.
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func updateAccountPassword(
-        for accountDID: String,
+        for did: String,
         newPassword: String
     ) async throws {
         guard session != nil,
@@ -39,7 +39,7 @@ extension ATProtoAdmin {
         }
 
         let requestBody = ComAtprotoLexicon.Admin.UpdateAccountPasswordRequestBody(
-            accountDID: accountDID,
+            accountDID: did,
             newPassword: newPassword
         )
 

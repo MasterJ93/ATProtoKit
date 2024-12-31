@@ -29,7 +29,7 @@ extension ATProtoAdmin {
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
-    public func updateSubjectStatusAsAdmin(
+    public func updateSubjectStatus(
         _ subject: ATUnion.AdminUpdateSubjectStatusUnion,
         takedown: ComAtprotoLexicon.Admin.StatusAttributesDefinition? = nil,
         deactivated: ComAtprotoLexicon.Admin.StatusAttributesDefinition? = nil

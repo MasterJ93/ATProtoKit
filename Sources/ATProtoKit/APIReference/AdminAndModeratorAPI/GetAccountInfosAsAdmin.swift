@@ -23,12 +23,12 @@ extension ATProtoAdmin {
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/admin/getAccountInfos.json
     ///
-    /// - Parameter accountDIDs: An array of decentralized identifiers (DIDs) of user accounts.
+    /// - Parameter dids: An array of decentralized identifiers (DIDs) of user accounts.
     /// - Returns: An array of user account information.
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
-    public func getAccountInfos(_ accountDIDs: [String]) async throws -> ComAtprotoLexicon.Admin.GetAccountInfosOutput {
+    public func getAccountInfos(for dids: [String]) async throws -> ComAtprotoLexicon.Admin.GetAccountInfosOutput {
         guard session != nil,
               let accessToken = session?.accessToken else {
             throw ATRequestPrepareError.missingActiveSession
@@ -39,7 +39,7 @@ extension ATProtoAdmin {
             throw ATRequestPrepareError.invalidRequestURL
         }
 
-        let queryItems = accountDIDs.map { ("dids", $0) }
+        let queryItems = dids.map { ("dids", $0) }
 
         let queryURL: URL
 
