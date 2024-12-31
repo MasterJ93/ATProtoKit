@@ -38,7 +38,8 @@ extension ATProtoBlueskyChat {
                 isRelatedToBskyChat: true
             )
 
-            _ = try await APIClientService.shared.sendRequest(request)
+            let response = try await APIClientService.shared.sendRequest(request)
+
         } catch {
             throw error
         }

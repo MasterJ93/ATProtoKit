@@ -188,15 +188,6 @@ public actor APIClientService {
         return decodedData
     }
 
-    /// Sends a `URLRequest` without expecting a specific decoded response type.
-    ///
-    /// - Parameters:
-    ///   - request: The `URLRequest` to send.
-    ///   - body: An optional `Encodable` body to be encoded and attached to the request.
-    public func sendRequest(_ request: URLRequest, withEncodingBody body: (Encodable & Sendable)? = nil) async throws {
-        _ = try await self.performRequest(request, withEncodingBody: body)
-    }
-
     /// Sends a `URLRequest` in order to receive a data object.
     ///
     /// Typically, this will be used for getting a blob object as the output. However, this is

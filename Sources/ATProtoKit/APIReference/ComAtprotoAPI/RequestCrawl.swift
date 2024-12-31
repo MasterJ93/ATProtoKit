@@ -54,7 +54,7 @@ extension ATProtoKit {
                 authorizationValue: nil
             )
 
-            try await APIClientService.shared.sendRequest(
+            _ = try await APIClientService.shared.sendRequest(
                 request,
                 withEncodingBody: requestBody
             )
