@@ -19,7 +19,7 @@ extension ATProtoKit {
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/repo/listRecords.json
     ///
     /// - Parameters:
-    ///   - repositoryDID: The decentralized identifier (DID) or handle of the repository.
+    ///   - repository: The decentralized identifier (DID) or handle of the repository.
     ///   - collection: The Namespaced Identifier (NSID) of the repository.
     ///   - limit: The number of items that can be in the list. Optional. Defaults to `50`.
     ///   - cursor: The mark used to indicate the starting point for the next set
@@ -31,7 +31,7 @@ extension ATProtoKit {
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func listRecords(
-        from repositoryDID: String,
+        from repository: String,
         collection: String,
         limit: Int? = 50,
         cursor: String? = nil,
@@ -45,7 +45,7 @@ extension ATProtoKit {
 
         var queryItems = [(String, String)]()
 
-        queryItems.append(("repo", repositoryDID))
+        queryItems.append(("repo", repository))
 
         queryItems.append(("collection", collection))
 

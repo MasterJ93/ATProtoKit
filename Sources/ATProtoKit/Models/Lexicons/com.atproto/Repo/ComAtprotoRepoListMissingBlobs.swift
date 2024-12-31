@@ -15,8 +15,8 @@ extension ComAtprotoLexicon.Repository {
         /// A data model definition for a record blob.
         public struct RecordBlob: Sendable, Codable {
 
-            /// The CID hash of the record.
-            public let recordCID: String
+            /// The CID hash of the blob.
+            public let blobCID: String
 
             /// The URI of the record.
             public let recordURI: String

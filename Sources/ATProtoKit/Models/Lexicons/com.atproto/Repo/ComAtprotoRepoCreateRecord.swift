@@ -32,8 +32,7 @@ extension ComAtprotoLexicon.Repository {
 
         /// The record key of the collection. Optional.
         ///
-        /// - Important: Current maximum length is 15 characters. This library will automatically
-        /// truncate the `String` to the maximum length if it does go over the limit.
+        /// - Important: Current maximum length is 512 characters.
         ///
         /// - Note: According to the AT Protocol specifications: "The Record Key."
         public let recordKey: String?
@@ -62,7 +61,7 @@ extension ComAtprotoLexicon.Repository {
 
             try container.encode(self.repositoryDID, forKey: .repositoryDID)
             try container.encode(self.collection, forKey: .collection)
-            try truncatedEncodeIfPresent(self.recordKey, withContainer: &container, forKey: .recordKey, upToCharacterLength: 15)
+            try truncatedEncodeIfPresent(self.recordKey, withContainer: &container, forKey: .recordKey, upToCharacterLength: 512)
             try container.encodeIfPresent(self.shouldValidate, forKey: .shouldValidate)
             try container.encode(self.record, forKey: .record)
             try container.encodeIfPresent(self.swapCommit, forKey: .swapCommit)
@@ -89,13 +88,13 @@ extension ComAtprotoLexicon.Repository {
     public struct CreateRecordOutput: Sendable, Codable {
 
         /// The URI of the record.
-        public let recordURI: String
+        public let uri: String
 
         /// The CID of the record.
-        public let recordCID: String
+        public let cid: String
 
         /// The commit of the record. Optional.
-        public let recordCommit: ComAtprotoLexicon.Repository.CommitMetaDefinition?
+        public let commit: ComAtprotoLexicon.Repository.CommitMetaDefinition?
 
         /// The status of the write operation's validation. Optional.
         public let validationStatus: ValidationStatus?

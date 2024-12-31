@@ -23,22 +23,22 @@ extension ComAtprotoLexicon.Repository {
         public let recordURI: String
 
         /// The CID hash for the record.
-        public let cidHash: String
+        public let recordCID: String
 
         public init(recordURI: String, cidHash: String) {
             self.recordURI = recordURI
-            self.cidHash = cidHash
+            self.recordCID = cidHash
         }
 
         public init(from decoder: Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
             self.recordURI = try container.decode(String.self, forKey: .recordURI)
-            self.cidHash = try container.decode(String.self, forKey: .cidHash)
+            self.recordCID = try container.decode(String.self, forKey: .recordCID)
         }
 
         enum CodingKeys: String, CodingKey {
             case recordURI = "uri"
-            case cidHash = "cid"
+            case recordCID = "cid"
         }
     }
 }

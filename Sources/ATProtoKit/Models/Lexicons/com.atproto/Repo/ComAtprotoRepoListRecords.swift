@@ -9,6 +9,19 @@ import Foundation
 
 extension ComAtprotoLexicon.Repository {
 
+    /// A definition model for listing records.
+    public struct ListRecords: Sendable, Codable {
+
+        /// The URI of the record.
+        public let uri: String
+
+        /// The CID hash for the record.
+        public let cid: String
+
+        /// The value for the record.
+        public let value: UnknownType
+    }
+
     /// An output model for listing records.
     ///
     /// - Note: According to the AT Protocol specifications: "List a range of records in a

@@ -614,7 +614,7 @@ extension ATProtoBluesky {
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func addQuotePostToEmbed(_ strongReference: ComAtprotoLexicon.Repository.StrongReference) async throws -> ATUnion.PostEmbedUnion {
         let record = try await ATProtoTools().fetchRecordForURI(strongReference.recordURI)
-        let reference = ComAtprotoLexicon.Repository.StrongReference(recordURI: record.recordURI, cidHash: record.recordCID)
+        let reference = ComAtprotoLexicon.Repository.StrongReference(recordURI: record.uri, cidHash: record.cid)
         let embedRecord = AppBskyLexicon.Embed.RecordDefinition(record: reference)
 
         return .record(embedRecord)

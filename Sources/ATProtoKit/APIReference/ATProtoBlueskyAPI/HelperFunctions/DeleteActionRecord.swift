@@ -1,6 +1,6 @@
 //
 //  DeleteActionRecord.swift
-//  ATProtoKit
+//
 //
 //  Created by Andy Lin on 11/27/24.
 //
@@ -58,7 +58,7 @@ extension ATProtoBluesky {
 
                     let recordURI = "at://\(recordQuery.repository)/\(recordQuery.collection)/\(recordQuery.recordKey)"
 
-                    guard output.recordURI == recordURI else {
+                    guard output.uri == recordURI else {
                         throw ATRequestPrepareError.invalidRecord
                     }
                 } catch {
@@ -76,7 +76,7 @@ extension ATProtoBluesky {
                                                                                   pdsURL: sessionURL
                     )
 
-                    guard recordURI == output.recordURI else {
+                    guard recordURI == output.uri else {
                         throw ATRequestPrepareError.invalidRecord
                     }
 

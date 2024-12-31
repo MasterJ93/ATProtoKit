@@ -20,11 +20,11 @@ extension ComAtprotoLexicon.Repository {
         public let commitCID: String
 
         /// The revision of the commit.
-        public let commitRevision: String
+        public let revision: String
 
         enum CodingKeys: String, CodingKey {
             case commitCID = "cid"
-            case commitRevision = "rev"
+            case revision = "rev"
         }
     }
 }

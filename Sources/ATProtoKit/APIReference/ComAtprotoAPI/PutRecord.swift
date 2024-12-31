@@ -34,7 +34,7 @@ extension ATProtoKit {
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func putRecord(
-        _ repositoryDID: String,
+        repository: String,
         collection: String,
         recordKey: String,
         shouldValidate: Bool? = true,
@@ -53,7 +53,7 @@ extension ATProtoKit {
         }
 
         let requestBody = ComAtprotoLexicon.Repository.PutRecordRequestBody(
-            repositoryDID: repositoryDID,
+            repository: repository,
             collection: collection,
             recordKey: recordKey,
             shouldValidate: shouldValidate,

@@ -23,7 +23,7 @@ extension ComAtprotoLexicon.Repository {
         ///
         /// - Note: According to the AT Protocol specifications: "The handle or DID of the repo
         /// (aka, current account)."
-        public let repositoryDID: String
+        public let repository: String
 
         /// The NSID of the record.
         ///
@@ -64,7 +64,7 @@ extension ComAtprotoLexicon.Repository {
         public let swapCommit: String?
 
         enum CodingKeys: String, CodingKey {
-            case repositoryDID = "repo"
+            case repository = "repo"
             case collection
             case recordKey = "rkey"
             case shouldValidate = "validate"
@@ -85,13 +85,13 @@ extension ComAtprotoLexicon.Repository {
     public struct PutRecordOutput: Sendable, Codable {
 
         /// The URI of the record.
-        public let recordURI: String
+        public let uri: String
 
         /// The CID of the record.
-        public let recordCID: String
+        public let cid: String
 
         /// The commit of the record. Optional.
-        public let recordCommit: ComAtprotoLexicon.Repository.CommitMetaDefinition?
+        public let commit: ComAtprotoLexicon.Repository.CommitMetaDefinition?
 
         /// The status of the write operation's validation.
         public let validationStatus: ValidationStatus?

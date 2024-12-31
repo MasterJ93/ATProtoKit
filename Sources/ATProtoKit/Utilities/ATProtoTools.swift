@@ -270,7 +270,7 @@ public class ATProtoTools {
     /// - Returns: A ``AppBskyLexicon/Feed/PostRecord/ReplyReference``.
     @available(*, deprecated, message: "This will be removed in the future.")
     public func createReplyReference(from record: ComAtprotoLexicon.Repository.GetRecordOutput) -> AppBskyLexicon.Feed.PostRecord.ReplyReference {
-        let reference = ComAtprotoLexicon.Repository.StrongReference(recordURI: record.recordURI, cidHash: record.recordCID)
+        let reference = ComAtprotoLexicon.Repository.StrongReference(recordURI: record.uri, cidHash: record.cid)
 
         return AppBskyLexicon.Feed.PostRecord.ReplyReference(root: reference, parent: reference)
     }

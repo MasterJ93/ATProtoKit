@@ -19,7 +19,7 @@ extension ATProtoKit {
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/repo/applyWrites.json
     ///
     /// - Parameters:
-    ///   - repositoryDID: The decentralized identifier (DID) or handle of the repository.
+    ///   - did: The decentralized identifier (DID) or handle of the repository.
     ///   - shouldValidate: Indicates whether the operation should be validated. Optional. Defaults to `true`.
     ///   - writes: The write operation itself.
     ///   - swapCommit: Swaps out an operation based on the CID. Optional.
@@ -27,7 +27,7 @@ extension ATProtoKit {
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func applyWrites(
-        _ repositoryDID: String,
+        repository did: String,
         shouldValidate: Bool? = true,
         writes: [ATUnion.ApplyWritesUnion],
         swapCommit: String? = nil
@@ -43,7 +43,7 @@ extension ATProtoKit {
         }
 
         let requestBody = ComAtprotoLexicon.Repository.ApplyWritesRequestBody(
-            repositoryDID: repositoryDID,
+            repositoryDID: did,
             shouldValidate: shouldValidate,
             writes: writes,
             swapCommit: swapCommit

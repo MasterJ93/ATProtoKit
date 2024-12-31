@@ -17,18 +17,12 @@ extension ComAtprotoLexicon.Repository {
     public struct GetRecordOutput: Sendable, Codable {
 
         /// The URI of the record.
-        public let recordURI: String
-        
+        public let uri: String
+
         /// The CID hash for the record.
-        public let recordCID: String
-        
+        public let cid: String
+
         /// The value for the record.
         public let value: UnknownType?
-        
-        enum CodingKeys: String, CodingKey {
-            case recordURI = "uri"
-            case recordCID = "cid"
-            case value = "value"
-        }
     }
 }

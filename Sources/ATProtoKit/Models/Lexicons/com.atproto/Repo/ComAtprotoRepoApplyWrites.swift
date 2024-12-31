@@ -33,6 +33,8 @@ extension ComAtprotoLexicon.Repository {
             public let collection: String
 
             /// The record key of the write operation. Optional.
+            ///
+            /// - Important: Current maximum length is 15 characters.
             public let recordKey: String?
 
             /// The value of the write operation.
