@@ -15,9 +15,11 @@ extension ATProtoBlueskyChat {
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/chat/bsky/actor/exportAccountData.json
     ///
+    /// - Returns: The user account's chat data in a JSONL format.
+    ///
     ///- Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
-    public func exportAccountData() async throws {
+    public func exportAccountData() async throws -> Data {
         guard session != nil,
               let accessToken = session?.accessToken else {
             throw ATRequestPrepareError.missingActiveSession
@@ -29,6 +31,7 @@ extension ATProtoBlueskyChat {
         }
 
         do {
+            // TODO: Figure out what exactly should be done here.
             let request = APIClientService.createRequest(
                 forRequest: requestURL,
                 andMethod: .get,
@@ -40,6 +43,7 @@ extension ATProtoBlueskyChat {
 
             let response = try await APIClientService.shared.sendRequest(request)
 
+            return response
         } catch {
             throw error
         }

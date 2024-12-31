@@ -24,7 +24,7 @@ extension ChatBskyLexicon.Actor {
         /// - Warning: The value must not change.
         public static let type: String = "chat.bsky.actor.declaration"
 
-        /// Establishes rule for who can message the user account.
+        /// Establishes a rule for who can message the user account.
         public let allowIncoming: AllIncoming
 
         public init(allowIncoming: AllIncoming) {
