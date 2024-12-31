@@ -19,9 +19,10 @@ extension ATProtoKit {
     /// 
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/sync/getBlob.json
     ///
-    /// - Parameter accountDID: The decentralized identifier (DID) of the account.
-    /// - Parameter cidHash: The CID hash of the blob.
-    /// - Parameter pdsURL: The URL of the Personal Data Server (PDS).
+    /// - Parameters:
+    ///   - accountDID: The decentralized identifier (DID) of the account.
+    ///   - cid: The CID hash of the blob.
+    ///   - pdsURL: The URL of the Personal Data Server (PDS).
     /// Defaults to `https://bsky.social`.
     /// - Returns: The data blob owned by the user account.
     ///
@@ -29,7 +30,7 @@ extension ATProtoKit {
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public static func getBlob(
         from accountDID: String,
-        cidHash: String,
+        cid: String,
         pdsURL: String? = "https://bsky.social"
     ) async throws -> Data {
         guard let sessionURL = pdsURL,
@@ -39,7 +40,7 @@ extension ATProtoKit {
 
         let queryItems = [
             ("did", accountDID),
-            ("cid", cidHash)
+            ("cid", cid)
         ]
 
         let queryURL: URL

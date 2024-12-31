@@ -2,14 +2,6 @@
 
 ## Topics
 
-### com.atproto.sync.getBlob
-
-- ``ComAtprotoLexicon/Sync/GetBlobOutput``
-
-### com.atproto.sync.getBlocks
-
-- ``ComAtprotoLexicon/Sync/GetBlocksOutput``
-
 ### com.atproto.sync.getLatestCommit
 
 - ``ComAtprotoLexicon/Sync/GetLatestCommitOutput``

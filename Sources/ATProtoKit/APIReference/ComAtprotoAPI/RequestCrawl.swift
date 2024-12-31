@@ -16,9 +16,9 @@ extension ATProtoKit {
     /// stream events caused the crawling service to disconnect. Does not require auth;
     /// implemented by Relay."
     ///
-    /// - SeeAlso: This is based on the [`com.atproto.sync.notifyOfUpdate`][github] lexicon.
+    /// - SeeAlso: This is based on the [`com.atproto.sync.requestCrawl`][github] lexicon.
     ///
-    /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/sync/notifyOfUpdate.json
+    /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/sync/requestCrawl.json
     ///
     /// - Parameters:
     ///   - crawlingHostname: The hostname that the crawling service resides in. Optional.
@@ -41,7 +41,7 @@ extension ATProtoKit {
             throw ATRequestPrepareError.invalidHostnameURL
         }
 
-        let requestBody = ComAtprotoLexicon.Sync.Crawler(
+        let requestBody = ComAtprotoLexicon.Sync.RequestCrawlRequestBody(
             crawlingHostname: finalhostnameURL
         )
 

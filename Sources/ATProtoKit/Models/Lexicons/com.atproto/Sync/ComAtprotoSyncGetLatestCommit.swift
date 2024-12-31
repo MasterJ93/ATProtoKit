@@ -20,13 +20,13 @@ extension ComAtprotoLexicon.Sync {
     public struct GetLatestCommitOutput: Sendable, Codable {
 
         /// The commit CID of the repository.
-        public let commitCID: String
+        public let cid: String
 
         /// The repository's revision.
         public let revision: String
 
         enum CodingKeys: String, CodingKey {
-            case commitCID = "cid"
+            case cid
             case revision = "rev"
         }
     }

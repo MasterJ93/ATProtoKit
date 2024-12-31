@@ -19,7 +19,7 @@ extension ATProtoKit {
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/sync/getRecord.json
     ///
     /// - Parameters:
-    ///   - repository: The repository that owns the record.
+    ///   - repositoryDID: The repository's decentralized identifiers (DID) that owns the record.
     ///   - collection: The Namespaced Identifier (NSID) of the record.
     ///   - recordKey: The record key of the record.
     ///   - recordCID: The CID hash of the record. Optional.
@@ -29,7 +29,7 @@ extension ATProtoKit {
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func getSyncRecord(
-        from repository: String,
+        from repositoryDID: String,
         collection: String,
         recordKey: String,
         recordCID: String? = nil,
@@ -41,7 +41,7 @@ extension ATProtoKit {
         }
 
         var queryItems = [
-            ("repo", repository),
+            ("repo", repositoryDID),
             ("collection", collection),
             ("rkey", recordKey)
         ]

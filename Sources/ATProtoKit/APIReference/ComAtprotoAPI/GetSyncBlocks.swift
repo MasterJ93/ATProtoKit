@@ -25,7 +25,7 @@ extension ATProtoKit {
     ///
     /// - Parameters:
     ///   - repositoryDID: The decentralized identifier (DID) of the repository.
-    ///   - repositoryCIDHashes: An array of CID hashes from the repository.
+    ///   - repositoryCIDs: An array of CID hashes from the repository.
     ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `nil`.
     /// - Returns: A .car file, containing CBOR-encoded data of the repository blocks.
     ///
@@ -33,7 +33,7 @@ extension ATProtoKit {
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func getSyncBlocks(
         from repositoryDID: String,
-        by repositoryCIDHashes: [String],
+        by repositoryCIDs: [String],
         pdsURL: String? = nil
     ) async throws -> Data {
         guard let sessionURL = pdsURL != nil ? pdsURL : session?.pdsURL,
@@ -44,7 +44,7 @@ extension ATProtoKit {
         var queryItems = [(String, String)]()
 
         queryItems.append(("did", repositoryDID))
-        queryItems += repositoryCIDHashes.map { ("cids", $0) }
+        queryItems += repositoryCIDs.map { ("cids", $0) }
 
         let queryURL: URL
 

@@ -11,7 +11,7 @@ extension ATProtoKit {
 
     /// Notifies the crawling service to re-index or resume crawling.
     /// 
-    /// - Note: If `crawlingHostname` and `pdsURL` are the same, then it's best not to give
+    /// If `crawlingHostname` and `pdsURL` are the same, then it's best not to give
     /// a value to `hostname`.
     ///
     /// - Note: According to the AT Protocol specifications: "Notify a crawling service of a recent
@@ -30,7 +30,7 @@ extension ATProtoKit {
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func notifyOfUpdate(
-        in crawlingHostname: String? = nil,
+        in crawlingHostname: URL,
         pdsURL: String? = nil
     ) async throws {
         guard let sessionURL = pdsURL != nil ? pdsURL : session?.pdsURL,
@@ -38,14 +38,8 @@ extension ATProtoKit {
             throw ATRequestPrepareError.invalidRequestURL
         }
 
-        let hostnameURL = URL(string: crawlingHostname ?? sessionURL)
-
-        guard let finalhostnameURL = hostnameURL else {
-            throw ATRequestPrepareError.invalidHostnameURL
-        }
-
-        let requestBody = ComAtprotoLexicon.Sync.Crawler(
-            crawlingHostname: finalhostnameURL
+        let requestBody = ComAtprotoLexicon.Sync.NotifyOfUpdateRequestBody(
+            crawlingHostname: crawlingHostname
         )
 
         do {

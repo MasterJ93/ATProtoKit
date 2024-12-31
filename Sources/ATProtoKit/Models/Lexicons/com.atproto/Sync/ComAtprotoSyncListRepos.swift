@@ -9,6 +9,29 @@ import Foundation
 
 extension ComAtprotoLexicon.Sync {
 
+    /// A definition model for isting all decentralized identifiers (DIDs), revisions, and
+    /// commit CID hashes of given repositiories.
+    public struct ListRepositories: Sendable, Codable {
+
+        /// Indicates the status of the user account if it's inactivate.
+        ///
+        /// - Note: According to the AT Protocol specifications: "If active=false, this optional
+        /// field indicates a possible reason for why the account is not active. If active=false
+        /// and no status is supplied, then the host makes no claim for why the repository is no
+        /// longer being hosted."
+        public enum UserAccountStatus: String, Sendable, Codable {
+
+            /// Indicates the user account is inactive due to a takedown.
+            case takedown
+
+            /// Indicates the user account is inactivate due to a suspension.
+            case suspended
+
+            /// Indicates the user account is inactivate due to a deactivation.
+            case deactivated
+        }
+    }
+
     /// An output model for isting all decentralized identifiers (DIDs), revisions, and
     /// commit CID hashes of given repositiories.
     ///
@@ -51,7 +74,7 @@ extension ComAtprotoLexicon.Sync {
             public let isActive: Bool?
 
             /// The status of the repository. Optional.
-            public let status: UserAccountStatus?
+            public let status: ListRepositories.UserAccountStatus?
 
             enum CodingKeys: String, CodingKey {
                 case repositoryDID = "did"

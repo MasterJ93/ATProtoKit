@@ -20,7 +20,7 @@ extension ATProtoKit {
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/sync/getRepo.json
     ///
     /// - Parameters:
-    ///   - repositoryDID: The decentralized identifier (DID) or handle of the repository.
+    ///   - did: The decentralized identifier (DID) or handle of the repository.
     ///   - sinceRevision: The revision of the repository to list blobs starting from. Optional.
     ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `nil`.
     /// - Returns: A .car file, containing CBOR-encoded data of the full repository.
@@ -28,7 +28,7 @@ extension ATProtoKit {
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func getRepository(
-        _ repositoryDID: String,
+        by did: String,
         sinceRevision: String? = nil,
         pdsURL: String? = nil
     ) async throws -> Data {
@@ -39,7 +39,7 @@ extension ATProtoKit {
 
         var queryItems = [(String, String)]()
 
-        queryItems.append(("did", repositoryDID))
+        queryItems.append(("did", did))
 
         if let sinceRevision {
             queryItems.append(("since", sinceRevision))

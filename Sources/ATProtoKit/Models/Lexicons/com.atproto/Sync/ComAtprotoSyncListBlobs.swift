@@ -23,11 +23,11 @@ extension ComAtprotoLexicon.Sync {
         public let cursor: String?
 
         /// An array of CID hashes from a user account.
-        public let accountCIDHashes: [String]
+        public let accountCIDs: [String]
 
         enum CodingKeys: String, CodingKey {
             case cursor
-            case accountCIDHashes = "cids"
+            case accountCIDs = "cids"
         }
     }
 }
