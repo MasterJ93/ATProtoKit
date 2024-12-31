@@ -19,14 +19,14 @@ extension ATProtoBlueskyChat {
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/chat/bsky/moderation/updateActorAccess.json
     /// 
     /// - Parameters:
-    ///   - actorDID: The decentralized identifier (DID) of the user account.
+    ///   - did: The decentralized identifier (DID) of the user account.
     ///   - doesAllowAccess: Indicates whether the user account can acess direct messages.
     ///   - reference: A reference. Optional.
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func updateActorAccess(
-        actorDID: String,
+        by did: String,
         doesAllowAccess: Bool,
         reference: String? = nil
     ) async throws {
@@ -41,7 +41,7 @@ extension ATProtoBlueskyChat {
         }
 
         let requestBody = ChatBskyLexicon.Moderation.UpdateActorAccessRequestBody(
-            actorDID: actorDID,
+            actorDID: did,
             doesAllowAccess: doesAllowAccess,
             reference: reference
         )
