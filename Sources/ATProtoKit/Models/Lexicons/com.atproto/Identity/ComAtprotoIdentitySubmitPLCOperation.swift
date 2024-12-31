@@ -20,7 +20,7 @@ extension ComAtprotoLexicon.Identity {
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/identity/submitPlcOperation.json
     public struct SubmitPLCOperationRequestBody: Sendable, Codable {
 
-        /// The operation itself.
+        /// A PLC operation.
         public let operation: UnknownType
     }
 }

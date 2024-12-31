@@ -19,13 +19,13 @@ extension ATProtoKit {
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/identity/submitPlcOperation.json
     ///
-    /// - Parameter operation:
+    /// - Parameter operation: A PLC operation.
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func submitPLCOperation(_ operation: UnknownType) async throws {
         guard let sessionURL = session?.pdsURL,
-              let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.identity.identitySubmitPLCOperation") else {
+              let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.identity.submitPlcOperation") else {
             throw ATRequestPrepareError.invalidRequestURL
         }
 

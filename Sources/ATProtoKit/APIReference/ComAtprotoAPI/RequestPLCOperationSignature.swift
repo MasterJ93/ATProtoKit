@@ -9,7 +9,7 @@ import Foundation
 
 extension ATProtoKit {
 
-    /// Asks for an email that contains a code for a signed PLC operation.
+    /// Sends a request for an email that contains a code for a signed PLC operation.
     ///
     /// - Note: According to the AT Protocol specifications: "Request an email with a code to in
     /// order to request a signed PLC operation. Requires Auth."

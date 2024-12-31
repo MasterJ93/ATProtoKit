@@ -27,7 +27,7 @@ extension ATProtoKit {
     ///   - verificationMethods: A verification method recommeneded to be added in the
     ///   DID document. Optional.
     ///   - service: The service endpoint recommended in the DID document. Optional.
-    /// - Returns: The PLC operation itself.
+    /// - Returns: A signed PLC operation.
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
@@ -44,7 +44,7 @@ extension ATProtoKit {
         }
 
         guard let sessionURL = session?.pdsURL,
-              let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.identity.signPLCOperation") else {
+              let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.identity.signPlcOperation") else {
             throw ATRequestPrepareError.invalidRequestURL
         }
 

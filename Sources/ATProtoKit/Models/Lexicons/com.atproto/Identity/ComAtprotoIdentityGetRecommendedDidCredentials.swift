@@ -30,9 +30,9 @@ extension ComAtprotoLexicon.Identity {
         public let alsoKnownAs: [String]?
 
         /// A verification method recommeneded to be added in the DID document. Optional.
-        public let verificationMethods: VerificationMethod?
+        public let verificationMethods: UnknownType?
 
         /// The service endpoint recommended in the DID document. Optional.
-        public let service: ATService?
+        public let service: UnknownType?
     }
 }

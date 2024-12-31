@@ -49,7 +49,7 @@ extension ComAtprotoLexicon.Identity {
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/identity/signPlcOperation.json
     public struct SignPLCOperationOutput: Sendable, Codable {
 
-        /// The operation itself.
+        /// A signed PLC operation.
         public let operation: UnknownType
     }
 }
