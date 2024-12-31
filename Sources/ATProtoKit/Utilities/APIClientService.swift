@@ -206,10 +206,12 @@ public actor APIClientService {
     /// known and it's not a blob, however, then the other `sendRequest` methods are
     /// more appropriate.
     ///
-    /// - Parameter request: The `URLRequest` to send.
+    /// - Parameters:
+    ///   - request: The `URLRequest` to send.
+    ///   - body: An optional `Encodable` body to be encoded and attached to the request.
     /// - Returns: A `Data` object that contains the blob.
-    public func sendRequest(_ request: URLRequest) async throws -> Data {
-        let data = try await self.performRequest(request)
+    public func sendRequest(_ request: URLRequest, withEncodingBody body: (Encodable & Sendable)? = nil) async throws -> Data {
+        let data = try await self.performRequest(request, withEncodingBody: body)
         return data
     }
 
