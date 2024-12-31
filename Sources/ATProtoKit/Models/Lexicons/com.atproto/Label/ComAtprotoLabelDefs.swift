@@ -35,21 +35,20 @@ extension ComAtprotoLexicon.Label {
         ///
         /// - Note: According to the AT Protocol specifications: "AT URI of the record, repository
         /// (account), or other resource that this label applies to."
-        public let atURI: String
+        public let uri: String
 
         /// The CID hash of the resource the label applies to. Optional.
         ///
         /// - Note: According to the AT Protocol specifications: "Optionally, CID specifying the
         /// specific version of 'uri' resource this label applies to."
-        public let cidHash: String?
+        public let cid: String?
 
         /// The name of the label.
         ///
         /// - Note: According to the AT Protocol specifications: "The short string name of the
         /// value or type of this label."
         ///
-        /// - Important: Current maximum length is 128 characters. This library will automatically
-        /// truncate the `String` to the maximum length if it does go over the limit.
+        /// - Important: Current maximum length is 128 characters.
         public var name: String
 
         /// Indicates whether this label is negating a previously-used label. Optional.
@@ -81,8 +80,8 @@ extension ComAtprotoLexicon.Label {
 
             self.version = try container.decodeIfPresent(Int.self, forKey: .version)
             self.actorDID = try container.decode(String.self, forKey: .actorDID)
-            self.atURI = try container.decode(String.self, forKey: .atURI)
-            self.cidHash = try container.decodeIfPresent(String.self, forKey: .cidHash)
+            self.uri = try container.decode(String.self, forKey: .uri)
+            self.cid = try container.decodeIfPresent(String.self, forKey: .cid)
             self.name = try container.decode(String.self, forKey: .name)
             self.isNegated = try container.decodeIfPresent(Bool.self, forKey: .isNegated)
             self.timestamp = try decodeDate(from: container, forKey: .timestamp)
@@ -95,12 +94,9 @@ extension ComAtprotoLexicon.Label {
 
             try container.encodeIfPresent(self.version, forKey: .version)
             try container.encode(self.actorDID, forKey: .actorDID)
-            try container.encode(self.atURI, forKey: .atURI)
-            try container.encodeIfPresent(self.cidHash, forKey: .cidHash)
-
-            // Truncate `name` to 128 characters before encoding
+            try container.encode(self.uri, forKey: .uri)
+            try container.encodeIfPresent(self.cid, forKey: .cid)
             try truncatedEncode(self.name, withContainer: &container, forKey: .name, upToCharacterLength: 128)
-
             try container.encodeIfPresent(self.isNegated, forKey: .isNegated)
             try encodeDate(self.timestamp, with: &container, forKey: .timestamp)
             try encodeDateIfPresent(self.expiresOn, with: &container, forKey: .expiresOn)
@@ -110,8 +106,8 @@ extension ComAtprotoLexicon.Label {
         enum CodingKeys: String, CodingKey {
             case version = "ver"
             case actorDID = "src"
-            case atURI = "uri"
-            case cidHash = "cid"
+            case uri
+            case cid
             case name = "val"
             case isNegated = "neg"
             case timestamp = "cts"
@@ -132,12 +128,7 @@ extension ComAtprotoLexicon.Label {
         /// - Note: According to the AT Protocol specifications: "Metadata tags on an atproto
         /// record, published by the author within the record."
         ///
-        /// - Important: Current maximum length is 10 tags. This library will automatically
-        /// truncate the `Array` to the maximum length if it does go over the limit.
-        ///
-        /// - SeeAlso: This is based on the [`com.atproto.label.defs`][github] lexicon.
-        ///
-        /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/label/defs.json
+        /// - Important: Current maximum length is 10 items.
         public let values: [SelfLabelDefinition]
 
         public init(values: [SelfLabelDefinition]) {
@@ -153,7 +144,6 @@ extension ComAtprotoLexicon.Label {
         public func encode(to encoder: Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
 
-            // Truncate `values` to 10 items before encoding
             try truncatedEncode(self.values, withContainer: &container, forKey: .values, upToArrayLength: 10)
         }
 
@@ -178,14 +168,12 @@ extension ComAtprotoLexicon.Label {
         /// - Note: According to the AT Protocol specifications: "The short string name of the
         /// value or type of this label."
         ///
-        /// - Important: Current maximum length is 128 characters. This library will automatically
-        /// truncate the `String` to the maximum length if it does go over the limit.
+        /// - Important: Current maximum length is 128 characters.
         public let value: String
 
         public func encode(to encoder: Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
 
-            // Truncate `value` to 128 characters before encoding
             try truncatedEncode(self.value, withContainer: &container, forKey: .value, upToCharacterLength: 128)
         }
 
@@ -208,7 +196,9 @@ extension ComAtprotoLexicon.Label {
         ///
         /// - Important: This field can only contain lowercased letter and the hypen (-) character.
         /// This library will automatically convert uppercased letters to lowercased, as well as any
-        /// hashes other than the hypen into a hypen. All additional characters will be removed.
+        /// hashes other than the hypen into a hypen. All additional characters will be removed.\
+        /// \
+        /// Additionally, the current maximum length is 128 characters.
         ///
         /// - Note: According to the AT Protocol specifications: "The value of the label
         /// being defined. Must only include lowercase ascii and the '-' character ([a-z-]+)."
@@ -248,7 +238,6 @@ extension ComAtprotoLexicon.Label {
             var container = encoder.container(keyedBy: CodingKeys.self)
 
             // Ensure `value` is lowercased and only has the standard hyphen (-).
-            // Then, truncate `value` to 100 characters before encoding.
             try truncatedEncode(self.identifier.transformToLowerASCIIAndHyphen(), withContainer: &container, forKey: .identifier, upToCharacterLength: 100)
             try container.encode(self.severity, forKey: .severity)
             try container.encode(self.blurs, forKey: .blurs)
@@ -326,11 +315,15 @@ extension ComAtprotoLexicon.Label {
 
         /// The localized name of the label.
         ///
+        /// - Important: Current maximum length is 64 characters.
+        ///
         /// - Note: According to the AT Protocol specifications: "A short human-readable name for
         /// the label."
         public let name: String
 
         /// The localized description of the label.
+        ///
+        /// - Important: Current maximum length is 10,000 characters.
         ///
         /// - Note: According to the AT Protocol specifications: "A longer description of what the
         /// label means and why it might be applied."
@@ -348,9 +341,7 @@ extension ComAtprotoLexicon.Label {
             var container = encoder.container(keyedBy: CodingKeys.self)
 
             try container.encode(self.language, forKey: .language)
-            // Truncate `name` to 640 characters before encoding.
             try truncatedEncode(self.name, withContainer: &container, forKey: .name, upToCharacterLength: 64)
-
             try truncatedEncode(self.description, withContainer: &container, forKey: .description, upToCharacterLength: 10_000)
         }
 
