@@ -37,7 +37,8 @@ extension ATProtoBlueskyChat {
 
         var queryItems = [(String, String)]()
 
-        queryItems += members.map { ("members", $0) }
+        let cappedMembersArray = members.prefix(10)
+        queryItems += cappedMembersArray.map { ("members", $0) }
 
         let queryURL: URL
 

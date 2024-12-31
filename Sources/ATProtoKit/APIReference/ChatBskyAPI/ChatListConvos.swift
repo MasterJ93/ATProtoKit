@@ -66,7 +66,7 @@ extension ATProtoBlueskyChat {
                 isRelatedToBskyChat: true
             )
             let response = try await APIClientService.shared.sendRequest(request,
-                                                                  decodeTo: ChatBskyLexicon.Conversation.ListConversationsOutput.self)
+                decodeTo: ChatBskyLexicon.Conversation.ListConversationsOutput.self)
 
             return response
         } catch {

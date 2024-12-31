@@ -17,7 +17,7 @@ extension ChatBskyLexicon.Conversation {
     public struct MessageReferenceDefinition: Sendable, Codable {
 
         /// The decentralized identifier (DID) of the message.
-        public let messageDID: String
+        public let authorDID: String
 
         /// The ID of the message.
         public let messageID: String
@@ -26,7 +26,7 @@ extension ChatBskyLexicon.Conversation {
         public let conversationID: String
 
         enum CodingKeys: String, CodingKey {
-            case messageDID = "did"
+            case authorDID = "did"
             case messageID = "messageId"
             case conversationID = "convoId"
         }
@@ -50,23 +50,20 @@ extension ChatBskyLexicon.Conversation {
         /// URLs, hashtags, etc)"
         public let facets: [AppBskyLexicon.RichText.Facet]?
 
-        /// An array of embeds for the message. Optional.
-        public let embeds: [ATUnion.MessageInputEmbedUnion]?
+        /// An embed for the message. Optional.
+        public let embed: ATUnion.MessageInputEmbedUnion?
 
         public func encode(to encoder: any Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
-
-            // Truncate `tags` to 10000 characters before encoding
-            // `maxGraphemes`'s limit is 1000, but `String.count` should respect that limit implictly
             try truncatedEncode(self.text, withContainer: &container, forKey: .text, upToCharacterLength: 1_000)
             try container.encodeIfPresent(self.facets, forKey: .facets)
-            try container.encodeIfPresent(self.embeds, forKey: .embeds)
+            try container.encodeIfPresent(self.embed, forKey: .embed)
         }
 
-        enum CodingKeys: String, CodingKey {
+        enum CodingKeys: CodingKey {
             case text
             case facets
-            case embeds = "embed"
+            case embed
         }
     }
 
@@ -77,8 +74,8 @@ extension ChatBskyLexicon.Conversation {
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/chat/bsky/convo/defs.json
     public struct MessageViewDefinition: Sendable, Codable {
 
-        /// The ID of the message. Optional.
-        public let messageID: String?
+        /// The ID of the message.
+        public let messageID: String
 
         /// The revision of the message.
         public let revision: String
@@ -94,22 +91,22 @@ extension ChatBskyLexicon.Conversation {
         /// URLs, hashtags, etc)"
         public let facets: [AppBskyLexicon.RichText.Facet]?
 
-        /// An array of embeds for the message. Optional.
-        public let embeds: [ATUnion.MessageViewEmbedUnion]?
+        /// An embed for the message. Optional.
+        public let embed: ATUnion.MessageInputEmbedUnion?
 
         /// The sender of the message.
-        public let sender: String
+        public let sender: MessageViewSenderDefinition
 
         /// The date and time the message was seen.
         public let seenAt: Date
 
-        public init(messageID: String?, revision: String, text: String, facets: [AppBskyLexicon.RichText.Facet]?, embeds: [ATUnion.MessageViewEmbedUnion]?,
-                    sender: String, seenAt: Date) {
+        public init(messageID: String, revision: String, text: String, facets: [AppBskyLexicon.RichText.Facet]?, embed: ATUnion.MessageInputEmbedUnion?,
+                    sender: MessageViewSenderDefinition, seenAt: Date) {
             self.messageID = messageID
             self.revision = revision
             self.text = text
             self.facets = facets
-            self.embeds = embeds
+            self.embed = embed
             self.sender = sender
             self.seenAt = seenAt
         }
@@ -117,25 +114,23 @@ extension ChatBskyLexicon.Conversation {
         public init(from decoder: any Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
 
-            self.messageID = try container.decodeIfPresent(String.self, forKey: .messageID)
+            self.messageID = try container.decode(String.self, forKey: .messageID)
             self.revision = try container.decode(String.self, forKey: .revision)
             self.text = try container.decode(String.self, forKey: .text)
             self.facets = try container.decodeIfPresent([AppBskyLexicon.RichText.Facet].self, forKey: .facets)
-            self.embeds = try container.decodeIfPresent([ATUnion.MessageViewEmbedUnion].self, forKey: .embeds)
-            self.sender = try container.decode(String.self, forKey: .sender)
+            self.embed = try container.decodeIfPresent(ATUnion.MessageInputEmbedUnion.self, forKey: .embed)
+            self.sender = try container.decode(MessageViewSenderDefinition.self, forKey: .sender)
             self.seenAt = try decodeDate(from: container, forKey: .seenAt)
         }
 
         public func encode(to encoder: any Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
 
-            try container.encodeIfPresent(self.messageID, forKey: .messageID)
+            try container.encode(self.messageID, forKey: .messageID)
             try container.encode(self.revision, forKey: .revision)
-            // Truncate `tags` to 10000 characters before encoding
-            // `maxGraphemes`'s limit is 1000, but `String.count` should respect that limit implictly
             try truncatedEncode(self.text, withContainer: &container, forKey: .text, upToCharacterLength: 1_000)
             try container.encodeIfPresent(self.facets, forKey: .facets)
-            try container.encodeIfPresent(self.embeds, forKey: .embeds)
+            try container.encodeIfPresent(self.embed, forKey: .embed)
             try container.encode(self.sender, forKey: .sender)
             try encodeDate(self.seenAt, with: &container, forKey: .seenAt)
         }
@@ -145,7 +140,7 @@ extension ChatBskyLexicon.Conversation {
             case revision = "rev"
             case text
             case facets
-            case embeds = "embed"
+            case embed
             case sender
             case seenAt
         }
@@ -158,19 +153,19 @@ extension ChatBskyLexicon.Conversation {
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/chat/bsky/convo/defs.json
     public struct DeletedMessageViewDefinition: Sendable, Codable {
 
-        /// The ID of the message. Optional.
-        public let messageID: String?
+        /// The ID of the message.
+        public let messageID: String
 
         /// The revision of the message.
         public let revision: String
 
         /// The sender of the message.
-        public let sender: String
+        public let sender: MessageViewSenderDefinition
 
         /// The date and time the message was seen.
         public let seenAt: Date
 
-        public init(messageID: String?, revision: String, sender: String, seenAt: Date) {
+        public init(messageID: String, revision: String, sender: MessageViewSenderDefinition, seenAt: Date) {
             self.messageID = messageID
             self.revision = revision
             self.sender = sender
@@ -180,16 +175,16 @@ extension ChatBskyLexicon.Conversation {
         public init(from decoder: any Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
 
-            self.messageID = try container.decodeIfPresent(String.self, forKey: .messageID)
+            self.messageID = try container.decode(String.self, forKey: .messageID)
             self.revision = try container.decode(String.self, forKey: .revision)
-            self.sender = try container.decode(String.self, forKey: .sender)
+            self.sender = try container.decode(MessageViewSenderDefinition.self, forKey: .sender)
             self.seenAt = try decodeDate(from: container, forKey: .seenAt)
         }
 
         public func encode(to encoder: any Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
 
-            try container.encodeIfPresent(self.messageID, forKey: .messageID)
+            try container.encode(self.messageID, forKey: .messageID)
             try container.encode(self.revision, forKey: .revision)
             try container.encode(self.sender, forKey: .sender)
             try encodeDate(self.seenAt, with: &container, forKey: .seenAt)
@@ -211,10 +206,10 @@ extension ChatBskyLexicon.Conversation {
     public struct MessageViewSenderDefinition: Sendable, Codable {
 
         /// The decentralized identifier (DID) of the message.
-        public let messageDID: String
+        public let authorDID: String
 
         enum CodingKeys: String, CodingKey {
-            case messageDID = "did"
+            case authorDID = "did"
         }
     }
 
@@ -240,6 +235,9 @@ extension ChatBskyLexicon.Conversation {
         /// Indicates whether the conversation is muted.
         public let isMuted: Bool
 
+        /// Indicates whether the conversation was opened. Optional.
+        public let isOpened: Bool?
+
         /// The number of messages that haven't been read.
         public let unreadCount: Int
 
@@ -249,6 +247,7 @@ extension ChatBskyLexicon.Conversation {
             case members
             case lastMessage
             case isMuted = "muted"
+            case isOpened = "opened"
             case unreadCount
         }
     }

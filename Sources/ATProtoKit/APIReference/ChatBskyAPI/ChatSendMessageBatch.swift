@@ -17,12 +17,14 @@ extension ATProtoBlueskyChat {
     /// 
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/chat/bsky/convo/sendMessageBatch.json
     /// 
-    /// - Parameter messages: A array of messages. Maximum number is 100 items.
+    /// - Parameter messages: A array of messages. Current maximum length is 100 items.
     /// - Returns: An array of messages.
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
-    public func sendMessageBatch(messages: [ChatBskyLexicon.Conversation.SendMessageBatch.MessageBatchItem]) async throws -> ChatBskyLexicon.Conversation.SendMessageBatchOutput {
+    public func sendMessageBatch(
+        _ messages: [ChatBskyLexicon.Conversation.SendMessageBatch.BatchItem]
+    ) async throws -> ChatBskyLexicon.Conversation.SendMessageBatchOutput {
         guard session != nil,
               let accessToken = session?.accessToken else {
             throw ATRequestPrepareError.missingActiveSession

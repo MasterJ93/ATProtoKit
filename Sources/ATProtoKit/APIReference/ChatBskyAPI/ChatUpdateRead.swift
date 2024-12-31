@@ -24,7 +24,7 @@ extension ATProtoBlueskyChat {
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func updateRead(
         from conversationID: String,
-        upTo messageID: String? = nil
+        to messageID: String? = nil
     ) async throws -> ChatBskyLexicon.Conversation.UpdateReadOutput {
             guard session != nil,
                   let accessToken = session?.accessToken else {

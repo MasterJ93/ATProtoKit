@@ -21,7 +21,7 @@ extension ChatBskyLexicon.Conversation {
         /// - SeeAlso: This is based on the [`chat.bsky.convo.sendMessageBatch`][github] lexicon.
         ///
         /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/chat/bsky/convo/sendMessageBatch.json
-        public struct MessageBatchItem: Sendable, Codable {
+        public struct BatchItem: Sendable, Codable {
 
             /// The ID of the conversation.
             public let conversationID: String
@@ -44,7 +44,7 @@ extension ChatBskyLexicon.Conversation {
     public struct SendMessageBatchRequestBody: Sendable, Codable {
 
         /// An array of messages.
-        public let items: [SendMessageBatch.MessageBatchItem]
+        public let items: [SendMessageBatch.BatchItem]
 
         public func encode(to encoder: any Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)

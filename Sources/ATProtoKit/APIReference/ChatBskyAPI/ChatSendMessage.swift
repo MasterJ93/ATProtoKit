@@ -25,7 +25,7 @@ extension ATProtoBlueskyChat {
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func sendMessage(
-        conversationID: String,
+        to conversationID: String,
         message: ChatBskyLexicon.Conversation.MessageInputDefinition
     ) async throws -> ChatBskyLexicon.Conversation.MessageViewDefinition {
         guard session != nil,

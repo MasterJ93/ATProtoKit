@@ -15,12 +15,12 @@ extension ATProtoBlueskyChat {
     /// 
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/chat/bsky/convo/leaveConvo.json
     /// 
-    /// - Parameter conversationID: The ID of the conversation.
+    /// - Parameter id: The ID of the conversation.
     /// - Returns: The ID and revision of the conversation that the user account has left.
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
-    public func leaveConversation(from conversationID: String) async throws -> ChatBskyLexicon.Conversation.LeaveConversationOutput {
+    public func leaveConversation(from id: String) async throws -> ChatBskyLexicon.Conversation.LeaveConversationOutput {
         guard session != nil,
               let accessToken = session?.accessToken else {
             throw ATRequestPrepareError.missingActiveSession
@@ -32,7 +32,7 @@ extension ATProtoBlueskyChat {
         }
 
         let requestBody = ChatBskyLexicon.Conversation.LeaveConversationRequestBody(
-            conversationID: conversationID
+            conversationID: id
         )
 
         do {
