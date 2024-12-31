@@ -28,7 +28,7 @@ extension ATProtoKit {
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func reserveSigningKey(
-        _ repositoryDID: String,
+        for repositoryDID: String,
         pdsURL: String? = nil
     ) async throws -> ComAtprotoLexicon.Server.ReserveSigningKeyOutput {
         guard let sessionURL = pdsURL != nil ? pdsURL : determinePDSURL(customPDSURL: pdsURL),

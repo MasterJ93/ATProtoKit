@@ -28,12 +28,12 @@ extension ComAtprotoLexicon.Server {
         ///
         /// - Note: According to the AT Protocol specifications: "Requires a token from com.atproto.sever.requestEmailUpdate if the account's email has
         /// been confirmed."
-        public let token: String?
+        public let resetToken: String?
 
         enum CodingKeys: String, CodingKey {
             case email
             case isEmailAuthenticationFactorEnabled = "emailAuthFactor"
-            case token
+            case resetToken = "token"
         }
     }
 }

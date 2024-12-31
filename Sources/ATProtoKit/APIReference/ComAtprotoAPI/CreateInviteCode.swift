@@ -22,7 +22,7 @@ extension ATProtoKit {
     ///
     /// - Parameters:
     ///   - codeCount: The number of invite codes to be created. Defaults to 1.
-    ///   - account: The decentralized identifier (DIDs) of the user that can use the invite code.
+    ///   - account: The decentralized identifier (DID) of the user that can use the invite code.
     ///   Optional.
     /// - Returns: The details of the newly-created invite code.
     ///
@@ -30,7 +30,7 @@ extension ATProtoKit {
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func createInviteCode(
         _ codeCount: Int = 1,
-        for account: [String]
+        for account: String
     ) async throws -> ComAtprotoLexicon.Server.CreateInviteCodeOutput {
         guard session != nil,
               let accessToken = session?.accessToken else {

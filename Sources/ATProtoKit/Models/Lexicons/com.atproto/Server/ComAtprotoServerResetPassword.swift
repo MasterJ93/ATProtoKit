@@ -19,13 +19,13 @@ extension ComAtprotoLexicon.Server {
     public struct ResetPasswordRequestBody: Sendable, Codable {
 
         /// The token used to reset the password.
-        public let token: String
+        public let resetToken: String
 
         /// The new password for the user's account.
         public let newPassword: String
 
         enum CodingKeys: String, CodingKey {
-            case token
+            case resetToken = "token"
             case newPassword = "password"
         }
     }

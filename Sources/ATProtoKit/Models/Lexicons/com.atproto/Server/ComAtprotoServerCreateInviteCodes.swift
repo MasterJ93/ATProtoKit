@@ -9,6 +9,24 @@ import Foundation
 
 extension ComAtprotoLexicon.Server {
 
+    /// A definition model for creating invite codes.
+    public struct CreateInviteCodes: Sendable, Codable {
+
+        /// The server invite codes generated from ``ComAtprotoLexicon/Server/CreateInviteCodesOutput``.
+        ///
+        /// - SeeAlso: This is based on the [`com.atproto.server.createInviteCodes`][github] lexicon.
+        ///
+        /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/server/createInviteCodes.json
+        public struct AccountCodes: Sendable, Codable {
+
+            /// The user account that holds the invite codes.
+            public let account: String
+
+            /// An array of invite codes.
+            public let codes: [String]
+        }
+    }
+
     /// A request body model for creating invite codes.
     ///
     /// - Note: According to the AT Protocol specifications: "Create invite codes."
@@ -25,12 +43,6 @@ extension ComAtprotoLexicon.Server {
         public let useCount: Int
 
         /// An array of decentralized identifiers (DIDs) that can use the invite codes. Optional.
-        ///
-        /// - Important: The item associated with this property is undocumented in the AT Protocol specifications. The documentation here is based on:\
-        ///   \* **For items with some inferable context from property names or references**: its best interpretation, though not with full certainty.\
-        ///   \* **For items without enough context for even an educated guess**: a direct acknowledgment of their undocumented status.\
-        ///   \
-        ///   Clarifications from Bluesky are needed in order to fully understand this item.
         public let forAccounts: [String]?
     }
 
@@ -42,27 +54,6 @@ extension ComAtprotoLexicon.Server {
     public struct CreateInviteCodesOutput: Sendable, Codable {
 
         /// An array of invite codes.
-        public let codes: [AccountCodes]
-    }
-
-    /// The server invite codes generated from ``ComAtprotoLexicon/Server/CreateInviteCodesOutput``.
-    ///
-    ///
-    /// - SeeAlso: This is based on the [`com.atproto.server.createInviteCodes`][github] lexicon.
-    ///
-    /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/server/createInviteCodes.json
-    public struct AccountCodes: Sendable, Codable {
-
-        /// The account that holds the invite codes.
-        ///
-        /// - Important: The item associated with this property is undocumented in the AT Protocol specifications. The documentation here is based on:\
-        ///   \* **For items with some inferable context from property names or references**: its best interpretation, though not with full certainty.\
-        ///   \* **For items without enough context for even an educated guess**: a direct acknowledgment of their undocumented status.\
-        ///   \
-        ///   Clarifications from Bluesky are needed in order to fully understand this item.
-        public let account: String
-
-        /// An array of invite codes.
-        public let codes: [String]
+        public let codes: [CreateInviteCodes.AccountCodes]
     }
 }

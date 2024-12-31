@@ -28,7 +28,7 @@ extension ATProtoKit {
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func getAccountInviteCodes(
-        _ areUsedCodesIncluded: Bool = true,
+        areUsedCodesIncluded: Bool = true,
         areEarnedCodesIncluded: Bool = true
     ) async throws -> ComAtprotoLexicon.Server.GetAccountInviteCodesOutput {
         guard session != nil,

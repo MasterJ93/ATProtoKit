@@ -21,14 +21,14 @@ extension ATProtoKit {
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/server/resetPassword.json
     ///
     /// - Parameters:
-    ///   - token: The token used to reset the password.
+    ///   - resetToken: The token used to reset the password.
     ///   - newPassword: The new password for the user's account.
     ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `nil`.
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func resetPassword(
-        using token: String,
+        using resetToken: String,
         newPassword: String,
         pdsURL: String? = nil
     ) async throws {
@@ -38,7 +38,7 @@ extension ATProtoKit {
         }
 
         let requestBody = ComAtprotoLexicon.Server.ResetPasswordRequestBody(
-            token: token,
+            resetToken: resetToken,
             newPassword: newPassword
         )
 

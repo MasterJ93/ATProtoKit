@@ -59,10 +59,14 @@ extension ComAtprotoLexicon.Server {
         /// The date and time the App Password was created.
         public let createdAt: Date
 
-        public init(name: String, password: String, createdAt: Date) {
+        /// Indicates whether the App Password is privileged. Optional.
+        public let isPrivileged: Bool?
+
+        public init(name: String, password: String, createdAt: Date, isPrivileged: Bool?) {
             self.name = name
             self.password = password
             self.createdAt = createdAt
+            self.isPrivileged = isPrivileged
         }
 
         public init(from decoder: any Decoder) throws {
@@ -71,6 +75,7 @@ extension ComAtprotoLexicon.Server {
             self.name = try container.decode(String.self, forKey: .name)
             self.password = try container.decode(String.self, forKey: .password)
             self.createdAt = try decodeDate(from: container, forKey: .createdAt)
+            self.isPrivileged = try container.decodeIfPresent(Bool.self, forKey: .isPrivileged)
         }
 
         public func encode(to encoder: Encoder) throws {
@@ -79,12 +84,14 @@ extension ComAtprotoLexicon.Server {
             try container.encode(self.name, forKey: .name)
             try container.encode(self.password, forKey: .password)
             try encodeDate(self.createdAt, with: &container, forKey: .createdAt)
+            try container.encodeIfPresent(self.isPrivileged, forKey: .isPrivileged)
         }
 
-        enum CodingKeys: CodingKey {
+        enum CodingKeys: String, CodingKey {
             case name
             case password
             case createdAt
+            case isPrivileged = "privileged"
         }
     }
 }

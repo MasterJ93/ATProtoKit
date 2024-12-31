@@ -25,14 +25,14 @@ extension ATProtoKit {
     ///   - email: The new email addtess the user wants to associate with their account.
     ///   - isEmailAuthenticationFactorEnabled: Indicates whether
     ///   Two-Factor Authentication (via email) is enabled. Optional.
-    ///   - token: The token used to confirm the change. Optional.
+    ///   - resetToken: The token used to confirm the change. Optional.
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func updateEmail(
         _ email: String,
         isEmailAuthenticationFactorEnabled: Bool? = nil,
-        token: String? = nil
+        resetToken: String? = nil
     ) async throws {
         guard session != nil,
               let accessToken = session?.accessToken else {
@@ -46,7 +46,7 @@ extension ATProtoKit {
         let requestBody = ComAtprotoLexicon.Server.UpdateEmailRequestBody(
             email: email,
             isEmailAuthenticationFactorEnabled: isEmailAuthenticationFactorEnabled,
-            token: token
+            resetToken: resetToken
         )
 
         do {

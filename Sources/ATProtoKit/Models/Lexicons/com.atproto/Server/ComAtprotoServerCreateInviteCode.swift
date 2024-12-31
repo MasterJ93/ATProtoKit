@@ -21,14 +21,8 @@ extension ComAtprotoLexicon.Server {
         /// The number of times the invite code(s) can be used.
         public let useCount: Int
 
-        /// The decentralized identifier (DIDs) of the user that can use the invite code. Optional.
-        ///
-        /// - Important: The item associated with this property is undocumented in the AT Protocol specifications. The documentation here is based on:\
-        ///   \* **For items with some inferable context from property names or references**: its best interpretation, though not with full certainty.\
-        ///   \* **For items without enough context for even an educated guess**: a direct acknowledgment of their undocumented status.\
-        ///   \
-        ///   Clarifications from Bluesky are needed in order to fully understand this item.
-        public let forAccount: [String]?
+        /// The decentralized identifier (DID) of the users that can use the invite code. Optional.
+        public let forAccount: String
     }
 
     /// An output model for creating an invite code.

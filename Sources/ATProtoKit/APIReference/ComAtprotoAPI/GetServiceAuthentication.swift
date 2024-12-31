@@ -19,7 +19,7 @@ extension ATProtoKit {
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/server/getServiceAuth.json
     ///
     /// - Parameters:
-    ///   -  serviceDID: The decentralized identifier (DID) of the service.
+    ///   -  did: The decentralized identifier (DID) of the service.
     ///   - expirationTime: The exporation date of the session tokens expire. Optional.
     ///   Defaults to 60 seconds in the Unix Epoch format.
     ///   - lexiconMethod: The Namespaced Identifier (NSID) of the lexicon that the token is
@@ -29,9 +29,9 @@ extension ATProtoKit {
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func getServiceAuthentication(
-        from serviceDID: String,
+        from did: String,
         expirationTime: Int? = 60,
-        lexiconMethod: String?
+        lexiconMethod: String? = nil
     ) async throws -> ComAtprotoLexicon.Server.GetServiceAuthOutput {
         guard session != nil,
               let accessToken = session?.accessToken else {
@@ -44,7 +44,7 @@ extension ATProtoKit {
         }
 
         var queryItems = [
-            ("aud", serviceDID)
+            ("aud", did)
         ]
 
         if let expirationTime {

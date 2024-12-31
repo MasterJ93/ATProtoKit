@@ -21,16 +21,16 @@ extension ATProtoKit {
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/server/deleteAccount.json
     ///
     /// - Parameters:
-    ///   - accountDID: The decentralized identifier (DID) of the user account to be deleted.
+    ///   - did: The decentralized identifier (DID) of the user account to be deleted.
     ///   - password: The password of the user account.
     ///   - token: A token to confirm the deletion of the account.
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func deleteAccount(
-        _ accountDID: String,
+        for did: String,
         password: String,
-        token: String
+        deletionToken: String
     ) async throws {
         guard session != nil,
               let accessToken = session?.accessToken else {
@@ -43,9 +43,9 @@ extension ATProtoKit {
         }
 
         let requestBody = ComAtprotoLexicon.Server.DeleteAccountRequestBody(
-            accountDID: accountDID,
+            accountDID: did,
             accountPassword: password,
-            token: token
+            token: deletionToken
         )
 
         do {
