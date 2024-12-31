@@ -22,14 +22,14 @@ extension ATProtoAdmin {
     /// - Parameters:
     ///   - reasonType: The reason for the report.
     ///   - reason: Any additional context accompanying the report. Optional.
-    ///   - subject: The responsible party being reported.
+    ///   - subject: The offending subject in question.
     /// - Returns: A view of the newly-created report that will be sent to the moderators.
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func createReport(
         with reasonType: ComAtprotoLexicon.Moderation.ReasonTypeDefinition,
-        withContextof reason: String? = nil,
+        andContextof reason: String? = nil,
         subject: ATUnion.CreateReportSubjectUnion
     ) async throws -> ComAtprotoLexicon.Moderation.CreateReportOutput {
         guard session != nil,

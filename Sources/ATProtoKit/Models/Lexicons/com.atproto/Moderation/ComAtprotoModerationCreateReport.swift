@@ -56,15 +56,11 @@ extension ComAtprotoLexicon.Moderation {
         public let reasonType: ComAtprotoLexicon.Moderation.ReasonTypeDefinition
 
         /// The reason for the report. Optional.
+        ///
+        /// - Important: Current maximum length is 2,000 characters.
         public let reason: String?
 
-        /// The subject reference.
-        ///
-        /// - Important: The item associated with this property is undocumented in the AT Protocol specifications. The documentation here is based on:\
-        ///   \* **For items with some inferable context from property names or references**: its best interpretation, though not with full certainty.\
-        ///   \* **For items without enough context for even an educated guess**: a direct acknowledgment of their undocumented status.\
-        ///   \
-        ///   Clarifications from Bluesky are needed in order to fully understand this item.
+        /// The offending subject in question.
         public let subject: ATUnion.CreateReportSubjectUnion
 
         /// The decentralized identifier (DID) of the user who created the report.
@@ -99,9 +95,6 @@ extension ComAtprotoLexicon.Moderation {
 
             try container.encode(self.id, forKey: .id)
             try container.encode(self.reasonType, forKey: .reasonType)
-
-            // Truncate `reason` to 20,000 characters before encoding
-            // `maxGraphemes`'s limit is 2,000, but `String.count` should respect that limit implictly
             try truncatedEncodeIfPresent(self.reason, withContainer: &container, forKey: .reason, upToCharacterLength: 2_000)
             try container.encode(self.subject, forKey: .subject)
             try container.encode(self.reportedBy, forKey: .reportedBy)
