@@ -21,6 +21,9 @@ extension ToolsOzoneLexicon {
     /// A group of lexicons within the `tools.ozone.set` namespace.
     public struct Set {}
 
+    /// A group of lexicons within the `tools.ozone.setting` namespace.
+    public struct Setting {}
+
     /// A group of lexicons within the `tools.ozone.signature` namespace.
     public struct Signature {}
 

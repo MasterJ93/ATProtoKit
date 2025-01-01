@@ -172,8 +172,8 @@ extension ATProtoAdmin {
         }
 
         // removeTags
-        if let addedTags {
-            queryItems += addedTags.map { ("removedLabels", $0) }
+        if let removedTags {
+            queryItems += removedTags.map { ("removedLabels", $0) }
         }
 
         // reportTypes

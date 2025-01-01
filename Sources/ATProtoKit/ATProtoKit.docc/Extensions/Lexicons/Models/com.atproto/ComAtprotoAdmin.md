@@ -8,6 +8,7 @@
 - ``ComAtprotoLexicon/Admin/AccountViewDefinition``
 - ``ComAtprotoLexicon/Admin/RepositoryReferenceDefinition``
 - ``ComAtprotoLexicon/Admin/RepositoryBlobReferenceDefinition``
+- ``ComAtprotoLexicon/Admin/ThreatSignatureDefinition``
 
 ### com.atproto.admin.deleteAccount
 

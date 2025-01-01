@@ -17,6 +17,7 @@
 ### com.atproto.server.createAccount
 
 - ``ComAtprotoLexicon/Server/CreateAccountRequestBody``
+- ``ComAtprotoLexicon/Server/CreateAccountOutput``
 
 ### com.atproto.server.createAppPassword
 
@@ -30,13 +31,16 @@
 
 ### com.atproto.server.createInviteCodes
 
+- ``ComAtprotoLexicon/Server/CreateInviteCodes``
 - ``ComAtprotoLexicon/Server/CreateInviteCodes/AccountCodes``
 - ``ComAtprotoLexicon/Server/CreateInviteCodesRequestBody``
 - ``ComAtprotoLexicon/Server/CreateInviteCodesOutput``
 
 ### com.atproto.server.createSession
 
+- ``ComAtprotoLexicon/Server/CreateSession``
 - ``ComAtprotoLexicon/Server/CreateSessionRequestBody``
+- ``ComAtprotoLexicon/Server/CreateSessionOutput``
 
 ### com.atproto.server.deactiviateAccount
 
@@ -64,9 +68,19 @@
 
 - ``ComAtprotoLexicon/Server/GetServiceAuthOutput``
 
+### com.atproto.server.getSession
+
+- ``ComAtprotoLexicon/Server/GetSession``
+- ``ComAtprotoLexicon/Server/GetSessionOutput``
+
 ### com.atproto.server.listAppPasswords
 
 - ``ComAtprotoLexicon/Server/ListAppPasswordsOutput``
+
+### com.atproto.server.refreshSession
+
+- ``ComAtprotoLexicon/Server/RefreshSession``
+- ``ComAtprotoLexicon/Server/RefreshSessionOutput``
 
 ### com.atproto.server.requestEmailUpdate
 

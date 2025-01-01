@@ -42,6 +42,7 @@
 
 ### com.atproto.repo.listRecords
 
+- ``ComAtprotoLexicon/Repository/ListRecords``
 - ``ComAtprotoLexicon/Repository/ListRecordsOutput``
 
 ### com.atproto.repo.putRecord
@@ -57,5 +58,5 @@
 
 - ``ComAtprotoLexicon/Repository/UploadBlobRequestBody``
 - ``ComAtprotoLexicon/Repository/BlobContainer``
-- ``ComAtprotoLexicon/Repository/BlobContainer``
 - ``ComAtprotoLexicon/Repository/UploadBlobOutput``
+- ``ComAtprotoLexicon/Repository/BlobReference``

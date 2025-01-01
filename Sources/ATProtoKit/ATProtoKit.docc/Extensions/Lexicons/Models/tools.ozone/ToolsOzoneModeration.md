@@ -23,6 +23,9 @@
 - ``ToolsOzoneLexicon/Moderation/EventEmailDefinition``
 - ``ToolsOzoneLexicon/Moderation/EventDivertDefinition``
 - ``ToolsOzoneLexicon/Moderation/EventTagDefinition``
+- ``ToolsOzoneLexicon/Moderation/AccountEventDefinition``
+- ``ToolsOzoneLexicon/Moderation/IdentityEventDefinition``
+- ``ToolsOzoneLexicon/Moderation/RecordEventDefinition``
 - ``ToolsOzoneLexicon/Moderation/RepositoryViewDefinition``
 - ``ToolsOzoneLexicon/Moderation/RepositoryViewDetailDefinition``
 - ``ToolsOzoneLexicon/Moderation/RepositoryViewNotFoundDefinition``
@@ -34,6 +37,8 @@
 - ``ToolsOzoneLexicon/Moderation/BlobViewDefinition``
 - ``ToolsOzoneLexicon/Moderation/ImageDetailsDefinition``
 - ``ToolsOzoneLexicon/Moderation/VideoDetailsDefinition``
+- ``ToolsOzoneLexicon/Moderation/AccountHostingDefinition``
+- ``ToolsOzoneLexicon/Moderation/RecordHostingDefinition``
 
 ### tools.ozone.moderation.emitEvent
 

@@ -2,6 +2,10 @@
 
 ## Topics
 
+### com.atproto.temp.addReservedHandle
+
+- ``ComAtprotoLexicon/Temp/AddReservedHandleRequestBody``
+
 ### com.atproto.temp.checkSignupQueue
 
 - ``ComAtprotoLexicon/Temp/CheckSignupQueueOutput``
