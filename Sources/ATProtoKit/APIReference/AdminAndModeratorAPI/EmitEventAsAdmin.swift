@@ -24,7 +24,7 @@ extension ATProtoAdmin {
     /// - Parameters:
     ///   - event: The type of event the moderator is taking,
     ///   - subject: The type of repository reference.
-    ///   - subjectBlobCIDHashes: An array of CID hashes related to blobs for the moderator's
+    ///   - subjectBlobCIDs: An array of CID hashes related to blobs for the moderator's
     ///   event view. Optional.
     ///   - createdBy: The decentralized identifier (DID) of the moderator taking this action.
     /// - Returns: A moderation event view.
@@ -34,7 +34,7 @@ extension ATProtoAdmin {
     public func emitEvent(
         _ event: ATUnion.EmitEventUnion,
         subject: ATUnion.EmitEventSubjectUnion,
-        subjectBlobCIDHashes: [String]? = nil,
+        subjectBlobCIDs: [String]? = nil,
         createdBy: String
     ) async throws -> ToolsOzoneLexicon.Moderation.ModerationEventViewDefinition {
         guard session != nil,
@@ -50,7 +50,7 @@ extension ATProtoAdmin {
         let requestBody = ToolsOzoneLexicon.Moderation.EmitEventRequestBody(
             event: event,
             subject: subject,
-            subjectBlobCIDHashes: subjectBlobCIDHashes,
+            subjectBlobCIDs: subjectBlobCIDs,
             createdBy: createdBy
         )
 

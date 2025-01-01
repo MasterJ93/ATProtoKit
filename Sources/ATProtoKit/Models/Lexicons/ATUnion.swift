@@ -1671,6 +1671,41 @@ public struct ATUnion {
         }
     }
 
+    /// A reference containing the list of hosting types.
+    public enum SubjectStatusViewHostingUnion: Sendable, Codable {
+
+        /// An account host.
+        case accountHosting(ToolsOzoneLexicon.Moderation.AccountHostingDefinition)
+
+        /// A record host.
+        case recordHosting(ToolsOzoneLexicon.Moderation.RecordHostingDefinition)
+
+        public init(from decoder: Decoder) throws {
+            let container = try decoder.singleValueContainer()
+
+            if let value = try? container.decode(ToolsOzoneLexicon.Moderation.AccountHostingDefinition.self) {
+                self = .accountHosting(value)
+            } else if let value = try? container.decode(ToolsOzoneLexicon.Moderation.RecordHostingDefinition.self) {
+                self = .recordHosting(value)
+            } else {
+                throw DecodingError.typeMismatch(
+                    SubjectStatusViewHostingUnion.self, DecodingError.Context(
+                        codingPath: decoder.codingPath, debugDescription: "Unknown SubjectStatusViewHostingUnion type"))
+            }
+        }
+
+        public func encode(to encoder: Encoder) throws {
+            var container = encoder.singleValueContainer()
+
+            switch self {
+                case .accountHosting(let value):
+                    try container.encode(value)
+                case .recordHosting(let value):
+                    try container.encode(value)
+            }
+        }
+    }
+
     /// A reference containing the list of repository references.
     public enum SubjectStatusViewSubjectUnion: Sendable, Codable {
 
@@ -1786,6 +1821,15 @@ public struct ATUnion {
         /// A diversion event.
         case moderationEventTag(ToolsOzoneLexicon.Moderation.EventTagDefinition)
 
+        /// An account event.
+        case moderationAccountEvent(ToolsOzoneLexicon.Moderation.AccountEventDefinition)
+
+        /// An identity event.
+        case moderationIdentityEvent(ToolsOzoneLexicon.Moderation.IdentityEventDefinition)
+
+        /// A record event.
+        case moderationRecordEvent(ToolsOzoneLexicon.Moderation.RecordEventDefinition)
+
         public init(from decoder: Decoder) throws {
             let container = try decoder.singleValueContainer()
 
@@ -1817,6 +1861,12 @@ public struct ATUnion {
                 self = .moderationEventResolveAppeal(value)
             } else if let value = try? container.decode(ToolsOzoneLexicon.Moderation.EventTagDefinition.self) {
                 self = .moderationEventTag(value)
+            } else if let value = try? container.decode(ToolsOzoneLexicon.Moderation.AccountEventDefinition.self) {
+                self = .moderationAccountEvent(value)
+            } else if let value = try? container.decode(ToolsOzoneLexicon.Moderation.IdentityEventDefinition.self) {
+                self = .moderationIdentityEvent(value)
+            } else if let value = try? container.decode(ToolsOzoneLexicon.Moderation.RecordEventDefinition.self) {
+                self = .moderationRecordEvent(value)
             } else {
                 throw DecodingError.typeMismatch(
                     EmitEventUnion.self, DecodingError.Context(
@@ -1855,6 +1905,12 @@ public struct ATUnion {
                 case .moderationEventResolveAppeal(let moderationEventResolveAppeal):
                     try container.encode(moderationEventResolveAppeal)
                 case .moderationEventTag(let value):
+                    try container.encode(value)
+                case .moderationAccountEvent(let value):
+                    try container.encode(value)
+                case .moderationIdentityEvent(let value):
+                    try container.encode(value)
+                case .moderationRecordEvent(let value):
                     try container.encode(value)
             }
         }

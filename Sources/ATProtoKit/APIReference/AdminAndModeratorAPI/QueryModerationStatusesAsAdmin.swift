@@ -25,6 +25,11 @@ extension ATProtoAdmin {
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/tools/ozone/moderation/queryStatuses.json
     ///
     /// - Parameters:
+    ///   - queueCount: The number of queues. Optional.
+    ///   - queueIndex: The index of the queue to fetch subjects from. Optional.
+    ///   - queueSeed: The seed value to randomize the items.
+    ///   - canIncludeAllUserRecords: If true, events on all record types (posts, lists, profile
+    ///   etc.) owned by the did are returned. Optional.  Defaults to `false`.
     ///   - subject: The URI of the subject. Optional.
     ///   - comment: A query that makes the list display events with comments containing the
     ///   keywords used here. Optional.
@@ -34,6 +39,16 @@ extension ATProtoAdmin {
     ///   report date. Optional.
     ///   - reviewedAfter: States that the moderator statuses displayed should be after a specified
     ///   review date. Optional.
+    ///   - hostingDeletedAfter: Search subjects where the associated record/account was deleted
+    ///   after a given timestamp. Optional.
+    ///   - hostingDeletedBefore: Search subjects where the associated record/account was deleted
+    ///   before a given timestamp. Optional.
+    ///   - hostingUpdatedAfter: Search subjects where the associated record/account was updated
+    ///   after a given timestamp. Optional.
+    ///   - hostingUpdatedBefore: Search subjects where the associated record/account was updated
+    ///   before a given timestamp. Optional.
+    ///   - hostingStatuses: Search subjects by the status of the associated record/account.
+    ///   Optional.
     ///   - reviewedBefore: States that the moderator statuses displayed should be before a specified
     ///   review date. Optional.
     ///   - shouldIncludeMuted: Indicates whether muted subjects should be included in the results.
@@ -56,17 +71,28 @@ extension ATProtoAdmin {
     ///   the added tags. Optional.
     ///   - cursor: The mark used to indicate the starting point for the next set
     ///   of results. Optional.
+    ///   - collections: Sets where the subject belongs to the given collections will be returned.
+    ///   - subjectType: The specified subject type for the event. Optional.
     /// - Returns: An array of all moderation events pertaining a subject, with an optional cursor
     /// to extend the array.
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func queryStatuses(
-        _ subject: String? = nil,
+        queueCount: Int? = nil,
+        queueIndex: Int? = nil,
+        queueSeed: String? = nil,
+        canIncludeAllUserRecords: Bool? = nil,
+        subject: String? = nil,
         comment: String? = nil,
         reportedAfter: Date? = nil,
         reportedBefore: Date? = nil,
         reviewedAfter: Date? = nil,
+        hostingDeletedAfter: Date? = nil,
+        hostingDeletedBefore: Date? = nil,
+        hostingUpdatedAfter: Date? = nil,
+        hostingUpdatedBefore: Date? = nil,
+        hostingStatuses: [String]? = nil,
         reviewedBefore: Date? = nil,
         shouldIncludeMuted: Bool? = false,
         isOnlyMuted: Bool? = nil,
@@ -80,7 +106,9 @@ extension ATProtoAdmin {
         limit: Int? = 50,
         tags: [String]? = nil,
         excludeTags: [String]? = nil,
-        cursor: String? = nil
+        cursor: String? = nil,
+        collections: [String]? = nil,
+        subjectType: ToolsOzoneLexicon.Moderation.QueryStatuses.SubjectType? = nil
     ) async throws -> ToolsOzoneLexicon.Moderation.QueryStatusesOutput {
         guard session != nil,
               let accessToken = session?.accessToken else {
@@ -94,6 +122,30 @@ extension ATProtoAdmin {
 
         var queryItems = [(String, String)]()
 
+        // queueCount
+        if let queueIndex {
+            queryItems.append(("queueCount", "\(queueIndex)"))
+        }
+
+        // queueIndex
+        if let queueCount {
+            queryItems.append(("queueIndex", "\(queueCount)"))
+        }
+
+        // queueSeed
+        if let queueSeed {
+            queryItems.append(("queueSeed", queueSeed))
+        }
+        
+        // canIncludeAllUserRecords
+        if let canIncludeAllUserRecords {
+            queryItems.append(("includeAllUserRecords", "\(canIncludeAllUserRecords)"))
+        }
+        
+        if let subject {
+            queryItems.append(("subject", subject))
+        }
+
         // comment
         if let comment {
             queryItems.append(("comment", comment))
@@ -102,6 +154,31 @@ extension ATProtoAdmin {
         // reportedAfter
         if let reportedAfterDate = reportedAfter, let formattedReportedAfter = CustomDateFormatter.shared.string(from: reportedAfterDate) {
             queryItems.append(("reportedAfter", formattedReportedAfter))
+        }
+
+        // hostingDeletedAfter
+        if let hostingDeletedAfterDate = hostingDeletedAfter, let formattedHostingDeletedAfter = CustomDateFormatter.shared.string(from: hostingDeletedAfterDate) {
+            queryItems.append(("hostingDeletedAfter", "\(formattedHostingDeletedAfter)"))
+        }
+
+        // hostingDeletedBefore
+        if let hostingDeletedBeforeDate = hostingDeletedBefore, let formattedHostingDeletedBefore = CustomDateFormatter.shared.string(from: hostingDeletedBeforeDate) {
+            queryItems.append(("hostingDeletedBefore", formattedHostingDeletedBefore))
+        }
+
+        // hostingUpdatedAfter
+        if let hostingUpdatedAfterDate = hostingUpdatedAfter, let formattedHostingUpdatedAfter = CustomDateFormatter.shared.string(from: hostingUpdatedAfterDate) {
+            queryItems.append(("hostingUpdatedAfter", formattedHostingUpdatedAfter))
+        }
+
+        // hostingUpdatedBefore
+        if let hostingUpdatedBeforeDate = hostingUpdatedBefore, let formattedHostingUpdatedBefore = CustomDateFormatter.shared.string(from: hostingUpdatedBeforeDate) {
+            queryItems.append(("hostingUpdatedBefore", formattedHostingUpdatedBefore))
+        }
+
+        // hostingStatuses
+        if let hostingStatuses {
+            queryItems += hostingStatuses.map { ("hostingStatuses", $0) }
         }
 
         // reportedBefore
@@ -178,6 +255,17 @@ extension ATProtoAdmin {
         // cursor
         if let cursor {
             queryItems.append(("cursor", cursor))
+        }
+
+        // collections
+        if let collections {
+            let cappedCollectionsArray = collections.prefix(20)
+            queryItems += cappedCollectionsArray.map { ("collections", $0) }
+        }
+
+        // subjectType
+        if let subjectType {
+            queryItems.append(("subjectType", "\(subjectType.rawValue)"))
         }
 
         let queryURL: URL

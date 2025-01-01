@@ -21,6 +21,16 @@ extension ToolsOzoneLexicon.Moderation {
             /// Indicates the moderation events will be sorted in descending order.
             case descending = "desc"
         }
+
+        /// The main data model definition for the specified subject type for the event.
+        public enum SubjectType: String {
+
+            /// Indicates the subject type is an account.
+            case account
+
+            /// Indicates the subject type is a record.
+            case record
+        }
     }
 
     /// An output model for listing all moderation events pertaining a subject.

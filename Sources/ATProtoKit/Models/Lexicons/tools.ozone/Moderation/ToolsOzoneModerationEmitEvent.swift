@@ -25,7 +25,7 @@ extension ToolsOzoneLexicon.Moderation {
         public let subject: ATUnion.EmitEventSubjectUnion
 
         /// An array of CID hashes related to blobs for the moderator's event view. Optional.
-        public let subjectBlobCIDHashes: [String]?
+        public let subjectBlobCIDs: [String]?
 
         /// The decentralized identifier (DID) of the moderator taking this action.
         public let createdBy: String
@@ -33,7 +33,7 @@ extension ToolsOzoneLexicon.Moderation {
         enum CodingKeys: String, CodingKey {
             case event
             case subject
-            case subjectBlobCIDHashes = "subjectBlobCids"
+            case subjectBlobCIDs = "subjectBlobCids"
             case createdBy
         }
     }

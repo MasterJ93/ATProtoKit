@@ -21,15 +21,15 @@ extension ATProtoAdmin {
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/tools/ozone/moderation/getRecord.json
     ///
     /// - Parameters:
-    ///   - recordURI: The URI of the record.
-    ///   - recordCID: The CID hash of the record. Optional.
+    ///   - uri: The URI of the record.
+    ///   - cid: The CID hash of the record. Optional.
     /// - Returns: A detailed view of a record.
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func getRecord(
-        _ recordURI: String,
-        recordCID: String? = nil
+        uri: String,
+        cid: String? = nil
     ) async throws -> ToolsOzoneLexicon.Moderation.RecordViewDetailDefinition {
         guard session != nil,
               let accessToken = session?.accessToken else {
@@ -41,10 +41,10 @@ extension ATProtoAdmin {
             throw ATRequestPrepareError.invalidRequestURL
         }
 
-        var queryItems = [("uri", recordURI)]
+        var queryItems = [("uri", uri)]
 
-        if let recordCID {
-            queryItems.append(("cid", recordCID))
+        if let cid {
+            queryItems.append(("cid", cid))
         }
 
         let queryURL: URL

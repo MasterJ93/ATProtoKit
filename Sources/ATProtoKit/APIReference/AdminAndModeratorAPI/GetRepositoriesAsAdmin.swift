@@ -35,7 +35,7 @@ extension ATProtoAdmin {
 
         var queryItems = [(String, String)]()
 
-        let cappedDIDArray = dids.prefix(25)
+        let cappedDIDArray = dids.prefix(100)
         queryItems += cappedDIDArray.map { ("dids", $0) }
 
         let queryURL: URL

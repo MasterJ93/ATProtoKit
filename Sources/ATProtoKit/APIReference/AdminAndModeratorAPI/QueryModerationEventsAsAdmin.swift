@@ -10,9 +10,12 @@ import Foundation
 extension ATProtoAdmin {
 
     /// List all moderator events pertaining a subject.
-    /// 
+    ///
     /// - Important: This is an moderator task and as such, regular users won't be able to access
     /// this; if they attempt to do so, an error will occur.
+    ///
+    /// `collections` and `subjectType` are ignored when `canIncludeAllUserRecords` is set
+    /// to `false`.
     ///
     /// - Note: Many of the parameter's descriptions are taken directly from the
     /// AT Protocol's specification.
@@ -35,6 +38,8 @@ extension ATProtoAdmin {
     ///   - createdBefore: States that the moderator events displayed should be before a
     ///   specified date. Optional.
     ///   - subject: The URI of the subject related to the events. Optional.
+    ///   - collections: Sets where the subject belongs to the given collections will be returned.
+    ///   - subjectType: The specified subject type for the event. Optional.
     ///   - canIncludeAllUserRecords: If true, events on all record types (posts, lists, profile
     ///   etc.) owned by the did are returned. Optional.  Defaults to `false`.
     ///   - limit: The number of events that can be displayed at once. Optional. Defaults to `50`.
@@ -64,6 +69,8 @@ extension ATProtoAdmin {
         createdAfter: Date? = nil,
         createdBefore: Date? = nil,
         subject: String? = nil,
+        collections: [String]? = nil,
+        subjectType: ToolsOzoneLexicon.Moderation.QueryEvents.SubjectType? = nil,
         canIncludeAllUserRecords: Bool? = false,
         limit: Int? = 50,
         doesHaveComment: Bool? = nil,
@@ -115,6 +122,17 @@ extension ATProtoAdmin {
         // subject
         if let subject {
             queryItems.append(("subject", subject))
+        }
+
+        // collections
+        if let collections {
+            let cappedCollectionsArray = collections.prefix(20)
+            queryItems += cappedCollectionsArray.map { ("collections", $0) }
+        }
+
+        // subjectType
+        if let subjectType {
+            queryItems.append(("subjectType", "\(subjectType.rawValue)"))
         }
 
         // canIncludeAllUserRecords (includeAllUserRecords)

@@ -26,7 +26,7 @@ extension ToolsOzoneLexicon.Moderation {
         public let subject: ATUnion.ModerationEventViewSubjectUnion
 
         /// An array of CID hashes related to blobs for the moderator's event view.
-        public let subjectBlobCIDHashes: [String]
+        public let subjectBlobCIDs: [String]
 
         /// The creator of the event view.
         public let createdBy: String
@@ -35,17 +35,17 @@ extension ToolsOzoneLexicon.Moderation {
         public let createdAt: Date
 
         /// The handle of the moderator. Optional.
-        public var creatorHandle: String?
+        public let creatorHandle: String?
 
         /// The subject handle of the event view. Optional.
-        public var subjectHandle: String?
+        public let subjectHandle: String?
 
-        public init(id: Int, event: ATUnion.ModerationEventViewUnion, subject: ATUnion.ModerationEventViewSubjectUnion, subjectBlobCIDHashes: [String],
+        public init(id: Int, event: ATUnion.ModerationEventViewUnion, subject: ATUnion.ModerationEventViewSubjectUnion, subjectBlobCIDs: [String],
                     createdBy: String, createdAt: Date, creatorHandle: String? = nil, subjectHandle: String? = nil) {
             self.id = id
             self.event = event
             self.subject = subject
-            self.subjectBlobCIDHashes = subjectBlobCIDHashes
+            self.subjectBlobCIDs = subjectBlobCIDs
             self.createdBy = createdBy
             self.createdAt = createdAt
             self.creatorHandle = creatorHandle
@@ -58,7 +58,7 @@ extension ToolsOzoneLexicon.Moderation {
             self.id = try container.decode(Int.self, forKey: .id)
             self.event = try container.decode(ATUnion.ModerationEventViewUnion.self, forKey: .event)
             self.subject = try container.decode(ATUnion.ModerationEventViewSubjectUnion.self, forKey: .subject)
-            self.subjectBlobCIDHashes = try container.decode([String].self, forKey: .subjectBlobCIDHashes)
+            self.subjectBlobCIDs = try container.decode([String].self, forKey: .subjectBlobCIDs)
             self.createdBy = try container.decode(String.self, forKey: .createdBy)
             self.createdAt = try decodeDate(from: container, forKey: .createdAt)
             self.creatorHandle = try container.decodeIfPresent(String.self, forKey: .creatorHandle)
@@ -71,7 +71,7 @@ extension ToolsOzoneLexicon.Moderation {
             try container.encode(self.id, forKey: .id)
             try container.encode(self.event, forKey: .event)
             try container.encode(self.subject, forKey: .subject)
-            try container.encode(self.subjectBlobCIDHashes, forKey: .subjectBlobCIDHashes)
+            try container.encode(self.subjectBlobCIDs, forKey: .subjectBlobCIDs)
             try container.encode(self.createdBy, forKey: .createdBy)
             try encodeDate(self.createdAt, with: &container, forKey: .createdAt)
             try container.encodeIfPresent(self.creatorHandle, forKey: .creatorHandle)
@@ -82,7 +82,7 @@ extension ToolsOzoneLexicon.Moderation {
             case id
             case event
             case subject
-            case subjectBlobCIDHashes = "subjectBlobCids"
+            case subjectBlobCIDs = "subjectBlobCids"
             case createdBy
             case createdAt
             case creatorHandle
@@ -170,11 +170,14 @@ extension ToolsOzoneLexicon.Moderation {
         /// The subject reference of the status view.
         public let subject: ATUnion.SubjectStatusViewSubjectUnion
 
+        /// The hosting type of the status view.
+        public let hosting: ATUnion.SubjectStatusViewHostingUnion?
+
         /// An array of CID hashes related to blobs. Optional.
-        public var subjectBlobCIDHashes: [String]?
+        public let subjectBlobCIDs: [String]?
 
         /// The handle of the subject related to the status. Optional.
-        public var subjectRepoHandle: String?
+        public let subjectRepoHandle: String?
 
         /// The date and time of the last update for the status view.
         ///
@@ -192,24 +195,18 @@ extension ToolsOzoneLexicon.Moderation {
         public let reviewState: ToolsOzoneLexicon.Moderation.SubjectReviewStateDefinition
 
         /// Any additional comments written about the subject. Optional.
-        public var comment: String?
+        public let comment: String?
 
         /// The date and time the subject's time to be muted has been lifted. Optional.
         ///
         /// - Note: According to the AT Protocol specifications: "Sticky comment on the subject."
         public let muteUntil: Date?
 
-        /// The date and time until which reporting on the subject is muted. Optional.
-        ///
-        /// - Important: The item associated with this property is undocumented in the AT Protocol specifications. The documentation here is based on:\
-        ///   \* **For items with some inferable context from property names or references**: its best interpretation, though not with full certainty.\
-        ///   \* **For items without enough context for even an educated guess**: a direct acknowledgment of their undocumented status.\
-        ///   \
-        ///   Clarifications from Bluesky are needed in order to fully understand this item.
+        /// The date and time where the subject's muting period is lifted. Optional.
         public let muteReportingUntil: Date?
 
-        /// The name of the reviewer that reviewed the subject. Optional.
-        public var lastReviewedBy: String?
+        /// The decentralized identifier (DID) of the reviewer that reviewed the subject. Optional.
+        public let lastReviewedBy: String?
 
         /// The date and time the last reviewer looked at the subject. Optional.
         public let lastReviewedAt: Date?
@@ -221,25 +218,26 @@ extension ToolsOzoneLexicon.Moderation {
         public let lastAppealedAt: Date?
 
         /// Indicates whether the subject was taken down. Optional.
-        public var isTakenDown: Bool?
+        public let isTakenDown: Bool?
 
         /// Indicates whether an appeal has been made. Optional.
-        public var wasAppealed: Bool?
+        public let wasAppealed: Bool?
 
         /// The date and time the subject's suspension will be lifted. Optional.
-        public var suspendUntil: Date?
+        public let suspendUntil: Date?
 
         /// An array of tags. Optional.
-        public var tags: [String]?
+        public let tags: [String]?
 
-        public init(id: Int, subject: ATUnion.SubjectStatusViewSubjectUnion, subjectBlobCIDHashes: [String]? = nil, subjectRepoHandle: String? = nil,
-                    updatedAt: Date, createdAt: Date, reviewState: ToolsOzoneLexicon.Moderation.SubjectReviewStateDefinition, comment: String? = nil,
-                    muteUntil: Date? = nil, muteReportingUntil: Date? = nil, lastReviewedBy: String? = nil, lastReviewedAt: Date? = nil,
-                    lastReportedAt: Date? = nil, lastAppealedAt: Date? = nil, isTakenDown: Bool? = nil, wasAppealed: Bool? = nil, suspendUntil: Date? = nil,
-                    tags: [String]? = nil) {
+        public init(id: Int, subject: ATUnion.SubjectStatusViewSubjectUnion, hosting: ATUnion.SubjectStatusViewHostingUnion?,
+                    subjectBlobCIDs: [String]? = nil, subjectRepoHandle: String? = nil, updatedAt: Date, createdAt: Date,
+                    reviewState: ToolsOzoneLexicon.Moderation.SubjectReviewStateDefinition, comment: String? = nil, muteUntil: Date? = nil,
+                    muteReportingUntil: Date? = nil, lastReviewedBy: String? = nil, lastReviewedAt: Date? = nil, lastReportedAt: Date? = nil,
+                    lastAppealedAt: Date? = nil, isTakenDown: Bool? = nil, wasAppealed: Bool? = nil, suspendUntil: Date? = nil, tags: [String]? = nil) {
             self.id = id
             self.subject = subject
-            self.subjectBlobCIDHashes = subjectBlobCIDHashes
+            self.hosting = hosting
+            self.subjectBlobCIDs = subjectBlobCIDs
             self.subjectRepoHandle = subjectRepoHandle
             self.updatedAt = updatedAt
             self.createdAt = createdAt
@@ -262,7 +260,8 @@ extension ToolsOzoneLexicon.Moderation {
 
             self.id = try container.decode(Int.self, forKey: .id)
             self.subject = try container.decode(ATUnion.SubjectStatusViewSubjectUnion.self, forKey: .subject)
-            self.subjectBlobCIDHashes = try container.decodeIfPresent([String].self, forKey: .subjectBlobCIDHashes)
+            self.hosting = try container.decodeIfPresent(ATUnion.SubjectStatusViewHostingUnion.self, forKey: .hosting)
+            self.subjectBlobCIDs = try container.decodeIfPresent([String].self, forKey: .subjectBlobCIDs)
             self.subjectRepoHandle = try container.decodeIfPresent(String.self, forKey: .subjectRepoHandle)
             self.updatedAt = try decodeDate(from: container, forKey: .updatedAt)
             self.createdAt = try decodeDate(from: container, forKey: .createdAt)
@@ -285,7 +284,8 @@ extension ToolsOzoneLexicon.Moderation {
 
             try container.encode(self.id, forKey: .id)
             try container.encode(self.subject, forKey: .subject)
-            try container.encodeIfPresent(self.subjectBlobCIDHashes, forKey: .subjectBlobCIDHashes)
+            try container.encodeIfPresent(self.hosting, forKey: .hosting)
+            try container.encodeIfPresent(self.subjectBlobCIDs, forKey: .subjectBlobCIDs)
             try container.encodeIfPresent(self.subjectRepoHandle, forKey: .subjectRepoHandle)
             try encodeDate(self.updatedAt, with: &container, forKey: .updatedAt)
             try encodeDate(self.createdAt, with: &container, forKey: .createdAt)
@@ -306,7 +306,8 @@ extension ToolsOzoneLexicon.Moderation {
         enum CodingKeys: String, CodingKey {
             case id
             case subject
-            case subjectBlobCIDHashes = "subjectBlobCids"
+            case hosting
+            case subjectBlobCIDs = "subjectBlobCids"
             case subjectRepoHandle
             case updatedAt
             case createdAt
@@ -336,26 +337,26 @@ extension ToolsOzoneLexicon.Moderation {
         /// reviewed by a moderator.
         ///
         /// - Note: The above documentation was taken directly from the AT Protocol specifications.
-        case reviewOpen
+        case open = "reviewOpen"
 
         /// Moderator review status of a subject: Escalated. Indicates that the subject was
         /// escalated for review by a moderator.
         ///
         /// - Note: The above documentation was taken directly from the AT Protocol specifications.
-        case reviewEscalated
+        case escalated = "reviewEscalated"
 
         /// Moderator review status of a subject: Closed. Indicates that the subject was already
         /// reviewed and resolved by a moderator.
         ///
         /// - Note: The above documentation was taken directly from the AT Protocol specifications.
-        case reviewClosed
+        case closed = "reviewClosed"
 
         /// Moderator review status of a subject: Unnecessary. Indicates that the subject does
         /// not need a review at the moment but there
         /// is probably some moderation related metadata available for it
         ///
         /// - Note: The above documentation was taken directly from the AT Protocol specifications.
-        case reviewNone
+        case none = "reviewNone"
     }
 
     /// A definition model for an event takedown.
@@ -555,14 +556,14 @@ extension ToolsOzoneLexicon.Moderation {
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/tools/ozone/moderation/defs.json
     public struct EventMuteReporterDefinition: Sendable, Codable {
 
+        /// Any additional comments about the event. Optional.
+        public let comment: String?
+
         /// Indicates how long the account should remain muted (in hours).
         ///
         /// - Note: According to the AT Protocol specifications: "Indicates how long the
         /// account should remain muted."
         public let durationInHours: Int
-
-        /// Any additional comments about the event. Optional.
-        public let comment: String?
     }
 
     /// A definition model for an unmute reporter event.
@@ -656,6 +657,206 @@ extension ToolsOzoneLexicon.Moderation {
         public let comment: String?
     }
 
+    /// A definition model for an account event definition.
+    ///
+    /// - Note: According to the AT Protocol specifications: "Logs account status related events on
+    /// a repo subject. Normally captured by automod from the firehose and emitted to ozone for
+    /// historical tracking."
+    ///
+    /// - SeeAlso: This is based on the [`com.atproto.admin.defs`][github] lexicon.
+    ///
+    /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/admin/defs.json
+    public struct AccountEventDefinition: Sendable, Codable {
+
+        /// A comment attached to the account event.
+        public let comment: String?
+
+        /// Determines if the account was active.
+        public let isActive: Bool
+
+        /// Indicates the account has a repository that can be retrieved from the host. Optional.
+        ///
+        /// - Note: According to the AT Protocol specifications: "Indicates that the account has
+        /// a repository which can be fetched from the host that emitted this event."
+        public let status: Status?
+
+        /// The date and time
+        public let timestamp: Date
+
+        public init(comment: String?, isActive: Bool, status: Status?, timestamp: Date) {
+            self.comment = comment
+            self.isActive = isActive
+            self.status = status
+            self.timestamp = timestamp
+        }
+
+        public init(from decoder: any Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+
+            self.comment = try container.decodeIfPresent(String.self, forKey: .comment)
+            self.isActive = try container.decode(Bool.self, forKey: .isActive)
+            self.status = try container.decodeIfPresent(Status.self, forKey: .status)
+            self.timestamp = try decodeDate(from: container, forKey: .timestamp)
+        }
+
+        public func encode(to encoder: any Encoder) throws {
+            var container = encoder.container(keyedBy: CodingKeys.self)
+            
+            try container.encodeIfPresent(self.comment, forKey: .comment)
+            try container.encode(self.isActive, forKey: .isActive)
+            try container.encodeIfPresent(self.status, forKey: .status)
+            try encodeDate(self.timestamp, with: &container, forKey: .timestamp)
+        }
+
+        enum CodingKeys: String, CodingKey {
+            case comment
+            case isActive = "active"
+            case status
+            case timestamp
+        }
+
+        /// Indicates the account has a repository that can be retrieved from the host.
+        public enum Status: Sendable, Codable {
+
+            /// An unknown status.
+            case unknown
+
+            /// A deactivated status.
+            case deactivated
+
+            /// A deleted status.
+            case deleted
+
+            /// A takedown status.
+            case takendown
+
+            /// A suspended status.
+            case suspended
+
+            /// A tombstoned status.
+            case tombstoned
+        }
+    }
+
+    /// A definition model for a log identity related event on a repo subject.
+    ///
+    /// - Note: According to the AT Protocol specifications: "Logs identity related events on a
+    /// repo subject. Normally captured by automod from the firehose and emitted to ozone for
+    /// historical tracking."
+    ///
+    /// - SeeAlso: This is based on the [`com.atproto.admin.defs`][github] lexicon.
+    ///
+    /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/admin/defs.json
+    public struct IdentityEventDefinition: Sendable, Codable {
+
+        /// THe comment attached to the identity event. Optional.
+        public let comment: String?
+
+        /// The handle related to the event. Optional.
+        public let handle: String?
+
+        /// The host of the user account's Personal Data Server (PDS). Optional.
+        public let pdsHost: String?
+
+        /// Indicates whether the user account has been deleted. Optional.
+        public let tombstone: Bool?
+
+        /// The date and time of the log.
+        public let timestamp: Date
+
+        public init(from decoder: any Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+
+            self.comment = try container.decodeIfPresent(String.self, forKey: .comment)
+            self.handle = try container.decodeIfPresent(String.self, forKey: .handle)
+            self.pdsHost = try container.decodeIfPresent(String.self, forKey: .pdsHost)
+            self.tombstone = try container.decodeIfPresent(Bool.self, forKey: .tombstone)
+            self.timestamp = try decodeDate(from: container, forKey: .timestamp)
+        }
+
+        public func encode(to encoder: any Encoder) throws {
+            var container = encoder.container(keyedBy: CodingKeys.self)
+
+            try container.encodeIfPresent(self.comment, forKey: .comment)
+            try container.encodeIfPresent(self.handle, forKey: .handle)
+            try container.encodeIfPresent(self.pdsHost, forKey: .pdsHost)
+            try container.encodeIfPresent(self.tombstone, forKey: .tombstone)
+            try encodeDate(self.timestamp, with: &container, forKey: .timestamp)
+        }
+
+        enum CodingKeys: CodingKey {
+            case comment
+            case handle
+            case pdsHost
+            case tombstone
+            case timestamp
+        }
+    }
+
+    /// A definition model for a log lifecycle event on a record subject
+    ///
+    /// Logs lifecycle event on a record subject. Normally captured by automod from the firehose and emitted to ozone for historical tracking.
+    ///
+    /// - Note: According to the AT Protocol specifications: "Logs lifecycle event on a
+    /// record subject. Normally captured by automod from the firehose and emitted to ozone
+    /// for historical tracking."
+    ///
+    /// - SeeAlso: This is based on the [`com.atproto.admin.defs`][github] lexicon.
+    ///
+    /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/admin/defs.json
+    public struct RecordEventDefinition: Sendable, Codable {
+
+        /// The comment attached to the event. Optional.
+        public let comment: String?
+
+        /// The type of operation that happened on the record.
+        public let operation: Operation
+
+        /// The CID hash of the event. Optional.
+        public let cid: String?
+
+        /// The date and time of the event.
+        public let timestamp: Date
+
+        public init(from decoder: any Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+
+            self.comment = try container.decodeIfPresent(String.self, forKey: .comment)
+            self.operation = try container.decode(Operation.self, forKey: .operation)
+            self.cid = try container.decodeIfPresent(String.self, forKey: .cid)
+            self.timestamp = try decodeDate(from: container, forKey: .timestamp)
+        }
+
+        public func encode(to encoder: any Encoder) throws {
+            var container = encoder.container(keyedBy: CodingKeys.self)
+
+            try container.encodeIfPresent(self.comment, forKey: .comment)
+            try container.encode(self.operation, forKey: .operation)
+            try container.encodeIfPresent(self.cid, forKey: .cid)
+            try encodeDate(self.timestamp, with: &container, forKey: .timestamp)
+        }
+
+        enum CodingKeys: String, CodingKey {
+            case comment
+            case operation = "op"
+            case cid
+            case timestamp
+        }
+
+        /// The type of operation that happened on the record.
+        public enum Operation: String, Sendable, Codable {
+
+            /// Indicates a "created" operation occurred.
+            case created
+
+            /// Indicates an "updated" operation occurred.
+            case updated
+
+            /// Indicates a "deleted" operation occurred.
+            case deleted
+        }
+    }
+
     /// A definition model for a repository view.
     ///
     /// - SeeAlso: This is based on the [`com.atproto.admin.defs`][github] lexicon.
@@ -663,7 +864,7 @@ extension ToolsOzoneLexicon.Moderation {
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/admin/defs.json
     public struct RepositoryViewDefinition: Sendable, Codable {
 
-        /// The decentralized identifier (DID) of the user.
+        /// The decentralized identifier (DID) of the usre account.
         public let actorDID: String
 
         /// The handle of the user.
@@ -673,12 +874,6 @@ extension ToolsOzoneLexicon.Moderation {
         public let email: String?
 
         /// The related records of the user.
-        ///
-        /// - Important: The item associated with this property is undocumented in the AT Protocol specifications. The documentation here is based on:\
-        ///   \* **For items with some inferable context from property names or references**: its best interpretation, though not with full certainty.\
-        ///   \* **For items without enough context for even an educated guess**: a direct acknowledgment of their undocumented status.\
-        ///   \
-        ///   Clarifications from Bluesky are needed in order to fully understand this item.
         public let relatedRecords: UnknownType
 
         /// The date and time the user was indexed.
@@ -699,9 +894,13 @@ extension ToolsOzoneLexicon.Moderation {
         /// The date and time a status has been deactivated.
         public let deactivatedAt: Date?
 
+        /// The threat signature of the repository view. Optional.
+        public let threatSignature: ComAtprotoLexicon.Admin.ThreatSignatureDefinition?
+
         public init(actorDID: String, handle: String, email: String? = nil, relatedRecords: UnknownType, indexedAt: Date,
                     moderation: ToolsOzoneLexicon.Moderation.ModerationDefinition, invitedBy: ComAtprotoLexicon.Server.InviteCodeDefinition? = nil,
-                    areInvitesDisabled: Bool? = nil, inviteNote: String? = nil, deactivatedAt: Date? = nil) {
+                    areInvitesDisabled: Bool? = nil, inviteNote: String? = nil, deactivatedAt: Date? = nil,
+                    threatSignature: ComAtprotoLexicon.Admin.ThreatSignatureDefinition?) {
             self.actorDID = actorDID
             self.handle = handle
             self.email = email
@@ -712,6 +911,7 @@ extension ToolsOzoneLexicon.Moderation {
             self.areInvitesDisabled = areInvitesDisabled
             self.inviteNote = inviteNote
             self.deactivatedAt = deactivatedAt
+            self.threatSignature = threatSignature
         }
 
         public init(from decoder: any Decoder) throws {
@@ -727,6 +927,7 @@ extension ToolsOzoneLexicon.Moderation {
             self.areInvitesDisabled = try container.decodeIfPresent(Bool.self, forKey: .areInvitesDisabled)
             self.inviteNote = try container.decodeIfPresent(String.self, forKey: .inviteNote)
             self.deactivatedAt = try decodeDateIfPresent(from: container, forKey: .deactivatedAt)
+            self.threatSignature = try container.decodeIfPresent(ComAtprotoLexicon.Admin.ThreatSignatureDefinition.self, forKey: .threatSignature)
         }
 
         public func encode(to encoder: Encoder) throws {
@@ -742,6 +943,7 @@ extension ToolsOzoneLexicon.Moderation {
             try container.encodeIfPresent(self.areInvitesDisabled, forKey: .areInvitesDisabled)
             try container.encodeIfPresent(self.inviteNote, forKey: .inviteNote)
             try encodeDateIfPresent(self.deactivatedAt, with: &container, forKey: .deactivatedAt)
+            try container.encodeIfPresent(self.threatSignature, forKey: .threatSignature)
         }
 
         enum CodingKeys: String, CodingKey {
@@ -755,6 +957,7 @@ extension ToolsOzoneLexicon.Moderation {
             case areInvitesDisabled = "invitesDisabled"
             case inviteNote
             case deactivatedAt
+            case threatSignature
         }
     }
 
@@ -775,12 +978,6 @@ extension ToolsOzoneLexicon.Moderation {
         public let email: String?
 
         /// The user's related records.
-        ///
-        /// - Important: The item associated with this property is undocumented in the AT Protocol specifications. The documentation here is based on:\
-        ///   \* **For items with some inferable context from property names or references**: its best interpretation, though not with full certainty.\
-        ///   \* **For items without enough context for even an educated guess**: a direct acknowledgment of their undocumented status.\
-        ///   \
-        ///   Clarifications from Bluesky are needed in order to fully understand this item.
         public let relatedRecords: UnknownType
 
         /// The date and time the user was last indexed.
@@ -810,10 +1007,14 @@ extension ToolsOzoneLexicon.Moderation {
         /// The date and time a status has been deactivated.
         public let deactivatedAt: Date?
 
+        /// The threat signature of the repository view. Optional.
+        public let threatSignature: ComAtprotoLexicon.Admin.ThreatSignatureDefinition?
+
         public init(actorDID: String, handle: String, email: String? = nil, relatedRecords: UnknownType, indexedAt: Date,
                     moderation: ToolsOzoneLexicon.Moderation.ModerationDetailDefinition, labels: [ComAtprotoLexicon.Label.LabelDefinition]? = nil,
                     invitedBy: ComAtprotoLexicon.Server.InviteCodeDefinition?, invites: [ComAtprotoLexicon.Server.InviteCodeDefinition]? = nil,
-                    areInvitesDisabled: Bool? = nil, inviteNote: String? = nil, emailConfirmedAt: Date? = nil, deactivatedAt: Date? = nil) {
+                    areInvitesDisabled: Bool? = nil, inviteNote: String? = nil, emailConfirmedAt: Date? = nil, deactivatedAt: Date? = nil,
+                    threatSignature: ComAtprotoLexicon.Admin.ThreatSignatureDefinition?) {
             self.actorDID = actorDID
             self.handle = handle
             self.email = email
@@ -827,6 +1028,7 @@ extension ToolsOzoneLexicon.Moderation {
             self.inviteNote = inviteNote
             self.emailConfirmedAt = emailConfirmedAt
             self.deactivatedAt = deactivatedAt
+            self.threatSignature = threatSignature
         }
 
         public init(from decoder: any Decoder) throws {
@@ -845,6 +1047,7 @@ extension ToolsOzoneLexicon.Moderation {
             self.inviteNote = try container.decodeIfPresent(String.self, forKey: .inviteNote)
             self.emailConfirmedAt = try decodeDateIfPresent(from: container, forKey: .emailConfirmedAt)
             self.deactivatedAt = try decodeDateIfPresent(from: container, forKey: .deactivatedAt)
+            self.threatSignature = try container.decodeIfPresent(ComAtprotoLexicon.Admin.ThreatSignatureDefinition.self, forKey: .threatSignature)
         }
 
         public func encode(to encoder: Encoder) throws {
@@ -863,6 +1066,7 @@ extension ToolsOzoneLexicon.Moderation {
             try container.encodeIfPresent(self.inviteNote, forKey: .inviteNote)
             try encodeDateIfPresent(self.emailConfirmedAt, with: &container, forKey: .emailConfirmedAt)
             try encodeDateIfPresent(self.deactivatedAt, with: &container, forKey: .deactivatedAt)
+            try container.encodeIfPresent(self.threatSignature, forKey: .threatSignature)
         }
 
         enum CodingKeys: String, CodingKey {
@@ -879,6 +1083,7 @@ extension ToolsOzoneLexicon.Moderation {
             case inviteNote
             case emailConfirmedAt
             case deactivatedAt
+            case threatSignature
         }
     }
 
@@ -908,19 +1113,13 @@ extension ToolsOzoneLexicon.Moderation {
         public let recordURI: String
 
         /// The CID hash of the record.
-        public let cidHash: String
+        public let recordCID: String
 
         /// The value of the record.
-        ///
-        /// - Important: The item associated with this property is undocumented in the AT Protocol specifications. The documentation here is based on:\
-        ///   \* **For items with some inferable context from property names or references**: its best interpretation, though not with full certainty.\
-        ///   \* **For items without enough context for even an educated guess**: a direct acknowledgment of their undocumented status.\
-        ///   \
-        ///   Clarifications from Bluesky are needed in order to fully understand this item.
         public let value: UnknownType
 
         /// An array of CID hashes for blobs.
-        public let blobCIDHashes: [String]
+        public let blobCIDs: [String]
 
         /// The date and time the record is indexed.
         public let indexedAt: Date
@@ -943,12 +1142,12 @@ extension ToolsOzoneLexicon.Moderation {
         ///   Clarifications from Bluesky are needed in order to fully understand this item.
         public let repository: ToolsOzoneLexicon.Moderation.RepositoryViewDefinition
 
-        public init(recordURI: String, cidHash: String, value: UnknownType, blobCIDHashes: [String], indexedAt: Date,
+        public init(recordURI: String, recordCID: String, value: UnknownType, blobCIDs: [String], indexedAt: Date,
                     moderation: ToolsOzoneLexicon.Moderation.ModerationDefinition, repository: ToolsOzoneLexicon.Moderation.RepositoryViewDefinition) {
             self.recordURI = recordURI
-            self.cidHash = cidHash
+            self.recordCID = recordCID
             self.value = value
-            self.blobCIDHashes = blobCIDHashes
+            self.blobCIDs = blobCIDs
             self.indexedAt = indexedAt
             self.moderation = moderation
             self.repository = repository
@@ -958,9 +1157,9 @@ extension ToolsOzoneLexicon.Moderation {
             let container = try decoder.container(keyedBy: CodingKeys.self)
 
             self.recordURI = try container.decode(String.self, forKey: .recordURI)
-            self.cidHash = try container.decode(String.self, forKey: .cidHash)
+            self.recordCID = try container.decode(String.self, forKey: .recordCID)
             self.value = try container.decode(UnknownType.self, forKey: .value)
-            self.blobCIDHashes = try container.decode([String].self, forKey: .blobCIDHashes)
+            self.blobCIDs = try container.decode([String].self, forKey: .blobCIDs)
             self.indexedAt = try decodeDate(from: container, forKey: .indexedAt)
             self.moderation = try container.decode(ToolsOzoneLexicon.Moderation.ModerationDefinition.self, forKey: .moderation)
             self.repository = try container.decode(ToolsOzoneLexicon.Moderation.RepositoryViewDefinition.self, forKey: .repository)
@@ -970,9 +1169,9 @@ extension ToolsOzoneLexicon.Moderation {
             var container = encoder.container(keyedBy: CodingKeys.self)
 
             try container.encode(self.recordURI, forKey: .recordURI)
-            try container.encode(self.cidHash, forKey: .cidHash)
+            try container.encode(self.recordCID, forKey: .recordCID)
             try container.encode(self.value, forKey: .value)
-            try container.encode(self.blobCIDHashes, forKey: .blobCIDHashes)
+            try container.encode(self.blobCIDs, forKey: .blobCIDs)
             try encodeDate(self.indexedAt, with: &container, forKey: .indexedAt)
             try container.encode(self.moderation, forKey: .moderation)
             try container.encode(self.repository, forKey: .repository)
@@ -980,9 +1179,9 @@ extension ToolsOzoneLexicon.Moderation {
 
         enum CodingKeys: String, CodingKey {
             case recordURI = "uri"
-            case cidHash = "cid"
+            case recordCID
             case value
-            case blobCIDHashes = "blobCids"
+            case blobCIDs = "blobCids"
             case indexedAt
             case moderation
             case repository = "repo"
@@ -1000,19 +1199,13 @@ extension ToolsOzoneLexicon.Moderation {
         public let recordURI: String
 
         /// The CID hash of the record.
-        public let cidHash: String
+        public let recordCID: String
 
-        /// The value of the record.
-        ///
-        /// - Important: The item associated with this property is undocumented in the AT Protocol specifications. The documentation here is based on:\
-        ///   \* **For items with some inferable context from property names or references**: its best interpretation, though not with full certainty.\
-        ///   \* **For items without enough context for even an educated guess**: a direct acknowledgment of their undocumented status.\
-        ///   \
-        ///   Clarifications from Bluesky are needed in order to fully understand this item.
+        /// The value of the record view.
         public let value: String
 
         /// An array of CID hashes for blobs.
-        public let blobs: [ToolsOzoneLexicon.Moderation.BlobViewDefinition]
+        public let blobCIDs: [ToolsOzoneLexicon.Moderation.BlobViewDefinition]
 
         /// An array of labels attached to the record. Optional.
         public let labels: [ComAtprotoLexicon.Label.LabelDefinition]?
@@ -1038,13 +1231,13 @@ extension ToolsOzoneLexicon.Moderation {
         ///   Clarifications from Bluesky are needed in order to fully understand this item.
         public let repository: ToolsOzoneLexicon.Moderation.RepositoryViewDefinition
 
-        public init(recordURI: String, cidHash: String, value: String, blobs: [ToolsOzoneLexicon.Moderation.BlobViewDefinition],
+        public init(recordURI: String, recordCID: String, value: String, blobCIDs: [ToolsOzoneLexicon.Moderation.BlobViewDefinition],
                     labels: [ComAtprotoLexicon.Label.LabelDefinition]?, indexedAt: Date, moderation: ToolsOzoneLexicon.Moderation.ModerationDetailDefinition,
                     repository: ToolsOzoneLexicon.Moderation.RepositoryViewDefinition) {
             self.recordURI = recordURI
-            self.cidHash = cidHash
+            self.recordCID = recordCID
             self.value = value
-            self.blobs = blobs
+            self.blobCIDs = blobCIDs
             self.labels = labels
             self.indexedAt = indexedAt
             self.moderation = moderation
@@ -1055,9 +1248,9 @@ extension ToolsOzoneLexicon.Moderation {
             let container = try decoder.container(keyedBy: CodingKeys.self)
 
             self.recordURI = try container.decode(String.self, forKey: .recordURI)
-            self.cidHash = try container.decode(String.self, forKey: .cidHash)
+            self.recordCID = try container.decode(String.self, forKey: .recordCID)
             self.value = try container.decode(String.self, forKey: .value)
-            self.blobs = try container.decode([ToolsOzoneLexicon.Moderation.BlobViewDefinition].self, forKey: .blobs)
+            self.blobCIDs = try container.decode([ToolsOzoneLexicon.Moderation.BlobViewDefinition].self, forKey: .blobCIDs)
             self.labels = try container.decodeIfPresent([ComAtprotoLexicon.Label.LabelDefinition].self, forKey: .labels)
             self.indexedAt = try decodeDate(from: container, forKey: .indexedAt)
             self.moderation = try container.decode(ToolsOzoneLexicon.Moderation.ModerationDetailDefinition.self, forKey: .moderation)
@@ -1068,9 +1261,9 @@ extension ToolsOzoneLexicon.Moderation {
             var container = encoder.container(keyedBy: CodingKeys.self)
 
             try container.encode(self.recordURI, forKey: .recordURI)
-            try container.encode(self.cidHash, forKey: .cidHash)
+            try container.encode(self.recordCID, forKey: .recordCID)
             try container.encode(self.value, forKey: .value)
-            try container.encode(self.blobs, forKey: .blobs)
+            try container.encode(self.blobCIDs, forKey: .blobCIDs)
             try container.encodeIfPresent(self.labels, forKey: .labels)
             try encodeDate(self.indexedAt, with: &container, forKey: .indexedAt)
             try container.encode(self.moderation, forKey: .moderation)
@@ -1079,9 +1272,9 @@ extension ToolsOzoneLexicon.Moderation {
 
         enum CodingKeys: String, CodingKey {
             case recordURI = "uri"
-            case cidHash = "cid"
+            case recordCID
             case value
-            case blobs
+            case blobCIDs = "blobCids"
             case labels
             case indexedAt
             case moderation
@@ -1158,7 +1351,7 @@ extension ToolsOzoneLexicon.Moderation {
     public struct BlobViewDefinition: Sendable, Codable {
 
         /// The CID hash of the blob.
-        public let cidHash: String
+        public let cid: String
 
         /// The MIME type of the blob.
         public let mimeType: String
@@ -1175,9 +1368,9 @@ extension ToolsOzoneLexicon.Moderation {
         /// The status of the subject.
         public let moderation: ToolsOzoneLexicon.Moderation.ModerationDefinition
 
-        public init(cidHash: String, mimeType: String, size: Int, createdAt: Date, details: ATUnion.BlobViewDetailUnion,
+        public init(cid: String, mimeType: String, size: Int, createdAt: Date, details: ATUnion.BlobViewDetailUnion,
                     moderation: ToolsOzoneLexicon.Moderation.ModerationDefinition) {
-            self.cidHash = cidHash
+            self.cid = cid
             self.mimeType = mimeType
             self.size = size
             self.createdAt = createdAt
@@ -1188,7 +1381,7 @@ extension ToolsOzoneLexicon.Moderation {
         public init(from decoder: any Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
 
-            self.cidHash = try container.decode(String.self, forKey: .cidHash)
+            self.cid = try container.decode(String.self, forKey: .cid)
             self.mimeType = try container.decode(String.self, forKey: .mimeType)
             self.size = try container.decode(Int.self, forKey: .size)
             self.createdAt = try decodeDate(from: container, forKey: .createdAt)
@@ -1199,7 +1392,7 @@ extension ToolsOzoneLexicon.Moderation {
         public func encode(to encoder: Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
 
-            try container.encode(self.cidHash, forKey: .cidHash)
+            try container.encode(self.cid, forKey: .cid)
             try container.encode(self.mimeType, forKey: .mimeType)
             try container.encode(self.size, forKey: .size)
             try encodeDate(self.createdAt, with: &container, forKey: .createdAt)
@@ -1208,7 +1401,7 @@ extension ToolsOzoneLexicon.Moderation {
         }
 
         enum CodingKeys: String, CodingKey {
-            case cidHash = "cid"
+            case cid
             case mimeType
             case size
             case createdAt
@@ -1246,5 +1439,80 @@ extension ToolsOzoneLexicon.Moderation {
 
         /// The duration of the video.
         public let length: Int
+    }
+
+    /// A definition model for account hosting.
+    ///
+    /// - SeeAlso: This is based on the [`tools.ozone.moderation.defs`][github] lexicon.
+    ///
+    /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/admin/defs.json
+    public struct AccountHostingDefinition: Sendable, Codable {
+
+        /// The status of the account host.
+        public let status: Status
+
+        /// The date and time the account host has been updated. Optional.
+        public let updatedAt: Date?
+
+        /// The date and time the account host has been created. Optional.
+        public let createdAt: Date?
+
+        /// The date and time the account host has been deleted. Optional.
+        public let deletedAt: Date?
+
+        /// The date and time the account host has been deactivated. Optional.
+        public let deactivatedAt: Date?
+
+        /// The date and time the account host has been reactivated. Optional.
+        public let reactivatedAt: Date?
+
+        /// The status of the account host.
+        public enum Status: Sendable, Codable {
+
+            /// Indicates the account host has been taken down.
+            case takendown
+
+            /// Indicates the account host has been suspended.
+            case suspended
+
+            /// Indicates the account host has been deleted.
+            case deleted
+
+            /// Indicates the account host has been deactivated.
+            case deactivated
+
+            /// Indicates there is no known state for this account host.
+            case unknown
+        }
+    }
+
+    /// A definition model for record hosting.
+    ///
+    /// - SeeAlso: This is based on the [`tools.ozone.moderation.defs`][github] lexicon.
+    ///
+    /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/admin/defs.json
+    public struct RecordHostingDefinition: Sendable, Codable {
+
+        /// The status of the record host.
+        public let status: Status
+
+        /// The date and time the record host has been updated. Optional.
+        public let updatedAt: Date?
+
+        /// The date and time the record host has been created. Optional.
+        public let createdAt: Date?
+
+        /// The date and time the record host has been deleted. Optional.
+        public let deletedAt: Date?
+
+        /// The status of the record host.
+        public enum Status: Sendable, Codable {
+
+            /// Indicates the record host has been deleted.
+            case deleted
+
+            /// Indicates there is no known state for this record host.
+            case unknown
+        }
     }
 }
