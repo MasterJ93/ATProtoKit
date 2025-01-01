@@ -17,7 +17,17 @@ extension ATProtoAdmin {
     /// - SeeAlso: This is based on the [`tools.ozone.signature.searchAccounts`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/tools/ozone/signature/searchAccounts.json
+    /// 
+    /// - Parameters:
+    ///   - values: An array of values.
+    ///   - limit: The number of repositories in the array. Optional. Defaults to `50`. Can only
+    ///   choose between `1` and `100`.
+    ///   - cursor: The mark used to indicate the starting point for the next set
+    ///   of results. Optional.
+    /// - Returns: An array of accounts, with an optional cursor to extend the array.
     ///
+    /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
+    /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func searchAccounts(
         matching values: [String],
         cursor: String? = nil,

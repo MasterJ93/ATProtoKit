@@ -18,9 +18,20 @@ extension ATProtoAdmin {
     /// - SeeAlso: This is based on the [`tools.ozone.signature.findRelatedAccounts`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/tools/ozone/signature/findRelatedAccounts.json
+    /// 
+    /// - Parameters:
+    ///   - did: The decentralized identifier (DID) of the user account.
+    ///   - cursor: The mark used to indicate the starting point for the next set
+    ///   of results. Optional.
+    ///   - limit: The number of repositories in the array. Optional. Defaults to `50`. Can only
+    ///   choose between `1` and `100`.
+    /// - Returns: The related user accounts that match the threat signature with the root
+    /// user account.
     ///
+    /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
+    /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func findRelatedAccount(
-        did: String,
+        with did: String,
         cursor: String? = nil,
         limit: Int? = 50
     ) async throws -> ToolsOzoneLexicon.Signature.FindRelatedAccountsOutput {

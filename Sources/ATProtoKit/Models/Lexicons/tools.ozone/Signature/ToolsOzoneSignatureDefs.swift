@@ -16,10 +16,10 @@ extension ToolsOzoneLexicon.Signature {
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/tools/ozone/signature/defs.json
     public struct SignatureDetailDefinition: Sendable, Codable {
 
-        /// The property of the signature details. Optional.
-        public let property: String?
+        /// The property of the signature details.
+        public let property: String
 
-        /// The value of the signature details. Optional.
-        public let value : String?
+        /// The value of the signature details.
+        public let value : String
     }
 }

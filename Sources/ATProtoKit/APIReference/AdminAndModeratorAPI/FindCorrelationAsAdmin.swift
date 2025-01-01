@@ -23,7 +23,7 @@ extension ATProtoAdmin {
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
-    public func findCorrelation(dids: [String]) async throws -> ToolsOzoneLexicon.Signature.FindCorrelationOutput {
+    public func findCorrelation(by dids: [String]) async throws -> ToolsOzoneLexicon.Signature.FindCorrelationOutput {
         guard session != nil,
               let accessToken = session?.accessToken else {
             throw ATRequestPrepareError.missingActiveSession
