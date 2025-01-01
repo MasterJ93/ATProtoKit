@@ -42,7 +42,7 @@ extension ATProtoAdmin {
         }
 
         guard let sessionURL = session?.pdsURL,
-              let requestURL = URL(string: "\(sessionURL)/xrpc/tools.ozone.set.getValues") else {
+              let requestURL = URL(string: "\(sessionURL)/xrpc/tools.ozone.set.querySets") else {
             throw ATRequestPrepareError.invalidRequestURL
         }
 

@@ -24,7 +24,10 @@ extension ATProtoAdmin {
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
-    public func deleteValues(from name: String, matching values: [String]) async throws {
+    public func deleteValues(
+        from name: String,
+        matching values: [String]
+    ) async throws {
         guard session != nil,
               let accessToken = session?.accessToken else {
             throw ATRequestPrepareError.missingActiveSession

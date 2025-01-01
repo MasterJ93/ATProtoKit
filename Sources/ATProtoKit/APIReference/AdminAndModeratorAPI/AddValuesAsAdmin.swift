@@ -17,7 +17,10 @@ extension ATProtoAdmin {
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/tools/ozone/set/addValues.json
     ///
-    public func addValues(setName: String, values: [String]) async throws {
+    public func addValues(
+        setName: String,
+        values: [String]
+    ) async throws {
         guard session != nil,
               let accessToken = session?.accessToken else {
             throw ATRequestPrepareError.missingActiveSession

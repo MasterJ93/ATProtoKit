@@ -17,12 +17,13 @@ extension ToolsOzoneLexicon.Set {
 
         /// The name of the set.
         ///
-        /// A minimum of 3 characters and maximum of 128 characters is required.
+        /// - Important: Current minimum amount is 3 characters. Current maximum amount is
+        /// 128 characters.
         public let name: String
 
         /// The description of the set.
         ///
-        /// A maximum of 1,024 characters can be made.
+        /// - Important: Current maximum amount is 1,024 characters.
         public let description: String?
 
         public func encode(to encoder: any Encoder) throws {
@@ -47,12 +48,13 @@ extension ToolsOzoneLexicon.Set {
 
         /// The name of the set.
         ///
-        /// A minimum of 3 characters and maximum of 128 characters is required.
+        /// - Important: Current minimum amount is 3 characters. Current maximum amount is
+        /// 128 characters.
         public let name: String
 
         /// The description of the set.
         ///
-        /// A maximum of 1,024 characters can be made.
+        /// - Important: Current maximum amount is 1,024 characters.
         public let description: String?
 
         /// The size of the set.

@@ -38,7 +38,7 @@ extension ATProtoAdmin {
             throw ATRequestPrepareError.invalidRequestURL
         }
 
-        let requestBody = ToolsOzoneLexicon.Set.UpsertSetRequestBody(
+        let requestBody = ToolsOzoneLexicon.Set.SetDefinition(
             name: name,
             description: description
         )
