@@ -15,7 +15,7 @@ extension ATProtoAdmin {
     /// access this; if they attempt to do so, an error will occur.
     ///
     /// - Note: If you need to get details of multiple user accounts, use
-    /// ``getAccountInfos(_:)`` instead.
+    /// ``getAccountInfos(for:)`` instead.
     ///
     /// - Note: According to the AT Protocol specifications: "Get details about an account."
     ///

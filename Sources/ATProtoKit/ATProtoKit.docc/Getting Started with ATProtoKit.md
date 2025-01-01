@@ -71,7 +71,7 @@ let postResult = try await atProtoBluesky.createPostRecord(text: "Hello Bluesky!
 print(postResult)
 ```
 
-You should see the post in your Bluesky account once you run this code. When the method successfully completes, you'll receive a ``ComAtprotoLexicon/Repository/StrongReference`` object that contains the URI of the record (``ComAtprotoLexicon/Repository/StrongReference/recordURI``) and the content identifier hash of the record (``ComAtprotoLexicon/Repository/StrongReference/cidHash``).
+You should see the post in your Bluesky account once you run this code. When the method successfully completes, you'll receive a ``ComAtprotoLexicon/Repository/StrongReference`` object that contains the URI of the record (``ComAtprotoLexicon/Repository/StrongReference/recordURI``) and the content identifier hash of the record (``ComAtprotoLexicon/Repository/StrongReference/recordCID``).
 
 ### View Your Own Posts
 

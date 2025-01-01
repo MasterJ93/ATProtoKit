@@ -12,7 +12,7 @@ extension ATProtoKit {
     /// Deactivates the user's account.
     ///
     /// - Note: If you don't add `deleteAfter`, make sure to use
-    /// ``deleteAccount(_:password:token:)`` at some point after.
+    /// ``deleteAccount(for:password:deletionToken:)`` at some point after.
     ///
     /// - Note: According to the AT Protocol specifications: "Deactivates a currently active
     /// account. Stops serving of repo, and future writes to repo until reactivated. Used to

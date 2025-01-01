@@ -28,7 +28,3 @@
 
 - ``ToolsOzoneLexicon/Set/QuerySets``
 - ``ToolsOzoneLexicon/Set/QuerySetsOutput``
-
-### tools.ozone.set.upsertSet
-
-- ``ToolsOzoneLexicon/Set/UpsertSetRequestBody``

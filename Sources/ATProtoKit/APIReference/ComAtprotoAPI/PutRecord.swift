@@ -19,7 +19,7 @@ extension ATProtoKit {
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/repo/putRecord.json
     ///
     /// - Parameters:
-    ///   - repositoryDID: The decentralized identifier (DID) or handle of the repository.
+    ///   - repository: The decentralized identifier (DID) or handle of the repository.
     ///   - collection: The Namespaced Identifier (NSID) of the record.
     ///   - recordKey: The record key of the collection.
     ///   - shouldValidate: Indicates whether the record should be validated. Optional.

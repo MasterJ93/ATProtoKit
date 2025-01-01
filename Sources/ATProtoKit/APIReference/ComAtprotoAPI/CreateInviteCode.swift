@@ -12,7 +12,7 @@ extension ATProtoKit {
     /// Creates an invite code.
     ///
     /// - Note: If you need to create multiple invite codes at once, please use
-    /// ``createInviteCodes(_:for:)`` instead.
+    /// ``createInviteCodes(codeCount:for:)`` instead.
     ///
     /// - Note: According to the AT Protocol specifications: "Create an invite code."
     ///

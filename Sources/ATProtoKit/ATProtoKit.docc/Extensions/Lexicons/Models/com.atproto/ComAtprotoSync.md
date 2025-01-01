@@ -23,6 +23,10 @@
 
 - ``ComAtprotoLexicon/Sync/SubscribeRepos``
 
-### com.atproto.sync.notifyOfUpdate/com.atproto.sync.requestCrawl
+### com.atproto.sync.notifyOfUpdate
 
-- ``ComAtprotoLexicon/Sync/Crawler``
+- ``ComAtprotoLexicon/Sync/NotifyOfUpdateRequestBody``
+
+### com.atproto.sync.requestCrawl
+
+- ``ComAtprotoLexicon/Sync/RequestCrawlRequestBody``
