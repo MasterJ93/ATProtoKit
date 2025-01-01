@@ -4,7 +4,7 @@
 
 ### tools.ozone.setting.defs
 
-- ``ToolsOzoneLexicon/Setting/OptionDefinition
+- ``ToolsOzoneLexicon/Setting/OptionDefinition``
 
 ### tools.ozone.setting.listOptions
 
