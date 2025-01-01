@@ -35,10 +35,10 @@ extension ToolsOzoneLexicon.Team {
         public let lastUpdatedBy: String?
 
         /// The current role that was given to the member.
-        public let role: String
+        public let role: Role
 
         public init(memberDID: String, isDisabled: Bool?, profile: AppBskyLexicon.Actor.ProfileViewDetailedDefinition?, createdAt: Date?,
-                    updatedAt: Date? = nil, lastUpdatedBy: String?, role: String) {
+                    updatedAt: Date? = nil, lastUpdatedBy: String?, role: Role) {
             self.memberDID = memberDID
             self.isDisabled = isDisabled
             self.profile = profile
@@ -57,7 +57,7 @@ extension ToolsOzoneLexicon.Team {
             self.createdAt = try decodeDateIfPresent(from: container, forKey: .createdAt)
             self.updatedAt = try decodeDateIfPresent(from: container, forKey: .updatedAt)
             self.lastUpdatedBy = try container.decodeIfPresent(String.self, forKey: .lastUpdatedBy)
-            self.role = try container.decode(String.self, forKey: .role)
+            self.role = try container.decode(Role.self, forKey: .role)
         }
 
         public func encode(to encoder: any Encoder) throws {
@@ -90,20 +90,20 @@ extension ToolsOzoneLexicon.Team {
             ///
             /// - Note: According to the AT Protocol specifications: "Admin role. Highest level
             /// of access, can perform all actions."
-            case roleAdmin
+            case admin = "roleAdmin"
 
             /// A role that allows the member to access most of the actions.
             ///
             /// - Note: According to the AT Protocol specifications: "Moderator role. Can perform
             /// most actions."
-            case roleModerator
+            case moderator = "roleModerator"
 
             /// A role that allows the member to access actions related to monitoring and
             /// escalating issues.
             ///
             /// - Note: According to the AT Protocol specifications: "Triage role. Mostly intended
             /// for monitoring and escalating issues."
-            case roleTriage
+            case triage = "roleTriage"
         }
     }
 }
