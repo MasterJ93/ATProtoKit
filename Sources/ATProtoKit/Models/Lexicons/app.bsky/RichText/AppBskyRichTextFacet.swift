@@ -54,10 +54,10 @@ extension AppBskyLexicon.RichText {
         /// The data model definition for the byte slice.
         ///
         /// - Note: According to the AT Protocol specifications: "Specifies the sub-string range a
-        /// facet feature applies to. Start index is inclusive, end index is exclusive. Indices are
-        /// zero-indexed, counting bytes of the UTF-8 encoded text. NOTE: some languages, like
-        /// Javascript, use UTF-16 or Unicode codepoints for string slice indexing; in these
-        /// languages, convert to byte arrays before working with facets."
+        /// facet feature applies to. Start index is inclusive, end index is exclusive.
+        /// Indices are zero-indexed, counting bytes of the UTF-8 encoded text. NOTE: some
+        /// languages, like Javascript, use UTF-16 or Unicode codepoints for string slice indexing;
+        /// in these languages, convert to byte arrays before working with facets."
         ///
         /// - SeeAlso: This is based on the [`app.bsky.richtext.facet`][github] lexicon.
         ///
@@ -139,8 +139,9 @@ extension AppBskyLexicon.RichText {
         
         /// A data model for the Link feature definition.
         ///
-        /// - Note: According to the AT Protocol specifications: "Facet feature for a URL. The text URL
-        /// may have been simplified or truncated, but the facet reference should be a complete URL."
+        /// - Note: According to the AT Protocol specifications: "Facet feature for a URL. The text
+        /// URL may have been simplified or truncated, but the facet reference should be a
+        /// complete URL."
         ///
         /// - SeeAlso: This is based on the [`app.bsky.richtext.facet`][github] lexicon.
         ///
@@ -180,9 +181,9 @@ extension AppBskyLexicon.RichText {
         
         /// A data model for the Tag feature definition.
         ///
-        /// - Note: According to the AT Protocol specifications: "Facet feature for a hashtag. The text
-        /// usually includes a '#' prefix, but the facet reference should not (except in the case of
-        /// 'double hash tags')."
+        /// - Note: According to the AT Protocol specifications: "Facet feature for a hashtag.
+        /// The text usually includes a '#' prefix, but the facet reference should not (except in
+        /// the case of 'double hash tags')."
         ///
         /// - SeeAlso: This is based on the [`app.bsky.richtext.facet`][github] lexicon.
         ///
