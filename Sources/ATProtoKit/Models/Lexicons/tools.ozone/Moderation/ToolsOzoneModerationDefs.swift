@@ -384,6 +384,12 @@ extension ToolsOzoneLexicon.Moderation {
         /// - Note: According to the AT Protocol specifications: "If true, all other reports on
         /// content authored by this account will be resolved (acknowledged)."
         public let acknowledgeAccountSubjects: Bool?
+
+        /// An array of keywords and names of  policies that influenced the decision. Optional.
+        ///
+        /// - Note: According to the AT Protocol specifications: "Names/Keywords of the policies
+        /// that drove the decision."
+        public let policies: [String]?
     }
 
     /// A definition model for a reverse takedown event.

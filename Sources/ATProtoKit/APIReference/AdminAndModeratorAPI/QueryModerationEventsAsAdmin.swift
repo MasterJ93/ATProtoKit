@@ -44,6 +44,7 @@ extension ATProtoAdmin {
     ///   etc.) owned by the did are returned. Optional.  Defaults to `false`.
     ///   - limit: The number of events that can be displayed at once. Optional. Defaults to `50`.
     ///   - doesHaveComment: Indicates whether the list should only include events with comments.
+    ///   Optional.
     ///   - comment: A query that makes the list display events with comments containing the
     ///   keywords used here. Optional.
     ///   - addedLabels: An array of labels that makes the list display events that have the
@@ -54,7 +55,8 @@ extension ATProtoAdmin {
     ///   added tags. Optional.
     ///   - removedTags: An array of tags that makes the list display events that doesn't contain
     ///   the added tags. Optional.
-    ///   - reportTypes: An array of report types.
+    ///   - reportTypes: An array of report types. Optional.
+    ///   - policies: Filters events based on the action policies. Optional.
     ///   - cursor: The mark used to indicate the starting point for the next set
     ///   of results. Optional.
     /// - Returns: An array of all moderation events pertaining a subject, with an optional cursor
@@ -80,6 +82,7 @@ extension ATProtoAdmin {
         addedTags: [String]? = nil,
         removedTags: [String]? = nil,
         reportTypes: [String]? = nil,
+        policies: [String]? = nil,
         cursor: String? = nil
     ) async throws -> ToolsOzoneLexicon.Moderation.QueryEventsOutput {
         guard session != nil,
@@ -179,6 +182,11 @@ extension ATProtoAdmin {
         // reportTypes
         if let reportTypes {
             queryItems += reportTypes.map { ("reportTypes", $0) }
+        }
+
+        // policies
+        if let policies {
+            queryItems += policies.map { ("policies", $0) }
         }
 
         // cursor
