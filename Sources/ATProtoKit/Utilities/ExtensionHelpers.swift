@@ -130,8 +130,10 @@ extension UInt64 {
     /// Converts a `UInt64` to a Base32-sortable string, according to the
     /// AT Protocol specifications.
     ///
-    /// According to the (specifications)[atproto], a `base32-sortable` integer is encoded with
+    /// According to the [specifications][atproto], a `base32-sortable` integer is encoded with
     /// the characters `234567abcdefghijklmnopqrstuvwxyz` and is 13 characters in length.
+    ///
+    /// [atproto]: https://atproto.com/specs/tid#tid-structure
     ///
     /// - Returns: A `String` that's encoded in a Base32-sortable format.
     public func toBase32Sortable() -> String {
