@@ -254,7 +254,7 @@ public struct ATUnion {
     }
 
     /// A reference containing the list of the types of compatible media.
-    public enum RecordWithMediaUnion: Sendable, Codable {
+    public enum RecordWithMediaUnion: Sendable, Codable, Equatable, Hashable {
 
         /// An image that will be embedded.
         case embedImages(AppBskyLexicon.Embed.ImagesDefinition)
@@ -576,7 +576,7 @@ public struct ATUnion {
     }
 
     /// A reference containing the list of user-defined labels for feed generators.
-    public enum GeneratorLabelsUnion: Sendable, Codable {
+    public enum GeneratorLabelsUnion: Sendable, Codable, Equatable, Hashable {
 
         /// An array of user-defined labels.
         case selfLabels(ComAtprotoLexicon.Label.SelfLabelsDefinition)
@@ -637,7 +637,7 @@ public struct ATUnion {
     }
 
     /// A reference containing the list of types of embeds.
-    public enum PostEmbedUnion: Sendable, Codable {
+    public enum PostEmbedUnion: Sendable, Codable, Equatable, Hashable {
 
         /// An image embed.
         case images(AppBskyLexicon.Embed.ImagesDefinition)
@@ -693,7 +693,7 @@ public struct ATUnion {
     }
 
     /// A reference containing the list of user-defined labels.
-    public enum PostSelfLabelsUnion: Sendable, Codable {
+    public enum PostSelfLabelsUnion: Sendable, Codable, Equatable, Hashable {
 
         /// An array of user-defined labels.
         case selfLabels(ComAtprotoLexicon.Label.SelfLabelsDefinition)
@@ -720,7 +720,7 @@ public struct ATUnion {
         }
     }
 
-    public enum EmbeddingRulesUnion: Sendable, Codable {
+    public enum EmbeddingRulesUnion: Sendable, Codable, Equatable, Hashable {
 
         case disabledRule(AppBskyLexicon.Feed.PostgateRecord.DisableRule)
 
@@ -747,7 +747,7 @@ public struct ATUnion {
     }
 
     /// A reference containing the list of thread rules for a post.
-    public enum ThreadgateUnion: Sendable, Codable {
+    public enum ThreadgateUnion: Sendable, Codable, Equatable, Hashable {
 
         /// A rule that indicates whether users that the post author mentions can reply to the post.
         case mentionRule(AppBskyLexicon.Feed.ThreadgateRecord.MentionRule)
@@ -860,7 +860,7 @@ public struct ATUnion {
     }
 
     /// A reference containing the list of feature types.
-    public enum FacetFeatureUnion: Sendable, Codable {
+    public enum FacetFeatureUnion: Sendable, Codable, Equatable, Hashable {
 
         /// The Mention feature.
         case mention(AppBskyLexicon.RichText.Facet.Mention)
@@ -902,7 +902,7 @@ public struct ATUnion {
     }
 
     /// A reference containing the list of user-defined labels for feed generators.
-    public enum ListLabelsUnion: Sendable, Codable {
+    public enum ListLabelsUnion: Sendable, Codable, Equatable, Hashable {
 
         /// An array of user-defined labels.
         case selfLabels(ComAtprotoLexicon.Label.SelfLabelsDefinition)

@@ -130,7 +130,7 @@ public class ATProtoKit: ATProtoKitConfiguration, ATRecordConfiguration {
     /// An array of record lexicon structs created by Bluesky.
     ///
     /// If `canUseBlueskyRecords` is set to `false`, these will not be used.
-    public let recordLexicons: [ATRecordProtocol.Type] = [
+    public let recordLexicons: [any ATRecordProtocol.Type] = [
         AppBskyLexicon.Actor.ProfileRecord.self, AppBskyLexicon.Feed.GeneratorRecord.self, AppBskyLexicon.Feed.LikeRecord.self,
         AppBskyLexicon.Feed.PostRecord.self, AppBskyLexicon.Feed.PostgateRecord.self, AppBskyLexicon.Feed.RepostRecord.self,
         AppBskyLexicon.Feed.ThreadgateRecord.self, AppBskyLexicon.Graph.BlockRecord.self, AppBskyLexicon.Graph.FollowRecord.self,

@@ -121,7 +121,7 @@ extension ComAtprotoLexicon.Label {
     /// - SeeAlso: This is based on the [`com.atproto.label.defs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/label/defs.json
-    public struct SelfLabelsDefinition: Sendable, Codable {
+    public struct SelfLabelsDefinition: Sendable, Codable, Equatable, Hashable {
 
         /// An array of self-defined tags on a record.
         ///
@@ -161,7 +161,7 @@ extension ComAtprotoLexicon.Label {
     /// - SeeAlso: This is based on the [`com.atproto.label.defs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/label/defs.json
-    public struct SelfLabelDefinition: Sendable, Codable {
+    public struct SelfLabelDefinition: Sendable, Codable, Equatable, Hashable {
 
         /// A user-defined label.
         ///
@@ -190,7 +190,7 @@ extension ComAtprotoLexicon.Label {
     /// - SeeAlso: This is based on the [`com.atproto.label.defs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/label/defs.json
-    public struct LabelValueDefinition: Sendable, Codable {
+    public struct LabelValueDefinition: Sendable, Codable, Equatable, Hashable {
 
         /// The value of the label.
         ///
@@ -305,7 +305,7 @@ extension ComAtprotoLexicon.Label {
     /// - SeeAlso: This is based on the [`com.atproto.label.defs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/label/defs.json
-    public struct LabelValueDefinitionStringsDefinition: Sendable, Codable {
+    public struct LabelValueDefinitionStringsDefinition: Sendable, Codable, Equatable, Hashable {
 
         /// The language code of the label's definition.
         ///

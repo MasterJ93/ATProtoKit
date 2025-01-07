@@ -135,7 +135,7 @@ extension AppBskyLexicon.Feed {
         /// - SeeAlso: This is based on the [`app.bsky.feed.post`][github] lexicon.
         ///
         /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/feed/post.json
-        public struct ReplyReference: Sendable, Codable {
+        public struct ReplyReference: Sendable, Codable, Equatable, Hashable {
 
             /// The original post of the thread.
             public let root: ComAtprotoLexicon.Repository.StrongReference

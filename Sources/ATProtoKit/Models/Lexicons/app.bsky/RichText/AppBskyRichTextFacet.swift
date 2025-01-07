@@ -17,7 +17,7 @@ extension AppBskyLexicon.RichText {
     /// - SeeAlso: This is based on the [`app.bsky.richtext.facet`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/richtext/facet.json
-    public struct Facet: Sendable, Codable {
+    public struct Facet: Sendable, Codable, Equatable, Hashable {
 
         /// The range of characters related to the facet.
         public let index: ByteSlice
@@ -62,8 +62,8 @@ extension AppBskyLexicon.RichText {
         /// - SeeAlso: This is based on the [`app.bsky.richtext.facet`][github] lexicon.
         ///
         /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/richtext/facet.json
-        public struct ByteSlice: Codable, Sendable {
-            
+        public struct ByteSlice: Codable, Sendable, Equatable, Hashable {
+
             /// The start index of the byte slice.
             public let byteStart: Int
             
@@ -104,8 +104,8 @@ extension AppBskyLexicon.RichText {
         /// - SeeAlso: This is based on the [`app.bsky.richtext.facet`][github] lexicon.
         ///
         /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/richtext/facet.json
-        public struct Mention: Sendable, FeatureCodable {
-            
+        public struct Mention: Sendable, FeatureCodable, Equatable, Hashable {
+
             /// The identifier of the lexicon.
             ///
             /// - Warning: The value must not change.
@@ -146,8 +146,8 @@ extension AppBskyLexicon.RichText {
         /// - SeeAlso: This is based on the [`app.bsky.richtext.facet`][github] lexicon.
         ///
         /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/richtext/facet.json
-        public struct Link: Sendable, FeatureCodable {
-            
+        public struct Link: Sendable, FeatureCodable, Equatable, Hashable {
+
             /// The identifier of the lexicon.
             ///
             /// - Warning: The value must not change.
@@ -188,8 +188,8 @@ extension AppBskyLexicon.RichText {
         /// - SeeAlso: This is based on the [`app.bsky.richtext.facet`][github] lexicon.
         ///
         /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/richtext/facet.json
-        public struct Tag: Sendable, FeatureCodable {
-            
+        public struct Tag: Sendable, FeatureCodable, Equatable, Hashable {
+
             /// The identifier of the lexicon.
             ///
             /// - Warning: The value must not change.

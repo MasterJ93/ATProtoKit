@@ -215,7 +215,7 @@ extension AppBskyLexicon.Labeler {
     /// - SeeAlso: This is based on the [`app.bsky.labeler.defs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/labeler/defs.json
-    public struct LabelerPolicies: Sendable, Codable {
+    public struct LabelerPolicies: Sendable, Codable, Equatable, Hashable {
 
         /// The identifier of the lexicon.
         ///

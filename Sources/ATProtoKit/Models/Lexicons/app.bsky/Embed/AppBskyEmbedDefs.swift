@@ -17,7 +17,7 @@ extension AppBskyLexicon.Embed {
     /// - SeeAlso: This is based on the [`app.bsky.embed.images`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/embed/defs.json
-    public struct AspectRatioDefinition: Sendable, Codable {
+    public struct AspectRatioDefinition: Sendable, Codable, Equatable, Hashable {
 
         /// The width of the image.
         public let width: Int

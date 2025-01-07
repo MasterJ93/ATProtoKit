@@ -17,7 +17,7 @@ extension AppBskyLexicon.Embed {
     /// - SeeAlso: This is based on the [`app.bsky.embed.images`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/embed/images.json
-    public struct ImagesDefinition: Sendable, Codable {
+    public struct ImagesDefinition: Sendable, Codable, Equatable, Hashable {
 
         /// The identifier of the lexicon.
         ///
@@ -44,7 +44,7 @@ extension AppBskyLexicon.Embed {
         /// - SeeAlso: This is based on the [`app.bsky.embed.images`][github] lexicon.
         ///
         /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/embed/images.json
-        public struct Image: Sendable, Codable {
+        public struct Image: Sendable, Codable, Equatable, Hashable {
 
             /// The identifier of the lexicon.
             ///

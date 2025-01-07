@@ -17,7 +17,7 @@ extension AppBskyLexicon.Embed {
     /// - SeeAlso: This is based on the [`app.bsky.embed.video`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/embed/video.json
-    public struct VideoDefinition: Sendable, Codable {
+    public struct VideoDefinition: Sendable, Codable, Equatable, Hashable {
 
         /// The identifier of the lexicon.
         ///
@@ -70,7 +70,7 @@ extension AppBskyLexicon.Embed {
         /// - SeeAlso: This is based on the [`app.bsky.embed.video`][github] lexicon.
         ///
         /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/embed/video.json
-        public struct Caption: Sendable, Codable {
+        public struct Caption: Sendable, Codable, Equatable, Hashable {
 
             /// The identifier of the lexicon.
             ///

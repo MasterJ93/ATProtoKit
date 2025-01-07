@@ -18,7 +18,7 @@ extension AppBskyLexicon.Embed {
     /// - SeeAlso: This is based on the [`app.bsky.embed.record`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/embed/record.json
-    public struct RecordDefinition: Sendable, Codable {
+    public struct RecordDefinition: Sendable, Codable, Equatable, Hashable {
 
         /// The identifier of the lexicon.
         ///

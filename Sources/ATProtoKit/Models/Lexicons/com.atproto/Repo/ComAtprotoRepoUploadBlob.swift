@@ -28,14 +28,14 @@ extension ComAtprotoLexicon.Repository {
     /// The container used for storing blobs within a record.
     ///
     /// - Note: This is a temporary measure and will be deleted once a better solution is made.
-    public struct BlobContainer: Sendable, Codable {
+    public struct BlobContainer: Sendable, Codable, Equatable, Hashable {
 
         /// The blob itself.
         public let blob: UploadBlobOutput
     }
 
     /// A data model for a definition of an output of uploading a blob.
-    public struct UploadBlobOutput: Sendable, Codable {
+    public struct UploadBlobOutput: Sendable, Codable, Equatable, Hashable {
 
         /// The type of blob.
         public let type: String?
@@ -60,7 +60,7 @@ extension ComAtprotoLexicon.Repository {
     }
 
     /// A data model for a blob reference definition.
-    public struct BlobReference: Sendable, Codable {
+    public struct BlobReference: Sendable, Codable, Equatable, Hashable {
 
         /// The link of the blob reference.
         public let link: String

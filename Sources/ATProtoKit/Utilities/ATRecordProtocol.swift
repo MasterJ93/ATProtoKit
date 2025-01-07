@@ -49,7 +49,7 @@ import Foundation
 ///
 /// - Warning: All record types _must_ conform to this protocol. ATProtoKit will not be able to
 /// hold onto any `struct`s that don't conform to this protocol.
-public protocol ATRecordProtocol: Sendable, Codable {
+public protocol ATRecordProtocol: Sendable, Codable, Equatable, Hashable {
 
     /// The Namespaced Identifier (NSID) of the record.
     static var type: String { get }
@@ -71,7 +71,7 @@ public protocol ATRecordConfiguration {
     /// An array of record lexicon structs created by Bluesky.
     ///
     /// If `canUseBlueskyRecords` is set to `false`, these will not be used.
-    var recordLexicons: [ATRecordProtocol.Type] { get }
+    var recordLexicons: [any ATRecordProtocol.Type] { get }
 
     /// Internal state to track the process of adding records to ``ATRecordConfiguration``.
     var initializationTask: Task<Void, Error>? { get }
@@ -120,7 +120,7 @@ public actor ATRecordTypeRegistry {
     /// (which is used as the "value"). ``UnknownType`` will search for the key that matches with
     /// the JSON object's `$type` property, and then decode or encode the JSON object using the
     /// `struct` that was found if there's a match.
-    public static var recordRegistry = [String: ATRecordProtocol.Type]()
+    public static var recordRegistry = [String: any ATRecordProtocol.Type]()
 
     /// Indicates whether any Bluesky-related `ATRecordProtocol`-conforming `struct`s have been
     /// added to ``recordRegistry``. Defaults to `false`.
@@ -131,7 +131,7 @@ public actor ATRecordTypeRegistry {
     /// Initializes the registry with an array of record types.
     ///
     /// - Parameter types: An array of ``ATRecordProtocol``-conforming `struct`s.
-    public init(types: [ATRecordProtocol.Type]) async {
+    public init(types: [any ATRecordProtocol.Type]) async {
         for type in types {
             let typeKey = String(describing: type.type)
 
@@ -153,7 +153,7 @@ public actor ATRecordTypeRegistry {
     /// Bluesky-specific record lexicon models.
     ///
     /// - Parameter types: An array of ``ATRecordProtocol``-conforming `struct`s.
-    package init(blueskyLexiconTypes: [ATRecordProtocol.Type]) async {
+    package init(blueskyLexiconTypes: [any ATRecordProtocol.Type]) async {
         guard !ATRecordTypeRegistry.areBlueskyRecordsRegistered else { return }
 
         for type in blueskyLexiconTypes {
@@ -188,7 +188,7 @@ public actor ATRecordTypeRegistry {
     ///     \- reading from the decoder fails\
     ///     \- the data read is corrupted or otherwise invalid
     ///     \- no object key in `recordRegistry` matches the `$type`'s value.
-    public static func createInstance(ofType type: String, from decoder: Decoder) async throws -> ATRecordProtocol? {
+    public static func createInstance(ofType type: String, from decoder: Decoder) async throws -> (any ATRecordProtocol)? {
 
         guard let typeClass = await self.getRecordType(for: type) else {
             return nil
@@ -203,7 +203,7 @@ public actor ATRecordTypeRegistry {
     /// - Parameter type: The NSID string.
     /// - Returns: The ``ATRecordProtocol``-conforming type (if there's a match), or `nil`
     /// (if there isn't).
-    public static func getRecordType(for type: String) async -> ATRecordProtocol.Type? {
+    public static func getRecordType(for type: String) async -> (any ATRecordProtocol.Type)? {
         return ATRecordTypeRegistry.recordRegistry[type]
     }
 
@@ -243,7 +243,7 @@ public actor ATRecordTypeRegistry {
 public enum UnknownType: Sendable, Codable {
 
     /// Represents a decoded ``ATRecordProtocol``-conforming `struct`.
-    case record(ATRecordProtocol)
+    case record(any ATRecordProtocol)
 
     /// Represents an unknown type.
     ///

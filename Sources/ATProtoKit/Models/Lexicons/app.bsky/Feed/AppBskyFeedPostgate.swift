@@ -80,6 +80,6 @@ extension AppBskyLexicon.Feed {
         /// A marker that disables the embedding of this post.
         ///
         /// - Note: According to the AT Protocol specifications: "Disables embedding of this post."
-        public struct DisableRule: Codable, Sendable {}
+        public struct DisableRule: Codable, Sendable, Equatable, Hashable {}
     }
 }

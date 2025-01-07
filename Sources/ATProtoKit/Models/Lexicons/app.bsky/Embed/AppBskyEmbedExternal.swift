@@ -17,7 +17,7 @@ extension AppBskyLexicon.Embed {
     /// - SeeAlso: This is based on the [`app.bsky.embed.external`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/embed/external.json
-    public struct ExternalDefinition: Sendable, Codable {
+    public struct ExternalDefinition: Sendable, Codable, Equatable, Hashable {
 
         /// The identifier of the lexicon.
         ///
@@ -38,7 +38,7 @@ extension AppBskyLexicon.Embed {
         /// - SeeAlso: This is based on the [`app.bsky.embed.external`][github] lexicon.
         ///
         /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/embed/external.json
-        public struct External: Sendable, Codable {
+        public struct External: Sendable, Codable, Equatable, Hashable {
 
             /// The identifier of the lexicon.
             ///

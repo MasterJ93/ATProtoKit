@@ -91,7 +91,7 @@ extension AppBskyLexicon.Graph {
         }
 
         /// A feed within the starter pack.
-        public struct FeedItem: Sendable, Codable {
+        public struct FeedItem: Sendable, Codable, Equatable, Hashable {
 
             /// The URI of the feed.
             public let uri: String
