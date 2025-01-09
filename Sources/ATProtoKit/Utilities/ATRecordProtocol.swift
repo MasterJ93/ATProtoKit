@@ -450,9 +450,37 @@ public enum UnknownType: Sendable, Codable {
     }
 }
 
+extension UnknownType: Equatable {
+    public static func == (lhs: UnknownType, rhs: UnknownType) -> Bool {
+        do {
+            // Convert both sides to CodableValue dictionaries
+            let lhsValue = try lhs.asCodableValue()
+            let rhsValue = try rhs.asCodableValue()
+            return lhsValue == rhsValue
+        } catch {
+            // If conversion fails, consider them unequal
+            return false
+        }
+    }
+}
+
+extension UnknownType: Hashable {
+    public func hash(into hasher: inout Hasher) {
+        do {
+            // Convert the UnknownType instance to a CodableValue
+            let codableValue = try self.asCodableValue()
+            // Hash the CodableValue representation
+            codableValue.hash(into: &hasher)
+        } catch {
+            // If conversion fails, hash a fallback value
+            hasher.combine("UnknownTypeError")
+        }
+    }
+}
+
 /// A type-safe and thread-safe representation of JSON-compatible values, used for encoding and
 /// decoding arbitrary JSON data.
-public enum CodableValue: Codable, Sendable {
+public enum CodableValue: Codable, Sendable, Equatable, Hashable {
 
     /// Stores a `Bool` value.
     case bool(Bool)
