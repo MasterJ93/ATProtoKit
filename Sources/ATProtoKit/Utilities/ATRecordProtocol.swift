@@ -326,6 +326,35 @@ public enum UnknownType: Sendable, Codable {
         }
     }
 
+    /// Converts the `UnknownType` into a `[String: CodableValue]`.
+    ///
+    /// If the instance is a `.record` case, then it will attempt to encode the record into
+    /// a dictionary. Otherwise, it will simply return the stored dictionary.
+    ///
+    /// - Returns: A `[String: CodableValue]` version. of the instance.
+    ///
+    /// - Throws: An error if the conversion fails.
+    public func asCodableValue() throws -> [String: CodableValue] {
+        switch self {
+            case .unknown(let dictionary):
+                return dictionary
+            case .record(let record):
+                let data = try JSONEncoder().encode(record)
+                let jsonObject = try JSONSerialization.jsonObject(with: data, options: [])
+                guard let dictionary = jsonObject as? [String: Any] else {
+                    throw CodableValueConversionError.invalidRecordConversion
+                }
+                return try dictionary.mapValues { try CodableValue.fromAny($0) }
+        }
+    }
+
+    /// Represents possible errors during conversion.
+    public enum CodableValueConversionError: ATProtoError {
+
+        /// The instance's `.record` case failed to convert.
+        case invalidRecordConversion
+    }
+
     /// Decodes a nested dictionary from an unknown JSON object.
     ///
     /// This is essential to decode truly unknown types.

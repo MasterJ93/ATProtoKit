@@ -17,3 +17,7 @@
 - ``WebSocketFrameMessageError``
 - ``ATProtocolConfigurationError``
 - ``CBORProcessingError``
+
+## ``UnknownType``
+
+- ``UnknownType/CodableValueConversionError``
