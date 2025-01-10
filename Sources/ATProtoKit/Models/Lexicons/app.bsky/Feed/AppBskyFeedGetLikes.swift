@@ -63,6 +63,13 @@ extension AppBskyLexicon.Feed {
                 self.actor = try container.decode(AppBskyLexicon.Actor.ProfileViewDefinition.self, forKey: .actor)
             }
 
+            public func encode(to encoder: any Encoder) throws {
+                var container = encoder.container(keyedBy: CodingKeys.self)
+                try container.encodeDate(self.indexedAt, forKey: .indexedAt)
+                try container.encodeDate(self.createdAt, forKey: .createdAt)
+                try container.encode(self.actor, forKey: .actor)
+            }
+
             public enum CodingKeys: CodingKey {
                 case indexedAt
                 case createdAt
