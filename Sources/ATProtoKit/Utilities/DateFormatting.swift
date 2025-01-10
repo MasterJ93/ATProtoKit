@@ -173,7 +173,7 @@ extension KeyedEncodingContainer {
 ///     try container.encode(self._indexedAt, forKey: .indexedAt)
 /// }
 /// ```
-@available(*, deprecated, message: "Use encodeDate(from:) instead.")
+@available(*, deprecated, message: "Use encodeDate(_:forKey:) instead.")
 @propertyWrapper
 public struct DateFormatting: Sendable, Codable {
 
@@ -257,7 +257,7 @@ public struct DateFormatting: Sendable, Codable {
 ///     try container.encodeIfPresent(self._indexedAt, forKey: .indexedAt)
 /// }
 /// ```
-@available(*, deprecated, message: "Use encodeDateIfPresent(from:) instead.")
+@available(*, deprecated, message: "Use encodeDateIfPresent(_:forKey:) instead.")
 @propertyWrapper
 public struct DateFormattingOptional: Sendable, Codable {
 
