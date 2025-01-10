@@ -47,6 +47,27 @@ extension ATProtoBluesky {
     /// You can add up to three locales at once; only the first three items will be added as this
     /// is the limit mandated by Bluesky.
     ///
+    /// `createPostRecord()` will automatically look for URLs, hashtags, and @mentions for you.
+    /// However, if you would like to add inline link facets to your account, you can use the
+    /// `inlineFacets` parameter:
+    ///
+    /// ```swift
+    /// do {
+    ///     let inlineFacet = (URL(string: "https://www.loc.gov/resource/pga.05046/"), 57, 72)
+    ///     let postResult = try await atProtoBluesky.createPostRecord(
+    ///         text: "Where's that weird photo of a cat when you need one?\n\nAh: here it is!",
+    ///         inlineFacets: [inlineFacet]
+    ///     )
+    ///
+    ///     print(postResult)
+    /// } catch {
+    ///     throw error
+    /// }
+    /// ```
+    ///
+    /// - Note: `startPostion` and `endPostion` must be UTF-8 values.
+    ///
+    ///
     /// ## Adding Embedded Content
     /// You can embed various kinds of content in your post, from media to external links,
     /// to other records.
@@ -58,10 +79,10 @@ extension ATProtoBluesky {
     /// ```swift
     /// do {
     ///     let image = ATProtoTools.ImageQuery(
-    ///                     imageData: Data(contentsOf: "/path/to/file/cat.jpg"),
-    ///                     fileName: "cat.jpg",
-    ///                     altText: "A cat looking annoyed, waring a hat."
-    ///                 )
+    ///         imageData: Data(contentsOf: "/path/to/file/cat.jpg"),
+    ///         fileName: "cat.jpg",
+    ///         altText: "A cat looking annoyed, waring a hat."
+    ///     )
     ///
     ///     let postResult = try await atProtoBluesky.createPostRecord(
     ///         text: "I don't think my cat likes her new hat... 🙃",
@@ -215,7 +236,7 @@ extension ATProtoBluesky {
     /// - Parameters:
     ///   - text: The text that's directly displayed in the post record. Current limit is
     ///   300 characters.
-    ///   - inlineFacets: An array of index range numbers representing inline link facets.
+    ///   - inlineFacets: An array of URLs and index range numbers representing inline link facets.
     ///   Optional. Defaults to `nil`.
     ///   - locales: The languages the text is written in. Defaults to an empty array.
     ///   Current limit is 3 languages.
@@ -233,7 +254,7 @@ extension ATProtoBluesky {
     /// - Returns: A strong reference, which contains the newly-created record's URI and CID hash.
     public func createPostRecord(
         text: String,
-        inlineFacets: [(start: String, end: String)]? = nil,
+        inlineFacets: [(url: URL, startPosition: Int, endPosition: Int)]? = nil,
         locales: [Locale] = [],
         replyTo: AppBskyLexicon.Feed.PostRecord.ReplyReference? = nil,
         embed: EmbedIdentifier? = nil,
@@ -256,7 +277,18 @@ extension ATProtoBluesky {
         // Truncate the number of characters to 300.
         let postText = text.truncated(toLength: 300)
 
-        let facets = await ATFacetParser.parseFacets(from: postText, pdsURL: session.pdsURL ?? "https://bsky.social")
+        var facets = await ATFacetParser.parseFacets(from: postText, pdsURL: session.pdsURL ?? "https://bsky.social")
+        if let inlineFacets {
+            for (url, start, end) in inlineFacets {
+                do {
+                    let facet = try await ATFacetParser.createInlineLink(url: url, start: start, end: end)
+                    facets.append(facet)
+                } catch {
+                    print("Failed to create inline link: \(error.localizedDescription)")
+                }
+            }
+        }
+
 
         // Replies
         // Validate the reply reference if provided.
