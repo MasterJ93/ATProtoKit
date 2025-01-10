@@ -18,6 +18,10 @@
 - ``ATProtocolConfigurationError``
 - ``CBORProcessingError``
 
-## ``UnknownType``
+## `UnknownType`
 
 - ``UnknownType/CodableValueConversionError``
+
+## `ATFacetParser`
+
+- ``ATFacetParser/InlineLinkError``
