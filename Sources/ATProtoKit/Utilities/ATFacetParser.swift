@@ -135,7 +135,34 @@ public class ATFacetParser {
         } catch {
             print("Invalid regex: \(error.localizedDescription)")
         }
+
         return spans
+    }
+
+    /// Creates an inline link facet for a given URL with specified start and end positions.
+    ///
+    /// - Parameters:
+    ///   - url: The URL to link.
+    ///   - start: The start position of the link in the text (byte offset).
+    ///   - end: The end position of the link in the text (byte offset).
+    ///   - Returns: An instance of ``AppBskyLexicon/RichText/Facet``.
+    ///
+    /// - Throws: An `InlineLinkError` if the range or URL is invalid.
+    public static func createInlineLink(url: String, start: Int, end: Int) async throws -> AppBskyLexicon.RichText.Facet {
+        guard start >= 0, end > start else {
+            throw InlineLinkError.invalidRange(start: start, end: end)
+        }
+
+        guard let link = URL(string: url), link.scheme == "http" || link.scheme == "https" else {
+            throw InlineLinkError.invalidURL(url: url)
+        }
+
+        let facet = AppBskyLexicon.RichText.Facet(
+            index: AppBskyLexicon.RichText.Facet.ByteSlice(byteStart: start, byteEnd: end),
+            features: [.link(AppBskyLexicon.RichText.Facet.Link(uri: url))]
+        )
+
+        return facet
     }
 
     /// Processes text to find mentions, URLs, and hashtags, converting these elements into
@@ -221,6 +248,31 @@ public class ATFacetParser {
             ))
         }
         return facets
+    }
+
+    /// Errors that can occur when creating an inline link facet.
+    public enum InlineLinkError: ATProtoError, LocalizedError {
+
+        /// The start and/or end range is invalid.
+        ///
+        /// - Parameters:
+        ///   - start: The starting index number.
+        ///   - end: The ending index number.
+        case invalidRange(start: Int, end: Int)
+
+        /// The URL is invalid.
+        ///
+        /// - Parameter url: The specified URL.
+        case invalidURL(url: String)
+
+        public var errorDescription: String? {
+            switch self {
+                case .invalidRange(let start, let end):
+                    return "Invalid range: \"start\" (\(start)) must be >= 0, and \"end\" (\(end)) must be greater than \"start\"."
+                case .invalidURL(let url):
+                    return "Invalid URL: \(url). Only valid HTTP/HTTPS URLs are allowed."
+            }
+        }
     }
 }
 
