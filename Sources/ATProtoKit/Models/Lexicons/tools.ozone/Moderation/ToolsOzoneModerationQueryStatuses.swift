@@ -15,11 +15,11 @@ extension ToolsOzoneLexicon.Moderation {
         /// Indicates the sorting field for the moderation status array.
         public enum SortField: Codable {
 
-        /// Indicates the moderation status array will be sorted by the last reported user.
-        case lastReportedAt
+            /// Indicates the moderation status array will be sorted by the last reported user.
+            case lastReportedAt
 
-        /// Indicates the moderation status array will be sorted by the last reviwed user.
-        case lastReviewedAt
+            /// Indicates the moderation status array will be sorted by the last reviwed user.
+            case lastReviewedAt
         }
 
         public enum SortDirection: String, Sendable, Codable {

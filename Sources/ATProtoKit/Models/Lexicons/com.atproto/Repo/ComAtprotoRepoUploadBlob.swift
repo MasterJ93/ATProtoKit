@@ -45,7 +45,7 @@ extension ComAtprotoLexicon.Repository {
 
         /// The the MIME type.
         ///
-        /// This can be a `.jpg`, `.png`, and `.gif`
+        /// This can be a `.jpg`, `.png`, and `.gif`.
         public let mimeType: String
 
         /// The size of the blob.
