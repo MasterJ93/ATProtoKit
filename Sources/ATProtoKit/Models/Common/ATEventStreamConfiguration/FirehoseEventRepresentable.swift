@@ -108,7 +108,7 @@ public struct FirehoseFrameCommitMessage: Decodable {
         self.blocks = try container.decode(Data.self, forKey: .blocks)
         self.repositoryOperations = try container.decode([FirehoseEventRepositoryOperation].self, forKey: .repositoryOperations)
         self.blobIdentifiers = try container.decode([String].self, forKey: .blobIdentifiers)
-        self.timestamp = try decodeDate(from: container, forKey: .timestamp)
+        self.timestamp = try container.decodeDate(forKey: .timestamp)
     }
 
     public func encode(to encoder: Encoder) throws {
@@ -122,7 +122,7 @@ public struct FirehoseFrameCommitMessage: Decodable {
         try container.encode(self.since, forKey: .since)
         try container.encode(self.blocks, forKey: .blocks)
         try container.encode(blobIdentifiers, forKey: .blobIdentifiers)
-        try encodeDate(self.timestamp, with: &container, forKey: .timestamp)
+        try container.encodeDate(self.timestamp, forKey: .timestamp)
     }
 
     enum CodingKeys: String, CodingKey {
@@ -210,7 +210,7 @@ public struct FirehoseFrameIdentityMessage: Decodable {
 
         self.sequence = try container.decode(Int.self, forKey: .sequence)
         self.accountDID = try container.decode(String.self, forKey: .accountDID)
-        self.timestamp = try decodeDate(from: container, forKey: .timestamp)
+        self.timestamp = try container.decodeDate(forKey: .timestamp)
     }
 
     enum CodingKeys: String, CodingKey {
@@ -250,7 +250,7 @@ public struct FirehoseFrameHandleMessage: Decodable {
         self.sequence = try container.decode(Int.self, forKey: .sequence)
         self.accountDID = try container.decode(String.self, forKey: .accountDID)
         self.newHandle = try container.decode(String.self, forKey: .newHandle)
-        self.timestamp = try decodeDate(from: container, forKey: .timestamp)
+        self.timestamp = try container.decodeDate(forKey: .timestamp)
     }
 
     enum CodingKeys: String, CodingKey {
@@ -291,7 +291,7 @@ public struct FirehoseFrameMigrateMessage: Decodable {
         self.sequence = try container.decode(Int.self, forKey: .sequence)
         self.accountDID = try container.decode(String.self, forKey: .accountDID)
         self.migrateTo = try container.decodeIfPresent(String.self, forKey: .migrateTo)
-        self.timestamp = try decodeDate(from: container, forKey: .timestamp)
+        self.timestamp = try container.decodeDate(forKey: .timestamp)
     }
 
     enum CodingKeys: String, CodingKey {
@@ -328,7 +328,7 @@ public struct FirehoseFrameTombstoneMessage: Decodable {
 
         self.sequence = try container.decode(Int.self, forKey: .sequence)
         self.accountDID = try container.decode(String.self, forKey: .accountDID)
-        self.timestamp = try decodeDate(from: container, forKey: .timestamp)
+        self.timestamp = try container.decodeDate(forKey: .timestamp)
     }
 
     enum CodingKeys: String, CodingKey {
