@@ -145,7 +145,7 @@ public class ATFacetParser {
     ///   - url: The URL to link.
     ///   - start: The start position of the link in the text (byte offset).
     ///   - end: The end position of the link in the text (byte offset).
-    ///   - Returns: An instance of ``AppBskyLexicon/RichText/Facet``.
+    /// - Returns: An instance of ``AppBskyLexicon/RichText/Facet``.
     ///
     /// - Throws: An `InlineLinkError` if the range or URL is invalid.
     public static func createInlineLink(url: String, start: Int, end: Int) async throws -> AppBskyLexicon.RichText.Facet {
