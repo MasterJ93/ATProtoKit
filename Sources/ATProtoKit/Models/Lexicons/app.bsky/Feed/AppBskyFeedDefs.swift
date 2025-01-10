@@ -14,7 +14,7 @@ extension AppBskyLexicon.Feed {
     /// - SeeAlso: This is based on the [`app.bsky.feed.defs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/feed/defs.json
-    public struct PostViewDefinition: Sendable, Codable {
+    public struct PostViewDefinition: Sendable, Codable, Equatable, Hashable {
 
         /// The URI of the post.
         public let uri: String
@@ -117,7 +117,7 @@ extension AppBskyLexicon.Feed {
     /// - SeeAlso: This is based on the [`app.bsky.feed.defs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/feed/defs.json
-    public struct ViewerStateDefinition: Sendable, Codable {
+    public struct ViewerStateDefinition: Sendable, Codable, Equatable, Hashable {
 
         /// The URI of the requesting account's repost of the subject account's post. Optional.
         public let repostURI: String?
@@ -331,7 +331,7 @@ extension AppBskyLexicon.Feed {
     /// - SeeAlso: This is based on the [`app.bsky.feed.defs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/feed/defs.json
-    public struct BlockedAuthorDefinition: Sendable, Codable {
+    public struct BlockedAuthorDefinition: Sendable, Codable, Equatable, Hashable {
 
         /// The decentralized identifier (DID)  of the author.
         public let did: String
@@ -350,7 +350,7 @@ extension AppBskyLexicon.Feed {
     /// - SeeAlso: This is based on the [`app.bsky.feed.defs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/feed/defs.json
-    public struct GeneratorViewDefinition: Sendable, Codable {
+    public struct GeneratorViewDefinition: Sendable, Codable, Equatable, Hashable {
 
         /// The URI of the feed generator.
         public let feedURI: String
@@ -458,7 +458,7 @@ extension AppBskyLexicon.Feed {
     /// - SeeAlso: This is based on the [`app.bsky.feed.defs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/feed/defs.json
-    public struct GeneratorViewerStateDefinition: Sendable, Codable {
+    public struct GeneratorViewerStateDefinition: Sendable, Codable, Equatable, Hashable {
 
         /// The URI of the viewer's like, if they liked the feed generator. Optional.
         public var likeURI: String?
@@ -528,7 +528,7 @@ extension AppBskyLexicon.Feed {
     /// - SeeAlso: This is based on the [`app.bsky.feed.defs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/feed/defs.json
-    public struct ThreadgateViewDefinition: Sendable, Codable {
+    public struct ThreadgateViewDefinition: Sendable, Codable, Equatable, Hashable {
 
         /// The URI of the feed's threadgate.
         public let threadgateURI: String

@@ -14,7 +14,7 @@ extension AppBskyLexicon.Actor {
     /// - SeeAlso: This is based on the [`app.bsky.actor.defs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/actor/defs.json
-    public struct ProfileViewBasicDefinition: Sendable, Codable {
+    public struct ProfileViewBasicDefinition: Sendable, Codable, Equatable, Hashable {
 
         /// The decentralized identifier (DID) of the user.
         public let actorDID: String
@@ -87,7 +87,7 @@ extension AppBskyLexicon.Actor {
     /// - SeeAlso: This is based on the [`app.bsky.actor.defs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/actor/defs.json
-    public struct ProfileViewDefinition: Sendable, Codable {
+    public struct ProfileViewDefinition: Sendable, Codable, Equatable, Hashable {
 
         /// The decentralized identifier (DID) of the user.
         public let actorDID: String
@@ -320,7 +320,7 @@ extension AppBskyLexicon.Actor {
     /// - SeeAlso: This is based on the [`app.bsky.actor.defs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/actor/defs.json
-    public struct ProfileAssociatedDefinition: Sendable, Codable {
+    public struct ProfileAssociatedDefinition: Sendable, Codable, Equatable, Hashable {
 
         /// The number of lists associated with the user. Optional.
         public let lists: Int?
@@ -351,7 +351,7 @@ extension AppBskyLexicon.Actor {
     /// - SeeAlso: This is based on the [`app.bsky.actor.defs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/actor/defs.json
-    public struct ProfileAssociatedChatDefinition: Sendable, Codable {
+    public struct ProfileAssociatedChatDefinition: Sendable, Codable, Equatable, Hashable {
 
         /// Indicates what messages can be allowed into the user account's chat inbox.
         public let allowIncoming: String
@@ -383,7 +383,7 @@ extension AppBskyLexicon.Actor {
     /// - SeeAlso: This is based on the [`app.bsky.actor.defs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/actor/defs.json
-    public struct ViewerStateDefinition: Sendable, Codable {
+    public struct ViewerStateDefinition: Sendable, Codable, Equatable, Hashable {
 
         /// Indicates whether the requesting account has been muted by the subject
         /// account. Optional.
@@ -434,7 +434,7 @@ extension AppBskyLexicon.Actor {
     /// - SeeAlso: This is based on the [`app.bsky.actor.defs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/actor/defs.json
-    public struct KnownFollowers: Sendable, Codable {
+    public struct KnownFollowers: Sendable, Codable, Equatable, Hashable {
 
         /// The number of mutual followers related to the parent structure's specifications.
         public let count: Int

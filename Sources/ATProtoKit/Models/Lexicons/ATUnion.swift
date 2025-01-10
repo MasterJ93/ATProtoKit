@@ -120,7 +120,7 @@ public struct ATUnion {
     }
 
     /// A reference containing the list of the status of a record.
-    public enum RecordViewUnion: Sendable, Codable {
+    public enum RecordViewUnion: Sendable, Codable, Equatable, Hashable {
 
         /// A normal record type.
         case viewRecord(AppBskyLexicon.Embed.RecordDefinition.ViewRecord)
@@ -198,7 +198,7 @@ public struct ATUnion {
     }
 
     /// A reference containing the list of the types of embeds.
-    public enum EmbedViewUnion: Sendable, Codable {
+    public enum EmbedViewUnion: Sendable, Codable, Equatable, Hashable {
 
         /// The view of an external embed.
         case embedExternalView(AppBskyLexicon.Embed.ExternalDefinition.View)
@@ -296,7 +296,7 @@ public struct ATUnion {
     }
 
     /// A reference containing the list of the types of compatible media that can be viewed.
-    public enum MediaViewUnion: Sendable, Codable {
+    public enum MediaViewUnion: Sendable, Codable, Equatable, Hashable {
 
         /// An image that's been embedded.
         case embedImagesView(AppBskyLexicon.Embed.ImagesDefinition.View)

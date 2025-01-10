@@ -98,7 +98,7 @@ extension AppBskyLexicon.Embed {
         /// - SeeAlso: This is based on the [`app.bsky.embed.video`][github] lexicon.
         ///
         /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/embed/video.json
-        public struct View: Sendable, Codable {
+        public struct View: Sendable, Codable, Equatable, Hashable {
 
             /// The identifier of the lexicon.
             ///

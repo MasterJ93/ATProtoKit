@@ -14,7 +14,7 @@ extension AppBskyLexicon.Graph {
     /// - SeeAlso: This is based on the [`app.bsky.graph.defs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/graph/defs.json
-    public struct ListViewBasicDefinition: Sendable, Codable {
+    public struct ListViewBasicDefinition: Sendable, Codable, Equatable, Hashable {
 
         /// The URI of a user list.
         public let actorURI: String
@@ -98,7 +98,7 @@ extension AppBskyLexicon.Graph {
     /// - SeeAlso: This is based on the [`app.bsky.graph.defs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/graph/defs.json
-    public struct ListViewDefinition: Sendable, Codable {
+    public struct ListViewDefinition: Sendable, Codable, Equatable, Hashable {
 
         /// The identifier of the lexicon.
         ///
@@ -350,7 +350,7 @@ extension AppBskyLexicon.Graph {
     /// - SeeAlso: This is based on the [`app.bsky.graph.defs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/graph/defs.json
-    public struct StarterPackViewBasicDefinition: Sendable, Codable {
+    public struct StarterPackViewBasicDefinition: Sendable, Codable, Equatable, Hashable {
 
         /// The identifier of the lexicon.
         ///
@@ -461,7 +461,7 @@ extension AppBskyLexicon.Graph {
     /// - SeeAlso: This is based on the [`app.bsky.graph.defs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/graph/defs.json
-    public struct ListViewerStateDefinition: Sendable, Codable {
+    public struct ListViewerStateDefinition: Sendable, Codable, Equatable, Hashable {
 
         /// Indicates whether the user is muted. Optional.
         public var isMuted: Bool?

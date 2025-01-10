@@ -74,7 +74,7 @@ extension AppBskyLexicon.Embed {
         /// - SeeAlso: This is based on the [`app.bsky.embed.external`][github] lexicon.
         ///
         /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/embed/external.json
-        public struct View: Sendable, Codable {
+        public struct View: Sendable, Codable, Equatable, Hashable {
 
             /// The identifier of the lexicon.
             ///
@@ -91,7 +91,7 @@ extension AppBskyLexicon.Embed {
         }
 
         /// A data model for a definition for the external content.
-        public struct ViewExternal: Sendable, Codable {
+        public struct ViewExternal: Sendable, Codable, Equatable, Hashable {
 
             /// The identifier of the lexicon.
             ///

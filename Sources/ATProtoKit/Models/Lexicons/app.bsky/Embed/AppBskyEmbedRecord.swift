@@ -39,7 +39,7 @@ extension AppBskyLexicon.Embed {
         /// - SeeAlso: This is based on the [`app.bsky.embed.record`][github] lexicon.
         ///
         /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/embed/record.json
-        public struct View: Sendable, Codable {
+        public struct View: Sendable, Codable, Equatable, Hashable {
 
             /// The identifier of the lexicon.
             ///
@@ -60,7 +60,7 @@ extension AppBskyLexicon.Embed {
         /// - SeeAlso: This is based on the [`app.bsky.embed.record`][github] lexicon.
         ///
         /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/embed/record.json
-        public struct ViewRecord: Sendable, Codable {
+        public struct ViewRecord: Sendable, Codable, Equatable, Hashable {
 
             /// The identifier of the lexicon.
             ///
@@ -155,7 +155,7 @@ extension AppBskyLexicon.Embed {
         /// - SeeAlso: This is based on the [`app.bsky.embed.record`][github] lexicon.
         ///
         /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/embed/record.json
-        public struct ViewNotFound: Sendable, Codable {
+        public struct ViewNotFound: Sendable, Codable, Equatable, Hashable {
 
             /// The identifier of the lexicon.
             ///
@@ -180,7 +180,7 @@ extension AppBskyLexicon.Embed {
         /// - SeeAlso: This is based on the [`app.bsky.embed.record`][github] lexicon.
         ///
         /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/embed/record.json
-        public struct ViewBlocked: Sendable, Codable {
+        public struct ViewBlocked: Sendable, Codable, Equatable, Hashable {
 
             /// The identifier of the lexicon.
             ///
@@ -208,7 +208,7 @@ extension AppBskyLexicon.Embed {
         /// - SeeAlso: This is based on the [`app.bsky.embed.record`][github] lexicon.
         ///
         /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/embed/record.json
-        public struct ViewDetached: Sendable, Codable {
+        public struct ViewDetached: Sendable, Codable, Equatable, Hashable {
 
             /// The identifier of the lexicon.
             ///

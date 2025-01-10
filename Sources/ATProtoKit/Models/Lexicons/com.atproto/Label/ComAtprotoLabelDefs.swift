@@ -17,7 +17,7 @@ extension ComAtprotoLexicon.Label {
     /// - SeeAlso: This is based on the [`com.atproto.label.defs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/label/defs.json
-    public struct LabelDefinition: Sendable, Codable {
+    public struct LabelDefinition: Sendable, Codable, Equatable, Hashable {
 
         /// The version number of the label. Optional.
         ///
