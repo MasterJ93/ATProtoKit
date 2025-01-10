@@ -215,20 +215,25 @@ extension ATProtoBluesky {
     /// - Parameters:
     ///   - text: The text that's directly displayed in the post record. Current limit is
     ///   300 characters.
-    ///   - locales: The languages the text is written in. Current limit is 3 languages.
-    ///   - replyTo: The post record that this record is replying to.
+    ///   - inlineFacets: An array of index range numbers representing inline link facets.
+    ///   Optional. Defaults to `nil`.
+    ///   - locales: The languages the text is written in. Defaults to an empty array.
+    ///   Current limit is 3 languages.
+    ///   - replyTo: The post record that this record is replying to. Optional. Defaults to `nil`.
     ///   - embed: The embed container attached to the post record. Current items include
-    ///   images, videos, external links, records, and post records with media.
-    ///   - labels: An array of labels made by the user.
-    ///   - tags: An array of tags for the post record.
+    ///   images, videos, external links, records, and post records with media. Optional.
+    ///   Defaults to `nil`.
+    ///   - labels: An array of labels made by the user. Optional. Defaults to `nil`.
+    ///   - tags: An array of tags for the post record. Optional. Defaults to `nil`.
     ///   - creationDate: The date of the post record. Defaults to `Date.now`.
-    ///   - recordKey: The record key of the collection. Optional.
+    ///   - recordKey: The record key of the collection. Optional. Defaults to `nil`.
     ///   - shouldValidate: Indicates whether the record should be validated. Optional.
     ///   Defaults to `true`.
-    ///   - swapCommit: Swaps out an operation based on the CID. Optional.
+    ///   - swapCommit: Swaps out an operation based on the CID. Optional. Defaults to `nil`.
     /// - Returns: A strong reference, which contains the newly-created record's URI and CID hash.
     public func createPostRecord(
         text: String,
+        inlineFacets: [(start: String, end: String)]? = nil,
         locales: [Locale] = [],
         replyTo: AppBskyLexicon.Feed.PostRecord.ReplyReference? = nil,
         embed: EmbedIdentifier? = nil,
