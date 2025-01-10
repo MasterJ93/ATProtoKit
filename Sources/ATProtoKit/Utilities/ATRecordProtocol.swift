@@ -114,7 +114,8 @@ public actor ATRecordTypeRegistry {
 
     /// The registry itself.
     ///
-    /// Stores a mapping from NSID strings to corresponding record types.
+    /// Stores a mapping from Namespaced Identifier (NSID) strings to corresponding record types.
+    ///
     /// This contains a `Dictionary`, which contains the value of the `$type` property in the
     /// lexicon (which is used as the "key"), and the ``ATRecordProtocol``-conforming `struct`s
     /// (which is used as the "value"). ``UnknownType`` will search for the key that matches with
