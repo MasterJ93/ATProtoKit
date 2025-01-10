@@ -37,10 +37,10 @@ This will automatically create the custom initializer, as well as the custom dec
 If you rather write the custom initializers and methods manually, you can do so as well. When creating the custom initializers and methods, you'll want to replace the following methods with the custom ones:
 Replace|With...
 ---:|:---
-`decode(_:forKey:)`|``decodeDate(from:forKey:)``
-`decodeIfPresent(_:forKey:)`|``decodeDateIfPresent(from:forKey:)``
-`encode(_:forKey:)`|``encodeDate(_:with:forKey:)``
-`encodeIfPresent(_:forKey:)`|``encodeDateIfPresent(_:with:forKey:)``
+`decode(_:forKey:)`|``Swift/KeyedDecodingContainer/decodeDate(forKey:)``
+`decodeIfPresent(_:forKey:)`|``Swift/KeyedDecodingContainer/decodeDateIfPresent(forKey:)``
+`encode(_:forKey:)`|``Swift/KeyedEncodingContainer/encodeDate(_:forKey:)``
+`encodeIfPresent(_:forKey:)`|``Swift/KeyedEncodingContainer/encodeDateIfPresent(_:forKey:)``
 
 ```swift
 public struct UserProfile: ATRecordProtocol {
@@ -74,7 +74,7 @@ public struct UserProfile: ATRecordProtocol {
         self.followerCount = try container.decodeIfPresent(Int.self, forKey: .followerCount)
         self.followingCount = try container.decodeIfPresent(Int.self, forKey: .followingCount)
         // Replace `container.decode(Date.self, forKey: .createAt)`.
-        self.createdAt = try decodeDate(from: container, forKey: .createdAt)
+        self.createdAt = try container.decodeDate(forKey: .createdAt)
     }
 
     public func encode(to encoder: any Encoder) throws {
@@ -87,7 +87,7 @@ public struct UserProfile: ATRecordProtocol {
         try container.encodeIfPresent(self.followerCount, forKey: .followerCount)
         try container.encodeIfPresent(self.followingCount, forKey: .followingCount)
         // Replace `container.encode(self.createdAt, forKey: .createdAt)`.
-        try encodeDate(self.createdAt, with: &container, forKey: .createdAt)
+        try container.encodeDate(self.createdAt, forKey: .createdAt)
     }
 
     enum CodingKeys: CodingKey {
@@ -108,12 +108,12 @@ public struct UserProfile: ATRecordProtocol {
 - ``CustomDateFormatter``
 
 ### Decodable Methods
-- ``decodeDate(from:forKey:)``
-- ``decodeDateIfPresent(from:forKey:)``
+- ``Swift/KeyedDecodingContainer/decodeDate(forKey:)``
+- ``Swift/KeyedDecodingContainer/decodeDateIfPresent(forKey:)``
 
 ### Encodable Methods
-- ``encodeDate(_:with:forKey:)``
-- ``encodeDateIfPresent(_:with:forKey:)``
+- ``Swift/KeyedEncodingContainer/encodeDate(_:forKey:)``
+- ``Swift/KeyedEncodingContainer/encodeDateIfPresent(_:forKey:)``
 
 ### Deprecated Property Wrappers
 - ``ATProtoKit/DateFormatting``
