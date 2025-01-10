@@ -58,89 +58,81 @@ public struct CustomDateFormatter: Sendable {
     }
 }
 
-/// Decodes a non-optional date string using the provided `CustomDateFormatter`.
-///
-/// This is used as a replacement of `decode(_:forKey:)` specifically for `Date` objects.
-///
-/// - Parameters:
-///   - container: The keyed decoding container.
-///   - key: The key associated with the date string.
-/// - Returns: A `Date` object if decoding is successful.
-/// - Throws: `DecodingError` if the key is missing or the value is invalid.
-public func decodeDate<T: CodingKey>(from container: KeyedDecodingContainer<T>, forKey key: T) throws -> Date {
-    let dateString = try container.decode(String.self, forKey: key)
-    guard let date = CustomDateFormatter.shared.date(from: dateString) else {
-        throw DecodingError.dataCorruptedError(forKey: key, in: container, debugDescription: "Invalid date format: \(dateString)")
-    }
-    return date
-}
+// TODO: Move date format decode/encode methods to KeyedDecodingContainer
+extension KeyedDecodingContainer {
 
-/// Converts an ISO8601-formatted date string (if it exists) and converts it to a `Date?` object.
-///
-/// This is used as a replacement of `decodeIfPresent(_:forKey:)` specifically for `Date?` objects.
-///
-/// - Parameters:
-///   - container: The keyed decoding container.
-///   - key: The key associated with the date string.
-/// - Returns: A `Date?` if decoding is successful, or `nil` if the date is absent or invalid.
-/// - Throws: `DecodingError` if the key is present and the value is not a valid date.
-public func decodeDateIfPresent<T: CodingKey>(from container: KeyedDecodingContainer<T>, forKey key: T) throws -> Date? {
-    if let dateString = try container.decodeIfPresent(String.self, forKey: key) {
+    /// Decodes a non-optional date string using the provided `CustomDateFormatter`.
+    ///
+    /// This is used as a replacement of `decode(_:forKey:)` specifically for `Date` objects.
+    ///
+    /// - Parameter key: The key associated with the date string.
+    /// - Returns: A `Date` object if decoding is successful.
+    /// - Throws: `DecodingError` if the key is missing or the value is invalid.
+    public func decodeDate(forKey key: Key) throws -> Date {
+        let dateString = try self.decode(String.self, forKey: key)
         guard let date = CustomDateFormatter.shared.date(from: dateString) else {
-            throw DecodingError.dataCorruptedError(forKey: key, in: container, debugDescription: "Invalid date format: \(dateString)")
+            throw DecodingError.dataCorruptedError(forKey: key, in: self, debugDescription: "Invalid date format: \(dateString)")
         }
         return date
     }
-    return nil
+
+    /// Converts an ISO8601-formatted date string (if it exists) and converts it to a `Date?` object.
+    ///
+    /// This is used as a replacement of `decodeIfPresent(_:forKey:)` specifically for `Date?` objects.
+    ///
+    /// - Parameter key: The key associated with the date string.
+    /// - Returns: A `Date?` object if decoding is successful or `nil` if the date is absent or invalid.
+    /// - Throws: `DecodingError` if the key is present and the value is not a valid date.
+    public func decodeDateIfPresent(forKey key: Key) throws -> Date? {
+        if let dateString = try self.decodeIfPresent(String.self, forKey: key) {
+            guard let date = CustomDateFormatter.shared.date(from: dateString) else {
+                throw DecodingError.dataCorruptedError(forKey: key, in: self, debugDescription: "Invalid date format: \(dateString)")
+            }
+            return date
+        }
+        return nil
+    }
 }
 
-/// Encodes a `Date` value to its string representation and converts it to its ISO8601 format.
-///
-/// This is used as a replacement of `encode(_:forKey:)` specifically for `Date` objects.
-///
-/// - Parameters:
-///   - date: The `Date` object to encode.
-///   - container: The keyed encoding container.
-///   - key: The key associated with the encoded date.
-/// - Throws: `EncodingError` if the date cannot be encoded.
-public func encodeDate<T: CodingKey>(_ date: Date?, with container: inout KeyedEncodingContainer<T>, forKey key: T) throws {
-    if let date = date {
+extension KeyedEncodingContainer {
+
+    /// Encodes a `Date` value to its string representation and converts it to its ISO8601 format.
+    ///
+    /// This is used as a replacement of `encode(_:forKey:)` specifically for `Date` objects.
+    ///
+    /// - Parameters:
+    ///   - date: The `Date` object to encode.
+    ///   - key: The key associated with the encoded date.
+    /// - Throws: `EncodingError` if the date cannot be encoded.
+    public mutating func encodeDate(_ date: Date, forKey key: Key) throws {
         if let dateString = CustomDateFormatter.shared.string(from: date) {
-            try container.encode(dateString, forKey: key)
+            try self.encode(dateString, forKey: key)
         } else {
-            throw EncodingError.invalidValue(date, EncodingError.Context(codingPath: container.codingPath, debugDescription: "Invalid date value"))
+            throw EncodingError.invalidValue(date, EncodingError.Context(codingPath: self.codingPath, debugDescription: "Invalid date value"))
+        }
+    }
+
+    /// Encodes a `Date?` value to its string representation (if the value exists) and converts it to
+    /// its ISO8601 format.
+    ///
+    /// This is used as a replacement of `encodeIfPresent(_:forKey:)` specifically for
+    /// `Date?` objects.
+    ///
+    /// - Parameters:
+    ///   - date: The optional `Date` object to encode.
+    ///   - key: The key associated with the encoded date.
+    /// - Throws: `EncodingError` if the date cannot be encoded.
+    public mutating func encodeDateIfPresent(_ date: Date?, forKey key: Key) throws {
+        if let date = date {
+            if let dateString = CustomDateFormatter.shared.string(from: date) {
+                try self.encode(dateString, forKey: key)
+            } else {
+                throw EncodingError.invalidValue(date, EncodingError.Context(codingPath: self.codingPath, debugDescription: "Invalid date value"))
+            }
         }
     }
 }
 
-/// Encodes a `Date?` value to its string representation (if the value exists) and converts it to
-/// its ISO8601 format.
-///
-/// This is used as a replacement of `encodeIfPresent(_:forKey:)` specifically for `Date?` objects.
-///
-/// - Parameters:
-///   - date: The optional `Date` object to encode.
-///   - container: The keyed encoding container.
-///   - key: The key associated with the encoded date.
-/// - Throws: `EncodingError` if the date cannot be encoded.
-public func encodeDateIfPresent<T: CodingKey>(_ date: Date?, with container: inout KeyedEncodingContainer<T>, forKey key: T) throws {
-    if let date = date {
-        if let dateString = CustomDateFormatter.shared.string(from: date) {
-            try container.encode(dateString, forKey: key)
-        } else {
-            throw EncodingError.invalidValue(date, EncodingError.Context(codingPath: container.codingPath, debugDescription: "Invalid date value"))
-        }
-    }
-}
-
-// TODO: Move date format decode/encode methods to KeyedDecodingContainer
-extension KeyedDecodingContainer where K : CodingKey {
-
-}
-
-extension KeyedEncodingContainer where K : CodingKey {
-
-}
 
 // MARK: Deprecated property wrappers -
 /// A property wrapper for encoding and decoding `Date` objects with the ISO8601 format.

@@ -56,7 +56,7 @@ extension ComAtprotoLexicon.Server {
             self.isDisabled = try container.decode(Bool.self, forKey: .isDisabled)
             self.forAccount = try container.decode(String.self, forKey: .forAccount)
             self.createdBy = try container.decode(String.self, forKey: .createdBy)
-            self.createdAt = try decodeDate(from: container, forKey: .createdAt)
+            self.createdAt = try container.decodeDate(forKey: .createdAt)
             self.uses = try container.decode([ComAtprotoLexicon.Server.InviteCodeUseDefinition].self, forKey: .uses)
         }
 
@@ -68,7 +68,7 @@ extension ComAtprotoLexicon.Server {
             try container.encode(self.isDisabled, forKey: .isDisabled)
             try container.encode(self.forAccount, forKey: .forAccount)
             try container.encode(self.createdBy, forKey: .createdBy)
-            try encodeDate(self.createdAt, with: &container, forKey: .createdAt)
+            try container.encodeDate(self.createdAt, forKey: .createdAt)
             try container.encode(self.uses, forKey: .uses)
         }
 
@@ -105,14 +105,14 @@ extension ComAtprotoLexicon.Server {
             let container = try decoder.container(keyedBy: CodingKeys.self)
 
             self.usedBy = try container.decode(String.self, forKey: .usedBy)
-            self.usedAt = try decodeDate(from: container, forKey: .usedAt)
+            self.usedAt = try container.decodeDate(forKey: .usedAt)
         }
 
         public func encode(to encoder: any Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
 
             try container.encode(self.usedBy, forKey: .usedBy)
-            try encodeDate(self.usedAt, with: &container, forKey: .usedAt)
+            try container.encodeDate(self.usedAt, forKey: .usedAt)
         }
 
         enum CodingKeys: CodingKey {

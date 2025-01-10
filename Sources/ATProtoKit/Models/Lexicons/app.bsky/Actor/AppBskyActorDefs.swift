@@ -53,7 +53,7 @@ extension AppBskyLexicon.Actor {
             self.associated = try container.decodeIfPresent(AppBskyLexicon.Actor.ProfileAssociatedDefinition.self, forKey: .associated)
             self.viewer = try container.decodeIfPresent(AppBskyLexicon.Actor.ViewerStateDefinition.self, forKey: .viewer)
             self.labels = try container.decodeIfPresent([ComAtprotoLexicon.Label.LabelDefinition].self, forKey: .labels)
-            self.createdAt = try decodeDateIfPresent(from: container, forKey: .createdAt)
+            self.createdAt = try container.decodeDateIfPresent(forKey: .createdAt)
         }
 
         @_documentation(visibility: private)
@@ -67,7 +67,7 @@ extension AppBskyLexicon.Actor {
             try container.encodeIfPresent(self.associated, forKey: .associated)
             try container.encodeIfPresent(self.viewer, forKey: .viewer)
             try container.encodeIfPresent(self.labels, forKey: .labels)
-            try encodeDateIfPresent(self.createdAt, with: &container, forKey: .createdAt)
+            try container.encodeDateIfPresent(self.createdAt, forKey: .createdAt)
         }
 
         enum CodingKeys: String, CodingKey {
@@ -133,8 +133,8 @@ extension AppBskyLexicon.Actor {
             self.description = try container.decodeIfPresent(String.self, forKey: .description)
             self.avatarImageURL = try container.decodeIfPresent(URL.self, forKey: .avatarImageURL)
             self.associated = try container.decodeIfPresent(AppBskyLexicon.Actor.ProfileAssociatedDefinition.self, forKey: .associated)
-            self.indexedAt = try decodeDateIfPresent(from: container, forKey: .indexedAt)
-            self.createdAt = try decodeDateIfPresent(from: container, forKey: .createdAt)
+            self.indexedAt = try container.decodeDateIfPresent(forKey: .indexedAt)
+            self.createdAt = try container.decodeDateIfPresent(forKey: .createdAt)
             self.viewer = try container.decodeIfPresent(AppBskyLexicon.Actor.ViewerStateDefinition.self, forKey: .viewer)
             self.labels = try container.decodeIfPresent([ComAtprotoLexicon.Label.LabelDefinition].self, forKey: .labels)
         }
@@ -149,8 +149,8 @@ extension AppBskyLexicon.Actor {
             try truncatedEncodeIfPresent(self.description, withContainer: &container, forKey: .description, upToCharacterLength: 256)
             try container.encodeIfPresent(self.avatarImageURL, forKey: .avatarImageURL)
             try container.encodeIfPresent(self.associated, forKey: .associated)
-            try encodeDateIfPresent(self.indexedAt, with: &container, forKey: .indexedAt)
-            try encodeDateIfPresent(self.createdAt, with: &container, forKey: .createdAt)
+            try container.encodeDateIfPresent(self.indexedAt, forKey: .indexedAt)
+            try container.encodeDateIfPresent(self.createdAt, forKey: .createdAt)
             try container.encodeIfPresent(self.viewer, forKey: .viewer)
             try container.encodeIfPresent(self.labels, forKey: .labels)
         }
@@ -266,8 +266,8 @@ extension AppBskyLexicon.Actor {
             self.postCount = try container.decodeIfPresent(Int.self, forKey: .postCount)
             self.joinedViaStarterPack = try container.decodeIfPresent(AppBskyLexicon.Graph.StarterpackRecord.self, forKey: .joinedViaStarterPack)
             self.associated = try container.decodeIfPresent(AppBskyLexicon.Actor.ProfileAssociatedDefinition.self, forKey: .associated)
-            self.indexedAt = try decodeDateIfPresent(from: container, forKey: .indexedAt)
-            self.createdAt = try decodeDateIfPresent(from: container, forKey: .createdAt)
+            self.indexedAt = try container.decodeDateIfPresent(forKey: .indexedAt)
+            self.createdAt = try container.decodeDateIfPresent(forKey: .createdAt)
             self.viewer = try container.decodeIfPresent(AppBskyLexicon.Actor.ViewerStateDefinition.self, forKey: .viewer)
             self.labels = try container.decodeIfPresent([ComAtprotoLexicon.Label.LabelDefinition].self, forKey: .labels)
             self.pinnedPost = try container.decodeIfPresent(ComAtprotoLexicon.Repository.StrongReference.self, forKey: .pinnedPost)
@@ -288,8 +288,8 @@ extension AppBskyLexicon.Actor {
             try container.encodeIfPresent(self.postCount, forKey: .postCount)
             try container.encodeIfPresent(self.associated, forKey: .associated)
             try container.encodeIfPresent(self.joinedViaStarterPack, forKey: .joinedViaStarterPack)
-            try encodeDateIfPresent(self.indexedAt, with: &container, forKey: .indexedAt)
-            try encodeDateIfPresent(self.createdAt, with: &container, forKey: .createdAt)
+            try container.encodeDateIfPresent(self.indexedAt, forKey: .indexedAt)
+            try container.encodeDateIfPresent(self.createdAt, forKey: .createdAt)
             try container.encodeIfPresent(self.viewer, forKey: .viewer)
             try container.encodeIfPresent(self.labels, forKey: .labels)
             try container.encodeIfPresent(self.pinnedPost, forKey: .pinnedPost)
@@ -673,14 +673,14 @@ extension AppBskyLexicon.Actor {
         public init(from decoder: any Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
 
-            self.birthDate = try decodeDateIfPresent(from: container, forKey: .birthDate)
+            self.birthDate = try container.decodeDateIfPresent(forKey: .birthDate)
         }
 
         @_documentation(visibility: private)
         public func encode(to encoder: Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
 
-            try encodeDateIfPresent(self.birthDate, with: &container, forKey: .birthDate)
+            try container.encodeIfPresent(self.birthDate, forKey: .birthDate)
         }
 
         enum CodingKeys: String, CodingKey {
@@ -943,7 +943,7 @@ extension AppBskyLexicon.Actor {
             self.value = try container.decode(String.self, forKey: .value)
             self.targets = try container.decode([AppBskyLexicon.Actor.MutedWordTarget].self, forKey: .targets)
             self.actorTarget = try container.decodeIfPresent(AppBskyLexicon.Actor.MutedWord.ActorTarget.self, forKey: .actorTarget)
-            self.expiresAt = try decodeDateIfPresent(from: container, forKey: .expiresAt)
+            self.expiresAt = try container.decodeDateIfPresent(forKey: .expiresAt)
         }
 
         @_documentation(visibility: private)
@@ -951,12 +951,10 @@ extension AppBskyLexicon.Actor {
             var container = encoder.container(keyedBy: CodingKeys.self)
 
             try container.encodeIfPresent(self.id, forKey: .id)
-            // Truncate `value` to 1000 characters before decoding
-            // `maxGraphemes`'s limit is 100, but `String.count` should respect that limit
             try truncatedEncode(self.value, withContainer: &container, forKey: .value, upToCharacterLength: 100)
             try container.encode(self.targets, forKey: .targets)
             try container.encodeIfPresent(self.actorTarget, forKey: .actorTarget)
-            try encodeDateIfPresent(self.expiresAt, with: &container, forKey: .expiresAt)
+            try container.encodeDateIfPresent(self.expiresAt, forKey: .expiresAt)
         }
 
         enum CodingKeys: CodingKey {
@@ -1146,7 +1144,7 @@ extension AppBskyLexicon.Actor {
             self.id = try container.decode(String.self, forKey: .id)
             self.isCompleted = try container.decode(Bool.self, forKey: .isCompleted)
             self.data = try container.decodeIfPresent(String.self, forKey: .data)
-            self.expiresAt = try decodeDateIfPresent(from: container, forKey: .expiresAt)
+            self.expiresAt = try container.decodeDateIfPresent(forKey: .expiresAt)
         }
 
         public func encode(to encoder: any Encoder) throws {
@@ -1155,7 +1153,7 @@ extension AppBskyLexicon.Actor {
             try truncatedEncode(self.id, withContainer: &container, forKey: .id, upToCharacterLength: 100)
             try container.encode(self.isCompleted, forKey: .isCompleted)
             try truncatedEncodeIfPresent(self.data, withContainer: &container, forKey: .data, upToCharacterLength: 300)
-            try encodeDateIfPresent(self.expiresAt, with: &container, forKey: .expiresAt)
+            try container.encodeIfPresent(self.expiresAt, forKey: .expiresAt)
         }
 
         enum CodingKeys: String, CodingKey {

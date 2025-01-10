@@ -39,14 +39,14 @@ extension AppBskyLexicon.Graph {
             let container = try decoder.container(keyedBy: CodingKeys.self)
 
             self.subjectDID = try container.decode(String.self, forKey: .subjectDID)
-            self.createdAt = try decodeDate(from: container, forKey: .createdAt)
+            self.createdAt = try container.decodeDate(forKey: .createdAt)
         }
 
         public func encode(to encoder: any Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
 
             try container.encode(self.subjectDID, forKey: .subjectDID)
-            try encodeDate(self.createdAt, with: &container, forKey: .createdAt)
+            try container.encodeDate(self.createdAt, forKey: .createdAt)
         }
 
         enum CodingKeys: String, CodingKey {

@@ -115,7 +115,7 @@ extension AppBskyLexicon.Embed {
                 self.likeCount = try container.decodeIfPresent(Int.self, forKey: .likeCount)
                 self.quoteCount = try container.decodeIfPresent(Int.self, forKey: .quoteCount)
                 self.embeds = try container.decodeIfPresent([ATUnion.EmbedViewUnion].self, forKey: .embeds)
-                self.indexedAt = try decodeDate(from: container, forKey: .indexedAt)
+                self.indexedAt = try container.decodeDate(forKey: .indexedAt)
             }
 
             public func encode(to encoder: any Encoder) throws {
@@ -131,7 +131,7 @@ extension AppBskyLexicon.Embed {
                 try container.encodeIfPresent(self.likeCount, forKey: .likeCount)
                 try container.encodeIfPresent(self.quoteCount, forKey: .quoteCount)
                 try container.encodeIfPresent(self.embeds, forKey: .embeds)
-                try encodeDate(self.indexedAt, with: &container, forKey: .indexedAt)
+                try container.encodeDate(self.indexedAt, forKey: .indexedAt)
             }
 
             enum CodingKeys: String, CodingKey {

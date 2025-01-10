@@ -58,7 +58,7 @@ extension AppBskyLexicon.Feed {
 
             self.postURI = try container.decode(String.self, forKey: .postURI)
             self.allow = try container.decodeIfPresent([ATUnion.ThreadgateUnion].self, forKey: .allow)
-            self.createdAt = try decodeDate(from: container, forKey: .createdAt)
+            self.createdAt = try container.decodeDate(forKey: .createdAt)
             self.hiddenReplies = try container.decodeIfPresent([String].self, forKey: .hiddenReplies)
         }
 
@@ -67,8 +67,7 @@ extension AppBskyLexicon.Feed {
 
             try container.encode(self.postURI, forKey: .postURI)
             try container.encodeIfPresent(self.allow, forKey: .allow)
-            try encodeDate(self.createdAt, with: &container, forKey: .createdAt)
-
+            try container.encodeDate(self.createdAt, forKey: .createdAt)
             try truncatedEncodeIfPresent(self.hiddenReplies, withContainer: &container, forKey: .hiddenReplies, upToArrayLength: 50)
         }
 

@@ -64,7 +64,7 @@ extension AppBskyLexicon.Graph {
             self.avatarImageURL = try container.decodeIfPresent(URL.self, forKey: .avatarImageURL)
             self.listItemCount = try container.decodeIfPresent(Int.self, forKey: .listItemCount)
             self.viewer = try container.decodeIfPresent(AppBskyLexicon.Graph.ListViewerStateDefinition.self, forKey: .viewer)
-            self.indexedAt = try decodeDateIfPresent(from: container, forKey: .indexedAt)
+            self.indexedAt = try container.decodeDateIfPresent(forKey: .indexedAt)
         }
 
         public func encode(to encoder: Encoder) throws {
@@ -78,7 +78,7 @@ extension AppBskyLexicon.Graph {
             try container.encodeIfPresent(self.avatarImageURL, forKey: .avatarImageURL)
             try container.encodeIfPresent(self.listItemCount, forKey: .listItemCount)
             try container.encodeIfPresent(self.viewer, forKey: .viewer)
-            try encodeDateIfPresent(self.indexedAt, with: &container, forKey: .indexedAt)
+            try container.encodeDateIfPresent(self.indexedAt, forKey: .indexedAt)
         }
 
         enum CodingKeys: String, CodingKey {
@@ -181,7 +181,7 @@ extension AppBskyLexicon.Graph {
             self.avatarImageURL = try container.decodeIfPresent(URL.self, forKey: .avatarImageURL)
             self.listItemCount = try container.decodeIfPresent(Int.self, forKey: .listItemCount)
             self.viewer = try container.decodeIfPresent(AppBskyLexicon.Graph.ListViewerStateDefinition.self, forKey: .viewer)
-            self.indexedAt = try decodeDate(from: container, forKey: .indexedAt)
+            self.indexedAt = try container.decodeDate(forKey: .indexedAt)
         }
 
         public func encode(to encoder: Encoder) throws {
@@ -197,7 +197,7 @@ extension AppBskyLexicon.Graph {
             try container.encodeIfPresent(self.avatarImageURL, forKey: .avatarImageURL)
             try container.encodeIfPresent(self.listItemCount, forKey: .listItemCount)
             try container.encodeIfPresent(self.viewer, forKey: .viewer)
-            try encodeDate(self.indexedAt, with: &container, forKey: .indexedAt)
+            try container.encodeDate(self.indexedAt, forKey: .indexedAt)
         }
 
         enum CodingKeys: String, CodingKey {
@@ -311,7 +311,7 @@ extension AppBskyLexicon.Graph {
             self.joinedWeekCount = try container.decodeIfPresent(Int.self, forKey: .joinedWeekCount)
             self.joinedAllTimeCount = try container.decodeIfPresent(Int.self, forKey: .joinedAllTimeCount)
             self.labels = try container.decodeIfPresent([ComAtprotoLexicon.Label.LabelDefinition].self, forKey: .labels)
-            self.indexedAt = try decodeDate(from: container, forKey: .indexedAt)
+            self.indexedAt = try container.decodeDate(forKey: .indexedAt)
         }
 
         public func encode(to encoder: any Encoder) throws {
@@ -327,7 +327,7 @@ extension AppBskyLexicon.Graph {
             try container.encodeIfPresent(self.joinedWeekCount, forKey: .joinedWeekCount)
             try container.encodeIfPresent(self.joinedAllTimeCount, forKey: .joinedAllTimeCount)
             try container.encodeIfPresent(self.labels, forKey: .labels)
-            try encodeDate(self.indexedAt, with: &container, forKey: .indexedAt)
+            try container.encodeDate(self.indexedAt, forKey: .indexedAt)
         }
 
         enum CodingKeys: String, CodingKey {
@@ -402,7 +402,7 @@ extension AppBskyLexicon.Graph {
             self.joinedWeekCount = try container.decodeIfPresent(Int.self, forKey: .joinedWeekCount)
             self.joinedAllTimeCount = try container.decodeIfPresent(Int.self, forKey: .joinedAllTimeCount)
             self.labels = try container.decodeIfPresent([ComAtprotoLexicon.Label.LabelDefinition].self, forKey: .labels)
-            self.indexedAt = try decodeDate(from: container, forKey: .indexedAt)
+            self.indexedAt = try container.decodeDate(forKey: .indexedAt)
         }
 
         public func encode(to encoder: any Encoder) throws {
@@ -416,7 +416,7 @@ extension AppBskyLexicon.Graph {
             try container.encodeIfPresent(self.joinedWeekCount, forKey: .joinedWeekCount)
             try container.encodeIfPresent(self.joinedAllTimeCount, forKey: .joinedAllTimeCount)
             try container.encodeIfPresent(self.labels, forKey: .labels)
-            try encodeDate(self.indexedAt, with: &container, forKey: .indexedAt)
+            try container.encodeDate(self.indexedAt, forKey: .indexedAt)
         }
 
         enum CodingKeys: String, CodingKey {

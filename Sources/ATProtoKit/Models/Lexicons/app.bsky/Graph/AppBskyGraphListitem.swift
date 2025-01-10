@@ -50,7 +50,7 @@ extension AppBskyLexicon.Graph {
 
             self.subjectDID = try container.decode(String.self, forKey: .subjectDID)
             self.list = try container.decode(String.self, forKey: .list)
-            self.createdAt = try decodeDate(from: container, forKey: .createdAt)
+            self.createdAt = try container.decodeDate(forKey: .createdAt)
         }
 
         public func encode(to encoder: any Encoder) throws {
@@ -58,7 +58,7 @@ extension AppBskyLexicon.Graph {
 
             try container.encode(self.subjectDID, forKey: .subjectDID)
             try container.encode(self.list, forKey: .list)
-            try encodeDate(self.createdAt, with: &container, forKey: .createdAt)
+            try container.encodeDate(self.createdAt, forKey: .createdAt)
         }
 
         enum CodingKeys: String, CodingKey {

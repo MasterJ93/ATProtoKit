@@ -87,7 +87,7 @@ extension ComAtprotoLexicon.Moderation {
             self.reason = try container.decodeIfPresent(String.self, forKey: .reason)
             self.subject = try container.decode(ATUnion.CreateReportSubjectUnion.self, forKey: .subject)
             self.reportedBy = try container.decode(String.self, forKey: .reportedBy)
-            self.createdAt = try decodeDate(from: container, forKey: .createdAt)
+            self.createdAt = try container.decodeDate(forKey: .createdAt)
         }
 
         public func encode(to encoder: Encoder) throws {
@@ -98,7 +98,7 @@ extension ComAtprotoLexicon.Moderation {
             try truncatedEncodeIfPresent(self.reason, withContainer: &container, forKey: .reason, upToCharacterLength: 2_000)
             try container.encode(self.subject, forKey: .subject)
             try container.encode(self.reportedBy, forKey: .reportedBy)
-            try encodeDate(self.createdAt, with: &container, forKey: .createdAt)
+            try container.encodeDate(self.createdAt, forKey: .createdAt)
         }
 
         public enum CodingKeys: CodingKey {

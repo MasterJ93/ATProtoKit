@@ -84,8 +84,8 @@ extension ComAtprotoLexicon.Label {
             self.cid = try container.decodeIfPresent(String.self, forKey: .cid)
             self.name = try container.decode(String.self, forKey: .name)
             self.isNegated = try container.decodeIfPresent(Bool.self, forKey: .isNegated)
-            self.timestamp = try decodeDate(from: container, forKey: .timestamp)
-            self.expiresOn = try decodeDateIfPresent(from: container, forKey: .expiresOn)
+            self.timestamp = try container.decodeDate(forKey: .timestamp)
+            self.expiresOn = try container.decodeDateIfPresent(forKey: .expiresOn)
             self.signature = try container.decodeIfPresent(Data.self, forKey: .signature)
         }
 
@@ -98,8 +98,8 @@ extension ComAtprotoLexicon.Label {
             try container.encodeIfPresent(self.cid, forKey: .cid)
             try truncatedEncode(self.name, withContainer: &container, forKey: .name, upToCharacterLength: 128)
             try container.encodeIfPresent(self.isNegated, forKey: .isNegated)
-            try encodeDate(self.timestamp, with: &container, forKey: .timestamp)
-            try encodeDateIfPresent(self.expiresOn, with: &container, forKey: .expiresOn)
+            try container.encodeDate(self.timestamp, forKey: .timestamp)
+            try container.encodeDateIfPresent(self.expiresOn, forKey: .expiresOn)
             try container.encodeIfPresent(self.signature, forKey: .signature)
         }
 

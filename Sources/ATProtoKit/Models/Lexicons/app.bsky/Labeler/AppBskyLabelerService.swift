@@ -44,7 +44,7 @@ extension AppBskyLexicon.Labeler {
 
             self.policies = try container.decode(LabelerPolicies.self, forKey: .policies)
             self.labels = try container.decode([ComAtprotoLexicon.Label.SelfLabelDefinition].self, forKey: .labels)
-            self.createdAt = try decodeDate(from: container, forKey: .createdAt)
+            self.createdAt = try container.decodeDate(forKey: .createdAt)
         }
 
         public func encode(to encoder: any Encoder) throws {
@@ -52,7 +52,7 @@ extension AppBskyLexicon.Labeler {
 
             try container.encode(self.policies, forKey: .policies)
             try container.encode(self.labels, forKey: .labels)
-            try encodeDate(self.createdAt, with: &container, forKey: .createdAt)
+            try container.encodeDate(self.createdAt, forKey: .createdAt)
         }
 
         enum CodingKeys: String, CodingKey {

@@ -58,8 +58,8 @@ extension AppBskyLexicon.Feed {
             public init(from decoder: any Decoder) throws {
                 let container = try decoder.container(keyedBy: CodingKeys.self)
 
-                self.indexedAt = try decodeDate(from: container, forKey: .indexedAt)
-                self.createdAt = try decodeDate(from: container, forKey: .createdAt)
+                self.indexedAt = try container.decodeDate(forKey: .indexedAt)
+                self.createdAt = try container.decodeDate(forKey: .createdAt)
                 self.actor = try container.decode(AppBskyLexicon.Actor.ProfileViewDefinition.self, forKey: .actor)
             }
 

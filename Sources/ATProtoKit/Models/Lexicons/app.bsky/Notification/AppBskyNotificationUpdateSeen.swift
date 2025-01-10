@@ -29,13 +29,13 @@ extension AppBskyLexicon.Notification {
         public init(from decoder: any Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
 
-            self.seenAt = try decodeDate(from: container, forKey: .seenAt)
+            self.seenAt = try container.decodeDate(forKey: .seenAt)
         }
 
         public func encode(to encoder: any Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
 
-            try encodeDate(self.seenAt, with: &container, forKey: .seenAt)
+            try container.encodeDate(self.seenAt, forKey: .seenAt)
         }
 
         enum CodingKeys: CodingKey {

@@ -71,7 +71,7 @@ extension AppBskyLexicon.Feed {
             self.avatarImageBlob = try container.decodeIfPresent(ComAtprotoLexicon.Repository.BlobContainer?.self, forKey: .avatarImageBlob)
             self.canAcceptInteractions = try container.decodeIfPresent(Bool.self, forKey: .canAcceptInteractions)
             self.labels = try container.decodeIfPresent(ATUnion.GeneratorLabelsUnion.self, forKey: .labels)
-            self.createdAt = try decodeDate(from: container, forKey: .createdAt)
+            self.createdAt = try container.decodeDate(forKey: .createdAt)
         }
 
         public func encode(to encoder: Encoder) throws {
@@ -84,7 +84,7 @@ extension AppBskyLexicon.Feed {
             try container.encodeIfPresent(self.avatarImageBlob, forKey: .avatarImageBlob)
             try container.encodeIfPresent(self.canAcceptInteractions, forKey: .canAcceptInteractions)
             try container.encodeIfPresent(self.labels, forKey: .labels)
-            try encodeDate(self.createdAt, with: &container, forKey: .createdAt)
+            try container.encodeDate(self.createdAt, forKey: .createdAt)
         }
 
         enum CodingKeys: String, CodingKey {

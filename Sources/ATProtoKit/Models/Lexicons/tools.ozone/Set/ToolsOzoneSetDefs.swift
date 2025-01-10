@@ -80,18 +80,18 @@ extension ToolsOzoneLexicon.Set {
             self.name = try container.decode(String.self, forKey: .name)
             self.description = try container.decodeIfPresent(String.self, forKey: .description)
             self.setSize = try container.decode(Int.self, forKey: .setSize)
-            self.createdAt = try decodeDate(from: container, forKey: .createdAt)
-            self.updatedAt = try decodeDate(from: container, forKey: .updatedAt)
+            self.createdAt = try container.decodeDate(forKey: .createdAt)
+            self.updatedAt = try container.decodeDate(forKey: .updatedAt)
         }
 
         public func encode(to encoder: any Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
 
             try truncatedEncode(self.name, withContainer: &container, forKey: .name, upToCharacterLength: 128)
-            try truncatedEncodeIfPresent(self.description, withContainer: &container, forKey: .description,upToCharacterLength: 1_024)
+            try truncatedEncodeIfPresent(self.description, withContainer: &container, forKey: .description, upToCharacterLength: 1_024)
             try container.encode(self.setSize, forKey: .setSize)
-            try encodeDate(self.createdAt, with: &container, forKey: .createdAt)
-            try encodeDate(self.updatedAt, with: &container, forKey: .updatedAt)
+            try container.encodeDate(self.createdAt, forKey: .createdAt)
+            try container.encodeDate(self.updatedAt, forKey: .updatedAt)
         }
 
         enum CodingKeys: CodingKey {

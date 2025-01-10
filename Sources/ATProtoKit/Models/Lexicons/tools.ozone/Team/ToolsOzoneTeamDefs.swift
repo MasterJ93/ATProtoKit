@@ -54,8 +54,8 @@ extension ToolsOzoneLexicon.Team {
             self.memberDID = try container.decode(String.self, forKey: .memberDID)
             self.isDisabled = try container.decodeIfPresent(Bool.self, forKey: .isDisabled)
             self.profile = try container.decodeIfPresent(AppBskyLexicon.Actor.ProfileViewDetailedDefinition.self, forKey: .profile)
-            self.createdAt = try decodeDateIfPresent(from: container, forKey: .createdAt)
-            self.updatedAt = try decodeDateIfPresent(from: container, forKey: .updatedAt)
+            self.createdAt = try container.decodeDateIfPresent(forKey: .createdAt)
+            self.updatedAt = try container.decodeDateIfPresent(forKey: .updatedAt)
             self.lastUpdatedBy = try container.decodeIfPresent(String.self, forKey: .lastUpdatedBy)
             self.role = try container.decode(Role.self, forKey: .role)
         }
@@ -66,8 +66,8 @@ extension ToolsOzoneLexicon.Team {
             try container.encode(self.memberDID, forKey: .memberDID)
             try container.encodeIfPresent(self.isDisabled, forKey: .isDisabled)
             try container.encodeIfPresent(self.profile, forKey: .profile)
-            try encodeDateIfPresent(self.createdAt, with: &container, forKey: .createdAt)
-            try encodeDateIfPresent(self.updatedAt, with: &container, forKey: .updatedAt)
+            try container.encodeDateIfPresent(self.createdAt, forKey: .createdAt)
+            try container.encodeDateIfPresent(self.updatedAt, forKey: .updatedAt)
             try container.encodeIfPresent(self.lastUpdatedBy, forKey: .lastUpdatedBy)
             try container.encode(self.role, forKey: .role)
         }

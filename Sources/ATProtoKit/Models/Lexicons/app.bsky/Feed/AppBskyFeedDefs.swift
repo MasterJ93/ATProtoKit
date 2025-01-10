@@ -67,7 +67,7 @@ extension AppBskyLexicon.Feed {
             self.repostCount = try container.decodeIfPresent(Int.self, forKey: .repostCount)
             self.likeCount = try container.decodeIfPresent(Int.self, forKey: .likeCount)
             self.quoteCount = try container.decodeIfPresent(Int.self, forKey: .quoteCount)
-            self.indexedAt = try decodeDate(from: container, forKey: .indexedAt)
+            self.indexedAt = try container.decodeDate(forKey: .indexedAt)
             self.viewer = try container.decodeIfPresent(AppBskyLexicon.Feed.ViewerStateDefinition.self, forKey: .viewer)
             self.labels = try container.decodeIfPresent([ComAtprotoLexicon.Label.LabelDefinition].self, forKey: .labels)
             self.threadgate = try container.decodeIfPresent(AppBskyLexicon.Feed.ThreadgateViewDefinition.self, forKey: .threadgate)
@@ -85,7 +85,7 @@ extension AppBskyLexicon.Feed {
             try container.encodeIfPresent(self.repostCount, forKey: .repostCount)
             try container.encodeIfPresent(self.likeCount, forKey: .likeCount)
             try container.encodeIfPresent(self.quoteCount, forKey: .quoteCount)
-            try encodeDateIfPresent(self.indexedAt, with: &container, forKey: .indexedAt)
+            try container.encodeDateIfPresent(self.indexedAt, forKey: .indexedAt)
             try container.encodeIfPresent(self.viewer, forKey: .viewer)
             try container.encodeIfPresent(self.labels, forKey: .labels)
             try container.encodeIfPresent(self.threadgate, forKey: .threadgate)
@@ -230,14 +230,14 @@ extension AppBskyLexicon.Feed {
             let container = try decoder.container(keyedBy: CodingKeys.self)
 
             self.by = try container.decode(AppBskyLexicon.Actor.ProfileViewBasicDefinition.self, forKey: .by)
-            self.indexedAt = try decodeDate(from: container, forKey: .indexedAt)
+            self.indexedAt = try container.decodeDate(forKey: .indexedAt)
         }
 
         public func encode(to encoder: any Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
 
             try container.encode(self.by, forKey: .by)
-            try encodeDate(self.indexedAt, with: &container, forKey: .indexedAt)
+            try container.encodeDate(self.indexedAt, forKey: .indexedAt)
         }
 
         enum CodingKeys: CodingKey {
@@ -411,7 +411,7 @@ extension AppBskyLexicon.Feed {
             self.canAcceptInteractions = try container.decodeIfPresent(Bool.self, forKey: .canAcceptInteractions)
             self.labels = try container.decodeIfPresent([ComAtprotoLexicon.Label.LabelDefinition].self, forKey: .labels)
             self.viewer = try container.decodeIfPresent(AppBskyLexicon.Feed.GeneratorViewerStateDefinition.self, forKey: .viewer)
-            self.indexedAt = try decodeDate(from: container, forKey: .indexedAt)
+            self.indexedAt = try container.decodeDate(forKey: .indexedAt)
         }
 
         public func encode(to encoder: Encoder) throws {
@@ -433,7 +433,7 @@ extension AppBskyLexicon.Feed {
             try container.encodeIfPresent(self.canAcceptInteractions, forKey: .canAcceptInteractions)
             try container.encodeIfPresent(self.labels, forKey: .labels)
             try container.encodeIfPresent(self.viewer, forKey: .viewer)
-            try encodeDate(self.indexedAt, with: &container, forKey: .indexedAt)
+            try container.encodeDateIfPresent(self.indexedAt, forKey: .indexedAt)
         }
 
         enum CodingKeys: String, CodingKey {

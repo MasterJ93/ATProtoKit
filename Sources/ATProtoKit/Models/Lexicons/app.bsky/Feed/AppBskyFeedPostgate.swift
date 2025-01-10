@@ -54,7 +54,7 @@ extension AppBskyLexicon.Feed {
         public init(from decoder: any Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
 
-            self.createdAt = try decodeDate(from: container, forKey: .createdAt)
+            self.createdAt = try container.decodeDate(forKey: .createdAt)
             self.postURI = try container.decode(String.self, forKey: .postURI)
             self.detachedEmbeddingURIs = try container.decodeIfPresent([String].self, forKey: .detachedEmbeddingURIs)
             self.embeddingRules = try container.decodeIfPresent([ATUnion.EmbeddingRulesUnion].self, forKey: .embeddingRules)
@@ -63,7 +63,7 @@ extension AppBskyLexicon.Feed {
         public func encode(to encoder: any Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
 
-            try encodeDate(self.createdAt, with: &container, forKey: .createdAt)
+            try container.encodeDate(self.createdAt, forKey: .createdAt)
             try container.encode(self.postURI, forKey: .postURI)
             try truncatedEncodeIfPresent(self.detachedEmbeddingURIs, withContainer: &container, forKey: .detachedEmbeddingURIs, upToArrayLength: 50)
             try truncatedEncodeIfPresent(self.embeddingRules, withContainer: &container, forKey: .embeddingRules, upToArrayLength: 5)

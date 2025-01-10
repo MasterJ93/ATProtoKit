@@ -34,13 +34,13 @@ extension ComAtprotoLexicon.Server {
         public init(from decoder: any Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
 
-            self.deleteAfter = try decodeDate(from: container, forKey: .deleteAfter)
+            self.deleteAfter = try container.decodeDate(forKey: .deleteAfter)
         }
 
         public func encode(to encoder: Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
 
-            try encodeDate(self.deleteAfter, with: &container, forKey: .deleteAfter)
+            try container.encodeDate(self.deleteAfter, forKey: .deleteAfter)
         }
 
         enum CodingKeys: CodingKey {

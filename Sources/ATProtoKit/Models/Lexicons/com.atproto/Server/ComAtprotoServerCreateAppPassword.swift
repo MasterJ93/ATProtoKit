@@ -74,7 +74,7 @@ extension ComAtprotoLexicon.Server {
 
             self.name = try container.decode(String.self, forKey: .name)
             self.password = try container.decode(String.self, forKey: .password)
-            self.createdAt = try decodeDate(from: container, forKey: .createdAt)
+            self.createdAt = try container.decodeDate(forKey: .createdAt)
             self.isPrivileged = try container.decodeIfPresent(Bool.self, forKey: .isPrivileged)
         }
 
@@ -83,7 +83,7 @@ extension ComAtprotoLexicon.Server {
 
             try container.encode(self.name, forKey: .name)
             try container.encode(self.password, forKey: .password)
-            try encodeDate(self.createdAt, with: &container, forKey: .createdAt)
+            try container.encodeDate(self.createdAt, forKey: .createdAt)
             try container.encodeIfPresent(self.isPrivileged, forKey: .isPrivileged)
         }
 

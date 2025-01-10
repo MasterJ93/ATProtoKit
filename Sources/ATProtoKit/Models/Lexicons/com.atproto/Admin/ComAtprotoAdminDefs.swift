@@ -112,13 +112,13 @@ extension ComAtprotoLexicon.Admin {
             self.handle = try container.decode(String.self, forKey: .handle)
             self.email = try container.decodeIfPresent(String.self, forKey: .email)
             self.relatedRecords = try container.decodeIfPresent([UnknownType].self, forKey: .relatedRecords)
-            self.indexedAt = try decodeDate(from: container, forKey: .indexedAt)
+            self.indexedAt = try container.decodeDate(forKey: .indexedAt)
             self.invitedBy = try container.decodeIfPresent(ComAtprotoLexicon.Server.InviteCodeDefinition.self, forKey: .invitedBy)
             self.invites = try container.decodeIfPresent([ComAtprotoLexicon.Server.InviteCodeDefinition].self, forKey: .invites)
             self.areInvitesDisabled = try container.decodeIfPresent(Bool.self, forKey: .areInvitesDisabled)
-            self.emailConfirmedAt = try decodeDateIfPresent(from: container, forKey: .emailConfirmedAt)
+            self.emailConfirmedAt = try container.decodeDateIfPresent(forKey: .emailConfirmedAt)
             self.inviteNote = try container.decodeIfPresent(String.self, forKey: .inviteNote)
-            self.deactivatedAt = try decodeDateIfPresent(from: container, forKey: .deactivatedAt)
+            self.deactivatedAt = try container.decodeDateIfPresent(forKey: .deactivatedAt)
             self.threatSignature = try container.decodeIfPresent(ComAtprotoLexicon.Admin.ThreatSignatureDefinition.self, forKey: .threatSignature)
         }
 
@@ -129,13 +129,13 @@ extension ComAtprotoLexicon.Admin {
             try container.encode(self.handle, forKey: .handle)
             try container.encodeIfPresent(self.email, forKey: .email)
             try container.encodeIfPresent(self.relatedRecords, forKey: .relatedRecords)
-            try encodeDate(self.indexedAt, with: &container, forKey: .indexedAt)
+            try container.encodeDate(self.indexedAt, forKey: .indexedAt)
             try container.encodeIfPresent(self.invitedBy, forKey: .invitedBy)
             try container.encodeIfPresent(self.invites, forKey: .invites)
             try container.encodeIfPresent(self.areInvitesDisabled, forKey: .areInvitesDisabled)
-            try encodeDateIfPresent(self.emailConfirmedAt, with: &container, forKey: .emailConfirmedAt)
+            try container.encodeDateIfPresent(self.emailConfirmedAt, forKey: .emailConfirmedAt)
             try container.encodeIfPresent(self.inviteNote, forKey: .inviteNote)
-            try encodeDateIfPresent(self.deactivatedAt, with: &container, forKey: .deactivatedAt)
+            try container.encodeDateIfPresent(self.deactivatedAt, forKey: .deactivatedAt)
             try container.encodeIfPresent(self.threatSignature, forKey: .threatSignature)
         }
 

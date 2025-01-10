@@ -66,7 +66,7 @@ extension AppBskyLexicon.Labeler {
             self.creator = try container.decode(AppBskyLexicon.Actor.ProfileViewDefinition.self, forKey: .creator)
             self.likeCount = try container.decodeIfPresent(Int.self, forKey: .likeCount)
             self.viewer = try container.decodeIfPresent(AppBskyLexicon.Labeler.LabelerViewerStateDefinition.self, forKey: .viewer)
-            self.indexedAt = try decodeDate(from: container, forKey: .indexedAt)
+            self.indexedAt = try container.decodeDate(forKey: .indexedAt)
             self.labels = try container.decodeIfPresent([ComAtprotoLexicon.Label.LabelDefinition].self, forKey: .labels)
         }
         public func encode(to encoder: any Encoder) throws {
@@ -81,7 +81,7 @@ extension AppBskyLexicon.Labeler {
                 try container.encode(likeCount, forKey: .likeCount)
             }
             try container.encodeIfPresent(self.viewer, forKey: .viewer)
-            try encodeDate(self.indexedAt, with: &container, forKey: .indexedAt)
+            try container.encodeDate(self.indexedAt, forKey: .indexedAt)
             try container.encodeIfPresent(self.labels, forKey: .labels)
         }
 
@@ -155,7 +155,7 @@ extension AppBskyLexicon.Labeler {
             self.policies = try container.decode(AppBskyLexicon.Labeler.LabelerPolicies.self, forKey: .policies)
             self.likeCount = try container.decodeIfPresent(Int.self, forKey: .likeCount)
             self.viewer = try container.decodeIfPresent(AppBskyLexicon.Labeler.LabelerViewerStateDefinition.self, forKey: .viewer)
-            self.indexedAt = try decodeDate(from: container, forKey: .indexedAt)
+            self.indexedAt = try container.decodeDate(forKey: .indexedAt)
             self.labels = try container.decodeIfPresent([ComAtprotoLexicon.Label.LabelDefinition].self, forKey: .labels)
         }
 
@@ -172,7 +172,7 @@ extension AppBskyLexicon.Labeler {
                 try container.encode(likeCount, forKey: .likeCount)
             }
             try container.encodeIfPresent(self.viewer, forKey: .viewer)
-            try encodeDate(self.indexedAt, with: &container, forKey: .indexedAt)
+            try container.encodeDate(self.indexedAt, forKey: .indexedAt)
             try container.encodeIfPresent(self.labels, forKey: .labels)
         }
 

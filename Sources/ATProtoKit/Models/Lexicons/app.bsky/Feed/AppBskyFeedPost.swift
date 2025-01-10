@@ -97,7 +97,7 @@ extension AppBskyLexicon.Feed {
             self.languages = try container.decodeIfPresent([String].self, forKey: .languages)
             self.labels = try container.decodeIfPresent(ATUnion.PostSelfLabelsUnion.self, forKey: .labels)
             self.tags = try container.decodeIfPresent([String].self, forKey: .tags)
-            self.createdAt = try decodeDate(from: container, forKey: .createdAt)
+            self.createdAt = try container.decodeDate(forKey: .createdAt)
         }
 
         public func encode(to encoder: Encoder) throws {
@@ -112,8 +112,7 @@ extension AppBskyLexicon.Feed {
             try truncatedEncodeIfPresent(self.languages, withContainer: &container, forKey: .languages, upToArrayLength: 3)
             try container.encodeIfPresent(self.labels, forKey: .labels)
             try truncatedEncodeIfPresent(self.tags, withContainer: &container, forKey: .tags, upToCharacterLength: 64, upToArrayLength: 8)
-
-            try encodeDate(self.createdAt, with: &container, forKey: .createdAt)
+            try container.encodeDate(self.createdAt, forKey: .createdAt)
         }
 
         enum CodingKeys: String, CodingKey {

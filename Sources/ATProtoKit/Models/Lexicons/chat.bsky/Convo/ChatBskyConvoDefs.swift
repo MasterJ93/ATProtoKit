@@ -120,7 +120,7 @@ extension ChatBskyLexicon.Conversation {
             self.facets = try container.decodeIfPresent([AppBskyLexicon.RichText.Facet].self, forKey: .facets)
             self.embed = try container.decodeIfPresent(ATUnion.MessageInputEmbedUnion.self, forKey: .embed)
             self.sender = try container.decode(MessageViewSenderDefinition.self, forKey: .sender)
-            self.seenAt = try decodeDate(from: container, forKey: .seenAt)
+            self.seenAt = try container.decodeDate(forKey: .seenAt)
         }
 
         public func encode(to encoder: any Encoder) throws {
@@ -132,7 +132,7 @@ extension ChatBskyLexicon.Conversation {
             try container.encodeIfPresent(self.facets, forKey: .facets)
             try container.encodeIfPresent(self.embed, forKey: .embed)
             try container.encode(self.sender, forKey: .sender)
-            try encodeDate(self.seenAt, with: &container, forKey: .seenAt)
+            try container.encodeDate(self.seenAt, forKey: .seenAt)
         }
 
         public enum CodingKeys: String, CodingKey {
@@ -178,7 +178,7 @@ extension ChatBskyLexicon.Conversation {
             self.messageID = try container.decode(String.self, forKey: .messageID)
             self.revision = try container.decode(String.self, forKey: .revision)
             self.sender = try container.decode(MessageViewSenderDefinition.self, forKey: .sender)
-            self.seenAt = try decodeDate(from: container, forKey: .seenAt)
+            self.seenAt = try container.decodeDate(forKey: .seenAt)
         }
 
         public func encode(to encoder: any Encoder) throws {
@@ -187,7 +187,7 @@ extension ChatBskyLexicon.Conversation {
             try container.encode(self.messageID, forKey: .messageID)
             try container.encode(self.revision, forKey: .revision)
             try container.encode(self.sender, forKey: .sender)
-            try encodeDate(self.seenAt, with: &container, forKey: .seenAt)
+            try container.encodeDate(self.seenAt, forKey: .seenAt)
         }
 
         enum CodingKeys: String, CodingKey {

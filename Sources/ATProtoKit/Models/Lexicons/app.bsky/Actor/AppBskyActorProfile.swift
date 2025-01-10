@@ -82,7 +82,7 @@ extension AppBskyLexicon.Actor {
             self.labels = try container.decodeIfPresent([ComAtprotoLexicon.Label.SelfLabelsDefinition].self, forKey: .labels)
             self.joinedViaStarterPack = try container.decodeIfPresent(ComAtprotoLexicon.Repository.StrongReference.self, forKey: .joinedViaStarterPack)
             self.pinnedPost = try container.decodeIfPresent(ComAtprotoLexicon.Repository.StrongReference.self, forKey: .pinnedPost)
-            self.createdAt = try decodeDateIfPresent(from: container, forKey: .createdAt)
+            self.createdAt = try container.decodeDateIfPresent(forKey: .createdAt)
         }
 
         public func encode(to encoder: any Encoder) throws {
@@ -95,7 +95,7 @@ extension AppBskyLexicon.Actor {
             try container.encodeIfPresent(self.labels, forKey: .labels)
             try container.encodeIfPresent(self.joinedViaStarterPack, forKey: .joinedViaStarterPack)
             try container.encodeIfPresent(self.pinnedPost, forKey: .pinnedPost)
-            try encodeDateIfPresent(self.createdAt, with: &container, forKey: .createdAt)
+            try container.encodeDateIfPresent(self.createdAt, forKey: .createdAt)
         }
 
         enum CodingKeys: String, CodingKey {
