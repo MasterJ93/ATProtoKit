@@ -662,7 +662,7 @@ extension ATProtoBluesky {
     /// `EmbedIdentifier` provides a unified interface for specifying embeddable content,
     /// simplifying the process of attaching images, external links, other post records, or media
     /// to a post. By abstracting the details of each embed type, it allows methods like
-    /// ``createPostRecord(text:locales:replyTo:embed:labels:tags:creationDate:recordKey:shouldValidate:swapCommit:)``
+    /// ``createPostRecord(text:inlineFacets:locales:replyTo:embed:labels:tags:creationDate:recordKey:shouldValidate:swapCommit:)``
     /// to handle the necessary operations (e.g., uploading, grabbing metadata, validation, etc.)
     /// behind the scenes, streamlining the embedding process.
     public enum EmbedIdentifier {

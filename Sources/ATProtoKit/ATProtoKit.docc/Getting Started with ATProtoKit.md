@@ -64,7 +64,7 @@ To create a post, first create an ``ATProtoBluesky`` instance, with the ``ATProt
 let atProtoBluesky = ATProtoBluesky(atProtoKitInstance: atProto)
 ```
 
-Then use the ``ATProtoBluesky/createPostRecord(text:locales:replyTo:embed:labels:tags:creationDate:recordKey:shouldValidate:swapCommit:)`` method. While this method is extremely extensive, we're only going to focus on the `text` parameter.
+Then use the ``createPostRecord(text:inlineFacets:locales:replyTo:embed:labels:tags:creationDate:recordKey:shouldValidate:swapCommit:)`` method. While this method is extremely extensive, we're only going to focus on the `text` parameter.
 
 ```swift
 let postResult = try await atProtoBluesky.createPostRecord(text: "Hello Bluesky!")
