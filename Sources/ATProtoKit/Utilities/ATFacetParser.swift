@@ -288,3 +288,54 @@ internal protocol FeatureCodable: Codable {
     /// - Warning: The value must not change.
     static var type: String { get }
 }
+
+// MARK: AttributedString -
+extension AttributedString {
+    /// Converts a ``AppBskyLexicon/RichText/Facet/ByteSlice`` instance into
+    /// a `Range<AttributedString.Index>`.
+    ///
+    /// - Parameter index: The `ByteSlice` object containing `byteStart` and `byteEnd`.
+    /// - Returns: A `Range<AttributedString.Index>` if the conversion is successful, otherwise `nil`.
+    func facetIndex(from index: AppBskyLexicon.RichText.Facet.ByteSlice) -> Range<AttributedString.Index>? {
+        // Get the plain string representation
+        let text = self.description
+        let utf8View = text.utf8
+
+        // This is based on the code written in this GitHub Issue ticket: https://github.com/MasterJ93/ATProtoKit/issues/52#issuecomment-2490853227
+        guard let utf8Start = utf8View.index(utf8View.startIndex, offsetBy: index.byteStart, limitedBy: utf8View.endIndex),
+              let utf8End = utf8View.index(utf8Start, offsetBy: index.byteEnd - index.byteStart, limitedBy: utf8View.endIndex),
+              let stringStart = String.Index(utf8Start, within: text),
+              let stringEnd = String.Index(utf8End, within: text),
+              let attrStart = AttributedString.Index(stringStart, within: self),
+              let attrEnd = AttributedString.Index(stringEnd, within: self) else {
+            return nil
+        }
+
+        return attrStart..<attrEnd
+    }
+}
+
+
+// MARK: NSAttributedString -
+extension NSAttributedString {
+    /// Converts a ``AppBskyLexicon/RichText/Facet/ByteSlice`` instance into an `NSRange`.
+    ///
+    /// - Parameter index: The `ByteSlice` object containing `byteStart` and `byteEnd`.
+    /// - Returns: An `NSRange` if the conversion is successful, otherwise `nil`.
+    func facetRange(from index: AppBskyLexicon.RichText.Facet.ByteSlice) -> NSRange? {
+        // Get the plain string representation
+        let text = self.string
+        let utf8View = text.utf8
+
+        // This is based on the code written in this GitHub Issue ticket: https://github.com/MasterJ93/ATProtoKit/issues/52#issuecomment-2490853227
+        guard let utf8Start = utf8View.index(utf8View.startIndex, offsetBy: index.byteStart, limitedBy: utf8View.endIndex),
+              let utf8End = utf8View.index(utf8Start, offsetBy: index.byteEnd - index.byteStart, limitedBy: utf8View.endIndex),
+              let stringStart = String.Index(utf8Start, within: text),
+              let stringEnd = String.Index(utf8End, within: text) else {
+            return nil
+        }
+
+        return NSRange(stringStart..<stringEnd, in: text)
+    }
+}
+
