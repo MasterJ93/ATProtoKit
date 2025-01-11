@@ -415,8 +415,8 @@ extension ATProtoBluesky {
             }
 
             // Upload the image, then get the server response.
-            let blobReference = try await APIClientService.shared.uploadBlob(pdsURL: pdsURL, accessToken: accessToken, filename: image.fileName,
-                                                                             imageData: image.imageData)
+            let blobReference = try await ATProtoKit(canUseBlueskyRecords: false).uploadBlob(pdsURL: pdsURL, accessToken: accessToken, filename:
+                                    image.fileName, imageData: image.imageData)
 
             let embedImage = AppBskyLexicon.Embed.ImagesDefinition.Image(imageBlob: blobReference.blob, altText: image.altText ?? "", aspectRatio: nil)
             embedImages.append(embedImage)
@@ -566,7 +566,7 @@ extension ATProtoBluesky {
         if let captions = captions {
             print("Beginning caption collection...")
             for caption in captions {
-                let blobReference = try await APIClientService.shared.uploadBlob(
+                let blobReference = try await ATProtoKit(canUseBlueskyRecords: false).uploadBlob(
                     pdsURL: pdsURL,
                     accessToken: accessToken,
                     filename: "\(ATProtoTools().generateRandomString())_caption.vtt",
@@ -618,7 +618,7 @@ extension ATProtoBluesky {
         var thumbnailImage: ComAtprotoLexicon.Repository.UploadBlobOutput? = nil
 
         if let pdsURL = session.pdsURL, let imageData = image {
-            thumbnailImage = try? await APIClientService.shared.uploadBlob(
+            thumbnailImage = try? await ATProtoKit(canUseBlueskyRecords: false).uploadBlob(
                 pdsURL: pdsURL,
                 accessToken: session.accessToken,
                 filename: "\(ATProtoTools().generateRandomString())_thumbnail.jpg",

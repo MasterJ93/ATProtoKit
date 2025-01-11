@@ -7,7 +7,7 @@
 
 import Foundation
 
-extension APIClientService {
+extension ATProtoKit {
 
     /// Uploads a blob to a specified URL with multipart/form-data encoding.
     ///
@@ -46,7 +46,7 @@ extension APIClientService {
                 authorizationValue: "Bearer \(accessToken)")
             request.httpBody = imageData
 
-            let response = try await self.sendRequest(request,
+            let response = try await APIClientService.shared.sendRequest(request,
                                                       decodeTo: ComAtprotoLexicon.Repository.BlobContainer.self)
 
             return response
