@@ -26,6 +26,9 @@ extension ATProtoKit {
     ///   - filename: The filename of the blob to upload.
     ///   - imageData: The data of the blob to upload.
     /// - Returns: A `BlobContainer` instance with the upload result.
+    ///
+    /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
+    /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func uploadBlob(
         pdsURL: String = "https://bsky.social",
         accessToken: String,
