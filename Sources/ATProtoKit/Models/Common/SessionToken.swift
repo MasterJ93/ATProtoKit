@@ -29,6 +29,9 @@ public struct SessionToken: Sendable, Encodable {
     ///
     /// - Note: To validate the token, you need to use the algorithm specified by the
     /// token's ``SessionTokenAlgorithm`` value.
+    ///
+    /// - Note: According to the AT Protocol specifications: "Base64url-encoded signature using
+    /// the account DID's signing key."
     public let signature: Data?
 
     /// Decodes a session token, then initializes a new instance with the results.
@@ -94,9 +97,15 @@ public struct SessionToken: Sendable, Encodable {
     public struct Header: Sendable, Codable {
 
         /// The type of
+        ///
+        /// - Note: According to the AT Protocol specifications: "Currently `JWT`, but intend to
+        /// update to a more specific value."
         public let type: String
 
         /// The token's signing key.
+        ///
+        /// - Note: According to the AT Protocol specifications: "Indicates the signing key type
+        /// (see Cryptography)."
         ///
         /// - SeeAlso: The [Cyptography][cyptography] section of the AT Protocol specifications.
         ///
@@ -117,22 +126,47 @@ public struct SessionToken: Sendable, Encodable {
     public struct Payload: Sendable, Codable {
 
         /// The decentralized identifier (DID) for which the request is being made. Optional.
+        ///
+        /// - Note: According to the AT Protocol specifications: "Account DID that the request is
+        /// being sent on behalf of. This may include a suffix service identifier; see below."
         public let issuer: String?
+
+        /// The decentralized identifier (DID) of the subject the session token is given to.
+        /// Optional.
+        public let subjectDID: String?
 
         /// The decentralized identifier (DID) associated with the service to which the request is
         /// being sent to.
+        ///
+        /// - Note: According to the AT Protocol specifications: "Service DID associated with the
+        /// service that the request is being sent to."
         public let audience: String
 
         /// The date and time the token expires.
+        ///
+        /// - Note: According to the AT Protocol specifications: "oken expiration time, as a
+        /// UNIX timestamp with seconds precision. Should be a short time window, as revocation is
+        /// not implemented. 60 seconds is a good token lifetime."
         public let expiresAt: Date
 
         /// The date and time the token was created.
+        ///
+        /// - Note: According to the AT Protocol specifications: "Token creation time, as a
+        /// UNIX timestamp with seconds precision."
         public let issuedAt: Date
 
         /// The lexicon method that the token will only the user account to use within the session.
+        ///
+        /// - Note: According to the AT Protocol specifications: "hort for "lexicon method".
+        /// NSID syntax. Indicates the endpoint that this token authorizes. Servers must always
+        /// validate this field if included, and should require it for
+        /// security-sensitive operations. May become required in the future."
         public let lexiconMethod: String?
 
         /// A random string nonce. Optional.
+        ///
+        /// - Note: According to the AT Protocol specifications: "Unique random string nonce.
+        /// May be used by receiving services to prevent reuse of token and replay attacks."
         public let nonce: String?
 
         /// The scope of token. Optional.
@@ -144,6 +178,7 @@ public struct SessionToken: Sendable, Encodable {
             let container = try decoder.container(keyedBy: CodingKeys.self)
 
             self.issuer = try container.decodeIfPresent(String.self, forKey: .issuer)
+            self.subjectDID = try container.decodeIfPresent(String.self, forKey: .subjectDID)
             self.audience = try container.decode(String.self, forKey: .audience)
 
             // Convert the UNIX Epoch for expiresAt into a date.
@@ -163,6 +198,7 @@ public struct SessionToken: Sendable, Encodable {
             var container = encoder.container(keyedBy: CodingKeys.self)
 
             try container.encodeIfPresent(self.issuer, forKey: .issuer)
+            try container.encodeIfPresent(self.subjectDID, forKey: .subjectDID)
             try container.encode(self.audience, forKey: .audience)
             try container.encode(self.expiresAt, forKey: .expiresAt)
 
@@ -179,6 +215,7 @@ public struct SessionToken: Sendable, Encodable {
 
         enum CodingKeys: String, CodingKey {
             case issuer = "iss"
+            case subjectDID = "sub"
             case audience = "aud"
             case expiresAt = "exp"
             case issuedAt = "iat"
@@ -228,6 +265,9 @@ public struct SessionToken: Sendable, Encodable {
 }
 
 /// The token's signing key type.
+///
+/// - Note: According to the AT Protocol specifications: "Indicates the signing key type
+/// (see Cryptography)."
 ///
 /// - SeeAlso: The [Cyptography][cyptography] section of the AT Protocol specifications.
 ///
