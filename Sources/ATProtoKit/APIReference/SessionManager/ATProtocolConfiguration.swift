@@ -60,7 +60,7 @@ public class ATProtocolConfiguration: SessionConfiguration {
     /// - Parameters:
     ///   - handle: The user's handle identifier in their account.
     ///   - appPassword: The app password of the user's account.
-    ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `nil`.
+    ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `https://bsky.social`.
     ///   - configuration: An instance of `URLSessionConfiguration`. Optional.
     ///   - logIdentifier: Specifies the identifier for managing log outputs. Optional. Defaults
     ///   to the project's `CFBundleIdentifier`.
