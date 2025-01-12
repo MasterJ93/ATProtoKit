@@ -87,44 +87,6 @@ public struct SessionToken: Sendable, Encodable {
         return (header, payload, signature)
     }
 
-    /// Errors related to session tokens.
-    public enum SessionTokenError: Error {
-
-        /// The session token is invalid.
-        ///
-        /// - Parameter message: The message of the error.
-        case invalidSessionToken(message: String)
-
-        /// The token's header is invalid.
-        ///
-        /// - Parameter message: The message of the error.
-        case invalidHeader(message: String)
-
-        /// The token's header is missing.
-        ///
-        /// - Parameter message: The message of the error.
-        case missingHeader(message: String)
-
-        /// The token's payload is invalid.
-        /// - Parameter message: The message of the error.
-        case invalidPayload(message: String)
-
-        /// The token's payload is missing.
-        ///
-        /// - Parameter message: The message of the error.
-        case missingPayload(message: String)
-
-        /// The token's signature is invalid.
-        ///
-        /// - Parameter message: The message of the error.
-        case invalidSignature(message: String)
-
-        /// The token's signature is invalid.
-        ///
-        /// - Parameter message: The message of the error.
-        case missingSignature(message: String)
-    }
-
     /// The header of the session token.
     ///
     /// This includes the algorithm method used to validate the given token, as well as
@@ -175,6 +137,41 @@ public struct SessionToken: Sendable, Encodable {
         /// This will only appear if ``SessionTokenPayload/issuer``
         public let scope: String?
 
+        public init(from decoder: any Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+
+            self.issuer = try container.decodeIfPresent(String.self, forKey: .issuer)
+            self.audience = try container.decode(String.self, forKey: .audience)
+
+            // Convert the UNIX Epoch for expiresAt into a date.
+            let expiresAtTimestamp = try container.decode(Double.self, forKey: .expiresAt)
+            self.expiresAt = Date(timeIntervalSince1970: expiresAtTimestamp)
+
+            // Convert the UNIX Epoch for issuedAt into a date.
+            let issuedAtTimestamp = try container.decode(Double.self, forKey: .issuedAt)
+            self.issuedAt = Date(timeIntervalSince1970: issuedAtTimestamp)
+
+            self.lexiconMethod = try container.decodeIfPresent(String.self, forKey: .lexiconMethod)
+            self.scope = try container.decodeIfPresent(String.self, forKey: .scope)
+        }
+
+        public func encode(to encoder: any Encoder) throws {
+            var container = encoder.container(keyedBy: CodingKeys.self)
+
+            try container.encodeIfPresent(self.issuer, forKey: .issuer)
+            try container.encode(self.audience, forKey: .audience)
+            try container.encode(self.expiresAt, forKey: .expiresAt)
+
+            let expiresAtTimestamp = self.expiresAt.timeIntervalSince1970
+            try container.encode(expiresAtTimestamp, forKey: .expiresAt)
+
+            let issuedAtTimestamp = self.issuedAt.timeIntervalSince1970
+            try container.encode(issuedAtTimestamp, forKey: .issuedAt)
+
+            try container.encodeIfPresent(self.lexiconMethod, forKey: .lexiconMethod)
+            try container.encodeIfPresent(self.scope, forKey: .scope)
+        }
+
         enum CodingKeys: String, CodingKey {
             case issuer = "iss"
             case audience = "aud"
@@ -183,6 +180,44 @@ public struct SessionToken: Sendable, Encodable {
             case lexiconMethod = "lxm"
             case scope
         }
+    }
+
+    /// Errors related to session tokens.
+    public enum SessionTokenError: Error {
+
+        /// The session token is invalid.
+        ///
+        /// - Parameter message: The message of the error.
+        case invalidSessionToken(message: String)
+
+        /// The token's header is invalid.
+        ///
+        /// - Parameter message: The message of the error.
+        case invalidHeader(message: String)
+
+        /// The token's header is missing.
+        ///
+        /// - Parameter message: The message of the error.
+        case missingHeader(message: String)
+
+        /// The token's payload is invalid.
+        /// - Parameter message: The message of the error.
+        case invalidPayload(message: String)
+
+        /// The token's payload is missing.
+        ///
+        /// - Parameter message: The message of the error.
+        case missingPayload(message: String)
+
+        /// The token's signature is invalid.
+        ///
+        /// - Parameter message: The message of the error.
+        case invalidSignature(message: String)
+
+        /// The token's signature is invalid.
+        ///
+        /// - Parameter message: The message of the error.
+        case missingSignature(message: String)
     }
 }
 
