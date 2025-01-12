@@ -132,6 +132,9 @@ public struct SessionToken: Sendable, Encodable {
         /// The lexicon method that the token will only the user account to use within the session.
         public let lexiconMethod: String?
 
+        /// A random string nonce. Optional.
+        public let nonce: String?
+
         /// The scope of token. Optional.
         ///
         /// This will only appear if ``SessionTokenPayload/issuer``
@@ -152,6 +155,7 @@ public struct SessionToken: Sendable, Encodable {
             self.issuedAt = Date(timeIntervalSince1970: issuedAtTimestamp)
 
             self.lexiconMethod = try container.decodeIfPresent(String.self, forKey: .lexiconMethod)
+            self.nonce = try container.decodeIfPresent(String.self, forKey: .nonce)
             self.scope = try container.decodeIfPresent(String.self, forKey: .scope)
         }
 
@@ -169,6 +173,7 @@ public struct SessionToken: Sendable, Encodable {
             try container.encode(issuedAtTimestamp, forKey: .issuedAt)
 
             try container.encodeIfPresent(self.lexiconMethod, forKey: .lexiconMethod)
+            try container.encodeIfPresent(self.nonce, forKey: .nonce)
             try container.encodeIfPresent(self.scope, forKey: .scope)
         }
 
@@ -178,6 +183,7 @@ public struct SessionToken: Sendable, Encodable {
             case expiresAt = "exp"
             case issuedAt = "iat"
             case lexiconMethod = "lxm"
+            case nonce = "jti"
             case scope
         }
     }
