@@ -221,7 +221,7 @@ extension AppBskyLexicon.Graph {
     /// - SeeAlso: This is based on the [`app.bsky.graph.defs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/graph/defs.json
-    public struct ListItemViewDefinition: Sendable, Codable {
+    public struct ListItemViewDefinition: Sendable, Codable, Equatable, Hashable {
 
         /// The URI of the user list item.
         public let listItemURI: String
