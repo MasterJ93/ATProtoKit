@@ -54,7 +54,7 @@ extension ATProtoKit {
 
             return response
         } catch {
-            throw ATHTTPRequestError.invalidResponse
+            throw error
         }
     }
 }
