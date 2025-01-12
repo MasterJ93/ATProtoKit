@@ -93,6 +93,41 @@ public class ATProtocolConfiguration: SessionConfiguration {
         }
     }
 
+    /// Initializes a new instance of `ATProtocolConfiguration`, which assembles a session based
+    /// off of a ``UserSession`` instance.
+    /// 
+    /// - Parameters:
+    ///   - userSession: An instance of ``UserSession``.
+    ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `https://bsky.social`.
+    ///   - configuration: An instance of `URLSessionConfiguration`. Optional.
+    ///   - logIdentifier: Specifies the identifier for managing log outputs. Optional. Defaults
+    ///   to the project's `CFBundleIdentifier`.
+    ///   - logCategory: Specifies the category name the logs in the logger within ATProtoKit will
+    ///   be in. Optional. Defaults to `ATProtoKit`.
+    ///   - logLevel: Specifies the highest level of logs that will be outputted. Optional.
+    ///   Defaults to `.info`.
+    public init(
+        userSession: UserSession,
+        pdsURL: String = "https://bsky.social",
+        configuration: URLSessionConfiguration = .default,
+        logIdentifier: String? = nil,
+        logCategory: String? = nil,
+        logLevel: Logger.Level? = .info
+    ) {
+        self.handle = userSession.handle
+        self.password = ""
+        self.pdsURL = userSession.pdsURL ?? pdsURL
+        self.configuration = configuration
+        self.logIdentifier = logIdentifier ?? Bundle.main.bundleIdentifier ?? "com.cjrriley.ATProtoKit"
+        self.logCategory = logCategory ?? "ATProtoKit"
+        self.logLevel = logLevel
+
+        Task { [configuration] in
+            await ATProtocolConfiguration.loggerManager.setupLog(logCategory: logCategory, logLevel: logLevel, logIdentifier: logIdentifier)
+            await APIClientService.shared.configure(with: configuration)
+        }
+    }
+
     /// Initializes a new instance of `ATProtocolConfiguration`, which assembles an a session
     /// specifically for a service.
     /// 
