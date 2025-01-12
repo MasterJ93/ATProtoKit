@@ -513,10 +513,14 @@ public class ATProtoTools {
         /// The alt text of the image,
         public let altText: String?
 
-        public init(imageData: Data, fileName: String, altText: String?) {
+        /// The aspect ratio of the image.
+        public let aspectRatio: AppBskyLexicon.Embed.AspectRatioDefinition?
+
+        public init(imageData: Data, fileName: String, altText: String?, aspectRatio: AppBskyLexicon.Embed.AspectRatioDefinition?) {
             self.imageData = imageData
             self.fileName = fileName
             self.altText = altText
+            self.aspectRatio = aspectRatio
         }
     }
 

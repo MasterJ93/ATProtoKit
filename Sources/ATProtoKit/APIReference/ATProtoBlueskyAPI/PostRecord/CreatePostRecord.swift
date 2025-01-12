@@ -342,11 +342,12 @@ extension ATProtoBluesky {
                         )
 
                         resolvedEmbed = .recordWithMedia(recordWithMediaDefinition)
-                    case .video(let video, let captions, let altText):
+                    case .video(let video, let captions, let altText, let aspectRatio):
                         resolvedEmbed = try await buildVideo(
                             video,
                             with: captions,
                             altText: altText,
+                            aspectRatio: aspectRatio,
                             pdsURL: sessionURL,
                             accessToken: session.accessToken
                         )
@@ -415,10 +416,18 @@ extension ATProtoBluesky {
             }
 
             // Upload the image, then get the server response.
-            let blobReference = try await ATProtoKit(canUseBlueskyRecords: false).uploadBlob(pdsURL: pdsURL, accessToken: accessToken, filename:
-                                    image.fileName, imageData: image.imageData)
+            let blobReference = try await ATProtoKit(canUseBlueskyRecords: false).uploadBlob(
+                pdsURL: pdsURL,
+                accessToken: accessToken,
+                filename: image.fileName,
+                imageData: image.imageData
+            )
 
-            let embedImage = AppBskyLexicon.Embed.ImagesDefinition.Image(imageBlob: blobReference.blob, altText: image.altText ?? "", aspectRatio: nil)
+            let embedImage = AppBskyLexicon.Embed.ImagesDefinition.Image(
+                imageBlob: blobReference.blob,
+                altText: image.altText ?? "",
+                aspectRatio: image.aspectRatio
+            )
             embedImages.append(embedImage)
         }
 
@@ -453,8 +462,9 @@ extension ATProtoBluesky {
     ///
     /// - Parameters:
     ///   - video: The video file itself.
-    ///   - captions: An array of .vtt files for cloud captions in different languages.
-    ///   - altText: Alt text for the video.
+    ///   - captions: An array of .vtt files for cloud captions in different languages. Optional.
+    ///   - altText: Alt text for the video. Optional.
+    ///   - aspectRatio: The aspect ratio of the video. Optional.
     ///   - pollingFrequency: The amount of time (in seconds) to poll for a job state update.
     ///   Defaults to 5 seconds.
     ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `https://bsky.social`.
@@ -464,7 +474,8 @@ extension ATProtoBluesky {
     /// - Throws: Errors related to whether the video or caption file doesn't match the video file
     /// requirements, whether the files failed to upload, or whether anything related to the
     /// AT Protocol.
-    public func buildVideo(_ video: Data, with captions: [Caption]? = nil, altText: String? = nil, pollingFrequency: Int = 3, pdsURL: String = "https://bsky.social",
+    public func buildVideo(_ video: Data, with captions: [Caption]? = nil, altText: String? = nil,
+                           aspectRatio: AppBskyLexicon.Embed.AspectRatioDefinition? = nil, pollingFrequency: Int = 3, pdsURL: String = "https://bsky.social",
                            accessToken: String) async throws -> ATUnion.PostEmbedUnion {
 
         var videoBlob: ComAtprotoLexicon.Repository.UploadBlobOutput? = nil
@@ -581,7 +592,7 @@ extension ATProtoBluesky {
             video: videoBlob,
             captions: captionReferences,
             altText: altText,
-            aspectRatio: nil
+            aspectRatio: aspectRatio
         )
 
         print("Video is done being built. Time to go to the next step.")
@@ -683,7 +694,8 @@ extension ATProtoBluesky {
         ///   - video: The video file itself.
         ///   - captions: An array of captions for the video. Optional.
         ///   - altText: The alt text for the video. Optional.
-        case video(video: Data, captions: [Caption]? = nil, altText: String? = nil)
+        ///   - aspectRatio: The aspect ratio of the video. Optional.
+        case video(video: Data, captions: [Caption]? = nil, altText: String? = nil, aspectoRatio: AppBskyLexicon.Embed.AspectRatioDefinition? = nil)
 
         /// Represents an external link to be embedded in the post.
         ///
