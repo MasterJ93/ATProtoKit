@@ -161,8 +161,6 @@ extension AppBskyLexicon.Feed {
         public var reply: ReplyReferenceDefinition?
 
         /// Determines whether the repost is a normal repost or pinned. Optional.
-        ///
-        /// - Important: Current maximum length is 300 characters.
         public var reason: ATUnion.ReasonRepostUnion?
 
         /// The feed generator's context. Optional
