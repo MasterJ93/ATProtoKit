@@ -171,7 +171,7 @@ public struct SessionToken: Sendable, Encodable {
 
         /// The scope of token. Optional.
         ///
-        /// This will only appear if ``SessionTokenPayload/issuer``
+        /// This will only appear if ``SessionToken/Payload-swift.struct/issuer`` is empty.
         public let scope: String?
 
         public init(from decoder: any Decoder) throws {
