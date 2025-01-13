@@ -28,7 +28,9 @@ extension ATProtoBluesky {
         shouldValidate: Bool? = true,
         swapCommit: String? = nil
     ) async throws -> ComAtprotoLexicon.Repository.StrongReference {
-        guard let session else { throw ATRequestPrepareError.missingActiveSession }
+        guard let session else {
+            throw ATRequestPrepareError.missingActiveSession
+        }
 
         let likeRecord = AppBskyLexicon.Feed.LikeRecord(
             subject: strongReference,

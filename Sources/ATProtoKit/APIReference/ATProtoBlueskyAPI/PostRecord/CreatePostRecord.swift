@@ -265,7 +265,6 @@ extension ATProtoBluesky {
         shouldValidate: Bool? = true,
         swapCommit: String? = nil
     ) async throws -> ComAtprotoLexicon.Repository.StrongReference {
-
         guard let session else {
             throw ATRequestPrepareError.missingActiveSession
         }
