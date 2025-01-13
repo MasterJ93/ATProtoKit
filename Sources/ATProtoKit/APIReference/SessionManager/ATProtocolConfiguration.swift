@@ -229,19 +229,6 @@ public class ATProtocolConfiguration: SessionConfiguration {
                 pdsURL: self.pdsURL
             )
 
-            // Convert `response.didDocument` to `UserSession.didDocument`.
-            var decodedDidDocument: DIDDocument? = nil
-
-            if let didDocument = response.didDocument,
-               let jsonData = try didDocument.toJSON() {
-                do {
-                    let decoder = JSONDecoder()
-                    decodedDidDocument = try decoder.decode(DIDDocument.self, from: jsonData)
-                } catch {
-                    throw error
-                }
-            }
-
             let userSession = UserSession(
                 handle: response.handle,
                 sessionDID: response.did,
@@ -250,7 +237,7 @@ public class ATProtocolConfiguration: SessionConfiguration {
                 isEmailAuthenticationFactorEnabled: nil,
                 accessToken: response.accessToken,
                 refreshToken: response.refreshToken,
-                didDocument: decodedDidDocument,
+                didDocument: self.convertDIDDocument(response.didDocument),
                 isActive: nil,
                 status: nil,
                 pdsURL: self.pdsURL,
@@ -289,19 +276,6 @@ public class ATProtocolConfiguration: SessionConfiguration {
                 pdsURL: self.pdsURL
             )
 
-            // Convert `response.didDocument` to `UserSession.didDocument`.
-            var decodedDidDocument: DIDDocument? = nil
-
-            if let didDocument = response.didDocument,
-               let jsonData = try didDocument.toJSON() {
-                do {
-                    let decoder = JSONDecoder()
-                    decodedDidDocument = try decoder.decode(DIDDocument.self, from: jsonData)
-                } catch {
-                    throw error
-                }
-            }
-
             var status: UserAccountStatus? = nil
 
             switch response.status {
@@ -323,7 +297,7 @@ public class ATProtocolConfiguration: SessionConfiguration {
                 isEmailAuthenticationFactorEnabled: response.isEmailAuthenticatedFactor,
                 accessToken: response.accessToken,
                 refreshToken: response.refreshToken,
-                didDocument: decodedDidDocument,
+                didDocument: self.convertDIDDocument(response.didDocument),
                 isActive: response.isActive,
                 status: status,
                 pdsURL: self.pdsURL,
@@ -421,18 +395,6 @@ public class ATProtocolConfiguration: SessionConfiguration {
                 pdsURL: self.pdsURL
             )
 
-            var decodedDidDocument: DIDDocument? = nil
-
-            if let didDocument = response.didDocument,
-               let jsonData = try didDocument.toJSON() {
-                do {
-                    let decoder = JSONDecoder()
-                    decodedDidDocument = try decoder.decode(DIDDocument.self, from: jsonData)
-                } catch {
-                    throw error
-                }
-            }
-
             var status: UserAccountStatus? = nil
 
             switch response.status {
@@ -454,7 +416,7 @@ public class ATProtocolConfiguration: SessionConfiguration {
                 isEmailAuthenticationFactorEnabled: session?.isEmailAuthenticationFactorEnabled ?? nil,
                 accessToken: response.accessToken,
                 refreshToken: response.refreshToken,
-                didDocument: decodedDidDocument,
+                didDocument: self.convertDIDDocument(response.didDocument),
                 isActive: response.isActive,
                 status: status,
                 pdsURL: session?.pdsURL ?? nil,
