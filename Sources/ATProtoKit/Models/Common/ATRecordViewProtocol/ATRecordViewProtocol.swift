@@ -22,22 +22,12 @@ public protocol ATRecordViewProtocol: Identifiable {
     /// By default, the property will search for a property named `uri` and use that as the ID.
     ///
     /// If there's no such property name, you must create a custom implementation for it. To do
-    /// this, create a computed property for the object and use `Mirror` to find the specific URI
-    /// property that will be used as the identifier.
+    /// this, create a computed property for the object and type in the specific URI property that
+    /// will be used as the identifier.
     ///
     /// ```swift
     /// public var id: String {
-    ///     let mirror = Mirror(reflecting: self)
-    ///
-    ///     // Make sure you search for the property that represents a URI,
-    ///     // as this is the most unique element in the object.
-    ///     guard let uriProperty = mirror.children.first(where: { $0.label == "uri" })?.value as? String else {
-    ///         // For safety reasons, have a fallback option, or return
-    ///         // an empty string.
-    ///         return ""
-    ///     }
-    ///
-    ///     return uriProperty
+    ///     return self.feedURI
     /// }
     /// ```
     ///
