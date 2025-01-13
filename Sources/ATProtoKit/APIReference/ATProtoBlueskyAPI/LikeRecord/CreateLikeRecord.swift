@@ -9,20 +9,24 @@ import Foundation
 
 extension ATProtoBluesky {
 
-    /// Create a like record to a user's post.
-    /// 
+    /// Creates a like record to a user's post.
+    ///
     /// - Parameters:
     ///   - strongReference: The URI of the record, which contains the `recordURI` and `cidHash`.
     ///   - createdAt: The date and time the like record was created. Defaults to `Date.now`.
+    ///   - recordKey: The record key of the collection. Optional. Defaults to `nil`.
     ///   - shouldValidate: Indicates whether the record should be validated. Optional.
     ///   Defaults to `true`.
+    ///   - swapCommit: Swaps out an operation based on the CID. Optional. Defaults to `nil`.
     /// - Returns: A
     /// ``ComAtprotoLexicon/Repository/StrongReference``
     /// structure which represents the record that was successfully created.
     public func createLikeRecord(
         _ strongReference: ComAtprotoLexicon.Repository.StrongReference,
         createdAt: Date = Date(),
-        shouldValidate: Bool? = true
+        recordKey: String? = nil,
+        shouldValidate: Bool? = true,
+        swapCommit: String? = nil
     ) async throws -> ComAtprotoLexicon.Repository.StrongReference {
         guard let session else { throw ATRequestPrepareError.missingActiveSession }
 
@@ -34,8 +38,10 @@ extension ATProtoBluesky {
         return try await atProtoKitInstance.createRecord(
             repositoryDID: session.sessionDID,
             collection: "app.bsky.feed.like",
+            recordKey: recordKey,
             shouldValidate: shouldValidate,
-            record: UnknownType.record(likeRecord)
+            record: UnknownType.record(likeRecord),
+            swapCommit: swapCommit
         )
     }
     
