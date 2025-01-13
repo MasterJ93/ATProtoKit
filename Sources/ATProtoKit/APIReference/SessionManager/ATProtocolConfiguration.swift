@@ -134,6 +134,9 @@ public class ATProtocolConfiguration: SessionConfiguration {
     /// This should only be used to create different instances of services where you don't need a
     /// handle or password.
     ///
+    /// - Warning: This is an experimental initializer. This may be removed at a later date if
+    /// it doesn't prove to be helpful.
+    ///
     /// - Important: ``ATProtocolConfiguration/authenticate(authenticationFactorToken:)``,
     /// ``ATProtocolConfiguration/createAccount(email:handle:existingDID:inviteCode:verificationCode:verificationPhone:password:recoveryKey:plcOperation:)``,
     /// ``ATProtocolConfiguration/getSession(by:authenticationFactorToken:)``,
