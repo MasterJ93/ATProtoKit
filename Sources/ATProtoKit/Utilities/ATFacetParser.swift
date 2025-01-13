@@ -290,6 +290,7 @@ internal protocol FeatureCodable: Codable {
 }
 
 // MARK: AttributedString -
+@available(iOS 15, tvOS 15, macOS 12, watchOS 8, *)
 extension AttributedString {
     /// Converts a ``AppBskyLexicon/RichText/Facet/ByteSlice`` instance into
     /// a `Range<AttributedString.Index>`.
