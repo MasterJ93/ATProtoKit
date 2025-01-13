@@ -23,13 +23,7 @@ extension AppBskyLexicon.Feed.PostViewDefinition: ATRecordViewProtocol {
 extension AppBskyLexicon.Feed.GeneratorViewDefinition: ATRecordViewProtocol {
 
     public var id: String {
-        let mirror = Mirror(reflecting: self)
-
-        guard let uriProperty = mirror.children.first(where: { $0.label == "feedURI" })?.value as? String else {
-            return ""
-        }
-
-        return uriProperty
+        return self.feedURI
     }
 
     public func refresh(with session: UserSession) async throws -> AppBskyLexicon.Feed.GeneratorViewDefinition {
@@ -66,5 +60,41 @@ extension AppBskyLexicon.Graph.StarterPackViewDefinition: ATRecordViewProtocol {
         let record = try await atProto.getStarterPack(uri: self.uri)
 
         return record.starterPack
+    }
+}
+
+extension AppBskyLexicon.Feed.FeedViewPostDefinition: ATRecordViewProtocol {
+
+    public var id: String {
+        return self.post.uri
+    }
+
+    public func refresh(with session: UserSession) async throws -> AppBskyLexicon.Feed.FeedViewPostDefinition {
+        let config = ATProtocolConfiguration(userSession: session, pdsURL: session.pdsURL ?? "https://bsky.social")
+        _ = try await config.getSession()
+
+        let atProto = ATProtoKit(sessionConfiguration: config, canUseBlueskyRecords: false)
+        let record = try await atProto.getFeed(by: self.post.uri)
+
+        return record.feed[0]
+    }
+}
+
+// MARK: Identifiable-only Extensions -
+extension AppBskyLexicon.Actor.ProfileViewBasicDefinition: Identifiable {
+    public var id: String {
+        return "\(self.actorDID)"
+    }
+}
+
+extension AppBskyLexicon.Actor.ProfileViewDefinition: Identifiable {
+    public var id: String {
+        return "\(self.actorDID)"
+    }
+}
+
+extension AppBskyLexicon.Actor.ProfileViewDetailedDefinition: Identifiable {
+    public var id: String {
+        return "\(self.actorDID)"
     }
 }
