@@ -328,13 +328,52 @@ public class ATProtocolConfiguration: SessionConfiguration {
         by accessToken: String? = nil,
         authenticationFactorToken: String? = nil
     ) async throws -> ComAtprotoLexicon.Server.GetSessionOutput {
-        let sessionToken = try getValidAccessToken(from: accessToken)
+        var sessionToken: String = ""
+        do {
+             sessionToken = try getValidAccessToken(from: accessToken)
+        } catch {
+            throw error
+        }
 
         do {
             let response = try await ATProtoKit(canUseBlueskyRecords: false).getSession(
                 by: sessionToken,
                 pdsURL: self.pdsURL
             )
+
+            var status: UserAccountStatus? = nil
+
+            switch response.status {
+                case .suspended:
+                    status = .suspended
+                case .takedown:
+                    status = .takedown
+                case .deactivated:
+                    status = .deactivated
+                default:
+                    status = nil
+            }
+
+            if let session = self.session {
+                let userSession = UserSession(
+                    handle: response.handle,
+                    sessionDID: response.did,
+                    email: response.email,
+                    isEmailConfirmed: response.isEmailConfirmed,
+                    isEmailAuthenticationFactorEnabled: response.isEmailAuthenticationFactor,
+                    accessToken: sessionToken,
+                    refreshToken: session.refreshToken,
+                    didDocument: self.convertDIDDocument(response.didDocument),
+                    isActive: response.isActive,
+                    status: status,
+                    pdsURL: session.pdsURL,
+                    logger: await ATProtocolConfiguration.getLogger(),
+                    maxRetryCount: self.maxRetryCount,
+                    retryTimeDelay: self.retryTimeDelay
+                )
+
+                self.session = userSession
+            }
 
             return response
         } catch let apiError as ATAPIError {
