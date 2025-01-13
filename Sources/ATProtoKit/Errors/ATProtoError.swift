@@ -385,6 +385,11 @@ public enum ATProtocolConfigurationError: ATProtoError {
     ///
     /// - Parameter message: The message for the error.
     case noSessionToken(message: String)
+
+    /// The access and refresh tokens have both expired.
+    ///
+    /// - Parameter message: The message for the error.
+    case tokensExpired(message: String)
 }
 
 /// An error type related to CBOR processing issues.

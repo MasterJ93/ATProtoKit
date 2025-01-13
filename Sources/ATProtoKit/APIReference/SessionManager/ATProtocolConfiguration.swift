@@ -506,6 +506,54 @@ public class ATProtocolConfiguration: SessionConfiguration {
         }
     }
 
+    /// Resumes a session.
+    ///  
+    /// This is useful for cases where a user is opening the app and they've already logged in.
+    /// 
+    /// While inserting the access token is optional, the refresh token is not, as it lasts much
+    /// longer than the refresh token.
+    ///
+    /// - Warning: This is an experimental method. This may be removed at a later date if
+    /// it doesn't prove to be helpful.
+    ///
+    /// If the refresh token fails for whatever reason, it's recommended to call
+    /// ``ATProtocolConfiguration/authenticate(authenticationFactorToken:)``
+    /// in the `catch` block.
+    ///
+    /// - Parameters:
+    ///   - accessToken: The access token of the session. Optional.
+    ///   - refreshToken: The refresh token of the session.
+    ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `https://bsky.social`.
+    ///
+    /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
+    /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
+    public func resumeSession(
+        accessToken: String? = nil,
+        refreshToken: String,
+        pdsURL: String = "https://bsky.social"
+    ) async throws {
+        if let sessionToken = accessToken ?? self.session?.accessToken {
+            let expiryDate = try SessionToken(sessionToken: sessionToken).payload.expiresAt
+            let currentDate = Date()
+
+            if currentDate > expiryDate {
+                do {
+                    try await self.checkRefreshToken(refreshToken: refreshToken, pdsURL: pdsURL)
+                } catch {
+                    throw error
+                }
+            }
+
+            _ = try await self.getSession(by: accessToken)
+        } else {
+            do {
+                try await self.checkRefreshToken(refreshToken: refreshToken)
+            } catch {
+                throw error
+            }
+        }
+    }
+
 // MARK: - Common Helpers
     /// Converts the DID document from an ``UnknownType`` object to a ``DIDDocument`` object.
     ///
@@ -526,6 +574,27 @@ public class ATProtocolConfiguration: SessionConfiguration {
         }
 
         return decodedDidDocument
+    }
+
+    /// Checks the refresh token and refreshes the session.
+    ///
+    /// - Parameter refreshToken: The refresh token of the session.
+    ///
+    /// - Throws: ``ATProtocolConfigurationError`` if the current date is past the token's
+    /// expiry date.
+    private func checkRefreshToken(refreshToken: String, pdsURL: String = "https://bsky.social") async throws {
+        let expiryDate = try SessionToken(sessionToken: refreshToken).payload.expiresAt
+        let currentDate = Date()
+
+        if currentDate > expiryDate {
+            throw ATProtocolConfigurationError.tokensExpired(message: "The access and refresh tokens have expired.")
+        }
+
+        do {
+            _ = try await self.refreshSession(by: refreshToken)
+        } catch {
+            throw error
+        }
     }
 
 // MARK: - getSession Helpers
