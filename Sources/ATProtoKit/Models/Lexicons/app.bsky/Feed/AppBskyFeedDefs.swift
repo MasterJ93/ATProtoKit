@@ -152,7 +152,7 @@ extension AppBskyLexicon.Feed {
     /// - SeeAlso: This is based on the [`app.bsky.feed.defs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/feed/defs.json
-    public struct FeedViewPostDefinition: Sendable, Codable {
+    public struct FeedViewPostDefinition: Sendable, Codable, Equatable, Hashable {
 
         /// The post contained in a feed.
         public let post: PostViewDefinition
@@ -193,7 +193,7 @@ extension AppBskyLexicon.Feed {
     /// - SeeAlso: This is based on the [`app.bsky.feed.defs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/feed/defs.json
-    public struct ReplyReferenceDefinition: Sendable, Codable {
+    public struct ReplyReferenceDefinition: Sendable, Codable, Equatable, Hashable {
 
         /// The original post of the thread.
         public let root: ATUnion.ReplyReferenceRootUnion
@@ -216,7 +216,7 @@ extension AppBskyLexicon.Feed {
     /// - SeeAlso: This is based on the [`app.bsky.feed.defs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/feed/defs.json
-    public struct ReasonRepostDefinition: Sendable, Codable {
+    public struct ReasonRepostDefinition: Sendable, Codable, Equatable, Hashable {
 
         /// The basic details of the user who reposted the post.
         public let by: AppBskyLexicon.Actor.ProfileViewBasicDefinition
@@ -249,7 +249,7 @@ extension AppBskyLexicon.Feed {
     /// - SeeAlso: This is based on the [`app.bsky.feed.defs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/feed/defs.json
-    public struct ReasonPinDefinition: Sendable, Codable {}
+    public struct ReasonPinDefinition: Sendable, Codable, Equatable, Hashable {}
 
     /// A definition model for a hydrated version of a repost.
     ///
@@ -273,7 +273,7 @@ extension AppBskyLexicon.Feed {
     /// - SeeAlso: This is based on the [`app.bsky.feed.defs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/feed/defs.json
-    public struct NotFoundPostDefinition: Sendable, Codable {
+    public struct NotFoundPostDefinition: Sendable, Codable, Equatable, Hashable {
 
         /// The URI of the post.
         public let feedURI: String
@@ -292,7 +292,7 @@ extension AppBskyLexicon.Feed {
     /// - SeeAlso: This is based on the [`app.bsky.feed.defs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/feed/defs.json
-    public struct BlockedPostDefinition: Sendable, Codable {
+    public struct BlockedPostDefinition: Sendable, Codable, Equatable, Hashable {
 
         /// The URI of the post.
         public let feedURI: String

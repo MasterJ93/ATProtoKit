@@ -338,7 +338,7 @@ public struct ATUnion {
     }
 
     /// A reference containing the list of reposts.
-    public enum ReasonRepostUnion: Sendable, Codable {
+    public enum ReasonRepostUnion: Sendable, Codable, Equatable, Hashable {
 
         /// A very stripped down version of a repost.
         case reasonRepost(AppBskyLexicon.Feed.ReasonRepostDefinition)
@@ -373,7 +373,7 @@ public struct ATUnion {
     }
 
     /// A reference containing the list of the states of a post.
-    public enum ReplyReferenceRootUnion: Sendable, Codable {
+    public enum ReplyReferenceRootUnion: Sendable, Codable, Equatable, Hashable {
 
         /// The view of a post.
         case postView(AppBskyLexicon.Feed.PostViewDefinition)
@@ -415,7 +415,7 @@ public struct ATUnion {
     }
 
     /// A reference containing the list of the states of a post.
-    public enum ReplyReferenceParentUnion: Sendable, Codable {
+    public enum ReplyReferenceParentUnion: Sendable, Codable, Equatable, Hashable {
 
         /// The view of a post.
         case postView(AppBskyLexicon.Feed.PostViewDefinition)

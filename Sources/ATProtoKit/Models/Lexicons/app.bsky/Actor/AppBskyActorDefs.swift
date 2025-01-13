@@ -174,7 +174,7 @@ extension AppBskyLexicon.Actor {
     /// - SeeAlso: This is based on the [`app.bsky.actor.defs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/actor/defs.json
-    public struct ProfileViewDetailedDefinition: Sendable, Codable {
+    public struct ProfileViewDetailedDefinition: Sendable, Codable, Equatable, Hashable {
 
         /// The decentralized identifier (DID) of the user.
         public let actorDID: String
