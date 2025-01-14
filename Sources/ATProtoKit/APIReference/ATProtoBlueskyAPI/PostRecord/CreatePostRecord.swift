@@ -289,7 +289,6 @@ extension ATProtoBluesky {
             }
         }
 
-
         // Replies
         // Validate the reply reference if provided.
         var resolvedReplyTo: AppBskyLexicon.Feed.PostRecord.ReplyReference? = nil
@@ -356,10 +355,9 @@ extension ATProtoBluesky {
                 throw error
             }
         } else if let linkbuilder = self.linkBuilder {
-            do {
-                // Resolve the link, generate the metadata, and populate the external embed.
-                let resolvedLink = try await grabURL(from: facets, linkbuilder: linkbuilder)
+            let resolvedLink = try? await grabURL(from: facets, linkbuilder: linkbuilder)
 
+            if let resolvedLink = resolvedLink {
                 resolvedEmbed = await buildExternalEmbed(
                     from: resolvedLink.url,
                     title: resolvedLink.title,
@@ -367,8 +365,6 @@ extension ATProtoBluesky {
                     thumbnailImageURL: resolvedLink.thumbnailURL,
                     session: session
                 )
-            } catch {
-                throw error
             }
         }
 
