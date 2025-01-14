@@ -18,6 +18,9 @@ extension ComAtprotoLexicon {
     /// A group of lexicons within the `com.atproto.label` namespace.
     public struct Label {}
 
+    /// A group of lexicons within the `com.atproto.lexicon` namespace.
+    public struct Lexicon {}
+
     /// A group of lexicons within the `com.atproto.moderation` namespace.
     public struct Moderation {}
 

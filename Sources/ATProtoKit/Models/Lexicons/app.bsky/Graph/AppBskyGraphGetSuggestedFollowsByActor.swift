@@ -30,9 +30,16 @@ extension AppBskyLexicon.Graph {
         /// to generic results, and is not scoped using relativeToDid"
         public let isFallback: Bool? = false
 
-        enum CodingKeys: CodingKey {
+        /// A Snowflake ID for recommendation events. Optional.
+        ///
+        /// - Note: According to the AT Protocol specifications: "Snowflake for this
+        /// recommendation, use when submitting recommendation events."
+        public let recommendationID: Int?
+
+        enum CodingKeys: String, CodingKey {
             case suggestions
             case isFallback
+            case recommendationID = "recId"
         }
     }
 }
