@@ -100,7 +100,7 @@ Task {
 
 You can then create a post as normal using ``ATProtoBluesky/createPostRecord(text:inlineFacets:locales:replyTo:embed:labels:tags:creationDate:recordKey:shouldValidate:swapCommit:)``.
 
-The mthod will automatically take the first link it detects and use it as the external website card.
+The method will automatically take the first link it detects and use it as the external website card.
 
 ## Manually Creating a Website Card
 
