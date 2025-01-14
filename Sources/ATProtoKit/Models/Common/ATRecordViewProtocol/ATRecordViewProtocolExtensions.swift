@@ -98,3 +98,121 @@ extension AppBskyLexicon.Actor.ProfileViewDetailedDefinition: Identifiable {
         return "\(self.actorDID)"
     }
 }
+
+extension AppBskyLexicon.Labeler.LabelerViewDefinition: Identifiable {
+    public var id: String {
+        return self.uri
+    }
+}
+
+extension AppBskyLexicon.Graph.StarterPackViewBasicDefinition: Identifiable {
+    public var id: String {
+        return self.uri
+    }
+}
+
+extension ATUnion.EmbedViewUnion: Identifiable {
+    public var id: String {
+        switch self {
+            case .embedExternalView(let view):
+                return view.id
+            case .embedImagesView(let view):
+                return view.id
+            case .embedRecordView(let view):
+                return view.id
+            case .embedRecordWithMediaView(let view):
+                return view.id
+            case .embedVideoView(let view):
+                return view.id
+        }
+    }
+}
+
+extension AppBskyLexicon.Embed.ExternalDefinition.View: Identifiable {
+    public var id: String {
+        return "\(self.external.uri)"
+    }
+}
+
+extension AppBskyLexicon.Embed.ImagesDefinition.View: Identifiable {
+    public var id: String {
+        return images.map(\.id).joined(separator: "_")
+    }
+}
+
+extension AppBskyLexicon.Embed.ImagesDefinition.ViewImage: Identifiable {
+    public var id: String {
+        return "\(self.fullSizeImageURL)_\(self.thumbnailImageURL)"
+    }
+}
+
+extension AppBskyLexicon.Embed.RecordDefinition.View: Identifiable {
+    public var id: String {
+        switch self.record {
+            case .viewRecord(let viewRecord):
+                return viewRecord.id
+            case .viewNotFound(let viewNotFound):
+                return viewNotFound.id
+            case .viewBlocked(let viewBlocked):
+                return viewBlocked.id
+            case .viewDetached(let viewDetached):
+                return viewDetached.id
+            case .generatorView(let generatorView):
+                return generatorView.id
+            case .listView(let listView):
+                return listView.id
+            case .labelerView(let labelerView):
+                return labelerView.id
+            case .starterPackViewBasic(let starterPackViewBasic):
+                return starterPackViewBasic.id
+        }
+    }
+}
+
+extension AppBskyLexicon.Embed.RecordDefinition.ViewRecord: Identifiable {
+    public var id: String {
+        return self.uri
+    }
+}
+
+extension AppBskyLexicon.Embed.RecordDefinition.ViewNotFound: Identifiable {
+    public var id: String {
+        return self.uri
+    }
+}
+
+extension AppBskyLexicon.Embed.RecordDefinition.ViewBlocked: Identifiable {
+    public var id: String {
+        return self.uri
+    }
+}
+
+extension AppBskyLexicon.Embed.RecordDefinition.ViewDetached: Identifiable {
+    public var id: String {
+        return self.postURI
+    }
+}
+
+extension AppBskyLexicon.Embed.RecordWithMediaDefinition.View: Identifiable {
+    public var id: String {
+        let record = self.record.id
+        var media = ""
+
+        switch self.media {
+            case .embedExternalView(let mediaView):
+                media = mediaView.id
+            case .embedImagesView(let mediaView):
+                return mediaView.id
+            case .embedVideoView(let mediaView):
+                return mediaView.id
+        }
+
+        return "\(record)_\(media)"
+    }
+}
+
+extension AppBskyLexicon.Embed.VideoDefinition.View: Identifiable {
+    public var id: String {
+        return self.cid
+    }
+}
