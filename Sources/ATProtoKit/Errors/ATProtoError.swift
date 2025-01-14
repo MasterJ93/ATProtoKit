@@ -86,13 +86,24 @@ public enum ATAPIError: ATProtoError {
     case unknown(error: String?, errorCode: Int? = nil, errorData: Data? = nil, httpHeaders: [String : String]? = nil)
 }
 
-/// An error type related to ``ATProtoBluesky``-related issues.
-public enum ATProtoBlueskyError: Decodable, ATProtoError {
+extension ATProtoBluesky {
 
-    /// The reply reference could not be validated.
-    ///
-    /// - Parameter message: The message of the error.
-    case invalidReplyReference(message: String)
+    /// An error type related to ``ATProtoBluesky``-related issues.
+    public enum ATProtoBlueskyError: Decodable, ATProtoError {
+
+        /// The reply reference could not be validated.
+        ///
+        /// - Parameter message: The message of the error.
+        case invalidReplyReference(message: String)
+    }
+
+    /// An error type specifically related to Bluesky (either before or after interacting with
+    /// the service).
+    public enum ATBlueskyError: ATProtoError {
+
+        /// The image used is too large.
+        case imageTooLarge
+    }
 }
 
 /// An error type related to ``ATLinkBuilder``-related issues.
@@ -350,14 +361,6 @@ public struct ATHTTPResponseError: Decodable, ATProtoError {
     public let message: String
 }
 
-/// An error type specifically related to Bluesky (either before or after interacting with
-/// the service).
-public enum ATBlueskyError: ATProtoError {
-
-    /// The image used is too large.
-    case imageTooLarge
-}
-
 /// An error type related to issues surrounding
 public enum ATEventStreamError: ATProtoError {
 
@@ -378,18 +381,21 @@ public struct WebSocketFrameMessageError: Decodable, ATProtoError {
     public let message: String?
 }
 
-/// An error type related to ``ATProtocolConfiguration``.
-public enum ATProtocolConfigurationError: ATProtoError {
+extension ATProtocolConfiguration {
 
-    /// No token was found.
-    ///
-    /// - Parameter message: The message for the error.
-    case noSessionToken(message: String)
+    /// An error type related to ``ATProtocolConfiguration``.
+    public enum ATProtocolConfigurationError: ATProtoError {
 
-    /// The access and refresh tokens have both expired.
-    ///
-    /// - Parameter message: The message for the error.
-    case tokensExpired(message: String)
+        /// No token was found.
+        ///
+        /// - Parameter message: The message for the error.
+        case noSessionToken(message: String)
+
+        /// The access and refresh tokens have both expired.
+        ///
+        /// - Parameter message: The message for the error.
+        case tokensExpired(message: String)
+    }
 }
 
 /// An error type related to CBOR processing issues.

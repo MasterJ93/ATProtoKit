@@ -3,7 +3,6 @@
 ## Topics
 
 - ``ATAPIError``
-- ``ATProtoBlueskyError``
 - ``ATLinkBuilderError``
 - ``ATJobStatusError``
 - ``ATDIDError``
@@ -12,16 +11,6 @@
 - ``ATURIError``
 - ``ATRequestPrepareError``
 - ``ATHTTPRequestError``
-- ``ATBlueskyError``
 - ``ATEventStreamError``
 - ``WebSocketFrameMessageError``
-- ``ATProtocolConfigurationError``
 - ``CBORProcessingError``
-
-## `UnknownType`
-
-- ``UnknownType/CodableValueConversionError``
-
-## `ATFacetParser`
-
-- ``ATFacetParser/InlineLinkError``

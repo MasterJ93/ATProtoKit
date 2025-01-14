@@ -114,7 +114,7 @@ public class ATProtoTools {
             )
 
             guard let postRecord = record.value?.getRecord(ofType: AppBskyLexicon.Feed.PostRecord.self) else {
-                throw ATProtoBlueskyError.invalidReplyReference(
+                throw ATProtoBluesky.ATProtoBlueskyError.invalidReplyReference(
                     message: "Failed to parse the post record."
                 )
             }
@@ -169,7 +169,7 @@ public class ATProtoTools {
         )
 
         guard let postRecord = record.value?.getRecord(ofType: AppBskyLexicon.Feed.PostRecord.self) else {
-            throw ATProtoBlueskyError.invalidReplyReference(
+            throw ATProtoBluesky.ATProtoBlueskyError.invalidReplyReference(
                 message: "Failed to parse the post record."
             )
         }
