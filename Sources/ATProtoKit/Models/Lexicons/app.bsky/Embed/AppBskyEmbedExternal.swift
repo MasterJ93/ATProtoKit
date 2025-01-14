@@ -22,7 +22,7 @@ extension AppBskyLexicon.Embed {
         /// The identifier of the lexicon.
         ///
         /// - Warning: The value must not change.
-        public let type: String = "app.bsky.embed.external#main"
+        public let type: String = "app.bsky.embed.external"
 
         /// The external content needed to be embeeded.
         public let external: External
