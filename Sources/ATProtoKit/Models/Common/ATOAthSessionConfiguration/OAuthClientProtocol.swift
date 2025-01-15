@@ -7,7 +7,7 @@
 
 import Foundation
 
-public protocol OAuthClientMetadataProtocol: Codable {
+public protocol OAuthClientMetadataProtocol: Codable, Sendable {
 
     /// The ID of the client.
     ///
