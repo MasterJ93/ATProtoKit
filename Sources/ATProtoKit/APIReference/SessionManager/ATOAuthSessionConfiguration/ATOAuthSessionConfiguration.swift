@@ -93,7 +93,7 @@ public class ATOAuthSessionConfiguration: SessionConfiguration {
     }
 
     public func authenticate(authenticationFactorToken: String?) async throws {
-        <#code#>
+        print("Not implement yet.")
     }
 
 
