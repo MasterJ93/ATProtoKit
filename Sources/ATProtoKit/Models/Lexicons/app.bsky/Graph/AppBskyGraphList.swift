@@ -84,8 +84,8 @@ extension AppBskyLexicon.Graph {
 
             try container.encode(self.purpose, forKey: .purpose)
             try container.encode(self.name, forKey: .name)
-            try truncatedEncode(self.name, withContainer: &container, forKey: .name, upToCharacterLength: 64)
-            try truncatedEncodeIfPresent(self.description, withContainer: &container, forKey: .description, upToCharacterLength: 30)
+            try container.truncatedEncode(self.name, forKey: .name, upToCharacterLength: 64)
+            try container.truncatedEncodeIfPresent(self.description, forKey: .description, upToCharacterLength: 30)
             try container.encodeIfPresent(self.descriptionFacets, forKey: .descriptionFacets)
             try container.encodeIfPresent(self.avatarImageBlob, forKey: .avatarImageBlob)
             try container.encode(self.labels, forKey: .labels)

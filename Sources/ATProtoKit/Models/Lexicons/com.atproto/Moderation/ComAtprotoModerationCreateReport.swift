@@ -95,7 +95,7 @@ extension ComAtprotoLexicon.Moderation {
 
             try container.encode(self.id, forKey: .id)
             try container.encode(self.reasonType, forKey: .reasonType)
-            try truncatedEncodeIfPresent(self.reason, withContainer: &container, forKey: .reason, upToCharacterLength: 2_000)
+            try container.truncatedEncodeIfPresent(self.reason, forKey: .reason, upToCharacterLength: 2_000)
             try container.encode(self.subject, forKey: .subject)
             try container.encode(self.reportedBy, forKey: .reportedBy)
             try container.encodeDate(self.createdAt, forKey: .createdAt)

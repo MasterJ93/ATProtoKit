@@ -45,7 +45,7 @@ extension ToolsOzoneLexicon.Setting {
         public func encode(to encoder: any Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
 
-            try truncatedEncode(self.keys, withContainer: &container, forKey: .keys, upToArrayLength: 200)
+            try container.truncatedEncode(self.keys, forKey: .keys, upToArrayLength: 200)
             try container.encode(self.scope, forKey: .scope)
         }
 

@@ -51,7 +51,7 @@ extension ChatBskyLexicon.Actor {
 
             try container.encode(self.actorDID, forKey: .actorDID)
             try container.encode(self.actorHandle, forKey: .actorHandle)
-            try truncatedEncodeIfPresent(self.displayName, withContainer: &container, forKey: .displayName, upToCharacterLength: 64)
+            try container.truncatedEncodeIfPresent(self.displayName, forKey: .displayName, upToCharacterLength: 64)
             try container.encodeIfPresent(self.avatarImageURL, forKey: .avatarImageURL)
             try container.encodeIfPresent(self.associated, forKey: .associated)
             try container.encodeIfPresent(self.viewer, forKey: .viewer)

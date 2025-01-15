@@ -177,7 +177,7 @@ extension AppBskyLexicon.Feed {
             try container.encode(self.post, forKey: .post)
             try container.encodeIfPresent(self.reply, forKey: .reply)
             try container.encodeIfPresent(self.reason, forKey: .reason)
-            try truncatedEncodeIfPresent(self.feedContext, withContainer: &container, forKey: .feedContext, upToCharacterLength: 300)
+            try container.truncatedEncodeIfPresent(self.feedContext, forKey: .feedContext, upToCharacterLength: 300)
         }
 
         public enum CodingKeys: CodingKey {
@@ -420,7 +420,7 @@ extension AppBskyLexicon.Feed {
             try container.encode(self.feedDID, forKey: .feedDID)
             try container.encode(self.creator, forKey: .creator)
             try container.encode(self.displayName, forKey: .displayName)
-            try truncatedEncodeIfPresent(self.description, withContainer: &container, forKey: .description, upToCharacterLength: 300)
+            try container.truncatedEncodeIfPresent(self.description, forKey: .description, upToCharacterLength: 300)
             try container.encodeIfPresent(self.descriptionFacets, forKey: .descriptionFacets)
             try container.encodeIfPresent(self.avatarImageURL, forKey: .avatarImageURL)
 
@@ -575,7 +575,7 @@ extension AppBskyLexicon.Feed {
 
             try container.encode(self.itemURI, forKey: .itemURI)
             try container.encode(self.event, forKey: .event)
-            try truncatedEncodeIfPresent(self.feedContext, withContainer: &container, forKey: .feedContext, upToCharacterLength: 300)
+            try container.truncatedEncodeIfPresent(self.feedContext, forKey: .feedContext, upToCharacterLength: 300)
         }
 
         enum CodingKeys: String, CodingKey {

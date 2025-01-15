@@ -110,7 +110,7 @@ extension AppBskyLexicon.Embed {
                 var container = encoder.container(keyedBy: CodingKeys.self)
 
                 try container.encode(self.type, forKey: .type)
-                try truncatedEncode(self.images, withContainer: &container, forKey: .images, upToArrayLength: 4)
+                try container.truncatedEncode(self.images, forKey: .images, upToArrayLength: 4)
             }
 
             public enum CodingKeys: String, CodingKey {

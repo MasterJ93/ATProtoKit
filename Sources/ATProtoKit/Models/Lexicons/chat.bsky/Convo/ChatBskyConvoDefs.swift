@@ -55,7 +55,7 @@ extension ChatBskyLexicon.Conversation {
 
         public func encode(to encoder: any Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
-            try truncatedEncode(self.text, withContainer: &container, forKey: .text, upToCharacterLength: 1_000)
+            try container.truncatedEncode(self.text, forKey: .text, upToCharacterLength: 1_000)
             try container.encodeIfPresent(self.facets, forKey: .facets)
             try container.encodeIfPresent(self.embed, forKey: .embed)
         }
@@ -128,7 +128,7 @@ extension ChatBskyLexicon.Conversation {
 
             try container.encode(self.messageID, forKey: .messageID)
             try container.encode(self.revision, forKey: .revision)
-            try truncatedEncode(self.text, withContainer: &container, forKey: .text, upToCharacterLength: 1_000)
+            try container.truncatedEncode(self.text, forKey: .text, upToCharacterLength: 1_000)
             try container.encodeIfPresent(self.facets, forKey: .facets)
             try container.encodeIfPresent(self.embed, forKey: .embed)
             try container.encode(self.sender, forKey: .sender)

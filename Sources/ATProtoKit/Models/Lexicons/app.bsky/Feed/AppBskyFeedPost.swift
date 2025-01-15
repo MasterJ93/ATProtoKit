@@ -105,13 +105,13 @@ extension AppBskyLexicon.Feed {
 
             try container.encode(AppBskyLexicon.Feed.PostRecord.type, forKey: .type)
             try container.encode(self.text, forKey: .text)
-            try truncatedEncode(self.text, withContainer: &container, forKey: .text, upToCharacterLength: 300)
+            try container.truncatedEncode(self.text, forKey: .text, upToCharacterLength: 300)
             try container.encodeIfPresent(self.facets, forKey: .facets)
             try container.encodeIfPresent(self.reply, forKey: .reply)
             try container.encodeIfPresent(self.embed, forKey: .embed)
-            try truncatedEncodeIfPresent(self.languages, withContainer: &container, forKey: .languages, upToArrayLength: 3)
+            try container.truncatedEncodeIfPresent(self.languages, forKey: .languages, upToArrayLength: 3)
             try container.encodeIfPresent(self.labels, forKey: .labels)
-            try truncatedEncodeIfPresent(self.tags, withContainer: &container, forKey: .tags, upToCharacterLength: 64, upToArrayLength: 8)
+            try container.truncatedEncodeIfPresent(self.tags, forKey: .tags, upToCharacterLength: 64, upToArrayLength: 8)
             try container.encodeDate(self.createdAt, forKey: .createdAt)
         }
 

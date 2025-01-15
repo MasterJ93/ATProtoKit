@@ -62,7 +62,7 @@ extension AppBskyLexicon.Actor {
             
             try container.encode(self.actorDID, forKey: .actorDID)
             try container.encode(self.actorHandle, forKey: .actorHandle)
-            try truncatedEncodeIfPresent(self.displayName, withContainer: &container, forKey: .displayName, upToCharacterLength: 64)
+            try container.truncatedEncodeIfPresent(self.displayName, forKey: .displayName, upToCharacterLength: 64)
             try container.encodeIfPresent(self.avatarImageURL, forKey: .avatarImageURL)
             try container.encodeIfPresent(self.associated, forKey: .associated)
             try container.encodeIfPresent(self.viewer, forKey: .viewer)
@@ -145,8 +145,8 @@ extension AppBskyLexicon.Actor {
             
             try container.encode(self.actorDID, forKey: .actorDID)
             try container.encode(self.actorHandle, forKey: .actorHandle)
-            try truncatedEncodeIfPresent(self.displayName, withContainer: &container, forKey: .displayName, upToCharacterLength: 64)
-            try truncatedEncodeIfPresent(self.description, withContainer: &container, forKey: .description, upToCharacterLength: 256)
+            try container.truncatedEncodeIfPresent(self.displayName, forKey: .displayName, upToCharacterLength: 64)
+            try container.truncatedEncodeIfPresent(self.description, forKey: .description, upToCharacterLength: 256)
             try container.encodeIfPresent(self.avatarImageURL, forKey: .avatarImageURL)
             try container.encodeIfPresent(self.associated, forKey: .associated)
             try container.encodeDateIfPresent(self.indexedAt, forKey: .indexedAt)
@@ -279,8 +279,8 @@ extension AppBskyLexicon.Actor {
             
             try container.encode(self.actorDID, forKey: .actorDID)
             try container.encode(self.actorHandle, forKey: .actorHandle)
-            try truncatedEncodeIfPresent(self.displayName, withContainer: &container, forKey: .displayName, upToCharacterLength: 64)
-            try truncatedEncodeIfPresent(self.description, withContainer: &container, forKey: .description, upToCharacterLength: 256)
+            try container.truncatedEncodeIfPresent(self.displayName, forKey: .displayName, upToCharacterLength: 64)
+            try container.truncatedEncodeIfPresent(self.description, forKey: .description, upToCharacterLength: 256)
             try container.encodeIfPresent(self.avatarImageURL, forKey: .avatarImageURL)
             try container.encodeIfPresent(self.bannerImageURL, forKey: .bannerImageURL)
             try container.encodeIfPresent(self.followerCount, forKey: .followerCount)
@@ -448,7 +448,7 @@ extension AppBskyLexicon.Actor {
             var container = encoder.container(keyedBy: CodingKeys.self)
 
             try container.encode(self.count, forKey: .count)
-            try truncatedEncode(self.followers, withContainer: &container, forKey: .followers, upToArrayLength: 5)
+            try container.truncatedEncode(self.followers, forKey: .followers, upToArrayLength: 5)
         }
     }
 
@@ -838,7 +838,7 @@ extension AppBskyLexicon.Actor {
         public func encode(to encoder: Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
 
-            try truncatedEncode(self.tags, withContainer: &container, forKey: .tags, upToCharacterLength: 64, upToArrayLength: 100)
+            try container.truncatedEncode(self.tags, forKey: .tags, upToCharacterLength: 64, upToArrayLength: 100)
         }
 
         enum CodingKeys: String, CodingKey {
@@ -951,7 +951,7 @@ extension AppBskyLexicon.Actor {
             var container = encoder.container(keyedBy: CodingKeys.self)
 
             try container.encodeIfPresent(self.id, forKey: .id)
-            try truncatedEncode(self.value, withContainer: &container, forKey: .value, upToCharacterLength: 100)
+            try container.truncatedEncode(self.value, forKey: .value, upToCharacterLength: 100)
             try container.encode(self.targets, forKey: .targets)
             try container.encodeIfPresent(self.actorTarget, forKey: .actorTarget)
             try container.encodeDateIfPresent(self.expiresAt, forKey: .expiresAt)
@@ -1081,8 +1081,8 @@ extension AppBskyLexicon.Actor {
             var container = encoder.container(keyedBy: CodingKeys.self)
 
             try container.encodeIfPresent(self.activeProgressGuide, forKey: .activeProgressGuide)
-            try truncatedEncodeIfPresent(self.queuedNudges, withContainer: &container, forKey: .queuedNudges, upToCharacterLength: 100, upToArrayLength: 1_000)
-            try truncatedEncodeIfPresent(self.nuxs, withContainer: &container, forKey: .nuxs, upToArrayLength: 100)
+            try container.truncatedEncodeIfPresent(self.queuedNudges, forKey: .queuedNudges, upToCharacterLength: 100, upToArrayLength: 1_000)
+            try container.truncatedEncodeIfPresent(self.nuxs, forKey: .nuxs, upToArrayLength: 100)
         }
     }
 
@@ -1104,7 +1104,7 @@ extension AppBskyLexicon.Actor {
         public func encode(to encoder: any Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
 
-            try truncatedEncode(self.guide, withContainer: &container, forKey: .guide, upToArrayLength: 100)
+            try container.truncatedEncode(self.guide, forKey: .guide, upToArrayLength: 100)
         }
     }
 
@@ -1150,9 +1150,9 @@ extension AppBskyLexicon.Actor {
         public func encode(to encoder: any Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
 
-            try truncatedEncode(self.id, withContainer: &container, forKey: .id, upToCharacterLength: 100)
+            try container.truncatedEncode(self.id, forKey: .id, upToCharacterLength: 100)
             try container.encode(self.isCompleted, forKey: .isCompleted)
-            try truncatedEncodeIfPresent(self.data, withContainer: &container, forKey: .data, upToCharacterLength: 300)
+            try container.truncatedEncodeIfPresent(self.data, forKey: .data, upToCharacterLength: 300)
             try container.encodeIfPresent(self.expiresAt, forKey: .expiresAt)
         }
 

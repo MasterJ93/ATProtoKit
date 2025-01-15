@@ -72,11 +72,11 @@ extension AppBskyLexicon.Graph {
         public func encode(to encoder: any Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
 
-            try truncatedEncode(self.name, withContainer: &container, forKey: .name, upToCharacterLength: 50)
-            try truncatedEncodeIfPresent(self.name, withContainer: &container, forKey: .name, upToCharacterLength: 300)
+            try container.truncatedEncode(self.name, forKey: .name, upToCharacterLength: 50)
+            try container.truncatedEncodeIfPresent(self.name, forKey: .name, upToCharacterLength: 300)
             try container.encodeIfPresent(self.descriptionFacets, forKey: .descriptionFacets)
             try container.encode(self.listURI, forKey: .listURI)
-            try truncatedEncodeIfPresent(self.feeds, withContainer: &container, forKey: .feeds, upToArrayLength: 3)
+            try container.truncatedEncodeIfPresent(self.feeds, forKey: .feeds, upToArrayLength: 3)
             try container.encodeDate(self.createdAt, forKey: .createdAt)
         }
 

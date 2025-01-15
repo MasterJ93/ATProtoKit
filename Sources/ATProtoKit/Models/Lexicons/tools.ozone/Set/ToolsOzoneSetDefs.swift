@@ -29,8 +29,8 @@ extension ToolsOzoneLexicon.Set {
         public func encode(to encoder: any Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
 
-            try truncatedEncode(self.name, withContainer: &container, forKey: .name, upToCharacterLength: 128)
-            try truncatedEncodeIfPresent(self.description, withContainer: &container, forKey: .description,upToCharacterLength: 1_024)
+            try container.truncatedEncode(self.name, forKey: .name, upToCharacterLength: 128)
+            try container.truncatedEncodeIfPresent(self.description, forKey: .description, upToCharacterLength: 1_024)
         }
 
         enum CodingKeys: CodingKey {
@@ -87,8 +87,8 @@ extension ToolsOzoneLexicon.Set {
         public func encode(to encoder: any Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
 
-            try truncatedEncode(self.name, withContainer: &container, forKey: .name, upToCharacterLength: 128)
-            try truncatedEncodeIfPresent(self.description, withContainer: &container, forKey: .description, upToCharacterLength: 1_024)
+            try container.truncatedEncode(self.name, forKey: .name, upToCharacterLength: 128)
+            try container.truncatedEncodeIfPresent(self.description, forKey: .description, upToCharacterLength: 1_024)
             try container.encode(self.setSize, forKey: .setSize)
             try container.encodeDate(self.createdAt, forKey: .createdAt)
             try container.encodeDate(self.updatedAt, forKey: .updatedAt)

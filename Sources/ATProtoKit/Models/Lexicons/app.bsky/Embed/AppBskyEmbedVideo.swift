@@ -52,7 +52,7 @@ extension AppBskyLexicon.Embed {
 
             try container.encode(self.type, forKey: .type)
             try container.encode(self.video, forKey: .video)
-            try truncatedEncodeIfPresent(self.captions, withContainer: &container, forKey: .captions, upToArrayLength: 20)
+            try container.truncatedEncodeIfPresent(self.captions, forKey: .captions, upToArrayLength: 20)
             try container.encodeIfPresent(self.altText, forKey: .altText)
             try container.encodeIfPresent(self.aspectRatio, forKey: .aspectRatio)
         }

@@ -55,7 +55,7 @@ extension ToolsOzoneLexicon.Setting {
             try container.encode(self.key, forKey: .key)
             try container.encode(self.scope, forKey: .scope)
             try container.encode(self.value, forKey: .value)
-            try truncatedEncodeIfPresent(self.description, withContainer: &container, forKey: .description, upToCharacterLength: 2_000)
+            try container.truncatedEncodeIfPresent(self.description, forKey: .description, upToCharacterLength: 2_000)
             try container.encodeIfPresent(self.managerRole, forKey: .managerRole)
         }
 

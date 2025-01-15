@@ -96,7 +96,7 @@ extension ComAtprotoLexicon.Label {
             try container.encode(self.actorDID, forKey: .actorDID)
             try container.encode(self.uri, forKey: .uri)
             try container.encodeIfPresent(self.cid, forKey: .cid)
-            try truncatedEncode(self.name, withContainer: &container, forKey: .name, upToCharacterLength: 128)
+            try container.truncatedEncode(self.name, forKey: .name, upToCharacterLength: 128)
             try container.encodeIfPresent(self.isNegated, forKey: .isNegated)
             try container.encodeDate(self.timestamp, forKey: .timestamp)
             try container.encodeDateIfPresent(self.expiresOn, forKey: .expiresOn)
@@ -144,7 +144,7 @@ extension ComAtprotoLexicon.Label {
         public func encode(to encoder: Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
 
-            try truncatedEncode(self.values, withContainer: &container, forKey: .values, upToArrayLength: 10)
+            try container.truncatedEncode(self.values, forKey: .values, upToArrayLength: 10)
         }
 
         enum CodingKeys: CodingKey {
@@ -174,7 +174,7 @@ extension ComAtprotoLexicon.Label {
         public func encode(to encoder: Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
 
-            try truncatedEncode(self.value, withContainer: &container, forKey: .value, upToCharacterLength: 128)
+            try container.truncatedEncode(self.value, forKey: .value, upToCharacterLength: 128)
         }
 
         enum CodingKeys: String, CodingKey {
@@ -238,7 +238,7 @@ extension ComAtprotoLexicon.Label {
             var container = encoder.container(keyedBy: CodingKeys.self)
 
             // Ensure `value` is lowercased and only has the standard hyphen (-).
-            try truncatedEncode(self.identifier.transformToLowerASCIIAndHyphen(), withContainer: &container, forKey: .identifier, upToCharacterLength: 100)
+            try container.truncatedEncode(self.identifier.transformToLowerASCIIAndHyphen(), forKey: .identifier, upToCharacterLength: 100)
             try container.encode(self.severity, forKey: .severity)
             try container.encode(self.blurs, forKey: .blurs)
             try container.encode(self.defaultSetting, forKey: .defaultSetting)
@@ -341,8 +341,8 @@ extension ComAtprotoLexicon.Label {
             var container = encoder.container(keyedBy: CodingKeys.self)
 
             try container.encode(self.language, forKey: .language)
-            try truncatedEncode(self.name, withContainer: &container, forKey: .name, upToCharacterLength: 64)
-            try truncatedEncode(self.description, withContainer: &container, forKey: .description, upToCharacterLength: 10_000)
+            try container.truncatedEncode(self.name, forKey: .name, upToCharacterLength: 64)
+            try container.truncatedEncode(self.description, forKey: .description, upToCharacterLength: 10_000)
         }
 
         enum CodingKeys: String, CodingKey {

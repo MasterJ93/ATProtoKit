@@ -84,7 +84,7 @@ extension ToolsOzoneLexicon.Setting {
             try container.encode(self.did, forKey: .did)
             try container.encode(self.value, forKey: .value)
             try container.encodeIfPresent(self.description, forKey: .description)
-            try truncatedEncodeIfPresent(self.description, withContainer: &container, forKey: .description, upToCharacterLength: 1_024)
+            try container.truncatedEncodeIfPresent(self.description, forKey: .description, upToCharacterLength: 1_024)
             try container.encodeDateIfPresent(self.createdAt, forKey: .createdAt)
             try container.encodeDateIfPresent(self.updatedAt, forKey: .updatedAt)
             try container.encodeIfPresent(self.managerRole, forKey: .managerRole)

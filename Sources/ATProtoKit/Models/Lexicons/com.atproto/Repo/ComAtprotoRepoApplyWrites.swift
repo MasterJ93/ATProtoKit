@@ -44,7 +44,7 @@ extension ComAtprotoLexicon.Repository {
                 var container = encoder.container(keyedBy: CodingKeys.self)
 
                 try container.encode(self.collection, forKey: .collection)
-                try truncatedEncodeIfPresent(self.recordKey, withContainer: &container, forKey: .recordKey, upToCharacterLength: 15)
+                try container.truncatedEncodeIfPresent(self.recordKey, forKey: .recordKey, upToCharacterLength: 15)
                 try container.encode(self.value, forKey: .value)
             }
 
