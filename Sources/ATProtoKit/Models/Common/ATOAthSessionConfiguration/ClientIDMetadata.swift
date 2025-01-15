@@ -8,7 +8,7 @@
 import Foundation
 
 
-public struct ClientIDMetadata: Codable {
+public struct ClientIDMetadata: OAuthClientMetadataProtocol {
 
     /// The ID of the client.
     ///
@@ -23,41 +23,42 @@ public struct ClientIDMetadata: Codable {
     /// with `web` as the default if not specified. Note that this is field specified by
     /// OpenID/OIDC, which we are borrowing. Used by the Authorization Server to enforce the
     /// relevant 'best current practices'"
-    public var applicationType: ApplicationType? = .web
+    public var applicationType: OAuthApplicationType? = .web
 
     /// An array of grant types the client can use in an Authorization Server interactions.
     ///
     /// - Note: According to the AT Protocol specifications: "`authorization_code` must always
     /// be included. `refresh_token` is optional, but must be included if the client will make
     /// token refresh requests."
-    public let grantTypes: [GrantTypes]
+    public let grantTypes: [OAuthGrantTypes]
 
-    ///
+    /// An array of values representing for what's being requested by the client.
     ///
     /// - Note: According to the AT Protocol specifications: "All scope values which might be
     /// requested by this client are declared here. The `atproto` scope is required, so must be
     /// included here. See "Scopes" section."
-    public let scopes: [String]
+    public let scopes: [OAuthScopes]
 
-    ///
+    /// The type of response the client is expecting from the authorization server.
     ///
     /// - Note: According to the AT Protocol specifications: "`code` must be included."
     public let responseTypes: [String]
 
-    ///
+    /// An array of URIs used to redirect users back to the application.
     ///
     /// - Note: According to the AT Protocol specifications: "At least one redirect URI
     /// is required. See Authorization Request Fields section for rules about redirect URIs, which
     /// also apply here."
     public let requestURIs: [String]
 
-    ///
+    /// The authentication method that the client uses to authenticate itself to the
+    /// Authorization Server. Optional.
     ///
     /// - Note: According to the AT Protocol specifications: "Confidential clients must set this
     /// to `private_key_jwt`."
     public let tokenEndpointAuthenticationMethod: [String]?
 
-    ///
+    /// The authentication signing algorithm used by the Authorization Server. Optional.
     ///
     /// - Note: According to the AT Protocol specifications: "`none` is never allowed here.
     /// The current recommended and most-supported algorithm is `ES256`, but this may evolve
@@ -97,7 +98,7 @@ public struct ClientIDMetadata: Codable {
     /// hostname as `client_id`."
     public let clientURI: String?
 
-    /// The URI of the client's logo for the client.
+    /// The URI of the client's logo for the client. Optional.
     ///
     /// - Note: According to the AT Protocol specifications: "URL to client logo. Only `https:` URIs
     /// are allowed."
@@ -117,9 +118,9 @@ public struct ClientIDMetadata: Codable {
 
     init(
         clientID: String,
-        applicationType: ApplicationType? = .web,
-        grantTypes: [GrantTypes],
-        scopes: [String],
+        applicationType: OAuthApplicationType? = .web,
+        grantTypes: [OAuthGrantTypes],
+        scopes: [OAuthScopes],
         responseTypes: [String],
         requestURIs: [String],
         tokenEndpointAuthenticationMethod: [String]? = nil,
@@ -167,42 +168,5 @@ public struct ClientIDMetadata: Codable {
         case logoURI = "logo_uri"
         case termsOfServiceURI = "tos_uri"
         case privacyPolicyURI = "policy_uri"
-    }
-
-    public enum ApplicationType: String, Codable {
-
-        /// Indicates the application type is a web application.
-        case web
-
-        /// Indicates the application type is a native application.
-        case native
-    }
-
-    public enum GrantTypes: String, Codable {
-
-        case authorizationCode = "authorization_code"
-
-
-        case refreshToken = "refresh_token"
-    }
-
-    public enum Scopes: String, Codable {
-
-        /// Signifies the client is using the `atproto` profile of OAuth.
-        ///
-        /// - Warning: This is required to be used in order to access the
-        /// Personal Data Server (PDS).
-        case atproto = "atproto"
-
-        /// The generic scope that allows for most uses of the user account.
-        ///
-        /// This includes CRUD operations of records, uploading blobs, read/write permissions of
-        /// personal preferences, API endpoints and service proxying for most Lexicon endpoints,
-        /// and generating service authenication tokens,
-        case transitionGeneric = "transition:generic"
-
-        /// The scope that allows for access to the Bluesky DM functions
-        /// (the `chat.bsky.*` lexicon methods.).
-        case transitionChatBsky = "transition:chat.bsky"
     }
 }
