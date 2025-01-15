@@ -342,15 +342,13 @@ public struct ATLexiconModelMacro: MemberMacro {
         for propertyMap in propertyMaps {
             let propertyNameVariable: String = "\(propertyMap.name)"
             var encodedType: String = "\(propertyMap.type)"
-            var encodedKind: String = "container.encode"
-            var container: String = ""
+            var encodedKind: String = "encode"
             var characterLength: String = ""
             let arrayItems: String = ""
 
             // Check if truncation is involved.
             if propertyMap.stringCharacters != nil || propertyMap.arrayItems != nil {
                 encodedKind = "truncatedEncode"
-                container = ", withContainer: &container"
 
                 if let stringCharacters = propertyMap.stringCharacters, !stringCharacters.isEmpty {
                     characterLength = ", upToCharacterLength: \(stringCharacters)"
@@ -367,11 +365,11 @@ public struct ATLexiconModelMacro: MemberMacro {
 
                     if !propertyMap.isOptional {
                         encodedVariables.append(
-                            "try encodeDate(\(propertyNameVariable), with: &container, forKey: .\(propertyNameVariable)\n"
+                            "try container.encodeDate(\(propertyNameVariable), forKey: .\(propertyNameVariable)\n"
                         )
                     } else {
                         encodedVariables.append(
-                            "try encodeDateIfPresent(\(propertyNameVariable), with: &container, forKey: .\(propertyNameVariable)\n"
+                            "try container.encodeDateIfPresent(\(propertyNameVariable), forKey: .\(propertyNameVariable)\n"
                         )
                     }
 
@@ -393,7 +391,7 @@ public struct ATLexiconModelMacro: MemberMacro {
 
             encodedVariables.append(
                     """
-                    try \(encodedKind)(self.\(propertyNameVariable)\(container), forKey: .\(propertyNameVariable)\(characterLength)\(arrayItems))\n
+                    try container.\(encodedKind)(self.\(propertyNameVariable), forKey: .\(propertyNameVariable)\(characterLength)\(arrayItems))\n
                     """
             )
         }
