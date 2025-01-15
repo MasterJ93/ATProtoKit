@@ -30,8 +30,10 @@ extension ATProtoKit {
     ///   of results. Optional.
     ///   - relativeToDID: The decentralized identifier (DID) of the user account to get
     ///   suggestions to. Optional.
-    /// - Returns: An array of actors, with an optional cursor to expend the array.
-    /// 
+    /// - Returns: An array of actors, with an optional cursor to expend the array, and a snowflake
+    /// ID for recommendations. It can also include an optional value for the
+    /// decentralized identifier (DID) of the user account related to the suggestions.
+    ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func getSuggestionsSkeleton(

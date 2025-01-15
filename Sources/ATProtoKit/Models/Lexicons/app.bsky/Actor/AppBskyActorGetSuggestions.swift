@@ -24,5 +24,17 @@ extension AppBskyLexicon.Actor {
 
         /// An array of actors.
         public let actors: [ProfileViewDefinition]
+
+        /// A Snowflake ID for recommendation events. Optional.
+        ///
+        /// - Note: According to the AT Protocol specifications: "Snowflake for this
+        /// recommendation, use when submitting recommendation events."
+        public let recommendationID: Int?
+
+        enum CodingKeys: String, CodingKey {
+            case cursor
+            case actors
+            case recommendationID = "recId"
+        }
     }
 }
