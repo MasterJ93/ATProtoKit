@@ -23,7 +23,8 @@ extension ATProtoKit {
     ///   Can only choose between 1 and 100.
     ///   - cursor: The mark used to indicate the starting point for the next set
     ///   of results. Optional.
-    /// - Returns: An array of actors, with an optional cursor to extend the array.
+    /// - Returns: An array of actors, with an optional cursor to extend the array, and an optional
+    /// snowflake ID for recommendations.
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
@@ -36,7 +37,7 @@ extension ATProtoKit {
             throw ATRequestPrepareError.missingActiveSession
         }
 
-        guard let sessionURL = session?.pdsURL,
+        guard let sessionURL = session?.didDocument?.service[0].serviceEndpoint,
               let requestURL = URL(string: "\(sessionURL)/xrpc/app.bsky.actor.getSuggestions") else {
             throw ATRequestPrepareError.invalidRequestURL
         }

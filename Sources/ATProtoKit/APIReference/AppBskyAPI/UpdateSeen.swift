@@ -29,7 +29,7 @@ extension ATProtoKit {
             throw ATRequestPrepareError.missingActiveSession
         }
 
-        guard let sessionURL = session?.pdsURL,
+        guard let sessionURL = session?.didDocument?.service[0].serviceEndpoint,
               let requestURL = URL(string: "\(sessionURL)/xrpc/app.bsky.notification.updateSeen") else {
             throw ATRequestPrepareError.invalidRequestURL
         }

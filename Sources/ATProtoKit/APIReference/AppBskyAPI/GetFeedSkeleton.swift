@@ -36,8 +36,12 @@ extension ATProtoKit {
         by uri: String,
         limit: Int? = 50,
         cursor: String? = nil,
-        pdsURL: String
+        pdsURL: String = "https://api.bsky.social"
     ) async throws -> AppBskyLexicon.Feed.GetFeedSkeletonOutput {
+        guard pdsURL != "" else {
+            throw ATRequestPrepareError.emptyPDSURL
+        }
+
         guard let requestURL = URL(string: "\(pdsURL)/xrpc/app.bsky.feed.getFeedSkeleton") else {
             throw ATRequestPrepareError.invalidRequestURL
         }

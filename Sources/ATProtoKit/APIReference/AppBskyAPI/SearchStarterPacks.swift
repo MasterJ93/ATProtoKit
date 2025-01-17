@@ -35,10 +35,13 @@ extension ATProtoKit {
         matching query: String,
         limit: Int? = 25,
         cursor: String? = nil,
-        pdsURL: String = "https://bsky.social"
+        pdsURL: String = "https://api.bsky.app"
     ) async throws -> AppBskyLexicon.Graph.SearchStarterPacksOutput {
-        guard let sessionURL = session?.pdsURL,
-              let requestURL = URL(string: "\(sessionURL)/xrpc/app.bsky.feed.searchStarterPacks") else {
+        guard pdsURL != "" else {
+            throw ATRequestPrepareError.emptyPDSURL
+        }
+
+        guard let requestURL = URL(string: "\(pdsURL)/xrpc/app.bsky.feed.searchStarterPacks") else {
             throw ATRequestPrepareError.invalidRequestURL
         }
 

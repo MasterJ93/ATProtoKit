@@ -16,56 +16,56 @@ public enum ATAPIError: ATProtoError {
     /// Represents a bad request error (HTTP 400) with an associated message.
     ///
     /// - Parameter error: The error name and message.
-    case badRequest(error: ATHTTPResponseError) // Error 400
+    case badRequest(error: APIClientService.ATHTTPResponseError) // Error 400
 
     /// Represents an unauthorized error (HTTP 401) with an associated message and HTTP header.
     ///
     /// - Parameters:
     ///   - error: The error name and message.
     ///   - wwwAuthenticate: The value for the `WWW-Authenticate` header. Optional.
-    case unauthorized(error: ATHTTPResponseError, wwwAuthenticate: String?)
+    case unauthorized(error: APIClientService.ATHTTPResponseError, wwwAuthenticate: String?)
 
     /// Represents a forbidden error (HTTP 403) with an associated message.
     ///
     /// - Parameter error: The error name and message.
-    case forbidden(error: ATHTTPResponseError)
+    case forbidden(error: APIClientService.ATHTTPResponseError)
 
     /// Represents a not found error (HTTP 404) with an associated message.
     ///
     /// - Parameter error: The error name and message.
-    case notFound(error: ATHTTPResponseError)
+    case notFound(error: APIClientService.ATHTTPResponseError)
 
     /// Represents a method not allowed error (HTTP 405) with an associated message.
     ///
     /// - Parameter error: The error name and message.
-    case methodNotAllowed(error: ATHTTPResponseError)
+    case methodNotAllowed(error: APIClientService.ATHTTPResponseError)
 
     /// Represents a payload too large error (HTTP 413) with an associated message.
     ///
     /// - Parameter error: The error name and message.
-    case payloadTooLarge(error: ATHTTPResponseError)
+    case payloadTooLarge(error: APIClientService.ATHTTPResponseError)
 
     /// Represents an upgrade required error (HTTP 426) with an associated message.
     ///
     /// - Parameter error: The error name and message.
-    case upgradeRequired(error: ATHTTPResponseError)
+    case upgradeRequired(error: APIClientService.ATHTTPResponseError)
 
     /// Represents a too many requests error (HTTP 429) with an associated message and HTTP header.
     ///
     /// - Parameters:
     ///   - error: The error name and message.
     ///   - retryAfter: The value for the `ratelimit-reset` header. Optional.
-    case tooManyRequests(error: ATHTTPResponseError, retryAfter: TimeInterval?)
+    case tooManyRequests(error: APIClientService.ATHTTPResponseError, retryAfter: TimeInterval?)
 
     /// Represents an internal server error (HTTP 500) with an associated message.
     ///
     /// - Parameter error: The error name and message.
-    case internalServerError(error: ATHTTPResponseError)
+    case internalServerError(error: APIClientService.ATHTTPResponseError)
 
     /// Represents a method not implemented error (HTTP 501) with an associated message.
     ///
     /// - Parameter error: The error name and message.
-    case methodNotImplemented(error: ATHTTPResponseError)
+    case methodNotImplemented(error: APIClientService.ATHTTPResponseError)
 
     /// Represents a bad gateway error (HTTP 502) with an associated message.
     case badGateway
@@ -328,37 +328,43 @@ public enum ATRequestPrepareError: ATProtoError {
     /// This PDS will not work.
     case invalidPDS
 
+    /// The PDS field is empty.
+    case emptyPDSURL
+
     /// The record may be invalid.
     case invalidRecord
 }
 
-/// An error type related to issues surrounding HTTP requests.
-public enum ATHTTPRequestError: ATProtoError {
+extension APIClientService {
 
-    /// Unable to encode the request body.
-    case unableToEncodeRequestBody
+    /// An error type related to issues surrounding HTTP requests.
+    public enum ATHTTPRequestError: ATProtoError {
 
-    /// Failed to construct URL with the given parameters.
-    case failedToConstructURLWithParameters
+        /// Unable to encode the request body.
+        case unableToEncodeRequestBody
 
-    /// Failed to decode HTML content.
-    case failedToDecodeHTML
+        /// Failed to construct URL with the given parameters.
+        case failedToConstructURLWithParameters
 
-    /// Error encountered while getting the response from the server.
-    case errorGettingResponse
+        /// Failed to decode HTML content.
+        case failedToDecodeHTML
 
-    /// The response may be invalid.
-    case invalidResponse
-}
+        /// Error encountered while getting the response from the server.
+        case errorGettingResponse
 
-/// An error type related to issues surrounding HTTP responses.
-public struct ATHTTPResponseError: Decodable, ATProtoError {
+        /// The response may be invalid.
+        case invalidResponse
+    }
 
-    /// The name of the error.
-    public let error: String
+    /// An error type related to issues surrounding HTTP responses.
+    public struct ATHTTPResponseError: Decodable, ATProtoError {
 
-    /// The message for the error.
-    public let message: String
+        /// The name of the error.
+        public let error: String
+
+        /// The message for the error.
+        public let message: String
+    }
 }
 
 /// An error type related to issues surrounding

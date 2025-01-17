@@ -19,23 +19,23 @@ extension ATProtoKit {
     /// 
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/graph/muteThread.json
     ///  
-    /// - Parameter root: The URI of the root of the post.
+    /// - Parameter rootPostURI: The URI of the root of the post.
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
-    public func muteThread(_ root: String) async throws {
+    public func muteThread(_ rootPostURI: String) async throws {
         guard session != nil,
               let accessToken = session?.accessToken else {
             throw ATRequestPrepareError.missingActiveSession
         }
 
-        guard let sessionURL = session?.pdsURL,
+        guard let sessionURL = session?.didDocument?.service[0].serviceEndpoint,
               let requestURL = URL(string: "\(sessionURL)/xrpc/app.bsky.graph.muteThread") else {
             throw ATRequestPrepareError.invalidRequestURL
         }
 
         let requestBody = AppBskyLexicon.Graph.MuteThreadRequestBody(
-            root: root
+            root: rootPostURI
         )
 
         do {

@@ -24,6 +24,7 @@ extension ATProtoKit {
     ///   - limit: The number of items the list will hold. Optional. Defaults to `50`.
     ///   - cursor: The mark used to indicate the starting point for the next set
     ///   of results. Optional.
+    ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `https://api.bsky.app`.
     /// - Returns: An array of user accounts that the user account follows, information about the
     /// user account itself, and an optional cursor for extending the array.
     ///
@@ -32,15 +33,14 @@ extension ATProtoKit {
     public func getFollows(
         from actorDID: String,
         limit: Int? = 50,
-        cursor: String? = nil
+        cursor: String? = nil,
+        pdsURL: String = "https://api.bsky.app"
     ) async throws -> AppBskyLexicon.Graph.GetFollowsOutput {
-        guard session != nil,
-              let accessToken = session?.accessToken else {
-            throw ATRequestPrepareError.missingActiveSession
+        guard pdsURL != "" else {
+            throw ATRequestPrepareError.emptyPDSURL
         }
 
-        guard let sessionURL = session?.pdsURL,
-              let requestURL = URL(string: "\(sessionURL)/xrpc/app.bsky.graph.getFollows") else {
+        guard let requestURL = URL(string: "\(pdsURL)/xrpc/app.bsky.graph.getFollows") else {
             throw ATRequestPrepareError.invalidRequestURL
         }
 
@@ -69,8 +69,7 @@ extension ATProtoKit {
                 forRequest: queryURL,
                 andMethod: .get,
                 acceptValue: "application/json",
-                contentTypeValue: nil,
-                authorizationValue: "Bearer \(accessToken)"
+                contentTypeValue: nil
             )
             let response = try await APIClientService.shared.sendRequest(
                 request,

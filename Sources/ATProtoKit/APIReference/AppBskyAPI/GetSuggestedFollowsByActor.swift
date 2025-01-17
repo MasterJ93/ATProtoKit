@@ -21,7 +21,8 @@ extension ATProtoKit {
     ///
     /// - Parameter actor: The AT Identifier or handle of the user account that the suggestions
     /// are based on.
-    /// - Returns: An array of user accounts the requesting user account is suggested to follow.
+    /// - Returns: An array of user accounts the requesting user account is suggested to follow and
+    /// a snowflake ID for recommendations.
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
@@ -31,7 +32,7 @@ extension ATProtoKit {
             throw ATRequestPrepareError.missingActiveSession
         }
 
-        guard let sessionURL = session?.pdsURL,
+        guard let sessionURL = session?.didDocument?.service[0].serviceEndpoint,
               let requestURL = URL(string: "\(sessionURL)/xrpc/app.bsky.graph.getSuggestedFollowsByActor") else {
             throw ATRequestPrepareError.invalidRequestURL
         }
