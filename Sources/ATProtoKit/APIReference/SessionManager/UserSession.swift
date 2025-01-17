@@ -146,12 +146,46 @@ public struct DIDDocument: Sendable, Codable {
     /// Personal Data Server's (PDS) location.
     public var service: [ATService]
 
+    /// Checks if the ``service`` property array contains items, and if so, sees if `#atproto_pds`
+    /// is in the ``ATService/id`` property.
+    ///
+    /// - Returns: An ``ATService`` item.
+    ///
+    /// - Throws: ``DIDDocumentError`` if ``service`` is empty or if none of the items
+    /// contain `#atproto_pds`.
+    public func checkServiceForATProto() throws -> ATService {
+        let services = self.service
+
+        guard services.count > 0 else {
+            throw DIDDocumentError.emptyArray
+        }
+
+        for service in services {
+            if service.id == "#atproto_pds" {
+                return service
+            }
+        }
+
+        throw DIDDocumentError.noATProtoPDSValue
+    }
+
     enum CodingKeys: String, CodingKey {
         case context = "@context"
         case id
         case alsoKnownAs
         case verificationMethod
         case service
+    }
+
+    /// Errors relating to the DID Document.
+    public enum DIDDocumentError: ATProtoError {
+
+        /// The ``DIDDocument/service`` array is empty.
+        case emptyArray
+
+        /// None of the items in the ``DIDDocument/service`` array contains a `#atproto_pds`
+        /// value in the ``ATService/id`` property.
+        case noATProtoPDSValue
     }
 }
 
