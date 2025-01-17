@@ -23,7 +23,7 @@ extension ATProtoKit {
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
-    public func muteThread(_ root: String) async throws {
+    public func muteThread(_ rootPostURI: String) async throws {
         guard session != nil,
               let accessToken = session?.accessToken else {
             throw ATRequestPrepareError.missingActiveSession
@@ -35,7 +35,7 @@ extension ATProtoKit {
         }
 
         let requestBody = AppBskyLexicon.Graph.MuteThreadRequestBody(
-            root: root
+            root: rootPostURI
         )
 
         do {
