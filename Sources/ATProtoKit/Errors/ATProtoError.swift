@@ -332,26 +332,26 @@ public enum ATRequestPrepareError: ATProtoError {
     case invalidRecord
 }
 
-/// An error type related to issues surrounding HTTP requests.
-public enum ATHTTPRequestError: ATProtoError {
-
-    /// Unable to encode the request body.
-    case unableToEncodeRequestBody
-
-    /// Failed to construct URL with the given parameters.
-    case failedToConstructURLWithParameters
-
-    /// Failed to decode HTML content.
-    case failedToDecodeHTML
-
-    /// Error encountered while getting the response from the server.
-    case errorGettingResponse
-
-    /// The response may be invalid.
-    case invalidResponse
-}
-
 extension APIClientService {
+
+    /// An error type related to issues surrounding HTTP requests.
+    public enum ATHTTPRequestError: ATProtoError {
+
+        /// Unable to encode the request body.
+        case unableToEncodeRequestBody
+
+        /// Failed to construct URL with the given parameters.
+        case failedToConstructURLWithParameters
+
+        /// Failed to decode HTML content.
+        case failedToDecodeHTML
+
+        /// Error encountered while getting the response from the server.
+        case errorGettingResponse
+
+        /// The response may be invalid.
+        case invalidResponse
+    }
 
     /// An error type related to issues surrounding HTTP responses.
     public struct ATHTTPResponseError: Decodable, ATProtoError {

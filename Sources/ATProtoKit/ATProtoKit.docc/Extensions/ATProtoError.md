@@ -10,7 +10,6 @@
 - ``ATNSIDError``
 - ``ATURIError``
 - ``ATRequestPrepareError``
-- ``ATHTTPRequestError``
 - ``ATEventStreamError``
 - ``WebSocketFrameMessageError``
 - ``CBORProcessingError``
