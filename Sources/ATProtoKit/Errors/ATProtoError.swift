@@ -328,6 +328,9 @@ public enum ATRequestPrepareError: ATProtoError {
     /// This PDS will not work.
     case invalidPDS
 
+    /// The PDS field is empty.
+    case emptyPDSURL
+
     /// The record may be invalid.
     case invalidRecord
 }

@@ -36,14 +36,14 @@ extension ATProtoKit {
         limit: Int? = 50,
         isPriority: Bool?,
         cursor: String? = nil,
-        seenAt: Date? = nil
+        seenAt: Date? = Date()
     ) async throws -> AppBskyLexicon.Notification.ListNotificationsOutput {
         guard session != nil,
               let accessToken = session?.accessToken else {
             throw ATRequestPrepareError.missingActiveSession
         }
 
-        guard let sessionURL = session?.pdsURL,
+        guard let sessionURL = session?.didDocument?.service[0].serviceEndpoint,
               let requestURL = URL(string: "\(sessionURL)/xrpc/app.bsky.notification.listNotifications") else {
             throw ATRequestPrepareError.invalidRequestURL
         }

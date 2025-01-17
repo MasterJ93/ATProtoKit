@@ -21,7 +21,7 @@ extension ATProtoKit {
     /// - Parameters:
     ///   - labelerDIDs: An array of decentralized identifiers (DIDs) of labeler services.
     ///   - isDetailed: Indicates whether the information is detailed. Optional.
-    ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `nil`.
+    ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `https://api.bsky.app`.
     /// - Returns: An array of labeler views.
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
@@ -29,10 +29,13 @@ extension ATProtoKit {
     public func getLabelerServices(
         labelerDIDs: [String],
         isDetailed: Bool? = nil,
-        pdsURL: String? = nil
+        pdsURL: String = "https://api.bsky.app"
     ) async throws -> AppBskyLexicon.Labeler.GetServicesOutput {
-        guard let sessionURL = pdsURL != nil ? pdsURL : session?.pdsURL,
-              let requestURL = URL(string: "\(sessionURL)/xrpc/app.bsky.labeler.getServices") else {
+        guard pdsURL != "" else {
+            throw ATRequestPrepareError.emptyPDSURL
+        }
+
+        guard let requestURL = URL(string: "\(pdsURL)/xrpc/app.bsky.labeler.getServices") else {
             throw ATRequestPrepareError.invalidFormat
         }
 

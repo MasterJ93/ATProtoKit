@@ -42,7 +42,7 @@ extension ATProtoKit {
     ///   to `25`.
     ///   - cursor: The mark used to indicate the starting point for the next set
     ///   of results. Optional.
-    ///   - pdsURL: The URL of the Personal Data Server (PDS). Optional.
+    ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `https://api.bsky.app`.
     /// - Returns: An array of un-hydrated post records in the results, with an optional cursor to
     /// expand the array. The output may also display the total number of search results.
     ///
@@ -61,10 +61,13 @@ extension ATProtoKit {
         tags: [String]? = nil,
         limit: Int? = 25,
         cursor: String? = nil,
-        pdsURL: String? = nil
+        pdsURL: String = "https://api.bsky.app"
     ) async throws -> AppBskyLexicon.Unspecced.SearchPostsSkeletonOutput {
-        guard let sessionURL = pdsURL != nil ? pdsURL : session?.pdsURL,
-              let requestURL = URL(string: "\(sessionURL)/xrpc/app.bsky.unspecced.searchPostsSkeleton") else {
+        guard pdsURL != "" else {
+            throw ATRequestPrepareError.emptyPDSURL
+        }
+
+        guard let requestURL = URL(string: "\(pdsURL)/xrpc/app.bsky.unspecced.searchPostsSkeleton") else {
             throw ATRequestPrepareError.invalidRequestURL
         }
 
