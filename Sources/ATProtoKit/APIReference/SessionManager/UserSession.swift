@@ -52,6 +52,8 @@ public struct UserSession: SessionProtocol, Sendable {
     /// Indicates the possible reason for why the user account is inactive. Optional.
     public var status: UserAccountStatus?
 
+    /// The user account's endpoint used for sending authentication requests.
+    public let serviceEndpoint: URL
 
     /// The URL of the Personal Data Server (PDS) associated with the user. Optional.
     ///
@@ -86,7 +88,7 @@ public struct UserSession: SessionProtocol, Sendable {
     /// Initializes a new user session with the specified details.
     public init(handle: String, sessionDID: String, email: String? = nil, isEmailConfirmed: Bool? = nil, isEmailAuthenticationFactorEnabled: Bool?,
                 accessToken: String, refreshToken: String, didDocument: DIDDocument? = nil, isActive: Bool?, status: UserAccountStatus?,
-                pdsURL: String? = nil, logger: Logger? = nil, maxRetryCount: Int? = 3, retryTimeDelay: TimeInterval? = 1.0) {
+                serviceEndpoint: URL, pdsURL: String? = nil, logger: Logger? = nil, maxRetryCount: Int? = 3, retryTimeDelay: TimeInterval? = 1.0) {
         self.handle = handle
         self.sessionDID = sessionDID
         self.email = email
@@ -97,6 +99,7 @@ public struct UserSession: SessionProtocol, Sendable {
         self.didDocument = didDocument
         self.isActive = isActive
         self.status = status
+        self.serviceEndpoint = serviceEndpoint
         self.pdsURL = pdsURL
         self.logger = logger
         self.maxRetryCount = maxRetryCount
@@ -114,6 +117,7 @@ public struct UserSession: SessionProtocol, Sendable {
         case didDocument = "didDoc"
         case isActive = "active"
         case status
+        case serviceEndpoint
         case pdsURL
     }
 }
