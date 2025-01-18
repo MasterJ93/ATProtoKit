@@ -44,7 +44,7 @@ extension ATProtoKit {
             session: session
         )
 
-        guard let sessionURL = pdsURL != nil ? pdsURL : session?.didDocument?.service[0].serviceEndpoint.absoluteString,
+        guard let sessionURL = pdsURL != nil ? pdsURL : session?.serviceEndpoint.absoluteString,
               let requestURL = URL(string: "\(sessionURL)/xrpc/app.bsky.feed.getPostThread") else {
             throw ATRequestPrepareError.invalidRequestURL
         }
