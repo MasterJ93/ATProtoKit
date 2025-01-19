@@ -43,7 +43,9 @@ extension ATProtoKit {
             session: session
         )
 
-        guard let sessionURL = authorizationValue != nil ? session?.serviceEndpoint.absoluteString : pdsURL ?? "https://api.bsky.app",
+        let finalPDSURL = self.determinePDSURL(customPDSURL: pdsURL)
+
+        guard let sessionURL = authorizationValue != nil ? session?.serviceEndpoint.absoluteString : finalPDSURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/app.bsky.feed.getPostThread") else {
             throw ATRequestPrepareError.invalidRequestURL
         }
