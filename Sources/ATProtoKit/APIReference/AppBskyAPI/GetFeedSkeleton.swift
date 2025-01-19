@@ -32,7 +32,7 @@ extension ATProtoKit {
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
-    public static func getFeedSkeleton(
+    public func getFeedSkeleton(
         by uri: String,
         limit: Int? = 50,
         cursor: String? = nil,

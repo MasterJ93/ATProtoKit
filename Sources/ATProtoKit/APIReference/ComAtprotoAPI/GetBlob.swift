@@ -27,7 +27,7 @@ extension ATProtoKit {
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
-    public static func getBlob(
+    public func getBlob(
         from accountDID: String,
         cid: String,
         pdsURL: String = "https://api.bsky.app"
