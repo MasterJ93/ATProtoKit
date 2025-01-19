@@ -186,13 +186,14 @@ public class ATProtoKit: ATProtoKitConfiguration, ATRecordConfiguration {
     }
 
     /// Determines the appropriate Personal Data Server (PDS) URL.
+    ///
     /// - Parameters:
     ///   - customPDSURL: An optional custom PDS URL. If provided, this URL is used regardless of
     ///   the access token's presence.
     /// - Returns: The final PDS URL as a `String`.
-    func determinePDSURL(customPDSURL: String? = nil) -> String {
-        if let customURL = customPDSURL {
-            return customURL
+    func determinePDSURL(customPDSURL: String) -> String {
+        if customPDSURL != "" {
+            return customPDSURL
         } else {
             return "https://api.bsky.app"
         }
