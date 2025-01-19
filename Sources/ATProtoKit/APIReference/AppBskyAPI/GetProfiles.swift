@@ -31,7 +31,7 @@ extension ATProtoKit {
     /// - Parameters:
     ///   - actors: An array of user account handles or decentralized identifiers (DID).
     ///   Current maximum length is 25 handles and/or DIDs.
-    ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `https:api.bsky.app`.
+    ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `https://api.bsky.app`.
     ///   - shouldAuthenticate: Indicates whether the method will use the access token when
     ///   sending the request. Defaults to `true`.
     /// - Returns: An array of detailed profile views for several user accounts.

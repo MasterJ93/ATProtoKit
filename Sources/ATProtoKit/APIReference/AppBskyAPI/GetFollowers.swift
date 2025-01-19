@@ -44,7 +44,7 @@ extension ATProtoKit {
             session: session
         )
 
-        guard let sessionURL = pdsURL != nil ? pdsURL : session?.serviceEndpoint.absoluteString,
+        guard let sessionURL = authorizationValue != nil ? session?.serviceEndpoint.absoluteString : pdsURL ?? "https://api.bsky.app",
               let requestURL = URL(string: "\(sessionURL)/xrpc/app.bsky.graph.getFollowers") else {
             throw ATRequestPrepareError.invalidRequestURL
         }
