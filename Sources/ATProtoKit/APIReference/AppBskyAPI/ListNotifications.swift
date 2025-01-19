@@ -32,7 +32,7 @@ extension ATProtoKit {
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func listNotifications(
-        with reason: String? = nil,
+        with reasons: [AppBskyLexicon.Notification.Notification.Reason]? = nil,
         limit: Int? = 50,
         isPriority: Bool?,
         cursor: String? = nil,
@@ -50,8 +50,10 @@ extension ATProtoKit {
 
         var queryItems = [(String, String)]()
 
-        if let reason {
-            queryItems.append(("reason", "\(reason)"))
+        if let reasons {
+            reasons.forEach { reason in
+                queryItems.append(("reasons[]", "\(reason.rawValue)"))
+            }
         }
 
         if let limit {
