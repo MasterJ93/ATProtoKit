@@ -39,8 +39,7 @@ extension ATProtoKit {
     ///   creation operation. Optional.
     ///   - plcOperation: A signed DID PLC operation to be submitted as part of importing an
     ///   existing account to this instance. Optional.
-    ///   - pdsURL: The URL of the Personal Data Server (PDS). Optional.
-    ///   Defaults to `https://bsky.social`.
+    ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `https://app.bsky.app`.
     /// - Returns: An instance of an authenticated user session within the AT Protocol. It may also
     /// have logging information, as well as the URL of the Personal Data Server (PDS).
     ///
@@ -56,9 +55,11 @@ extension ATProtoKit {
         password: String? = nil,
         recoveryKey: String? = nil,
         plcOperation: UnknownType? = nil,
-        pdsURL: String = "https://bsky.social"
+        pdsURL: String = "https://app.bsky.app"
     ) async throws -> ComAtprotoLexicon.Server.CreateAccountOutput {
-        guard let requestURL = URL(string: "\(pdsURL)/xrpc/com.atproto.server.createAccount") else {
+        let finalPDSURL = self.determinePDSURL(customPDSURL: pdsURL)
+
+        guard let requestURL = URL(string: "\(finalPDSURL)/xrpc/com.atproto.server.createAccount") else {
             throw ATRequestPrepareError.invalidRequestURL
         }
 

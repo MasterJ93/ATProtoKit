@@ -47,7 +47,7 @@ extension ATProtoKit {
     public func searchActorsTypeahead(
         matching query: String,
         limit: Int? = 10,
-        pdsURL: String? = nil,
+        pdsURL: String = "https://api.bsky.app",
         shouldAuthenticate: Bool = true
     ) async throws -> AppBskyLexicon.Actor.SearchActorsTypeaheadOutput {
         let authorizationValue = prepareAuthorizationValue(

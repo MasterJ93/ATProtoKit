@@ -24,15 +24,17 @@ extension ATProtoKit {
     ///
     /// - Parameters:
     ///   - refreshToken: The refresh token for the session.
-    ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `nil`.
+    ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `https://api.bsky.app`.
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func deleteSession(
         refreshToken: String,
-        pdsURL: String = "https://bsky.social"
+        pdsURL: String = "https://api.bsky.app"
     ) async throws {
-        guard let requestURL = URL(string: "\(pdsURL)/xrpc/com.atproto.server.deleteSession") else {
+        let finalPDSURL = self.determinePDSURL(customPDSURL: pdsURL)
+
+        guard let requestURL = URL(string: "\(finalPDSURL)/xrpc/com.atproto.server.deleteSession") else {
             throw ATRequestPrepareError.invalidRequestURL
         }
 

@@ -36,11 +36,9 @@ extension ATProtoKit {
         and others: [String]? = nil,
         pdsURL: String = "https://api.bsky.app"
     ) async throws -> AppBskyLexicon.Graph.GetRelationshipsOutput {
-        guard pdsURL != "" else {
-            throw ATRequestPrepareError.emptyPDSURL
-        }
+        let finalPDSURL = self.determinePDSURL(customPDSURL: pdsURL)
 
-        guard let requestURL = URL(string: "\(pdsURL)/xrpc/app.bsky.graph.getRelationships") else {
+        guard let requestURL = URL(string: "\(finalPDSURL)/xrpc/app.bsky.graph.getRelationships") else {
             throw ATRequestPrepareError.invalidRequestURL
         }
 

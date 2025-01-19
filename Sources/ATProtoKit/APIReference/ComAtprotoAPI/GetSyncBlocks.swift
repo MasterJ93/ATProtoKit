@@ -26,7 +26,7 @@ extension ATProtoKit {
     /// - Parameters:
     ///   - repositoryDID: The decentralized identifier (DID) of the repository.
     ///   - repositoryCIDs: An array of CID hashes from the repository.
-    ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `nil`.
+    ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `https://api.bsky.app`.
     /// - Returns: A .car file, containing CBOR-encoded data of the repository blocks.
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
@@ -34,10 +34,11 @@ extension ATProtoKit {
     public func getSyncBlocks(
         from repositoryDID: String,
         by repositoryCIDs: [String],
-        pdsURL: String? = nil
+        pdsURL: String = "https://api.bsky.app"
     ) async throws -> Data {
-        guard let sessionURL = pdsURL != nil ? pdsURL : session?.pdsURL,
-              let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.sync.getBlocks") else {
+        let finalPDSURL = self.determinePDSURL(customPDSURL: pdsURL)
+
+        guard let requestURL = URL(string: "\(finalPDSURL)/xrpc/com.atproto.sync.getBlocks") else {
             throw ATRequestPrepareError.invalidRequestURL
         }
 

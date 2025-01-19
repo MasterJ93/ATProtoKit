@@ -22,20 +22,21 @@ extension ATProtoKit {
     ///
     /// - Parameters:
     ///   - crawlingHostname: The hostname that the crawling service resides in. Optional.
-    ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `nil`.
+    ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `https://api.bsky.app`.
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func requestCrawl(
         in crawlingHostname: String? = nil,
-        pdsURL: String? = nil
+        pdsURL: String = "https://api.bsky.app"
     ) async throws {
-        guard let sessionURL = pdsURL != nil ? pdsURL : session?.pdsURL,
-              let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.sync.notifyOfUpdate") else {
+        let finalPDSURL = self.determinePDSURL(customPDSURL: pdsURL)
+
+        guard let requestURL = URL(string: "\(finalPDSURL)/xrpc/com.atproto.sync.notifyOfUpdate") else {
             throw ATRequestPrepareError.invalidRequestURL
         }
 
-        let hostnameURL = URL(string: crawlingHostname ?? sessionURL)
+        let hostnameURL = URL(string: crawlingHostname ?? finalPDSURL)
 
         guard let finalhostnameURL = hostnameURL else {
             throw ATRequestPrepareError.invalidHostnameURL

@@ -24,8 +24,7 @@ extension ATProtoKit {
     ///
     /// - Parameters:
     ///   - accessToken: The access token used for API requests that requests authentication.
-    ///   - pdsURL: The URL of the Personal Data Server (PDS). Optional.
-    ///   Defaults to `https://bsky.social`.
+    ///   - pdsURL: The URL of the Personal Data Server (PDS).. Defaults to `https://api.bsky.app`.
     ///
     /// - Returns: An instance of the session-related information for the user account.
     /// 
@@ -33,10 +32,11 @@ extension ATProtoKit {
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func getSession(
         by accessToken: String,
-        pdsURL: String? = "https://bsky.social"
+        pdsURL: String = "https://api.bsky.app"
     ) async throws -> ComAtprotoLexicon.Server.GetSessionOutput {
-        guard let sessionURL = pdsURL,
-              let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.server.getSession") else {
+        let finalPDSURL = self.determinePDSURL(customPDSURL: pdsURL)
+
+        guard let requestURL = URL(string: "\(finalPDSURL)/xrpc/com.atproto.server.getSession") else {
             throw ATRequestPrepareError.invalidRequestURL
         }
 

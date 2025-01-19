@@ -22,8 +22,7 @@ extension ATProtoKit {
     /// - Parameters:
     ///   - accountDID: The decentralized identifier (DID) of the account.
     ///   - cid: The CID hash of the blob.
-    ///   - pdsURL: The URL of the Personal Data Server (PDS).
-    /// Defaults to `https://bsky.social`.
+    ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `https://api.bsky.app`.
     /// - Returns: The data blob owned by the user account.
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
@@ -31,10 +30,11 @@ extension ATProtoKit {
     public static func getBlob(
         from accountDID: String,
         cid: String,
-        pdsURL: String? = "https://bsky.social"
+        pdsURL: String = "https://api.bsky.app"
     ) async throws -> Data {
-        guard let sessionURL = pdsURL,
-              let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.sync.getBlob") else {
+        let finalPDSURL = self.determinePDSURL(customPDSURL: pdsURL)
+
+        guard let requestURL = URL(string: "\(finalPDSURL)/xrpc/com.atproto.sync.getBlob") else {
             throw ATRequestPrepareError.invalidRequestURL
         }
 

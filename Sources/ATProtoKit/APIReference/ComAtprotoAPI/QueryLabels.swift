@@ -41,7 +41,7 @@ extension ATProtoKit {
         sources: [String]? = nil,
         limit: Int? = 50,
         cursor: String? = nil,
-        pdsURL: String? = nil,
+        pdsURL: String = "https://api.bsky.app",
         shouldAuthenticate: Bool = true
     ) async throws -> ComAtprotoLexicon.Label.QueryLabelsOutput {
         let authorizationValue = prepareAuthorizationValue(
@@ -49,8 +49,9 @@ extension ATProtoKit {
             session: session
         )
 
-        guard let sessionURL = pdsURL != nil ? pdsURL : session?.pdsURL,
-              let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.label.queryLabels") else {
+        let finalPDSURL = self.determinePDSURL(customPDSURL: pdsURL)
+
+        guard let requestURL = URL(string: "\(finalPDSURL)/xrpc/com.atproto.label.queryLabels") else {
             throw ATRequestPrepareError.missingActiveSession
         }
 

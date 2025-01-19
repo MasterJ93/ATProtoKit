@@ -22,16 +22,17 @@ extension ATProtoKit {
     ///
     /// - Parameters:
     ///   - email: The email associated with the user's account.
-    ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `nil`.
+    ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `https://api.bsky.app`.
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func requestPasswordReset(
         forEmail email: String,
-        pdsURL: String? = nil
+        pdsURL: String = "https://api.bsky.app"
     ) async throws {
-        guard let sessionURL = pdsURL != nil ? pdsURL : session?.pdsURL,
-              let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.server.requestPasswordReset") else {
+        let finalPDSURL = self.determinePDSURL(customPDSURL: pdsURL)
+
+        guard let requestURL = URL(string: "\(finalPDSURL)/xrpc/com.atproto.server.requestPasswordReset") else {
             throw ATRequestPrepareError.invalidRequestURL
         }
 

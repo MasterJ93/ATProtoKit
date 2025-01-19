@@ -23,7 +23,7 @@ extension ATProtoKit {
     ///   - collection: The Namespaced Identifier (NSID) of the record.
     ///   - recordKey: The record key of the record.
     ///   - recordCID: The CID hash of the record. Optional.
-    ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `nil`.
+    ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `https://api.bsky.app`.
     /// - Returns: A .car file, containing CBOR-encoded data of a record.
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
@@ -33,10 +33,11 @@ extension ATProtoKit {
         collection: String,
         recordKey: String,
         recordCID: String? = nil,
-        pdsURL: String? = nil
+        pdsURL: String = "https://api.bsky.app"
     ) async throws -> Data {
-        guard let sessionURL = pdsURL != nil ? pdsURL : session?.pdsURL,
-              let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.sync.getRecord") else {
+        let finalPDSURL = self.determinePDSURL(customPDSURL: pdsURL)
+
+        guard let requestURL = URL(string: "\(finalPDSURL)/xrpc/com.atproto.sync.getRecord") else {
             throw ATRequestPrepareError.invalidRequestURL
         }
 
