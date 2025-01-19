@@ -44,7 +44,7 @@ extension ATProtoKit {
 
         let finalPDSURL = self.determinePDSURL(customPDSURL: pdsURL)
 
-        guard let requestURL = URL(string: "\(pdsURL)/xrpc/app.bsky.feed.getFeedSkeleton") else {
+        guard let requestURL = URL(string: "\(finalPDSURL)/xrpc/app.bsky.feed.getFeedSkeleton") else {
             throw ATRequestPrepareError.invalidRequestURL
         }
 
