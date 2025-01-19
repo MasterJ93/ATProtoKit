@@ -53,7 +53,7 @@ public class ATProtoTools {
                 from: repository,
                 collection: collection,
                 recordKey: recordKey,
-                pdsURL: session?.pdsURL
+                pdsURL: session?.pdsURL ?? "https://api.bsky.app"
             )
         } catch {
             return false
@@ -73,7 +73,7 @@ public class ATProtoTools {
                 from: repository,
                 collection: collection,
                 recordKey: recordKey,
-                pdsURL: session?.pdsURL
+                pdsURL: session?.pdsURL ?? "https://api.bsky.app"
             )
         } catch {
             return false
@@ -110,7 +110,7 @@ public class ATProtoTools {
                 from: repository,
                 collection: collection,
                 recordKey: recordKey,
-                pdsURL: session.pdsURL
+                pdsURL: session.pdsURL ?? "https://api.bsky.app"
             )
 
             guard let postRecord = record.value?.getRecord(ofType: AppBskyLexicon.Feed.PostRecord.self) else {
@@ -158,14 +158,14 @@ public class ATProtoTools {
         session: UserSession
     ) async throws -> ComAtprotoLexicon.Repository.StrongReference {
         // Parse the URI to retrieve the post data.
-        let recordQuery = try parseURI(reference.recordURI, pdsURL: session.pdsURL ?? "https://bsky.social")
+        let recordQuery = try parseURI(reference.recordURI, pdsURL: session.pdsURL ?? "https:/api.bsky.app")
 
         // Fetch the post record from the repository.
         let record = try await ATProtoKit().getRepositoryRecord(
             from: recordQuery.repository,
             collection: recordQuery.collection,
             recordKey: recordQuery.recordKey,
-            pdsURL: session.pdsURL
+            pdsURL: session.pdsURL ?? "https://api.bsky.app"
         )
 
         guard let postRecord = record.value?.getRecord(ofType: AppBskyLexicon.Feed.PostRecord.self) else {
@@ -255,7 +255,8 @@ public class ATProtoTools {
         let query = try parseURI(uri)
 
         do {
-            let record = try await ATProtoKit().getRepositoryRecord(from: query.repository, collection: query.collection, recordKey: query.recordKey, pdsURL: session?.pdsURL)
+            let record = try await ATProtoKit().getRepositoryRecord(from: query.repository, collection: query.collection, recordKey: query.recordKey,
+                                                                    pdsURL: session?.pdsURL ?? "https://api.bsky.app")
 
             return record
         } catch {
