@@ -36,7 +36,7 @@ extension ATProtoKit {
     ) async throws -> ComAtprotoLexicon.Sync.ListRepositoriesOutput {
         let finalPDSURL = self.determinePDSURL(customPDSURL: pdsURL)
 
-        guard let requestURL = URL(string: "\(finalPDSURL)/xrpc/com.atproto.sync.getRepos") else {
+        guard let requestURL = URL(string: "\(finalPDSURL)/xrpc/com.atproto.sync.listRepos") else {
             throw ATRequestPrepareError.invalidRequestURL
         }
 

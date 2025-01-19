@@ -35,7 +35,7 @@ extension ATProtoKit {
     ) async throws {
         let finalPDSURL = self.determinePDSURL(customPDSURL: pdsURL)
 
-        guard let requestURL = URL(string: "\(finalPDSURL)/xrpc/app.bsky.graph.notifyOfUpdate") else {
+        guard let requestURL = URL(string: "\(finalPDSURL)/xrpc/com.atproto.sync.notifyOfUpdate") else {
             throw ATRequestPrepareError.invalidRequestURL
         }
 
