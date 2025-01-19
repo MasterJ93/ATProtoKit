@@ -26,7 +26,7 @@ extension ATProtoKit {
     ///   Optional. Defaults to `80`. Can be between `0` and `1000`.
     ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `nil`.
     ///   - shouldAuthenticate: Indicates whether the method will use the access token when
-    ///   sending the request. Defaults to `false`.
+    ///   sending the request. Defaults to `true`.
     /// - Returns: A post thread that matches the `postURI`.
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
@@ -35,11 +35,10 @@ extension ATProtoKit {
         from postURI: String,
         depth: Int? = 6,
         parentHeight: Int? = 80,
-        pdsURL: String? = nil,
-        shouldAuthenticate: Bool = false
+        pdsURL: String = "https://api.bsky.app",
+        shouldAuthenticate: Bool = true
     ) async throws -> AppBskyLexicon.Feed.GetPostThreadOutput {
         let authorizationValue = prepareAuthorizationValue(
-            methodPDSURL: pdsURL,
             shouldAuthenticate: shouldAuthenticate,
             session: session
         )

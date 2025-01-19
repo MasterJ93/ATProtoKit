@@ -29,9 +29,9 @@ extension ATProtoKit {
     ///   Can only choose between `1` and `250`.
     ///   - cursor: The mark used to indicate the starting point for the next set
     ///   of results. Optional.
-    ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `nil`.
+    ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `https://api.bsky.app`.
     ///   - shouldAuthenticate: Indicates whether the method will use the access token when
-    ///   sending the request. Defaults to `false`.
+    ///   sending the request. Defaults to `true`.
     /// - Returns: An array of labels, with an optional cursor to extend the array.
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
@@ -42,10 +42,9 @@ extension ATProtoKit {
         limit: Int? = 50,
         cursor: String? = nil,
         pdsURL: String? = nil,
-        shouldAuthenticate: Bool = false
+        shouldAuthenticate: Bool = true
     ) async throws -> ComAtprotoLexicon.Label.QueryLabelsOutput {
         let authorizationValue = prepareAuthorizationValue(
-            methodPDSURL: pdsURL,
             shouldAuthenticate: shouldAuthenticate,
             session: session
         )

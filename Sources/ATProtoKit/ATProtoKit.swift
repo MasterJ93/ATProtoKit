@@ -38,21 +38,17 @@ public protocol ATProtoKitConfiguration {
     /// all log events are spread across the entire class.
     var logger: Logger? { get }
 
-    /// Prepares an authorization value for API requests based on `session` and `pdsURL`.
+    /// Prepares an authorization value for API requests based on `session`.
     ///
     /// This determines whether the "Authorization" header will be included in the request payload.
-    /// It takes both `shouldAuthenticate` and `pdsURL` into account if the method has them,
-    /// as well as the current session. You can use this method as-is, or customize the
-    /// implementation as you see fit.
+    /// It takes `shouldAuthenticate` into account if the method has them, as well as the
+    /// current session. You can use this method as-is, or customize the implementation as you
+    /// see fit.
     ///
     /// - Note: Don't use this method if authorization is required or unneeded. This is only for
-    /// methods where autheorization is optional.
-    ///
-    /// - Important:  If `pdsURL` is not `nil`, then authentication will never be considered
-    /// since the session's access token wasn't created by the Personal Data Server (PDS).
+    /// methods where authorization is optional.
     ///
     /// - Parameters:
-    ///   - methodPDSURL: The URL of the Personal Data Server (PDS). Optional. Defaults to `nil`.
     ///   - shouldAuthenticate: Indicates whether the method call should be authenticated.
     ///   Defaults to `false`.
     ///   - session: The current session used in the class's instance. Optional.
@@ -60,7 +56,7 @@ public protocol ATProtoKitConfiguration {
     /// - Returns: A `String`, containing either `nil` if it's determined that there should be no
     /// authorization header in the request, or  `"Bearer \(accessToken)"` (where `accessToken`
     /// is the session's access token) if it's determined there should be an authorization header.
-    func prepareAuthorizationValue(methodPDSURL: String?, shouldAuthenticate: Bool, session: UserSession?) -> String?
+    func prepareAuthorizationValue(shouldAuthenticate: Bool, session: UserSession?) -> String?
 }
 
 extension ATProtoKitConfiguration {
@@ -68,17 +64,13 @@ extension ATProtoKitConfiguration {
     /// Prepares an authorization value for API requests based on `session` and `pdsURL`.
     ///
     /// This determines whether the "Authorization" header will be included in the request payload.
-    /// It takes both `shouldAuthenticate` and `pdsURL` into account if the method has them,
-    /// as well as the current session.
+    /// It takes `shouldAuthenticate` into account if the method has them, as well as the
+    /// current session.
     ///
     /// - Note: Don't use this method if authorization is required or unneeded. This is only for
-    /// methods where autheorization is optional.
-    ///
-    /// - Important:  If `pdsURL` is not `nil`, then authentication will never be considered
-    /// since the session's access token wasn't created by the Personal Data Server (PDS).
+    /// methods where authorization is optional.
     ///
     /// - Parameters:
-    ///   - methodPDSURL: The URL of the Personal Data Server (PDS). Optional. Defaults to `nil`.
     ///   - shouldAuthenticate: Indicates whether the method call should be authenticated.
     ///   Defaults to `false`.
     ///   - session: The current session used in the class's instance. Optional.
@@ -87,19 +79,18 @@ extension ATProtoKitConfiguration {
     /// authorization header in the request, or  `"Bearer \(accessToken)"`
     /// (where `accessToken` is the session's access token) if it's determined there should be an
     /// authorization header.
-    public func prepareAuthorizationValue(methodPDSURL: String? = nil, shouldAuthenticate: Bool = false, session: UserSession?) -> String? {
-        guard methodPDSURL == nil else {
+    public func prepareAuthorizationValue(shouldAuthenticate: Bool = false, session: UserSession?) -> String? {
+        // If `shouldAuthenticate` is false, return nil regardless of session state.
+        guard shouldAuthenticate else {
             return nil
         }
 
-        // Proceed with authentication only if required and a session exists with a valid access token.
-        if shouldAuthenticate,
-           let session = session,
-           !session.accessToken.isEmpty {
+        // If `shouldAuthenticate` is true, check if the session exists and has a valid access token.
+        if let session = session, !session.accessToken.isEmpty {
             return "Bearer \(session.accessToken)"
         }
 
-        // Return nil if authentication is not needed or can't be performed.
+        // Return nil if no valid session or access token is found.
         return nil
     }
 }

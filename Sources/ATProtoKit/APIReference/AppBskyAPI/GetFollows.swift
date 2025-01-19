@@ -25,6 +25,8 @@ extension ATProtoKit {
     ///   - cursor: The mark used to indicate the starting point for the next set
     ///   of results. Optional.
     ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `https://api.bsky.app`.
+    ///   - shouldAuthenticate: Indicates whether the method will use the access token when
+    ///   sending the request. Defaults to `true`.
     /// - Returns: An array of user accounts that the user account follows, information about the
     /// user account itself, and an optional cursor for extending the array.
     ///
@@ -34,13 +36,16 @@ extension ATProtoKit {
         from actorDID: String,
         limit: Int? = 50,
         cursor: String? = nil,
-        pdsURL: String = "https://api.bsky.app"
+        pdsURL: String = "https://api.bsky.app",
+        shouldAuthenticate: Bool = true
     ) async throws -> AppBskyLexicon.Graph.GetFollowsOutput {
-        guard pdsURL != "" else {
-            throw ATRequestPrepareError.emptyPDSURL
-        }
+        let authorizationValue = prepareAuthorizationValue(
+            shouldAuthenticate: shouldAuthenticate,
+            session: session
+        )
 
-        guard let requestURL = URL(string: "\(pdsURL)/xrpc/app.bsky.graph.getFollows") else {
+        guard let sessionURL = pdsURL != nil ? pdsURL : session?.serviceEndpoint.absoluteString,
+              let requestURL = URL(string: "\(sessionURL)/xrpc/app.bsky.graph.getFollows") else {
             throw ATRequestPrepareError.invalidRequestURL
         }
 
@@ -69,7 +74,8 @@ extension ATProtoKit {
                 forRequest: queryURL,
                 andMethod: .get,
                 acceptValue: "application/json",
-                contentTypeValue: nil
+                contentTypeValue: nil,
+                authorizationValue: authorizationValue
             )
             let response = try await APIClientService.shared.sendRequest(
                 request,

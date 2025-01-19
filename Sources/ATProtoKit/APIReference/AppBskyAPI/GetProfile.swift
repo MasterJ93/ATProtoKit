@@ -30,20 +30,19 @@ extension ATProtoKit {
     ///
     /// - Parameters:
     ///   - actor: The handle or decentralized identifier (DID) of the user's account.
-    ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `nil`.
+    ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `https://api.bsky.app`.
     ///   - shouldAuthenticate: Indicates whether the method will use the access token when
-    ///   sending the request. Defaults to `false`.
+    ///   sending the request. Defaults to `true`.
     /// - Returns: A detailed profile view of the specified user account.
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func getProfile(
         for actor: String,
-        pdsURL: String? = nil,
-        shouldAuthenticate: Bool = false
+        pdsURL: String = "https://api.bsky.app",
+        shouldAuthenticate: Bool = true
     ) async throws -> AppBskyLexicon.Actor.ProfileViewDetailedDefinition {
         let authorizationValue = prepareAuthorizationValue(
-            methodPDSURL: pdsURL,
             shouldAuthenticate: shouldAuthenticate,
             session: session
         )

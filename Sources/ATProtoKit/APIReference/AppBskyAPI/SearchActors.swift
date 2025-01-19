@@ -35,9 +35,9 @@ extension ATProtoKit {
     ///   Can only choose between 1 and 100.
     ///   - cursor: The mark used to indicate the starting point for the next set
     ///   of results. Optional.
-    ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `nil`.
+    ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `https://api.bsky.app`.
     ///   - shouldAuthenticate: Indicates whether the method will use the access token
-    ///   when sending the request. Defaults to `false`.
+    ///   when sending the request. Defaults to `true`.
     /// - Returns: An array of actors, with an optional cursor to expand the array.
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
@@ -46,11 +46,10 @@ extension ATProtoKit {
         matching query: String,
         limit: Int? = 25,
         cursor: String? = nil,
-        pdsURL: String? = nil,
-        shouldAuthenticate: Bool = false
+        pdsURL: String = "https://api.bsky.app",
+        shouldAuthenticate: Bool = true
     ) async throws -> AppBskyLexicon.Actor.SearchActorsOutput {
         let authorizationValue = prepareAuthorizationValue(
-            methodPDSURL: pdsURL,
             shouldAuthenticate: shouldAuthenticate,
             session: session
         )
