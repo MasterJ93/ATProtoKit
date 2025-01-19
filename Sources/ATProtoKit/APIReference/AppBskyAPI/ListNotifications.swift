@@ -19,7 +19,7 @@ extension ATProtoKit {
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/notification/listNotifications.json
     ///
     /// - Parameters:
-    ///   - reason: A reason that matches the
+    ///   - reasons: An array of reasons for the notification.
     ///   ``AppBskyLexicon/Notification/Notification/reason-swift.property``. Optional.
     ///   - limit: The number of invite codes in the list. Optional. Defaults to `50`.
     ///   - isPriority: Indicates whether the notification is a priority. Optional.
