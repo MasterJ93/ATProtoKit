@@ -18,15 +18,17 @@ extension ATProtoKit {
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/server/describeServer.json
     ///
-    /// - Parameter pdsURL: The URL of the Personal Data Server (PDS). Defaults to `nil`.
+    /// - Parameter pdsURL: The URL of the Personal Data Server (PDS).
+    /// Defaults to `https://api.bsky.app`.
     /// - Returns: Some general information of the server that matches with either `pdsURL`
     /// or `session.pdsURL`.
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
-    public func describeServer(_ pdsURL: String? = nil) async throws -> ComAtprotoLexicon.Server.DescribeServerOutput {
-        guard let sessionURL = pdsURL != nil ? pdsURL : session?.pdsURL,
-              let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.server.describeServer") else {
+    public func describeServer(_ pdsURL: String = "https://api.bsky.app") async throws -> ComAtprotoLexicon.Server.DescribeServerOutput {
+        let finalPDSURL = self.determinePDSURL(customPDSURL: pdsURL)
+
+        guard let requestURL = URL(string: "\(finalPDSURL)/xrpc/com.atproto.server.describeServer") else {
             throw ATRequestPrepareError.invalidRequestURL
         }
 

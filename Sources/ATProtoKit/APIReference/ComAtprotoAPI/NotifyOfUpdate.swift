@@ -31,10 +31,11 @@ extension ATProtoKit {
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func notifyOfUpdate(
         in crawlingHostname: URL,
-        pdsURL: String? = nil
+        pdsURL: String = "https://api.bsky.app"
     ) async throws {
-        guard let sessionURL = pdsURL != nil ? pdsURL : session?.pdsURL,
-              let requestURL = URL(string: "\(sessionURL)/xrpc/app.bsky.graph.notifyOfUpdate") else {
+        let finalPDSURL = self.determinePDSURL(customPDSURL: pdsURL)
+
+        guard let requestURL = URL(string: "\(finalPDSURL)/xrpc/com.atproto.sync.notifyOfUpdate") else {
             throw ATRequestPrepareError.invalidRequestURL
         }
 

@@ -52,6 +52,8 @@ public struct UserSession: SessionProtocol, Sendable {
     /// Indicates the possible reason for why the user account is inactive. Optional.
     public var status: UserAccountStatus?
 
+    /// The user account's endpoint used for sending authentication requests.
+    public let serviceEndpoint: URL
 
     /// The URL of the Personal Data Server (PDS) associated with the user. Optional.
     ///
@@ -86,7 +88,7 @@ public struct UserSession: SessionProtocol, Sendable {
     /// Initializes a new user session with the specified details.
     public init(handle: String, sessionDID: String, email: String? = nil, isEmailConfirmed: Bool? = nil, isEmailAuthenticationFactorEnabled: Bool?,
                 accessToken: String, refreshToken: String, didDocument: DIDDocument? = nil, isActive: Bool?, status: UserAccountStatus?,
-                pdsURL: String? = nil, logger: Logger? = nil, maxRetryCount: Int? = 3, retryTimeDelay: TimeInterval? = 1.0) {
+                serviceEndpoint: URL, pdsURL: String? = nil, logger: Logger? = nil, maxRetryCount: Int? = 3, retryTimeDelay: TimeInterval? = 1.0) {
         self.handle = handle
         self.sessionDID = sessionDID
         self.email = email
@@ -97,6 +99,7 @@ public struct UserSession: SessionProtocol, Sendable {
         self.didDocument = didDocument
         self.isActive = isActive
         self.status = status
+        self.serviceEndpoint = serviceEndpoint
         self.pdsURL = pdsURL
         self.logger = logger
         self.maxRetryCount = maxRetryCount
@@ -114,6 +117,7 @@ public struct UserSession: SessionProtocol, Sendable {
         case didDocument = "didDoc"
         case isActive = "active"
         case status
+        case serviceEndpoint
         case pdsURL
     }
 }
@@ -146,12 +150,46 @@ public struct DIDDocument: Sendable, Codable {
     /// Personal Data Server's (PDS) location.
     public var service: [ATService]
 
+    /// Checks if the ``service`` property array contains items, and if so, sees if `#atproto_pds`
+    /// is in the ``ATService/id`` property.
+    ///
+    /// - Returns: An ``ATService`` item.
+    ///
+    /// - Throws: ``DIDDocumentError`` if ``service`` is empty or if none of the items
+    /// contain `#atproto_pds`.
+    public func checkServiceForATProto() throws -> ATService {
+        let services = self.service
+
+        guard services.count > 0 else {
+            throw DIDDocumentError.emptyArray
+        }
+
+        for service in services {
+            if service.id == "#atproto_pds" {
+                return service
+            }
+        }
+
+        throw DIDDocumentError.noATProtoPDSValue
+    }
+
     enum CodingKeys: String, CodingKey {
         case context = "@context"
         case id
         case alsoKnownAs
         case verificationMethod
         case service
+    }
+
+    /// Errors relating to the DID Document.
+    public enum DIDDocumentError: ATProtoError {
+
+        /// The ``DIDDocument/service`` array is empty.
+        case emptyArray
+
+        /// None of the items in the ``DIDDocument/service`` array contains a `#atproto_pds`
+        /// value in the ``ATService/id`` property.
+        case noATProtoPDSValue
     }
 }
 

@@ -229,6 +229,13 @@ public class ATProtocolConfiguration: SessionConfiguration {
                 pdsURL: self.pdsURL
             )
 
+            guard let didDocument = self.convertDIDDocument(response.didDocument) else {
+                throw DIDDocument.DIDDocumentError.emptyArray
+            }
+
+            let atService = try didDocument.checkServiceForATProto()
+            let serviceEndpoint = atService.serviceEndpoint
+
             let userSession = UserSession(
                 handle: response.handle,
                 sessionDID: response.did,
@@ -237,9 +244,10 @@ public class ATProtocolConfiguration: SessionConfiguration {
                 isEmailAuthenticationFactorEnabled: nil,
                 accessToken: response.accessToken,
                 refreshToken: response.refreshToken,
-                didDocument: self.convertDIDDocument(response.didDocument),
+                didDocument: didDocument,
                 isActive: nil,
                 status: nil,
+                serviceEndpoint: serviceEndpoint,
                 pdsURL: self.pdsURL,
                 logger: await ATProtocolConfiguration.getLogger(),
                 maxRetryCount: self.maxRetryCount,
@@ -276,6 +284,13 @@ public class ATProtocolConfiguration: SessionConfiguration {
                 pdsURL: self.pdsURL
             )
 
+            guard let didDocument = self.convertDIDDocument(response.didDocument) else {
+                throw DIDDocument.DIDDocumentError.emptyArray
+            }
+
+            let atService = try didDocument.checkServiceForATProto()
+            let serviceEndpoint = atService.serviceEndpoint
+
             var status: UserAccountStatus? = nil
 
             switch response.status {
@@ -297,9 +312,10 @@ public class ATProtocolConfiguration: SessionConfiguration {
                 isEmailAuthenticationFactorEnabled: response.isEmailAuthenticatedFactor,
                 accessToken: response.accessToken,
                 refreshToken: response.refreshToken,
-                didDocument: self.convertDIDDocument(response.didDocument),
+                didDocument: didDocument,
                 isActive: response.isActive,
                 status: status,
+                serviceEndpoint: serviceEndpoint,
                 pdsURL: self.pdsURL,
                 logger: await ATProtocolConfiguration.getLogger(),
                 maxRetryCount: self.maxRetryCount,
@@ -341,6 +357,13 @@ public class ATProtocolConfiguration: SessionConfiguration {
                 pdsURL: self.pdsURL
             )
 
+            guard let didDocument = self.convertDIDDocument(response.didDocument) else {
+                throw DIDDocument.DIDDocumentError.emptyArray
+            }
+
+            let atService = try didDocument.checkServiceForATProto()
+            let serviceEndpoint = atService.serviceEndpoint
+
             var status: UserAccountStatus? = nil
 
             switch response.status {
@@ -363,9 +386,10 @@ public class ATProtocolConfiguration: SessionConfiguration {
                     isEmailAuthenticationFactorEnabled: response.isEmailAuthenticationFactor,
                     accessToken: sessionToken,
                     refreshToken: session.refreshToken,
-                    didDocument: self.convertDIDDocument(response.didDocument),
+                    didDocument: didDocument,
                     isActive: response.isActive,
                     status: status,
+                    serviceEndpoint: serviceEndpoint,
                     pdsURL: session.pdsURL,
                     logger: await ATProtocolConfiguration.getLogger(),
                     maxRetryCount: self.maxRetryCount,
@@ -434,6 +458,13 @@ public class ATProtocolConfiguration: SessionConfiguration {
                 pdsURL: self.pdsURL
             )
 
+            guard let didDocument = self.convertDIDDocument(response.didDocument) else {
+                throw DIDDocument.DIDDocumentError.emptyArray
+            }
+
+            let atService = try didDocument.checkServiceForATProto()
+            let serviceEndpoint = atService.serviceEndpoint
+
             var status: UserAccountStatus? = nil
 
             switch response.status {
@@ -455,9 +486,10 @@ public class ATProtocolConfiguration: SessionConfiguration {
                 isEmailAuthenticationFactorEnabled: session?.isEmailAuthenticationFactorEnabled ?? nil,
                 accessToken: response.accessToken,
                 refreshToken: response.refreshToken,
-                didDocument: self.convertDIDDocument(response.didDocument),
+                didDocument: didDocument,
                 isActive: response.isActive,
                 status: status,
+                serviceEndpoint: serviceEndpoint,
                 pdsURL: session?.pdsURL ?? nil,
                 logger: await ATProtocolConfiguration.getLogger(),
                 maxRetryCount: self.maxRetryCount,

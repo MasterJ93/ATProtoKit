@@ -24,7 +24,7 @@ extension ATProtoKit {
     ///   - limit: The number of invite codes in the list. Optional. Defaults to `500`.
     ///   - cursor: The mark used to indicate the starting point for the next set
     ///   of results. Optional.
-    ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `nil`.
+    ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `https://api.bsky.app`.
     /// - Returns: An array of CID hashes from a user account, with an optional cursor to extend
     /// the array.
     ///
@@ -35,10 +35,11 @@ extension ATProtoKit {
         sinceRevision: String?,
         limit: Int? = 500,
         cursor: String? = nil,
-        pdsURL: String? = nil
+        pdsURL: String = "https://api.bsky.app"
     ) async throws -> ComAtprotoLexicon.Sync.ListBlobsOutput {
-        guard let sessionURL = pdsURL != nil ? pdsURL : session?.pdsURL,
-              let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.sync.listBlobs") else {
+        let finalPDSURL = self.determinePDSURL(customPDSURL: pdsURL)
+
+        guard let requestURL = URL(string: "\(finalPDSURL)/xrpc/com.atproto.sync.listBlobs") else {
             throw ATRequestPrepareError.invalidRequestURL
         }
 

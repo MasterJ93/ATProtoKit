@@ -31,7 +31,9 @@ extension ATProtoKit {
             throw ATRequestPrepareError.emptyPDSURL
         }
 
-        guard let requestURL = URL(string: "\(pdsURL)/app.bsky.feed.describeFeedGenerator") else {
+        let finalPDSURL = self.determinePDSURL(customPDSURL: pdsURL)
+
+        guard let requestURL = URL(string: "\(finalPDSURL)/app.bsky.feed.describeFeedGenerator") else {
             throw ATRequestPrepareError.invalidRequestURL
         }
 

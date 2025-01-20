@@ -29,9 +29,9 @@ extension ATProtoKit {
     ///   Can only choose between `1` and `250`.
     ///   - cursor: The mark used to indicate the starting point for the next set
     ///   of results. Optional.
-    ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `nil`.
+    ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `https://api.bsky.app`.
     ///   - shouldAuthenticate: Indicates whether the method will use the access token when
-    ///   sending the request. Defaults to `false`.
+    ///   sending the request. Defaults to `true`.
     /// - Returns: An array of labels, with an optional cursor to extend the array.
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
@@ -41,17 +41,17 @@ extension ATProtoKit {
         sources: [String]? = nil,
         limit: Int? = 50,
         cursor: String? = nil,
-        pdsURL: String? = nil,
-        shouldAuthenticate: Bool = false
+        pdsURL: String = "https://api.bsky.app",
+        shouldAuthenticate: Bool = true
     ) async throws -> ComAtprotoLexicon.Label.QueryLabelsOutput {
         let authorizationValue = prepareAuthorizationValue(
-            methodPDSURL: pdsURL,
             shouldAuthenticate: shouldAuthenticate,
             session: session
         )
 
-        guard let sessionURL = pdsURL != nil ? pdsURL : session?.pdsURL,
-              let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.label.queryLabels") else {
+        let finalPDSURL = self.determinePDSURL(customPDSURL: pdsURL)
+
+        guard let requestURL = URL(string: "\(finalPDSURL)/xrpc/com.atproto.label.queryLabels") else {
             throw ATRequestPrepareError.missingActiveSession
         }
 

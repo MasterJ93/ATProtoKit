@@ -19,7 +19,7 @@ extension ATProtoKit {
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/notification/listNotifications.json
     ///
     /// - Parameters:
-    ///   - reason: A reason that matches the
+    ///   - reasons: An array of reasons for the notification.
     ///   ``AppBskyLexicon/Notification/Notification/reason-swift.property``. Optional.
     ///   - limit: The number of invite codes in the list. Optional. Defaults to `50`.
     ///   - isPriority: Indicates whether the notification is a priority. Optional.
@@ -32,7 +32,7 @@ extension ATProtoKit {
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func listNotifications(
-        with reason: String? = nil,
+        with reasons: [AppBskyLexicon.Notification.Notification.Reason]? = nil,
         limit: Int? = 50,
         isPriority: Bool?,
         cursor: String? = nil,
@@ -43,15 +43,17 @@ extension ATProtoKit {
             throw ATRequestPrepareError.missingActiveSession
         }
 
-        guard let sessionURL = session?.didDocument?.service[0].serviceEndpoint,
+        guard let sessionURL = session?.serviceEndpoint,
               let requestURL = URL(string: "\(sessionURL)/xrpc/app.bsky.notification.listNotifications") else {
             throw ATRequestPrepareError.invalidRequestURL
         }
 
         var queryItems = [(String, String)]()
 
-        if let reason {
-            queryItems.append(("reason", "\(reason)"))
+        if let reasons {
+            reasons.forEach { reason in
+                queryItems.append(("reasons[]", "\(reason.rawValue)"))
+            }
         }
 
         if let limit {

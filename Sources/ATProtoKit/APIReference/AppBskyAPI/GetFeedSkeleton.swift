@@ -32,17 +32,19 @@ extension ATProtoKit {
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
-    public static func getFeedSkeleton(
+    public func getFeedSkeleton(
         by uri: String,
         limit: Int? = 50,
         cursor: String? = nil,
-        pdsURL: String = "https://api.bsky.social"
+        pdsURL: String = "https://api.bsky.app"
     ) async throws -> AppBskyLexicon.Feed.GetFeedSkeletonOutput {
         guard pdsURL != "" else {
             throw ATRequestPrepareError.emptyPDSURL
         }
 
-        guard let requestURL = URL(string: "\(pdsURL)/xrpc/app.bsky.feed.getFeedSkeleton") else {
+        let finalPDSURL = self.determinePDSURL(customPDSURL: pdsURL)
+
+        guard let requestURL = URL(string: "\(finalPDSURL)/xrpc/app.bsky.feed.getFeedSkeleton") else {
             throw ATRequestPrepareError.invalidRequestURL
         }
 

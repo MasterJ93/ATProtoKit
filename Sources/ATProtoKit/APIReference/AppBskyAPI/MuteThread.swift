@@ -29,7 +29,7 @@ extension ATProtoKit {
             throw ATRequestPrepareError.missingActiveSession
         }
 
-        guard let sessionURL = session?.didDocument?.service[0].serviceEndpoint,
+        guard let sessionURL = session?.serviceEndpoint,
               let requestURL = URL(string: "\(sessionURL)/xrpc/app.bsky.graph.muteThread") else {
             throw ATRequestPrepareError.invalidRequestURL
         }

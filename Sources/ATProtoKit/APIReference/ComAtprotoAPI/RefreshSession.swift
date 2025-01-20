@@ -25,7 +25,7 @@ extension ATProtoKit {
     ///
     /// - Parameters:
     ///   - refreshToken: The refresh token for the session.
-    ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `https://bsky.social`.
+    ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `https://api.bsky.app`.
     /// - Returns: An instance of an authenticated user session within the AT Protocol. It may also
     /// have logging information, as well as the URL of the Personal Data Server (PDS).
     ///
@@ -33,9 +33,11 @@ extension ATProtoKit {
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func refreshSession(
         refreshToken: String,
-        pdsURL: String = "https://bsky.social"
+        pdsURL: String = "https://api.bsky.app"
     ) async throws -> ComAtprotoLexicon.Server.RefreshSessionOutput {
-        guard let requestURL = URL(string: "\(pdsURL)/xrpc/com.atproto.server.refreshSession") else {
+        let finalPDSURL = self.determinePDSURL(customPDSURL: pdsURL)
+
+        guard let requestURL = URL(string: "\(finalPDSURL)/xrpc/com.atproto.server.refreshSession") else {
             throw ATRequestPrepareError.invalidRequestURL
         }
 
