@@ -579,7 +579,7 @@ extension ATProtoBluesky {
                     imageData: caption.file
                 )
 
-                captionReferences.append(AppBskyLexicon.Embed.VideoDefinition.Caption(language: caption.language, fileBlob: blobReference.blob))
+                captionReferences.append(AppBskyLexicon.Embed.VideoDefinition.Caption(language: caption.language.identifier, fileBlob: blobReference.blob))
             }
         }
 

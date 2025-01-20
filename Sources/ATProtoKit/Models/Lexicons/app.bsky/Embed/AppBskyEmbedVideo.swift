@@ -78,7 +78,7 @@ extension AppBskyLexicon.Embed {
             public let type: String = "app.bsky.embed.video#caption"
 
             /// The language the captions are written in.
-            public let language: Locale
+            public let language: String
 
             /// The caption file itself.
             ///
