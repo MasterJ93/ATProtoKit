@@ -58,6 +58,9 @@ extension AppBskyLexicon.Feed {
         /// An array of labels created by the user. Optional.
         public let labels: ATUnion.GeneratorLabelsUnion?
 
+        /// The content mode for the feed generator. Optional.
+        public let contentMode: ContentMode?
+
         /// The date and time the feed was created.
         public let createdAt: Date
 
@@ -71,6 +74,7 @@ extension AppBskyLexicon.Feed {
             self.avatarImageBlob = try container.decodeIfPresent(ComAtprotoLexicon.Repository.BlobContainer?.self, forKey: .avatarImageBlob)
             self.canAcceptInteractions = try container.decodeIfPresent(Bool.self, forKey: .canAcceptInteractions)
             self.labels = try container.decodeIfPresent(ATUnion.GeneratorLabelsUnion.self, forKey: .labels)
+            self.contentMode = try container.decodeIfPresent(ContentMode.self, forKey: .contentMode)
             self.createdAt = try container.decodeDate(forKey: .createdAt)
         }
 
@@ -84,6 +88,7 @@ extension AppBskyLexicon.Feed {
             try container.encodeIfPresent(self.avatarImageBlob, forKey: .avatarImageBlob)
             try container.encodeIfPresent(self.canAcceptInteractions, forKey: .canAcceptInteractions)
             try container.encodeIfPresent(self.labels, forKey: .labels)
+            try container.encodeIfPresent(self.contentMode, forKey: .contentMode)
             try container.encodeDate(self.createdAt, forKey: .createdAt)
         }
 
@@ -96,7 +101,18 @@ extension AppBskyLexicon.Feed {
             case avatarImageBlob = "avatar"
             case canAcceptInteractions = "acceptsInteractions"
             case labels
+            case contentMode
             case createdAt
+        }
+
+        /// The content mode for the feed generator.
+        public enum ContentMode: String, Sendable, Codable {
+
+            /// Declares the feed generator supports any post type.
+            case unspecified = "app.bsky.feed.defs#contentModeUnspecified"
+
+            /// Declares the feed generator returns posts with embeds from `app.bsky.embed.video`.
+            case video = "app.bsky.feed.defs#contentModeVideo"
         }
     }
 }

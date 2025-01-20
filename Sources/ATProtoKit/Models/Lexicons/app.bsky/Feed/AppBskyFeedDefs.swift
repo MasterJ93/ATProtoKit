@@ -391,6 +391,8 @@ extension AppBskyLexicon.Feed {
         /// The viewer's state for the feed generator. Optional.
         public let viewer: GeneratorViewerStateDefinition?
 
+        /// The content mode of the feed generator. Optional.
+        public let contentMode: ContentMode?
 
         /// The last time the feed generator was indexed.
         public let indexedAt: Date
@@ -410,6 +412,7 @@ extension AppBskyLexicon.Feed {
             self.canAcceptInteractions = try container.decodeIfPresent(Bool.self, forKey: .canAcceptInteractions)
             self.labels = try container.decodeIfPresent([ComAtprotoLexicon.Label.LabelDefinition].self, forKey: .labels)
             self.viewer = try container.decodeIfPresent(AppBskyLexicon.Feed.GeneratorViewerStateDefinition.self, forKey: .viewer)
+            self.contentMode = try container.decodeIfPresent(ContentMode.self, forKey: .contentMode)
             self.indexedAt = try container.decodeDate(forKey: .indexedAt)
         }
 
@@ -432,6 +435,7 @@ extension AppBskyLexicon.Feed {
             try container.encodeIfPresent(self.canAcceptInteractions, forKey: .canAcceptInteractions)
             try container.encodeIfPresent(self.labels, forKey: .labels)
             try container.encodeIfPresent(self.viewer, forKey: .viewer)
+            try container.encodeIfPresent(self.contentMode, forKey: .contentMode)
             try container.encodeDateIfPresent(self.indexedAt, forKey: .indexedAt)
         }
 
@@ -448,7 +452,18 @@ extension AppBskyLexicon.Feed {
             case canAcceptInteractions = "acceptsInteractions"
             case labels
             case viewer
+            case contentMode
             case indexedAt
+        }
+
+        /// The content mode for the feed generator.
+        public enum ContentMode: String, Sendable, Codable, Equatable, Hashable {
+
+            /// Declares the feed generator supports any post type.
+            case unspecified = "app.bsky.feed.defs#contentModeUnspecified"
+
+            /// Declares the feed generator returns posts with embeds from `app.bsky.embed.video`.
+            case video = "app.bsky.feed.defs#contentModeVideo"
         }
     }
 
@@ -628,6 +643,18 @@ extension AppBskyLexicon.Feed {
             /// - Note: According to the AT Protocol specifications: "User clicked through to the embedded
             /// content of the feed item."
             case clickthroughEmbed
+
+            /// Declares the feed generator supports any post type.
+            ///
+            /// - Note: According to the AT Protocol specifications: "Declares the feed generator
+            /// returns any types of posts."
+            case contentModeUnspecified
+
+            /// Declares the feed generator returns posts with embeds from `app.bsky.embed.video`.
+            ///
+            /// - Note: According to the AT Protocol specifications: "Declares the feed generator
+            /// returns posts containing app.bsky.embed.video embeds."
+            case contentModeVideo
 
             /// Indicates the user has viewed the item in the feed.
             ///
