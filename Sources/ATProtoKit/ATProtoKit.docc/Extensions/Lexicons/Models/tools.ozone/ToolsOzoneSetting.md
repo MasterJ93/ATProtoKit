@@ -20,3 +20,4 @@
 
 - ``ToolsOzoneLexicon/Setting/UpsertOption``
 - ``ToolsOzoneLexicon/Setting/UpsertOptionRequestBody``
+- ``ToolsOzoneLexicon/Setting/UpsertOptionOutput``

@@ -16,6 +16,10 @@ extension ComAtprotoLexicon.Lexicon {
     /// in Lexicon; this meta schema currently only includes a single version field ('lexicon').
     /// See the atproto specifications for description of the other expected top-level fields
     /// ('id', 'defs', etc)."
+    ///
+    /// - SeeAlso: This is based on the [`com.atproto.lexicon.schema`][github] lexicon.
+    ///
+    /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/lexicon/schema.json
     public struct SchemaRecord: ATRecordProtocol, Sendable {
 
         /// The identifier of the lexicon.
