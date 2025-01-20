@@ -44,7 +44,7 @@ extension AppBskyLexicon.Feed {
         public let quoteCount: Int?
 
         /// The last time the post has been indexed.
-        public var indexedAt: Date
+        public let indexedAt: Date
 
         /// The viewer's interaction with the post. Optional.
         public let viewer: ViewerStateDefinition?
@@ -158,10 +158,10 @@ extension AppBskyLexicon.Feed {
         public let post: PostViewDefinition
 
         /// The reply reference for the post, if it's a reply. Optional.
-        public var reply: ReplyReferenceDefinition?
+        public let reply: ReplyReferenceDefinition?
 
         /// Determines whether the repost is a normal repost or pinned. Optional.
-        public var reason: ATUnion.ReasonRepostUnion?
+        public let reason: ATUnion.ReasonRepostUnion?
 
         /// The feed generator's context. Optional
         ///
@@ -265,7 +265,7 @@ extension AppBskyLexicon.Feed {
         public let parent: ATUnion.ThreadViewPostParentUnion?
 
         /// An array of posts of various types. Optional.
-        public var replies: [ATUnion.ThreadViewPostRepliesUnion]?
+        public let replies: [ATUnion.ThreadViewPostRepliesUnion]?
     }
 
     /// A definition model for a post that may not have been found.
@@ -335,7 +335,7 @@ extension AppBskyLexicon.Feed {
         public let did: String
 
         /// The viewer state of the user. Optional.
-        public var viewer: AppBskyLexicon.Actor.ViewerStateDefinition?
+        public let viewer: AppBskyLexicon.Actor.ViewerStateDefinition?
 
         enum CodingKeys: CodingKey {
             case did
@@ -368,16 +368,16 @@ extension AppBskyLexicon.Feed {
         /// The description of the feed generator. Optional.
         ///
         /// - Important: Current maximum length is 300 characters.
-        public var description: String?
+        public let description: String?
 
         /// An array of the facets within the feed generator's description.
         public let descriptionFacets: [AppBskyLexicon.RichText.Facet]?
 
         /// The avatar image URL of the feed generator.
-        public var avatarImageURL: URL?
+        public let avatarImageURL: URL?
 
         /// The number of likes for the feed generator.
-        public var likeCount: Int?
+        public let likeCount: Int?
 
         /// Indicates whether the feed generator can accept interactions.
         ///
@@ -388,11 +388,14 @@ extension AppBskyLexicon.Feed {
         /// An array of labels. Optional.
         public let labels: [ComAtprotoLexicon.Label.LabelDefinition]?
 
-        /// The viewer's state for the feed generator.
-        public var viewer: GeneratorViewerStateDefinition?
+        /// The viewer's state for the feed generator. Optional.
+        public let viewer: GeneratorViewerStateDefinition?
+
+        /// The content mode of the feed generator. Optional.
+        public let contentMode: ContentMode?
 
         /// The last time the feed generator was indexed.
-        public var indexedAt: Date
+        public let indexedAt: Date
 
         public init(from decoder: any Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
@@ -409,6 +412,7 @@ extension AppBskyLexicon.Feed {
             self.canAcceptInteractions = try container.decodeIfPresent(Bool.self, forKey: .canAcceptInteractions)
             self.labels = try container.decodeIfPresent([ComAtprotoLexicon.Label.LabelDefinition].self, forKey: .labels)
             self.viewer = try container.decodeIfPresent(AppBskyLexicon.Feed.GeneratorViewerStateDefinition.self, forKey: .viewer)
+            self.contentMode = try container.decodeIfPresent(ContentMode.self, forKey: .contentMode)
             self.indexedAt = try container.decodeDate(forKey: .indexedAt)
         }
 
@@ -431,6 +435,7 @@ extension AppBskyLexicon.Feed {
             try container.encodeIfPresent(self.canAcceptInteractions, forKey: .canAcceptInteractions)
             try container.encodeIfPresent(self.labels, forKey: .labels)
             try container.encodeIfPresent(self.viewer, forKey: .viewer)
+            try container.encodeIfPresent(self.contentMode, forKey: .contentMode)
             try container.encodeDateIfPresent(self.indexedAt, forKey: .indexedAt)
         }
 
@@ -447,7 +452,18 @@ extension AppBskyLexicon.Feed {
             case canAcceptInteractions = "acceptsInteractions"
             case labels
             case viewer
+            case contentMode
             case indexedAt
+        }
+
+        /// The content mode for the feed generator.
+        public enum ContentMode: String, Sendable, Codable, Equatable, Hashable {
+
+            /// Declares the feed generator supports any post type.
+            case unspecified = "app.bsky.feed.defs#contentModeUnspecified"
+
+            /// Declares the feed generator returns posts with embeds from `app.bsky.embed.video`.
+            case video = "app.bsky.feed.defs#contentModeVideo"
         }
     }
 
@@ -459,7 +475,7 @@ extension AppBskyLexicon.Feed {
     public struct GeneratorViewerStateDefinition: Sendable, Codable, Equatable, Hashable {
 
         /// The URI of the viewer's like, if they liked the feed generator. Optional.
-        public var likeURI: String?
+        public let likeURI: String?
 
         enum CodingKeys: String, CodingKey {
             case likeURI = "like"
@@ -480,7 +496,7 @@ extension AppBskyLexicon.Feed {
         public let postURI: String
 
         /// The indication that the post was a repost. Optional.
-        public var reason: ATUnion.SkeletonReasonRepostUnion?
+        public let reason: ATUnion.SkeletonReasonRepostUnion?
 
         /// The feed generator's context. Optional
         ///
@@ -627,6 +643,18 @@ extension AppBskyLexicon.Feed {
             /// - Note: According to the AT Protocol specifications: "User clicked through to the embedded
             /// content of the feed item."
             case clickthroughEmbed
+
+            /// Declares the feed generator supports any post type.
+            ///
+            /// - Note: According to the AT Protocol specifications: "Declares the feed generator
+            /// returns any types of posts."
+            case contentModeUnspecified
+
+            /// Declares the feed generator returns posts with embeds from `app.bsky.embed.video`.
+            ///
+            /// - Note: According to the AT Protocol specifications: "Declares the feed generator
+            /// returns posts containing app.bsky.embed.video embeds."
+            case contentModeVideo
 
             /// Indicates the user has viewed the item in the feed.
             ///
