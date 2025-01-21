@@ -7,6 +7,8 @@
 - ``ToolsOzoneLexicon/Moderation/ModerationEventViewDefinition``
 - ``ToolsOzoneLexicon/Moderation/EventViewDetailDefinition``
 - ``ToolsOzoneLexicon/Moderation/SubjectStatusViewDefinition``
+- ``ToolsOzoneLexicon/Moderation/AccountStatsDefinition``
+- ``ToolsOzoneLexicon/Moderation/RecordsStatsDefinition``
 - ``ToolsOzoneLexicon/Moderation/SubjectReviewStateDefinition``
 - ``ToolsOzoneLexicon/Moderation/EventTakedownDefinition``
 - ``ToolsOzoneLexicon/Moderation/EventReverseTakedownDefinition``
