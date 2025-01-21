@@ -46,6 +46,28 @@ extension ToolsOzoneLexicon.Communication {
         /// Indicates whether the communication template is disabled. Optional.
         public let isDisabled: Bool?
 
+        public init(id: String, name: String?, language: Locale?, contentMarkdown: String?, subject: String?, updatedBy: String?, isDisabled: Bool?) {
+            self.id = id
+            self.name = name
+            self.language = language
+            self.contentMarkdown = contentMarkdown
+            self.subject = subject
+            self.updatedBy = updatedBy
+            self.isDisabled = isDisabled
+        }
+
+        public init(from decoder: any Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+
+            self.id = try container.decode(String.self, forKey: .id)
+            self.name = try container.decodeIfPresent(String.self, forKey: .name)
+            self.language = try container.decodeLocaleIfPresent(forKey: .language)
+            self.contentMarkdown = try container.decodeIfPresent(String.self, forKey: .contentMarkdown)
+            self.subject = try container.decodeIfPresent(String.self, forKey: .subject)
+            self.updatedBy = try container.decodeIfPresent(String.self, forKey: .updatedBy)
+            self.isDisabled = try container.decodeIfPresent(Bool.self, forKey: .isDisabled)
+        }
+
         enum CodingKeys: String, CodingKey {
             case id
             case name

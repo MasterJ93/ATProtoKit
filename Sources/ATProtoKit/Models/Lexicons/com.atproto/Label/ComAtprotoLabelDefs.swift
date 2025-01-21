@@ -332,7 +332,7 @@ extension ComAtprotoLexicon.Label {
         public init(from decoder: any Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
 
-            self.language = try container.decode(Locale.self, forKey: .language)
+            self.language = try container.decodeLocale(forKey: .language)
             self.name = try container.decode(String.self, forKey: .name)
             self.description = try container.decode(String.self, forKey: .description)
         }
