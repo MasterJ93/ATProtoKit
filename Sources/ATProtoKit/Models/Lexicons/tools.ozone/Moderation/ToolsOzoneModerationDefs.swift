@@ -229,11 +229,24 @@ extension ToolsOzoneLexicon.Moderation {
         /// An array of tags. Optional.
         public let tags: [String]?
 
+        /// Statistics about a user account. Optional.
+        ///
+        /// - Note: According to the AT Protocol specifications: "Statistics related to the
+        /// account subject."
+        public let accountStats: AccountStatsDefinition?
+
+        /// Statistics about a record's set items. Optional
+        ///
+        /// - Note: According to the AT Protocol specifications: "Statistics related to the record
+        /// subjects authored by the subject's account."
+        public let recordsStats: RecordsStatsDefinition?
+
         public init(id: Int, subject: ATUnion.SubjectStatusViewSubjectUnion, hosting: ATUnion.SubjectStatusViewHostingUnion?,
                     subjectBlobCIDs: [String]? = nil, subjectRepoHandle: String? = nil, updatedAt: Date, createdAt: Date,
                     reviewState: ToolsOzoneLexicon.Moderation.SubjectReviewStateDefinition, comment: String? = nil, muteUntil: Date? = nil,
                     muteReportingUntil: Date? = nil, lastReviewedBy: String? = nil, lastReviewedAt: Date? = nil, lastReportedAt: Date? = nil,
-                    lastAppealedAt: Date? = nil, isTakenDown: Bool? = nil, wasAppealed: Bool? = nil, suspendUntil: Date? = nil, tags: [String]? = nil) {
+                    lastAppealedAt: Date? = nil, isTakenDown: Bool? = nil, wasAppealed: Bool? = nil, suspendUntil: Date? = nil, tags: [String]? = nil,
+                    accountStats: AccountStatsDefinition? = nil, recordsStats: RecordsStatsDefinition? = nil) {
             self.id = id
             self.subject = subject
             self.hosting = hosting
@@ -253,6 +266,8 @@ extension ToolsOzoneLexicon.Moderation {
             self.wasAppealed = wasAppealed
             self.suspendUntil = suspendUntil
             self.tags = tags
+            self.accountStats = accountStats
+            self.recordsStats = recordsStats
         }
 
         public init(from decoder: any Decoder) throws {
@@ -277,6 +292,8 @@ extension ToolsOzoneLexicon.Moderation {
             self.wasAppealed = try container.decodeIfPresent(Bool.self, forKey: .wasAppealed)
             self.suspendUntil = try container.decodeDateIfPresent(forKey: .suspendUntil)
             self.tags = try container.decodeIfPresent([String].self, forKey: .tags)
+            self.accountStats = try container.decodeIfPresent(AccountStatsDefinition.self, forKey: .accountStats)
+            self.recordsStats = try container.decodeIfPresent(RecordsStatsDefinition.self, forKey: .recordsStats)
         }
 
         public func encode(to encoder: Encoder) throws {
@@ -301,6 +318,8 @@ extension ToolsOzoneLexicon.Moderation {
             try container.encodeIfPresent(self.wasAppealed, forKey: .wasAppealed)
             try container.encodeDateIfPresent(self.suspendUntil, forKey: .suspendUntil)
             try container.encode(self.tags, forKey: .tags)
+            try container.encodeIfPresent(self.accountStats, forKey: .accountStats)
+            try container.encodeIfPresent(self.recordsStats, forKey: .recordsStats)
         }
 
         enum CodingKeys: String, CodingKey {
@@ -323,7 +342,111 @@ extension ToolsOzoneLexicon.Moderation {
             case wasAppealed = "appealed"
             case suspendUntil
             case tags
+            case accountStats
+            case recordsStats
         }
+    }
+
+    /// A definition model for statistics about a user account.
+    ///
+    /// - Note: According to the AT Protocol specifications: "Statistics about a particular
+    /// account subject."
+    ///
+    /// - SeeAlso: This is based on the [`tools.ozone.moderation.defs`][github] lexicon.
+    ///
+    /// [github]: https://github.com/bluesky-social/atproto/blame/main/lexicons/tools/ozone/moderation/defs.json
+    public struct AccountStatsDefinition: Sendable, Codable {
+
+        /// The number of reports related to the user account. Optional.
+        ///
+        /// - Note: According to the AT Protocol specifications: "Statistics about a particular
+        /// account subject."
+        public let reportCount: Int?
+
+        /// The number of appeals related to the user account. Optional.
+        ///
+        /// - Note: According to the AT Protocol specifications: "Total number of reports on
+        /// the account."
+        public let appealCount: Int?
+
+        /// The number of times the user account has been suspended. Optional.
+        ///
+        /// - Note: According to the AT Protocol specifications: "Number of times the account
+        /// was suspended."
+        public let suspendCount: Int?
+
+        /// The number of escalations related to the user account. Optional.
+        ///
+        /// - Note: According to the AT Protocol specifications: "Number of times the account
+        /// was escalated."
+        public let escalateCount: Int?
+
+        /// The number of times the user account has been taken down. Optional.
+        ///
+        /// - Note: According to the AT Protocol specifications: "Number of times the account was
+        /// taken down."
+        public let takedownCount: Int?
+    }
+
+    /// A definition model for statistics about a record's set items.
+    ///
+    /// - Note: According to the AT Protocol specifications: "Statistics about a set of record
+    /// subject items."
+    ///
+    /// - SeeAlso: This is based on the [`tools.ozone.moderation.defs`][github] lexicon.
+    ///
+    /// [github]: https://github.com/bluesky-social/atproto/blame/main/lexicons/tools/ozone/moderation/defs.json
+    public struct RecordsStatsDefinition: Sendable, Codable {
+
+        /// Total total number of reports on the record's set items. Optional.
+        ///
+        /// - Note: According to the AT Protocol specifications: "Cumulative sum of the number of
+        /// reports on the items in the set."
+        public let totalReports: Int?
+
+        /// The total number of reported set items.
+        ///
+        /// - Note: According to the AT Protocol specifications: "Number of items that were
+        /// reported at least once."
+        public let reportedCount: Int?
+
+        /// The total number of set items that have been escalated. Optional.
+        ///
+        /// - Note: According to the AT Protocol specifications: "Number of items that were
+        /// escalated at least once."
+        public let escalatedCount: Int?
+
+        /// The total number of set items that have has their reports appealed. Optional.
+        ///
+        /// - Note: According to the AT Protocol specifications: "Number of items that were
+        /// appealed at least once."
+        public let appealedCount: Int?
+
+        /// The total number of set items. Optional.
+        ///
+        /// - Note: According to the AT Protocol specifications: "Total number of items in
+        /// the set."
+        public let subjectCount: Int?
+
+        /// The total number of set items currently in the `reviewOpen` or
+        /// `reviewEscalated` state. Optional.
+        ///
+        /// - Note: According to the AT Protocol specifications: "Number of items currently in
+        /// 'reviewOpen' or 'reviewEscalated' state."
+        public let pendingCount: Int?
+
+        /// The total number of set items currently in the `reviewNone` or `reviewClosed` state.
+        /// Optional.
+        ///
+        /// - Note: According to the AT Protocol specifications: "Number of items currently in
+        /// 'reviewNone' or 'reviewClosed' state"
+        public let processedCount: Int?
+
+        /// The total number of set items that have been taken down. Optional.
+        ///
+        /// - Note: According to the AT Protocol specifications: "Number of items currently
+        /// taken down"
+        public let takendownCount: Int?
     }
 
     /// A definition model for  the subject review state.
