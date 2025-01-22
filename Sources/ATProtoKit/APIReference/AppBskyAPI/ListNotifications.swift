@@ -52,7 +52,7 @@ extension ATProtoKit {
 
         if let reasons {
             reasons.forEach { reason in
-                queryItems.append(("reasons[]", "\(reason.rawValue)"))
+                queryItems.append(("reasons", "\(reason.rawValue)"))
             }
         }
 
