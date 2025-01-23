@@ -10,7 +10,11 @@ import Foundation
 extension ATProtoKit {
 
     /// Lists notifications of the user account.
-    /// 
+    ///
+    /// - Bug: The `seenAt` parameter is currently not working. This is a known issue, as per the
+    /// [GitHub Issue ticket](https://github.com/bluesky-social/atproto/issues/1636) in the
+    /// atproto repo. Until it's fixed, please refrain from using this.
+    ///
     /// - Note: According to the AT Protocol specifications: "Enumerate notifications for the
     /// requesting account. Requires auth."
     ///
@@ -73,7 +77,6 @@ extension ATProtoKit {
         if let seenAt, let formattedSeenAt = CustomDateFormatter.shared.string(from: seenAt) {
             queryItems.append(("seenAt", formattedSeenAt))
         }
-
 
         let queryURL: URL
 
