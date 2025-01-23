@@ -48,6 +48,24 @@ extension ToolsOzoneLexicon.Communication {
         /// the template."
         public let createdBy: String?
 
+        public init(name: String, contentMarkdown: String, subject: String, language: Locale?, createdBy: String?) {
+            self.name = name
+            self.contentMarkdown = contentMarkdown
+            self.subject = subject
+            self.language = language
+            self.createdBy = createdBy
+        }
+
+        public init(from decoder: any Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+
+            self.name = try container.decode(String.self, forKey: .name)
+            self.contentMarkdown = try container.decode(String.self, forKey: .contentMarkdown)
+            self.subject = try container.decode(String.self, forKey: .subject)
+            self.language = try container.decodeLocaleIfPresent(forKey: .language)
+            self.createdBy = try container.decodeIfPresent(String.self, forKey: .createdBy)
+        }
+
         enum CodingKeys: String, CodingKey {
             case name
             case contentMarkdown

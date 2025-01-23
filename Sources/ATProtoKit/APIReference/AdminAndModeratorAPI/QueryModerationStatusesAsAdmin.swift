@@ -73,6 +73,12 @@ extension ATProtoAdmin {
     ///   of results. Optional.
     ///   - collections: Sets where the subject belongs to the given collections will be returned.
     ///   - subjectType: The specified subject type for the event. Optional.
+    ///   - minimumAccountSuspendCount: The minimum number of accounts that have been suspended.
+    ///   Optional. Defaults to `nil`.
+    ///   - minimumReportedRecordsCount: The minimum number of reported records. Optional.
+    ///   Defaults to `nil`.
+    ///   - minimumTakendownRecordsCount: The minimum number of takedown records. Optional.
+    ///   Defaults to `nil`.
     /// - Returns: An array of all moderation events pertaining a subject, with an optional cursor
     /// to extend the array.
     ///
@@ -108,7 +114,10 @@ extension ATProtoAdmin {
         excludeTags: [String]? = nil,
         cursor: String? = nil,
         collections: [String]? = nil,
-        subjectType: ToolsOzoneLexicon.Moderation.QueryStatuses.SubjectType? = nil
+        subjectType: ToolsOzoneLexicon.Moderation.QueryStatuses.SubjectType? = nil,
+        minimumAccountSuspendCount: Int? = nil,
+        minimumReportedRecordsCount: Int? = nil,
+        minimumTakendownRecordsCount: Int? = nil
     ) async throws -> ToolsOzoneLexicon.Moderation.QueryStatusesOutput {
         guard session != nil,
               let accessToken = session?.accessToken else {
@@ -266,6 +275,21 @@ extension ATProtoAdmin {
         // subjectType
         if let subjectType {
             queryItems.append(("subjectType", "\(subjectType.rawValue)"))
+        }
+
+        // minimumAccountSuspendCount
+        if let minimumAccountSuspendCount {
+            queryItems.append(("minAccountSuspendCount", "\(minimumAccountSuspendCount)"))
+        }
+
+        // minimumReportedRecordsCount
+        if let minimumReportedRecordsCount {
+            queryItems.append(("minReportedRecordsCount", "\(minimumReportedRecordsCount)"))
+        }
+
+        // minimumTakendownRecordsCount
+        if let minimumTakendownRecordsCount {
+            queryItems.append(("minTakendownRecordsCount", "\(minimumTakendownRecordsCount)"))
         }
 
         let queryURL: URL

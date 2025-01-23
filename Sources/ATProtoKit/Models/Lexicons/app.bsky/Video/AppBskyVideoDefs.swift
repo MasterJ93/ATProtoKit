@@ -65,6 +65,9 @@ extension AppBskyLexicon.Video {
 
             /// The job is currently scanning.
             case jobStateScanning = "JOB_STATE_SCANNING"
+            
+            /// The job is scanned.
+            case jobStateScanned = "JOB_STATE_SCANNED"
 
             /// The job is completed processing.
             case jobStateCompleted = "JOB_STATE_COMPLETED"

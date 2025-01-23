@@ -80,7 +80,7 @@ extension ToolsOzoneLexicon.Communication {
             self.subject = try container.decodeIfPresent(String.self, forKey: .subject)
             self.contentMarkdown = try container.decode(String.self, forKey: .contentMarkdown)
             self.isDisabled = try container.decode(Bool.self, forKey: .isDisabled)
-            self.language = try container.decodeIfPresent(Locale.self, forKey: .language)
+            self.language = try container.decodeLocaleIfPresent(forKey: .language)
             self.lastUpdatedBy = try container.decode(String.self, forKey: .lastUpdatedBy)
             self.createdAt = try container.decodeDate(forKey: .createdAt)
             self.updatedAt = try container.decodeDate(forKey: .updatedAt)

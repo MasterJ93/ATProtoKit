@@ -13,13 +13,21 @@ extension ToolsOzoneLexicon.Moderation {
     public struct QueryStatuses: Sendable, Codable {
 
         /// Indicates the sorting field for the moderation status array.
-        public enum SortField: Codable {
+        public enum SortField: Sendable, Codable {
 
             /// Indicates the moderation status array will be sorted by the last reported user.
             case lastReportedAt
 
             /// Indicates the moderation status array will be sorted by the last reviwed user.
             case lastReviewedAt
+
+            /// Indicates the moderation status array will be sorted by the number of
+            /// reported records.
+            case reportedRecordsCount
+
+            /// Indicates the moderation status array will be sorted by the number of
+            /// takedown records.
+            case takendownRecordsCount
         }
 
         public enum SortDirection: String, Sendable, Codable {

@@ -10,7 +10,11 @@ import Foundation
 extension ATProtoKit {
 
     /// Lists notifications of the user account.
-    /// 
+    ///
+    /// - Bug: The `seenAt` parameter is currently not working. This is a known issue, as per the
+    /// [GitHub Issue ticket](https://github.com/bluesky-social/atproto/issues/1636) in the
+    /// atproto repo. Until it's fixed, please refrain from using this.
+    ///
     /// - Note: According to the AT Protocol specifications: "Enumerate notifications for the
     /// requesting account. Requires auth."
     ///
@@ -23,6 +27,7 @@ extension ATProtoKit {
     ///   ``AppBskyLexicon/Notification/Notification/reason-swift.property``. Optional.
     ///   - limit: The number of invite codes in the list. Optional. Defaults to `50`.
     ///   - isPriority: Indicates whether the notification is a priority. Optional.
+    ///   Defaults to `nil`.
     ///   - cursor: The mark used to indicate the starting point for the next set
     ///   of results. Optional.
     ///   - seenAt: The date and time the notification was seen. Defaults to the date and time the
@@ -34,9 +39,9 @@ extension ATProtoKit {
     public func listNotifications(
         with reasons: [AppBskyLexicon.Notification.Notification.Reason]? = nil,
         limit: Int? = 50,
-        isPriority: Bool?,
+        isPriority: Bool? = nil,
         cursor: String? = nil,
-        seenAt: Date? = Date()
+        seenAt: Date? = nil
     ) async throws -> AppBskyLexicon.Notification.ListNotificationsOutput {
         guard session != nil,
               let accessToken = session?.accessToken else {
@@ -52,7 +57,7 @@ extension ATProtoKit {
 
         if let reasons {
             reasons.forEach { reason in
-                queryItems.append(("reasons[]", "\(reason.rawValue)"))
+                queryItems.append(("reasons", "\(reason.rawValue)"))
             }
         }
 
@@ -72,7 +77,6 @@ extension ATProtoKit {
         if let seenAt, let formattedSeenAt = CustomDateFormatter.shared.string(from: seenAt) {
             queryItems.append(("seenAt", formattedSeenAt))
         }
-
 
         let queryURL: URL
 
