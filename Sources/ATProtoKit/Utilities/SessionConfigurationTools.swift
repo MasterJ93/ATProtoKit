@@ -156,9 +156,7 @@ public class SessionConfigurationTools {
     ///
     /// - Parameter accessToken: An optional access token to validate.
     /// - Returns: A valid access token.
-    ///
-    /// - Throws: An `ATProtoError` if no access token is available.
-    public func getValidRefreshToken(from refreshToken: String?) throws -> String {
+    public func getValidRefreshToken(from refreshToken: String?) -> String {
         if let token = refreshToken {
             return token
         }
