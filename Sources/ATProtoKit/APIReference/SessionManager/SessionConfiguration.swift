@@ -12,59 +12,59 @@ import Logging
 public protocol SessionConfiguration: Sendable {
 
     /// The user's handle within the AT Protocol.
-    var handle: String { get }
+    var handle: String { get set }
 
     /// The password associated with the user's account, used for authentication.
-    var password: String { get }
+    var password: String { get set }
 
     /// The decentralized identifier (DID), serving as a persistent and long-term account
     /// identifier according to the W3C standard.
-    var sessionDID: String { get }
+    var sessionDID: String { get set }
 
     /// The user's email address. Optional.
-    var email: String? { get }
+    var email: String? { get set }
 
     /// Indicates whether the user's email address has been confirmed. Optional.
-    var isEmailConfirmed: Bool? { get }
+    var isEmailConfirmed: Bool? { get set }
 
     /// Indicates whether Two-Factor Authentication (via email) is enabled. Optional.
-    var isEmailAuthenticationFactorEnabled: Bool? { get }
+    var isEmailAuthenticationFactorEnabled: Bool? { get set }
 
     /// The access token used for API requests that requests authentication.
-    var accessToken: String { get }
+    var accessToken: String? { get set }
 
     /// The refresh token used to generate a new access token.
-    var refreshToken: String { get }
+    var refreshToken: String { get set }
 
     /// The DID document associated with the user, which contains AT Protocol-specific
     /// information. Optional.
-    var didDocument: DIDDocument? { get }
+    var didDocument: DIDDocument? { get set }
 
     /// Indicates whether the user account is active. Optional.
-    var isActive: Bool? { get }
+    var isActive: Bool? { get set }
 
     /// Indicates the possible reason for why the user account is inactive. Optional.
-    var status: UserAccountStatus? { get }
+    var status: UserAccountStatus? { get set }
 
     /// The user account's endpoint used for sending authentication requests.
-    var serviceEndpoint: URL { get }
+    var serviceEndpoint: URL { get set }
 
     /// The base URL of the Personal Data Server (PDS) with which the AT Protocol interacts.
     ///
     /// This URL is used to make network requests to the PDS for various operations, such as
     /// session creation, refresh, and deletion.
-    var pdsURL: String { get }
+    var pdsURL: String { get set }
 
     /// Specifies the logger that will be used for emitting log messages. Optional.
     ///
     /// - Note: This is not included when initalizing `UserSession`. Instead, it's added
     /// after the successful initalizing.
-    var logger: Logger? { get }
+    var logger: Logger? { get set }
 
     /// The object attached to the configuration class that holds the session. Optional.
     ///
     /// This also includes things such as retry limits and logging.
-    var session: UserSession? { get }
+    var session: UserSession? { get set }
 
     /// The number of times a request can be attempted before it's considered a failure.
     ///
@@ -72,7 +72,7 @@ public protocol SessionConfiguration: Sendable {
     ///
     /// - Note: This is not included when initalizing `UserSession`. Instead, it's added
     /// after the successful initalizing.
-    var maxRetryCount: Int? { get }
+    var maxRetryCount: Int? { get set }
 
     /// The length of time to wait before attempting to retry a request.
     ///
@@ -82,7 +82,7 @@ public protocol SessionConfiguration: Sendable {
     ///
     /// - Note: This is not included when initalizing `UserSession`. Instead, it's added
     /// after the successful initalizing.
-    var retryTimeDelay: TimeInterval? { get }
+    var retryTimeDelay: TimeInterval? { get set }
 
 
     /// Attempts to authenticate with the PDS using the `handle` and `appPassword`.
