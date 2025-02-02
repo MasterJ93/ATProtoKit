@@ -6,6 +6,7 @@
 
 - ``PostViewDefinition``
 - ``ViewerStateDefinition``
+- ``ThreadContextDefinition``
 - ``FeedViewPostDefinition``
 - ``ReplyReferenceDefinition``
 - ``ReasonRepostDefinition``
