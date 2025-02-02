@@ -180,7 +180,8 @@ public class SessionConfigurationTools {
         do {
             try await self.sessionConfiguration.authenticate(authenticationFactorToken: authenticationFactorToken)
 
-            guard let didDocument = self.sessionConfiguration.didDocument else {
+            guard let refreshToken = sessionConfiguration.refreshToken,
+                  let didDocument = self.sessionConfiguration.didDocument else {
                 throw SessionConfigurationToolsError.noSessionToken(message: "No session token found after re-authentication attempt.")
             }
 
@@ -220,7 +221,7 @@ public class SessionConfigurationTools {
 
             return ComAtprotoLexicon.Server.RefreshSessionOutput(
                 accessToken: self.sessionConfiguration.accessToken!,
-                refreshToken: self.sessionConfiguration.refreshToken,
+                refreshToken: refreshToken,
                 handle: self.sessionConfiguration.handle,
                 did: self.sessionConfiguration.sessionDID,
                 didDocument: unknownDIDDocument,
