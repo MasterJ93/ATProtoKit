@@ -126,7 +126,7 @@ public protocol SessionConfiguration: Sendable {
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     func createAccount(
         email: String?,
-        password: String,
+        handle: String,
         existingDID: String?,
         inviteCode: String?,
         verificationCode: String?,
