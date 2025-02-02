@@ -97,15 +97,14 @@ public class SessionConfigurationTools {
         do {
             _ = try await self.sessionConfiguration.refreshSession(by: nil, authenticationFactorToken: authenticationFactorToken)
 
-            guard let status = self.sessionConfiguration.status,
-                  let didDocument = self.sessionConfiguration.didDocument else {
+            guard let didDocument = self.sessionConfiguration.didDocument else {
                 throw SessionConfigurationToolsError.noSessionToken(message: "No session token found after re-authentication attempt.")
             }
 
             var refreshedSessionStatus: ComAtprotoLexicon.Server.GetSession.UserAccountStatus? = nil
 
             // UserAccountStatus conversion.
-            let sessionStatus = status
+            let sessionStatus = self.sessionConfiguration.status
             switch sessionStatus {
                 case .suspended:
                     refreshedSessionStatus = .suspended
@@ -183,15 +182,14 @@ public class SessionConfigurationTools {
         do {
             try await self.sessionConfiguration.authenticate(authenticationFactorToken: authenticationFactorToken)
 
-            guard let status = self.sessionConfiguration.status,
-                  let didDocument = self.sessionConfiguration.didDocument else {
+            guard let didDocument = self.sessionConfiguration.didDocument else {
                 throw SessionConfigurationToolsError.noSessionToken(message: "No session token found after re-authentication attempt.")
             }
 
             var refreshedSessionStatus: ComAtprotoLexicon.Server.RefreshSession.UserAccountStatus? = nil
 
             // UserAccountStatus conversion.
-            let sessionStatus = status
+            let sessionStatus = self.sessionConfiguration.status
             switch sessionStatus {
                 case .suspended:
                     refreshedSessionStatus = .suspended
