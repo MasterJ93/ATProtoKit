@@ -611,10 +611,17 @@ extension ToolsOzoneLexicon.Moderation {
         /// An array of labels that's applied to a user for the purpose of negating.
         public let negateLabelValues: [String]
 
+        /// Indicates the duration of the label’s validity, applicable only to newly added labels.
+        ///
+        /// - Note: According to the AT Protocol specifications: "Indicates how long the label
+        /// will remain on the subject. Only applies on labels that are being added."
+        public let durationInHours: Int?
+
         enum CodingKeys: String, CodingKey {
             case comment
             case createLabelValues = "createLabelVals"
             case negateLabelValues = "negateLabelVals"
+            case durationInHours
         }
     }
 

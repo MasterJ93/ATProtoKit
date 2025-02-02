@@ -129,6 +129,9 @@ public actor ATRecordTypeRegistry {
     /// - Warning: Don't touch this property; this should only be used for ``ATProtoKit``.
     public static var areBlueskyRecordsRegistered = false
 
+    /// Global dispatch group to signal when registration is complete.
+    public static let registrationGroup = DispatchGroup()
+
     /// Initializes the registry with an array of record types.
     ///
     /// - Parameter types: An array of ``ATRecordProtocol``-conforming `struct`s.
@@ -266,6 +269,16 @@ public enum UnknownType: Sendable, Codable {
     ///     \- the JSON object is invalid
     @_documentation(visibility: private)
     public init(from decoder: Decoder) throws {
+        // Before we decode anything, we need to check that ATRecordTypeRegistry is ready.
+        // It shouldn't ever take more than 3 seconds to be ready, but in the rare case that it is,
+        // indeed, not ready, we need to end this early.
+        let waitResult = ATRecordTypeRegistry.registrationGroup.wait(timeout: .now() + 3)
+        if waitResult == .timedOut {
+            throw DecodingError.dataCorrupted(
+                DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Record registry not ready")
+            )
+        }
+
         let container = try decoder.container(keyedBy: DynamicCodingKeys.self)
 
         if let typeKey = DynamicCodingKeys(stringValue: "$type"),
@@ -425,6 +438,16 @@ public enum UnknownType: Sendable, Codable {
     /// Inherited from `Encoder`.
     @_documentation(visibility: private)
     public func encode(to encoder: Encoder) throws {
+        // Before we encode anything, we need to check that ATRecordTypeRegistry is ready.
+        // It shouldn't ever take more than 3 seconds to be ready, but in the rare case that it is,
+        // indeed, not ready, we need to end this early.
+        let waitResult = ATRecordTypeRegistry.registrationGroup.wait(timeout: .now() + 3)
+        if waitResult == .timedOut {
+            throw EncodingError.invalidValue(self,
+                                             EncodingError.Context(codingPath: encoder.codingPath,
+                                                                   debugDescription: "Record registry not ready"))
+        }
+
         var container = encoder.singleValueContainer()
 
         switch self {

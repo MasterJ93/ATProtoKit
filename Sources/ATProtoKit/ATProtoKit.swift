@@ -167,11 +167,10 @@ public class ATProtoKit: ATProtoKitConfiguration, ATRecordConfiguration {
         self.sessionConfiguration = sessionConfiguration
         self.logger = session?.logger
 
+        // Mark the beginning of registration.
         // This is to fix a bug from the following issue: https://github.com/MasterJ93/ATProtoKit/issues/75
-        // The thread may be blocked if the code within the Task block doesn't complete in a reasonable timeframe.
-        // This should hopefully be a temporary fix until there's a better solution that doesn't block the
-        // UI-related threads.
-        let semaphore = DispatchSemaphore(value: 0)
+        // as well as this issue: https://github.com/MasterJ93/ATProtoKit/issues/102
+        ATRecordTypeRegistry.registrationGroup.enter()
 
         Task { [recordLexicons] in
             if canUseBlueskyRecords && !(ATRecordTypeRegistry.areBlueskyRecordsRegistered) {
@@ -179,10 +178,9 @@ public class ATProtoKit: ATProtoKitConfiguration, ATRecordConfiguration {
                 await ATRecordTypeRegistry.setBlueskyRecordsRegistered(true)
             }
 
-            semaphore.signal()
+            // Registration complete – signal waiting threads.
+            ATRecordTypeRegistry.registrationGroup.leave()
         }
-
-        semaphore.wait()
     }
 
     /// Determines the appropriate Personal Data Server (PDS) URL.

@@ -147,6 +147,19 @@ extension AppBskyLexicon.Feed {
         }
     }
 
+    /// A definition model for metadata about this post in the thread context.
+    ///
+    /// - Note: According to the AT Protocol specifications: "Metadata about this post within the context of the thread it is in."
+    ///
+    /// - SeeAlso: This is based on the [`app.bsky.feed.defs`][github] lexicon.
+    ///
+    /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/feed/defs.json
+    public struct ThreadContextDefinition: Sendable, Codable, Equatable, Hashable {
+
+        /// The URI of the root author's like record.
+        public let rootAuthorLike: String
+    }
+
     /// A definition model for a feed's view.
     ///
     /// - SeeAlso: This is based on the [`app.bsky.feed.defs`][github] lexicon.
@@ -266,6 +279,9 @@ extension AppBskyLexicon.Feed {
 
         /// An array of posts of various types. Optional.
         public let replies: [ATUnion.ThreadViewPostRepliesUnion]?
+
+        /// The context of the thread view. Optional.
+        public let threadContext: ThreadContextDefinition?
     }
 
     /// A definition model for a post that may not have been found.

@@ -29,6 +29,9 @@ extension AppBskyLexicon.Feed {
 
             /// Indicates the array of feeds will contain posts that are threads.
             case postAndAuthorThreads = "posts_and_author_threads"
+
+            /// Indicates the array of the feeds will contain videos.
+            case postsWithVideo = "posts_with_video"
         }
     }
 
