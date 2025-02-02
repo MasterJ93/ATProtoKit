@@ -75,7 +75,7 @@ public class SessionConfigurationTools {
             return token
         }
 
-        if let token = self.session?.accessToken {
+        if let token = self.sessionConfiguration.accessToken {
             return token
         }
 
@@ -97,14 +97,15 @@ public class SessionConfigurationTools {
         do {
             _ = try await self.sessionConfiguration.refreshSession(by: nil, authenticationFactorToken: authenticationFactorToken)
 
-            guard let session = self.session else {
+            guard let status = self.sessionConfiguration.status,
+                  let didDocument = self.sessionConfiguration.didDocument else {
                 throw SessionConfigurationToolsError.noSessionToken(message: "No session token found after re-authentication attempt.")
             }
 
             var refreshedSessionStatus: ComAtprotoLexicon.Server.GetSession.UserAccountStatus? = nil
 
             // UserAccountStatus conversion.
-            let sessionStatus = session.status
+            let sessionStatus = status
             switch sessionStatus {
                 case .suspended:
                     refreshedSessionStatus = .suspended
@@ -120,7 +121,7 @@ public class SessionConfigurationTools {
             let encoder = JSONEncoder()
             encoder.outputFormatting = .prettyPrinted
 
-            let jsonData = try encoder.encode(session.didDocument)
+            let jsonData = try encoder.encode(didDocument)
 
             guard let rawDictionary = try JSONSerialization.jsonObject(with: jsonData, options: []) as? [String: Any] else {
                 throw DecodingError.dataCorrupted(
@@ -133,17 +134,17 @@ public class SessionConfigurationTools {
                 codableDictionary[key] = try CodableValue.fromAny(value)
             }
 
-            let didDocument = UnknownType.unknown(codableDictionary)
+            let unknownDIDDocument = UnknownType.unknown(codableDictionary)
 
             return ComAtprotoLexicon.Server
                 .GetSessionOutput(
-                    handle: session.handle,
-                    did: session.sessionDID,
-                    email: session.email,
-                    isEmailConfirmed: session.isEmailConfirmed,
-                    isEmailAuthenticationFactor: session.isEmailAuthenticationFactorEnabled,
-                    didDocument: didDocument,
-                    isActive: session.isActive,
+                    handle: self.sessionConfiguration.handle,
+                    did: self.sessionConfiguration.sessionDID,
+                    email: self.sessionConfiguration.email,
+                    isEmailConfirmed: self.sessionConfiguration.isEmailConfirmed,
+                    isEmailAuthenticationFactor: self.sessionConfiguration.isEmailAuthenticationFactorEnabled,
+                    didDocument: unknownDIDDocument,
+                    isActive: self.sessionConfiguration.isActive,
                     status: refreshedSessionStatus
                 )
         } catch {
@@ -163,11 +164,8 @@ public class SessionConfigurationTools {
             return token
         }
 
-        if let token = self.session?.refreshToken {
-            return token
-        }
-
-        throw SessionConfigurationToolsError.noSessionToken(message: "No session token available.")
+        let token = self.sessionConfiguration.refreshToken
+        return token
     }
 
     /// Handles re-authentication and session refresh when the token is expired.
@@ -183,16 +181,17 @@ public class SessionConfigurationTools {
         authenticationFactorToken: String? = nil
     ) async throws -> ComAtprotoLexicon.Server.RefreshSessionOutput {
         do {
-            try await self.authenticate(authenticationFactorToken: authenticationFactorToken)
+            try await self.sessionConfiguration.authenticate(authenticationFactorToken: authenticationFactorToken)
 
-            guard let session = self.session else {
+            guard let status = self.sessionConfiguration.status,
+                  let didDocument = self.sessionConfiguration.didDocument else {
                 throw SessionConfigurationToolsError.noSessionToken(message: "No session token found after re-authentication attempt.")
             }
 
             var refreshedSessionStatus: ComAtprotoLexicon.Server.RefreshSession.UserAccountStatus? = nil
 
             // UserAccountStatus conversion.
-            let sessionStatus = session.status
+            let sessionStatus = status
             switch sessionStatus {
                 case .suspended:
                     refreshedSessionStatus = .suspended
@@ -208,7 +207,7 @@ public class SessionConfigurationTools {
             let encoder = JSONEncoder()
             encoder.outputFormatting = .prettyPrinted
 
-            let jsonData = try encoder.encode(session.didDocument)
+            let jsonData = try encoder.encode(didDocument)
 
             guard let rawDictionary = try JSONSerialization.jsonObject(with: jsonData, options: []) as? [String: Any] else {
                 throw DecodingError.dataCorrupted(
@@ -221,15 +220,15 @@ public class SessionConfigurationTools {
                 codableDictionary[key] = try CodableValue.fromAny(value)
             }
 
-            let didDocument = UnknownType.unknown(codableDictionary)
+            let unknownDIDDocument = UnknownType.unknown(codableDictionary)
 
             return ComAtprotoLexicon.Server.RefreshSessionOutput(
-                accessToken: session.accessToken,
-                refreshToken: session.refreshToken,
-                handle: session.handle,
-                did: session.sessionDID,
-                didDocument: didDocument,
-                isActive: session.isActive,
+                accessToken: self.sessionConfiguration.accessToken!,
+                refreshToken: self.sessionConfiguration.refreshToken,
+                handle: self.sessionConfiguration.handle,
+                did: self.sessionConfiguration.sessionDID,
+                didDocument: unknownDIDDocument,
+                isActive: self.sessionConfiguration.isActive,
                 status: refreshedSessionStatus
             )
         } catch {
