@@ -97,4 +97,118 @@ public protocol SessionConfiguration: Sendable {
     ///
     /// - Throws: An error if there are issues creating the request or communicating with the PDS.
     func authenticate(authenticationFactorToken: String?) async throws
+
+    /// Creates an a new account for the user.
+    ///
+    /// - Note: `plcOp` may be updated when full account migration is implemented.
+    ///
+    /// - Bug: `plcOp` is currently broken: there's nothing that can be used for this at the
+    /// moment while Bluesky continues to work on account migration. Until everything settles
+    /// and they have a concrete example of what to do, don't use it. In the meantime, leave it
+    /// at `nil`.
+    ///
+    /// - Parameters:
+    ///   - email: The email of the user. Optional
+    ///   - handle: The handle the user wishes to use.
+    ///   - existingDID: A decentralized identifier (DID) that has existed before and will be
+    ///   used to be imported to the new account. Optional.
+    ///   - inviteCode: The invite code for the user. Optional.
+    ///   - verificationCode: A verification code.
+    ///   - verificationPhone: A code that has come from a text message in the user's
+    ///   phone. Optional.
+    ///   - password: The password the user will use for the account. Optional.
+    ///   - recoveryKey: DID PLC rotation key (aka, recovery key) to be included in PLC
+    ///   creation operation. Optional.
+    ///   - plcOperation: A signed DID PLC operation to be submitted as part of importing an
+    ///   existing account to this instance. Optional.
+    ///
+    /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
+    /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
+    func createAccount(
+        email: String?,
+        password: String,
+        existingDID: String?,
+        inviteCode: String?,
+        verificationCode: String?,
+        verificationPhone: String?,
+        password: String?,
+        recoveryKey: String?,
+        plcOperation: UnknownType?
+    ) async throws
+
+    /// Fetches an existing session using an access token.
+    ///
+    /// If the access token is invalid, then a new one will be created, either by refeshing a
+    /// session, or by re-authenticating.
+    ///
+    /// - Parameters:
+    ///   - accessToken: The access token used for the session. Optional.
+    ///   Defaults to `nil`.
+    ///   - authenticationFactorToken: A token used for Two-Factor Authentication. Optional.
+    ///
+    /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
+    /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
+    func getSession(by accessToken: String?, authenticationFactorToken: String?) async throws
+
+    /// Refreshes the user's session using a refresh token.
+    ///
+    /// If the refresh token is invalid, the method will re-authenticate and try again.
+    ///
+    /// - Note: If the method throws an error saying that an authentication token is required,
+    /// re-trying the method with the `authenticationFactorToken` argument filled should
+    /// solve the issue.
+    ///
+    /// - Note: If you rely on ``ATProtocolConfiguration/session`` for managing the session,
+    /// there's no need to use the `refreshToken` argument.
+    ///
+    /// When the method completes, ``ATProtocolConfiguration/session`` will be updated with a
+    /// new instance of an authenticated user session within the AT Protocol. It may also have
+    /// logging information, as well as the URL of the Personal Data Server (PDS).
+    ///
+    /// - Parameters:
+    ///   - refreshToken: The refresh token used for the session. Optional.
+    ///   Defaults to `nil`.
+    ///   - authenticationFactorToken: A token used for Two-Factor Authentication. Optional.
+    ///   Defaults to `nil`.
+    ///
+    /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
+    /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
+    func refreshSession(by refreshToken: String?, authenticationFactorToken: String?) async throws
+
+    /// Resumes a session.
+    ///
+    /// This is useful for cases where a user is opening the app and they've already logged in.
+    ///
+    /// While inserting the access token is optional, the refresh token is not, as it lasts much
+    /// longer than the refresh token.
+    ///
+    /// - Warning: This is an experimental method. This may be removed at a later date if
+    /// it doesn't prove to be helpful.
+    ///
+    /// If the refresh token fails for whatever reason, it's recommended to call
+    /// ``ATProtocolConfiguration/authenticate(authenticationFactorToken:)``
+    /// in the `catch` block.
+    ///
+    /// - Parameters:
+    ///   - accessToken: The access token of the session. Optional.
+    ///   - refreshToken: The refresh token of the session.
+    ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `https://bsky.social`.
+    ///
+    /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
+    /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
+    func resumeSession(accessToken: String?, refreshToken: String) async throws
+
+    /// Deletes the user session.
+    ///
+    /// - Note: If you rely on ``ATProtocolConfiguration/session`` for managing the session,
+    /// there's no need to use the `refreshToken` argument.
+    ///
+    /// - Parameter refreshToken: The refresh token used for the session. Optional.
+    /// Defaults to `nil`.
+    ///
+    /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
+    /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
+    func deleteSession(with refreshToken: String?) async throws
+}
+
 }
