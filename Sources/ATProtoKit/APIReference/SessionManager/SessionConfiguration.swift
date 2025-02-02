@@ -206,4 +206,268 @@ public protocol SessionConfiguration: Sendable {
     func deleteSession(with refreshToken: String?) async throws
 }
 
+extension SessionConfiguration {
+
+    public mutating func authenticate(authenticationFactorToken: String? = nil) async throws {
+        let sessionConfiguration = SessionConfigurationTools(sessionConfiguration: self)
+
+        do {
+            let response = try await ATProtoKit(canUseBlueskyRecords: false).createSession(
+                with: self.handle,
+                and: self.password,
+                authenticationFactorToken: authenticationFactorToken,
+                pdsURL: self.pdsURL
+            )
+
+            guard let didDocument = sessionConfiguration.convertDIDDocument(response.didDocument) else {
+                throw DIDDocument.DIDDocumentError.emptyArray
+            }
+
+            let atService = try didDocument.checkServiceForATProto()
+            let serviceEndpoint = atService.serviceEndpoint
+
+            var status: UserAccountStatus? = nil
+
+            switch response.status {
+                case .suspended:
+                    status = .suspended
+                case .takedown:
+                    status = .takedown
+                case .deactivated:
+                    status = .deactivated
+                default:
+                    status = nil
+            }
+
+            self.handle = response.handle
+            self.sessionDID = response.did
+            self.email = response.email
+            self.isEmailConfirmed = response.isEmailConfirmed
+            self.isEmailAuthenticationFactorEnabled = response.isEmailAuthenticatedFactor
+            self.accessToken = response.accessToken
+            self.refreshToken = response.refreshToken
+            self.didDocument = didDocument
+            self.isActive = response.isActive
+            self.status = status
+            self.serviceEndpoint = serviceEndpoint
+            self.logger = await ATProtocolConfiguration.getLogger()
+        } catch {
+            throw error
+        }
+    }
+
+    public mutating func createAccount(
+        email: String?,
+        handle: String,
+        existingDID: String?,
+        inviteCode: String?,
+        verificationCode: String?,
+        verificationPhone: String?,
+        password: String?,
+        recoveryKey: String?,
+        plcOperation: UnknownType?
+    ) async throws {
+        let sessionConfiguration = SessionConfigurationTools(sessionConfiguration: self)
+
+        let response = try await ATProtoKit(canUseBlueskyRecords: false).createAccount(
+            email: email,
+            handle: handle,
+            existingDID: existingDID,
+            inviteCode: inviteCode,
+            verificationCode: verificationCode,
+            verificationPhone: verificationPhone,
+            password: password,
+            recoveryKey: recoveryKey,
+            plcOperation: plcOperation,
+            pdsURL: self.pdsURL
+        )
+
+        guard let didDocument = sessionConfiguration.convertDIDDocument(response.didDocument) else {
+            throw DIDDocument.DIDDocumentError.emptyArray
+        }
+
+        let atService = try didDocument.checkServiceForATProto()
+        let serviceEndpoint = atService.serviceEndpoint
+
+        self.handle = response.handle
+        self.sessionDID = response.did
+        self.email = email
+        self.accessToken = response.accessToken
+        self.refreshToken = response.refreshToken
+        self.didDocument = didDocument
+        self.serviceEndpoint = serviceEndpoint
+        self.logger = await ATProtocolConfiguration.getLogger()
+    }
+
+    public mutating func getSession(by accessToken: String? = nil, authenticationFactorToken: String? = nil) async throws {
+        let sessionConfiguration = SessionConfigurationTools(sessionConfiguration: self)
+
+        var sessionToken: String = ""
+        do {
+            sessionToken = try sessionConfiguration.getValidAccessToken(from: accessToken)
+        } catch {
+            throw error
+        }
+
+        do {
+            let response = try await ATProtoKit(canUseBlueskyRecords: false).getSession(
+                by: sessionToken,
+                pdsURL: self.pdsURL
+            )
+
+            guard let didDocument = sessionConfiguration.convertDIDDocument(response.didDocument) else {
+                throw DIDDocument.DIDDocumentError.emptyArray
+            }
+
+            let atService = try didDocument.checkServiceForATProto()
+            let serviceEndpoint = atService.serviceEndpoint
+
+            var status: UserAccountStatus? = nil
+
+            switch response.status {
+                case .suspended:
+                    status = .suspended
+                case .takedown:
+                    status = .takedown
+                case .deactivated:
+                    status = .deactivated
+                default:
+                    status = nil
+            }
+
+            self.handle = response.handle
+            self.sessionDID = response.did
+            self.email = response.email
+            self.isEmailConfirmed = response.isEmailConfirmed
+            self.isEmailAuthenticationFactorEnabled = response.isEmailAuthenticationFactor
+            self.accessToken = sessionToken
+            self.didDocument = didDocument
+            self.isActive = response.isActive
+            self.status = status
+            self.serviceEndpoint = serviceEndpoint
+            self.logger = await ATProtocolConfiguration.getLogger()
+        } catch let apiError as ATAPIError {
+            guard case .badRequest(let errorDetails) = apiError,
+                  errorDetails.error == "ExpiredToken" else {
+                throw apiError
+            }
+
+            _ = try await sessionConfiguration.handleExpiredTokenFromGetSession(authenticationFactorToken: authenticationFactorToken)
+        }
+    }
+
+    public mutating func refreshSession(
+        by refreshToken: String? = nil,
+        authenticationFactorToken: String? = nil
+    ) async throws {
+        let sessionConfiguration = SessionConfigurationTools(sessionConfiguration: self)
+        var sessionToken: String = ""
+
+        let token = sessionConfiguration.getValidRefreshToken(from: self.refreshToken)
+
+        if let token = sessionConfiguration.getValidRefreshToken(from: self.refreshToken) {
+            sessionToken = token
+        } else {
+            do {
+                try await self.authenticate(authenticationFactorToken: authenticationFactorToken)
+            } catch {
+                throw error
+            }
+        }
+
+        do {
+            let response = try await ATProtoKit(canUseBlueskyRecords: false).refreshSession(
+                refreshToken: sessionToken,
+                pdsURL: self.pdsURL
+            )
+
+            guard let didDocument = sessionConfiguration.convertDIDDocument(response.didDocument) else {
+                throw DIDDocument.DIDDocumentError.emptyArray
+            }
+
+            let atService = try didDocument.checkServiceForATProto()
+            let serviceEndpoint = atService.serviceEndpoint
+
+            var status: UserAccountStatus? = nil
+
+            switch response.status {
+                case .suspended:
+                    status = .suspended
+                case .takedown:
+                    status = .takedown
+                case .deactivated:
+                    status = .deactivated
+                default:
+                    status = nil
+            }
+
+            self.handle = response.handle
+            self.sessionDID = response.did
+            self.accessToken = response.accessToken
+            self.refreshToken = response.refreshToken
+            self.didDocument = didDocument
+            self.isActive = response.isActive
+            self.status = status
+            self.serviceEndpoint = serviceEndpoint
+            self.logger = await ATProtocolConfiguration.getLogger()
+        } catch let apiError as ATAPIError {
+            // If the token expires, re-authenticate and try refreshing the token again.
+            guard case .badRequest(let errorDetails) = apiError,
+                  errorDetails.error == "ExpiredToken" else {
+                throw apiError
+            }
+
+            _ = try await sessionConfiguration.handleExpiredTokenFromRefreshSession(authenticationFactorToken: authenticationFactorToken)
+        }
+    }
+
+    public mutating func resumeSession(
+        accessToken: String? = nil,
+        refreshToken: String,
+        pdsURL: String = "https://bsky.social"
+    ) async throws {
+        let sessionConfiguration = SessionConfigurationTools(sessionConfiguration: self)
+
+        if let sessionToken = accessToken ?? self.accessToken {
+            let expiryDate = try SessionToken(sessionToken: sessionToken).payload.expiresAt
+            let currentDate = Date()
+
+            if currentDate > expiryDate {
+                do {
+                    try await sessionConfiguration.checkRefreshToken(refreshToken: refreshToken, pdsURL: pdsURL)
+                } catch {
+                    throw error
+                }
+            }
+
+            _ = try await self.getSession(by: accessToken)
+        } else {
+            do {
+                try await sessionConfiguration.checkRefreshToken(refreshToken: refreshToken)
+            } catch {
+                throw error
+            }
+        }
+    }
+
+    public mutating func deleteSession(with refreshToken: String? = nil) async throws {
+        do {
+            var token: String
+
+            if let refreshToken = refreshToken {
+                token = refreshToken
+            } else if let sessionToken = self.refreshToken {
+                token = sessionToken
+            } else {
+                return
+            }
+
+            _ = try await ATProtoKit(canUseBlueskyRecords: false).deleteSession(
+                refreshToken: token,
+                pdsURL: self.pdsURL
+            )
+        } catch {
+            throw error
+        }
+    }
 }
