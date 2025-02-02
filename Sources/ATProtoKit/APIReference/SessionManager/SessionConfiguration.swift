@@ -34,7 +34,7 @@ public protocol SessionConfiguration: Sendable {
     var accessToken: String? { get set }
 
     /// The refresh token used to generate a new access token.
-    var refreshToken: String { get set }
+    var refreshToken: String? { get set }
 
     /// The DID document associated with the user, which contains AT Protocol-specific
     /// information. Optional.
