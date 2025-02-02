@@ -61,11 +61,6 @@ public protocol SessionConfiguration: Sendable {
     /// after the successful initalizing.
     var logger: Logger? { get set }
 
-    /// The object attached to the configuration class that holds the session. Optional.
-    ///
-    /// This also includes things such as retry limits and logging.
-    var session: UserSession? { get set }
-
     /// The number of times a request can be attempted before it's considered a failure.
     ///
     /// By default, ATProtoKit will retry a request attempt for 1 second.
