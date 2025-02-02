@@ -155,14 +155,17 @@ public class SessionConfigurationTools {
     /// Validates and retrieves a valid access token from the provided argument or the session object.
     ///
     /// - Parameter accessToken: An optional access token to validate.
-    /// - Returns: A valid access token.
-    public func getValidRefreshToken(from refreshToken: String?) -> String {
+    /// - Returns: A valid access token, or `nil`.
+    public func getValidRefreshToken(from refreshToken: String?) -> String? {
         if let token = refreshToken {
             return token
         }
 
-        let token = self.sessionConfiguration.refreshToken
-        return token
+        if let token = self.sessionConfiguration.refreshToken {
+            return token
+        }
+
+        return nil
     }
 
     /// Handles re-authentication and session refresh when the token is expired.
