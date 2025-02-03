@@ -4,4 +4,4 @@
 
 ### com.atproto.lexicon.schema
 
-- ``ComAtprotoLexicon/Lexicon/SchemaRecord``
+- ``SchemaRecord``

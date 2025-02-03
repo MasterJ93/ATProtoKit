@@ -211,7 +211,7 @@ extension AppBskyLexicon.Actor {
         public let associated: ProfileAssociatedDefinition?
 
         /// The starter pack the user account used to join Bluesky. Optional.
-        public let joinedViaStarterPack: AppBskyLexicon.Graph.StarterpackRecord?
+        public let joinedViaStarterPack: AppBskyLexicon.Graph.StarterPackViewBasicDefinition?
 
         /// The date the profile was last indexed. Optional.
         public let indexedAt: Date?
@@ -231,7 +231,7 @@ extension AppBskyLexicon.Actor {
 
         public init(actorDID: String, actorHandle: String, displayName: String? = nil, description: String? = nil, avatarImageURL: URL? = nil,
                     bannerImageURL: URL? = nil, followerCount: Int? = nil, followCount: Int? = nil, postCount: Int? = nil,
-                    associated: ProfileAssociatedDefinition?, joinedViaStarterPack: AppBskyLexicon.Graph.StarterpackRecord?, indexedAt: Date?,
+                    associated: ProfileAssociatedDefinition?, joinedViaStarterPack: AppBskyLexicon.Graph.StarterPackViewBasicDefinition?, indexedAt: Date?,
                     createdAt: Date?, viewer: ViewerStateDefinition? = nil, labels: [ComAtprotoLexicon.Label.LabelDefinition]? = nil,
                     pinnedPost: ComAtprotoLexicon.Repository.StrongReference?) {
             self.actorDID = actorDID
@@ -264,7 +264,7 @@ extension AppBskyLexicon.Actor {
             self.followerCount = try container.decodeIfPresent(Int.self, forKey: .followerCount)
             self.followCount = try container.decodeIfPresent(Int.self, forKey: .followCount)
             self.postCount = try container.decodeIfPresent(Int.self, forKey: .postCount)
-            self.joinedViaStarterPack = try container.decodeIfPresent(AppBskyLexicon.Graph.StarterpackRecord.self, forKey: .joinedViaStarterPack)
+            self.joinedViaStarterPack = try container.decodeIfPresent(AppBskyLexicon.Graph.StarterPackViewBasicDefinition.self, forKey: .joinedViaStarterPack)
             self.associated = try container.decodeIfPresent(AppBskyLexicon.Actor.ProfileAssociatedDefinition.self, forKey: .associated)
             self.indexedAt = try container.decodeDateIfPresent(forKey: .indexedAt)
             self.createdAt = try container.decodeDateIfPresent(forKey: .createdAt)
