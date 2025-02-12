@@ -1024,7 +1024,7 @@ extension AppBskyLexicon.Actor {
         }
     }
 
-    /// A definition model for  a "Labelers" preference.
+    /// A definition model for a "Labelers" preference.
     ///
     /// - SeeAlso: This is based on the [`app.bsky.actor.defs`][github] lexicon.
     ///
@@ -1032,7 +1032,7 @@ extension AppBskyLexicon.Actor {
     public struct LabelersPreferencesDefinition: Sendable, Codable {
 
         /// An array of labeler items.
-        public let labelers: [String]
+        public let labelers: [LabelersPreferenceItem]
     }
 
     /// A definition model for a labeler item.
@@ -1161,6 +1161,46 @@ extension AppBskyLexicon.Actor {
             case isCompleted = "completed"
             case data
             case expiresAt
+        }
+    }
+
+    /// A definition model for default post interaction settings that mirror threadgate and
+    /// postgate records when creating new posts.
+    ///
+    /// - Note: According to the AT Protocol specifications: "Default post interaction settings
+    /// for the account. These values should be applied as default values when creating new posts.
+    /// These refs should mirror the threadgate and postgate records exactly."
+    ///
+    /// - SeeAlso: This is based on the [`app.bsky.actor.defs`][github] lexicon.
+    ///
+    /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/actor/defs.json
+    public struct PostInteractionSettingsPreferenceDefinition: Sendable, Codable {
+
+        /// An array of rules that determines who can reply to the user account's posts.
+        ///
+        /// An empty array prevents any replies. An undefined array allows anyone to reply.
+        ///
+        /// - Note: According to the AT Protocol specifications: "Matches threadgate record. List of rules defining who can reply to this users posts. If value is an empty array, no one can reply. If value is undefined, anyone can reply."
+        public let threadgateAllowRules: [ATUnion.ActorPostInteractionSettingsPreferencesUnion]
+
+        public init(threadgateAllowRules: [ATUnion.ActorPostInteractionSettingsPreferencesUnion]) {
+            self.threadgateAllowRules = threadgateAllowRules
+        }
+
+        public init(from decoder: any Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+
+            self.threadgateAllowRules = try container.decode([ATUnion.ActorPostInteractionSettingsPreferencesUnion].self, forKey: .threadgateAllowRules)
+        }
+
+        public func encode(to encoder: any Encoder) throws {
+            var container = encoder.container(keyedBy: CodingKeys.self)
+
+            try container.truncatedEncode(self.threadgateAllowRules, forKey: .threadgateAllowRules, upToArrayLength: 5)
+        }
+
+        enum CodingKeys: CodingKey {
+            case threadgateAllowRules
         }
     }
 }

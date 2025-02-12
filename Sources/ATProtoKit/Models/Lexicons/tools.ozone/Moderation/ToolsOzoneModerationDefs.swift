@@ -197,6 +197,12 @@ extension ToolsOzoneLexicon.Moderation {
         /// Any additional comments written about the subject. Optional.
         public let comment: String?
 
+        /// The priority score of the subject.
+        ///
+        /// - Note: According to the AT Protocol specifications: "Numeric value representing the
+        /// level of priority. Higher score means higher priority."
+        public let priorityScore: Int?
+
         /// The date and time the subject's time to be muted has been lifted. Optional.
         ///
         /// - Note: According to the AT Protocol specifications: "Sticky comment on the subject."
@@ -243,10 +249,10 @@ extension ToolsOzoneLexicon.Moderation {
 
         public init(id: Int, subject: ATUnion.SubjectStatusViewSubjectUnion, hosting: ATUnion.SubjectStatusViewHostingUnion?,
                     subjectBlobCIDs: [String]? = nil, subjectRepoHandle: String? = nil, updatedAt: Date, createdAt: Date,
-                    reviewState: ToolsOzoneLexicon.Moderation.SubjectReviewStateDefinition, comment: String? = nil, muteUntil: Date? = nil,
-                    muteReportingUntil: Date? = nil, lastReviewedBy: String? = nil, lastReviewedAt: Date? = nil, lastReportedAt: Date? = nil,
-                    lastAppealedAt: Date? = nil, isTakenDown: Bool? = nil, wasAppealed: Bool? = nil, suspendUntil: Date? = nil, tags: [String]? = nil,
-                    accountStats: AccountStatsDefinition? = nil, recordsStats: RecordsStatsDefinition? = nil) {
+                    reviewState: ToolsOzoneLexicon.Moderation.SubjectReviewStateDefinition, comment: String? = nil, priorityScore: Int? = nil,
+                    muteUntil: Date? = nil, muteReportingUntil: Date? = nil, lastReviewedBy: String? = nil, lastReviewedAt: Date? = nil,
+                    lastReportedAt: Date? = nil, lastAppealedAt: Date? = nil, isTakenDown: Bool? = nil, wasAppealed: Bool? = nil, suspendUntil: Date? = nil,
+                    tags: [String]? = nil, accountStats: AccountStatsDefinition? = nil, recordsStats: RecordsStatsDefinition? = nil) {
             self.id = id
             self.subject = subject
             self.hosting = hosting
@@ -256,6 +262,7 @@ extension ToolsOzoneLexicon.Moderation {
             self.createdAt = createdAt
             self.reviewState = reviewState
             self.comment = comment
+            self.priorityScore = priorityScore.map { max(1, min($0, 100)) }
             self.muteUntil = muteUntil
             self.muteReportingUntil = muteReportingUntil
             self.lastReviewedBy = lastReviewedBy
@@ -282,6 +289,7 @@ extension ToolsOzoneLexicon.Moderation {
             self.createdAt = try container.decodeDate(forKey: .createdAt)
             self.reviewState = try container.decode(ToolsOzoneLexicon.Moderation.SubjectReviewStateDefinition.self, forKey: .reviewState)
             self.comment = try container.decodeIfPresent(String.self, forKey: .comment)
+            self.priorityScore = try container.decodeIfPresent(Int.self, forKey: .priorityScore)
             self.muteUntil = try container.decodeDateIfPresent(forKey: .muteUntil)
             self.muteReportingUntil = try container.decodeDateIfPresent(forKey: .muteReportingUntil)
             self.lastReviewedBy = try container.decodeIfPresent(String.self, forKey: .lastReviewedBy)
@@ -308,6 +316,12 @@ extension ToolsOzoneLexicon.Moderation {
             try container.encodeDate(self.createdAt, forKey: .createdAt)
             try container.encode(self.reviewState, forKey: .reviewState)
             try container.encodeIfPresent(self.comment, forKey: .comment)
+
+            if let priorityScore = self.priorityScore {
+                let finalPriorityScore = max(1, min(priorityScore, 100))
+                try container.encodeIfPresent(finalPriorityScore, forKey: .priorityScore)
+            }
+
             try container.encodeDateIfPresent(self.muteUntil, forKey: .muteUntil)
             try container.encodeDateIfPresent(self.muteReportingUntil, forKey: .muteReportingUntil)
             try container.encodeIfPresent(self.lastReviewedBy, forKey: .lastReviewedBy)
@@ -332,6 +346,7 @@ extension ToolsOzoneLexicon.Moderation {
             case createdAt
             case reviewState
             case comment
+            case priorityScore
             case muteUntil
             case muteReportingUntil
             case lastReviewedBy
@@ -622,6 +637,48 @@ extension ToolsOzoneLexicon.Moderation {
             case createLabelValues = "createLabelVals"
             case negateLabelValues = "negateLabelVals"
             case durationInHours
+        }
+    }
+
+    /// A definition model for setting the subject's priority score.
+    ///
+    /// - Note: According to the AT Protocol specifications: "Set priority score of the subject.
+    /// Higher score means higher priority."
+    ///
+    /// - SeeAlso: This is based on the [`tools.ozone.moderation.defs`][github] lexicon.
+    ///
+    /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/tools/ozone/moderation/defs.json
+    public struct EventPriorityScoreDefinition: Sendable, Codable {
+
+        /// Any comments for the subject's priority score. Optional.
+        public let comment: String?
+
+        /// The priority score of the subject.
+        public var score: Int
+
+        public init(comment: String?, score: Int) {
+            self.comment = comment
+            self.score = score
+        }
+
+        public init(from decoder: any Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+
+            self.comment = try container.decodeIfPresent(String.self, forKey: .comment)
+            self.score = try container.decode(Int.self, forKey: .score)
+        }
+
+        public func encode(to encoder: any Encoder) throws {
+            var container = encoder.container(keyedBy: CodingKeys.self)
+            try container.encodeIfPresent(self.comment, forKey: .comment)
+
+            let finalScore = max(1, min(self.score, 100))
+            try container.encode(finalScore, forKey: .score)
+        }
+
+        enum CodingKeys: CodingKey {
+            case comment
+            case score
         }
     }
 

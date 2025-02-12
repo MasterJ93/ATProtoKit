@@ -28,6 +28,9 @@ extension ToolsOzoneLexicon.Moderation {
             /// Indicates the moderation status array will be sorted by the number of
             /// takedown records.
             case takendownRecordsCount
+
+            /// Indicates the moderation status array will be sorted by the priority score.
+            case priorityScore
         }
 
         public enum SortDirection: String, Sendable, Codable {
@@ -57,7 +60,7 @@ extension ToolsOzoneLexicon.Moderation {
     ///
     /// - SeeAlso: This is based on the [`tools.ozone.moderation.queryStatuses`][github] lexicon.
     ///
-    /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/tools/ozone/moderation/queryEvents.json
+    /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/tools/ozone/moderation/queryStatuses.json
     public struct QueryStatusesOutput: Sendable, Codable {
 
         /// The mark used to indicate the starting point for the next set of results. Optional.
