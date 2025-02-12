@@ -51,6 +51,9 @@ public struct ATUnion {
         /// The "Labelers" preference.
         case labelersPreferences(AppBskyLexicon.Actor.LabelersPreferencesDefinition)
 
+        /// The "Post Interaction Setting" preference.
+        case postInteractionSettingsPreference(AppBskyLexicon.Actor.PostInteractionSettingsPreferenceDefinition)
+
         // Implement custom decoding
         public init(from decoder: Decoder) throws {
             let container = try decoder.singleValueContainer()
@@ -79,6 +82,8 @@ public struct ATUnion {
                 self = .bskyAppStatePreferences(value)
             } else if let value = try? container.decode(AppBskyLexicon.Actor.LabelersPreferencesDefinition.self) {
                 self = .labelersPreferences(value)
+            } else if let value = try? container.decode(AppBskyLexicon.Actor.PostInteractionSettingsPreferenceDefinition.self) {
+                self = .postInteractionSettingsPreference(value)
             } else {
                 throw DecodingError.typeMismatch(
                     ActorPreferenceUnion.self, DecodingError.Context(
@@ -115,6 +120,43 @@ public struct ATUnion {
                     try container.encode(bskyAppStatePreferences)
                 case .labelersPreferences(let labelersPreferences):
                     try container.encode(labelersPreferences)
+                case .postInteractionSettingsPreference(let preference):
+                    try container.encode(preference)
+            }
+        }
+    }
+
+    /// A reference containing the list of post interaction setting preferences.
+    public enum ActorPostInteractionSettingsPreferencesUnion: Sendable, Codable, Equatable, Hashable {
+
+        /// A rule that allows users that were mentioned in the user account's post to reply to
+        /// said post.
+        case mentionRule(AppBskyLexicon.Feed.ThreadgateRecord.MentionRule)
+
+        /// A rule that allows users who follow you to reply to the user account's post.
+        case followerRule(AppBskyLexicon.Feed.ThreadgateRecord.FollowerRule)
+
+        /// A rule that allows users that are followed by the user account to reply to the post.
+        case followingRule(AppBskyLexicon.Feed.ThreadgateRecord.FollowingRule)
+
+        /// A rule that allows users are in a specified list to reply to the post.
+        case listRule(AppBskyLexicon.Feed.ThreadgateRecord.ListRule)
+
+        public init(from decoder: any Decoder) throws {
+            let container = try decoder.singleValueContainer()
+
+            if let value = try? container.decode(AppBskyLexicon.Feed.ThreadgateRecord.MentionRule.self) {
+                self = .mentionRule(value)
+            } else if let value = try? container.decode(AppBskyLexicon.Feed.ThreadgateRecord.FollowerRule.self) {
+                self = .followerRule(value)
+            } else if let value = try? container.decode(AppBskyLexicon.Feed.ThreadgateRecord.FollowingRule.self) {
+                self = .followingRule(value)
+            } else if let value = try? container.decode(AppBskyLexicon.Feed.ThreadgateRecord.ListRule.self) {
+                self = .listRule(value)
+            } else {
+                throw DecodingError.typeMismatch(
+                    RecordViewUnion.self, DecodingError.Context(
+                        codingPath: decoder.codingPath, debugDescription: "Unknown ActorPostInteractionSettingsPreferencesUnion type"))
             }
         }
     }
@@ -749,14 +791,17 @@ public struct ATUnion {
     /// A reference containing the list of thread rules for a post.
     public enum ThreadgateUnion: Sendable, Codable, Equatable, Hashable {
 
-        /// A rule that indicates whether users that the post author mentions can reply to the post.
+        /// A rule that allows users that were mentioned in the user account's post to reply to
+        /// said post.
         case mentionRule(AppBskyLexicon.Feed.ThreadgateRecord.MentionRule)
 
-        /// A rule that indicates whether users that the post author is following can reply to the post.
+        /// A rule that allows users who follow you to reply to the user account's post.
+        case followerRule(AppBskyLexicon.Feed.ThreadgateRecord.FollowerRule)
+
+        /// A rule that allows users that are followed by the user account to reply to the post.
         case followingRule(AppBskyLexicon.Feed.ThreadgateRecord.FollowingRule)
 
-        /// A rule that indicates whether users that are on a specific list made by the post author can
-        /// reply to the post.
+        /// A rule that allows users are in a specified list to reply to the post.
         case listRule(AppBskyLexicon.Feed.ThreadgateRecord.ListRule)
 
         public init(from decoder: Decoder) throws {
@@ -764,6 +809,8 @@ public struct ATUnion {
 
             if let value = try? container.decode(AppBskyLexicon.Feed.ThreadgateRecord.MentionRule.self) {
                 self = .mentionRule(value)
+            } else if let value = try? container.decode(AppBskyLexicon.Feed.ThreadgateRecord.FollowerRule.self) {
+                self = .followerRule(value)
             } else if let value = try? container.decode(AppBskyLexicon.Feed.ThreadgateRecord.FollowingRule.self) {
                 self = .followingRule(value)
             } else if let value = try? container.decode(AppBskyLexicon.Feed.ThreadgateRecord.ListRule.self) {
@@ -780,6 +827,8 @@ public struct ATUnion {
 
             switch self {
                 case .mentionRule(let embedView):
+                    try container.encode(embedView)
+                case .followerRule(let embedView):
                     try container.encode(embedView)
                 case .followingRule(let embedView):
                     try container.encode(embedView)
@@ -1418,6 +1467,10 @@ public struct ATUnion {
         /// A tag event.
         case moderationEventTag(ToolsOzoneLexicon.Moderation.EventTagDefinition)
 
+        /// A priority score event.
+        case moderationEventPriorityScore(ToolsOzoneLexicon.Moderation.EventPriorityScoreDefinition)
+
+
         public init(from decoder: Decoder) throws {
             let container = try decoder.singleValueContainer()
 
@@ -1451,6 +1504,8 @@ public struct ATUnion {
                 self = .moderationEventDivert(value)
             } else if let value = try? container.decode(ToolsOzoneLexicon.Moderation.EventTagDefinition.self) {
                 self = .moderationEventTag(value)
+            } else if let value = try? container.decode(ToolsOzoneLexicon.Moderation.EventPriorityScoreDefinition.self) {
+                self = .moderationEventPriorityScore(value)
             } else {
                 throw DecodingError.typeMismatch(
                     ModerationEventViewUnion.self, DecodingError.Context(
@@ -1492,6 +1547,8 @@ public struct ATUnion {
                     try container.encode(moderationEventDivert)
                 case .moderationEventTag(let moderationEventTag):
                     try container.encode(moderationEventTag)
+                case .moderationEventPriorityScore(let event):
+                    try container.encode(event)
             }
         }
     }
@@ -1571,6 +1628,9 @@ public struct ATUnion {
         /// A tag event.
         case moderationEventTag(ToolsOzoneLexicon.Moderation.EventTagDefinition)
 
+        /// A priority score event.
+        case moderationEventPriorityScore(ToolsOzoneLexicon.Moderation.EventPriorityScoreDefinition)
+
         public init(from decoder: Decoder) throws {
             let container = try decoder.singleValueContainer()
 
@@ -1594,6 +1654,8 @@ public struct ATUnion {
                 self = .moderationEventResolveAppeal(value)
             } else if let value = try? container.decode(ToolsOzoneLexicon.Moderation.EventTagDefinition.self) {
                 self = .moderationEventTag(value)
+            } else if let value = try? container.decode(ToolsOzoneLexicon.Moderation.EventPriorityScoreDefinition.self) {
+                self = .moderationEventPriorityScore(value)
             } else {
                 throw DecodingError.typeMismatch(
                     ModerationEventViewDetailUnion.self, DecodingError.Context(
@@ -1625,6 +1687,8 @@ public struct ATUnion {
                     try container.encode(moderationEventResolveAppeal)
                 case .moderationEventTag(let moderationEventTag):
                     try container.encode(moderationEventTag)
+                case .moderationEventPriorityScore(let event):
+                    try container.encode(event)
             }
         }
     }

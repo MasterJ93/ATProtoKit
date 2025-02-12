@@ -404,6 +404,23 @@ extension ATProtocolConfiguration {
     }
 }
 
+extension SessionConfigurationTools {
+
+    /// An error type related to ``ATProtocolConfiguration``.
+    public enum SessionConfigurationToolsError: ATProtoError {
+
+        /// No token was found.
+        ///
+        /// - Parameter message: The message for the error.
+        case noSessionToken(message: String)
+
+        /// The access and refresh tokens have both expired.
+        ///
+        /// - Parameter message: The message for the error.
+        case tokensExpired(message: String)
+    }
+}
+
 /// An error type related to CBOR processing issues.
 public enum CBORProcessingError: Error {
     

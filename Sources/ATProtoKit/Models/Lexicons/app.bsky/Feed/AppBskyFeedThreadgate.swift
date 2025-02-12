@@ -79,19 +79,25 @@ extension AppBskyLexicon.Feed {
             case hiddenReplies
         }
 
-        /// A rule that indicates whether users that the post author mentions can reply to the post.
+        /// A rule that allows users that were mentioned in the user account's post to reply to
+        /// said post.
         ///
         /// - Note: According to the AT Protocol specifications: "Allow replies from actors mentioned
         /// in your post."
         public struct MentionRule: Sendable, Codable, Equatable, Hashable {}
 
-        /// A rule that indicates whether users that the post author is following can reply to the post.
+        /// A rule that allows users who follow you to reply to the user account's post.
+        ///
+        /// - Note: According to the AT Protocol specifications: "Allow replies from actors who
+        /// follow you."
+        public struct FollowerRule: Sendable, Codable, Equatable, Hashable {}
+
+        /// A rule that allows users that are followed by the user account to reply to the post.
         ///
         /// - Note: According to the AT Protocol specifications: "Allow replies from actors you follow."
         public struct FollowingRule: Sendable, Codable, Equatable, Hashable {}
 
-        /// A rule that indicates whether users that are on a specific list made by the post author can
-        /// reply to the post.
+        /// A rule that allows users are in a specified list to reply to the post.
         ///
         /// - Note: According to the AT Protocol specifications: "Allow replies from actors on a list."
         public struct ListRule: Sendable, Codable, Equatable, Hashable {

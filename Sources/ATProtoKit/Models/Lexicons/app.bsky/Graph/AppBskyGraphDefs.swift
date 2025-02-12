@@ -352,11 +352,6 @@ extension AppBskyLexicon.Graph {
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/graph/defs.json
     public struct StarterPackViewBasicDefinition: Sendable, Codable, Equatable, Hashable {
 
-        /// The identifier of the lexicon.
-        ///
-        /// - Warning: The value must not change.
-        public let type: String = "app.bsky.graph.defs#starterPackViewBasic"
-
         /// The URI of the starter pack.
         public let uri: String
 
@@ -389,11 +384,6 @@ extension AppBskyLexicon.Graph {
         public init(from decoder: any Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
 
-            let decodedType = try container.decode(String.self, forKey: .type)
-            if decodedType != type {
-                throw DecodingError.typeMismatch(ListViewDefinition.self, .init(codingPath: [CodingKeys.type], debugDescription: "type did not match expected type \(type)"))
-            }
-          
             self.uri = try container.decode(String.self, forKey: CodingKeys.uri)
             self.cid = try container.decode(String.self, forKey: .cid)
             self.record = try container.decode(UnknownType.self, forKey: .record)
@@ -420,7 +410,6 @@ extension AppBskyLexicon.Graph {
         }
 
         enum CodingKeys: String, CodingKey {
-            case type = "$type"
             case uri
             case cid
             case record
