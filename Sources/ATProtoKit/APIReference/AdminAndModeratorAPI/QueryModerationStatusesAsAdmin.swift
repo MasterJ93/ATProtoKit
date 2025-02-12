@@ -79,6 +79,7 @@ extension ATProtoAdmin {
     ///   Defaults to `nil`.
     ///   - minimumTakendownRecordsCount: The minimum number of takedown records. Optional.
     ///   Defaults to `nil`.
+    ///   - minimumPriorityScore: The minimum score that the subject needs to be at. Optional.
     /// - Returns: An array of all moderation events pertaining a subject, with an optional cursor
     /// to extend the array.
     ///
@@ -117,7 +118,8 @@ extension ATProtoAdmin {
         subjectType: ToolsOzoneLexicon.Moderation.QueryStatuses.SubjectType? = nil,
         minimumAccountSuspendCount: Int? = nil,
         minimumReportedRecordsCount: Int? = nil,
-        minimumTakendownRecordsCount: Int? = nil
+        minimumTakendownRecordsCount: Int? = nil,
+        minimumPriorityScore: Int? = nil
     ) async throws -> ToolsOzoneLexicon.Moderation.QueryStatusesOutput {
         guard session != nil,
               let accessToken = session?.accessToken else {
@@ -290,6 +292,12 @@ extension ATProtoAdmin {
         // minimumTakendownRecordsCount
         if let minimumTakendownRecordsCount {
             queryItems.append(("minTakendownRecordsCount", "\(minimumTakendownRecordsCount)"))
+        }
+
+        // minimumPriorityScore
+        if let minimumPriorityScore {
+            let finalMinimumPriorityScore = max(1, min(minimumPriorityScore, 100))
+            queryItems.append(("minPriorityScore", "\(finalMinimumPriorityScore)"))
         }
 
         let queryURL: URL
