@@ -455,3 +455,7 @@ _TBD..._
     ```
     - If there’s a `return` statement in the `do-catch` block, or if the query method is in there, the request and response methods should be beside each other.
     - If any additional method calls are being made, put them beside `createRequest()` and `sendRequest()` if they're strongly related to them.
+- When explicitly writing `Int` values in Swift, if the value is 1,000 or greater, use underscore separators (`_`) every three digits, grouping from right to left, to help with making it easier to read. Examples:
+   - `2_000`
+   - `14_923`
+   - `1_038_124`

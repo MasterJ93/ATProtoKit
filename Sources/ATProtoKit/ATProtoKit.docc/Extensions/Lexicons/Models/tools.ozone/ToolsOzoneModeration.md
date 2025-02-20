@@ -41,6 +41,7 @@
 - ``ToolsOzoneLexicon/Moderation/VideoDetailsDefinition``
 - ``ToolsOzoneLexicon/Moderation/AccountHostingDefinition``
 - ``ToolsOzoneLexicon/Moderation/RecordHostingDefinition``
+- ``ToolsOzoneLexicon/Moderation/ReporterStatsDefinition``
 
 ### tools.ozone.moderation.emitEvent
 
@@ -49,6 +50,10 @@
 ### tools.ozone.moderation.getRecords
 
 - ``ToolsOzoneLexicon/Moderation/GetRecordsOutput``
+
+### tools.ozone.moderation.getReporterStats
+
+- ``ToolsOzoneLexicon/Moderation/GetReporterStatsOutput``
 
 ### tools.ozone.moderation.getRepos
 
