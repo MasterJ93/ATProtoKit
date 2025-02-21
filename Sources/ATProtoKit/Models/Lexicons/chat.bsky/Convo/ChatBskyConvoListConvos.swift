@@ -9,6 +9,31 @@ import Foundation
 
 extension ChatBskyLexicon.Conversation {
 
+    /// A definition model for listing various conversations.
+    ///
+    /// - SeeAlso: This is based on the [`chat.bsky.convo.listConvos`][github] lexicon.
+    ///
+    /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/chat/bsky/convo/listConvos.json
+    public struct ListConversations: Sendable, Codable {
+
+        /// The read state of conversation.
+        public enum ReadState: String, Sendable, Codable {
+
+            /// The conversation has been unread.
+            case unread
+        }
+
+        /// The status of the conversation.
+        public enum Status: String, Sendable, Codable {
+
+            /// The conversation is waiting to be accepted.
+            case request
+
+            /// The conversation has been accepted.
+            case accepted
+        }
+    }
+
     /// An output model for listing various conversations.
     ///
     /// - SeeAlso: This is based on the [`chat.bsky.convo.listConvos`][github] lexicon.
