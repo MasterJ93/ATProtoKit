@@ -174,8 +174,7 @@ public class ATProtoKit: ATProtoKitConfiguration, ATRecordConfiguration {
 
         Task { [recordLexicons] in
             if canUseBlueskyRecords && !(ATRecordTypeRegistry.areBlueskyRecordsRegistered) {
-                _ = await ATRecordTypeRegistry(blueskyLexiconTypes: recordLexicons)
-                await ATRecordTypeRegistry.setBlueskyRecordsRegistered(true)
+                _ = await ATRecordTypeRegistry.shared.register(blueskyLexiconTypes: recordLexicons)
             }
 
             // Registration complete – signal waiting threads.
