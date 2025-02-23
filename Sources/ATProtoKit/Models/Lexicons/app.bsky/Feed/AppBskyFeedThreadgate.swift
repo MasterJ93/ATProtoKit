@@ -66,7 +66,7 @@ extension AppBskyLexicon.Feed {
             var container = encoder.container(keyedBy: CodingKeys.self)
 
             try container.encode(self.postURI, forKey: .postURI)
-            try container.encodeIfPresent(self.allow, forKey: .allow)
+            try container.truncatedEncodeIfPresent(self.allow, forKey: .allow, upToArrayLength: 5)
             try container.encodeDate(self.createdAt, forKey: .createdAt)
             try container.truncatedEncodeIfPresent(self.hiddenReplies, forKey: .hiddenReplies, upToArrayLength: 50)
         }
