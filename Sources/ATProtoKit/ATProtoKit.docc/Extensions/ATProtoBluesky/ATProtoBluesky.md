@@ -22,7 +22,12 @@
 - ``ATLinkBuilder``
 - ``deletePostRecord(_:)``
 
-<!--Postgates and Threadgates-->
+### Postgates and Threadgates
+
+- ``createPostgateRecord(postURI:detachedEmbeddingURIs:embeddingRules:recordKey:shouldValidate:swapCommit:)``
+- ``deletePostgateRecord(_:)``
+
+
 
 ### Managing Liking and Unliking
 
