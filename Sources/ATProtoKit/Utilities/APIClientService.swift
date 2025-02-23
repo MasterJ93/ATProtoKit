@@ -80,9 +80,6 @@ public actor APIClientService {
 
     /// Creates an instance for use in accepting and returning API requests and
     /// responses respectively.
-    ///
-    /// - Parameter configuration: An instance of `URLSessionConfiguration`.
-    /// Defaults to `.default`.
     private init() {
         let sessionConfig = URLSessionConfiguration.default
         sessionConfig.httpAdditionalHeaders = ["User-Agent": APIClientService.userAgent]
@@ -300,6 +297,11 @@ public actor APIClientService {
     ///   - body: An optional `Encodable` body to be encoded and attached to the request.
     /// - Returns: A tuple containing the data and the HTTPURLResponse.
     private func performRequest(_ request: URLRequest, withEncodingBody body: (Encodable & Sendable)? = nil) async throws -> Data {
+        // Wait for ATRecordTypeRegistry to be ready before proceeding
+        for await _ in await ATRecordTypeRegistry.shared.onReady {
+            break
+        }
+
         var urlRequest = request
 
         if let body = body {

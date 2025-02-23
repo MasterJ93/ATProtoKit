@@ -39,7 +39,7 @@ Task {
     do {
         try await config.authenticate()
 
-        let atProto = ATProtoKit(sessionConfiguration: config)
+        let atProto = await ATProtoKit(sessionConfiguration: config)
         let atProtoBluesky = ATProtoBluesky(atProtoKitInstance: atProto)
 
         let postResult = try await atProtoBluesky.createPostRecord(text: "Hello Bluesky!")
@@ -60,9 +60,9 @@ I believe Bluesky and its accompanying AT Protocol gives the perfect balance bet
 - [x] Written with adherence to the Swift API Design Guidelines.
 - [ ] Well-written documentation for all of the AT Protocol and Bluesky APIs.
 - [x] A RichText helper to parse text into the applicable facets.
-- [ ] Easily validate different identifiers.
+- [x] Easily validate different identifiers.
 - [ ] A powerful Firehose API that retrieves and filters events and records in real-time.
-- [x] A logging tool for easy debugging.
+- [ ] A logging tool for easy debugging.
 
 > [!NOTE]
 > Not all features above have been implemented; however, they will be, soon.
@@ -72,7 +72,7 @@ I believe Bluesky and its accompanying AT Protocol gives the perfect balance bet
 You can use the Swift Package Manager to download and import the library into your project:
 ```swift
 dependencies: [
-    .package(url: "https://github.com/MasterJ93/ATProtoKit.git", from: "0.23.0")
+    .package(url: "https://github.com/MasterJ93/ATProtoKit.git", from: "0.24.0")
 ]
 ```
 

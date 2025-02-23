@@ -34,7 +34,10 @@ extension ComAtprotoLexicon.Repository {
 
             /// The record key of the write operation. Optional.
             ///
-            /// - Important: Current maximum length is 15 characters.
+            /// - Important: Current maximum length is 512 characters.
+            ///
+            /// - Note: According to the AT Protocol specifications: "NOTE: maxLength is redundant
+            /// with record-key format. Keeping it temporarily to ensure backwards compatibility."
             public let recordKey: String?
 
             /// The value of the write operation.
@@ -44,7 +47,7 @@ extension ComAtprotoLexicon.Repository {
                 var container = encoder.container(keyedBy: CodingKeys.self)
 
                 try container.encode(self.collection, forKey: .collection)
-                try container.truncatedEncodeIfPresent(self.recordKey, forKey: .recordKey, upToCharacterLength: 15)
+                try container.truncatedEncodeIfPresent(self.recordKey, forKey: .recordKey, upToCharacterLength: 512)
                 try container.encode(self.value, forKey: .value)
             }
 

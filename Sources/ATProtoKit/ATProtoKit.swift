@@ -111,6 +111,8 @@ extension ATProtoKitConfiguration {
 ///         try await config.authenticate()
 ///
 ///         print("Access token: \(session.accessToken)")
+///
+///         let atProtoKit = await ATProtoKit(sessionConfiguration: config)
 ///     } catch {
 ///         print("Error: \(error)")
 ///     }
@@ -167,19 +169,36 @@ public class ATProtoKit: ATProtoKitConfiguration, ATRecordConfiguration {
         self.sessionConfiguration = sessionConfiguration
         self.logger = session?.logger
 
-        // Mark the beginning of registration.
-        // This is to fix a bug from the following issue: https://github.com/MasterJ93/ATProtoKit/issues/75
-        // as well as this issue: https://github.com/MasterJ93/ATProtoKit/issues/102
-        ATRecordTypeRegistry.registrationGroup.enter()
-
         Task { [recordLexicons] in
             if canUseBlueskyRecords && !(ATRecordTypeRegistry.areBlueskyRecordsRegistered) {
-                _ = await ATRecordTypeRegistry(blueskyLexiconTypes: recordLexicons)
-                await ATRecordTypeRegistry.setBlueskyRecordsRegistered(true)
+                _ = await ATRecordTypeRegistry.shared.register(blueskyLexiconTypes: recordLexicons)
             }
+        }
+    }
 
-            // Registration complete – signal waiting threads.
-            ATRecordTypeRegistry.registrationGroup.leave()
+    /// Initializes a new, asyncronous instance of `ATProtoKit`.
+    ///
+    /// This will also handle some of the logging-related setup. The identifier will either be your
+    /// project's `CFBundleIdentifier` or an identifier named
+    /// `com.cjrriley.ATProtoKit`. However, you can manually override this.
+    ///
+    /// If you're using methods such as
+    /// ``ATProtoKit/ATProtoKit/createAccount(email:handle:existingDID:inviteCode:verificationCode:verificationPhone:password:recoveryKey:plcOperation:pdsURL:)``
+    /// or ``ATProtoKit/ATProtoKit/getSession(by:pdsURL:)``, be sure to set
+    /// `canUseBlueskyRecords` to false. While the initializer does check to see if the records
+    /// have been added, it's best not to invoke it, esepcially if you're using ATProtoKit for a
+    /// generic AT Protocol service that doesn't use Bluesky records.
+    ///
+    /// - Parameters:
+    ///   - sessionConfiguration: The authenticated user session within the AT Protocol. Optional.
+    ///   - canUseBlueskyRecords: Indicates whether Bluesky's lexicons should be used.
+    ///   Defaults to `true`.
+    public init(sessionConfiguration: SessionConfiguration? = nil, canUseBlueskyRecords: Bool = true) async {
+        self.sessionConfiguration = sessionConfiguration
+        self.logger = session?.logger
+
+        if canUseBlueskyRecords && !(ATRecordTypeRegistry.areBlueskyRecordsRegistered) {
+            _ = await ATRecordTypeRegistry.shared.register(blueskyLexiconTypes: recordLexicons)
         }
     }
 

@@ -2,6 +2,11 @@
 
 ## Topics
 
+### chat.bsky.convo.acceptConvo
+
+- ``ChatBskyLexicon/Conversation/AcceptConversationRequestBody``
+- ``ChatBskyLexicon/Conversation/AcceptConversationOutput``
+
 ### chat.bsky.convo.defs
 
 - ``ChatBskyLexicon/Conversation/MessageReferenceDefinition``
@@ -11,9 +16,13 @@
 - ``MessageViewSenderDefinition``
 - ``ConversationViewDefinition``
 - ``LogBeginConversationDefinition``
+- ``LogAcceptConversationDefinition``
 - ``LogLeaveConversationDefinition``
+- ``LogMuteConversationDefinition``
+- ``LogUnmuteConversationDefinition``
 - ``LogCreateMessageDefinition``
 - ``LogDeleteMessageDefinition``
+- ``LogReadMessageDefinition``
 
 ### chat.bsky.convo.deleteMessageForSelf
 
@@ -22,6 +31,10 @@
 ### chat.bsky.convo.getConvo
 
 - ``ChatBskyLexicon/Conversation/GetConversationOutput``
+
+### chat.bsky.convo.getConvoAvailability
+
+- ``ChatBskyLexicon/Conversation/GetConversationAvailabilityOutput``
 
 ### chat.bsky.convo.getConvoForMembers
 
@@ -42,6 +55,7 @@
 
 ### chat.bsky.convo.listConvos
 
+- ``ChatBskyLexicon/Conversation/ListConversations``
 - ``ChatBskyLexicon/Conversation/ListConversationsOutput``
 
 ### chat.bsky.convo.muteConvo
