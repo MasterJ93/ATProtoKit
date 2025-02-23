@@ -19,6 +19,8 @@ extension ATProtoBlueskyChat {
     ///   - limit: The number of items that can be in the list. Optional. Defaults to `50`.
     ///   - cursor: The mark used to indicate the starting point for the next set
     ///   of results. Optional.
+    ///   - readState: The read state of conversation. Optional.
+    ///   - status: The status of the conversation. Optional.
     /// - Returns: An array of conversations the user account is currently in, with an optional
     /// cursor for expanding the array.
     ///
@@ -26,7 +28,9 @@ extension ATProtoBlueskyChat {
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func listConversations(
         limit: Int? = 50,
-        cursor: String? = nil
+        cursor: String? = nil,
+        readState: ChatBskyLexicon.Conversation.ListConversations.ReadState? = nil,
+        status: ChatBskyLexicon.Conversation.ListConversations.Status? = nil
     ) async throws -> ChatBskyLexicon.Conversation.ListConversationsOutput {
         guard session != nil,
               let accessToken = session?.accessToken else {

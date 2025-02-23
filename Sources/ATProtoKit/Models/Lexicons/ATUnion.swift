@@ -45,7 +45,7 @@ public struct ATUnion {
 
         /// The "Bluesky App State" preference.
         ///
-        /// - Important: this should never be used, as it's supposed to be for the official Bluesky iOS client.
+        /// - Important: This should never be used, as it's supposed to be for the official Bluesky iOS client.
         case bskyAppStatePreferences(AppBskyLexicon.Actor.BskyAppStatePreferencesDefinition)
 
         /// The "Labelers" preference.
@@ -1139,11 +1139,49 @@ public struct ATUnion {
         }
     }
 
+    /// A reference containing the list of messages.
+    public enum LogReadMessageUnion: Sendable, Codable {
+
+        /// A message view.
+        case messageView(ChatBskyLexicon.Conversation.MessageViewDefinition)
+
+        /// A deleted message view.
+        case deletedMessageView(ChatBskyLexicon.Conversation.DeletedMessageViewDefinition)
+
+        public init(from decoder: any Decoder) throws {
+            let container = try decoder.singleValueContainer()
+
+            if let value = try? container.decode(ChatBskyLexicon.Conversation.MessageViewDefinition.self) {
+                self = .messageView(value)
+            } else if let value = try? container.decode(ChatBskyLexicon.Conversation.DeletedMessageViewDefinition.self) {
+                self = .deletedMessageView(value)
+            } else {
+                throw DecodingError.typeMismatch(
+                    LogDeleteMessageUnion.self, DecodingError.Context(
+                        codingPath: decoder.codingPath, debugDescription: "Unknown LogDeleteMessageUnion type"))
+            }
+        }
+
+        public func encode(to encoder: any Encoder) throws {
+            var container = encoder.singleValueContainer()
+
+            switch self {
+                case .messageView(let messageView):
+                    try container.encode(messageView)
+                case .deletedMessageView(let deletedMessageView):
+                    try container.encode(deletedMessageView)
+            }
+        }
+    }
+
     /// A reference containing the list of message logs.
     public enum MessageLogsUnion: Sendable, Codable {
 
         /// A log entry for beginning the coversation.
         case logBeginConversation(ChatBskyLexicon.Conversation.LogBeginConversationDefinition)
+
+        /// A log entry for accepting a conversation.
+        case logAcceptConversation(ChatBskyLexicon.Conversation.LogAcceptConversationDefinition)
 
         /// A log entry for leaving the conversation.
         case logLeaveConversation(ChatBskyLexicon.Conversation.LogLeaveConversationDefinition)
@@ -1159,6 +1197,8 @@ public struct ATUnion {
 
             if let value = try? container.decode(ChatBskyLexicon.Conversation.LogBeginConversationDefinition.self) {
                 self = .logBeginConversation(value)
+            } else if let value = try? container.decode(ChatBskyLexicon.Conversation.LogAcceptConversationDefinition.self) {
+                self = .logAcceptConversation(value)
             } else if let value = try? container.decode(ChatBskyLexicon.Conversation.LogLeaveConversationDefinition.self) {
                 self = .logLeaveConversation(value)
             } else if let value = try? container.decode(ChatBskyLexicon.Conversation.LogCreateMessageDefinition.self) {
@@ -1178,6 +1218,8 @@ public struct ATUnion {
             switch self {
                 case .logBeginConversation(let logBeginConversation):
                     try container.encode(logBeginConversation)
+                case .logAcceptConversation(let logAcceptConversation):
+                    try container.encode(logAcceptConversation)
                 case .logLeaveConversation(let logLeaveConversation):
                     try container.encode(logLeaveConversation)
                 case .logCreateMessage(let logCreateMessage):
@@ -1879,6 +1921,9 @@ public struct ATUnion {
         /// An email event.
         case moderationEventEmail(ToolsOzoneLexicon.Moderation.EventEmailDefinition)
 
+        /// A divert event.
+        case moderationEventDivert(ToolsOzoneLexicon.Moderation.EventDivertDefinition)
+
         /// A resolve appeal event.
         case moderationEventResolveAppeal(ToolsOzoneLexicon.Moderation.EventResolveAppealDefinition)
 
@@ -1921,6 +1966,8 @@ public struct ATUnion {
                 self = .moderationEventUnmuteReporter(value)
             } else if let value = try? container.decode(ToolsOzoneLexicon.Moderation.EventEmailDefinition.self) {
                 self = .moderationEventEmail(value)
+            } else if let value = try? container.decode(ToolsOzoneLexicon.Moderation.EventDivertDefinition.self) {
+                self = .moderationEventDivert(value)
             } else if let value = try? container.decode(ToolsOzoneLexicon.Moderation.EventResolveAppealDefinition.self) {
                 self = .moderationEventResolveAppeal(value)
             } else if let value = try? container.decode(ToolsOzoneLexicon.Moderation.EventTagDefinition.self) {
@@ -1966,6 +2013,8 @@ public struct ATUnion {
                     try container.encode(moderationEventUnmuteReporter)
                 case .moderationEventEmail(let moderationEventEmail):
                     try container.encode(moderationEventEmail)
+                case .moderationEventDivert(let moderationEventDivert):
+                    try container.encode(moderationEventDivert)
                 case .moderationEventResolveAppeal(let moderationEventResolveAppeal):
                     try container.encode(moderationEventResolveAppeal)
                 case .moderationEventTag(let value):

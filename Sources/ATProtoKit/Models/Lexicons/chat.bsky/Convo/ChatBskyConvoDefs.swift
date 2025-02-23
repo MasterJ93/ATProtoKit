@@ -235,8 +235,8 @@ extension ChatBskyLexicon.Conversation {
         /// Indicates whether the conversation is muted.
         public let isMuted: Bool
 
-        /// Indicates whether the conversation was opened. Optional.
-        public let isOpened: Bool?
+        /// The status of the conversation.
+        public let status: Status
 
         /// The number of messages that haven't been read.
         public let unreadCount: Int
@@ -247,8 +247,18 @@ extension ChatBskyLexicon.Conversation {
             case members
             case lastMessage
             case isMuted = "muted"
-            case isOpened = "opened"
+            case status
             case unreadCount
+        }
+
+        /// The status of the conversation.
+        public enum Status: String, Sendable, Codable {
+
+            /// The conversation is waiting to be accepted.
+            case request
+
+            /// The conversation has been accepted.
+            case accepted
         }
     }
 
@@ -271,12 +281,69 @@ extension ChatBskyLexicon.Conversation {
         }
     }
 
+    /// A definition model for a log for accepting the conversation.
+    ///
+    /// - SeeAlso: This is based on the [`chat.bsky.convo.defs`][github] lexicon.
+    ///
+    /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/chat/bsky/convo/defs.json
+    public struct LogAcceptConversationDefinition: Sendable, Codable {
+
+        /// The revision of the log.
+        public let revision: String
+
+        /// The ID of the conversation.
+        public let conversationID: String
+
+        enum CodingKeys: String, CodingKey {
+            case revision = "rev"
+            case conversationID = "convoID"
+        }
+    }
+
     /// A definition model for a log for leaving the conversation.
     ///
     /// - SeeAlso: This is based on the [`chat.bsky.convo.defs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/chat/bsky/convo/defs.json
     public struct LogLeaveConversationDefinition: Sendable, Codable {
+
+        /// The revision of the log.
+        public let revision: String
+
+        /// The ID of the conversation.
+        public let conversationID: String
+
+        enum CodingKeys: String, CodingKey {
+            case revision = "rev"
+            case conversationID = "convoID"
+        }
+    }
+
+    /// A definition model for a log for muting a conversation.
+    ///
+    /// - SeeAlso: This is based on the [`chat.bsky.convo.defs`][github] lexicon.
+    ///
+    /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/chat/bsky/convo/defs.json
+    public struct LogMuteConversationDefinition: Sendable, Codable {
+
+        /// The revision of the log.
+        public let revision: String
+
+        /// The ID of the conversation.
+        public let conversationID: String
+
+        enum CodingKeys: String, CodingKey {
+            case revision = "rev"
+            case conversationID = "convoID"
+        }
+    }
+
+    /// A definition model for a log for unmuting a conversation.
+    ///
+    /// - SeeAlso: This is based on the [`chat.bsky.convo.defs`][github] lexicon.
+    ///
+    /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/chat/bsky/convo/defs.json
+    public struct LogUnmuteConversationDefinition: Sendable, Codable {
 
         /// The revision of the log.
         public let revision: String
@@ -328,6 +395,29 @@ extension ChatBskyLexicon.Conversation {
 
         /// The message itself.
         public let message: ATUnion.LogDeleteMessageUnion
+
+        enum CodingKeys: String, CodingKey {
+            case revision = "rev"
+            case conversationID = "convoID"
+            case message
+        }
+    }
+
+    /// A definition model for a log for reading a message.
+    ///
+    /// - SeeAlso: This is based on the [`chat.bsky.convo.defs`][github] lexicon.
+    ///
+    /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/chat/bsky/convo/defs.json
+    public struct LogReadMessageDefinition: Sendable, Codable {
+
+        /// The revision of the log.
+        public let revision: String
+
+        /// The ID of the conversation.
+        public let conversationID: String
+
+        /// The message itself.
+        public let message: ATUnion.LogReadMessageUnion
 
         enum CodingKeys: String, CodingKey {
             case revision = "rev"
