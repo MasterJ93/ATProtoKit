@@ -27,7 +27,8 @@
 - ``createPostgateRecord(postURI:detachedEmbeddingURIs:embeddingRules:recordKey:shouldValidate:swapCommit:)``
 - ``deletePostgateRecord(_:)``
 
-
+- ``createThreadgateRecord(postURI:replyControls:hiddenReplyURIs:recordKey:shouldValidate:swapCommit:)``
+- ``deleteThreadgateRecord(_:)``
 
 ### Managing Liking and Unliking
 
