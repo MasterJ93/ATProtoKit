@@ -102,7 +102,7 @@ extension ATRecordConfiguration {
 /// When adding a record, you need to type `.self` at the end.
 /// ```swift
 /// Task {
-///     await ATRecordTypeRegistry(types: [UserProfile.self])
+///     _ = await ATRecordTypeRegistry.shared.register(blueskyLexiconTypes: [UserProfile.self])
 /// }
 /// ```
 ///
