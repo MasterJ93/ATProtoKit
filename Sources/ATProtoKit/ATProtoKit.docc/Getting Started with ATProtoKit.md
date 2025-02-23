@@ -55,7 +55,9 @@ Task {
 You can then create an ``ATProtoKit/ATProtoKit`` instance, where you can insert the ``ATProtocolConfiguration`` object in the `sessionConfiguration` parameter:
 
 ```swift
-let atProto = ATProtoKit(sessionConfiguration: config)
+Task {
+    let atProto = try await ATProtoKit(sessionConfiguration: config)
+}
 ```
 
 ### Creating a post
