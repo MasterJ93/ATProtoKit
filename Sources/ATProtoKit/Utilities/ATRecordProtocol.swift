@@ -195,7 +195,7 @@ public actor ATRecordTypeRegistry {
     /// - Note: This must only be used for the main `ATProtoKit` `class` and only for
     /// Bluesky-specific record lexicon models.
     ///
-    /// - Parameter types: An array of ``ATRecordProtocol``-conforming `struct`s.
+    /// - Parameter blueskyLexiconTypes: An array of ``ATRecordProtocol``-conforming `struct`s.
     public func register(blueskyLexiconTypes: [any ATRecordProtocol.Type]) async {
         guard !Self.areBlueskyRecordsRegistered else { return }
 
