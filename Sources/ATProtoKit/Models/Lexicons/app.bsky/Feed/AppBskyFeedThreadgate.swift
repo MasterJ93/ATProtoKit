@@ -31,7 +31,7 @@ extension AppBskyLexicon.Feed {
         /// post record."
         public let postURI: String
 
-        /// An array of rules used as an allowlist.
+        /// An array of rules used as an allowlist. Optional.
         ///
         /// - Important: Current maximum length is 5 items.
         public let allow: [ATUnion.ThreadgateUnion]?
@@ -103,7 +103,11 @@ extension AppBskyLexicon.Feed {
         public struct ListRule: Sendable, Codable, Equatable, Hashable {
 
             /// The list itself.
-            public let list: String
+            public let listURI: String
+
+            enum CodingKeys: String, CodingKey {
+                case listURI = "list"
+            }
         }
     }
 }
