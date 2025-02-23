@@ -37,7 +37,7 @@ extension ATProtoBluesky {
     /// }
     /// ```
     ///
-    /// ## Managing embedding post options
+    /// ## Managing Embedding Post Options
     ///
     /// You can detact the post from a quote post by using the `detachedEmbeddingURIs` argument.
     /// When doing so, Bluesky will display a "Removed by author" warning and the quote post will
@@ -88,7 +88,9 @@ extension ATProtoBluesky {
         }
 
         // Check to see if the post exists.
-        guard let post = try await atProtoKitInstance.getPosts([postURI]).posts.first else { throw ATProtoBlueskyError.invalidReplyReference(message: "Post not found.") }
+        guard let post = try await atProtoKitInstance.getPosts([postURI]).posts.first else {
+            throw ATProtoBlueskyError.invalidReplyReference(message: "Post not found.")
+        }
 
         var postgateEmbedRules: [ATUnion.EmbeddingRulesUnion]? = nil
 
@@ -103,7 +105,7 @@ extension ATProtoBluesky {
         }
 
         let postgateRecord = AppBskyLexicon.Feed.PostgateRecord(
-            createdAt: post.record.getRecord(ofType: AppBskyLexicon.Feed.PostRecord.self)?.createdAt ?? Date(),
+            createdAt: post.record.getRecord(ofType: AppBskyLexicon.Feed.PostgateRecord.self)?.createdAt ?? Date(),
             postURI: postURI,
             detachedEmbeddingURIs: detachedEmbeddingURIs,
             embeddingRules: postgateEmbedRules
