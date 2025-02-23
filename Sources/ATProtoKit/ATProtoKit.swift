@@ -112,7 +112,7 @@ extension ATProtoKitConfiguration {
 ///
 ///         print("Access token: \(session.accessToken)")
 ///
-///         let atProtoKit = try await ATProtoKit(sessionConfiguration: config)
+///         let atProtoKit = await ATProtoKit(sessionConfiguration: config)
 ///     } catch {
 ///         print("Error: \(error)")
 ///     }

@@ -56,7 +56,7 @@ You can then create an ``ATProtoKit/ATProtoKit`` instance, where you can insert 
 
 ```swift
 Task {
-    let atProto = try await ATProtoKit(sessionConfiguration: config)
+    let atProto = await ATProtoKit(sessionConfiguration: config)
 }
 ```
 

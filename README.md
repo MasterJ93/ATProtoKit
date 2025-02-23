@@ -39,7 +39,7 @@ Task {
     do {
         try await config.authenticate()
 
-        let atProto = try await ATProtoKit(sessionConfiguration: config)
+        let atProto = await ATProtoKit(sessionConfiguration: config)
         let atProtoBluesky = ATProtoBluesky(atProtoKitInstance: atProto)
 
         let postResult = try await atProtoBluesky.createPostRecord(text: "Hello Bluesky!")
