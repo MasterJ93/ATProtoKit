@@ -144,9 +144,6 @@ public actor ATRecordTypeRegistry {
     /// - Warning: Don't touch this property; this should only be used for ``ATProtoKit``.
     public static var areBlueskyRecordsRegistered = false
 
-    /// Global dispatch group to signal when registration is complete.
-    public static let registrationGroup = DispatchGroup()
-
     /// Tracks whether the registry is currently being modified.
     private var isUpdating = false
 
