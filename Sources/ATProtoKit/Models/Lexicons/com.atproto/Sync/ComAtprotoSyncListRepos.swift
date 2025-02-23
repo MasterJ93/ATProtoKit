@@ -24,11 +24,20 @@ extension ComAtprotoLexicon.Sync {
             /// Indicates the user account is inactive due to a takedown.
             case takedown
 
-            /// Indicates the user account is inactivate due to a suspension.
+            /// Indicates the repository has been suspended.
             case suspended
 
-            /// Indicates the user account is inactivate due to a deactivation.
+            /// Indicates the repository has been deleted.
+            case deleted
+
+            /// Indicates the repository has been deactivated.
             case deactivated
+
+            /// Indicates the repository has been desynchronized.
+            case desynchronized
+
+            /// Indicates the repository has been throttled.
+            case throttled
         }
     }
 
