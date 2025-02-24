@@ -63,6 +63,7 @@ extension AppBskyLexicon.Feed {
         public func encode(to encoder: any Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
 
+            try container.encode(Self.type, forKey: .type)
             try container.encodeDate(self.createdAt, forKey: .createdAt)
             try container.encode(self.postURI, forKey: .postURI)
             try container.truncatedEncodeIfPresent(self.detachedEmbeddingURIs, forKey: .detachedEmbeddingURIs, upToArrayLength: 50)
@@ -80,6 +81,21 @@ extension AppBskyLexicon.Feed {
         /// A marker that disables the embedding of this post.
         ///
         /// - Note: According to the AT Protocol specifications: "Disables embedding of this post."
-        public struct DisableRule: Codable, Sendable, Equatable, Hashable {}
+        public struct DisableRule: Codable, Sendable, Equatable, Hashable {
+
+            public let type: String = "app.bsky.feed.postgate#disableRule"
+
+            public init() {}
+
+            public func encode(to encoder: any Encoder) throws {
+                var container = encoder.container(keyedBy: CodingKeys.self)
+
+                try container.encode(self.type, forKey: .type)
+            }
+
+            enum CodingKeys: String, CodingKey {
+                case type = "$type"
+            }
+        }
     }
 }

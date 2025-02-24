@@ -84,28 +84,56 @@ extension AppBskyLexicon.Feed {
         ///
         /// - Note: According to the AT Protocol specifications: "Allow replies from actors mentioned
         /// in your post."
-        public struct MentionRule: Sendable, Codable, Equatable, Hashable {}
+        public struct MentionRule: Sendable, Codable, Equatable, Hashable {
+
+            /// The identifier of the object.
+            public let type = "app.bsky.feed.threadgate#mentionRule"
+
+            enum CodingKeys: String, CodingKey {
+                case type = "$type"
+            }
+        }
 
         /// A rule that allows users who follow you to reply to the user account's post.
         ///
         /// - Note: According to the AT Protocol specifications: "Allow replies from actors who
         /// follow you."
-        public struct FollowerRule: Sendable, Codable, Equatable, Hashable {}
+        public struct FollowerRule: Sendable, Codable, Equatable, Hashable {
+
+            /// The identifier of the object.
+            public let type = "app.bsky.feed.threadgate#followerRule"
+
+            enum CodingKeys: String, CodingKey {
+                case type = "$type"
+            }
+        }
 
         /// A rule that allows users that are followed by the user account to reply to the post.
         ///
         /// - Note: According to the AT Protocol specifications: "Allow replies from actors you follow."
-        public struct FollowingRule: Sendable, Codable, Equatable, Hashable {}
+        public struct FollowingRule: Sendable, Codable, Equatable, Hashable {
+
+            /// The identifier of the object.
+            public let type = "app.bsky.feed.threadgate#followingRule"
+
+            enum CodingKeys: String, CodingKey {
+                case type = "$type"
+            }
+        }
 
         /// A rule that allows users are in a specified list to reply to the post.
         ///
         /// - Note: According to the AT Protocol specifications: "Allow replies from actors on a list."
         public struct ListRule: Sendable, Codable, Equatable, Hashable {
 
+            /// The identifier of the object.
+            public let type = "app.bsky.feed.threadgate#listRule"
+
             /// The list itself.
             public let listURI: String
 
             enum CodingKeys: String, CodingKey {
+                case type = "$type"
                 case listURI = "list"
             }
         }
