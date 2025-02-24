@@ -94,7 +94,7 @@ extension ATProtoBluesky {
         /// The post record could not be found.
         ///
         /// - Parameter message: The message of the error.
-        case postNotFound(message: String = "Post not found.")
+        case postNotFound(message: String)
 
         /// The reply reference could not be validated.
         ///
