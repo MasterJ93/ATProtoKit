@@ -69,30 +69,31 @@ extension ATProtoBluesky {
             throw ATProtoBlueskyError.postNotFound(message: "Post (\(postURI)) not found.")
         }
 
-        var threadgateAllowArray: [ATUnion.ThreadgateUnion]? = nil
+        var threadgateAllowArray: [ATUnion.ThreadgateUnion] = []
 
-        if let replyControls = replyControls, replyControls.isEmpty == true {
+        if let replyControls = replyControls, replyControls.isEmpty == false {
             let cappedReplyControls = Array(replyControls.prefix(5))
 
             for replyControl in cappedReplyControls {
                 switch replyControl {
                     case .allowMentions:
-                        threadgateAllowArray?.append(.mentionRule(AppBskyLexicon.Feed.ThreadgateRecord.MentionRule()))
+                        threadgateAllowArray.append(.mentionRule(AppBskyLexicon.Feed.ThreadgateRecord.MentionRule()))
                     case .allowFollowers:
-                        threadgateAllowArray?.append(.followerRule(AppBskyLexicon.Feed.ThreadgateRecord.FollowerRule()))
+                        threadgateAllowArray.append(.followerRule(AppBskyLexicon.Feed.ThreadgateRecord.FollowerRule()))
                     case .allowFollowing:
-                        threadgateAllowArray?.append(.followingRule(AppBskyLexicon.Feed.ThreadgateRecord.FollowingRule()))
+                        threadgateAllowArray.append(.followingRule(AppBskyLexicon.Feed.ThreadgateRecord.FollowingRule()))
                     case .allowList(listURI: let listURI):
-                        threadgateAllowArray?.append(.listRule(AppBskyLexicon.Feed.ThreadgateRecord.ListRule(listURI: listURI)))
+                        threadgateAllowArray.append(.listRule(AppBskyLexicon.Feed.ThreadgateRecord.ListRule(listURI: listURI)))
                 }
             }
-
         }
+
+        let finalThreadgateAllowArray = threadgateAllowArray.isEmpty ? nil : threadgateAllowArray
 
         let threadgateRecord = AppBskyLexicon.Feed.ThreadgateRecord(
             postURI: postURI,
-            allow: threadgateAllowArray,
-            createdAt: post.record.getRecord(ofType: AppBskyLexicon.Feed.ThreadgateRecord.self)?.createdAt ?? Date(),
+            allow: finalThreadgateAllowArray,
+            createdAt: Date(),
             hiddenReplies: hiddenReplyURIs
         )
 

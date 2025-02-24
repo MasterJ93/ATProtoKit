@@ -94,17 +94,19 @@ extension ATProtoBluesky {
             throw ATProtoBlueskyError.postNotFound(message: "Post (\(postURI)) not found.")
         }
 
-        var postgateEmbedRules: [ATUnion.EmbeddingRulesUnion]? = nil
+        var postgateEmbedRules: [ATUnion.EmbeddingRulesUnion] = []
 
         // Loop through any items in embedRules, if any.
-        if let embeddingRules = embeddingRules, embeddingRules.isEmpty == true {
+        if let embeddingRules = embeddingRules, embeddingRules.isEmpty == false {
             for rule in embeddingRules {
                 switch rule {
                     case .disable:
-                        postgateEmbedRules?.append(.disabledRule(AppBskyLexicon.Feed.PostgateRecord.DisableRule()))
+                        postgateEmbedRules.append(.disabledRule(AppBskyLexicon.Feed.PostgateRecord.DisableRule()))
                 }
             }
         }
+
+        let finalPostgateEmbedRules = postgateEmbedRules.isEmpty ? nil : postgateEmbedRules
 
         let postgateRecord = AppBskyLexicon.Feed.PostgateRecord(
             createdAt: post.record.getRecord(ofType: AppBskyLexicon.Feed.PostgateRecord.self)?.createdAt ?? Date(),
