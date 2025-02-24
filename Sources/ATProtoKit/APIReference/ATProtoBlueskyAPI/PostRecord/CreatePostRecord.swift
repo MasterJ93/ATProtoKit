@@ -379,14 +379,18 @@ extension ATProtoBluesky {
             createdAt: creationDate
         )
 
-        return try await atProtoKitInstance.createRecord(
-            repositoryDID: session.sessionDID,
-            collection: "app.bsky.feed.post",
-            recordKey: recordKey ?? nil,
-            shouldValidate: shouldValidate,
-            record: UnknownType.record(postRecord),
-            swapCommit: swapCommit ?? nil
-        )
+        do {
+            return try await atProtoKitInstance.createRecord(
+                repositoryDID: session.sessionDID,
+                collection: "app.bsky.feed.post",
+                recordKey: recordKey ?? nil,
+                shouldValidate: shouldValidate,
+                record: UnknownType.record(postRecord),
+                swapCommit: swapCommit ?? nil
+            )
+        } catch {
+            throw error
+        }
     }
     
     /// Uploads images to the AT Protocol for attaching to a record at a later request.

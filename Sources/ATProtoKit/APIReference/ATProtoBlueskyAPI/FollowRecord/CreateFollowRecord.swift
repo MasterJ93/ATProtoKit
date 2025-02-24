@@ -37,13 +37,17 @@ extension ATProtoBluesky {
             createdAt: createdAt
         )
 
-        return try await atProtoKitInstance.createRecord(
-            repositoryDID: session.sessionDID,
-            collection: "app.bsky.graph.follow",
-            recordKey: recordKey,
-            shouldValidate: shouldValidate,
-            record: UnknownType.record(followRecord),
-            swapCommit: swapCommit
-        )
+        do {
+            return try await atProtoKitInstance.createRecord(
+                repositoryDID: session.sessionDID,
+                collection: "app.bsky.graph.follow",
+                recordKey: recordKey,
+                shouldValidate: shouldValidate,
+                record: UnknownType.record(followRecord),
+                swapCommit: swapCommit
+            )
+        } catch {
+            throw error
+        }
     }
 }

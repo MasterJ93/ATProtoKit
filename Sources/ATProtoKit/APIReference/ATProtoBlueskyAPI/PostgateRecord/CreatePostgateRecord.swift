@@ -110,17 +110,21 @@ extension ATProtoBluesky {
             createdAt: post.record.getRecord(ofType: AppBskyLexicon.Feed.PostgateRecord.self)?.createdAt ?? Date(),
             postURI: postURI,
             detachedEmbeddingURIs: detachedEmbeddingURIs,
-            embeddingRules: postgateEmbedRules
+            embeddingRules: finalPostgateEmbedRules
         )
 
-        return try await atProtoKitInstance.createRecord(
-            repositoryDID: session.sessionDID,
-            collection: "app.bsky.feed.postgate",
-            recordKey: recordKey ?? nil,
-            shouldValidate: shouldValidate,
-            record: UnknownType.record(postgateRecord),
-            swapCommit: swapCommit ?? nil
-        )
+        do {
+            return try await atProtoKitInstance.createRecord(
+                repositoryDID: session.sessionDID,
+                collection: "app.bsky.feed.postgate",
+                recordKey: recordKey ?? nil,
+                shouldValidate: shouldValidate,
+                record: UnknownType.record(postgateRecord),
+                swapCommit: swapCommit ?? nil
+            )
+        } catch {
+            throw error
+        }
     }
 
     /// A list of restrictions and rules for embedding a post.

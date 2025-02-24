@@ -96,14 +96,18 @@ extension ATProtoBluesky {
             hiddenReplies: hiddenReplyURIs
         )
 
-        return try await atProtoKitInstance.createRecord(
-            repositoryDID: session.sessionDID,
-            collection: "app.bsky.feed.threadgate",
-            recordKey: recordKey ?? nil,
-            shouldValidate: shouldValidate,
-            record: UnknownType.record(threadgateRecord),
-            swapCommit: swapCommit ?? nil
-        )
+        do {
+            return try await atProtoKitInstance.createRecord(
+                repositoryDID: session.sessionDID,
+                collection: "app.bsky.feed.threadgate",
+                recordKey: recordKey ?? nil,
+                shouldValidate: shouldValidate,
+                record: UnknownType.record(threadgateRecord),
+                swapCommit: swapCommit ?? nil
+            )
+        } catch {
+            throw error
+        }
     }
 
     /// A list of rules used as an allowlist.
