@@ -298,8 +298,11 @@ public actor APIClientService {
     /// - Returns: A tuple containing the data and the HTTPURLResponse.
     private func performRequest(_ request: URLRequest, withEncodingBody body: (Encodable & Sendable)? = nil) async throws -> Data {
         // Wait for ATRecordTypeRegistry to be ready before proceeding
-        for await _ in await ATRecordTypeRegistry.shared.onReady {
-            break
+        if await ATRecordTypeRegistry.shared.isUpdating {
+            for await _ in await ATRecordTypeRegistry.shared.onReady {
+                print("APIClientService is ready.")
+                break
+            }
         }
 
         var urlRequest = request
