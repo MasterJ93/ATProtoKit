@@ -91,6 +91,11 @@ extension ATProtoBluesky {
     /// An error type related to ``ATProtoBluesky``-related issues.
     public enum ATProtoBlueskyError: Decodable, ATProtoError {
 
+        /// The specified post could not be found.
+        ///
+        /// - Parameter message: The message of the error.
+        case postNotFound(message: String)
+
         /// The reply reference could not be validated.
         ///
         /// - Parameter message: The message of the error.
