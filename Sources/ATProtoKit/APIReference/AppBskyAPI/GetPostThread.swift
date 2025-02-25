@@ -24,7 +24,6 @@ extension ATProtoKit {
     ///   Defaults to `6`. Can be between `0` and `1000`.
     ///   - parentHeight: The number of parent layers that can be included in the result.
     ///   Optional. Defaults to `80`. Can be between `0` and `1000`.
-    ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `nil`.
     ///   - shouldAuthenticate: Indicates whether the method will use the access token when
     ///   sending the request. Defaults to `true`.
     /// - Returns: A post thread that matches the `postURI`.
@@ -35,7 +34,6 @@ extension ATProtoKit {
         from postURI: String,
         depth: Int? = 6,
         parentHeight: Int? = 80,
-        pdsURL: String = "https://api.bsky.app",
         shouldAuthenticate: Bool = true
     ) async throws -> AppBskyLexicon.Feed.GetPostThreadOutput {
         let authorizationValue = prepareAuthorizationValue(
@@ -43,9 +41,11 @@ extension ATProtoKit {
             session: session
         )
 
-        let finalPDSURL = self.determinePDSURL(customPDSURL: pdsURL)
+        guard self.pdsURL != "" else {
+            throw ATRequestPrepareError.emptyPDSURL
+        }
 
-        guard let sessionURL = authorizationValue != nil ? session?.serviceEndpoint.absoluteString : finalPDSURL,
+        guard let sessionURL = authorizationValue != nil ? session?.serviceEndpoint.absoluteString : self.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/app.bsky.feed.getPostThread") else {
             throw ATRequestPrepareError.invalidRequestURL
         }

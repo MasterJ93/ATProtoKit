@@ -14,7 +14,7 @@ extension ATProtoKit {
     /// - Important: This will only be able to get like records for the authenticated account.
     /// This won't work for any other user account. If you need to grab the like records for user
     /// accounts other than the authenticated one, use
-    /// ``listRecords(from:collection:limit:cursor:isArrayReverse:pdsURL:)`` instead.
+    /// ``listRecords(from:collection:limit:cursor:isArrayReverse:)`` instead.
     ///
     /// - Note: According to the AT Protocol specifications: "Get a list of posts liked by an
     /// actor. Requires auth, actor must be the requesting account."

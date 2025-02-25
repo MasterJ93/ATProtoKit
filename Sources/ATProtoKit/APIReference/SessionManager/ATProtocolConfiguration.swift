@@ -216,7 +216,7 @@ public class ATProtocolConfiguration {
         plcOperation: UnknownType? = nil
     ) async throws -> UserSession {
         do {
-            let response = try await ATProtoKit(canUseBlueskyRecords: false).createAccount(
+            let response = try await ATProtoKit(pdsURL: self.pdsURL, canUseBlueskyRecords: false).createAccount(
                 email: email,
                 handle: handle,
                 existingDID: existingDID,
@@ -225,8 +225,7 @@ public class ATProtocolConfiguration {
                 verificationPhone: verificationPhone,
                 password: password,
                 recoveryKey: recoveryKey,
-                plcOperation: plcOperation,
-                pdsURL: self.pdsURL
+                plcOperation: plcOperation
             )
 
             guard let didDocument = self.convertDIDDocument(response.didDocument) else {
@@ -277,11 +276,10 @@ public class ATProtocolConfiguration {
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func authenticate(authenticationFactorToken: String? = nil) async throws {
         do {
-            let response = try await ATProtoKit(canUseBlueskyRecords: false).createSession(
+            let response = try await ATProtoKit(pdsURL: self.pdsURL, canUseBlueskyRecords: false).createSession(
                 with: self.handle,
                 and: self.password,
-                authenticationFactorToken: authenticationFactorToken,
-                pdsURL: self.pdsURL
+                authenticationFactorToken: authenticationFactorToken
             )
 
             guard let didDocument = self.convertDIDDocument(response.didDocument) else {
@@ -352,9 +350,8 @@ public class ATProtocolConfiguration {
         }
 
         do {
-            let response = try await ATProtoKit(canUseBlueskyRecords: false).getSession(
-                by: sessionToken,
-                pdsURL: self.pdsURL
+            let response = try await ATProtoKit(pdsURL: self.pdsURL, canUseBlueskyRecords: false).getSession(
+                by: sessionToken
             )
 
             guard let didDocument = self.convertDIDDocument(response.didDocument) else {
@@ -453,9 +450,8 @@ public class ATProtocolConfiguration {
         }
 
         do {
-            let response = try await ATProtoKit(canUseBlueskyRecords: false).refreshSession(
-                refreshToken: sessionToken,
-                pdsURL: self.pdsURL
+            let response = try await ATProtoKit(pdsURL: self.pdsURL, canUseBlueskyRecords: false).refreshSession(
+                refreshToken: sessionToken
             )
 
             guard let didDocument = self.convertDIDDocument(response.didDocument) else {
@@ -531,9 +527,8 @@ public class ATProtocolConfiguration {
                 return
             }
 
-            _ = try await ATProtoKit(canUseBlueskyRecords: false).deleteSession(
-                refreshToken: token,
-                pdsURL: self.pdsURL
+            _ = try await ATProtoKit(pdsURL: self.pdsURL, canUseBlueskyRecords: false).deleteSession(
+                refreshToken: token
             )
 
             self.session = nil

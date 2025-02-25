@@ -19,20 +19,13 @@ extension ATProtoKit {
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/identity/resolveHandle.json
     ///
-    /// - Parameters:
-    ///   - handle: The handle to resolve into a decentralized identifier (DID).
-    ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `nil`.
+    /// - Parameter handle: The handle to resolve into a decentralized identifier (DID).
     /// - Returns: The resolved handle's decentralized identifier (DID).
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
-    public func resolveHandle(
-        from handle: String,
-        pdsURL: String = "https://api.bsky.app"
-    ) async throws -> ComAtprotoLexicon.Identity.ResolveHandleOutput {
-        let finalPDSURL = self.determinePDSURL(customPDSURL: pdsURL)
-
-        guard let requestURL = URL(string: "\(finalPDSURL)/xrpc/com.atproto.identity.resolveHandle") else {
+    public func resolveHandle(from handle: String) async throws -> ComAtprotoLexicon.Identity.ResolveHandleOutput {
+        guard let requestURL = URL(string: "\(self.pdsURL)/xrpc/com.atproto.identity.resolveHandle") else {
             throw ATRequestPrepareError.invalidRequestURL
         }
 

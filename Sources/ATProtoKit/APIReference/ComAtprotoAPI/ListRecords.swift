@@ -25,7 +25,6 @@ extension ATProtoKit {
     ///   - cursor: The mark used to indicate the starting point for the next set
     ///   of results. Optional.
     ///   - isArrayReverse: Indicates whether the list of records is listed in reverse. Optional.
-    ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `https://api.bsky.app`.
     /// - Returns: An array of records, with an optional cursor to extend the array.
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
@@ -35,12 +34,9 @@ extension ATProtoKit {
         collection: String,
         limit: Int? = 50,
         cursor: String? = nil,
-        isArrayReverse: Bool? = nil,
-        pdsURL: String = "https://api.bsky.app"
+        isArrayReverse: Bool? = nil
     ) async throws -> ComAtprotoLexicon.Repository.ListRecordsOutput {
-        let finalPDSURL = self.determinePDSURL(customPDSURL: pdsURL)
-
-        guard let requestURL = URL(string: "\(finalPDSURL)/xrpc/com.atproto.repo.listRecords") else {
+        guard let requestURL = URL(string: "\(self.pdsURL)/xrpc/com.atproto.repo.listRecords") else {
             throw ATRequestPrepareError.invalidRequestURL
         }
 

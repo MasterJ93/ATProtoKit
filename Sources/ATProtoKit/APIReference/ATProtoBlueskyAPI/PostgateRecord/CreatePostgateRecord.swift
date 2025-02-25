@@ -74,8 +74,6 @@ extension ATProtoBluesky {
     ///   Defaults to `true`.
     ///   - swapCommit: Swaps out an operation based on the CID. Optional. Defaults to `nil`.
     /// - Returns: A strong reference, which contains the newly-created record's URI and CID hash.
-    ///
-    ///   - Throws:
     public func createPostgateRecord(
         postURI: String,
         detachedEmbeddingURIs: [String]? = nil,

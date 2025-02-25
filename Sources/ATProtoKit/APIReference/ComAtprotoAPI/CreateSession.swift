@@ -26,8 +26,7 @@ extension ATProtoKit {
     ///   - identifier: An identifier (typically a handle) for the user account.
     ///   - password: The password for the user account.
     ///   - authenticationFactorToken: The token used if the user account has
-    ///   multi-factor authorization. Optinonal.
-    ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `https://api.bsky.app`.
+    ///   multi-factor authorization. Optional.
     ///
     /// - Returns: An instance of an authenticated user session within the AT Protocol. It may also
     /// have logging information, as well as the URL of the Personal Data Server (PDS).
@@ -37,12 +36,13 @@ extension ATProtoKit {
     public func createSession(
         with identifier: String,
         and password: String,
-        authenticationFactorToken: String? = nil,
-        pdsURL: String = "https://api.bsky.app"
+        authenticationFactorToken: String? = nil
     ) async throws -> ComAtprotoLexicon.Server.CreateSessionOutput {
-        let finalPDSURL = self.determinePDSURL(customPDSURL: pdsURL)
+        guard self.pdsURL != "" else {
+            throw ATRequestPrepareError.emptyPDSURL
+        }
 
-        guard let requestURL = URL(string: "\(finalPDSURL)/xrpc/com.atproto.server.createSession") else {
+        guard let requestURL = URL(string: "\(self.pdsURL)/xrpc/com.atproto.server.createSession") else {
             throw ATRequestPrepareError.invalidRequestURL
         }
 
@@ -57,6 +57,7 @@ extension ATProtoKit {
                 forRequest: requestURL,
                 andMethod: .post
             )
+
             let response = try await APIClientService.shared.sendRequest(
                 request,
                 withEncodingBody: requestBody,

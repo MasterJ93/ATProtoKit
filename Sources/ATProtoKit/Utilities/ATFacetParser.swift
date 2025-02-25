@@ -196,7 +196,7 @@ public class ATFacetParser {
                 // Remove the `@` from the handle.
                 let notATHandle = String(handle.dropFirst())
 
-                let mentionResult = try await ATProtoKit().resolveHandle(from: notATHandle, pdsURL: pdsURL)
+                let mentionResult = try await ATProtoKit(pdsURL: pdsURL, canUseBlueskyRecords: false).resolveHandle(from: notATHandle)
 
                 guard let start = mention["start"] as? Int, let end = mention["end"] as? Int else { continue }
 

@@ -80,7 +80,7 @@ Then under `targets`:
 ```swift
 targets: [
     .target(
-        // name: ...,
+        // name: "[name of target]",
         dependencies: [
             .product(name: "ATProtoKit", package: "atprotokit")
         ]

@@ -25,7 +25,6 @@ extension ATProtoKit {
     ///   - cursor: The mark used to indicate the starting point for the next set
     ///   of results. Optional.
     ///   - accessToken: The access token of the user. Optional.
-    ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `https://api.bsky.app`.
     /// - Returns: An array of posts in a feed, with an optional cursor to extend the array.
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
@@ -34,12 +33,13 @@ extension ATProtoKit {
         from uri: String,
         limit: Int? = 50,
         cursor: String? = nil,
-        accessToken: String? = nil,
-        pdsURL: String = "https://api.bsky.app"
+        accessToken: String? = nil
     ) async throws -> AppBskyLexicon.Feed.GetListFeedOutput {
-        let finalPDSURL = self.determinePDSURL(customPDSURL: pdsURL)
+        guard self.pdsURL != "" else {
+            throw ATRequestPrepareError.emptyPDSURL
+        }
 
-        guard let requestURL = URL(string: "\(finalPDSURL)/xrpc/app.bsky.feed.getListFeed") else {
+        guard let requestURL = URL(string: "\(self.pdsURL)/xrpc/app.bsky.feed.getListFeed") else {
             throw ATRequestPrepareError.invalidRequestURL
         }
 
