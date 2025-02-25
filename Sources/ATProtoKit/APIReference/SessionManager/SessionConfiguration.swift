@@ -53,13 +53,13 @@ public protocol SessionConfiguration: Sendable {
     ///
     /// This URL is used to make network requests to the PDS for various operations, such as
     /// session creation, refresh, and deletion.
-    var pdsURL: String { get set }
+    var pdsURL: String { get }
 
     /// Specifies the logger that will be used for emitting log messages. Optional.
     ///
     /// - Note: This is not included when initalizing `UserSession`. Instead, it's added
     /// after the successful initalizing.
-    var logger: Logger? { get set }
+    var logger: Logger? { get }
 
     /// The number of times a request can be attempted before it's considered a failure.
     ///
@@ -67,7 +67,7 @@ public protocol SessionConfiguration: Sendable {
     ///
     /// - Note: This is not included when initalizing `UserSession`. Instead, it's added
     /// after the successful initalizing.
-    var maxRetryCount: Int? { get set }
+    var maxRetryCount: Int? { get }
 
     /// The length of time to wait before attempting to retry a request.
     ///
@@ -77,7 +77,7 @@ public protocol SessionConfiguration: Sendable {
     ///
     /// - Note: This is not included when initalizing `UserSession`. Instead, it's added
     /// after the successful initalizing.
-    var retryTimeDelay: TimeInterval? { get set }
+    var retryTimeDelay: TimeInterval? { get }
 
 
     /// Attempts to authenticate with the PDS using the `handle` and `appPassword`.
@@ -249,7 +249,6 @@ extension SessionConfiguration {
             self.isActive = response.isActive
             self.status = status
             self.serviceEndpoint = serviceEndpoint
-            self.logger = await ATProtocolConfiguration.getLogger()
         } catch {
             throw error
         }
@@ -294,7 +293,6 @@ extension SessionConfiguration {
         self.refreshToken = response.refreshToken
         self.didDocument = didDocument
         self.serviceEndpoint = serviceEndpoint
-        self.logger = await ATProtocolConfiguration.getLogger()
     }
 
     public mutating func getSession(by accessToken: String? = nil, authenticationFactorToken: String? = nil) async throws {
@@ -342,7 +340,6 @@ extension SessionConfiguration {
             self.isActive = response.isActive
             self.status = status
             self.serviceEndpoint = serviceEndpoint
-            self.logger = await ATProtocolConfiguration.getLogger()
         } catch let apiError as ATAPIError {
             guard case .badRequest(let errorDetails) = apiError,
                   errorDetails.error == "ExpiredToken" else {
@@ -405,7 +402,6 @@ extension SessionConfiguration {
             self.isActive = response.isActive
             self.status = status
             self.serviceEndpoint = serviceEndpoint
-            self.logger = await ATProtocolConfiguration.getLogger()
         } catch let apiError as ATAPIError {
             // If the token expires, re-authenticate and try refreshing the token again.
             guard case .badRequest(let errorDetails) = apiError,
