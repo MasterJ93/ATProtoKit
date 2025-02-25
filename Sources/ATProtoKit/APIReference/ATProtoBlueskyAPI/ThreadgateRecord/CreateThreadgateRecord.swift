@@ -47,7 +47,6 @@ extension ATProtoBluesky {
     ///   - postURI: The URI of the post.
     ///   - replyControls: An array of rules used as an allowlist. Optional.
     ///   - hiddenReplyURIs: An array of hidden replies in the form of URIs. Optional.
-    ///   - recordKey: The record key of the collection. Optional. Defaults to `nil`.
     ///   - shouldValidate: Indicates whether the record should be validated. Optional.
     ///   Defaults to `true`.
     ///   - swapCommit: Swaps out an operation based on the CID. Optional. Defaults to `nil`.
@@ -56,7 +55,6 @@ extension ATProtoBluesky {
         postURI: String,
         replyControls: [ThreadgateAllowRule]? = nil,
         hiddenReplyURIs: [String]? = nil,
-        recordKey: String? = nil,
         shouldValidate: Bool? = true,
         swapCommit: String? = nil
     ) async throws -> ComAtprotoLexicon.Repository.StrongReference {
@@ -98,10 +96,13 @@ extension ATProtoBluesky {
         )
 
         do {
+            let recordURI = post.uri
+            let recordKey = try ATProtoTools().parseURI(recordURI).recordKey
+
             return try await atProtoKitInstance.createRecord(
                 repositoryDID: session.sessionDID,
                 collection: "app.bsky.feed.threadgate",
-                recordKey: recordKey ?? nil,
+                recordKey: recordKey,
                 shouldValidate: shouldValidate,
                 record: UnknownType.record(threadgateRecord),
                 swapCommit: swapCommit ?? nil
