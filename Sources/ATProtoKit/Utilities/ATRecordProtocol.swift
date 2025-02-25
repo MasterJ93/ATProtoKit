@@ -96,13 +96,13 @@ extension ATRecordConfiguration {
 /// that the JSON object will fit into.
 ///
 /// This registry is managed by an `actor`, ensuring concurrency-safe access to its internal
-/// data. Because of this, all interactions with `ATRecordTypeRegistry` must be done
+/// data. Because of this, most interactions with `ATRecordTypeRegistry` must be done
 /// asynchronously using `await`.
 ///
 /// When adding a record, you need to type `.self` at the end.
 /// ```swift
 /// Task {
-///     _ = await ATRecordTypeRegistry.shared.register(blueskyLexiconTypes: [UserProfile.self])
+///     _ = await ATRecordTypeRegistry.shared.register(types: [UserProfile.self])
 /// }
 /// ```
 ///
@@ -110,6 +110,15 @@ extension ATRecordConfiguration {
 ///
 /// - Warning: All record types _must_ conform to ``ATRecordProtocol``. Failure to do so may
 /// result in an error.
+///
+/// # Waiting For the Registry To Be Ready
+///
+/// If you need to ensure that the registry is ready to be read. In order to do this, you should
+/// use ``ATRecordTypeRegistry/waitUntilRegistryIsRead()`` in the function. This prevents the
+/// function from continuing until the registry is ready to be used.
+///
+/// - Note: ``ATRecordTypeRegistry/waitUntilRegistryIsRead()`` only works in functions that
+/// are `async`.
 public actor ATRecordTypeRegistry {
 
     /// The shared instance of the `actor`.
