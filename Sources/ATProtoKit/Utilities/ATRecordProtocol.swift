@@ -189,7 +189,11 @@ public actor ATRecordTypeRegistry {
     ///
     /// - Parameter blueskyLexiconTypes: An array of ``ATRecordProtocol``-conforming `struct`s.
     public func register(blueskyLexiconTypes: [any ATRecordProtocol.Type]) async {
-        guard !Self.areBlueskyRecordsRegistered else { return }
+        let alreadyRegistered = self.registryQueue.sync {
+            Self.areBlueskyRecordsRegistered
+        }
+
+        guard !alreadyRegistered else { return }
 
         self.isUpdating = true
 
@@ -233,9 +237,7 @@ public actor ATRecordTypeRegistry {
 
     /// Halts the execution of code until ``recordRegistry`` is ready to be used.
     public func waitUntilRegistryIsRead() async {
-        Self.shared.registryQueue.sync {
-            if !isUpdating { return }
-        }
+        if isUpdating == false { return }
 
         await withCheckedContinuation { (continuation: CheckedContinuation<Void, Never>) in
             continuations.append(continuation)
