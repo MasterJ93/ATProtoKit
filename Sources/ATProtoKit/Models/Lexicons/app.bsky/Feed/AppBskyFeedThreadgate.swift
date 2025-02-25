@@ -11,6 +11,9 @@ extension AppBskyLexicon.Feed {
 
     /// A record model for a threadgate.
     ///
+    /// - Important: When creating this record, be sure that the record key of a
+    /// ``AppBskyLexicon/Feed/PostRecord`` is the same as the record key of this record. 
+    ///
     /// - Note: According to the AT Protocol specifications: "Record defining interaction gating rules
     /// for a thread (aka, reply controls). The record key (rkey) of the threadgate record must match
     /// the record key of the thread's root post, and that record must be in the same repository."
