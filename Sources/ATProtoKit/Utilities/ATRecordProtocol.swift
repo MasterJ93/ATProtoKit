@@ -121,7 +121,7 @@ extension ATRecordConfiguration {
 /// are `async`.
 public actor ATRecordTypeRegistry {
 
-    /// The shared instance of the `actor`.
+    /// The shared instance of `ATRecordTypeRegistry`.
     public static let shared = ATRecordTypeRegistry()
 
     /// A private dispatch queue for the registry.
