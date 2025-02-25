@@ -216,7 +216,7 @@ public class ATProtocolConfiguration: SessionConfiguration {
         plcOperation: UnknownType? = nil
     ) async throws -> UserSession {
         do {
-            let response = try await ATProtoKit(pdsURL: session?.pdsURL ?? "https://api.bsky.app", canUseBlueskyRecords: false).createAccount(
+            let response = try await ATProtoKit(pdsURL: self.pdsURL, canUseBlueskyRecords: false).createAccount(
                 email: email,
                 handle: handle,
                 existingDID: existingDID,
@@ -276,7 +276,7 @@ public class ATProtocolConfiguration: SessionConfiguration {
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func authenticate(authenticationFactorToken: String? = nil) async throws {
         do {
-            let response = try await ATProtoKit(pdsURL: session?.pdsURL ?? "https://api.bsky.app", canUseBlueskyRecords: false).createSession(
+            let response = try await ATProtoKit(pdsURL: self.pdsURL, canUseBlueskyRecords: false).createSession(
                 with: self.handle,
                 and: self.password,
                 authenticationFactorToken: authenticationFactorToken
@@ -350,7 +350,7 @@ public class ATProtocolConfiguration: SessionConfiguration {
         }
 
         do {
-            let response = try await ATProtoKit(pdsURL: session?.pdsURL ?? "https://api.bsky.app", canUseBlueskyRecords: false).getSession(
+            let response = try await ATProtoKit(pdsURL: self.pdsURL, canUseBlueskyRecords: false).getSession(
                 by: sessionToken
             )
 
@@ -450,7 +450,7 @@ public class ATProtocolConfiguration: SessionConfiguration {
         }
 
         do {
-            let response = try await ATProtoKit(pdsURL: session?.pdsURL ?? "https://api.bsky.app", canUseBlueskyRecords: false).refreshSession(
+            let response = try await ATProtoKit(pdsURL: self.pdsURL, canUseBlueskyRecords: false).refreshSession(
                 refreshToken: sessionToken
             )
 
@@ -527,7 +527,7 @@ public class ATProtocolConfiguration: SessionConfiguration {
                 return
             }
 
-            _ = try await ATProtoKit(pdsURL: session?.pdsURL ?? "https://api.bsky.app", canUseBlueskyRecords: false).deleteSession(
+            _ = try await ATProtoKit(pdsURL: self.pdsURL, canUseBlueskyRecords: false).deleteSession(
                 refreshToken: token
             )
 

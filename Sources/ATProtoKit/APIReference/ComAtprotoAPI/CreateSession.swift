@@ -57,6 +57,7 @@ extension ATProtoKit {
                 forRequest: requestURL,
                 andMethod: .post
             )
+
             let response = try await APIClientService.shared.sendRequest(
                 request,
                 withEncodingBody: requestBody,
