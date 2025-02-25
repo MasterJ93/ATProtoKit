@@ -137,6 +137,7 @@ public class ATProtoKit: ATProtoKitConfiguration, ATRecordConfiguration {
     /// Internal state to track initialization completion.
     public var initializationTask: Task<Void, Error>?
 
+    /// Represents an object used for managing sessions.
     public let sessionConfiguration: SessionConfiguration?
 
     /// The URL of the Personal Data Server (PDS).
@@ -245,6 +246,7 @@ public class ATProtoBluesky: ATProtoKitConfiguration {
     /// Specifies the logger that will be used for emitting log messages.
     public private(set) var logger: Logger?
 
+    /// Represents an object used for managing sessions.
     public let sessionConfiguration: SessionConfiguration?
 
     /// The URL of the Personal Data Server (PDS).
@@ -290,6 +292,7 @@ public class ATProtoBlueskyChat: ATProtoKitConfiguration {
     /// Specifies the logger that will be used for emitting log messages.
     public private(set) var logger: Logger?
 
+    /// Represents an object used for managing sessions.
     public let sessionConfiguration: SessionConfiguration?
 
     /// The URL of the Personal Data Server (PDS).
@@ -369,6 +372,7 @@ public class ATProtoAdmin: ATProtoKitConfiguration {
     /// Specifies the logger that will be used for emitting log messages.
     public private(set) var logger: Logger?
 
+    /// Represents an object used for managing sessions.
     public let sessionConfiguration: SessionConfiguration?
 
     /// The URL of the Personal Data Server (PDS).
