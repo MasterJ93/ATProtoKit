@@ -16,6 +16,7 @@
 - ``ToolsOzoneLexicon/Moderation/EventCommentDefinition``
 - ``ToolsOzoneLexicon/Moderation/EventReportDefinition``
 - ``ToolsOzoneLexicon/Moderation/EventLabelDefinition``
+- ``ToolsOzoneLexicon/Moderation/EventPriorityScoreDefinition``
 - ``ToolsOzoneLexicon/Moderation/EventAcknowledgeDefinition``
 - ``ToolsOzoneLexicon/Moderation/EventEscalateDefinition``
 - ``ToolsOzoneLexicon/Moderation/EventMuteDefinition``

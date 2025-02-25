@@ -29,6 +29,7 @@ extension ATProtoKit {
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
+    @available(*, deprecated, renamed: "requestCrawl", message: "Use requestCrawl() instead")
     public func notifyOfUpdate(
         in crawlingHostname: URL,
         pdsURL: String = "https://api.bsky.app"

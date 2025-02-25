@@ -30,6 +30,7 @@
 - ``BskyAppStatePreferencesDefinition``
 - ``BskyAppProgressGuideDefinition``
 - ``NUXDefinition``
+- ``PostInteractionSettingsPreferenceDefinition``
 
 ### app.bsky.actor.getPreferences
 - ``GetPreferencesOutput``

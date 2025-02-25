@@ -58,4 +58,24 @@ extension ComAtprotoLexicon.Moderation {
         /// moderation action."
         case appeal = "reasonAppeal"
     }
+
+    /// A definition model for a tag describing a possible subject for reporting.
+    ///
+    /// - Note: According to the AT Protocol specifications: "Tag describing a type of subject
+    /// that might be reported."
+    ///
+    /// - SeeAlso: This is based on the [`com.atproto.moderation.defs`][github] lexicon.
+    ///
+    /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/moderation/defs.json
+    public enum SubjectTypeDefinition: String, Sendable, Codable {
+
+        /// Indicates the subject to be reported is a user account.
+        case account
+
+        /// Indicates the subject to be reported is a record.
+        case record
+
+        /// Indicates the subject to be reported is a chat message.
+        case chat
+    }
 }

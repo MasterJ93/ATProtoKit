@@ -22,8 +22,8 @@
 
 ### com.atproto.sync.listReposByCollection
 
-- ``ComAtprotoLexicon/Sync/ListRepositories``
-- ``ComAtprotoLexicon/Sync/ListRepositoriesOutput``
+- ``ComAtprotoLexicon/Sync/ListRepositoriesByCollection``
+- ``ComAtprotoLexicon/Sync/ListRepositoriesByCollectionOutput``
 
 ### com.atproto.sync.subscribeRepos
 

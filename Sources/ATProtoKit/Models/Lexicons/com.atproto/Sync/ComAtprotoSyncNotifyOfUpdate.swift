@@ -19,6 +19,7 @@ extension ComAtprotoLexicon.Sync {
     /// - SeeAlso: This is based on the [`com.atproto.sync.notifyOfUpdate`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/sync/notifyOfUpdate.json
+    @available(*, deprecated, renamed: "RequestCrawlRequestBody", message: "Use RequestCrawlRequestBody() instead")
     public struct NotifyOfUpdateRequestBody: Sendable, Codable {
 
         /// The hostname that the crawling service resides in.

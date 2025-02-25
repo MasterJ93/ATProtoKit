@@ -10,3 +10,4 @@
 ### com.atproto.moderation.defs
 
 - ``ComAtprotoLexicon/Moderation/ReasonTypeDefinition``
+- ``ComAtprotoLexicon/Moderation/SubjectTypeDefinition``
