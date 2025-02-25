@@ -8,8 +8,8 @@
 import Foundation
 
 extension ATProtoBluesky {
-    
-    /// A convenience method to create a post record to user account in Bluesky.
+
+    /// A convenience method to create a post record to the user account in Bluesky.
     ///
     /// This can be used instead of creating your own method if you wish not to do so.
     ///
@@ -379,14 +379,18 @@ extension ATProtoBluesky {
             createdAt: creationDate
         )
 
-        return try await atProtoKitInstance.createRecord(
-            repositoryDID: session.sessionDID,
-            collection: "app.bsky.feed.post",
-            recordKey: recordKey ?? nil,
-            shouldValidate: shouldValidate,
-            record: UnknownType.record(postRecord),
-            swapCommit: swapCommit ?? nil
-        )
+        do {
+            return try await atProtoKitInstance.createRecord(
+                repositoryDID: session.sessionDID,
+                collection: "app.bsky.feed.post",
+                recordKey: recordKey ?? nil,
+                shouldValidate: shouldValidate,
+                record: UnknownType.record(postRecord),
+                swapCommit: swapCommit ?? nil
+            )
+        } catch {
+            throw error
+        }
     }
     
     /// Uploads images to the AT Protocol for attaching to a record at a later request.

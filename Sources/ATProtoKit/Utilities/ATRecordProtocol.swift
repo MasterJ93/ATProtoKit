@@ -145,7 +145,7 @@ public actor ATRecordTypeRegistry {
     public static var areBlueskyRecordsRegistered = false
 
     /// Tracks whether the registry is currently being modified.
-    private var isUpdating = false
+    public private(set) var isUpdating = false
 
     /// `AsyncStream` to notify when the registry is ready.
     private var onReadyStream: AsyncStream<Void>?
@@ -170,8 +170,7 @@ public actor ATRecordTypeRegistry {
     ///
     /// - Parameter types: An array of ``ATRecordProtocol``-conforming `struct`s.
     public func register(types: [any ATRecordProtocol.Type]) async {
-        self.resetOnReady()
-        isUpdating = true
+        await beginUpdating()
 
         for type in types {
             let typeKey = type.type
@@ -185,9 +184,7 @@ public actor ATRecordTypeRegistry {
             }
         }
 
-        isUpdating = false
-
-        continuation?.yield(())
+        await endUpdating()
     }
 
     /// Registers an array of Bluesky record lexicon types.
@@ -199,8 +196,7 @@ public actor ATRecordTypeRegistry {
     public func register(blueskyLexiconTypes: [any ATRecordProtocol.Type]) async {
         guard !Self.areBlueskyRecordsRegistered else { return }
 
-        self.resetOnReady()
-        isUpdating = true
+        await beginUpdating()
 
         for type in blueskyLexiconTypes {
             let typeKey = type.type
@@ -217,9 +213,8 @@ public actor ATRecordTypeRegistry {
         self.registryQueue.sync {
             Self.areBlueskyRecordsRegistered = true
         }
-        self.isUpdating = false
 
-        self.continuation?.yield(())
+        await endUpdating()
     }
 
     /// Indicates whether the specified lexicon `struct` type is registered
@@ -293,7 +288,20 @@ public actor ATRecordTypeRegistry {
     /// Resets ``onReady`` to force wait on next access.
     private func resetOnReady() {
         onReadyStream = nil
+        continuation = nil
         onReadyStream = createOnReadyStream()
+    }
+
+    /// Called when an update to ``recordRegistry`` begins.
+    private func beginUpdating() async {
+        isUpdating = true
+        resetOnReady()
+    }
+
+    /// Called when ``recordRegistry`` updates are completed.
+    private func endUpdating() async {
+        isUpdating = false
+        continuation?.yield(())
     }
 }
 

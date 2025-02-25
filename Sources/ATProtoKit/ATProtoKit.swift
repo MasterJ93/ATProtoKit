@@ -163,9 +163,10 @@ public class ATProtoKit: ATProtoKitConfiguration, ATRecordConfiguration {
     ///
     /// - Parameters:
     ///   - sessionConfiguration: The authenticated user session within the AT Protocol. Optional.
+    ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `https://api.bsky.app`.
     ///   - canUseBlueskyRecords: Indicates whether Bluesky's lexicons should be used.
     ///   Defaults to `true`.
-    public init(sessionConfiguration: SessionConfiguration? = nil, canUseBlueskyRecords: Bool = true) {
+    public init(sessionConfiguration: SessionConfiguration? = nil, pdsURL: String = "https://api.bsky.app", canUseBlueskyRecords: Bool = true) {
         self.sessionConfiguration = sessionConfiguration
         self.logger = session?.logger
 
@@ -191,9 +192,10 @@ public class ATProtoKit: ATProtoKitConfiguration, ATRecordConfiguration {
     ///
     /// - Parameters:
     ///   - sessionConfiguration: The authenticated user session within the AT Protocol. Optional.
+    ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `https://api.bsky.app`.
     ///   - canUseBlueskyRecords: Indicates whether Bluesky's lexicons should be used.
     ///   Defaults to `true`.
-    public init(sessionConfiguration: SessionConfiguration? = nil, canUseBlueskyRecords: Bool = true) async {
+    public init(sessionConfiguration: SessionConfiguration? = nil, pdsURL: String = "https://api.bsky.app", canUseBlueskyRecords: Bool = true) async {
         self.sessionConfiguration = sessionConfiguration
         self.logger = session?.logger
 
