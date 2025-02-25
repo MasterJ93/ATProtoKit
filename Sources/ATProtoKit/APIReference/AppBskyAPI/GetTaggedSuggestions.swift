@@ -20,17 +20,17 @@ extension ATProtoKit {
     /// - SeeAlso: This is based on the [`app.bsky.unspecced.getTaggedSuggestions`][github] lexicon.
     /// 
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/unspecced/getTaggedSuggestions.json
-    /// 
-    /// - Parameter pdsURL: The URL of the Personal Data Server (PDS). Optional.
-    /// Defaults to `https://api.bsky.app`.
+    ///
     /// - Returns: An array of suggestions.
     /// 
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
-    public func getTaggedSuggestions(pdsURL: String = "https://api.bsky.app") async throws -> AppBskyLexicon.Unspecced.GetTaggedSuggestionsOutput {
-        let finalPDSURL = self.determinePDSURL(customPDSURL: pdsURL)
+    public func getTaggedSuggestions() async throws -> AppBskyLexicon.Unspecced.GetTaggedSuggestionsOutput {
+        guard self.pdsURL != "" else {
+            throw ATRequestPrepareError.emptyPDSURL
+        }
 
-        guard let requestURL = URL(string: "\(finalPDSURL)/xrpc/app.bsky.unspecced.getTaggedSuggestions") else {
+        guard let requestURL = URL(string: "\(self.pdsURL)/xrpc/app.bsky.unspecced.getTaggedSuggestions") else {
             throw ATRequestPrepareError.invalidRequestURL
         }
 

@@ -27,19 +27,19 @@ extension ATProtoKit {
     ///   - limit: - limit: The number of items the list will hold. Optional. Defaults to `25`.
     ///   - cursor: The mark used to indicate the starting point for the next set
     ///   of results. Optional.
-    ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `https://api.bsky.app`.
     /// - Returns: An array of skeleton starter packs, with an optional cursor to expand the array.
     /// The output may also display the total number of search results.
     public func searchStarterPacksSkeleton(
         matching query: String,
         viewerDID: String? = nil,
         limit: Int? = 25,
-        cursor: String? = nil,
-        pdsURL: String = "https://api.bsky.app"
+        cursor: String? = nil
     ) async throws -> AppBskyLexicon.Unspecced.SearchStarterPackSkeletonOutput {
-        let finalPDSURL = self.determinePDSURL(customPDSURL: pdsURL)
+        guard self.pdsURL != "" else {
+            throw ATRequestPrepareError.emptyPDSURL
+        }
 
-        guard let requestURL = URL(string: "\(finalPDSURL)/xrpc/app.bsky.unspecced.searchStarterPacksSkeleton") else {
+        guard let requestURL = URL(string: "\(self.pdsURL)/xrpc/app.bsky.unspecced.searchStarterPacksSkeleton") else {
             throw ATRequestPrepareError.invalidRequestURL
         }
 

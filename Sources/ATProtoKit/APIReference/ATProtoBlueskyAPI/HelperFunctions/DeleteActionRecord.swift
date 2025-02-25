@@ -52,8 +52,7 @@ extension ATProtoBluesky {
                     let output = try await atProtoKitInstance.getRepositoryRecord(from: recordQuery.repository,
                                                                                   collection: recordQuery.collection,
                                                                                   recordKey: recordQuery.recordKey,
-                                                                                  recordCID: recordQuery.recordCID,
-                                                                                  pdsURL: sessionURL
+                                                                                  recordCID: recordQuery.recordCID
                     )
 
                     let recordURI = "at://\(recordQuery.repository)/\(recordQuery.collection)/\(recordQuery.recordKey)"
@@ -72,8 +71,7 @@ extension ATProtoBluesky {
                     let output = try await atProtoKitInstance.getRepositoryRecord(from: parsedURI.repository,
                                                                                   collection: parsedURI.collection,
                                                                                   recordKey: parsedURI.recordKey,
-                                                                                  recordCID: parsedURI.recordCID,
-                                                                                  pdsURL: sessionURL
+                                                                                  recordCID: parsedURI.recordCID
                     )
 
                     guard recordURI == output.uri else {

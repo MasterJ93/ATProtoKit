@@ -57,6 +57,14 @@ public protocol ATProtoKitConfiguration {
     /// authorization header in the request, or  `"Bearer \(accessToken)"` (where `accessToken`
     /// is the session's access token) if it's determined there should be an authorization header.
     func prepareAuthorizationValue(shouldAuthenticate: Bool, session: UserSession?) -> String?
+
+    /// Determines the appropriate Personal Data Server (PDS) URL.
+    ///
+    /// - Parameters:
+    ///   - customPDSURL: An optional custom PDS URL. If provided, this URL is used regardless of
+    ///   the access token's presence.
+    /// - Returns: The final PDS URL as a `String`.
+    static func determinePDSURL(customPDSURL: String) -> String
 }
 
 extension ATProtoKitConfiguration {
@@ -92,6 +100,20 @@ extension ATProtoKitConfiguration {
 
         // Return nil if no valid session or access token is found.
         return nil
+    }
+
+    /// Determines the appropriate Personal Data Server (PDS) URL.
+    ///
+    /// - Parameters:
+    ///   - customPDSURL: An optional custom PDS URL. If provided, this URL is used regardless of
+    ///   the access token's presence.
+    /// - Returns: The final PDS URL as a `String`.
+    public static func determinePDSURL(customPDSURL: String) -> String {
+        if customPDSURL != "" {
+            return customPDSURL
+        } else {
+            return "https://api.bsky.app"
+        }
     }
 }
 
@@ -155,8 +177,8 @@ public class ATProtoKit: ATProtoKitConfiguration, ATRecordConfiguration {
     /// `com.cjrriley.ATProtoKit`. However, you can manually override this.
     ///
     /// If you're using methods such as
-    /// ``ATProtoKit/ATProtoKit/createAccount(email:handle:existingDID:inviteCode:verificationCode:verificationPhone:password:recoveryKey:plcOperation:pdsURL:)``
-    /// or ``ATProtoKit/ATProtoKit/getSession(by:pdsURL:)``, be sure to set
+    /// ``ATProtoKit/ATProtoKit/createAccount(email:handle:existingDID:inviteCode:verificationCode:verificationPhone:password:recoveryKey:plcOperation:)``
+    /// or ``ATProtoKit/ATProtoKit/getSession(by:)``, be sure to set
     /// `canUseBlueskyRecords` to false. While the initializer does check to see if the records
     /// have been added, it's best not to invoke it, esepcially if you're using ATProtoKit for a
     /// generic AT Protocol service that doesn't use Bluesky records.
@@ -172,7 +194,7 @@ public class ATProtoKit: ATProtoKitConfiguration, ATRecordConfiguration {
     ///   Defaults to `true`.
     public init(sessionConfiguration: SessionConfiguration? = nil, pdsURL: String = "https://api.bsky.app", canUseBlueskyRecords: Bool = true) {
         self.sessionConfiguration = sessionConfiguration
-        self.pdsURL = pdsURL
+        self.pdsURL = Self.determinePDSURL(customPDSURL: pdsURL)
         self.logger = session?.logger
 
         Task { [recordLexicons] in
@@ -189,8 +211,8 @@ public class ATProtoKit: ATProtoKitConfiguration, ATRecordConfiguration {
     /// `com.cjrriley.ATProtoKit`. However, you can manually override this.
     ///
     /// If you're using methods such as
-    /// ``ATProtoKit/ATProtoKit/createAccount(email:handle:existingDID:inviteCode:verificationCode:verificationPhone:password:recoveryKey:plcOperation:pdsURL:)``
-    /// or ``ATProtoKit/ATProtoKit/getSession(by:pdsURL:)``, be sure to set
+    /// ``ATProtoKit/ATProtoKit/createAccount(email:handle:existingDID:inviteCode:verificationCode:verificationPhone:password:recoveryKey:plcOperation:)``
+    /// or ``ATProtoKit/ATProtoKit/getSession(by:)``, be sure to set
     /// `canUseBlueskyRecords` to false. While the initializer does check to see if the records
     /// have been added, it's best not to invoke it, esepcially if you're using ATProtoKit for a
     /// generic AT Protocol service that doesn't use Bluesky records.
@@ -207,20 +229,6 @@ public class ATProtoKit: ATProtoKitConfiguration, ATRecordConfiguration {
 
         if canUseBlueskyRecords && !(ATRecordTypeRegistry.areBlueskyRecordsRegistered) {
             _ = await ATRecordTypeRegistry.shared.register(blueskyLexiconTypes: recordLexicons)
-        }
-    }
-
-    /// Determines the appropriate Personal Data Server (PDS) URL.
-    ///
-    /// - Parameters:
-    ///   - customPDSURL: An optional custom PDS URL. If provided, this URL is used regardless of
-    ///   the access token's presence.
-    /// - Returns: The final PDS URL as a `String`.
-    func determinePDSURL(customPDSURL: String) -> String {
-        if customPDSURL != "" {
-            return customPDSURL
-        } else {
-            return "https://api.bsky.app"
         }
     }
 }

@@ -24,7 +24,6 @@ extension ATProtoKit {
     ///   - limit: The number of suggested users to follow. Optional. Defaults to `25`.
     ///   - cursor: The mark used to indicate the starting point for the next set
     ///   of results. Optional.
-    ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `https://apt.bsky.app`.
     /// - Returns: An array of starter packs, with an optional cursor to expand the array.
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
@@ -32,12 +31,13 @@ extension ATProtoKit {
     public func searchStarterPacks(
         matching query: String,
         limit: Int? = 25,
-        cursor: String? = nil,
-        pdsURL: String = "https://api.bsky.app"
+        cursor: String? = nil
     ) async throws -> AppBskyLexicon.Graph.SearchStarterPacksOutput {
-        let finalPDSURL = self.determinePDSURL(customPDSURL: pdsURL)
+        guard self.pdsURL != "" else {
+            throw ATRequestPrepareError.emptyPDSURL
+        }
 
-        guard let requestURL = URL(string: "\(finalPDSURL)/xrpc/app.bsky.feed.searchStarterPacks") else {
+        guard let requestURL = URL(string: "\(self.pdsURL)/xrpc/app.bsky.feed.searchStarterPacks") else {
             throw ATRequestPrepareError.invalidRequestURL
         }
 

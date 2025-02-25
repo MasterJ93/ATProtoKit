@@ -49,11 +49,10 @@ public class ATProtoTools {
                 return false
             }
 
-            _ = try await ATProtoKit().getRepositoryRecord(
+            _ = try await ATProtoKit(pdsURL: session?.pdsURL ?? "https://api.bsky.app", canUseBlueskyRecords: false).getRepositoryRecord(
                 from: repository,
                 collection: collection,
-                recordKey: recordKey,
-                pdsURL: session?.pdsURL ?? "https://api.bsky.app"
+                recordKey: recordKey
             )
         } catch {
             return false
@@ -69,11 +68,10 @@ public class ATProtoTools {
                 return false
             }
 
-            _ = try await ATProtoKit().getRepositoryRecord(
+            _ = try await ATProtoKit(pdsURL: session?.pdsURL ?? "https://api.bsky.app", canUseBlueskyRecords: false).getRepositoryRecord(
                 from: repository,
                 collection: collection,
-                recordKey: recordKey,
-                pdsURL: session?.pdsURL ?? "https://api.bsky.app"
+                recordKey: recordKey
             )
         } catch {
             return false
@@ -106,11 +104,10 @@ public class ATProtoTools {
             let collection = recordQuery.collection
             let recordKey = recordQuery.recordKey
 
-            let record = try await ATProtoKit().getRepositoryRecord(
+            let record = try await ATProtoKit(pdsURL: session.pdsURL ?? "https://api.bsky.app", canUseBlueskyRecords: false).getRepositoryRecord(
                 from: repository,
                 collection: collection,
-                recordKey: recordKey,
-                pdsURL: session.pdsURL ?? "https://api.bsky.app"
+                recordKey: recordKey
             )
 
             guard let postRecord = record.value?.getRecord(ofType: AppBskyLexicon.Feed.PostRecord.self) else {
@@ -161,11 +158,10 @@ public class ATProtoTools {
         let recordQuery = try parseURI(reference.recordURI, pdsURL: session.pdsURL ?? "https:/api.bsky.app")
 
         // Fetch the post record from the repository.
-        let record = try await ATProtoKit().getRepositoryRecord(
+        let record = try await ATProtoKit(pdsURL: session.pdsURL ?? "https://api.bsky.app", canUseBlueskyRecords: false).getRepositoryRecord(
             from: recordQuery.repository,
             collection: recordQuery.collection,
-            recordKey: recordQuery.recordKey,
-            pdsURL: session.pdsURL ?? "https://api.bsky.app"
+            recordKey: recordQuery.recordKey
         )
 
         guard let postRecord = record.value?.getRecord(ofType: AppBskyLexicon.Feed.PostRecord.self) else {
@@ -255,8 +251,11 @@ public class ATProtoTools {
         let query = try parseURI(uri)
 
         do {
-            let record = try await ATProtoKit().getRepositoryRecord(from: query.repository, collection: query.collection, recordKey: query.recordKey,
-                                                                    pdsURL: session?.pdsURL ?? "https://api.bsky.app")
+            let record = try await ATProtoKit(pdsURL: session?.pdsURL ?? "https://api.bsky.app", canUseBlueskyRecords: false).getRepositoryRecord(
+                from: query.repository,
+                collection: query.collection,
+                recordKey: query.recordKey
+            )
 
             return record
         } catch {
@@ -283,7 +282,7 @@ public class ATProtoTools {
     /// should be able to parse
     /// them and return a proper ``RecordQuery``. However, it's still important to validate the
     /// record by using
-    /// ``ATProtoKit/ATProtoKit/getRepositoryRecord(from:collection:recordKey:recordCID:pdsURL:)``.
+    /// ``ATProtoKit/ATProtoKit/getRepositoryRecord(from:collection:recordKey:recordCID:)``.
     ///
     /// - Parameters:
     ///   - uri: The URI to parse.

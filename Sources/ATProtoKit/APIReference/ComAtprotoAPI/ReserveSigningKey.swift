@@ -20,20 +20,13 @@ extension ATProtoKit {
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/server/reserveSigningKey.json
     ///
-    /// - Parameters:
-    ///   - repositoryDID: The decentalized identifier (DID) of the repository.
-    ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `https://api.bsky.app`.
+    /// - Parameter repositoryDID: The decentalized identifier (DID) of the repository.
     /// - Returns: The newly-created signing key.
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
-    public func reserveSigningKey(
-        for repositoryDID: String,
-        pdsURL: String = "https://api.bsky.app"
-    ) async throws -> ComAtprotoLexicon.Server.ReserveSigningKeyOutput {
-        let finalPDSURL = self.determinePDSURL(customPDSURL: pdsURL)
-
-        guard let requestURL = URL(string: "\(finalPDSURL)/xrpc/com.atproto.server.reserveSigningKey") else {
+    public func reserveSigningKey(for repositoryDID: String) async throws -> ComAtprotoLexicon.Server.ReserveSigningKeyOutput {
+        guard let requestURL = URL(string: "\(self.pdsURL)/xrpc/com.atproto.server.reserveSigningKey") else {
             throw ATRequestPrepareError.invalidRequestURL
         }
 

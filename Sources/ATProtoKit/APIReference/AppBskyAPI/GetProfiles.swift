@@ -19,7 +19,7 @@ extension ATProtoKit {
     /// normal URL isn't used for unauthenticated API calls.\
     /// \
     /// If you need a profile of just one user, it's best to use
-    /// ``getProfile(for:pdsURL:shouldAuthenticate:)``.
+    /// ``getProfile(for:shouldAuthenticate:)``.
     ///
     /// - Note: According to the AT Protocol specifications: "Get detailed profile views of
     /// multiple actors."
@@ -31,7 +31,6 @@ extension ATProtoKit {
     /// - Parameters:
     ///   - actors: An array of user account handles or decentralized identifiers (DID).
     ///   Current maximum length is 25 handles and/or DIDs.
-    ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `https://api.bsky.app`.
     ///   - shouldAuthenticate: Indicates whether the method will use the access token when
     ///   sending the request. Defaults to `true`.
     /// - Returns: An array of detailed profile views for several user accounts.
@@ -40,7 +39,6 @@ extension ATProtoKit {
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func getProfiles(
         for actors: [String],
-        pdsURL: String = "https://api.bsky.app",
         shouldAuthenticate: Bool = true
     ) async throws -> AppBskyLexicon.Actor.GetProfilesOutput {
         let authorizationValue = prepareAuthorizationValue(
@@ -48,9 +46,11 @@ extension ATProtoKit {
             session: session
         )
 
-        let finalPDSURL = determinePDSURL(customPDSURL: pdsURL)
+        guard self.pdsURL != "" else {
+            throw ATRequestPrepareError.emptyPDSURL
+        }
 
-        guard let requestURL = URL(string: "\(finalPDSURL)/xrpc/app.bsky.actor.getProfiles") else {
+        guard let requestURL = URL(string: "\(self.pdsURL)/xrpc/app.bsky.actor.getProfiles") else {
             throw ATRequestPrepareError.invalidRequestURL
         }
 
