@@ -128,7 +128,7 @@ public actor ATRecordTypeRegistry {
     private let registryQueue = DispatchQueue(label: "com.cjrriley.ATProtoKit.ATRecordTypeRegistryQueue")
 
     /// A private property of ``recordRegistry``.
-    private static var _recordRegistry: [String: any ATRecordProtocol.Type] = [:]
+    private(set) static var _recordRegistry: [String: any ATRecordProtocol.Type] = [:]
 
     /// The registry itself.
     ///
@@ -151,7 +151,7 @@ public actor ATRecordTypeRegistry {
     /// added to ``recordRegistry``. Defaults to `false`.
     ///
     /// - Warning: Don't touch this property; this should only be used for ``ATProtoKit``.
-    public static var areBlueskyRecordsRegistered = false
+    public private(set) static var areBlueskyRecordsRegistered = false
 
     /// Tracks whether the registry is currently being modified.
     public private(set) var isUpdating = false
