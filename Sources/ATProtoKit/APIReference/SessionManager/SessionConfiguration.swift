@@ -9,7 +9,7 @@ import Foundation
 import Logging
 
 /// Defines the requirements for session configurations within ATProtoKit.
-public protocol SessionConfiguration: Sendable {
+public protocol SessionConfiguration {
 
     /// The user's handle within the AT Protocol.
     var handle: String { get set }
