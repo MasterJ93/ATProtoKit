@@ -147,22 +147,8 @@ public actor ATRecordTypeRegistry {
     /// Tracks whether the registry is currently being modified.
     public private(set) var isUpdating = false
 
-    /// `AsyncStream` to notify when the registry is ready.
-    private var onReadyStream: AsyncStream<Void>?
-
-    /// The continuation used to control ``onReady``.
-    private var continuation: AsyncStream<Void>.Continuation?
-
-    /// Stream to listen for registry readiness.
-    public var onReady: AsyncStream<Void> {
-        get {
-            if let existingStream = onReadyStream {
-                return existingStream
-            } else {
-                return createOnReadyStream()
-            }
-        }
-    }
+    /// An array of continuations waiting for the registry to be ready.
+    private var continuations: [CheckedContinuation<Void, Never>] = []
 
     private init() {}
 
@@ -170,7 +156,7 @@ public actor ATRecordTypeRegistry {
     ///
     /// - Parameter types: An array of ``ATRecordProtocol``-conforming `struct`s.
     public func register(types: [any ATRecordProtocol.Type]) async {
-        await beginUpdating()
+        self.isUpdating = true
 
         for type in types {
             let typeKey = type.type
@@ -196,7 +182,7 @@ public actor ATRecordTypeRegistry {
     public func register(blueskyLexiconTypes: [any ATRecordProtocol.Type]) async {
         guard !Self.areBlueskyRecordsRegistered else { return }
 
-        await beginUpdating()
+        self.isUpdating = true
 
         for type in blueskyLexiconTypes {
             let typeKey = type.type
@@ -233,6 +219,17 @@ public actor ATRecordTypeRegistry {
     public static func setBlueskyRecordsRegistered(_ value: Bool) {
         self.shared.registryQueue.sync {
             Self.areBlueskyRecordsRegistered = value
+        }
+    }
+
+    /// Halts the execution of code until ``recordRegistry`` is ready to be used.
+    public func waitUntilRegistryIsRead() async {
+        Self.shared.registryQueue.sync {
+            if !isUpdating { return }
+        }
+
+        await withCheckedContinuation { (continuation: CheckedContinuation<Void, Never>) in
+            continuations.append(continuation)
         }
     }
 
@@ -273,35 +270,15 @@ public actor ATRecordTypeRegistry {
         }
     }
 
-    /// Creates a new `AsyncStream<Void>` value that emits when the registry is ready.
-    /// 
-    /// - Returns: A new `AsyncStream<Void>` value that emits when the registry is fully initialized.
-    private func createOnReadyStream() -> AsyncStream<Void> {
-        AsyncStream { continuation in
-            self.continuation = continuation
-            if !isUpdating {
-                continuation.yield(())
-            }
-        }
-    }
-
-    /// Resets ``onReady`` to force wait on next access.
-    private func resetOnReady() {
-        onReadyStream = nil
-        continuation = nil
-        onReadyStream = createOnReadyStream()
-    }
-
-    /// Called when an update to ``recordRegistry`` begins.
-    private func beginUpdating() async {
-        isUpdating = true
-        resetOnReady()
-    }
-
     /// Called when ``recordRegistry`` updates are completed.
     private func endUpdating() async {
         isUpdating = false
-        continuation?.yield(())
+
+        for continuation in continuations {
+            continuation.resume()
+        }
+        // Clear the waiting list.
+        continuations.removeAll()
     }
 }
 
