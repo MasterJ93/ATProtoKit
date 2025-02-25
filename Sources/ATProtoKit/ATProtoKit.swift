@@ -139,6 +139,9 @@ public class ATProtoKit: ATProtoKitConfiguration, ATRecordConfiguration {
 
     public let sessionConfiguration: SessionConfiguration?
 
+    /// The URL of the Personal Data Server (PDS).
+    public let pdsURL: String
+
     /// Represents an authenticated user session within the AT Protocol. Optional.
     public var session: UserSession? {
         return sessionConfiguration?.session
@@ -168,6 +171,7 @@ public class ATProtoKit: ATProtoKitConfiguration, ATRecordConfiguration {
     ///   Defaults to `true`.
     public init(sessionConfiguration: SessionConfiguration? = nil, pdsURL: String = "https://api.bsky.app", canUseBlueskyRecords: Bool = true) {
         self.sessionConfiguration = sessionConfiguration
+        self.pdsURL = pdsURL
         self.logger = session?.logger
 
         Task { [recordLexicons] in
@@ -197,6 +201,7 @@ public class ATProtoKit: ATProtoKitConfiguration, ATRecordConfiguration {
     ///   Defaults to `true`.
     public init(sessionConfiguration: SessionConfiguration? = nil, pdsURL: String = "https://api.bsky.app", canUseBlueskyRecords: Bool = true) async {
         self.sessionConfiguration = sessionConfiguration
+        self.pdsURL = pdsURL
         self.logger = session?.logger
 
         if canUseBlueskyRecords && !(ATRecordTypeRegistry.areBlueskyRecordsRegistered) {
@@ -242,6 +247,9 @@ public class ATProtoBluesky: ATProtoKitConfiguration {
 
     public let sessionConfiguration: SessionConfiguration?
 
+    /// The URL of the Personal Data Server (PDS).
+    public let pdsURL: String
+
     /// Represents an authenticated user session within the AT Protocol. Optional.
     public var session: UserSession? {
         return sessionConfiguration?.session
@@ -260,6 +268,7 @@ public class ATProtoBluesky: ATProtoKitConfiguration {
         self.sessionConfiguration = atProtoKitInstance.sessionConfiguration
         self.linkBuilder = linkbuilder
         self.logger = self.atProtoKitInstance.session?.logger ?? logger
+        self.pdsURL = "https://api.bsky.app"
     }
 }
 
@@ -283,6 +292,9 @@ public class ATProtoBlueskyChat: ATProtoKitConfiguration {
 
     public let sessionConfiguration: SessionConfiguration?
 
+    /// The URL of the Personal Data Server (PDS).
+    public let pdsURL: String
+
     /// Represents an authenticated user session within the AT Protocol. Optional.
     public var session: UserSession? {
         return sessionConfiguration?.session
@@ -300,6 +312,7 @@ public class ATProtoBlueskyChat: ATProtoKitConfiguration {
         self.atProtoKitInstance = atProtoKitInstance
         self.sessionConfiguration = atProtoKitInstance.sessionConfiguration
         self.logger = self.atProtoKitInstance.session?.logger
+        self.pdsURL = "https://api.bsky.app"
     }
 }
 
@@ -358,6 +371,9 @@ public class ATProtoAdmin: ATProtoKitConfiguration {
 
     public let sessionConfiguration: SessionConfiguration?
 
+    /// The URL of the Personal Data Server (PDS).
+    public let pdsURL: String
+
     /// Represents an authenticated user session within the AT Protocol. Optional.
     public var session: UserSession? {
         return sessionConfiguration?.session
@@ -369,6 +385,7 @@ public class ATProtoAdmin: ATProtoKitConfiguration {
     ///   Defaults to the project's `CFBundleIdentifier`.
     public init(sessionConfiguration: SessionConfiguration? = nil) {
         self.sessionConfiguration = sessionConfiguration
+        self.pdsURL = "https://api.bsky.app"
         self.logger = session?.logger
     }
 }
