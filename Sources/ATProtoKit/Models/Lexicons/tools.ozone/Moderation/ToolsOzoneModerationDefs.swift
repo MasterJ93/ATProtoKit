@@ -564,7 +564,8 @@ extension ToolsOzoneLexicon.Moderation {
 
     /// A definition model for a comment event.
     ///
-    /// - Note: According to the AT Protocol specifications: "Add a comment to a subject."
+    /// - Note: According to the AT Protocol specifications: "Add a comment to a subject. An empty
+    /// comment will clear any previously set sticky comment."
     ///
     /// - SeeAlso: This is based on the [`tools.ozone.moderation.defs`][github] lexicon.
     ///
