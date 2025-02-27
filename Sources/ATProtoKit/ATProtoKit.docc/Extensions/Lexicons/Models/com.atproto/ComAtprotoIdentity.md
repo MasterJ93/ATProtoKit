@@ -2,13 +2,25 @@
 
 ## Topics
 
+### com.atproto.identity.defs
+
+- ``ComAtprotoLexicon/Identity/IdentityInfoDefinition``
+
 ### com.atproto.identity.getRecommendedDidCredentials
 
 - ``ComAtprotoLexicon/Identity/GetRecommendedDidCredentialsOutput``
 
+### com.atproto.identity.refreshIdentity
+
+- ``ComAtprotoLexicon/Identity/RefreshIdentityRequestBody``
+
 ### com.atproto.identity.requestPlcOperationSignature
 
-- ``ComAtprotoLexicon/Identity/RequestPlcOperationSignatureRequestBody``
+- ``ComAtprotoLexicon/Identity/RequestPLCOperationSignatureRequestBody``
+
+### com.atproto.identity.resolveDid
+
+- ``ComAtprotoLexicon/Identity/ResolveDIDOutput``
 
 ### com.atproto.identity.resolveHandle
 

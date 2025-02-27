@@ -17,5 +17,5 @@ extension ComAtprotoLexicon.Identity {
     /// - SeeAlso: This is based on the [`com.atproto.identity.requestPlcOperationSignature`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/identity/requestPlcOperationSignature.json
-    public struct RequestPlcOperationSignatureRequestBody: Sendable, Codable {}
+    public struct RequestPLCOperationSignatureRequestBody: Sendable, Codable {}
 }
