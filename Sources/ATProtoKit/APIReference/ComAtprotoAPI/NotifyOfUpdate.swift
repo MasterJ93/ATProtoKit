@@ -27,8 +27,14 @@ extension ATProtoKit {
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
-    public func notifyOfUpdate(in crawlingHostname: URL) async throws {
-        guard let requestURL = URL(string: "\(self.pdsURL)/xrpc/com.atproto.sync.notifyOfUpdate") else {
+    @available(*, deprecated, renamed: "requestCrawl", message: "Use requestCrawl() instead")
+    public func notifyOfUpdate(
+        in crawlingHostname: URL,
+        pdsURL: String = "https://api.bsky.app"
+    ) async throws {
+        let finalPDSURL = self.determinePDSURL(customPDSURL: pdsURL)
+
+        guard let requestURL = URL(string: "\(finalPDSURL)/xrpc/com.atproto.sync.notifyOfUpdate") else {
             throw ATRequestPrepareError.invalidRequestURL
         }
 

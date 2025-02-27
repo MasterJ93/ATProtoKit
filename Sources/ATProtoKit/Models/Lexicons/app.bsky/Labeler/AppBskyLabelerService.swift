@@ -33,10 +33,38 @@ extension AppBskyLexicon.Labeler {
         /// The date and time the labeler service was created.
         public let createdAt: Date
 
-        public init(policies: LabelerPolicies, labels: [ComAtprotoLexicon.Label.SelfLabelDefinition], createdAt: Date) {
+        /// The set of report reason codes that this service is authorized to review and take
+        /// action on.
+        ///
+        /// - Note: According to the AT Protocol specifications: "The set of report reason 'codes'
+        /// which are in-scope for this service to review and action. These usually align to
+        /// policy categories. If not defined (distinct from empty array), all reason types
+        /// are allowed."
+        public let reasonTypes: ComAtprotoLexicon.Moderation.ReasonTypeDefinition?
+
+        /// The types of subjects this service accepts reports on.
+        ///
+        /// - Note: According to the AT Protocol specifications: "The set of subject types
+        /// (account, record, etc) this service accepts reports on."
+        public let subjectTypes: ComAtprotoLexicon.Moderation.SubjectTypeDefinition?
+
+        /// An array of Namespaced Identifiers (NSIDs) for records that can be reported to
+        /// this service.
+        ///
+        /// - Note: According to the AT Protocol specifications: "Set of record types
+        /// (collection NSIDs) which can be reported to this service. If not defined
+        /// (distinct from empty array), default is any record type."
+        public let subjectCollections: [String]?
+
+        public init(policies: LabelerPolicies, labels: [ComAtprotoLexicon.Label.SelfLabelDefinition], createdAt: Date,
+                    reasonTypes: ComAtprotoLexicon.Moderation.ReasonTypeDefinition?, subjectTypes: ComAtprotoLexicon.Moderation.SubjectTypeDefinition?,
+                    subjectCollections: [String]?) {
             self.policies = policies
             self.labels = labels
             self.createdAt = createdAt
+            self.reasonTypes = reasonTypes
+            self.subjectTypes = subjectTypes
+            self.subjectCollections = subjectCollections
         }
 
         public init(from decoder: any Decoder) throws {
@@ -45,6 +73,9 @@ extension AppBskyLexicon.Labeler {
             self.policies = try container.decode(LabelerPolicies.self, forKey: .policies)
             self.labels = try container.decode([ComAtprotoLexicon.Label.SelfLabelDefinition].self, forKey: .labels)
             self.createdAt = try container.decodeDate(forKey: .createdAt)
+            self.reasonTypes = try container.decodeIfPresent(ComAtprotoLexicon.Moderation.ReasonTypeDefinition.self, forKey: .reasonTypes)
+            self.subjectTypes = try container.decodeIfPresent(ComAtprotoLexicon.Moderation.SubjectTypeDefinition.self, forKey: .subjectTypes)
+            self.subjectCollections = try container.decodeIfPresent([String].self, forKey: .subjectCollections)
         }
 
         public func encode(to encoder: any Encoder) throws {
@@ -53,6 +84,9 @@ extension AppBskyLexicon.Labeler {
             try container.encode(self.policies, forKey: .policies)
             try container.encode(self.labels, forKey: .labels)
             try container.encodeDate(self.createdAt, forKey: .createdAt)
+            try container.encodeIfPresent(self.reasonTypes, forKey: .reasonTypes)
+            try container.encodeIfPresent(self.subjectTypes, forKey: .subjectTypes)
+            try container.encodeIfPresent(self.subjectCollections, forKey: .subjectCollections)
         }
 
         enum CodingKeys: String, CodingKey {
@@ -60,6 +94,9 @@ extension AppBskyLexicon.Labeler {
             case policies
             case labels
             case createdAt
+            case reasonTypes
+            case subjectTypes
+            case subjectCollections
         }
     }
 }

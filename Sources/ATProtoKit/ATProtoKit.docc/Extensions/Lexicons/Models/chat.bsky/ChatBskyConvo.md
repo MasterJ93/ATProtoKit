@@ -78,6 +78,12 @@
 - ``ChatBskyLexicon/Conversation/UnMuteConversationRequestBody``
 - ``ChatBskyLexicon/Conversation/UnmuteConversationOutput``
 
+### chat.bsky.convo.updateAllRead
+
+- ``ChatBskyLexicon/Conversation/UpdateAllRead``
+- ``ChatBskyLexicon/Conversation/UpdateAllReadRequestBody``
+- ``ChatBskyLexicon/Conversation/UpdateAllReadOutput``
+
 ### chat.bsky.convo.updateRead
 
 - ``ChatBskyLexicon/Conversation/UpdateReadRequestBody``
