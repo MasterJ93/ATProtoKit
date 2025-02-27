@@ -96,13 +96,13 @@ extension ATRecordConfiguration {
 /// that the JSON object will fit into.
 ///
 /// This registry is managed by an `actor`, ensuring concurrency-safe access to its internal
-/// data. Because of this, all interactions with `ATRecordTypeRegistry` must be done
+/// data. Because of this, most interactions with `ATRecordTypeRegistry` must be done
 /// asynchronously using `await`.
 ///
 /// When adding a record, you need to type `.self` at the end.
 /// ```swift
 /// Task {
-///     _ = await ATRecordTypeRegistry.shared.register(blueskyLexiconTypes: [UserProfile.self])
+///     _ = await ATRecordTypeRegistry.shared.register(types: [UserProfile.self])
 /// }
 /// ```
 ///
@@ -110,16 +110,25 @@ extension ATRecordConfiguration {
 ///
 /// - Warning: All record types _must_ conform to ``ATRecordProtocol``. Failure to do so may
 /// result in an error.
+///
+/// # Waiting For the Registry To Be Ready
+///
+/// If you need to ensure that the registry is ready to be read. In order to do this, you should
+/// use ``ATRecordTypeRegistry/waitUntilRegistryIsRead()`` in the function. This prevents the
+/// function from continuing until the registry is ready to be used.
+///
+/// - Note: ``ATRecordTypeRegistry/waitUntilRegistryIsRead()`` only works in functions that
+/// are `async`.
 public actor ATRecordTypeRegistry {
 
-    /// The shared instance of the `actor`.
+    /// The shared instance of `ATRecordTypeRegistry`.
     public static let shared = ATRecordTypeRegistry()
 
     /// A private dispatch queue for the registry.
     private let registryQueue = DispatchQueue(label: "com.cjrriley.ATProtoKit.ATRecordTypeRegistryQueue")
 
     /// A private property of ``recordRegistry``.
-    private static var _recordRegistry: [String: any ATRecordProtocol.Type] = [:]
+    private(set) static var _recordRegistry: [String: any ATRecordProtocol.Type] = [:]
 
     /// The registry itself.
     ///
@@ -142,27 +151,13 @@ public actor ATRecordTypeRegistry {
     /// added to ``recordRegistry``. Defaults to `false`.
     ///
     /// - Warning: Don't touch this property; this should only be used for ``ATProtoKit``.
-    public static var areBlueskyRecordsRegistered = false
+    public private(set) static var areBlueskyRecordsRegistered = false
 
     /// Tracks whether the registry is currently being modified.
     public private(set) var isUpdating = false
 
-    /// `AsyncStream` to notify when the registry is ready.
-    private var onReadyStream: AsyncStream<Void>?
-
-    /// The continuation used to control ``onReady``.
-    private var continuation: AsyncStream<Void>.Continuation?
-
-    /// Stream to listen for registry readiness.
-    public var onReady: AsyncStream<Void> {
-        get {
-            if let existingStream = onReadyStream {
-                return existingStream
-            } else {
-                return createOnReadyStream()
-            }
-        }
-    }
+    /// An array of continuations waiting for the registry to be ready.
+    private var continuations: [CheckedContinuation<Void, Never>] = []
 
     private init() {}
 
@@ -170,7 +165,7 @@ public actor ATRecordTypeRegistry {
     ///
     /// - Parameter types: An array of ``ATRecordProtocol``-conforming `struct`s.
     public func register(types: [any ATRecordProtocol.Type]) async {
-        await beginUpdating()
+        self.isUpdating = true
 
         for type in types {
             let typeKey = type.type
@@ -194,9 +189,13 @@ public actor ATRecordTypeRegistry {
     ///
     /// - Parameter blueskyLexiconTypes: An array of ``ATRecordProtocol``-conforming `struct`s.
     public func register(blueskyLexiconTypes: [any ATRecordProtocol.Type]) async {
-        guard !Self.areBlueskyRecordsRegistered else { return }
+        let alreadyRegistered = self.registryQueue.sync {
+            Self.areBlueskyRecordsRegistered
+        }
 
-        await beginUpdating()
+        guard !alreadyRegistered else { return }
+
+        self.isUpdating = true
 
         for type in blueskyLexiconTypes {
             let typeKey = type.type
@@ -233,6 +232,15 @@ public actor ATRecordTypeRegistry {
     public static func setBlueskyRecordsRegistered(_ value: Bool) {
         self.shared.registryQueue.sync {
             Self.areBlueskyRecordsRegistered = value
+        }
+    }
+
+    /// Halts the execution of code until ``recordRegistry`` is ready to be used.
+    public func waitUntilRegistryIsRead() async {
+        if isUpdating == false { return }
+
+        await withCheckedContinuation { (continuation: CheckedContinuation<Void, Never>) in
+            continuations.append(continuation)
         }
     }
 
@@ -273,35 +281,15 @@ public actor ATRecordTypeRegistry {
         }
     }
 
-    /// Creates a new `AsyncStream<Void>` value that emits when the registry is ready.
-    /// 
-    /// - Returns: A new `AsyncStream<Void>` value that emits when the registry is fully initialized.
-    private func createOnReadyStream() -> AsyncStream<Void> {
-        AsyncStream { continuation in
-            self.continuation = continuation
-            if !isUpdating {
-                continuation.yield(())
-            }
-        }
-    }
-
-    /// Resets ``onReady`` to force wait on next access.
-    private func resetOnReady() {
-        onReadyStream = nil
-        continuation = nil
-        onReadyStream = createOnReadyStream()
-    }
-
-    /// Called when an update to ``recordRegistry`` begins.
-    private func beginUpdating() async {
-        isUpdating = true
-        resetOnReady()
-    }
-
     /// Called when ``recordRegistry`` updates are completed.
     private func endUpdating() async {
         isUpdating = false
-        continuation?.yield(())
+
+        for continuation in continuations {
+            continuation.resume()
+        }
+        // Clear the waiting list.
+        continuations.removeAll()
     }
 }
 

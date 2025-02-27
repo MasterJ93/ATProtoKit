@@ -37,14 +37,18 @@ extension ATProtoBluesky {
             createdAt: createdAt
         )
 
-        return try await atProtoKitInstance.createRecord(
-            repositoryDID: session.sessionDID,
-            collection: "app.bsky.feed.like",
-            recordKey: recordKey,
-            shouldValidate: shouldValidate,
-            record: UnknownType.record(likeRecord),
-            swapCommit: swapCommit
-        )
+        do {
+            return try await atProtoKitInstance.createRecord(
+                repositoryDID: session.sessionDID,
+                collection: "app.bsky.feed.like",
+                recordKey: recordKey,
+                shouldValidate: shouldValidate,
+                record: UnknownType.record(likeRecord),
+                swapCommit: swapCommit
+            )
+        } catch {
+            throw error
+        }
     }
     
     /// The request body for a like record.

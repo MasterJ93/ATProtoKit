@@ -11,6 +11,9 @@ extension AppBskyLexicon.Feed {
 
     /// A record model for the rules of a post's interaction.
     ///
+    /// - Important: When creating this record, be sure that the record key of a
+    /// ``AppBskyLexicon/Feed/PostRecord`` is the same as the record key of this record.
+    ///
     /// - Note: According to the AT Protocol specifications: "Record defining interaction rules for
     /// a post. The record key (rkey) of the postgate record must match the record key of the post,
     /// and that record must be in the same repository."
@@ -63,6 +66,7 @@ extension AppBskyLexicon.Feed {
         public func encode(to encoder: any Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
 
+            try container.encode(Self.type, forKey: .type)
             try container.encodeDate(self.createdAt, forKey: .createdAt)
             try container.encode(self.postURI, forKey: .postURI)
             try container.truncatedEncodeIfPresent(self.detachedEmbeddingURIs, forKey: .detachedEmbeddingURIs, upToArrayLength: 50)
@@ -80,6 +84,21 @@ extension AppBskyLexicon.Feed {
         /// A marker that disables the embedding of this post.
         ///
         /// - Note: According to the AT Protocol specifications: "Disables embedding of this post."
-        public struct DisableRule: Codable, Sendable, Equatable, Hashable {}
+        public struct DisableRule: Codable, Sendable, Equatable, Hashable {
+
+            public let type: String = "app.bsky.feed.postgate#disableRule"
+
+            public init() {}
+
+            public func encode(to encoder: any Encoder) throws {
+                var container = encoder.container(keyedBy: CodingKeys.self)
+
+                try container.encode(self.type, forKey: .type)
+            }
+
+            enum CodingKeys: String, CodingKey {
+                case type = "$type"
+            }
+        }
     }
 }

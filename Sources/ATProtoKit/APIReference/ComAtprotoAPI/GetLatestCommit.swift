@@ -18,20 +18,15 @@ extension ATProtoKit {
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/sync/getLatestCommit.json
     ///
-    /// - Parameters:
-    ///   - repositoryDID: The decentralized identifier (DID) of the repository.
-    ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `https://api.bsky.app`.
+    /// - Parameter repositoryDID: The decentralized identifier (DID) of the repository.
     /// - Returns: The commit CID and revision of the repository.
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func getLatestCommit(
-        from repositoryDID: String,
-        pdsURL: String = "https://api.bsky.app"
+        from repositoryDID: String
     ) async throws -> ComAtprotoLexicon.Sync.GetLatestCommitOutput {
-        let finalPDSURL = self.determinePDSURL(customPDSURL: pdsURL)
-
-        guard let requestURL = URL(string: "\(finalPDSURL)/xrpc/com.atproto.sync.getLatestCommit") else {
+        guard let requestURL = URL(string: "\(self.pdsURL)/xrpc/com.atproto.sync.getLatestCommit") else {
             throw ATRequestPrepareError.invalidRequestURL
         }
 

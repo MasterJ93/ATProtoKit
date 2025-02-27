@@ -25,7 +25,6 @@ extension ATProtoKit {
     ///   choose between `1` and `2,000`.
     ///   - cursor: The mark used to indicate the starting point for the next set
     ///   of results. Optional.
-    ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `https://api.bsky.app`.
     /// - Returns: An array of repositories, with an optional cursor to extend the array.
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
@@ -33,12 +32,9 @@ extension ATProtoKit {
     public func listRepositoriesByCollection(
         collection: String,
         limit: Int? = 500,
-        cursor: String? = nil,
-        pdsURL: String = "https://api.bsky.app"
+        cursor: String? = nil
     ) async throws -> ComAtprotoLexicon.Sync.ListRepositoriesByCollectionOutput {
-        let finalPDSURL = self.determinePDSURL(customPDSURL: pdsURL)
-
-        guard let requestURL = URL(string: "\(finalPDSURL)/xrpc/com.atproto.sync.listReposByCollection") else {
+        guard let requestURL = URL(string: "\(self.pdsURL)/xrpc/com.atproto.sync.listReposByCollection") else {
             throw ATRequestPrepareError.invalidRequestURL
         }
 

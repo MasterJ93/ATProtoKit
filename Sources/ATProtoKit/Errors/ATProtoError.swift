@@ -91,7 +91,7 @@ extension ATProtoBluesky {
     /// An error type related to ``ATProtoBluesky``-related issues.
     public enum ATProtoBlueskyError: Decodable, ATProtoError {
 
-        /// The specified post could not be found.
+        /// The post record could not be found.
         ///
         /// - Parameter message: The message of the error.
         case postNotFound(message: String)

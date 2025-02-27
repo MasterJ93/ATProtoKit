@@ -27,7 +27,6 @@ extension ATProtoKit {
     ///   - limit: The number of items that can be in the list. Optional. Defaults to `50`.
     ///   - cursor: The mark used to indicate the starting point for the next set
     ///   of results. Optional.
-    ///   - pdsURL: The URL of the Personal Data Server (PDS).
     /// - Returns: An array of skeleton feeds, with an optional cursor to extend the array.
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
@@ -35,20 +34,17 @@ extension ATProtoKit {
     public func getFeedSkeleton(
         by uri: String,
         limit: Int? = 50,
-        cursor: String? = nil,
-        pdsURL: String = "https://api.bsky.app"
+        cursor: String? = nil
     ) async throws -> AppBskyLexicon.Feed.GetFeedSkeletonOutput {
-        guard pdsURL != "" else {
+        guard self.pdsURL != "" else {
             throw ATRequestPrepareError.emptyPDSURL
         }
 
-        let finalPDSURL = self.determinePDSURL(customPDSURL: pdsURL)
-
-        guard let requestURL = URL(string: "\(finalPDSURL)/xrpc/app.bsky.feed.getFeedSkeleton") else {
+        guard let requestURL = URL(string: "\(self.pdsURL)/xrpc/app.bsky.feed.getFeedSkeleton") else {
             throw ATRequestPrepareError.invalidRequestURL
         }
 
-        if pdsURL == "https://bsky.social" {
+        if self.pdsURL == "https://bsky.social" {
             throw ATRequestPrepareError.invalidPDS
         }
 

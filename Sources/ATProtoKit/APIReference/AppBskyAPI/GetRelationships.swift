@@ -23,8 +23,6 @@ extension ATProtoKit {
     ///   - others: An array of AT Identifiers for the other user accounts
     ///   that the primary user account may be related to. Optional. Current maximum item length
     ///   is `30`.
-    ///   - pdsURL: The URL of the Personal Data Server (PDS).
-    ///   Defaults to `https://api.bsky.app`.
     /// - Returns: The metadata which containing the relationship between mutliple user accounts,
     /// as well as the decentralized identifier (DID) of the user account that matched
     /// the `actorDID`.
@@ -33,12 +31,13 @@ extension ATProtoKit {
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func getRelationships(
         between actor: String,
-        and others: [String]? = nil,
-        pdsURL: String = "https://api.bsky.app"
+        and others: [String]? = nil
     ) async throws -> AppBskyLexicon.Graph.GetRelationshipsOutput {
-        let finalPDSURL = self.determinePDSURL(customPDSURL: pdsURL)
+        guard self.pdsURL != "" else {
+            throw ATRequestPrepareError.emptyPDSURL
+        }
 
-        guard let requestURL = URL(string: "\(finalPDSURL)/xrpc/app.bsky.graph.getRelationships") else {
+        guard let requestURL = URL(string: "\(self.pdsURL)/xrpc/app.bsky.graph.getRelationships") else {
             throw ATRequestPrepareError.invalidRequestURL
         }
 

@@ -31,12 +31,16 @@ extension ATProtoBluesky {
             createdAt: createdAt
         )
 
-        return try await atProtoKitInstance.createRecord(
-            repositoryDID: session.sessionDID,
-            collection: "app.bsky.feed.repost",
-            shouldValidate: shouldValidate,
-            record: UnknownType.record(repostRecord)
-        )
+        do {
+            return try await atProtoKitInstance.createRecord(
+                repositoryDID: session.sessionDID,
+                collection: "app.bsky.feed.repost",
+                shouldValidate: shouldValidate,
+                record: UnknownType.record(repostRecord)
+            )
+        } catch {
+            throw error
+        }
     }
     
     /// The request body for a repost record.

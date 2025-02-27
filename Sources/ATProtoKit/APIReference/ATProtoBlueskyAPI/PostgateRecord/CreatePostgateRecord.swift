@@ -70,18 +70,14 @@ extension ATProtoBluesky {
     ///   - detachedEmbeddingURIs: An array of URIs belonging to posts that the `postURI`'s author
     ///   has detached. Optional.
     ///   - embeddingRules: An array of rules for embedding the post. Optional.
-    ///   - recordKey: The record key of the collection. Optional. Defaults to `nil`.
     ///   - shouldValidate: Indicates whether the record should be validated. Optional.
     ///   Defaults to `true`.
     ///   - swapCommit: Swaps out an operation based on the CID. Optional. Defaults to `nil`.
     /// - Returns: A strong reference, which contains the newly-created record's URI and CID hash.
-    ///
-    ///   - Throws:
     public func createPostgateRecord(
         postURI: String,
         detachedEmbeddingURIs: [String]? = nil,
         embeddingRules: [PostgateEmbeddingRule]? = nil,
-        recordKey: String? = nil,
         shouldValidate: Bool? = true,
         swapCommit: String? = nil
     ) async throws -> ComAtprotoLexicon.Repository.StrongReference {
@@ -116,14 +112,13 @@ extension ATProtoBluesky {
         )
 
         do {
-            
-//            try await atProtoKitInstance.putRecord(repository: session.sessionDID, collection: "app.bsky.feed.postgate", recordKey: recordKey ?? nil, record: <#T##UnknownType#>)
-
+            let recordURI = post.uri
+            let recordKey = try ATProtoTools().parseURI(recordURI).recordKey
 
             return try await atProtoKitInstance.createRecord(
                 repositoryDID: session.sessionDID,
                 collection: "app.bsky.feed.postgate",
-                recordKey: recordKey ?? nil,
+                recordKey: recordKey,
                 shouldValidate: shouldValidate,
                 record: UnknownType.record(postgateRecord),
                 swapCommit: swapCommit ?? nil

@@ -24,19 +24,14 @@ extension ATProtoKit {
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/repo/importRepo.json
     /// [car_link]: https://atproto.com/specs/repository#car-file-serialization
     ///
-    /// - Parameters:
-    ///   - repositoryData: The repository data in the form of a CAR file.
-    ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `https://api.bsky.app`.
+    /// - Parameter repositoryData: The repository data in the form of a CAR file.
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func importRepository(
-        _ repositoryData: Data,
-        pdsURL: String = "https://api.bsky.app"
+        _ repositoryData: Data
     ) async throws {
-        let finalPDSURL = self.determinePDSURL(customPDSURL: pdsURL)
-
-        guard let requestURL = URL(string: "\(finalPDSURL)/xrpc/com.atproto.repo.importRepo") else {
+        guard let requestURL = URL(string: "\(self.pdsURL)/xrpc/com.atproto.repo.importRepo") else {
             throw ATRequestPrepareError.invalidRequestURL
         }
 

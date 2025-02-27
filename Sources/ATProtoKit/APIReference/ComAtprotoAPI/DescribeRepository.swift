@@ -20,7 +20,7 @@ extension ATProtoKit {
     ///
     /// - Parameters:
     ///   - repositoryDID: The decentralized identifier (DID) or handle of the repository.
-    ///   - pdsURL: The URL of the Personal Data Server (PDS). Optional.
+    ///   - pdsURL: The URL of the Personal Data Server (PDS). Optional. Defaults to `nil`.
     /// - Returns: Some general information about the repository that matches `repositoryDID`.
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
