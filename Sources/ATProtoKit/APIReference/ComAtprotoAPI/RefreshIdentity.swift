@@ -27,11 +27,6 @@ extension ATProtoKit {
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func refreshIdentity(with identifier: String) async throws -> ComAtprotoLexicon.Identity.IdentityInfoDefinition {
-        guard session != nil,
-              let accessToken = session?.accessToken else {
-            throw ATRequestPrepareError.missingActiveSession
-        }
-
         guard let sessionURL = session?.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.identity.refreshIdentity") else {
             throw ATRequestPrepareError.invalidRequestURL
@@ -49,6 +44,7 @@ extension ATProtoKit {
                 contentTypeValue: "application/json",
                 authorizationValue: nil
             )
+
             let response = try await APIClientService.shared.sendRequest(
                 request,
                 withEncodingBody: requestBody,
