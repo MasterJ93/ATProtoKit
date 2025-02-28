@@ -23,7 +23,9 @@ extension ATProtoKit {
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/sync/notifyOfUpdate.json
     ///
-    /// - Parameter crawlingHostname: The hostname that the crawling service resides in. Optional.
+    /// - Parameters:
+    ///   - crawlingHostname: The hostname that the crawling service resides in. Optional.
+    ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `https://api.bsky.app`.
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
@@ -32,9 +34,7 @@ extension ATProtoKit {
         in crawlingHostname: URL,
         pdsURL: String = "https://api.bsky.app"
     ) async throws {
-        let finalPDSURL = self.determinePDSURL(customPDSURL: pdsURL)
-
-        guard let requestURL = URL(string: "\(finalPDSURL)/xrpc/com.atproto.sync.notifyOfUpdate") else {
+        guard let requestURL = URL(string: "\(self.pdsURL)/xrpc/com.atproto.sync.notifyOfUpdate") else {
             throw ATRequestPrepareError.invalidRequestURL
         }
 
