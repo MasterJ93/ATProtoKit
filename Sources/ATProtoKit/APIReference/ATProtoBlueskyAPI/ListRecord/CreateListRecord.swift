@@ -15,7 +15,7 @@ extension ATProtoBluesky {
     ///
     /// # Creating a List
     ///
-    /// After you authenticate into Bluesky, you can create a post by using the `name` and
+    /// After you authenticate into Bluesky, you can create a list by using the `name` and
     /// `listType` arguments:
     ///
     /// ```swift
@@ -109,10 +109,9 @@ extension ATProtoBluesky {
         }
 
         // listAvatarImage
-        var postEmbed: ATUnion.PostEmbedUnion? = nil
         var avatarImage: ComAtprotoLexicon.Repository.UploadBlobOutput? = nil
         if let listAvatarImage = listAvatarImage {
-            postEmbed = try await uploadImages(
+            let postEmbed = try await uploadImages(
                 [listAvatarImage],
                 pdsURL: sessionURL,
                 accessToken: session.accessToken
