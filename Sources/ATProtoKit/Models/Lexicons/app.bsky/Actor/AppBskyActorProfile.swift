@@ -37,7 +37,7 @@ extension AppBskyLexicon.Actor {
         /// description text."
         public let description: String?
 
-        /// The avatar image URL of the profile. Optional.
+        /// The avatar image blob of the profile. Optional.
         ///
         /// - Note: Only JPEGs and PNGs are accepted.
         ///
@@ -45,9 +45,9 @@ extension AppBskyLexicon.Actor {
         ///
         /// - Note: According to the AT Protocol specifications: "Small image to be displayed next
         /// to posts from account. AKA, 'profile picture'"
-        public let avatarBlob: ComAtprotoLexicon.Repository.BlobContainer?
+        public let avatarBlob: ComAtprotoLexicon.Repository.UploadBlobOutput?
 
-        /// The banner image URL of the profile. Optional.
+        /// The banner image blob of the profile. Optional.
         ///
         /// - Note: Only JPEGs and PNGs are accepted.
         ///
@@ -55,7 +55,7 @@ extension AppBskyLexicon.Actor {
         ///
         /// - Note: According to the AT Protocol specifications: "Larger horizontal image to
         /// display behind profile view."
-        public let bannerBlob: ComAtprotoLexicon.Repository.BlobContainer?
+        public let bannerBlob: ComAtprotoLexicon.Repository.UploadBlobOutput?
 
         /// An array of user-defined labels. Optional.
         ///
@@ -72,13 +72,27 @@ extension AppBskyLexicon.Actor {
         /// The date and time the profile was created. Optional.
         public let createdAt: Date?
 
+        public init(displayName: String?, description: String?, avatarBlob: ComAtprotoLexicon.Repository.UploadBlobOutput?,
+                    bannerBlob: ComAtprotoLexicon.Repository.UploadBlobOutput?, labels: [ComAtprotoLexicon.Label.SelfLabelsDefinition]?,
+                    joinedViaStarterPack: ComAtprotoLexicon.Repository.StrongReference?, pinnedPost: ComAtprotoLexicon.Repository.StrongReference?,
+                    createdAt: Date?) {
+            self.displayName = displayName
+            self.description = description
+            self.avatarBlob = avatarBlob
+            self.bannerBlob = bannerBlob
+            self.labels = labels
+            self.joinedViaStarterPack = joinedViaStarterPack
+            self.pinnedPost = pinnedPost
+            self.createdAt = createdAt
+        }
+
         public init(from decoder: any Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
 
             self.displayName = try container.decodeIfPresent(String.self, forKey: .displayName)
             self.description = try container.decodeIfPresent(String.self, forKey: .description)
-            self.avatarBlob = try container.decodeIfPresent(ComAtprotoLexicon.Repository.BlobContainer.self, forKey: .avatarBlob)
-            self.bannerBlob = try container.decodeIfPresent(ComAtprotoLexicon.Repository.BlobContainer.self, forKey: .bannerBlob)
+            self.avatarBlob = try container.decodeIfPresent(ComAtprotoLexicon.Repository.UploadBlobOutput.self, forKey: .avatarBlob)
+            self.bannerBlob = try container.decodeIfPresent(ComAtprotoLexicon.Repository.UploadBlobOutput.self, forKey: .bannerBlob)
             self.labels = try container.decodeIfPresent([ComAtprotoLexicon.Label.SelfLabelsDefinition].self, forKey: .labels)
             self.joinedViaStarterPack = try container.decodeIfPresent(ComAtprotoLexicon.Repository.StrongReference.self, forKey: .joinedViaStarterPack)
             self.pinnedPost = try container.decodeIfPresent(ComAtprotoLexicon.Repository.StrongReference.self, forKey: .pinnedPost)

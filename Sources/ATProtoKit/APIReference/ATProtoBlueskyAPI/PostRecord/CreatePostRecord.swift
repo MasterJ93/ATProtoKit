@@ -13,8 +13,8 @@ extension ATProtoBluesky {
     ///
     /// This can be used instead of creating your own method if you wish not to do so.
     ///
-    /// ## Creating a Post
-    /// After you authenticate into Bluesky, you can create a post by using the `text` field:
+    /// # Creating a Post
+    /// After you authenticate into Bluesky, you can create a post by using the `text` argument:
     /// ```swift
     /// do {
     ///     let postResult = try await atProtoBluesky.createPostRecord(
@@ -68,11 +68,11 @@ extension ATProtoBluesky {
     /// - Note: `startPostion` and `endPostion` must be UTF-8 values.
     ///
     ///
-    /// ## Adding Embedded Content
+    /// # Adding Embedded Content
     /// You can embed various kinds of content in your post, from media to external links,
     /// to other records.
     ///
-    /// ### Images
+    /// ## Images
     /// Use ``ATProtoTools/ImageQuery`` to add details to the image, such as
     /// alt text, then attach it to the post record.
     ///
@@ -81,7 +81,7 @@ extension ATProtoBluesky {
     ///     let image = ATProtoTools.ImageQuery(
     ///         imageData: Data(contentsOf: "/path/to/file/cat.jpg"),
     ///         fileName: "cat.jpg",
-    ///         altText: "A cat looking annoyed, waring a hat."
+    ///         altText: "A cat looking annoyed, wearing a hat."
     ///     )
     ///
     ///     let postResult = try await atProtoBluesky.createPostRecord(
@@ -99,7 +99,7 @@ extension ATProtoBluesky {
     ///
     /// Up to four images can be attached to a post. All images need to be a .jpg format.
     ///
-    /// ### Videos
+    /// ## Videos
     /// Similar to images, you can add videos to a post.
     ///
     /// ```swift
@@ -121,7 +121,7 @@ extension ATProtoBluesky {
     /// You can upload up to 25 videos per day and the 25 videos can't exceed a total of 500 MB
     /// for the day.
     ///
-    /// ### External Links
+    /// ## External Links
     /// You can attach a website card to the post.
     ///
     /// ```swift
@@ -159,7 +159,7 @@ extension ATProtoBluesky {
     /// If there are any links in the post's text, the method will not convert it into a
     /// website card; you will need to manually achieve this.
     ///
-    /// ## Creating a Quote Post
+    /// # Creating a Quote Post
     /// Quote posts are also embeds: you simply need to embed the record's strong reference to it.
     ///
     /// ```swift
@@ -180,7 +180,7 @@ extension ATProtoBluesky {
     /// Only one record can be embedded. This isn't limited to post records, though: you can embed
     /// any Bluesky-related record that you wish.
     ///
-    /// ## Creating a Reply
+    /// # Creating a Reply
     /// To create a reply, pass the reply reference of the post's reply reference to the post record.
     ///
     /// ```swift

@@ -51,13 +51,13 @@ extension AppBskyLexicon.Graph {
         public let avatarImageBlob: ComAtprotoLexicon.Repository.UploadBlobOutput?
 
         /// The user-defined labels for the list. Optional.
-        public let labels: ATUnion.ListLabelsUnion
+        public let labels: ATUnion.ListLabelsUnion?
 
         /// The date and time the list was created.
         public let createdAt: Date
 
         public init(purpose: ListPurpose, name: String, description: String?, descriptionFacets: [AppBskyLexicon.RichText.Facet]?,
-                    avatarImageBlob: ComAtprotoLexicon.Repository.UploadBlobOutput?, labels: ATUnion.ListLabelsUnion, createdAt: Date) {
+                    avatarImageBlob: ComAtprotoLexicon.Repository.UploadBlobOutput?, labels: ATUnion.ListLabelsUnion?, createdAt: Date) {
             self.purpose = purpose
             self.name = name
             self.description = description
@@ -75,7 +75,7 @@ extension AppBskyLexicon.Graph {
             self.description = try container.decodeIfPresent(String.self, forKey: .description)
             self.descriptionFacets = try container.decodeIfPresent([AppBskyLexicon.RichText.Facet].self, forKey: .descriptionFacets)
             self.avatarImageBlob = try container.decodeIfPresent(ComAtprotoLexicon.Repository.UploadBlobOutput.self, forKey: .avatarImageBlob)
-            self.labels = try container.decode(ATUnion.ListLabelsUnion.self, forKey: .labels)
+            self.labels = try container.decodeIfPresent(ATUnion.ListLabelsUnion.self, forKey: .labels)
             self.createdAt = try container.decodeDate(forKey: .createdAt)
         }
 
@@ -85,10 +85,10 @@ extension AppBskyLexicon.Graph {
             try container.encode(self.purpose, forKey: .purpose)
             try container.encode(self.name, forKey: .name)
             try container.truncatedEncode(self.name, forKey: .name, upToCharacterLength: 64)
-            try container.truncatedEncodeIfPresent(self.description, forKey: .description, upToCharacterLength: 30)
+            try container.truncatedEncodeIfPresent(self.description, forKey: .description, upToCharacterLength: 300)
             try container.encodeIfPresent(self.descriptionFacets, forKey: .descriptionFacets)
             try container.encodeIfPresent(self.avatarImageBlob, forKey: .avatarImageBlob)
-            try container.encode(self.labels, forKey: .labels)
+            try container.encodeIfPresent(self.labels, forKey: .labels)
             try container.encodeDate(self.createdAt, forKey: .createdAt)
         }
 
