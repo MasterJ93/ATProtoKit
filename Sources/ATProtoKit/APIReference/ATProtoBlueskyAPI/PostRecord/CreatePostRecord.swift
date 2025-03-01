@@ -14,7 +14,7 @@ extension ATProtoBluesky {
     /// This can be used instead of creating your own method if you wish not to do so.
     ///
     /// ## Creating a Post
-    /// After you authenticate into Bluesky, you can create a post by using the `text` field:
+    /// After you authenticate into Bluesky, you can create a post by using the `text` argument:
     /// ```swift
     /// do {
     ///     let postResult = try await atProtoBluesky.createPostRecord(
