@@ -81,7 +81,7 @@ extension ATProtoBluesky {
     ///     let image = ATProtoTools.ImageQuery(
     ///         imageData: Data(contentsOf: "/path/to/file/cat.jpg"),
     ///         fileName: "cat.jpg",
-    ///         altText: "A cat looking annoyed, waring a hat."
+    ///         altText: "A cat looking annoyed, wearing a hat."
     ///     )
     ///
     ///     let postResult = try await atProtoBluesky.createPostRecord(
