@@ -37,17 +37,6 @@ extension ATProtoBluesky {
             throw ATRequestPrepareError.invalidPDS
         }
 
-        // Check to see if the list exists.
-        let uri = try ATProtoTools().parseURI(listURI)
-
-        guard let record = try await atProtoKitInstance.getRepositoryRecord(
-            from: uri.repository,
-            collection: uri.collection,
-            recordKey: uri.recordKey
-        ).value?.getRecord(ofType: AppBskyLexicon.Graph.ListRecord.self) else {
-            throw ATProtoBlueskyError.postNotFound(message: "List record (\(listURI)) not found.")
-        }
-
         // listPurpose
         let listPurpose: AppBskyLexicon.Graph.ListPurpose
         switch listType {

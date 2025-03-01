@@ -128,7 +128,7 @@ extension ATProtoBluesky {
 
         let listRecord = AppBskyLexicon.Graph.ListRecord(
             purpose: listPurpose,
-            name: name,
+            name: nameText,
             description: descriptionText,
             descriptionFacets: descriptionFacets,
             avatarImageBlob: avatarImage,
