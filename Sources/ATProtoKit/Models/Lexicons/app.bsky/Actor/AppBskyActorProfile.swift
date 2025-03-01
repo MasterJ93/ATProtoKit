@@ -72,6 +72,20 @@ extension AppBskyLexicon.Actor {
         /// The date and time the profile was created. Optional.
         public let createdAt: Date?
 
+        public init(displayName: String?, description: String?, avatarBlob: ComAtprotoLexicon.Repository.BlobContainer?,
+                    bannerBlob: ComAtprotoLexicon.Repository.BlobContainer?, labels: [ComAtprotoLexicon.Label.SelfLabelsDefinition]?,
+                    joinedViaStarterPack: ComAtprotoLexicon.Repository.StrongReference?, pinnedPost: ComAtprotoLexicon.Repository.StrongReference?,
+                    createdAt: Date?) {
+            self.displayName = displayName
+            self.description = description
+            self.avatarBlob = avatarBlob
+            self.bannerBlob = bannerBlob
+            self.labels = labels
+            self.joinedViaStarterPack = joinedViaStarterPack
+            self.pinnedPost = pinnedPost
+            self.createdAt = createdAt
+        }
+
         public init(from decoder: any Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
 
