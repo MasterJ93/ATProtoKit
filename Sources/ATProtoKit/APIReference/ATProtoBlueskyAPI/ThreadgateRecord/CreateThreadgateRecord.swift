@@ -21,7 +21,7 @@ extension ATProtoBluesky {
     /// After that, you can use the ``ComAtprotoLexicon/Repository/StrongReference/recordURI``
     /// property as the value for the `postURI` argument.
     ///
-    /// ## Managing Allowlist Options
+    /// # Managing Allowlist Options
     ///
     /// With the `replyControls` argument, you can specifiy the specific retrictions you want
     /// for the post.
