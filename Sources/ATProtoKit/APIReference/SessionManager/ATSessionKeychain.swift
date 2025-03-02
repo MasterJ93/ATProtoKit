@@ -40,11 +40,11 @@ public struct ATSessionKeychain: SessionKeychainProtocol {
     ///
     /// - Throws: A `KeychainError` if the operation fails.
     public func retrievePassword() throws -> String? {
-        if let data = try retrieveData(for: passwordKey) {
-            return String(data: data, encoding: .utf8)
+        guard let data = try retrieveData(for: passwordKey) else {
+            return nil
         }
 
-        return nil
+        return String(data: data, encoding: .utf8)
     }
 
     /// Updates the stored password with a new value.
@@ -86,11 +86,11 @@ public struct ATSessionKeychain: SessionKeychainProtocol {
     ///
     /// - Throws: A `KeychainError` if the operation fails.
     public func retrieveRefreshToken() throws -> String? {
-        if let data = try retrieveData(for: refreshTokenKey) {
-            return String(data: data, encoding: .utf8)
+        guard let data = try retrieveData(for: refreshTokenKey) else {
+            return nil
         }
 
-        return nil
+        return String(data: data, encoding: .utf8)
     }
 
     /// Updates the stored refresh token with a new value.
