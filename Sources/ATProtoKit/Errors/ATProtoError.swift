@@ -100,6 +100,11 @@ extension ATProtoBluesky {
         ///
         /// - Parameter message: The message of the error.
         case invalidReplyReference(message: String)
+
+        /// The `replace` argument is empty.
+        ///
+        /// - Parameter message: The message of the error.
+        case emptyReplaceArray(message: String)
     }
 
     /// An error type specifically related to Bluesky (either before or after interacting with

@@ -35,8 +35,7 @@ extension ATProtoBluesky {
         }
 
         if replace.count == 0 {
-            // TODO: Add error case
-            print("The 'replace' argument must contain at least one value.")
+            throw ATProtoBlueskyError.emptyReplaceArray(message: "The 'replace' argument must contain at least one value.")
         }
 
         // Check for duplicates.
