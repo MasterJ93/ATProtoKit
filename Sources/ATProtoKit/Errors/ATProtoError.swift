@@ -372,6 +372,22 @@ extension APIClientService {
     }
 }
 
+/// An error type related to keychain operations.
+public enum ATKeychainError: ATProtoError {
+
+    /// Indicates a failure while storing an item.
+    case storeError(message: String)
+
+    /// Indicates a failure while retrieving an item.
+    case retrievalError(message: String)
+
+    /// Indicates a failure while updating an item.
+    case updateError(message: String)
+
+    /// Indicates a failure while removing an item.
+    case removalError(message: String)
+}
+
 /// An error type related to issues surrounding
 public enum ATEventStreamError: ATProtoError {
 
