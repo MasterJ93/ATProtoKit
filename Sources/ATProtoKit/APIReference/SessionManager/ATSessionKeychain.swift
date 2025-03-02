@@ -26,7 +26,12 @@ public struct ATSessionKeychain: SessionKeychainProtocol {
     ///
     /// - Throws: A `KeychainError` if the operation fails.
     public func storePassword(_ password: String) throws {
-        <#code#>
+        // Convert the password string to Data.
+        guard let data = password.data(using: .utf8) else {
+            throw ATKeychainError.storeError(message: "Unable to encode password data.")
+        }
+
+        try storeData(data, for: passwordKey)
     }
 
     /// Retrieves the stored password.
