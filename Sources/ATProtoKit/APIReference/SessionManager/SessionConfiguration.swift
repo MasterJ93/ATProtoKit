@@ -22,6 +22,9 @@ public protocol SessionConfiguration {
     /// session creation, refresh, and deletion.
     var pdsURL: String { get }
 
+    /// An instance of `URLSessionConfiguration`.
+    var configuration: URLSessionConfiguration { get }
+
     /// The object attached to the configuration class that holds the session. Optional.
     ///
     /// This also includes things such as retry limits and logging.
