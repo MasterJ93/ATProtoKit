@@ -1,6 +1,6 @@
 //
 //  SessionKeychainProtocol.swift
-//  ATProtoKit
+//
 //
 //  Created by Christopher Jr Riley on 2025-03-01.
 //
@@ -71,9 +71,28 @@ public protocol SessionKeychainProtocol {
 
     /// Checks the refresh token and refreshes the session.
     ///
-    /// - Parameter refreshToken: The refresh token of the session.
+    /// - Returns: `true` if the refresh token expired, `false` if it hasn't expired, or `nil` if
+    /// the refresh token doesn't exist.
     ///
     /// - Throws: ``ATProtocolConfigurationError`` if the current date is past the token's
     /// expiry date.
-    func checkRefreshToken(refreshToken: String, pdsURL: String) async throws
+    func hasRefreshTokenExpired() async throws -> Bool?
+}
+
+extension SessionKeychainProtocol {
+
+    public func hasRefreshTokenExpired() async throws -> Bool? {
+        guard let refreshToken = try self.retrievePassword() else {
+            return nil
+        }
+
+        let expiryDate = try SessionToken(sessionToken: refreshToken).payload.expiresAt
+        let currentDate = Date()
+
+        if currentDate > expiryDate {
+            return true
+        }
+
+        return false
+    }
 }
