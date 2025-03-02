@@ -16,7 +16,13 @@ import Foundation
 /// object, create an initializer and assign your `SessionKeychainProtocol`-conforming object to
 /// the `sessionKeychain` property.
 public protocol SessionKeychainProtocol {
-    
+
+    /// The unique key for storing the user account's password.
+    var passwordKey: String { get }
+
+    /// The unique key for storing the user account's refresh token.
+    var refreshTokenKey: String { get }
+
     /// Stores the provided password securely.
     ///
     /// - Parameter password: The user's password to store.
