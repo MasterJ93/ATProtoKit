@@ -92,13 +92,81 @@ public struct ATSessionKeychain: SessionKeychainProtocol {
     ///
     /// - Parameter key: The key for the keychain.
     /// - Returns: A keychain query dictionary.
-    private func keychainQuery(for key: String) -> [String: Any] {
+    private func query(for key: String) -> [String: Any] {
         return [
             kSecClass as String: kSecClassGenericPassword,
             kSecAttrAccount as String: key,
             kSecAttrService as String: Bundle.main.bundleIdentifier ?? "dev.atprotokit.keychain",
             kSecAttrAccessible as String: kSecAttrAccessibleWhenUnlocked
         ]
+    }
+
+    /// Stores raw data in the keychain for a given key.
+    ///
+    /// - Parameters:
+    ///   - data: The data to store.
+    ///   - key: The key associated with the data.
+    ///
+    /// - Throws: A `KeychainError.storeError` if storing fails.
+    private func storeData(_ data: Data, for key: String) throws {
+        var query = query(for: key)
+        query[kSecValueData as String] = data
+
+        let status = SecItemAdd(query as CFDictionary, nil)
+        guard status == errSecSuccess else {
+            throw ATKeychainError.storeError(message: "Unable to store data for key \(key), status code: \(status)")
+        }
+    }
+
+    /// Updates existing data in the keychain for a given key.
+    ///
+    /// - Parameters:
+    ///   - data: The new data to update.
+    ///   - key: The key associated with the data.
+    ///
+    /// - Throws: A `KeychainError.updateError` if the update fails.
+    private func updateData(_ data: Data, for key: String) throws {
+        let query = query(for: key)
+        let attributesToUpdate = [kSecValueData as String: data]
+
+        let status = SecItemUpdate(query as CFDictionary, attributesToUpdate as CFDictionary)
+        guard status == errSecSuccess else {
+            throw ATKeychainError.updateError(message: "Unable to update data for key \(key), status code: \(status)")
+        }
+    }
+
+    /// Retrieves raw data from the keychain for a given key.
+    ///
+    /// - Parameter key: The key associated with the item.
+    /// - Returns: The retrieved data, or `nil` if no data exists for the key.
+    ///
+    /// - Throws: A `KeychainError.retrievalError` if the retrieval fails.
+    private func retrieveData(for key: String) throws -> Data? {
+        var query = query(for: key)
+        query[kSecReturnData as String] = kCFBooleanTrue
+        query[kSecMatchLimit as String] = kSecMatchLimitOne
+
+        var result: AnyObject?
+        let status = SecItemCopyMatching(query as CFDictionary, &result)
+        guard status == errSecSuccess || status == errSecItemNotFound else {
+            throw ATKeychainError.retrievalError(message: "Unable to retrieve data for key \(key), status code: \(status)")
+        }
+
+        return result as? Data
+    }
+
+    /// Deletes data in the keychain for a given key.
+    ///
+    /// - Parameter key: The key associated with the item.
+    ///
+    /// - Throws: A `KeychainError.removalError` if the deletion fails.
+    private func removeData(for key: String) throws {
+        let query = query(for: key)
+        let status = SecItemDelete(query as CFDictionary)
+
+        guard status == errSecSuccess || status == errSecItemNotFound else {
+            throw ATKeychainError.removalError(message: "Unable to remove data for key \(key), status code: \(status)")
+        }
     }
 }
 #endif
