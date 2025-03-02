@@ -10,7 +10,7 @@ import Foundation
 #if os(iOS) || os(macOS) || os(tvOS) || os(visionOS) || os(watchOS)
 import Security
 
-///
+/// Manages the keychains asociated with the sessions for the AT Protocol.
 public struct ATSessionKeychain: SessionKeychainProtocol {
 
     /// The unique key for storing the user account's password.
