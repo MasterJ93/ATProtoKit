@@ -73,7 +73,11 @@ public struct ATSessionKeychain: SessionKeychainProtocol {
     ///
     /// - Throws: A `KeychainError` if the operation fails.
     public func storeRefreshToken(_ token: String) throws {
-        <#code#>
+        guard let data = token.data(using: .utf8) else {
+            throw ATKeychainError.storeError(message: "Unable to encode refresh token data.")
+        }
+
+        try storeData(data, for: refreshTokenKey)
     }
 
     /// Retrieves the stored refresh token.
@@ -82,7 +86,11 @@ public struct ATSessionKeychain: SessionKeychainProtocol {
     ///
     /// - Throws: A `KeychainError` if the operation fails.
     public func retrieveRefreshToken() throws -> String? {
-        <#code#>
+        if let data = try retrieveData(for: refreshTokenKey) {
+            return String(data: data, encoding: .utf8)
+        }
+
+        return nil
     }
 
     /// Updates the stored refresh token with a new value.
@@ -91,14 +99,18 @@ public struct ATSessionKeychain: SessionKeychainProtocol {
     ///
     /// - Throws: A `KeychainError` if the operation fails.
     public func updateRefreshToken(_ token: String) throws {
-        <#code#>
+        guard let data = token.data(using: .utf8) else {
+            throw ATKeychainError.updateError(message: "Unable to encode refresh token data.")
+        }
+
+        try updateData(data, for: refreshTokenKey)
     }
 
     /// Removes the stored refresh token.
     ///
     /// - Throws: A `KeychainError` if the operation fails.
     public func removeRefreshToken() throws {
-        <#code#>
+        try removeData(for: refreshTokenKey)
     }
 
     /// Constructs a keychain query dictionary for a given key.
