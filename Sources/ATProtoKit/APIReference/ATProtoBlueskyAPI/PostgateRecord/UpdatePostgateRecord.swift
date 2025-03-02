@@ -30,7 +30,7 @@ extension ATProtoBluesky {
 
         // Check to see if the post exists.
         guard let post = try await atProtoKitInstance.getPosts([postURI]).posts.first else {
-            throw ATProtoBlueskyError.postNotFound(message: "Post (\(postURI)) not found.")
+            throw ATProtoBlueskyError.recordNotFound(message: "Post record (\(postURI)) not found.")
         }
 
         var postgateEmbedRules: [ATUnion.EmbeddingRulesUnion] = []
@@ -63,7 +63,7 @@ extension ATProtoBluesky {
                 collection: uri.collection,
                 recordKey: uri.recordKey
             ).value != nil else {
-                throw ATProtoBlueskyError.postNotFound(message: "Postgate record not found.")
+                throw ATProtoBlueskyError.recordNotFound(message: "Postgate record not found.")
             }
 
             return try await atProtoKitInstance.putRecord(

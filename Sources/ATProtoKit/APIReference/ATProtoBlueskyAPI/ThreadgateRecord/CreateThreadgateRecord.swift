@@ -64,7 +64,7 @@ extension ATProtoBluesky {
 
         // Check to see if the post exists.
         guard let post = try await atProtoKitInstance.getPosts([postURI]).posts.first else {
-            throw ATProtoBlueskyError.postNotFound(message: "Post (\(postURI)) not found.")
+            throw ATProtoBlueskyError.recordNotFound(message: "Post record (\(postURI)) not found.")
         }
 
         var threadgateAllowArray: [ATUnion.ThreadgateUnion] = []

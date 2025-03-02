@@ -55,7 +55,7 @@ extension ATProtoBluesky {
 
         guard let record = try await atProtoKitInstance.getPosts([listURI]).posts.first,
               let list = record.record.getRecord(ofType: AppBskyLexicon.Graph.ListRecord.self) else {
-            throw ATProtoBlueskyError.postNotFound(message: "Post (\(listURI)) not found.")
+            throw ATProtoBlueskyError.recordNotFound(message: "List record (\(listURI)) not found.")
         }
 
         // Make placeholder variables and hold the current record's values into them.
