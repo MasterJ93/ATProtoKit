@@ -40,7 +40,11 @@ public struct ATSessionKeychain: SessionKeychainProtocol {
     ///
     /// - Throws: A `KeychainError` if the operation fails.
     public func retrievePassword() throws -> String? {
-        <#code#>
+        if let data = try retrieveData(for: passwordKey) {
+            return String(data: data, encoding: .utf8)
+        }
+
+        return nil
     }
 
     /// Updates the stored password with a new value.
@@ -49,14 +53,18 @@ public struct ATSessionKeychain: SessionKeychainProtocol {
     ///
     /// - Throws: A `KeychainError` if the operation fails.
     public func updatePassword(_ password: String) throws {
-        <#code#>
+        guard let data = password.data(using: .utf8) else {
+            throw ATKeychainError.updateError(message: "Unable to encode password data.")
+        }
+
+        try updateData(data, for: passwordKey)
     }
 
     /// Removes the stored password.
     ///
     /// - Throws: A `KeychainError` if the operation fails.
     public func removePassword() throws {
-        <#code#>
+        try removeData(for: passwordKey)
     }
 
     /// Stores the provided refresh token securely.
