@@ -42,7 +42,7 @@ extension ChatBskyLexicon.Conversation {
     public struct ListConversationsOutput: Sendable, Codable {
 
         /// The mark used to indicate the starting point for the next set of results. Optional.
-        public let cursor: String
+        public let cursor: String?
 
         /// An array of conversations.
         public let conversations: [ConversationViewDefinition]

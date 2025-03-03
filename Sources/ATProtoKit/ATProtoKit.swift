@@ -323,7 +323,7 @@ public class ATProtoBlueskyChat: ATProtoKitConfiguration {
         self.atProtoKitInstance = atProtoKitInstance
         self.sessionConfiguration = atProtoKitInstance.sessionConfiguration
         self.logger = self.atProtoKitInstance.session?.logger
-        self.pdsURL = "https://api.bsky.app"
+        self.pdsURL = "https://api.bsky.chat"
     }
 }
 
