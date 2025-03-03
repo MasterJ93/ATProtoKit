@@ -486,7 +486,7 @@ public class ATProtocolConfiguration: SessionConfiguration {
                 isActive: response.isActive,
                 status: status,
                 serviceEndpoint: serviceEndpoint,
-                pdsURL: session?.pdsURL ?? nil,
+                pdsURL: session?.pdsURL ?? (self.pdsURL ?? nil),
                 logger: await ATProtocolConfiguration.getLogger(),
                 maxRetryCount: self.maxRetryCount,
                 retryTimeDelay: self.retryTimeDelay
