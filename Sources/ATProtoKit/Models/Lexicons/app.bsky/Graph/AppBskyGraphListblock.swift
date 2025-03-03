@@ -28,33 +28,33 @@ extension AppBskyLexicon.Graph {
         ///
         /// - Note: According to the AT Protocol specifications: "Reference (AT-URI) to the mod
         /// list record."
-        public let subjectDID: String
+        public let listURI: String
 
         /// The date and time the record was created.
         public let createdAt: Date
 
-        public init(subjectDID: String, createdAt: Date) {
-            self.subjectDID = subjectDID
+        public init(listURI: String, createdAt: Date) {
+            self.listURI = listURI
             self.createdAt = createdAt
         }
 
         public init(from decoder: any Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
 
-            self.subjectDID = try container.decode(String.self, forKey: .subjectDID)
+            self.listURI = try container.decode(String.self, forKey: .listURI)
             self.createdAt = try container.decodeDate(forKey: .createdAt)
         }
 
         public func encode(to encoder: any Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
 
-            try container.encode(self.subjectDID, forKey: .subjectDID)
+            try container.encode(self.listURI, forKey: .listURI)
             try container.encodeDate(self.createdAt, forKey: .createdAt)
         }
 
         enum CodingKeys: String, CodingKey {
             case type = "$type"
-            case subjectDID = "subject"
+            case listURI = "subject"
             case createdAt
         }
     }

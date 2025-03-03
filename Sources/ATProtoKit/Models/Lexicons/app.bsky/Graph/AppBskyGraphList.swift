@@ -29,7 +29,7 @@ extension AppBskyLexicon.Graph {
         ///
         /// - Note: According to the AT Protocol specifications: "Defines the purpose of the list
         /// (aka, moderation-oriented or curration-oriented)."
-        public let purpose: ListPurpose
+        public let purpose: AppBskyLexicon.Graph.ListPurpose
 
         /// The name of the list.
         ///
@@ -56,7 +56,7 @@ extension AppBskyLexicon.Graph {
         /// The date and time the list was created.
         public let createdAt: Date
 
-        public init(purpose: ListPurpose, name: String, description: String?, descriptionFacets: [AppBskyLexicon.RichText.Facet]?,
+        public init(purpose: AppBskyLexicon.Graph.ListPurpose, name: String, description: String?, descriptionFacets: [AppBskyLexicon.RichText.Facet]?,
                     avatarImageBlob: ComAtprotoLexicon.Repository.UploadBlobOutput?, labels: ATUnion.ListLabelsUnion?, createdAt: Date) {
             self.purpose = purpose
             self.name = name
@@ -70,7 +70,7 @@ extension AppBskyLexicon.Graph {
         public init(from decoder: any Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
 
-            self.purpose = try container.decode(ListPurpose.self, forKey: .purpose)
+            self.purpose = try container.decode(AppBskyLexicon.Graph.ListPurpose.self, forKey: .purpose)
             self.name = try container.decode(String.self, forKey: .name)
             self.description = try container.decodeIfPresent(String.self, forKey: .description)
             self.descriptionFacets = try container.decodeIfPresent([AppBskyLexicon.RichText.Facet].self, forKey: .descriptionFacets)
