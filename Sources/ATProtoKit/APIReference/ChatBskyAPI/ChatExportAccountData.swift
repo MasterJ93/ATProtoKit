@@ -38,6 +38,7 @@ extension ATProtoBlueskyChat {
                 acceptValue: "application/jsonl",
                 contentTypeValue: nil,
                 authorizationValue: "Bearer \(accessToken)",
+                labelersValue: "did:plc:ar7c4by46qjdydhdevvrndac#atproto_labeler",
                 isRelatedToBskyChat: true
             )
 

@@ -50,6 +50,7 @@ extension ATProtoBlueskyChat {
                 acceptValue: "application/json",
                 contentTypeValue: "application/json",
                 authorizationValue: "Bearer \(accessToken)",
+                labelersValue: "did:plc:ar7c4by46qjdydhdevvrndac#atproto_labeler",
                 isRelatedToBskyChat: true
             )
             let response = try await APIClientService.shared.sendRequest(
