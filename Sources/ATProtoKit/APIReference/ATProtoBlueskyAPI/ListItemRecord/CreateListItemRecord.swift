@@ -60,10 +60,6 @@ extension ATProtoBluesky {
             throw ATRequestPrepareError.missingActiveSession
         }
 
-        guard let sessionURL = session.pdsURL else {
-            throw ATRequestPrepareError.invalidPDS
-        }
-
         do {
             _ = try await atProtoKitInstance.resolveDID(subjectDID)
 
