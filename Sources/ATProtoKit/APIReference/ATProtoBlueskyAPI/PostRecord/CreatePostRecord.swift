@@ -476,6 +476,12 @@ extension ATProtoBluesky {
     public func buildVideo(_ video: Data, with captions: [Caption]? = nil, altText: String? = nil,
                            aspectRatio: AppBskyLexicon.Embed.AspectRatioDefinition? = nil, pollingFrequency: Int = 3, pdsURL: String = "https://bsky.social",
                            accessToken: String) async throws -> ATUnion.PostEmbedUnion {
+        // Check if the size of the video is small enough.
+        let sizeLimit = 100 * 1024 * 1024 // 100MB in bytes
+        if video.count >= sizeLimit {
+            throw ATJobStatusError.videoSizeTooLarge(message: "The video file is too large. The maximum file size is currently 100MB.")
+        }
+
 
         var videoBlob: ComAtprotoLexicon.Repository.UploadBlobOutput? = nil
         var captionReferences: [AppBskyLexicon.Embed.VideoDefinition.Caption] = []

@@ -148,6 +148,11 @@ public enum ATJobStatusError: Decodable, ATProtoError {
     /// - Parameter message: The message for the error.
     case videoLimitExceeded(message: String)
 
+    /// The video can't be uploaded because the size of the video is too big.
+    ///
+    /// - Parameter message: The message for the error.
+    case videoSizeTooLarge(message: String)
+
     /// The video can't be uploaded because the user account either has the ability to upload
     /// videos disabld or because they have been banned from doing so.
     ///
