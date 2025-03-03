@@ -98,17 +98,17 @@ extension ChatBskyLexicon.Conversation {
         public let sender: MessageViewSenderDefinition
 
         /// The date and time the message was seen.
-        public let seenAt: Date
+        public let sentAt: Date
 
         public init(messageID: String, revision: String, text: String, facets: [AppBskyLexicon.RichText.Facet]?, embed: ATUnion.MessageInputEmbedUnion?,
-                    sender: MessageViewSenderDefinition, seenAt: Date) {
+                    sender: MessageViewSenderDefinition, sentAt: Date) {
             self.messageID = messageID
             self.revision = revision
             self.text = text
             self.facets = facets
             self.embed = embed
             self.sender = sender
-            self.seenAt = seenAt
+            self.sentAt = sentAt
         }
 
         public init(from decoder: any Decoder) throws {
@@ -120,7 +120,7 @@ extension ChatBskyLexicon.Conversation {
             self.facets = try container.decodeIfPresent([AppBskyLexicon.RichText.Facet].self, forKey: .facets)
             self.embed = try container.decodeIfPresent(ATUnion.MessageInputEmbedUnion.self, forKey: .embed)
             self.sender = try container.decode(MessageViewSenderDefinition.self, forKey: .sender)
-            self.seenAt = try container.decodeDate(forKey: .seenAt)
+            self.sentAt = try container.decodeDate(forKey: .sentAt)
         }
 
         public func encode(to encoder: any Encoder) throws {
@@ -132,7 +132,7 @@ extension ChatBskyLexicon.Conversation {
             try container.encodeIfPresent(self.facets, forKey: .facets)
             try container.encodeIfPresent(self.embed, forKey: .embed)
             try container.encode(self.sender, forKey: .sender)
-            try container.encodeDate(self.seenAt, forKey: .seenAt)
+            try container.encodeDate(self.sentAt, forKey: .sentAt)
         }
 
         public enum CodingKeys: String, CodingKey {
@@ -142,7 +142,7 @@ extension ChatBskyLexicon.Conversation {
             case facets
             case embed
             case sender
-            case seenAt
+            case sentAt
         }
     }
 
@@ -162,14 +162,14 @@ extension ChatBskyLexicon.Conversation {
         /// The sender of the message.
         public let sender: MessageViewSenderDefinition
 
-        /// The date and time the message was seen.
-        public let seenAt: Date
+        /// The date and time the message was sent.
+        public let sentAt: Date
 
-        public init(messageID: String, revision: String, sender: MessageViewSenderDefinition, seenAt: Date) {
+        public init(messageID: String, revision: String, sender: MessageViewSenderDefinition, sentAt: Date) {
             self.messageID = messageID
             self.revision = revision
             self.sender = sender
-            self.seenAt = seenAt
+            self.sentAt = sentAt
         }
 
         public init(from decoder: any Decoder) throws {
@@ -178,7 +178,7 @@ extension ChatBskyLexicon.Conversation {
             self.messageID = try container.decode(String.self, forKey: .messageID)
             self.revision = try container.decode(String.self, forKey: .revision)
             self.sender = try container.decode(MessageViewSenderDefinition.self, forKey: .sender)
-            self.seenAt = try container.decodeDate(forKey: .seenAt)
+            self.sentAt = try container.decodeDate(forKey: .sentAt)
         }
 
         public func encode(to encoder: any Encoder) throws {
@@ -187,14 +187,14 @@ extension ChatBskyLexicon.Conversation {
             try container.encode(self.messageID, forKey: .messageID)
             try container.encode(self.revision, forKey: .revision)
             try container.encode(self.sender, forKey: .sender)
-            try container.encodeDate(self.seenAt, forKey: .seenAt)
+            try container.encodeDate(self.sentAt, forKey: .sentAt)
         }
 
         enum CodingKeys: String, CodingKey {
             case messageID = "id"
             case revision = "rev"
             case sender
-            case seenAt
+            case sentAt
         }
     }
 

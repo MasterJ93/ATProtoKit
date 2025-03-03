@@ -35,7 +35,7 @@ extension ChatBskyLexicon.Actor {
 
         /// The list of metadata relating to the requesting account's relationship with the
         /// subject account. Optional.
-        public let viewer: [AppBskyLexicon.Actor.ViewerStateDefinition]?
+        public let viewer: AppBskyLexicon.Actor.ViewerStateDefinition?
 
         /// An array of labels created by the user. Optional.
         public let labels: [ComAtprotoLexicon.Label.LabelDefinition]?
