@@ -45,10 +45,17 @@
 - ``createFollowRecord(actorDID:createdAt:recordKey:shouldValidate:swapCommit:)``
 - ``deleteFollowRecord(_:)``
 
-- ``createBlockRecord(actorDID:createdAt:recordKey:shouldValidate:swapCommit:)``
+- ``createBlockRecord(ofType:createdAt:recordKey:shouldValidate:swapCommit:)``
 - ``deleteBlockRecord(_:)``
 
-<!--### Managing Lists-->
+### Managing Lists
+
+- ``createListRecord(named:ofType:description:listAvatarImage:labels:creationDate:recordKey:shouldValidate:swapCommit:)``
+- ``updateListRecord(listURI:replace:)``
+- ``deleteListRecord(_:)``
+
+- ``createListItemRecord(for:subjectDID:recordKey:shouldValidate:swapCommit:)``
+- ``deleteListItemRecord(_:)``
 
 <!--### Managing Starter Packs-->
 
