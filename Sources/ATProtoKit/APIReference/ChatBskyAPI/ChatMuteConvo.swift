@@ -26,7 +26,7 @@ extension ATProtoBlueskyChat {
             throw ATRequestPrepareError.missingActiveSession
         }
 
-        guard let sessionURL = session?.pdsURL,
+        guard let sessionURL = session?.serviceEndpoint,
               let requestURL = URL(string: "\(sessionURL)/xrpc/chat.bsky.convo.muteConvo") else {
             throw ATRequestPrepareError.invalidRequestURL
         }
