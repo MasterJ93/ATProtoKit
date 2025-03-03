@@ -19,7 +19,7 @@ extension ATProtoBluesky {
     /// only take the first instance; the rest will be discarded automatically.
     ///
     /// - Parameters:
-    ///   - listURI: The URI of the post.
+    ///   - listURI: The URI of the list.
     ///   - replace: An array of properties where the list record would replace.
     /// - Returns: A strong reference, which contains the newly-created record's URI and CID hash.
     public func updateListRecord(

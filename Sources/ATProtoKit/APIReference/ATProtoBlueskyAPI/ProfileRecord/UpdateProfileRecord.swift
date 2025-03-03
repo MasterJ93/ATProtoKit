@@ -9,8 +9,8 @@ import Foundation
 
 extension ATProtoBluesky {
 
-    /// A convenience method to update a list record to the user account in Bluesky.
-    ///  
+    /// A convenience method to update a profile record to the user account in Bluesky.
+    ///
     /// This can be used instead of creating your own method if you wish not to do so.
     ///  
     /// When you want to erase a property, add the applicable cases and set them to `nil`.
