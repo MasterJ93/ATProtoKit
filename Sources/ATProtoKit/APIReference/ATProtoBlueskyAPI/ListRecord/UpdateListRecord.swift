@@ -52,8 +52,14 @@ extension ATProtoBluesky {
             }
         }
 
-        guard let record = try await atProtoKitInstance.getPosts([listURI]).posts.first,
-              let list = record.record.getRecord(ofType: AppBskyLexicon.Graph.ListRecord.self) else {
+        let uri = try ATProtoTools().parseURI(listURI)
+
+        guard let record = try await atProtoKitInstance.getRepositoryRecord(
+            from: uri.repository,
+            collection: uri.collection,
+            recordKey: uri.recordKey
+        ).value,
+              let list = record.getRecord(ofType: AppBskyLexicon.Graph.ListRecord.self) else {
             throw ATProtoBlueskyError.recordNotFound(message: "List record (\(listURI)) not found.")
         }
 
@@ -133,12 +139,10 @@ extension ATProtoBluesky {
         )
 
         do {
-            let recordKey = try ATProtoTools().parseURI(listURI).recordKey
-
             return try await atProtoKitInstance.putRecord(
                 repository: session.sessionDID,
                 collection: "app.bsky.graph.list",
-                recordKey: recordKey,
+                recordKey: uri.recordKey,
                 record: UnknownType.record(listRecord)
             )
         } catch {
