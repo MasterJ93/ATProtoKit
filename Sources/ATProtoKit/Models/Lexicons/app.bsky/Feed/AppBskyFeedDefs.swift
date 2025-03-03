@@ -157,7 +157,7 @@ extension AppBskyLexicon.Feed {
     public struct ThreadContextDefinition: Sendable, Codable, Equatable, Hashable {
 
         /// The URI of the root author's like record.
-        public let rootAuthorLike: String
+        public let rootAuthorLike: String?
     }
 
     /// A definition model for a feed's view.
