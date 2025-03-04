@@ -80,7 +80,7 @@ public protocol SessionKeychainProtocol {
     /// - Returns: `true` if the refresh token expired, `false` if it hasn't expired, or `nil` if
     /// the refresh token doesn't exist.
     ///
-    /// - Throws: ``ATProtocolConfigurationError`` if the current date is past the token's
+    /// - Throws: `KeychainError` if the current date is past the token's
     /// expiry date.
     func hasRefreshTokenExpired() async throws -> Bool?
 }
