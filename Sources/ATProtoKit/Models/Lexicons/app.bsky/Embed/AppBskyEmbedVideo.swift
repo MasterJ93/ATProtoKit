@@ -28,7 +28,10 @@ extension AppBskyLexicon.Embed {
         ///
         /// Only .mp4 files can be accepted.
         ///
-        /// - Important: Current maximum size is 50,000,000 bytes (50 MB).
+        /// - Important: Current maximum size is 100,000,000 bytes (100 MB).
+        ///
+        /// - Note: According to the AT Protocol specifications: "The mp4 video file. May be up to
+        /// 100mb, formerly limited to 50mb."
         public let video: ComAtprotoLexicon.Repository.UploadBlobOutput
 
         /// An array of captions in various languages provided for the video. Optional.

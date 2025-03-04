@@ -117,7 +117,7 @@ extension ATProtoBluesky {
     /// }
     /// ```
     ///
-    /// Only one video can be added to a post, can be 50 MB or less, and must use the .mp4 format.
+    /// Only one video can be added to a post, can be 100 MB or less, and must use the .mp4 format.
     /// You can upload up to 25 videos per day and the 25 videos can't exceed a total of 500 MB
     /// for the day.
     ///
@@ -452,7 +452,7 @@ extension ATProtoBluesky {
 
     /// Uploads a video to the AT Protocol for attaching to a record at a later request.
     ///
-    /// A maximum size of 50 MB is allowed to be uploaded. The video file must be in
+    /// A maximum size of 100 MB is allowed to be uploaded. The video file must be in
     /// an .mp4 format. For the caption files, a maximum of 20 .vtt files can be add, and none
     /// can exceed 20 KB.
     ///
@@ -476,6 +476,12 @@ extension ATProtoBluesky {
     public func buildVideo(_ video: Data, with captions: [Caption]? = nil, altText: String? = nil,
                            aspectRatio: AppBskyLexicon.Embed.AspectRatioDefinition? = nil, pollingFrequency: Int = 3, pdsURL: String = "https://bsky.social",
                            accessToken: String) async throws -> ATUnion.PostEmbedUnion {
+        // Check if the size of the video is small enough.
+        let sizeLimit = 100 * 1024 * 1024 // 100MB in bytes
+        if video.count >= sizeLimit {
+            throw ATJobStatusError.videoSizeTooLarge(message: "The video file is too large. The maximum file size is currently 100MB.")
+        }
+
 
         var videoBlob: ComAtprotoLexicon.Repository.UploadBlobOutput? = nil
         var captionReferences: [AppBskyLexicon.Embed.VideoDefinition.Caption] = []
@@ -685,7 +691,7 @@ extension ATProtoBluesky {
 
         /// Represents a video to be embedded in the post.
         ///
-        /// A maximum size of 50 MB is allowed to be uploaded. The video file must be in
+        /// A maximum size of 100 MB is allowed to be uploaded. The video file must be in
         /// an .mp4 format. For the caption files, a maximum of 20 .vtt files can be add, and none
         /// can exceed 20 KB.
         ///
