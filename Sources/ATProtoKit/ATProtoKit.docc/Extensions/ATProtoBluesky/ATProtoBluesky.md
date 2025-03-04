@@ -48,6 +48,12 @@
 - ``createBlockRecord(ofType:createdAt:recordKey:shouldValidate:swapCommit:)``
 - ``deleteBlockRecord(_:)``
 
+### Managing Profiles
+
+- ``createProfileRecord(with:description:avatarImage:bannerImage:labels:joinedViaStarterPack:pinnedPost:recordKey:shouldValidate:swapCommit:)``
+- ``updateProfileRecord(profileURI:replace:)``
+- ``deleteProfileRecord(_:)``
+
 ### Managing Lists
 
 - ``createListRecord(named:ofType:description:listAvatarImage:labels:creationDate:recordKey:shouldValidate:swapCommit:)``
