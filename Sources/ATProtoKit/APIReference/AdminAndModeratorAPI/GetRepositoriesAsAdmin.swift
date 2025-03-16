@@ -16,7 +16,7 @@ extension ATProtoAdmin {
     /// 
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/tools/ozone/moderation/getRepos.json
     /// 
-    /// - Parameter dids: An array of Decentralized Identifiers (DIDs) to extract the
+    /// - Parameter dids: An array of decentralized identifiers (DIDs) to extract the
     /// repository information. Limits to 100 items.
     /// - Returns: An aray of repositories based on the decentralized identifiers (DIDs) given.
     ///
