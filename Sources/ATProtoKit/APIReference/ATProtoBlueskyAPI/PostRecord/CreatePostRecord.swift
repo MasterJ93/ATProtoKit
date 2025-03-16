@@ -273,10 +273,7 @@ extension ATProtoBluesky {
             throw ATRequestPrepareError.invalidPDS
         }
 
-        // Truncate the number of characters to 300.
-        let postText = text.truncated(toLength: 300)
-
-        var facets = await ATFacetParser.parseFacets(from: postText, pdsURL: session.pdsURL ?? "https://bsky.social")
+        var facets = await ATFacetParser.parseFacets(from: text, pdsURL: session.pdsURL ?? "https://bsky.social")
         if let inlineFacets {
             for (url, start, end) in inlineFacets {
                 do {
@@ -287,6 +284,9 @@ extension ATProtoBluesky {
                 }
             }
         }
+        
+        // Truncate the number of characters to 300.
+        let postText = text.truncated(toLength: 300)
 
         // Replies
         // Validate the reply reference if provided.
