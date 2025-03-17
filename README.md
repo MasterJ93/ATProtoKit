@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://github.com/MasterJ93/ATProtoKit/blob/ed45edcd717e7341ae688d294504e0019550b3f0/atprotokit_logo.png" height="128" alt="A logo for ATProtoKit, which contains three stacks of rounded rectangles in an isometric top view. At the top stack, the at symbol is in a thick weight, with clouds as the symbol’s colour. The three stacks are darker shades of blue.">
+  <img src="https://github.com/MasterJ93/ATProtoKit/blob/main/Sources/ATProtoKit/ATProtoKit.docc/Resources/atprotokit_icon.png" height="128" alt="A icon for ATProtoKit, which contains three stacks of rounded rectangles in an isometric top view. At the top stack, the at symbol is in a thick weight, with clouds as the symbol’s colour. The three stacks are darker shades of blue.">
 </p>
 
 <h1 align="center">ATProtoKit</h1>

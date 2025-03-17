@@ -5,7 +5,7 @@ Develop and manage client and server-side applications for the AT Protocol and B
 @Metadata {
     @PageImage(
         purpose: icon, 
-        source: "atprotokit_logo", 
+        source: "atprotokit_icon", 
         alt: "A technology icon representing the ATProtoKit framework.")
     @PageColor(blue)
 }
