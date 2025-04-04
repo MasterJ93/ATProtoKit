@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import Logging
 
 /// Represents an authenticated user session within the AT Protocol.
 ///
