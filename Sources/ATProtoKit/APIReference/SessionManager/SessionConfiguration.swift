@@ -167,9 +167,7 @@ extension SessionConfiguration {
                 isActive: nil,
                 status: nil,
                 serviceEndpoint: serviceEndpoint,
-                pdsURL: self.pdsURL,
-                maxRetryCount: nil,
-                retryTimeDelay: nil
+                pdsURL: self.pdsURL
             )
         } catch {
             throw error

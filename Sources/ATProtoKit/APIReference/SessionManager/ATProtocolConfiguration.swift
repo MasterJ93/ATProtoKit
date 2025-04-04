@@ -247,10 +247,7 @@ public class ATProtocolConfiguration: SessionConfiguration {
                 isActive: nil,
                 status: nil,
                 serviceEndpoint: serviceEndpoint,
-                pdsURL: self.pdsURL,
-                logger: await ATProtocolConfiguration.getLogger(),
-                maxRetryCount: self.maxRetryCount,
-                retryTimeDelay: self.retryTimeDelay
+                pdsURL: self.pdsURL
             )
 
             return userSession

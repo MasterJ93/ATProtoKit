@@ -61,34 +61,10 @@ public struct UserSession: SessionProtocol, Sendable {
     /// after the successful initalizing.
     public var pdsURL: String?
 
-    /// Specifies the logger that will be used for emitting log messages. Optional.
-    ///
-    /// - Note: This is not included when initalizing `UserSession`. Instead, it's added
-    /// after the successful initalizing.
-    public var logger: Logger?
-
-    /// The number of times a request can be attempted before it's considered a failure.
-    ///
-    /// By default, ATProtoKit will retry a request attempt for 1 second.
-    ///
-    /// - Note: This is not included when initalizing `UserSession`. Instead, it's added
-    /// after the successful initalizing.
-    public var maxRetryCount: Int?
-
-    /// The length of time to wait before attempting to retry a request.
-    ///
-    /// By default, ATProtoKit will wait for 1 second before attempting to retry a request.
-    /// ATProtoKit will change the number exponentally in order to help prevent overloading
-    /// the server.
-    ///
-    /// - Note: This is not included when initalizing `UserSession`. Instead, it's added
-    /// after the successful initalizing.
-    public var retryTimeDelay: TimeInterval?
-
     /// Initializes a new user session with the specified details.
     public init(handle: String, sessionDID: String, email: String? = nil, isEmailConfirmed: Bool? = nil, isEmailAuthenticationFactorEnabled: Bool?,
                 accessToken: String, refreshToken: String, didDocument: DIDDocument? = nil, isActive: Bool?, status: UserAccountStatus?,
-                serviceEndpoint: URL, pdsURL: String? = nil, logger: Logger? = nil, maxRetryCount: Int? = 3, retryTimeDelay: TimeInterval? = 1.0) {
+                serviceEndpoint: URL, pdsURL: String? = nil) {
         self.handle = handle
         self.sessionDID = sessionDID
         self.email = email
@@ -101,9 +77,6 @@ public struct UserSession: SessionProtocol, Sendable {
         self.status = status
         self.serviceEndpoint = serviceEndpoint
         self.pdsURL = pdsURL
-        self.logger = logger
-        self.maxRetryCount = maxRetryCount
-        self.retryTimeDelay = retryTimeDelay
     }
 
     enum CodingKeys: String, CodingKey {
