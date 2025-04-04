@@ -121,3 +121,86 @@ public protocol SessionConfiguration: AnyObject, Sendable {
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     func deleteSession() async throws
 }
+
+extension SessionConfiguration {
+
+    public func createAccount(
+        email: String?,
+        handle: String,
+        existingDID: String?,
+        inviteCode: String?,
+        verificationCode: String?,
+        verificationPhone: String?,
+        password: String?,
+        recoveryKey: String?,
+        plcOperation: UnknownType?
+    ) async throws {
+        do {
+            let response = try await ATProtoKit(pdsURL: self.pdsURL, canUseBlueskyRecords: false).createAccount(
+                email: email,
+                handle: handle,
+                existingDID: existingDID,
+                inviteCode: inviteCode,
+                verificationCode: verificationCode,
+                verificationPhone: verificationPhone,
+                password: password,
+                recoveryKey: recoveryKey,
+                plcOperation: plcOperation
+            )
+
+            guard let didDocument = SessionConfigurationHelpers.convertDIDDocument(response.didDocument) else {
+                throw DIDDocument.DIDDocumentError.emptyArray
+            }
+
+            let atService = try didDocument.checkServiceForATProto()
+            let serviceEndpoint = atService.serviceEndpoint
+
+            let userSession = UserSession(
+                handle: response.handle,
+                sessionDID: response.did,
+                email: email,
+                isEmailConfirmed: nil,
+                isEmailAuthenticationFactorEnabled: nil,
+                accessToken: response.accessToken,
+                refreshToken: response.refreshToken,
+                didDocument: didDocument,
+                isActive: nil,
+                status: nil,
+                serviceEndpoint: serviceEndpoint,
+                pdsURL: self.pdsURL,
+                maxRetryCount: nil,
+                retryTimeDelay: nil
+            )
+        } catch {
+            throw error
+        }
+    }
+
+    
+}
+
+public enum SessionConfigurationHelpers {
+
+    /// Converts the DID document from an ``UnknownType`` object to a ``DIDDocument`` object.
+    ///
+    /// - Parameter didDocument: The DID document as an ``UnknownType`` object. Optional.
+    /// Defaults to `nil`.
+    /// - Returns: A ``DIDDocument`` object (if there's a value) or `nil` (if not).
+    public static func convertDIDDocument(_ didDocument: UnknownType? = nil) -> DIDDocument? {
+        var decodedDidDocument: DIDDocument? = nil
+
+        do {
+            if let didDocument = didDocument,
+               let jsonData = try didDocument.toJSON() {
+                let decoder = JSONDecoder()
+                decodedDidDocument = try decoder.decode(DIDDocument.self, from: jsonData)
+            }
+        } catch {
+            return nil
+        }
+
+        return decodedDidDocument
+    }
+
+    
+}
