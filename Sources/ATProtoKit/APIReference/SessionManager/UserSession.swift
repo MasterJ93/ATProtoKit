@@ -18,7 +18,7 @@ import Logging
 /// This is based loosely based on the [`com.atproto.server.createSession`][github] lexicon.
 ///
 /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/server/createSession.json
-public struct UserSession: SessionProtocol, Sendable {
+public struct UserSession: Sendable, Codable {
 
     /// The user's handle within the AT Protocol.
     public private(set) var handle: String
