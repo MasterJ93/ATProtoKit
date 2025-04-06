@@ -36,6 +36,18 @@ public protocol SessionConfiguration: AnyObject, Sendable {
     /// This is used to look for the `UserSession` instance within `UserSessionRegistry`.
     var instanceUUID: UUID { get }
 
+    /// The async stream that receives user-provided authentication codes.
+    ///
+    /// This stream should be awaited by conforming types to receive
+    /// user input asynchronously during the authentication process.
+    var codeStream: AsyncStream<String> { get }
+
+    /// The continuation used to yield new user input into the `codeStream`.
+    ///
+    /// Conforming types should call `codeContinuation.yield(_:)` to
+    /// provide new authentication codes from the user.
+    var codeContinuation: AsyncStream<String>.Continuation { get }
+
     /// Creates an a new account for the user.
     ///
     /// - Note: `plcOp` may be updated when full account migration is implemented.
@@ -79,7 +91,7 @@ public protocol SessionConfiguration: AnyObject, Sendable {
     /// Attempts to authenticate with the PDS using the `handle` and `appPassword`.
     ///
     /// This method should implement the necessary logic to authenticate the user against the PDS,
-    /// returning a `UserSession` object upon successful authentication or an error if
+    /// returning a `UserSession` object upon successful authentication, or an error if
     /// authentication fails. If the account has Two-Factor Authentication enabled, this must be
     /// handled as well.
     ///
