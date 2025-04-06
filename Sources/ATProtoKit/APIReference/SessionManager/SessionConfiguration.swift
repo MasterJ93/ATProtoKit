@@ -91,18 +91,18 @@ public protocol SessionConfiguration: AnyObject, Sendable {
         plcOperation: UnknownType?
     ) async throws
 
-    /// Attempts to authenticate with the PDS using the `handle` and `appPassword`.
+    /// Attempts to authenticate with the PDS.
     ///
     /// This method should implement the necessary logic to authenticate the user against the PDS,
-    /// returning a `UserSession` object upon successful authentication, or an error if
-    /// authentication fails. If the account has Two-Factor Authentication enabled, this must be
-    /// handled as well.
+    /// while adding the password and tokens to the `keychainProtocol` instance. Additional
+    /// Two-Factor Authentication implementations must be handled as well.
     ///
-    /// - Parameter authenticationFactorToken: A token used for
-    /// Two-Factor Authentication. Optional.
+    /// - Parameters:
+    ///   - handle: The hanle used for the account.
+    ///   - password: The password used for the account.
     ///
     /// - Throws: An error if there are issues creating the request or communicating with the PDS.
-    func authenticate() async throws
+    func authenticate(with handle: String, password: String) async throws
 
     /// Fetches an existing session using an access token.
     ///
