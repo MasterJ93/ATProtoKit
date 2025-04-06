@@ -13,8 +13,8 @@ import Foundation
 /// to use those implementations, or create your own.
 ///
 /// When implementing this protocol onto your `class`, you should keep in mind of a few things:
-/// - `class`es conforming to `SessionConfiguration` must be `final` and conforming
-/// to `Sendable`.
+/// - `class`es that conform to `SessionConfiguration` must be marked `final` and
+/// adopt `Sendable`.
 /// - You should use `UserSessionRegistry` to manage `UserSession` instances.
 /// - When deleting a session, make sure that `deleteSession` removes the instance
 /// from `UserSessionRegistry`.
