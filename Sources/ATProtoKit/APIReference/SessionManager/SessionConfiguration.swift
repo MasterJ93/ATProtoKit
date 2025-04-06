@@ -48,6 +48,9 @@ public protocol SessionConfiguration: AnyObject, Sendable {
     /// provide new authentication codes from the user.
     var codeContinuation: AsyncStream<String>.Continuation { get }
 
+    /// An instance of `SecureKeychainProtocol`.
+    var keychainProtocol: SecureKeychainProtocol { get }
+
     /// Creates an a new account for the user.
     ///
     /// - Note: `plcOp` may be updated when full account migration is implemented.
