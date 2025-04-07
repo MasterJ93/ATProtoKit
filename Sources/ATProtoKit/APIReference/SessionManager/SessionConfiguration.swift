@@ -327,7 +327,7 @@ extension SessionConfiguration {
 
         do {
             if try SessionToken(sessionToken: accessToken).payload.expiresAt.addingTimeInterval(30) > Date() {
-                // TODO: Add the refreshSession method.
+                try await self.refreshSession()
             }
         } catch {
             throw error
@@ -391,6 +391,74 @@ extension SessionConfiguration {
 
     public func receiveCodeFromUser(_ input: String) {
         codeContinuation.yield(input)
+    }
+
+    public func refreshSession() async throws {
+        let refreshToken: String
+
+        do {
+            refreshToken = try keychainProtocol.retrieveRefreshToken()
+        } catch {
+            throw ATProtocolConfiguration.ATProtocolConfigurationError.noSessionToken(message: "The access token doesn't exist.")
+        }
+
+        do {
+            if try SessionToken(sessionToken: refreshToken).payload.expiresAt.addingTimeInterval(30) > Date() {
+                // TODO: Re-authenticate.
+            }
+        } catch {
+            throw error
+        }
+
+        do {
+            let response = try await ATProtoKit(pdsURL: self.pdsURL, canUseBlueskyRecords: false).getSession(
+                by: refreshToken
+            )
+
+            guard let convertedDIDDocument = SessionConfigurationHelpers.convertDIDDocument(response.didDocument) else {
+                throw DIDDocument.DIDDocumentError.emptyArray
+            }
+
+            let didDocument = convertedDIDDocument
+
+            let atService = try didDocument.checkServiceForATProto()
+            let serviceEndpoint = atService.serviceEndpoint
+
+            var status: UserAccountStatus? = nil
+
+            switch response.status {
+                case .suspended:
+                    status = .suspended
+                case .takedown:
+                    status = .takedown
+                case .deactivated:
+                    status = .deactivated
+                default:
+                    status = nil
+            }
+
+            guard let userSession = await UserSessionRegistry.shared.getSession(for: instanceUUID) else {
+                // TODO: Replace with a better error.
+                throw DIDDocument.DIDDocumentError.emptyArray
+            }
+
+            let updatedUserSession = UserSession(
+                handle: response.handle,
+                sessionDID: response.did,
+                email: response.email,
+                isEmailConfirmed: response.isEmailConfirmed,
+                isEmailAuthenticationFactorEnabled: response.isEmailAuthenticationFactor,
+                didDocument: didDocument,
+                isActive: response.isActive,
+                status: status,
+                serviceEndpoint: serviceEndpoint,
+                pdsURL: self.pdsURL
+            )
+
+            _ = await UserSessionRegistry.shared.update(instanceUUID, with: updatedUserSession)
+        } catch {
+            throw error
+        }
     }
 }
 
