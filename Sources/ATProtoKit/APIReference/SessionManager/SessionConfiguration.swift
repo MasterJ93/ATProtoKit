@@ -135,6 +135,34 @@ public protocol SessionConfiguration: AnyObject, Sendable {
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     func deleteSession() async throws
+
+    /// Waits for the Two-Factor Authentication code from the user.
+    ///
+    /// It's best not to override this method's default implementation unless you need
+    /// additional setup. If you do need to override this implementation, ensure that the following
+    /// line is in your custom implementation:
+    ///
+    /// ```swift
+    /// codeContinuation.yield(input)
+    /// return await iterator.next() ?? ""
+    /// ```
+    ///
+    /// - Returns: The code from the `codeStream`.
+    func waitForUserCode() async -> String
+
+    /// Takes the Two-Factor Authentication code inputted from the user.
+    ///
+    /// It's best not to override this method's default implementation unless you need
+    /// additional setup. If you do need to override this implementation, ensure that the following
+    /// line is in your custom implementation:
+    ///
+    /// ```swift
+    /// var iterator = codeStream.makeAsyncIterator()
+    ///
+    /// ```
+    ///
+    /// - Parameter input: The Two-Factor Authentication code.
+    func receiveCodeFromUser(_ input: String)
 }
 
 extension SessionConfiguration {
@@ -176,8 +204,6 @@ extension SessionConfiguration {
                 email: email,
                 isEmailConfirmed: nil,
                 isEmailAuthenticationFactorEnabled: nil,
-                accessToken: response.accessToken,
-                refreshToken: response.refreshToken,
                 didDocument: didDocument,
                 isActive: nil,
                 status: nil,
@@ -189,7 +215,105 @@ extension SessionConfiguration {
         }
     }
 
-    
+    public func authenticate(with handle: String, password: String) async throws {
+        let atProtoKit = await ATProtoKit(pdsURL: self.pdsURL, canUseBlueskyRecords: false)
+        let didDocument: DIDDocument
+        let serviceEndpoint: URL
+        var response: ComAtprotoLexicon.Server.CreateSessionOutput? = nil
+        var userCode: String? = nil
+
+        do {
+            // Resolve the handle to make sure it exists.
+            let identity = try await atProtoKit.resolveIdentity(handle)
+
+            guard let convertedDIDDocument = SessionConfigurationHelpers.convertDIDDocument(identity.didDocument) else {
+                throw DIDDocument.DIDDocumentError.emptyArray
+            }
+
+            didDocument = convertedDIDDocument
+
+            let atService = try didDocument.checkServiceForATProto()
+            serviceEndpoint = atService.serviceEndpoint
+        } catch {
+            throw error
+        }
+
+        // Loop until an error has been thrown, or until the response has been added.
+        while response == nil {
+            do {
+                response = try await ATProtoKit(pdsURL: self.pdsURL, canUseBlueskyRecords: false)
+                    .createSession(
+                        with: handle,
+                        and: password,
+                        authenticationFactorToken: userCode
+                    )
+            } catch let error as ATAPIError {
+                switch error {
+                    case .badRequest(error: let responseError):
+                        if responseError.error == "AuthFactorTokenRequired" {
+                            userCode = await waitForUserCode()
+
+                            continue
+                        }
+                    default:
+                        throw error
+                }
+
+                throw error
+            }
+        }
+
+        // Assemble the UserSession object and insert it to the keychain protocol.
+        do {
+            guard let response = response else {
+                throw DIDDocument.DIDDocumentError.emptyArray
+            }
+
+            var status: UserAccountStatus? = nil
+
+            switch response.status {
+                case .suspended:
+                    status = .suspended
+                case .takedown:
+                    status = .takedown
+                case .deactivated:
+                    status = .deactivated
+                default:
+                    status = nil
+            }
+
+
+            let userSession = UserSession(
+                handle: response.handle,
+                sessionDID: response.did,
+                email: response.email,
+                isEmailConfirmed: response.isEmailConfirmed,
+                isEmailAuthenticationFactorEnabled: response.isEmailAuthenticatedFactor,
+                didDocument: didDocument,
+                isActive: response.isActive,
+                status: status,
+                serviceEndpoint: serviceEndpoint,
+                pdsURL: self.pdsURL
+            )
+
+            try keychainProtocol.saveAccessToken(response.accessToken)
+            try keychainProtocol.saveRefreshToken(response.refreshToken)
+            try keychainProtocol.savePassword(password)
+
+            await UserSessionRegistry.shared.register(instanceUUID, session: userSession)
+        } catch {
+            throw error
+        }
+    }
+
+    public func waitForUserCode() async -> String {
+        var iterator = codeStream.makeAsyncIterator()
+        return await iterator.next() ?? ""
+    }
+
+    public func receiveCodeFromUser(_ input: String) {
+        codeContinuation.yield(input)
+    }
 }
 
 public enum SessionConfigurationHelpers {

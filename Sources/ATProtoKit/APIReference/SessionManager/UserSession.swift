@@ -35,12 +35,6 @@ public struct UserSession: Sendable, Codable {
     /// Indicates whether Two-Factor Authentication (via email) is enabled. Optional.
     public private(set) var isEmailAuthenticationFactorEnabled: Bool?
 
-    /// The access token used for API requests that requests authentication.
-    public private(set) var accessToken: String
-
-    /// The refresh token used to generate a new access token.
-    public private(set) var refreshToken: String
-
     /// The DID document associated with the user, which contains AT Protocol-specific
     /// information. Optional.
     public private(set) var didDocument: DIDDocument?
@@ -62,15 +56,12 @@ public struct UserSession: Sendable, Codable {
 
     /// Initializes a new user session with the specified details.
     public init(handle: String, sessionDID: String, email: String? = nil, isEmailConfirmed: Bool? = nil, isEmailAuthenticationFactorEnabled: Bool?,
-                accessToken: String, refreshToken: String, didDocument: DIDDocument? = nil, isActive: Bool?, status: UserAccountStatus?,
-                serviceEndpoint: URL, pdsURL: String? = nil) {
+                didDocument: DIDDocument? = nil, isActive: Bool?, status: UserAccountStatus?, serviceEndpoint: URL, pdsURL: String? = nil) {
         self.handle = handle
         self.sessionDID = sessionDID
         self.email = email
         self.isEmailConfirmed = isEmailConfirmed
         self.isEmailAuthenticationFactorEnabled = isEmailAuthenticationFactorEnabled
-        self.accessToken = accessToken
-        self.refreshToken = refreshToken
         self.didDocument = didDocument
         self.isActive = isActive
         self.status = status
@@ -84,8 +75,6 @@ public struct UserSession: Sendable, Codable {
         case email
         case isEmailConfirmed = "emailConfirmed"
         case isEmailAuthenticationFactorEnabled = "emailAuthFactor"
-        case accessToken = "accessJwt"
-        case refreshToken = "refreshJwt"
         case didDocument = "didDoc"
         case isActive = "active"
         case status
