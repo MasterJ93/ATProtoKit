@@ -317,7 +317,11 @@ extension SessionConfiguration {
     }
 
     public func getSession() async throws {
-        guard let accessToken = keychainProtocol.retrieveAccessToken() else {
+        let accessToken: String
+
+        do {
+            accessToken = try keychainProtocol.retrieveAccessToken()
+        } catch {
             throw ATProtocolConfiguration.ATProtocolConfigurationError.noSessionToken(message: "The access token doesn't exist.")
         }
 

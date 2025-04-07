@@ -36,7 +36,11 @@ public protocol SecureKeychainProtocol {
     ///     return self.accessToken
     /// }
     /// ```
-    func retrieveAccessToken() -> String?
+    ///
+    /// - Returns: The access token of the account.
+    ///
+    /// - Throws: An error if the access token doesn't exist.
+    func retrieveAccessToken() throws -> String
 
     /// Saves the access token of the account.
     ///
@@ -81,8 +85,10 @@ public protocol SecureKeychainProtocol {
 
     /// Retrieves the password of the account from the keychain.
     ///
-    ///- Returns: The password itself (if it exists), or `nil`.
-    func retrievePassword() throws -> String?
+    /// - Returns: The password itself.
+    ///
+    /// - Throws: An error if the password doesn't exist.
+    func retrievePassword() throws -> String
 
     /// Updates the password of the account into the keychain.
     ///
@@ -99,8 +105,10 @@ public protocol SecureKeychainProtocol {
 
     /// Retrieves the refresh token of the account to the keychain.
     ///
-    /// - Returns: The keychain of the account (if it exists), or `nil`.
-    func retrieveRefreshToken() throws -> String?
+    /// - Returns: The refresh token of the account.
+    ///
+    /// - Throws: An error if the refresh token doesn't exist.
+    func retrieveRefreshToken() throws -> String
 
     /// Updates the refresh token of the account to the keychain.
     func updateRefreshToken(_ newRefreshToken: String) throws
