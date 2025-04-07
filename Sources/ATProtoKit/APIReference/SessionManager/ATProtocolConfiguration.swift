@@ -204,57 +204,18 @@ public class ATProtocolConfiguration: SessionConfiguration {
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
-    public func createAccount(
-        email: String? = nil,
-        handle: String,
-        existingDID: String? = nil,
-        inviteCode: String? = nil,
-        verificationCode: String? = nil,
-        verificationPhone: String? = nil,
-        password: String? = nil,
-        recoveryKey: String? = nil,
-        plcOperation: UnknownType? = nil
-    ) async throws -> UserSession {
-        do {
-            let response = try await ATProtoKit(pdsURL: self.pdsURL, canUseBlueskyRecords: false).createAccount(
-                email: email,
-                handle: handle,
-                existingDID: existingDID,
-                inviteCode: inviteCode,
-                verificationCode: verificationCode,
-                verificationPhone: verificationPhone,
-                password: password,
-                recoveryKey: recoveryKey,
-                plcOperation: plcOperation
-            )
+//    public func createAccount(
+//        email: String? = nil,
+//        handle: String,
+//        existingDID: String? = nil,
+//        inviteCode: String? = nil,
+//        verificationCode: String? = nil,
+//        verificationPhone: String? = nil,
+//        password: String? = nil,
+//        recoveryKey: String? = nil,
+//        plcOperation: UnknownType? = nil
+//    ) async throws -> UserSession {
 
-            guard let didDocument = self.convertDIDDocument(response.didDocument) else {
-                throw DIDDocument.DIDDocumentError.emptyArray
-            }
-
-            let atService = try didDocument.checkServiceForATProto()
-            let serviceEndpoint = atService.serviceEndpoint
-
-            let userSession = UserSession(
-                handle: response.handle,
-                sessionDID: response.did,
-                email: email,
-                isEmailConfirmed: nil,
-                isEmailAuthenticationFactorEnabled: nil,
-                accessToken: response.accessToken,
-                refreshToken: response.refreshToken,
-                didDocument: didDocument,
-                isActive: nil,
-                status: nil,
-                serviceEndpoint: serviceEndpoint,
-                pdsURL: self.pdsURL
-            )
-
-            return userSession
-        } catch {
-            throw error
-        }
-    }
 
     /// Attempts to authenticate the user into the server.
     ///

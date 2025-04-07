@@ -210,6 +210,15 @@ extension SessionConfiguration {
                 serviceEndpoint: serviceEndpoint,
                 pdsURL: self.pdsURL
             )
+
+            try keychainProtocol.saveAccessToken(response.accessToken)
+            try keychainProtocol.saveRefreshToken(response.refreshToken)
+
+            if let password {
+                try keychainProtocol.savePassword(password)
+            }
+
+            await UserSessionRegistry.shared.register(instanceUUID, session: userSession)
         } catch {
             throw error
         }
