@@ -315,6 +315,66 @@ extension SessionConfiguration {
         }
     }
 
+    public func getSession() async throws {
+        guard let accessToken = keychainProtocol.retrieveAccessToken() else {
+            throw ATProtocolConfiguration.ATProtocolConfigurationError.noSessionToken(message: "The access token doesn't exist.")
+        }
+
+        if try SessionToken(sessionToken: accessToken).payload.expiresAt.addingTimeInterval(30) > Date() {
+            // TODO: Add the refreshSession method.
+        }
+
+        do {
+            let response = try await ATProtoKit(pdsURL: self.pdsURL, canUseBlueskyRecords: false).getSession(
+                by: accessToken
+            )
+
+            guard let convertedDIDDocument = SessionConfigurationHelpers.convertDIDDocument(response.didDocument) else {
+                throw DIDDocument.DIDDocumentError.emptyArray
+            }
+
+            let didDocument = convertedDIDDocument
+
+            let atService = try didDocument.checkServiceForATProto()
+            let serviceEndpoint = atService.serviceEndpoint
+
+            var status: UserAccountStatus? = nil
+
+            switch response.status {
+                case .suspended:
+                    status = .suspended
+                case .takedown:
+                    status = .takedown
+                case .deactivated:
+                    status = .deactivated
+                default:
+                    status = nil
+            }
+
+            guard let userSession = await UserSessionRegistry.shared.getSession(for: instanceUUID) else {
+                // TODO: Replace with a better error.
+                throw DIDDocument.DIDDocumentError.emptyArray
+            }
+
+            let updatedUserSession = UserSession(
+                handle: response.handle,
+                sessionDID: response.did,
+                email: response.email,
+                isEmailConfirmed: response.isEmailConfirmed,
+                isEmailAuthenticationFactorEnabled: response.isEmailAuthenticationFactor,
+                didDocument: didDocument,
+                isActive: response.isActive,
+                status: status,
+                serviceEndpoint: serviceEndpoint,
+                pdsURL: self.pdsURL
+            )
+
+            _ = await UserSessionRegistry.shared.update(instanceUUID, with: updatedUserSession)
+        } catch {
+            throw error
+        }
+    }
+
     public func waitForUserCode() async -> String {
         var iterator = codeStream.makeAsyncIterator()
         return await iterator.next() ?? ""
