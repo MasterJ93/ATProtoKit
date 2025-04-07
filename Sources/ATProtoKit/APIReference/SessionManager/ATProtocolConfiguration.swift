@@ -246,74 +246,10 @@ public class ATProtocolConfiguration: SessionConfiguration {
     /// - Returns: Information of the user account's current session straight from the service.
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
-    public func getSession(
-        by accessToken: String? = nil,
-        authenticationFactorToken: String? = nil
-    ) async throws -> ComAtprotoLexicon.Server.GetSessionOutput {
-        var sessionToken: String = ""
-        do {
-             sessionToken = try getValidAccessToken(from: accessToken)
-        } catch {
-            throw error
-        }
-
-        do {
-            let response = try await ATProtoKit(pdsURL: self.pdsURL, canUseBlueskyRecords: false).getSession(
-                by: sessionToken
-            )
-
-            guard let didDocument = self.convertDIDDocument(response.didDocument) else {
-                throw DIDDocument.DIDDocumentError.emptyArray
-            }
-
-            let atService = try didDocument.checkServiceForATProto()
-            let serviceEndpoint = atService.serviceEndpoint
-
-            var status: UserAccountStatus? = nil
-
-            switch response.status {
-                case .suspended:
-                    status = .suspended
-                case .takedown:
-                    status = .takedown
-                case .deactivated:
-                    status = .deactivated
-                default:
-                    status = nil
-            }
-
-            if let session = self.session {
-                let userSession = UserSession(
-                    handle: response.handle,
-                    sessionDID: response.did,
-                    email: response.email,
-                    isEmailConfirmed: response.isEmailConfirmed,
-                    isEmailAuthenticationFactorEnabled: response.isEmailAuthenticationFactor,
-                    accessToken: sessionToken,
-                    refreshToken: session.refreshToken,
-                    didDocument: didDocument,
-                    isActive: response.isActive,
-                    status: status,
-                    serviceEndpoint: serviceEndpoint,
-                    pdsURL: session.pdsURL,
-                    logger: await ATProtocolConfiguration.getLogger(),
-                    maxRetryCount: self.maxRetryCount,
-                    retryTimeDelay: self.retryTimeDelay
-                )
-
-                self.session = userSession
-            }
-
-            return response
-        } catch let apiError as ATAPIError {
-            guard case .badRequest(let errorDetails) = apiError,
-                  errorDetails.error == "ExpiredToken" else {
-                throw apiError
-            }
-
-            return try await handleExpiredTokenFromGetSession(authenticationFactorToken: authenticationFactorToken)
-        }
-    }
+//    public func getSession(
+//        by accessToken: String? = nil,
+//        authenticationFactorToken: String? = nil
+//    ) async throws -> ComAtprotoLexicon.Server.GetSessionOutput {
 
     /// Refreshes the user's session using a refresh token.
     ///
