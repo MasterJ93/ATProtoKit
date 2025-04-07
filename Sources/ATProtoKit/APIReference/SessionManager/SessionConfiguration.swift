@@ -325,8 +325,12 @@ extension SessionConfiguration {
             throw ATProtocolConfiguration.ATProtocolConfigurationError.noSessionToken(message: "The access token doesn't exist.")
         }
 
-        if try SessionToken(sessionToken: accessToken).payload.expiresAt.addingTimeInterval(30) > Date() {
-            // TODO: Add the refreshSession method.
+        do {
+            if try SessionToken(sessionToken: accessToken).payload.expiresAt.addingTimeInterval(30) > Date() {
+                // TODO: Add the refreshSession method.
+            }
+        } catch {
+            throw error
         }
 
         do {
