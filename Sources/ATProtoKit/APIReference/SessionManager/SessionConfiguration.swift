@@ -275,6 +275,7 @@ extension SessionConfiguration {
         // Assemble the UserSession object and insert it to the keychain protocol.
         do {
             guard let response = response else {
+                // TODO: Replace with a better error.
                 throw DIDDocument.DIDDocumentError.emptyArray
             }
 
