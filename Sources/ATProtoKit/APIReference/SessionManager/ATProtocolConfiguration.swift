@@ -271,57 +271,7 @@ public class ATProtocolConfiguration: SessionConfiguration {
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
-    public func authenticate(authenticationFactorToken: String? = nil) async throws {
-        do {
-            let response = try await ATProtoKit(pdsURL: self.pdsURL, canUseBlueskyRecords: false).createSession(
-                with: self.handle,
-                and: self.password,
-                authenticationFactorToken: authenticationFactorToken
-            )
-
-            guard let didDocument = self.convertDIDDocument(response.didDocument) else {
-                throw DIDDocument.DIDDocumentError.emptyArray
-            }
-
-            let atService = try didDocument.checkServiceForATProto()
-            let serviceEndpoint = atService.serviceEndpoint
-
-            var status: UserAccountStatus? = nil
-
-            switch response.status {
-                case .suspended:
-                    status = .suspended
-                case .takedown:
-                    status = .takedown
-                case .deactivated:
-                    status = .deactivated
-                default:
-                    status = nil
-            }
-
-            let userSession = UserSession(
-                handle: response.handle,
-                sessionDID: response.did,
-                email: response.email,
-                isEmailConfirmed: response.isEmailConfirmed,
-                isEmailAuthenticationFactorEnabled: response.isEmailAuthenticatedFactor,
-                accessToken: response.accessToken,
-                refreshToken: response.refreshToken,
-                didDocument: didDocument,
-                isActive: response.isActive,
-                status: status,
-                serviceEndpoint: serviceEndpoint,
-                pdsURL: self.pdsURL,
-                logger: await ATProtocolConfiguration.getLogger(),
-                maxRetryCount: self.maxRetryCount,
-                retryTimeDelay: self.retryTimeDelay
-            )
-
-            self.session = userSession
-        } catch {
-            throw error
-        }
-    }
+//    public func authenticate(authenticationFactorToken: String? = nil) async throws {
 
     /// Fetches an existing session using an access token.
     ///
