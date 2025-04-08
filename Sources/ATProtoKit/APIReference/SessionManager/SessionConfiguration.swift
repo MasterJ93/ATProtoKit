@@ -359,11 +359,6 @@ extension SessionConfiguration {
                     status = nil
             }
 
-            guard let userSession = await UserSessionRegistry.shared.getSession(for: instanceUUID) else {
-                // TODO: Replace with a better error.
-                throw DIDDocument.DIDDocumentError.emptyArray
-            }
-
             let updatedUserSession = UserSession(
                 handle: response.handle,
                 sessionDID: response.did,
@@ -442,11 +437,6 @@ extension SessionConfiguration {
                     status = .deactivated
                 default:
                     status = nil
-            }
-
-            guard let userSession = await UserSessionRegistry.shared.getSession(for: instanceUUID) else {
-                // TODO: Replace with a better error.
-                throw DIDDocument.DIDDocumentError.emptyArray
             }
 
             let updatedUserSession = UserSession(
