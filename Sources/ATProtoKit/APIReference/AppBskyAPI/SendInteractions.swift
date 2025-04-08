@@ -14,7 +14,7 @@ extension ATProtoKit {
     /// - Warning: This is a work in progress. This method may not work as expected.
     /// Please use this at your own risk.
     ///
-    /// - Note: According to the AT Protocol specifications: "end information about interactions
+    /// - Note: According to the AT Protocol specifications: "Send information about interactions
     /// with feed items back to the feed generator that served them."
     ///
     /// - SeeAlso: This is based on the [`app.bsky.feed.sendInteractions`][github] lexicon.
