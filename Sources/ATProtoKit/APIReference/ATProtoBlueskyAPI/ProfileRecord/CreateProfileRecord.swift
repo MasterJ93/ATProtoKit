@@ -159,7 +159,7 @@ extension ATProtoBluesky {
 
         // avatarImage
         var profileAvatarImage: ComAtprotoLexicon.Repository.UploadBlobOutput? = nil
-        let accessToken = try keychain.retrieveAccessToken()
+        let accessToken = try await keychain.retrieveAccessToken()
 
         if let avatarImage = avatarImage {
             let postEmbed = try await uploadImages(

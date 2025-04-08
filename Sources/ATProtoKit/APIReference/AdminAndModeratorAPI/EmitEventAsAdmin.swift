@@ -42,7 +42,7 @@ extension ATProtoAdmin {
             throw ATRequestPrepareError.missingActiveSession
         }
 
-        let accessToken = try keychain.retrieveAccessToken()
+        let accessToken = try await keychain.retrieveAccessToken()
 
         guard let sessionURL = session.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/tools.ozone.moderation.emitEvent") else {

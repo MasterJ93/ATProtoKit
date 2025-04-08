@@ -73,7 +73,7 @@ extension ATProtoBluesky {
         var newPinnedPost: ComAtprotoLexicon.Repository.StrongReference? = profile.pinnedPost
 
         for uniqueField in uniqueFields {
-            let accessToken = try keychain.retrieveAccessToken()
+            let accessToken = try await keychain.retrieveAccessToken()
 
             switch uniqueField {
                 case .displayName(let displayNameField):

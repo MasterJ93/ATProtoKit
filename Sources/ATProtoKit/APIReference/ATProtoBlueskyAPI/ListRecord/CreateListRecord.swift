@@ -112,7 +112,7 @@ extension ATProtoBluesky {
         var avatarImage: ComAtprotoLexicon.Repository.UploadBlobOutput? = nil
         if let listAvatarImage = listAvatarImage {
             if let keychain = sessionConfiguration?.keychainProtocol {
-                let accessToken = try keychain.retrieveAccessToken()
+                let accessToken = try await keychain.retrieveAccessToken()
                 let postEmbed = try await uploadImages(
                     [listAvatarImage],
                     pdsURL: sessionURL,

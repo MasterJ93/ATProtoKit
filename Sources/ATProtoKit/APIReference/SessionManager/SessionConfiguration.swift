@@ -211,11 +211,11 @@ extension SessionConfiguration {
                 pdsURL: self.pdsURL
             )
 
-            try keychainProtocol.saveAccessToken(response.accessToken)
-            try keychainProtocol.saveRefreshToken(response.refreshToken)
+            try await keychainProtocol.saveAccessToken(response.accessToken)
+            try await keychainProtocol.saveRefreshToken(response.refreshToken)
 
             if let password {
-                try keychainProtocol.savePassword(password)
+                try await keychainProtocol.savePassword(password)
             }
 
             await UserSessionRegistry.shared.register(instanceUUID, session: userSession)
@@ -305,9 +305,9 @@ extension SessionConfiguration {
                 pdsURL: self.pdsURL
             )
 
-            try keychainProtocol.saveAccessToken(response.accessToken)
-            try keychainProtocol.saveRefreshToken(response.refreshToken)
-            try keychainProtocol.savePassword(password)
+            try await keychainProtocol.saveAccessToken(response.accessToken)
+            try await keychainProtocol.saveRefreshToken(response.refreshToken)
+            try await keychainProtocol.savePassword(password)
 
             await UserSessionRegistry.shared.register(instanceUUID, session: userSession)
         } catch {
@@ -319,7 +319,7 @@ extension SessionConfiguration {
         let accessToken: String
 
         do {
-            accessToken = try keychainProtocol.retrieveAccessToken()
+            accessToken = try await keychainProtocol.retrieveAccessToken()
         } catch {
             throw ATProtocolConfiguration.ATProtocolConfigurationError.noSessionToken(message: "The access token doesn't exist.")
         }
@@ -391,7 +391,7 @@ extension SessionConfiguration {
         let refreshToken: String
 
         do {
-            refreshToken = try keychainProtocol.retrieveRefreshToken()
+            refreshToken = try await keychainProtocol.retrieveRefreshToken()
         } catch {
             throw ATProtocolConfiguration.ATProtocolConfigurationError.noSessionToken(message: "The access token doesn't exist.")
         }
@@ -462,7 +462,7 @@ extension SessionConfiguration {
         let refreshToken: String
 
         do {
-            refreshToken = try keychainProtocol.retrieveRefreshToken()
+            refreshToken = try await keychainProtocol.retrieveRefreshToken()
         } catch {
             throw ATProtocolConfiguration.ATProtocolConfigurationError.noSessionToken(message: "The access token doesn't exist.")
         }

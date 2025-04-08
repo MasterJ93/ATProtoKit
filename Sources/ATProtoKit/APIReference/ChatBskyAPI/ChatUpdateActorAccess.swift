@@ -35,7 +35,7 @@ extension ATProtoBlueskyChat {
             throw ATRequestPrepareError.missingActiveSession
         }
 
-        let accessToken = try keychain.retrieveAccessToken()
+        let accessToken = try await keychain.retrieveAccessToken()
         let sessionURL = session.serviceEndpoint.absoluteString
 
         guard let requestURL = URL(string: "\(sessionURL)/xrpc/chat.bsky.moderation.updateActorAccess") else {

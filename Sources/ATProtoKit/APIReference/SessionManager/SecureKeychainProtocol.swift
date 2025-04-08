@@ -40,7 +40,7 @@ public protocol SecureKeychainProtocol: Sendable {
     /// - Returns: The access token of the account.
     ///
     /// - Throws: An error if the access token doesn't exist.
-    func retrieveAccessToken() throws -> String
+    func retrieveAccessToken() async throws -> String
 
     /// Saves the access token of the account.
     ///
@@ -58,7 +58,7 @@ public protocol SecureKeychainProtocol: Sendable {
     ///```
     ///
     /// - Parameter accessToken: The token used to authenticate to the service.
-    func saveAccessToken(_ accessToken: String) throws
+    func saveAccessToken(_ accessToken: String) async throws
 
     /// Deletes the access token of the account.
     ///
@@ -74,45 +74,45 @@ public protocol SecureKeychainProtocol: Sendable {
     ///     self.accessToken = nil
     /// }
     ///```
-    func deleteAccessToken() throws
+    func deleteAccessToken() async throws
 
     /// Saves the password of the account to the keychain.
     ///
     /// This can be either the user's real password or the App Password.
     ///
     /// - Parameter password: The password of the account.
-    func savePassword(_ password: String) throws
+    func savePassword(_ password: String) async throws
 
     /// Retrieves the password of the account from the keychain.
     ///
     /// - Returns: The password itself.
     ///
     /// - Throws: An error if the password doesn't exist.
-    func retrievePassword() throws -> String
+    func retrievePassword() async throws -> String
 
     /// Updates the password of the account into the keychain.
     ///
     /// - Parameter newPassword: The new account password.
-    func updatePassword(_ newPassword: String) throws
+    func updatePassword(_ newPassword: String) async throws
 
     /// Deletes the password of the account from the keychain.
-    func deletePassword() throws
+    func deletePassword() async throws
 
     /// Saves the refresh token of the account to the keychain.
     ///
     /// - Parameter refreshToken: The refresh token of the account.
-    func saveRefreshToken(_ refreshToken: String) throws
+    func saveRefreshToken(_ refreshToken: String) async throws
 
     /// Retrieves the refresh token of the account to the keychain.
     ///
     /// - Returns: The refresh token of the account.
     ///
     /// - Throws: An error if the refresh token doesn't exist.
-    func retrieveRefreshToken() throws -> String
+    func retrieveRefreshToken() async throws -> String
 
     /// Updates the refresh token of the account to the keychain.
-    func updateRefreshToken(_ newRefreshToken: String) throws
+    func updateRefreshToken(_ newRefreshToken: String) async throws
 
     /// Deletes the refresh token of the account to the keychain.
-    func deleteRefreshToken() throws
+    func deleteRefreshToken() async throws
 }

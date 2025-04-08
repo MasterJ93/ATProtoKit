@@ -317,7 +317,7 @@ extension ATProtoBluesky {
         if let embedUnion = embed {
             do {
                 if let keychain = sessionConfiguration?.keychainProtocol {
-                    let accessToken = try keychain.retrieveAccessToken()
+                    let accessToken = try await keychain.retrieveAccessToken()
 
                     switch embedUnion {
                         case .images(let images):
@@ -640,7 +640,7 @@ extension ATProtoBluesky {
         // Grab the access token.
         do {
             let keychain = sessionConfiguration?.keychainProtocol
-            if let accessToken = try? keychain?.retrieveAccessToken() {
+            if let accessToken = try? await keychain?.retrieveAccessToken() {
                 if let pdsURL = session.pdsURL, let imageData = image {
                     thumbnailImage = try await ATProtoKit(canUseBlueskyRecords: false).uploadBlob(
                         pdsURL: pdsURL,
