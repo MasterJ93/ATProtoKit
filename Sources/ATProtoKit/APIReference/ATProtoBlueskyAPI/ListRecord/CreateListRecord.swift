@@ -111,18 +111,21 @@ extension ATProtoBluesky {
         // listAvatarImage
         var avatarImage: ComAtprotoLexicon.Repository.UploadBlobOutput? = nil
         if let listAvatarImage = listAvatarImage {
-            let postEmbed = try await uploadImages(
-                [listAvatarImage],
-                pdsURL: sessionURL,
-                accessToken: session.accessToken
-            )
+            if let keychain = sessionConfiguration?.keychainProtocol {
+                let accessToken = try keychain.retrieveAccessToken()
+                let postEmbed = try await uploadImages(
+                    [listAvatarImage],
+                    pdsURL: sessionURL,
+                    accessToken: accessToken
+                )
 
-            switch postEmbed {
-                case .images(let imagesDefinition):
-                    let avatarImageContainer = imagesDefinition
-                    avatarImage = avatarImageContainer.images[0].imageBlob
-                default:
-                    break
+                switch postEmbed {
+                    case .images(let imagesDefinition):
+                        let avatarImageContainer = imagesDefinition
+                        avatarImage = avatarImageContainer.images[0].imageBlob
+                    default:
+                        break
+                }
             }
         }
 

@@ -109,11 +109,13 @@ extension ATProtoBluesky {
                         break
                     }
 
-                    if let listAvatarImageField = listAvatarImageField {
+                    if let listAvatarImageField = listAvatarImageField,
+                       let keychain = sessionConfiguration?.keychainProtocol {
+                        let accessToken = try keychain.retrieveAccessToken()
                         let postEmbed = try await uploadImages(
                             [listAvatarImageField],
                             pdsURL: sessionURL,
-                            accessToken: session.accessToken
+                            accessToken: accessToken
                         )
 
                         switch postEmbed {
