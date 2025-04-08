@@ -51,7 +51,7 @@ extension ATProtoKit {
                 andMethod: .post,
                 acceptValue: "application/json",
                 contentTypeValue: "application/json",
-                authorizationValue: nil
+                authorizationValue: "Bearer \(accessToken)"
             )
 
             _ = try await APIClientService.shared.sendRequest(

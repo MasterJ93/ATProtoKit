@@ -44,7 +44,7 @@ extension ATProtoKit {
                 forRequest: requestURL,
                 andMethod: .get,
                 contentTypeValue: nil,
-                authorizationValue: nil
+                authorizationValue: "Bearer \(accessToken)"
             )
             let response = try await APIClientService.shared.sendRequest(
                 request,
