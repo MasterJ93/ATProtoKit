@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import Logging
 
 /// Manages authentication and session operations for the a user account in the ATProtocol.
 final public class ATProtocolConfiguration: SessionConfiguration {
