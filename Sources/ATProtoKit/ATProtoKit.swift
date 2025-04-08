@@ -20,24 +20,6 @@ public protocol ATProtoKitConfiguration {
     /// Represents an object used for managing sessions.
     var sessionConfiguration: SessionConfiguration? { get }
 
-    /// Represents an authenticated user session within the AT Protocol. Optional.
-    ///
-    /// This would be received by the ``ATProtoKitConfiguration/sessionConfiguration`` object.
-    /// Make this property a computed property when adding this to your class.
-    ///
-    /// ```swift
-    /// public var session: UserSession? {
-    ///     return sessionConfiguration.session
-    /// }
-    /// ```
-    var session: UserSession? { get }
-
-    /// Specifies the logger that will be used for emitting log messages. Optional.
-    ///
-    /// - Note: Be sure to create an instance inside the `init()` method. This is important so
-    /// all log events are spread across the entire class.
-    var logger: Logger? { get }
-
     /// Prepares an authorization value for API requests based on `session`.
     ///
     /// This determines whether the "Authorization" header will be included in the request payload.
@@ -57,6 +39,14 @@ public protocol ATProtoKitConfiguration {
     /// authorization header in the request, or  `"Bearer \(accessToken)"` (where `accessToken`
     /// is the session's access token) if it's determined there should be an authorization header.
     func prepareAuthorizationValue(shouldAuthenticate: Bool, keychain: SessionKeychainProtocol?) async -> String?
+
+    /// Retrieves the applicable ``UserSession`` instance.
+    ///
+    /// It's best not to remove the default implementation of this method.
+    ///
+    /// - Returns: A ``UserSession`` instance that's applicable to the session (if it exists),
+    /// or `nil` (if it doesn't).
+    func getUserSession() async throws -> UserSession?
 
     /// Determines the appropriate Personal Data Server (PDS) URL.
     ///
@@ -105,6 +95,16 @@ extension ATProtoKitConfiguration {
 
         // Return nil if no valid session or access token is found.
         return nil
+    }
+
+    /// Retrieves the applicable ``UserSession`` instance.
+    ///
+    /// - Returns: A ``UserSession`` instance that's applicable to the session (if it exists),
+    /// or `nil` (if it doesn't).
+    public func getUserSession() async throws -> UserSession? {
+        guard let sessionConfiguration = sessionConfiguration else { return nil }
+        let userSession = await UserSessionRegistry.shared.getSession(for: sessionConfiguration.instanceUUID)
+        return userSession
     }
 
     /// Determines the appropriate Personal Data Server (PDS) URL.
@@ -158,9 +158,6 @@ public class ATProtoKit: ATProtoKitConfiguration, ATRecordConfiguration {
         AppBskyLexicon.Graph.StarterpackRecord.self, AppBskyLexicon.Labeler.ServiceRecord.self, ChatBskyLexicon.Actor.DeclarationRecord.self
     ]
 
-    /// Specifies the logger that will be used for emitting log messages.
-    public private(set) var logger: Logger?
-
     /// Internal state to track initialization completion.
     public var initializationTask: Task<Void, Error>?
 
@@ -169,11 +166,6 @@ public class ATProtoKit: ATProtoKitConfiguration, ATRecordConfiguration {
 
     /// The URL of the Personal Data Server (PDS).
     public let pdsURL: String
-
-    /// Represents an authenticated user session within the AT Protocol. Optional.
-    public var session: UserSession? {
-        return sessionConfiguration?.session
-    }
 
     /// Initializes a new instance of `ATProtoKit`.
     /// 
@@ -200,7 +192,6 @@ public class ATProtoKit: ATProtoKitConfiguration, ATRecordConfiguration {
     public init(sessionConfiguration: SessionConfiguration? = nil, pdsURL: String = "https://api.bsky.app", canUseBlueskyRecords: Bool = true) {
         self.sessionConfiguration = sessionConfiguration
         self.pdsURL = Self.determinePDSURL(customPDSURL: pdsURL)
-        self.logger = session?.logger
 
         Task { [recordLexicons] in
             if canUseBlueskyRecords && !(ATRecordTypeRegistry.areBlueskyRecordsRegistered) {
@@ -230,7 +221,6 @@ public class ATProtoKit: ATProtoKitConfiguration, ATRecordConfiguration {
     public init(sessionConfiguration: SessionConfiguration? = nil, pdsURL: String = "https://api.bsky.app", canUseBlueskyRecords: Bool = true) async {
         self.sessionConfiguration = sessionConfiguration
         self.pdsURL = pdsURL
-        self.logger = session?.logger
 
         if canUseBlueskyRecords && !(ATRecordTypeRegistry.areBlueskyRecordsRegistered) {
             _ = await ATRecordTypeRegistry.shared.register(blueskyLexiconTypes: recordLexicons)
@@ -256,19 +246,11 @@ public class ATProtoBluesky: ATProtoKitConfiguration {
     /// The ``ATLinkBuilder`` object used to grab the metadata for preview link cards. Optional.
     public let linkBuilder: ATLinkBuilder?
 
-    /// Specifies the logger that will be used for emitting log messages.
-    public private(set) var logger: Logger?
-
     /// Represents an object used for managing sessions.
     public let sessionConfiguration: SessionConfiguration?
 
     /// The URL of the Personal Data Server (PDS).
     public let pdsURL: String
-
-    /// Represents an authenticated user session within the AT Protocol. Optional.
-    public var session: UserSession? {
-        return sessionConfiguration?.session
-    }
 
     /// Represents the instance of ``ATProtoKit/ATProtoKit``.
     internal let atProtoKitInstance: ATProtoKit
@@ -282,7 +264,6 @@ public class ATProtoBluesky: ATProtoKitConfiguration {
         self.atProtoKitInstance = atProtoKitInstance
         self.sessionConfiguration = atProtoKitInstance.sessionConfiguration
         self.linkBuilder = linkbuilder
-        self.logger = self.atProtoKitInstance.session?.logger ?? logger
         self.pdsURL = "https://api.bsky.app"
     }
 }
@@ -302,19 +283,11 @@ public class ATProtoBlueskyChat: ATProtoKitConfiguration {
     /// from the `ATProtoKit` instance.
     public var urlSessionConfiguration: URLSessionConfiguration = .default
 
-    /// Specifies the logger that will be used for emitting log messages.
-    public private(set) var logger: Logger?
-
     /// Represents an object used for managing sessions.
     public let sessionConfiguration: SessionConfiguration?
 
     /// The URL of the Personal Data Server (PDS).
     public let pdsURL: String
-
-    /// Represents an authenticated user session within the AT Protocol. Optional.
-    public var session: UserSession? {
-        return sessionConfiguration?.session
-    }
 
     /// Represents the instance of ``ATProtoKit/ATProtoKit``.
     internal let atProtoKitInstance: ATProtoKit
@@ -327,7 +300,6 @@ public class ATProtoBlueskyChat: ATProtoKitConfiguration {
     public init(atProtoKitInstance: ATProtoKit) {
         self.atProtoKitInstance = atProtoKitInstance
         self.sessionConfiguration = atProtoKitInstance.sessionConfiguration
-        self.logger = self.atProtoKitInstance.session?.logger
         self.pdsURL = "https://api.bsky.chat"
     }
 }
@@ -391,11 +363,6 @@ public class ATProtoAdmin: ATProtoKitConfiguration {
     /// The URL of the Personal Data Server (PDS).
     public let pdsURL: String
 
-    /// Represents an authenticated user session within the AT Protocol. Optional.
-    public var session: UserSession? {
-        return sessionConfiguration?.session
-    }
-
     /// Initializes a new instance of `ATProtoAdmin`.
     /// - Parameters:
     ///   - sessionConfiguration: The authenticated user session within the AT Protocol. Optional.
@@ -403,6 +370,5 @@ public class ATProtoAdmin: ATProtoKitConfiguration {
     public init(sessionConfiguration: SessionConfiguration? = nil) {
         self.sessionConfiguration = sessionConfiguration
         self.pdsURL = "https://api.bsky.app"
-        self.logger = session?.logger
     }
 }
