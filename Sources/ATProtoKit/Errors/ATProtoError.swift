@@ -335,6 +335,9 @@ public enum ATRequestPrepareError: ATProtoError {
     /// The hostname's URL may be incorrect.
     case invalidHostnameURL
 
+    /// The request failed after several retries.
+    case failedAfterRetries
+
     /// There's no valid or active session in the instance.
     ///
     /// Authentication is required for methods that need it.

@@ -28,12 +28,12 @@ extension ATProtoKit {
     public func uploadVideo(_ video: Data) async throws -> AppBskyLexicon.Video.JobStatusDefinition {
         var attempts = 0
 
-        guard session != nil,
-              session?.accessToken != nil else {
+        guard let session = try await self.getUserSession(),
+              let keychain = sessionConfiguration?.keychainProtocol else {
             throw ATRequestPrepareError.missingActiveSession
         }
 
-        guard let serviceEndpoint = session?.didDocument?.service[0].serviceEndpoint,
+        guard let serviceEndpoint = session.didDocument?.service[0].serviceEndpoint,
               let serviceEndpointHost = serviceEndpoint.hostname() else {
             throw ATRequestPrepareError.invalidRequestURL
         }
@@ -57,17 +57,14 @@ extension ATProtoKit {
 
         var queryItems = [(String, String)]()
 
-        if let did = session?.sessionDID {
-            queryItems.append(("did", did))
-        }
-
+        queryItems.append(("did", session.sessionDID))
         queryItems.append(("name", "\(ATProtoTools().generateRandomString()).mp4"))
 
         let queryURL: URL
 
 
-        let maxRetryCount = session?.maxRetryCount ?? 3
-        let retryTimeDelay = session?.retryTimeDelay ?? 1.0
+        let maxRetryCount = 3
+        let retryTimeDelay = 1.0
 
         while attempts < maxRetryCount {
             do {

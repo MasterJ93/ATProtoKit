@@ -28,8 +28,7 @@ extension ATProtoKit {
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func checkSignupQueue(matching query: String) async throws -> ComAtprotoLexicon.Temp.CheckSignupQueueOutput {
-        guard let sessionURL = session?.pdsURL,
-              let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.temp.checkSignupQueue") else {
+        guard let requestURL = URL(string: "\(self.pdsURL)/xrpc/com.atproto.temp.checkSignupQueue") else {
             throw ATRequestPrepareError.invalidRequestURL
         }
 

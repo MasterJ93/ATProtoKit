@@ -24,8 +24,8 @@ extension ATProtoKit {
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func getUploadLimits() async throws -> AppBskyLexicon.Video.GetUploadLimitsOutput {
-        guard session != nil,
-              (session?.accessToken != nil) else {
+        guard let session = try await self.getUserSession(),
+              let keychain = sessionConfiguration?.keychainProtocol else {
             throw ATRequestPrepareError.missingActiveSession
         }
 

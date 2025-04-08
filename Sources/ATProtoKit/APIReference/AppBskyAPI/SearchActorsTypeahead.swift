@@ -48,16 +48,16 @@ extension ATProtoKit {
         limit: Int? = 10,
         shouldAuthenticate: Bool = true
     ) async throws -> AppBskyLexicon.Actor.SearchActorsTypeaheadOutput {
-        let authorizationValue = prepareAuthorizationValue(
-            shouldAuthenticate: shouldAuthenticate,
-            session: session
+        let authorizationValue = await prepareAuthorizationValue(
+            shouldAuthenticate: shouldAuthenticate
         )
 
         guard self.pdsURL != "" else {
             throw ATRequestPrepareError.emptyPDSURL
         }
 
-        guard let requestURL = URL(string: "\(self.pdsURL)/xrpc/app.bsky.actor.searchActorsTypeahead") else {
+        guard let sessionURL = authorizationValue != nil ? try await self.getUserSession()?.serviceEndpoint.absoluteString : self.pdsURL,
+              let requestURL = URL(string: "\(self.pdsURL)/xrpc/app.bsky.actor.searchActorsTypeahead") else {
             throw ATRequestPrepareError.invalidRequestURL
         }
 
