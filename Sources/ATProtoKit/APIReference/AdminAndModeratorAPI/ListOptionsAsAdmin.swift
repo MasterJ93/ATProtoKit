@@ -36,12 +36,14 @@ extension ATProtoAdmin {
         prefix: String? = nil,
         key: [String]? = []
     ) async throws -> ToolsOzoneLexicon.Setting.ListOptionsOutput {
-        guard session != nil,
-              let accessToken = session?.accessToken else {
+        guard let session = try await self.getUserSession(),
+              let keychain = sessionConfiguration?.keychainProtocol else {
             throw ATRequestPrepareError.missingActiveSession
         }
 
-        guard let sessionURL = session?.pdsURL,
+        let accessToken = try keychain.retrieveAccessToken()
+
+        guard let sessionURL = session.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/tools.ozone.setting.listOptions") else {
             throw ATRequestPrepareError.invalidRequestURL
         }

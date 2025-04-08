@@ -44,13 +44,15 @@ extension ATProtoKit {
         postFilter: AppBskyLexicon.Feed.GetAuthorFeed.Filter? = .postsWithReplies,
         shouldIncludePins: Bool? = false
     ) async throws -> AppBskyLexicon.Feed.GetAuthorFeedOutput {
-        guard session != nil,
-              let accessToken = session?.accessToken else {
+        guard let session = try await self.getUserSession(),
+              let keychain = sessionConfiguration?.keychainProtocol else {
             throw ATRequestPrepareError.missingActiveSession
         }
 
-        guard let sessionURL = session?.serviceEndpoint,
-              let requestURL = URL(string: "\(sessionURL)/xrpc/app.bsky.feed.getAuthorFeed") else {
+        let accessToken = try keychain.retrieveAccessToken()
+        let sessionURL = session.serviceEndpoint.absoluteString
+
+        guard let requestURL = URL(string: "\(sessionURL)/xrpc/app.bsky.feed.getAuthorFeed") else {
             throw ATRequestPrepareError.invalidRequestURL
         }
 

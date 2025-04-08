@@ -31,12 +31,14 @@ extension ATProtoAdmin {
         description: String? = nil,
         managerRole: ToolsOzoneLexicon.Team.MemberDefinition.Role?
     ) async throws -> ToolsOzoneLexicon.Setting.UpsertOptionOutput {
-        guard session != nil,
-              let accessToken = session?.accessToken else {
+        guard let session = try await self.getUserSession(),
+              let keychain = sessionConfiguration?.keychainProtocol else {
             throw ATRequestPrepareError.missingActiveSession
         }
 
-        guard let sessionURL = session?.pdsURL,
+        let accessToken = try keychain.retrieveAccessToken()
+
+        guard let sessionURL = session.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/tools.ozone.setting.upsertOption") else {
             throw ATRequestPrepareError.invalidRequestURL
         }

@@ -36,12 +36,14 @@ extension ATProtoAdmin {
         sortBy: ToolsOzoneLexicon.Set.QuerySets.SortBy? = .name,
         sortDirection: ToolsOzoneLexicon.Set.QuerySets.SortDirection? = .ascending
     ) async throws -> ToolsOzoneLexicon.Set.QuerySetsOutput {
-        guard session != nil,
-              let accessToken = session?.accessToken else {
+        guard let session = try await self.getUserSession(),
+              let keychain = sessionConfiguration?.keychainProtocol else {
             throw ATRequestPrepareError.missingActiveSession
         }
 
-        guard let sessionURL = session?.pdsURL,
+        let accessToken = try keychain.retrieveAccessToken()
+
+        guard let sessionURL = session.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/tools.ozone.set.querySets") else {
             throw ATRequestPrepareError.invalidRequestURL
         }

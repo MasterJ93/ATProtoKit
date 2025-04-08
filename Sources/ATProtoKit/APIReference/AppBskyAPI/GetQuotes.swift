@@ -35,13 +35,15 @@ extension ATProtoKit {
         limit: Int? = 50,
         cursor: String? = nil
     ) async throws -> AppBskyLexicon.Feed.GetQuotesOutput {
-        guard session != nil,
-              let accessToken = session?.accessToken else {
+        guard let session = try await self.getUserSession(),
+              let keychain = sessionConfiguration?.keychainProtocol else {
             throw ATRequestPrepareError.missingActiveSession
         }
 
-        guard let sessionURL = session?.serviceEndpoint,
-              let requestURL = URL(string: "\(sessionURL)/xrpc/app.bsky.feed.getQuotes") else {
+        let accessToken = try keychain.retrieveAccessToken()
+        let sessionURL = session.serviceEndpoint.absoluteString
+
+        guard let requestURL = URL(string: "\(sessionURL)/xrpc/app.bsky.feed.getQuotes") else {
             throw ATRequestPrepareError.invalidRequestURL
         }
 

@@ -27,13 +27,15 @@ extension ATProtoKit {
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func getSuggestedFollowsByActor(_ actor: String) async throws -> AppBskyLexicon.Graph.GetSuggestedFollowsByActorOutput {
-        guard session != nil,
-              let accessToken = session?.accessToken else {
+        guard let session = try await self.getUserSession(),
+              let keychain = sessionConfiguration?.keychainProtocol else {
             throw ATRequestPrepareError.missingActiveSession
         }
 
-        guard let sessionURL = session?.serviceEndpoint,
-              let requestURL = URL(string: "\(sessionURL)/xrpc/app.bsky.graph.getSuggestedFollowsByActor") else {
+        let accessToken = try keychain.retrieveAccessToken()
+        let sessionURL = session.serviceEndpoint.absoluteString
+
+        guard let requestURL = URL(string: "\(sessionURL)/xrpc/app.bsky.graph.getSuggestedFollowsByActor") else {
             throw ATRequestPrepareError.invalidRequestURL
         }
 

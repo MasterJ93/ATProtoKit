@@ -24,13 +24,15 @@ extension ATProtoKit {
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func muteThread(_ rootPostURI: String) async throws {
-        guard session != nil,
-              let accessToken = session?.accessToken else {
+        guard let session = try await self.getUserSession(),
+              let keychain = sessionConfiguration?.keychainProtocol else {
             throw ATRequestPrepareError.missingActiveSession
         }
 
-        guard let sessionURL = session?.serviceEndpoint,
-              let requestURL = URL(string: "\(sessionURL)/xrpc/app.bsky.graph.muteThread") else {
+        let accessToken = try keychain.retrieveAccessToken()
+        let sessionURL = session.serviceEndpoint.absoluteString
+
+        guard let requestURL = URL(string: "\(sessionURL)/xrpc/app.bsky.graph.muteThread") else {
             throw ATRequestPrepareError.invalidRequestURL
         }
 

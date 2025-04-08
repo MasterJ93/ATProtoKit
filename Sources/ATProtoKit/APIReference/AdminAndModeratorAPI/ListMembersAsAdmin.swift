@@ -40,12 +40,14 @@ extension ATProtoAdmin {
         limit: Int? = 50,
         cursor: String? = nil
     ) async throws -> ToolsOzoneLexicon.Team.ListMembersOutput {
-        guard session != nil,
-              let accessToken = session?.accessToken else {
+        guard let session = try await self.getUserSession(),
+              let keychain = sessionConfiguration?.keychainProtocol else {
             throw ATRequestPrepareError.missingActiveSession
         }
 
-        guard let sessionURL = session?.pdsURL,
+        let accessToken = try keychain.retrieveAccessToken()
+
+        guard let sessionURL = session.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/tools.ozone.team.listMembers") else {
             throw ATRequestPrepareError.invalidRequestURL
         }

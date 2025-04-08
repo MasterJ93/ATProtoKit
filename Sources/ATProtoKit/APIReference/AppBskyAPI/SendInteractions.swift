@@ -29,13 +29,15 @@ extension ATProtoKit {
     public func sendInteractions(
         _ interactions: [AppBskyLexicon.Feed.InteractionDefinition]
     ) async throws -> AppBskyLexicon.Feed.SendInteractionsOutput {
-        guard session != nil,
-              let accessToken = session?.accessToken else {
+        guard let session = try await self.getUserSession(),
+              let keychain = sessionConfiguration?.keychainProtocol else {
             throw ATRequestPrepareError.missingActiveSession
         }
 
-        guard let sessionURL = session?.serviceEndpoint,
-              let requestURL = URL(string: "\(sessionURL)/xrpc/app.bsky.feed.sendInteractions") else {
+        let accessToken = try keychain.retrieveAccessToken()
+        let sessionURL = session.serviceEndpoint.absoluteString
+
+        guard let requestURL = URL(string: "\(sessionURL)/xrpc/app.bsky.feed.sendInteractions") else {
             throw ATRequestPrepareError.invalidRequestURL
         }
 

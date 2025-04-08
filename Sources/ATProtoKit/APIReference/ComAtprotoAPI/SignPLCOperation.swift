@@ -38,13 +38,15 @@ extension ATProtoKit {
         verificationMethods: VerificationMethod?,
         service: ATService?
     ) async throws -> ComAtprotoLexicon.Identity.SignPLCOperationOutput {
-        guard session != nil,
-              let accessToken = session?.accessToken else {
+        guard let session = try await self.getUserSession(),
+              let keychain = sessionConfiguration?.keychainProtocol else {
             throw ATRequestPrepareError.missingActiveSession
         }
 
-        guard let sessionURL = session?.pdsURL,
-              let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.identity.signPlcOperation") else {
+        let accessToken = try keychain.retrieveAccessToken()
+        let sessionURL = session.serviceEndpoint.absoluteString
+
+        guard let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.identity.signPlcOperation") else {
             throw ATRequestPrepareError.invalidRequestURL
         }
 
