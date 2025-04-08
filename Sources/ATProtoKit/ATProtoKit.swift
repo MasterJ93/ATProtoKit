@@ -51,12 +51,12 @@ public protocol ATProtoKitConfiguration {
     /// - Parameters:
     ///   - shouldAuthenticate: Indicates whether the method call should be authenticated.
     ///   Defaults to `false`.
-    ///   - session: The current session used in the class's instance. Optional.
+    ///   - keychain: The instance of `KeychainProtocol`. Optional.
     ///
     /// - Returns: A `String`, containing either `nil` if it's determined that there should be no
     /// authorization header in the request, or  `"Bearer \(accessToken)"` (where `accessToken`
     /// is the session's access token) if it's determined there should be an authorization header.
-    func prepareAuthorizationValue(shouldAuthenticate: Bool, session: UserSession?) -> String?
+    func prepareAuthorizationValue(shouldAuthenticate: Bool, keychain: SessionKeychainProtocol?) async -> String?
 
     /// Determines the appropriate Personal Data Server (PDS) URL.
     ///
@@ -81,21 +81,26 @@ extension ATProtoKitConfiguration {
     /// - Parameters:
     ///   - shouldAuthenticate: Indicates whether the method call should be authenticated.
     ///   Defaults to `false`.
-    ///   - session: The current session used in the class's instance. Optional.
+    ///   - keychain: The instance of `KeychainProtocol`. Optional.
     ///
     /// - Returns: A `String`, containing either `nil` if it's determined that there should be no
     /// authorization header in the request, or  `"Bearer \(accessToken)"`
     /// (where `accessToken` is the session's access token) if it's determined there should be an
     /// authorization header.
-    public func prepareAuthorizationValue(shouldAuthenticate: Bool = false, session: UserSession?) -> String? {
+    public func prepareAuthorizationValue(shouldAuthenticate: Bool = false, keychain: SessionKeychainProtocol?) async -> String? {
         // If `shouldAuthenticate` is false, return nil regardless of session state.
         guard shouldAuthenticate else {
             return nil
         }
 
         // If `shouldAuthenticate` is true, check if the session exists and has a valid access token.
-        if let session = session, !session.accessToken.isEmpty {
-            return "Bearer \(session.accessToken)"
+        if let sessionConfiguration = sessionConfiguration {
+            do {
+                let keychain = try sessionConfiguration.keychainProtocol.retrieveAccessToken()
+                return "Bearer \(keychain)"
+            } catch {
+                return nil
+            }
         }
 
         // Return nil if no valid session or access token is found.
