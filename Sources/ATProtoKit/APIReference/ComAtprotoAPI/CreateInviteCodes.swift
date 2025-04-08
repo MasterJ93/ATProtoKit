@@ -20,7 +20,7 @@ extension ATProtoKit {
     /// - Parameters:
     ///   - codeCount: The number of invite codes to be created. Defaults to `1`.
     ///   - accounts: An array of decentralized identifiers (DIDs) that can use the invite codes.
-    /// - Returns: An array of newly-created invide codes
+    /// - Returns: An array of newly-created invide codes.
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
