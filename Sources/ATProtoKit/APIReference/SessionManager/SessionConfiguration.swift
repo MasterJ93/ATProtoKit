@@ -460,6 +460,34 @@ extension SessionConfiguration {
             throw error
         }
     }
+
+    public func deleteSession() async throws {
+        let refreshToken: String
+
+        do {
+            refreshToken = try keychainProtocol.retrieveRefreshToken()
+        } catch {
+            throw ATProtocolConfiguration.ATProtocolConfigurationError.noSessionToken(message: "The access token doesn't exist.")
+        }
+
+        do {
+            if try SessionToken(sessionToken: refreshToken).payload.expiresAt.addingTimeInterval(30) > Date() {
+                // TODO: Re-authenticate.
+            }
+        } catch {
+            throw error
+        }
+
+        do {
+            try await ATProtoKit(pdsURL: self.pdsURL, canUseBlueskyRecords: false).deleteSession(
+                refreshToken: refreshToken
+            )
+
+            await UserSessionRegistry.shared.removeSession(for: instanceUUID)
+        } catch {
+            throw error
+        }
+    }
 }
 
 public enum SessionConfigurationHelpers {
