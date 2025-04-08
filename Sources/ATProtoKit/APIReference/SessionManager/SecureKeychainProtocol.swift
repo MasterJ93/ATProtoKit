@@ -22,6 +22,12 @@ public protocol SecureKeychainProtocol: Sendable {
     /// A unique identifier for linking the instance of `UserSession` to the credentials.
     var identifier: UUID { get }
 
+    /// Initializes an instance of `SecureKeychainProtocol`.
+    ///
+    /// - Parameter identifier: A unique identifier for linking the instance of `UserSession`
+    /// the credientals.
+    init(identifier: UUID)
+
     /// Retrieves the access token of the account.
     ///
     /// When implementing this method, please be sure to save the access token in-memory.
