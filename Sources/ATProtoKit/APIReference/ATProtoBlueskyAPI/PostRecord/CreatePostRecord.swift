@@ -265,7 +265,7 @@ extension ATProtoBluesky {
         shouldValidate: Bool? = true,
         swapCommit: String? = nil
     ) async throws -> ComAtprotoLexicon.Repository.StrongReference {
-        guard let session else {
+        guard let session = try await atProtoKitInstance.getUserSession() else {
             throw ATRequestPrepareError.missingActiveSession
         }
 
@@ -316,39 +316,43 @@ extension ATProtoBluesky {
 
         if let embedUnion = embed {
             do {
-                switch embedUnion {
-                    case .images(let images):
-                        resolvedEmbed = try await uploadImages(
-                            images,
-                            pdsURL: sessionURL,
-                            accessToken: session.accessToken
-                        )
-                    case .external(let url, let title, let description, let thumbnailImageURL):
-                        resolvedEmbed = await buildExternalEmbed(
-                            from: url,
-                            title: title,
-                            description: description,
-                            thumbnailImageURL: thumbnailImageURL,
-                            session: session
-                        )
-                    case .record(let record):
-                        resolvedEmbed = try await addQuotePostToEmbed(record)
-                    case .recordWithMedia(let record, let media):
-                        let recordWithMediaDefinition = AppBskyLexicon.Embed.RecordWithMediaDefinition(
-                            record: record,
-                            media: media
-                        )
+                if let keychain = sessionConfiguration?.keychainProtocol {
+                    let accessToken = try keychain.retrieveAccessToken()
 
-                        resolvedEmbed = .recordWithMedia(recordWithMediaDefinition)
-                    case .video(let video, let captions, let altText, let aspectRatio):
-                        resolvedEmbed = try await buildVideo(
-                            video,
-                            with: captions,
-                            altText: altText,
-                            aspectRatio: aspectRatio,
-                            pdsURL: sessionURL,
-                            accessToken: session.accessToken
-                        )
+                    switch embedUnion {
+                        case .images(let images):
+                            resolvedEmbed = try await uploadImages(
+                                images,
+                                pdsURL: sessionURL,
+                                accessToken: accessToken
+                            )
+                        case .external(let url, let title, let description, let thumbnailImageURL):
+                            resolvedEmbed = await buildExternalEmbed(
+                                from: url,
+                                title: title,
+                                description: description,
+                                thumbnailImageURL: thumbnailImageURL,
+                                session: session
+                            )
+                        case .record(let record):
+                            resolvedEmbed = try await addQuotePostToEmbed(record)
+                        case .recordWithMedia(let record, let media):
+                            let recordWithMediaDefinition = AppBskyLexicon.Embed.RecordWithMediaDefinition(
+                                record: record,
+                                media: media
+                            )
+
+                            resolvedEmbed = .recordWithMedia(recordWithMediaDefinition)
+                        case .video(let video, let captions, let altText, let aspectRatio):
+                            resolvedEmbed = try await buildVideo(
+                                video,
+                                with: captions,
+                                altText: altText,
+                                aspectRatio: aspectRatio,
+                                pdsURL: sessionURL,
+                                accessToken: accessToken
+                            )
+                    }
                 }
             } catch {
                 throw error
@@ -633,15 +637,22 @@ extension ATProtoBluesky {
         // Optional upload of the thumbnail image if it exists.
         var thumbnailImage: ComAtprotoLexicon.Repository.UploadBlobOutput? = nil
 
-        if let pdsURL = session.pdsURL, let imageData = image {
-            thumbnailImage = try? await ATProtoKit(canUseBlueskyRecords: false).uploadBlob(
-                pdsURL: pdsURL,
-                accessToken: session.accessToken,
-                filename: "\(ATProtoTools().generateRandomString())_thumbnail.jpg",
-                imageData: imageData
-            ).blob
-
-        } else {
+        // Grab the access token.
+        do {
+            let keychain = sessionConfiguration?.keychainProtocol
+            if let accessToken = try? keychain?.retrieveAccessToken() {
+                if let pdsURL = session.pdsURL, let imageData = image {
+                    thumbnailImage = try await ATProtoKit(canUseBlueskyRecords: false).uploadBlob(
+                        pdsURL: pdsURL,
+                        accessToken: accessToken,
+                        filename: "\(ATProtoTools().generateRandomString())_thumbnail.jpg",
+                        imageData: imageData
+                    ).blob
+                } else {
+                    thumbnailImage = nil
+                }
+            }
+        } catch {
             thumbnailImage = nil
         }
 
