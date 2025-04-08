@@ -36,16 +36,15 @@ extension ATProtoKit {
         parentHeight: Int? = 80,
         shouldAuthenticate: Bool = true
     ) async throws -> AppBskyLexicon.Feed.GetPostThreadOutput {
-        let authorizationValue = prepareAuthorizationValue(
-            shouldAuthenticate: shouldAuthenticate,
-            session: session
+        let authorizationValue = await prepareAuthorizationValue(
+            shouldAuthenticate: shouldAuthenticate
         )
 
         guard self.pdsURL != "" else {
             throw ATRequestPrepareError.emptyPDSURL
         }
 
-        guard let sessionURL = authorizationValue != nil ? session?.serviceEndpoint.absoluteString : self.pdsURL,
+        guard let sessionURL = authorizationValue != nil ? try await self.getUserSession()?.serviceEndpoint.absoluteString : self.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/app.bsky.feed.getPostThread") else {
             throw ATRequestPrepareError.invalidRequestURL
         }

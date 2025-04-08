@@ -37,16 +37,15 @@ extension ATProtoKit {
         cursor: String? = nil,
         shouldAuthenticate: Bool = true
     ) async throws -> AppBskyLexicon.Graph.GetFollowersOutput {
-        let authorizationValue = prepareAuthorizationValue(
-            shouldAuthenticate: shouldAuthenticate,
-            session: session
+        let authorizationValue = await prepareAuthorizationValue(
+            shouldAuthenticate: shouldAuthenticate
         )
 
         guard self.pdsURL != "" else {
             throw ATRequestPrepareError.emptyPDSURL
         }
 
-        guard let sessionURL = authorizationValue != nil ? session?.serviceEndpoint.absoluteString : self.pdsURL,
+        guard let sessionURL = authorizationValue != nil ? try await self.getUserSession()?.serviceEndpoint.absoluteString : self.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/app.bsky.graph.getFollowers") else {
             throw ATRequestPrepareError.invalidRequestURL
         }
