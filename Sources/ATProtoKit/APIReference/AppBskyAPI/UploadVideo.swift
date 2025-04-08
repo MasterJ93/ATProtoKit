@@ -28,8 +28,7 @@ extension ATProtoKit {
     public func uploadVideo(_ video: Data) async throws -> AppBskyLexicon.Video.JobStatusDefinition {
         var attempts = 0
 
-        guard let session = try await self.getUserSession(),
-              let keychain = sessionConfiguration?.keychainProtocol else {
+        guard let session = try await self.getUserSession() else {
             throw ATRequestPrepareError.missingActiveSession
         }
 
@@ -53,7 +52,7 @@ extension ATProtoKit {
 
         let requestBody = AppBskyLexicon.Video.UploadVideoRequestBody(video: video)
 
-        var queryItems: [(String, String)] = [
+        let queryItems: [(String, String)] = [
             ("did", session.sessionDID),
             ("name", "\(ATProtoTools().generateRandomString()).mp4")
         ]

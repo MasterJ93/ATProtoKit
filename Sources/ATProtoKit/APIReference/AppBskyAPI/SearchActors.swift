@@ -56,7 +56,7 @@ extension ATProtoKit {
         }
 
         guard let sessionURL = authorizationValue != nil ? try await self.getUserSession()?.serviceEndpoint.absoluteString : self.pdsURL,
-              let requestURL = URL(string: "\(self.pdsURL)/xrpc/app.bsky.actor.searchActors") else {
+              let requestURL = URL(string: "\(sessionURL)/xrpc/app.bsky.actor.searchActors") else {
             throw ATRequestPrepareError.invalidRequestURL
         }
 
