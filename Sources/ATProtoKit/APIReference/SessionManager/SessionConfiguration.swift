@@ -15,7 +15,7 @@ import Foundation
 /// When implementing this protocol onto your `class`, you should keep in mind of a few things:
 /// - `class`es that conform to `SessionConfiguration` must be marked `final` and
 /// adopt `Sendable`.
-/// - You should use `UserSessionRegistry` to manage `UserSession` instances.
+/// - You should use `UserSessionRegistry` to manage ``UserSession`` instances.
 /// - When deleting a session, make sure that `deleteSession` removes the instance
 /// from `UserSessionRegistry`.
 /// - Accessing the access token, refresh token, or password requires
@@ -291,7 +291,6 @@ extension SessionConfiguration {
                 default:
                     status = nil
             }
-
 
             let userSession = UserSession(
                 handle: response.handle,
