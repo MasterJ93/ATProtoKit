@@ -402,8 +402,16 @@ extension SessionConfiguration {
         }
 
         do {
-            if try SessionToken(sessionToken: refreshToken).payload.expiresAt.addingTimeInterval(30) > Date() {
-                // TODO: Re-authenticate.
+            if try SessionToken(sessionToken: refreshToken).payload.expiresAt.addingTimeInterval(10) > Date() {
+                guard let handle = await UserSessionRegistry.shared.getSession(for: instanceUUID)?.handle else {
+                    // TODO: Create a better error.
+                    throw DIDDocument.DIDDocumentError.emptyArray
+                }
+
+                try await self.authenticate(
+                    with: handle,
+                    password: try keychainProtocol.retrievePassword()
+                )
             }
         } catch {
             throw error
@@ -470,8 +478,16 @@ extension SessionConfiguration {
         }
 
         do {
-            if try SessionToken(sessionToken: refreshToken).payload.expiresAt.addingTimeInterval(30) > Date() {
-                // TODO: Re-authenticate.
+            if try SessionToken(sessionToken: refreshToken).payload.expiresAt.addingTimeInterval(10) > Date() {
+                guard let handle = await UserSessionRegistry.shared.getSession(for: instanceUUID)?.handle else {
+                    // TODO: Create a better error.
+                    throw DIDDocument.DIDDocumentError.emptyArray
+                }
+
+                try await self.authenticate(
+                    with: handle,
+                    password: try keychainProtocol.retrievePassword()
+                )
             }
         } catch {
             throw error
