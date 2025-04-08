@@ -42,12 +42,16 @@ extension ATProtoKit {
         cursor: String? = nil,
         shouldAuthenticate: Bool = true
     ) async throws -> ComAtprotoLexicon.Label.QueryLabelsOutput {
-        let authorizationValue = prepareAuthorizationValue(
-            shouldAuthenticate: shouldAuthenticate,
-            session: session
+        let authorizationValue = await prepareAuthorizationValue(
+            shouldAuthenticate: shouldAuthenticate
         )
 
-        guard let requestURL = URL(string: "\(self.pdsURL)/xrpc/com.atproto.label.queryLabels") else {
+        guard self.pdsURL != "" else {
+            throw ATRequestPrepareError.emptyPDSURL
+        }
+
+        guard let sessionURL = authorizationValue != nil ? try await self.getUserSession()?.serviceEndpoint.absoluteString : self.pdsURL,
+              let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.label.queryLabels") else {
             throw ATRequestPrepareError.missingActiveSession
         }
 
