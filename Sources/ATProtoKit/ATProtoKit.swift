@@ -30,15 +30,13 @@ public protocol ATProtoKitConfiguration {
     /// - Note: Don't use this method if authorization is required or unneeded. This is only for
     /// methods where authorization is optional.
     ///
-    /// - Parameters:
-    ///   - shouldAuthenticate: Indicates whether the method call should be authenticated.
+    /// - Parameter shouldAuthenticate: Indicates whether the method call should be authenticated.
     ///   Defaults to `false`.
-    ///   - keychain: The instance of `KeychainProtocol`. Optional.
     ///
     /// - Returns: A `String`, containing either `nil` if it's determined that there should be no
     /// authorization header in the request, or  `"Bearer \(accessToken)"` (where `accessToken`
     /// is the session's access token) if it's determined there should be an authorization header.
-    func prepareAuthorizationValue(shouldAuthenticate: Bool, keychain: SessionKeychainProtocol?) async -> String?
+    func prepareAuthorizationValue(shouldAuthenticate: Bool) async -> String?
 
     /// Retrieves the applicable ``UserSession`` instance.
     ///
@@ -68,16 +66,14 @@ extension ATProtoKitConfiguration {
     /// - Note: Don't use this method if authorization is required or unneeded. This is only for
     /// methods where authorization is optional.
     ///
-    /// - Parameters:
-    ///   - shouldAuthenticate: Indicates whether the method call should be authenticated.
+    /// - Parameter shouldAuthenticate: Indicates whether the method call should be authenticated.
     ///   Defaults to `false`.
-    ///   - keychain: The instance of `KeychainProtocol`. Optional.
     ///
     /// - Returns: A `String`, containing either `nil` if it's determined that there should be no
     /// authorization header in the request, or  `"Bearer \(accessToken)"`
     /// (where `accessToken` is the session's access token) if it's determined there should be an
     /// authorization header.
-    public func prepareAuthorizationValue(shouldAuthenticate: Bool = false, keychain: SessionKeychainProtocol?) async -> String? {
+    public func prepareAuthorizationValue(shouldAuthenticate: Bool = false) async -> String? {
         // If `shouldAuthenticate` is false, return nil regardless of session state.
         guard shouldAuthenticate else {
             return nil
