@@ -57,12 +57,12 @@ public protocol ATRecordViewProtocol: Identifiable {
     /// }
     /// ```
     ///
-    /// - Parameter session: An instance of ``UserSession``.
+    /// - Parameter sessionConfiguration: An instance of ``SessionConfiguration``.
     /// - Returns: An updated version of the record view.
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
-    func refresh(with session: UserSession) async throws -> Self
+    func refresh(with sessionConfiguration: SessionConfiguration) async throws -> Self
 }
 
 extension ATRecordViewProtocol {

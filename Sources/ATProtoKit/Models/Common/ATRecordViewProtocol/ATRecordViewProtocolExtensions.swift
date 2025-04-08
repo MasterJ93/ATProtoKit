@@ -9,11 +9,8 @@ import Foundation
 
 extension AppBskyLexicon.Feed.PostViewDefinition: ATRecordViewProtocol {
 
-    public func refresh(with session: UserSession) async throws -> AppBskyLexicon.Feed.PostViewDefinition {
-        let config = ATProtocolConfiguration(userSession: session, pdsURL: session.pdsURL ?? "https://bsky.social")
-        _ = try await config.getSession()
-
-        let atProto = await ATProtoKit(sessionConfiguration: config, canUseBlueskyRecords: false)
+    public func refresh(with sessionConfiguration: SessionConfiguration) async throws -> AppBskyLexicon.Feed.PostViewDefinition {
+        let atProto = await ATProtoKit(sessionConfiguration: sessionConfiguration, canUseBlueskyRecords: false)
         let record = try await atProto.getPosts([self.uri])
 
         return record.posts[0]
@@ -26,11 +23,8 @@ extension AppBskyLexicon.Feed.GeneratorViewDefinition: ATRecordViewProtocol {
         return self.feedURI
     }
 
-    public func refresh(with session: UserSession) async throws -> AppBskyLexicon.Feed.GeneratorViewDefinition {
-        let config = ATProtocolConfiguration(userSession: session, pdsURL: session.pdsURL ?? "https://bsky.social")
-        _ = try await config.getSession()
-
-        let atProto = await ATProtoKit(sessionConfiguration: config, canUseBlueskyRecords: false)
+    public func refresh(with sessionConfiguration: SessionConfiguration) async throws -> AppBskyLexicon.Feed.GeneratorViewDefinition {
+        let atProto = await ATProtoKit(sessionConfiguration: sessionConfiguration, canUseBlueskyRecords: false)
         let record = try await atProto.getFeedGenerator(by: self.feedURI)
 
         return record.view
@@ -39,11 +33,8 @@ extension AppBskyLexicon.Feed.GeneratorViewDefinition: ATRecordViewProtocol {
 
 extension AppBskyLexicon.Graph.ListViewDefinition: ATRecordViewProtocol {
 
-    public func refresh(with session: UserSession) async throws -> AppBskyLexicon.Graph.ListViewDefinition {
-        let config = ATProtocolConfiguration(userSession: session, pdsURL: session.pdsURL ?? "https://bsky.social")
-        _ = try await config.getSession()
-
-        let atProto = await ATProtoKit(sessionConfiguration: config, canUseBlueskyRecords: false)
+    public func refresh(with sessionConfiguration: SessionConfiguration) async throws -> AppBskyLexicon.Graph.ListViewDefinition {
+        let atProto = await ATProtoKit(sessionConfiguration: sessionConfiguration, canUseBlueskyRecords: false)
         let record = try await atProto.getList(from: self.uri)
 
         return record.list
@@ -52,11 +43,8 @@ extension AppBskyLexicon.Graph.ListViewDefinition: ATRecordViewProtocol {
 
 extension AppBskyLexicon.Graph.StarterPackViewDefinition: ATRecordViewProtocol {
 
-    public func refresh(with session: UserSession) async throws -> AppBskyLexicon.Graph.StarterPackViewDefinition {
-        let config = ATProtocolConfiguration(userSession: session, pdsURL: session.pdsURL ?? "https://bsky.social")
-        _ = try await config.getSession()
-
-        let atProto = await ATProtoKit(sessionConfiguration: config, canUseBlueskyRecords: false)
+    public func refresh(with sessionConfiguration: SessionConfiguration) async throws -> AppBskyLexicon.Graph.StarterPackViewDefinition {
+        let atProto = await ATProtoKit(sessionConfiguration: sessionConfiguration, canUseBlueskyRecords: false)
         let record = try await atProto.getStarterPack(uri: self.uri)
 
         return record.starterPack
@@ -69,11 +57,8 @@ extension AppBskyLexicon.Feed.FeedViewPostDefinition: ATRecordViewProtocol {
         return self.post.uri
     }
 
-    public func refresh(with session: UserSession) async throws -> AppBskyLexicon.Feed.FeedViewPostDefinition {
-        let config = ATProtocolConfiguration(userSession: session, pdsURL: session.pdsURL ?? "https://bsky.social")
-        _ = try await config.getSession()
-
-        let atProto = await ATProtoKit(sessionConfiguration: config, canUseBlueskyRecords: false)
+    public func refresh(with sessionConfiguration: SessionConfiguration) async throws -> AppBskyLexicon.Feed.FeedViewPostDefinition {
+        let atProto = await ATProtoKit(sessionConfiguration: sessionConfiguration, canUseBlueskyRecords: false)
         let record = try await atProto.getFeed(by: self.post.uri)
 
         return record.feed[0]
