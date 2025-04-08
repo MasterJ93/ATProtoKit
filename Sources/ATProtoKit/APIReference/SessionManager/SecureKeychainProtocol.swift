@@ -17,7 +17,7 @@ import Foundation
 ///
 /// This, coupled with `UserSessionRegistry`, is the best way to manage authentication in the
 /// AT Protocol.
-public protocol SecureKeychainProtocol {
+public protocol SecureKeychainProtocol: Sendable {
 
     /// A unique identifier for linking the instance of `UserSession` to the credentials.
     var identifier: UUID { get }
