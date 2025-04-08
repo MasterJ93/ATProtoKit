@@ -51,24 +51,19 @@ extension ATProtoKit {
             throw ATRequestPrepareError.invalidRequestURL
         }
 
-        let requestBody = AppBskyLexicon.Video.UploadVideoRequestBody(
-            video: video
-        )
+        let requestBody = AppBskyLexicon.Video.UploadVideoRequestBody(video: video)
 
-        var queryItems = [(String, String)]()
-
-        queryItems.append(("did", session.sessionDID))
-        queryItems.append(("name", "\(ATProtoTools().generateRandomString()).mp4"))
-
-        let queryURL: URL
-
+        var queryItems: [(String, String)] = [
+            ("did", session.sessionDID),
+            ("name", "\(ATProtoTools().generateRandomString()).mp4")
+        ]
 
         let maxRetryCount = 3
         let retryTimeDelay = 1.0
 
         while attempts < maxRetryCount {
             do {
-                queryURL = try APIClientService.setQueryItems(
+                let queryURL = try APIClientService.setQueryItems(
                     for: requestURL,
                     with: queryItems
                 )
@@ -103,37 +98,26 @@ extension ATProtoKit {
                             .upgradeRequired(let requestError),
                             .internalServerError(let requestError),
                             .methodNotImplemented(let requestError):
-                        if attempts == maxRetryCount {
+                        if attempts == maxRetryCount - 1 {
                             throw requestError
-                        } else {
-                            attempts += 1
-                            try await Task.sleep(nanoseconds: UInt64(retryTimeDelay * 1_000_000_000))
                         }
                     case .badGateway,
                             .serviceUnavailable,
                             .gatewayTimeout:
-                        if attempts == maxRetryCount {
+                        if attempts == maxRetryCount - 1 {
                             throw error
-                        } else {
-                            attempts += 1
-                            try await Task.sleep(nanoseconds: UInt64(retryTimeDelay * 1_000_000_000))
                         }
                     case .unknown(error: let requestError, errorCode: let errorCode, errorData: let errorData, httpHeaders: let httpHeaders):
-                        if attempts == maxRetryCount {
+                        if attempts == maxRetryCount - 1 {
                             throw ATAPIError.unknown(error: requestError, errorCode: errorCode, errorData: errorData, httpHeaders: httpHeaders)
-                        } else {
-                            attempts += 1
-                            try await Task.sleep(nanoseconds: UInt64(retryTimeDelay * 1_000_000_000))
                         }
                 }
 
                 attempts += 1
                 try await Task.sleep(nanoseconds: UInt64(retryTimeDelay * 1_000_000_000))
-
-                throw error
             }
         }
 
-        throw ATRequestPrepareError.invalidRequestURL
+        throw ATRequestPrepareError.failedAfterRetries
     }
 }
