@@ -325,7 +325,7 @@ extension SessionConfiguration {
         }
 
         do {
-            if try SessionToken(sessionToken: accessToken).payload.expiresAt.addingTimeInterval(30) > Date() {
+            if try SessionToken(sessionToken: accessToken).payload.expiresAt.addingTimeInterval(10) <= Date() {
                 try await self.refreshSession()
             }
         } catch {
@@ -397,7 +397,7 @@ extension SessionConfiguration {
         }
 
         do {
-            if try SessionToken(sessionToken: refreshToken).payload.expiresAt > Date() {
+            if try SessionToken(sessionToken: refreshToken).payload.expiresAt.addingTimeInterval(10) <= Date() {
                 guard let handle = await UserSessionRegistry.shared.getSession(for: instanceUUID)?.handle else {
                     // TODO: Create a better error.
                     throw DIDDocument.DIDDocumentError.emptyArray
@@ -470,7 +470,7 @@ extension SessionConfiguration {
         }
 
         do {
-            if try SessionToken(sessionToken: refreshToken).payload.expiresAt.addingTimeInterval(10) > Date() {
+            if try SessionToken(sessionToken: refreshToken).payload.expiresAt.addingTimeInterval(10) <= Date() {
                 guard let handle = await UserSessionRegistry.shared.getSession(for: instanceUUID)?.handle else {
                     // TODO: Create a better error.
                     throw DIDDocument.DIDDocumentError.emptyArray
