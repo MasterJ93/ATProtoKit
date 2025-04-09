@@ -23,26 +23,33 @@ final public class ATProtocolConfiguration: SessionConfiguration {
     /// An instance of `URLSessionConfiguration`.
     public let configuration: URLSessionConfiguration
 
+    /// Determines whether `ATProtocolConfiguration` will automatically resolve the handle.
+    public let canResolve: Bool
+
     /// Initializes a new instance of `ATProtocolConfiguration`.
     ///
     /// - Parameters:
     ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `https://bsky.social`.
-    ///   - keychainProtocol: An instance of `SecureKeychainProtocol`.
+    ///   - keychainProtocol: An instance of `SecureKeychainProtocol`. Optional. Defaults to `nil`.
     ///   - configuration: An instance of `URLSessionConfiguration`. Optional.
-    public init(
+    ///   - canResolve: Indicates whether `ATProtocolConfiguration` will automatically resolve
+    ///   the handle. Defaults to `true`.
+    public init<Keychain: SecureKeychainProtocol>(
         pdsURL: String = "https://bsky.social",
-        keychainProtocol: SecureKeychainProtocol,
-        configuration: URLSessionConfiguration = .default
+        keychainProtocol: Keychain,
+        configuration: URLSessionConfiguration = .default,
+        canResolve: Bool = true
     ) {
-        self.instanceUUID = UUID()
+        self.keychainProtocol = keychainProtocol
+        self.instanceUUID = keychainProtocol.identifier
         self.pdsURL = pdsURL
 
         let (stream, continuation) = AsyncStream<String>.makeStream()
         self.codeStream = stream
         self.codeContinuation = continuation
 
-        self.keychainProtocol = keychainProtocol
         self.configuration = configuration
+        self.canResolve = canResolve
     }
 
 //    /// Resumes a session.
