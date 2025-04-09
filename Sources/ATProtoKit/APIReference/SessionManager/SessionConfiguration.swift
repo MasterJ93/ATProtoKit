@@ -397,7 +397,7 @@ extension SessionConfiguration {
         }
 
         do {
-            if try SessionToken(sessionToken: refreshToken).payload.expiresAt.addingTimeInterval(10) > Date() {
+            if try SessionToken(sessionToken: refreshToken).payload.expiresAt > Date() {
                 guard let handle = await UserSessionRegistry.shared.getSession(for: instanceUUID)?.handle else {
                     // TODO: Create a better error.
                     throw DIDDocument.DIDDocumentError.emptyArray
@@ -413,8 +413,8 @@ extension SessionConfiguration {
         }
 
         do {
-            let response = try await ATProtoKit(pdsURL: self.pdsURL, canUseBlueskyRecords: false).getSession(
-                by: refreshToken
+            let response = try await ATProtoKit(pdsURL: self.pdsURL, canUseBlueskyRecords: false).refreshSession(
+                refreshToken: refreshToken
             )
 
             guard let convertedDIDDocument = SessionConfigurationHelpers.convertDIDDocument(response.didDocument) else {
@@ -439,12 +439,14 @@ extension SessionConfiguration {
                     status = nil
             }
 
+            let oldUserSession = await UserSessionRegistry.shared.getSession(for: instanceUUID)
+
             let updatedUserSession = UserSession(
                 handle: response.handle,
                 sessionDID: response.did,
-                email: response.email,
-                isEmailConfirmed: response.isEmailConfirmed,
-                isEmailAuthenticationFactorEnabled: response.isEmailAuthenticationFactor,
+                email: oldUserSession?.email,
+                isEmailConfirmed: oldUserSession?.isEmailConfirmed,
+                isEmailAuthenticationFactorEnabled: oldUserSession?.isEmailAuthenticationFactorEnabled,
                 didDocument: didDocument,
                 isActive: response.isActive,
                 status: status,
