@@ -279,6 +279,10 @@ extension SessionConfiguration {
                 throw DIDDocument.DIDDocumentError.emptyArray
             }
 
+            guard let convertedDIDDocument = SessionConfigurationHelpers.convertDIDDocument(response.didDocument) else {
+                throw DIDDocument.DIDDocumentError.emptyArray
+            }
+
             var status: UserAccountStatus? = nil
 
             switch response.status {
