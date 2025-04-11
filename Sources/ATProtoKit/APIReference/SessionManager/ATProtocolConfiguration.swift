@@ -34,6 +34,25 @@ final public class ATProtocolConfiguration: SessionConfiguration {
     ///   - configuration: An instance of `URLSessionConfiguration`. Optional.
     ///   - canResolve: Indicates whether `ATProtocolConfiguration` will automatically resolve
     ///   the handle. Defaults to `true`.
+#if os(iOS) || os(macOS) || os(tvOS) || os(visionOS) || os(watchOS)
+    public init<Keychain: SecureKeychainProtocol>(
+        pdsURL: String = "https://bsky.social",
+        keychainProtocol: Keychain = AppleSecureKeychain(),
+        configuration: URLSessionConfiguration = .default,
+        canResolve: Bool = true
+    ) {
+        self.keychainProtocol = keychainProtocol
+        self.instanceUUID = keychainProtocol.identifier
+        self.pdsURL = pdsURL
+
+        let (stream, continuation) = AsyncStream<String>.makeStream()
+        self.codeStream = stream
+        self.codeContinuation = continuation
+
+        self.configuration = configuration
+        self.canResolve = canResolve
+    }
+#elseif os(Linux)
     public init<Keychain: SecureKeychainProtocol>(
         pdsURL: String = "https://bsky.social",
         keychainProtocol: Keychain,
@@ -51,6 +70,43 @@ final public class ATProtocolConfiguration: SessionConfiguration {
         self.configuration = configuration
         self.canResolve = canResolve
     }
+#elseif os(Windows)
+    public init<Keychain: SecureKeychainProtocol>(
+        pdsURL: String = "https://bsky.social",
+        keychainProtocol: Keychain,
+        configuration: URLSessionConfiguration = .default,
+        canResolve: Bool = true
+    ) {
+        self.keychainProtocol = keychainProtocol
+        self.instanceUUID = keychainProtocol.identifier
+        self.pdsURL = pdsURL
+
+        let (stream, continuation) = AsyncStream<String>.makeStream()
+        self.codeStream = stream
+        self.codeContinuation = continuation
+
+        self.configuration = configuration
+        self.canResolve = canResolve
+    }
+#else
+    public init<Keychain: SecureKeychainProtocol>(
+        pdsURL: String = "https://bsky.social",
+        keychainProtocol: Keychain,
+        configuration: URLSessionConfiguration = .default,
+        canResolve: Bool = true
+    ) {
+        self.keychainProtocol = keychainProtocol
+        self.instanceUUID = keychainProtocol.identifier
+        self.pdsURL = pdsURL
+
+        let (stream, continuation) = AsyncStream<String>.makeStream()
+        self.codeStream = stream
+        self.codeContinuation = continuation
+
+        self.configuration = configuration
+        self.canResolve = canResolve
+    }
+#endif
 
 //    /// Resumes a session.
 //    ///  
