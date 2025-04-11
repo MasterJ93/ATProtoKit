@@ -92,24 +92,24 @@ targets: [
 The Projects page isn't completed, but you can still view it through its [Projects](https://github.com/users/MasterJ93/projects/2) page.
 
 ## Quick Start
-As shown in the Example Usage, it all starts with `ATProtocolConfiguration`, which uses the handle, app password, and pdsURL to access and create a session:
+As shown in the Example Usage, it all starts with `ATProtocolConfiguration`:
 ```swift
 import ATProtoKit
 
-let config = ATProtocolConfiguration(handle: "lucy.bsky.social", appPassword: "hunter2")
+let config = ATProtocolConfiguration()
 ```
 
 By default, `ATProtocolConfiguration` conforms to `https://bsky.social`. However, if you’re using a different distributed service, you can specify the URL:
 ```swift
-let result = ATProtocolConfiguration(handle: "lucy.example.social", appPassword: "hunter2", pdsURL: "https://example.social")
+let result = ATProtocolConfiguration(pdsURL: "https://example.social")
 ```
 
-This session contains all of the elements you need, such as the access and refresh tokens:
+After that, use the `authenticate()` method, and pass in the handle and password of the user account. This session contains all of the elements you need, such as the access and refresh tokens:
 ```swift
 Task {
     do {
         // The session object is contained in the `ATProtocolConfiguration` object:
-        try await config.authenticate()
+        try await config.authenticate(handle: "lucy.bsky.social", appPassword: "hunter2")
 
         if let session = config.session {
             print("Result (Access Token): \(session.accessToken)")
