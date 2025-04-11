@@ -67,9 +67,14 @@ ATProtoKit is fully open source under the [MIT license](https://github.com/Maste
 
 ### Authentication and Session Management
 
-- ``ATProtoKit/ATProtoKitConfiguration``
 - ``ATProtocolConfiguration``
+- ``ATProtoKit/ATProtoKitConfiguration``
+- ``SessionConfiguration``
+- <doc:SessionConfigurationEssentialsTOS>
+- ``UserSessionRegistry``
 - ``UserSession``
+- ``SecureKeychainProtocol``
+- ``AppleSecureKeychain``
  
  @Comment {
      The following should be added:
@@ -134,6 +139,7 @@ ATProtoKit is fully open source under the [MIT license](https://github.com/Maste
 - ``ATProtoTools``
 - <doc:DateFormatting-PropertyWrapper>
 - ``ATFacetParser``
+- ``SessionConfigurationHelpers``
 
 @Comment {
     The following should be added:

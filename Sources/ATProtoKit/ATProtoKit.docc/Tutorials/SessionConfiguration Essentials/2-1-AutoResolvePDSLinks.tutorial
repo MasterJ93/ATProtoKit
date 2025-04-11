@@ -1,0 +1,54 @@
+@Tutorial(time: 5) {
+    @Intro(title: "Auto-Resolve PDS Links (Apple platforms)") {
+        `ATProtoKit` works best when calling lexicon methods straight from the Personal Data Server (PDS). In this chapter, we'll be using `ATResolve`: a Swift package that can resolve the decentralized identifier (DID) of the user account.
+        
+        We'll be using this package to get the service endpoint so that the authentication method can authenticate directly using the PDS' own implementation.
+
+        
+        @Image(source: <#file#>, alt: "<#accessible description#>")
+    }
+    
+    @Section(title: "Add ATResolve as a dependency") {
+        @ContentAndMedia {
+            <#text#>
+            
+            @Image(source: <#file#>, alt: "<#accessible description#>")
+        }
+        
+        @Steps {
+            @Step {
+                <#text#>
+                
+                @Image(source: <#file#>, alt: "<#accessible description#>")
+            }
+            
+            @Step {
+                <#text#>
+                
+                @Code(name: "<#display name#>", file: <#filename.swift#>)
+            }
+        }
+    }
+    
+    @Section(title: "Implement ATResolve to find the PDS endpoint.") {
+        @ContentAndMedia {
+            Import `ATResolve`, then tell it to find the PDS' service endpoint after resolving the DID.
+            
+            @Image(source: <#file#>, alt: "<#accessible description#>")
+        }
+        
+        @Steps {
+            @Step {
+                <#text#>
+                
+                @Image(source: <#file#>, alt: "<#accessible description#>")
+            }
+            
+            @Step {
+                <#text#>
+                
+                @Code(name: "<#display name#>", file: <#filename.swift#>)
+            }
+        }
+    }
+}
