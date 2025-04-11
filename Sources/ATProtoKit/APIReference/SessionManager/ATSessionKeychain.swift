@@ -11,186 +11,295 @@ import Foundation
 import Security
 
 /// Manages the keychains asociated with the sessions for the AT Protocol.
-public struct ATSessionKeychain: SessionKeychainProtocol {
+public actor AppleSecureKeychain: SecureKeychainProtocol {
 
-    /// The unique key for storing the user account's password.
-    public let passwordKey: String = "dev.atprotokit.password"
-
-    /// The unique key for storing the user account's refresh token.
-    public let refreshTokenKey: String = "dev.atprotokit.refreshToken"
-
-
-    /// Stores the provided password securely.
+    /// The `UUID` identifier.
     ///
-    /// - Parameter password: The user's password to store.
+    /// This identifier links the instances of `AppleSecureKeychain`, `SessionConfiguration`,
+    /// and `UserSession` together in a decoupled way, allowing for safe transfers of data.
+    public let identifier: UUID
+
+    /// The name of the service.
     ///
-    /// - Throws: A `KeychainError` if the operation fails.
-    public func storePassword(_ password: String) throws {
-        // Convert the password string to Data.
-        guard let data = password.data(using: .utf8) else {
-            throw ATKeychainError.storeError(message: "Unable to encode password data.")
+    /// This corresponds with the `kSecAttrService` parameter of the keychain.
+    public let serviceName: String
+
+    /// Initializes an instance of `AppleSecureKeychain`.
+    ///
+    /// You are welcome to create your own `UUID` value, but in most cases, you should let the
+    /// `AppleSecureKeychain` instance handle this job for you.
+    ///
+    /// - Parameters:
+    ///   - identitifer: A `UUID` value. Defaults to `UUID()`.
+    ///   - serviceName: The name of the service. Defaults to `"ATProtoKit"`.
+    public init(identifier: UUID = UUID(), serviceName: String = "ATProtoKit") {
+        self.identifier = identifier
+        self.serviceName = serviceName
+    }
+
+    /// The access token of the user account. Optional.
+    ///
+    /// This access token is stored in-memory due to how quickly this token expires.
+    private var cachedAccessToken: String?
+
+    /// A cached version of the refresh token. Optional.
+    private var cachedRefreshToken: String?
+
+    /// A cahced version of the password. Optional.
+    private var cachedPassword: String?
+
+    /// The key for the refresh token.
+    private var refreshTokenKey: String { "\(identifier.uuidString).refreshToken" }
+
+    /// The key for the password.
+    private var passwordKey: String { "\(identifier.uuidString).password" }
+
+    /// Retrieves the user account's access token.
+    ///
+    /// - Returns: The user account's access token.
+    ///
+    /// - Throws:
+    public func retrieveAccessToken() async throws -> String {
+        guard let cachedAccessToken = cachedAccessToken else {
+            throw ApplSecureKeychainError.accessTokenNotFound
         }
 
-        try storeData(data, for: passwordKey)
+        return cachedAccessToken
     }
 
-    /// Retrieves the stored password.
+    /// Saves the user account's access token in-memory.
     ///
-    /// - Returns: The stored password, or `nil` if not found.
+    /// - Parameter accessToken: The user account's access token to save.
     ///
-    /// - Throws: A `KeychainError` if the operation fails.
-    public func retrievePassword() throws -> String? {
-        guard let data = try retrieveData(for: passwordKey) else {
-            return nil
+    /// - Throws:
+    public func saveAccessToken(_ accessToken: String) async throws {
+        cachedAccessToken = accessToken
+    }
+
+    /// Deletes the access token.
+    ///
+    /// - Note: Please be sure to delete the instance of the `UserSession` and
+    /// `SessionConfiguration` if you're deleting the session.
+    ///
+    /// - Throws:
+    public func deleteAccessToken() async throws {
+        cachedAccessToken = nil
+    }
+
+    /// Retrieves the user account's refresh token.
+    ///
+    /// - Throws:
+    public func retrieveRefreshToken() async throws -> String {
+        if let cached = cachedRefreshToken {
+            return cached
         }
 
-        return String(data: data, encoding: .utf8)
+        let token = try await readItem(forKey: refreshTokenKey)
+        cachedRefreshToken = token
+        return token
     }
 
-    /// Updates the stored password with a new value.
+    /// Saves the user account's refresh token to the keychain.
     ///
-    /// - Parameter password: The new password to update.
+    /// - Parameter refreshToken: The user account's refresh token.
     ///
-    /// - Throws: A `KeychainError` if the operation fails.
-    public func updatePassword(_ password: String) throws {
-        guard let data = password.data(using: .utf8) else {
-            throw ATKeychainError.updateError(message: "Unable to encode password data.")
+    /// - Throws: `ApplSecureKeychainError.unhandledStatus` if the operation failed.
+    public func saveRefreshToken(_ refreshToken: String) async throws {
+        try await saveOrUpdateItem(refreshToken, forKey: refreshTokenKey)
+        cachedRefreshToken = refreshToken
+    }
+
+    /// Updates the user account's refresh token.
+    ///
+    /// - Parameter newRefreshToken: The user account's updated refresh token.
+    ///
+    /// - Throws:
+    public func updateRefreshToken(_ newRefreshToken: String) async throws {
+        try await saveOrUpdateItem(newRefreshToken, forKey: refreshTokenKey)
+        cachedRefreshToken = newRefreshToken
+    }
+
+    /// Deletes the user account's refresh token.
+    ///
+    /// - Note: Please be sure to delete the instance of the `UserSession` and
+    /// `SessionConfiguration` if you're deleting the session.
+    ///
+    /// - Throws:
+    public func deleteRefreshToken() async throws {
+        try await deleteItem(forKey: refreshTokenKey)
+        cachedRefreshToken = nil
+    }
+
+    /// Retrieves the user account's password from the keychain.
+    ///
+    /// - Returns: The user account's password to save.
+    ///
+    /// - Throws:
+    public func retrievePassword() async throws -> String {
+        if let cached = cachedPassword {
+            return cached
         }
 
-        try updateData(data, for: passwordKey)
+        let password = try await readItem(forKey: passwordKey)
+        cachedPassword = password
+
+        return password
     }
 
-    /// Removes the stored password.
+    /// Saves the user account's password to the keychain.
     ///
-    /// - Throws: A `KeychainError` if the operation fails.
-    public func removePassword() throws {
-        try removeData(for: passwordKey)
+    /// - Parameter password: The user account's password to save.
+    ///
+    /// - Throws: `ApplSecureKeychainError.unhandledStatus` if the operation failed.
+    public func savePassword(_ password: String) async throws {
+        try await saveOrUpdateItem(password, forKey: passwordKey)
+        cachedPassword = password
     }
 
-    /// Stores the provided refresh token securely.
+    /// Updates the user account's password.
     ///
-    /// - Parameter token: The refresh token to store.
+    /// - Parameter newPassword: The updated password.
     ///
-    /// - Throws: A `KeychainError` if the operation fails.
-    public func storeRefreshToken(_ token: String) throws {
-        guard let data = token.data(using: .utf8) else {
-            throw ATKeychainError.storeError(message: "Unable to encode refresh token data.")
-        }
-
-        try storeData(data, for: refreshTokenKey)
+    /// - Throws: `ApplSecureKeychainError.unhandledStatus` if the operation failed.
+    public func updatePassword(_ newPassword: String) async throws {
+        try await saveOrUpdateItem(newPassword, forKey: passwordKey)
+        cachedPassword = newPassword
     }
 
-    /// Retrieves the stored refresh token.
+    /// Deletes the password from the keychain.
     ///
-    /// - Returns: The stored refresh token, or `nil` if not found.
+    /// - Note: Please be sure to delete the instance of the `UserSession` and
+    /// `SessionConfiguration` if you're deleting the session.
     ///
-    /// - Throws: A `KeychainError` if the operation fails.
-    public func retrieveRefreshToken() throws -> String? {
-        guard let data = try retrieveData(for: refreshTokenKey) else {
-            return nil
-        }
-
-        return String(data: data, encoding: .utf8)
+    /// - Throws:
+    public func deletePassword() async throws {
+        try await deleteItem(forKey: passwordKey)
+        cachedPassword = nil
     }
 
-    /// Updates the stored refresh token with a new value.
-    ///
-    /// - Parameter token: The new refresh token to update.
-    ///
-    /// - Throws: A `KeychainError` if the operation fails.
-    public func updateRefreshToken(_ token: String) throws {
-        guard let data = token.data(using: .utf8) else {
-            throw ATKeychainError.updateError(message: "Unable to encode refresh token data.")
-        }
+    // MARK: - Helpers
 
-        try updateData(data, for: refreshTokenKey)
-    }
-
-    /// Removes the stored refresh token.
+    /// Saves or updates a keychain item.
     ///
-    /// - Throws: A `KeychainError` if the operation fails.
-    public func removeRefreshToken() throws {
-        try removeData(for: refreshTokenKey)
-    }
-
-    /// Constructs a keychain query dictionary for a given key.
+    /// - Parameters:
+    ///   - value: The keychain value.
+    ///   - key: The keychain key.
     ///
-    /// - Parameter key: The key for the keychain.
-    /// - Returns: A keychain query dictionary.
-    private func query(for key: String) -> [String: Any] {
-        return [
-            kSecClass as String: kSecClassGenericPassword,
-            kSecAttrAccount as String: key,
-            kSecAttrService as String: Bundle.main.bundleIdentifier ?? "dev.atprotokit.keychain",
-            kSecAttrAccessible as String: kSecAttrAccessibleWhenUnlocked
+    ///   - Throws: `ApplSecureKeychainError.unhandledStatus` if the operation failed.
+    private func saveOrUpdateItem(_ value: String, forKey key: String) async throws {
+        let data = Data(value.utf8)
+
+        let query: [CFString: Any] = [
+            kSecClass: kSecClassGenericPassword,
+            kSecAttrAccount: key,
+            kSecAttrService: serviceName,
         ]
+
+        let updateAttributes: [CFString: Any] = [
+            kSecValueData: data
+        ]
+
+        let status = SecItemUpdate(query as CFDictionary, updateAttributes as CFDictionary)
+
+        switch status {
+            case errSecSuccess:
+                return
+            case errSecItemNotFound:
+                var newItem = query
+                newItem[kSecValueData] = data
+                let addStatus = SecItemAdd(newItem as CFDictionary, nil)
+                guard addStatus == errSecSuccess else {
+                    throw ApplSecureKeychainError.unhandledStatus(status: addStatus)
+                }
+            default:
+                throw ApplSecureKeychainError.unhandledStatus(status: status)
+        }
     }
 
-    /// Stores raw data in the keychain for a given key.
+    /// Reads the value of the keychain item.
     ///
-    /// - Parameters:
-    ///   - data: The data to store.
-    ///   - key: The key associated with the data.
+    /// - Parameter key: The key of the keychain value to read.
+    /// - Returns: The keychain value.
     ///
-    /// - Throws: A `KeychainError.storeError` if storing fails.
-    private func storeData(_ data: Data, for key: String) throws {
-        var query = query(for: key)
-        query[kSecValueData as String] = data
+    /// - Throws: An error if the item wasn't found, the data was invalid, or if there was an
+    /// unhandled operation.
+    private func readItem(forKey key: String) async throws -> String {
+        let query: [CFString: Any] = [
+            kSecClass: kSecClassGenericPassword,
+            kSecAttrAccount: key,
+            kSecAttrService: serviceName,
+            kSecReturnData: true,
+            kSecMatchLimit: kSecMatchLimitOne
+        ]
 
-        let status = SecItemAdd(query as CFDictionary, nil)
+        var item: AnyObject?
+        let status = SecItemCopyMatching(query as CFDictionary, &item)
+
+        guard status != errSecItemNotFound else {
+            throw ApplSecureKeychainError.itemNotFound(key: key)
+        }
+
         guard status == errSecSuccess else {
-            throw ATKeychainError.storeError(message: "Unable to store data for key \(key), status code: \(status)")
-        }
-    }
-
-    /// Updates existing data in the keychain for a given key.
-    ///
-    /// - Parameters:
-    ///   - data: The new data to update.
-    ///   - key: The key associated with the data.
-    ///
-    /// - Throws: A `KeychainError.updateError` if the update fails.
-    private func updateData(_ data: Data, for key: String) throws {
-        let query = query(for: key)
-        let attributesToUpdate = [kSecValueData as String: data]
-
-        let status = SecItemUpdate(query as CFDictionary, attributesToUpdate as CFDictionary)
-        guard status == errSecSuccess else {
-            throw ATKeychainError.updateError(message: "Unable to update data for key \(key), status code: \(status)")
-        }
-    }
-
-    /// Retrieves raw data from the keychain for a given key.
-    ///
-    /// - Parameter key: The key associated with the item.
-    /// - Returns: The retrieved data, or `nil` if no data exists for the key.
-    ///
-    /// - Throws: A `KeychainError.retrievalError` if the retrieval fails.
-    private func retrieveData(for key: String) throws -> Data? {
-        var query = query(for: key)
-        query[kSecReturnData as String] = kCFBooleanTrue
-        query[kSecMatchLimit as String] = kSecMatchLimitOne
-
-        var result: AnyObject?
-        let status = SecItemCopyMatching(query as CFDictionary, &result)
-        guard status == errSecSuccess || status == errSecItemNotFound else {
-            throw ATKeychainError.retrievalError(message: "Unable to retrieve data for key \(key), status code: \(status)")
+            throw ApplSecureKeychainError.unhandledStatus(status: status)
         }
 
-        return result as? Data
+        guard let data = item as? Data, let result = String(data: data, encoding: .utf8) else {
+            throw ApplSecureKeychainError.invalidData
+        }
+
+        return result
     }
 
-    /// Deletes data in the keychain for a given key.
+    /// Deletes the item from the keychain.
     ///
-    /// - Parameter key: The key associated with the item.
+    /// - Parameter key: The key of the keychain item to delete.
     ///
-    /// - Throws: A `KeychainError.removalError` if the deletion fails.
-    private func removeData(for key: String) throws {
-        let query = query(for: key)
+    /// - Throws: `ApplSecureKeychainError.unhandledStatus` if there was an unhandled operation.
+    private func deleteItem(forKey key: String) async throws {
+        let query: [CFString: Any] = [
+            kSecClass: kSecClassGenericPassword,
+            kSecAttrAccount: key,
+            kSecAttrService: serviceName
+        ]
+
         let status = SecItemDelete(query as CFDictionary)
-
         guard status == errSecSuccess || status == errSecItemNotFound else {
-            throw ATKeychainError.removalError(message: "Unable to remove data for key \(key), status code: \(status)")
+            throw ApplSecureKeychainError.unhandledStatus(status: status)
+        }
+    }
+}
+
+// MARK: - Keychain Error
+
+/// Errors related to keychain management.
+public enum ApplSecureKeychainError: Error, LocalizedError {
+
+    /// The keychain item was not found.
+    ///
+    /// - Parameter key: The key for the item.
+    case itemNotFound(key: String)
+
+    /// The access token could not be found.
+    case accessTokenNotFound
+
+    /// The data retrieved was invalid.
+    case invalidData
+
+    /// There was a keychain unhandled operation.
+    ///
+    /// - Parameter status: The `OSStatus` value.
+    case unhandledStatus(status: OSStatus)
+
+    public var errorDescription: String? {
+        switch self {
+            case .itemNotFound(let key):
+                return "No item found for key: \(key)"
+            case .accessTokenNotFound:
+                return "No access token was found."
+            case .invalidData:
+                return "The data retrieved from the keychain was invalid."
+            case .unhandledStatus(let status):
+                return "Keychain operation failed with status: \(status)"
         }
     }
 }
