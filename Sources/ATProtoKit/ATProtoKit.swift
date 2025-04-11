@@ -125,8 +125,8 @@ extension ATProtoKitConfiguration {
 /// ```swift
 /// let config = ATProtocolConfiguration(handle: "example.bsky.social", appPassword: "hunter2")
 /// ```
-/// ``ATProtocolConfiguration/authenticate(authenticationFactorToken:)`` should then be
-/// used to get information about the session. The result is handed over to the `ATProtoKit`'s instance:
+/// ``ATProtocolConfiguration/authenticate(with:password:)`` should then be used to get information
+/// about the session. The result is handed over to the `ATProtoKit`'s instance:
 ///
 /// ```swift
 /// Task {
@@ -313,8 +313,8 @@ public class ATProtoBlueskyChat: ATProtoKitConfiguration {
 /// ```swift
 /// let config = ATProtocolConfiguration(handle: "example.bsky.social", appPassword: "hunter2")
 /// ```
-/// ``ATProtocolConfiguration/authenticate(authenticationFactorToken:)`` should then be used to
-/// get information about the session. The result is handed over to the `ATProtoAdmin`'s instance:
+/// ``ATProtocolConfiguration/authenticate(with:password:)`` should then be used to get information
+/// about the session. The result is handed over to the `ATProtoAdmin`'s instance:
 ///```swift
 /// Task {
 ///     do {

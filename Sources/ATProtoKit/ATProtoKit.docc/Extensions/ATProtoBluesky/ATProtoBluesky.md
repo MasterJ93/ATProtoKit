@@ -6,8 +6,6 @@
 ### Instance Properties
 
 - ``linkBuilder``
-- ``logger``
-- ``session``
 - ``sessionConfiguration``
 - ``urlSessionConfiguration``
 

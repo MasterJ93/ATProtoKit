@@ -2,7 +2,6 @@
 
 ## Topics
 
-- ``SessionProtocol``
 - ``SessionResponse``
 - ``SessionConfiguration``
 - ``DIDDocument``

@@ -20,13 +20,13 @@ Below is a very quick example to run the project:
 ```swift
 import ATProtoKit
 
-let config = ATProtocolConfiguration(handle: "example.bsky.social", appPassword: "hunter2")
+let config = ATProtocolConfiguration()
 
 Task {
     print("Starting application...")
 
     do {
-        try await config.authenticate()
+        try await config.authenticate(handle: "example.bsky.social", appPassword: "hunter2")
 
         let atProto = await ATProtoKit(sessionConfiguration: config)
         let atProtoBluesky = ATProtoBluesky(atProtoKitInstance: atProto)

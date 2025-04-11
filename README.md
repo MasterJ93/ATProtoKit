@@ -31,13 +31,13 @@ ATProtoKit is an easy-to-understand API library that leverages the AT Protocol w
 
 ## Example Usage
 ```swift
-let config = ATProtocolConfiguration(handle: "lucy.bsky.social", appPassword: "hunter2")
+let config = ATProtocolConfiguration()
 
 Task {
     print("Starting application...")
 
     do {
-        try await config.authenticate()
+        try await config.authenticate(handle: "lucy.bsky.social", appPassword: "hunter2")
 
         let atProto = await ATProtoKit(sessionConfiguration: config)
         let atProtoBluesky = ATProtoBluesky(atProtoKitInstance: atProto)

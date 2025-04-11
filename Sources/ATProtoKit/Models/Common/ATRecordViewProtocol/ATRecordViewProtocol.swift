@@ -37,25 +37,10 @@ public protocol ATRecordViewProtocol: Identifiable {
 
     /// Refreshes the record view with updated information.
     ///
-    /// You need to use ``ATProtocolConfiguration/init(userSession:pdsURL:configuration:logIdentifier:logCategory:logLevel:)``
-    /// (to receive the required session tokens) as well as
-    /// ``ATProtocolConfiguration/getSession(by:authenticationFactorToken:)`` (to make sure the
-    /// session is up to date) in order to establish a connection. Once that happens, use the
-    /// appropriate method to get the record view. For example, for
-    /// ``AppBskyLexicon/Feed/PostViewDefinition``, you can use
+    /// You need to pass in the instance of ``SessionConfiguration`` in order to establish
+    /// a connection. Once that happens, use the appropriate method to get the record view.
+    /// For example, for ``AppBskyLexicon/Feed/PostViewDefinition``, you can use
     /// ``ATProtoKit/ATProtoKit/getPosts(_:)``, which returns that object.
-    ///
-    /// ```swift
-    /// public func refresh(with session: UserSession) async throws -> ProfileRecordView? {
-    ///     let config = ATProtocolConfiguration(userSession: session, pdsURL: session.pdsURL ?? "https://bsky.social")
-    ///     _ = try await config.getSession()
-    ///
-    ///     let atProto = ATProtoKit(sessionConfiguration: config, canUseBlueskyRecords: false)
-    ///     let record = try await atProto.getPosts([self.id])
-    ///
-    ///     return record.posts[0]
-    /// }
-    /// ```
     ///
     /// - Parameter sessionConfiguration: An instance of ``SessionConfiguration``.
     /// - Returns: An updated version of the record view.

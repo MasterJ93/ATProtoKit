@@ -30,7 +30,7 @@ public actor AppleSecureKeychain: SecureKeychainProtocol {
     /// `AppleSecureKeychain` instance handle this job for you.
     ///
     /// - Parameters:
-    ///   - identitifer: A `UUID` value. Defaults to `UUID()`.
+    ///   - identifier: A `UUID` value. Defaults to `UUID()`.
     ///   - serviceName: The name of the service. Defaults to `"ATProtoKit"`.
     public init(identifier: UUID = UUID(), serviceName: String = "ATProtoKit") {
         self.identifier = identifier

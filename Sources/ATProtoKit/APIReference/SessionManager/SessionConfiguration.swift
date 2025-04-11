@@ -74,8 +74,6 @@ public protocol SessionConfiguration: AnyObject, Sendable {
     ///   creation operation. Optional.
     ///   - plcOperation: A signed DID PLC operation to be submitted as part of importing an
     ///   existing account to this instance. Optional.
-    /// - Returns: An instance of an authenticated user session within the AT Protocol. It may also
-    /// have logging information, as well as the URL of the Personal Data Server (PDS).
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
@@ -121,11 +119,9 @@ public protocol SessionConfiguration: AnyObject, Sendable {
     /// re-trying the method with the `authenticationFactorToken` argument filled should
     /// solve the issue.
     ///
-    /// When the method completes, ``ATProtocolConfiguration/session`` will be updated with a
-    /// new instance of an authenticated user session within the AT Protocol. It may also have
-    /// logging information, as well as the URL of the Personal Data Server (PDS).
+    /// When the method completes, the linked ``UserSession`` inside ``UserSessionRegistry`` will
+    /// be replaced with a new instance.
     ///
-    /// - Returns: Information of the user account's new session.
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     func refreshSession() async throws

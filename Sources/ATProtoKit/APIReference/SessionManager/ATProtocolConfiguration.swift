@@ -7,7 +7,10 @@
 
 import Foundation
 
-/// Manages authentication and session operations for the a user account in the ATProtocol.
+/// Manages authentication and session operations for the a user account in the AT Protocol.
+///
+/// This is for handling App Passwords. At this time, an implementation of a
+/// ``SessionConfiguration`` instance is required if you need OAuth support.
 final public class ATProtocolConfiguration: SessionConfiguration {
 
     public let instanceUUID: UUID
@@ -30,7 +33,8 @@ final public class ATProtocolConfiguration: SessionConfiguration {
     ///
     /// - Parameters:
     ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `https://bsky.social`.
-    ///   - keychainProtocol: An instance of `SecureKeychainProtocol`. Optional. Defaults to `nil`.
+    ///   - keychainProtocol: An instance of ``SecureKeychainProtocol``. Optional. Defaults to the
+    ///   default implementation of ``SecureKeychainProtocol``.
     ///   - configuration: An instance of `URLSessionConfiguration`. Optional.
     ///   - canResolve: Indicates whether `ATProtocolConfiguration` will automatically resolve
     ///   the handle. Defaults to `true`.
