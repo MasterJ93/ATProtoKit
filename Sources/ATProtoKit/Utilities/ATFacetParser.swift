@@ -97,8 +97,10 @@ public class ATFacetParser {
     }
     
     /// Replaces URL text in the original string with a truncated version used for display in Bluesky.
-    /// This shortens each URL to exclude the scheme and limit to 32 characters total.
-    /// The replacement uses byte ranges, so the function processes from the end of the string backward.
+    /// 
+    /// - Parameter text: The post's text.
+    /// - Returns: A tuple containing the updated plain text and an array of link facets.
+    ///   Each link facet represents a detected URL within the text, along with its start and end positions.
     public static func truncateAndReplaceLinks(in text: String) -> (text: String, updatedLinkFacets: [(url: URL, start: Int, end: Int)]) {
         var result = ""
         var updatedFacets: [(url: URL, start: Int, end: Int)] = []
