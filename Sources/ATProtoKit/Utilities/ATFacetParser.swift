@@ -95,6 +95,60 @@ public class ATFacetParser {
 
         return spans
     }
+    
+    /// Replaces URL text in the original string with a truncated version used for display in Bluesky.
+    /// This shortens each URL to exclude the scheme and limit to 32 characters total.
+    /// The replacement uses byte ranges, so the function processes from the end of the string backward.
+    public static func truncateAndReplaceLinks(in text: String) -> (text: String, updatedLinkFacets: [(url: URL, start: Int, end: Int)]) {
+        var result = ""
+        var updatedFacets: [(url: URL, start: Int, end: Int)] = []
+        var currentByteOffset = 0
+        var lastByteIndex = text.utf8.startIndex
+        
+        let urls = parseURLs(from: text)
+        
+        for urlInfo in urls {
+            guard let start = urlInfo["start"] as? Int,
+                  let end = urlInfo["end"] as? Int,
+                  let linkString = urlInfo["link"] as? String,
+                  let url = URL(string: linkString) else { continue }
+            
+            let utf8View = text.utf8
+            guard let utf8Start = utf8View.index(utf8View.startIndex, offsetBy: start, limitedBy: utf8View.endIndex),
+                  let utf8End = utf8View.index(utf8View.startIndex, offsetBy: end, limitedBy: utf8View.endIndex),
+                  let startIndex = String.Index(utf8Start, within: text),
+                  let endIndex = String.Index(utf8End, within: text) else { continue }
+            
+            let unchangedRange = lastByteIndex..<utf8Start
+            if let unchangedStart = String.Index(unchangedRange.lowerBound, within: text),
+               let unchangedEnd = String.Index(unchangedRange.upperBound, within: text) {
+                let unchangedText = text[unchangedStart..<unchangedEnd]
+                result.append(contentsOf: unchangedText)
+                currentByteOffset += unchangedText.utf8.count
+            }
+            
+            let stripped = linkString.replacingOccurrences(of: #"^https?://"#, with: "", options: .regularExpression)
+            let replacement: String
+            if stripped.count > 32 {
+                replacement = String(stripped.prefix(29)) + "..."
+            } else {
+                replacement = stripped
+            }
+            
+            result.append(replacement)
+            updatedFacets.append((url, currentByteOffset, currentByteOffset + replacement.utf8.count))
+            currentByteOffset += replacement.utf8.count
+            lastByteIndex = utf8End
+        }
+        
+        if let tailStart = String.Index(lastByteIndex, within: text) {
+            let remaining = text[tailStart...]
+            result.append(contentsOf: remaining)
+        }
+        
+        return (result, updatedFacets)
+    }
+
 
     /// Parses hashtags from a given text and returns them along with their positions.
     ///

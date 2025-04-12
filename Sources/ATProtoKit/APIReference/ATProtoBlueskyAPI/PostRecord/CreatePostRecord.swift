@@ -285,8 +285,32 @@ extension ATProtoBluesky {
             }
         }
         
+        // Replace hyperlinks in text and update their facet ranges
+        let (resolvedText, updatedLinkFacets) = ATFacetParser.truncateAndReplaceLinks(in: text)
+        
+        // If we have any new URLs that have been updated, modify their facets to their new size
+        for (url, start, end) in updatedLinkFacets {
+            do {
+                let updatedFacet = try await ATFacetParser.createInlineLink(url: url, start: start, end: end)
+
+                // Remove any existing link facet with the same URL
+                facets.removeAll {
+                    $0.features.contains(where: {
+                        if case .link(let linkFeature) = $0 {
+                            return linkFeature.uri == url.absoluteString
+                        }
+                        return false
+                    })
+                }
+
+                facets.append(updatedFacet)
+            } catch {
+                print("Failed to create updated inline link facet: \(error)")
+            }
+        }
+        
         // Truncate the number of characters to 300.
-        let postText = text.truncated(toLength: 300)
+        let postText = resolvedText.truncated(toLength: 300)
 
         // Replies
         // Validate the reply reference if provided.
