@@ -70,7 +70,6 @@ ATProtoKit is fully open source under the [MIT license](https://github.com/Maste
 - ``ATProtocolConfiguration``
 - ``ATProtoKit/ATProtoKitConfiguration``
 - ``SessionConfiguration``
-- <doc:SessionConfigurationEssentialsTOS>
 - ``UserSessionRegistry``
 - ``UserSession``
 - ``SecureKeychainProtocol``
