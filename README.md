@@ -28,6 +28,8 @@
 
 ATProtoKit is an easy-to-understand API library that leverages the AT Protocol with the type-safety and ease-of-use you’ve come to expect with the Swift programming language. Whether you’re building a bot, a server app, or just another user-facing Bluesky client, this project should hopefully get you up to speed.
 
+This Swift package mainly focuses on the client side of the AT Protocol. This is essentially a combination of the [`api`](https://github.com/bluesky-social/atproto/tree/main/packages/api) and [`xrpc`](https://github.com/bluesky-social/atproto/tree/main/packages/xrpc) packages from the official [`atproto`](https://github.com/bluesky-social/atproto) TypeScript repository.
+
 
 ## Example Usage
 ```swift
