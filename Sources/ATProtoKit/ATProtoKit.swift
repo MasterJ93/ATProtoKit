@@ -160,6 +160,9 @@ public class ATProtoKit: ATProtoKitConfiguration, ATRecordConfiguration {
     /// Represents an object used for managing sessions.
     public let sessionConfiguration: SessionConfiguration?
 
+    /// A `URLSessionConfiguration` object.
+    public let urlSessionConfiguration: URLSessionConfiguration
+
     /// The URL of the Personal Data Server (PDS).
     public let pdsURL: String
 
@@ -172,7 +175,7 @@ public class ATProtoKit: ATProtoKitConfiguration, ATRecordConfiguration {
     /// If you're using methods such as
     /// ``ATProtoKit/ATProtoKit/createAccount(email:handle:existingDID:inviteCode:verificationCode:verificationPhone:password:recoveryKey:plcOperation:)``
     /// or ``ATProtoKit/ATProtoKit/getSession(by:)``, be sure to set
-    /// `canUseBlueskyRecords` to false. While the initializer does check to see if the records
+    /// `canUseBlueskyRecords` to `false`. While the initializer does check to see if the records
     /// have been added, it's best not to invoke it, esepcially if you're using ATProtoKit for a
     /// generic AT Protocol service that doesn't use Bluesky records.
     ///
@@ -180,16 +183,29 @@ public class ATProtoKit: ATProtoKitConfiguration, ATRecordConfiguration {
     /// `canUseBlueskyRecords` is `true`. In this case, it's a good idea to move the initializer
     /// to a `Task` block in order to prevent that from happening.
     ///
+    /// If a ``SessionConfiguration``-conforming `class` is used and the `configuration` property
+    /// is being used, don't use the `urlSessionConfiguration` parameter. Doing so would override
+    /// the `URLSessionConfiguration` implementation from `SessionConfiguration`.
+    ///
     /// - Parameters:
     ///   - sessionConfiguration: The authenticated user session within the AT Protocol. Optional.
+    ///   - urlSessionConfiguration: A `URLSessionConfiguration` object. Optional.
+    ///   Defaults to `nil`.
     ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `https://api.bsky.app`.
     ///   - canUseBlueskyRecords: Indicates whether Bluesky's lexicons should be used.
     ///   Defaults to `true`.
-    public init(sessionConfiguration: SessionConfiguration? = nil, pdsURL: String = "https://api.bsky.app", canUseBlueskyRecords: Bool = true) {
+    public init(sessionConfiguration: SessionConfiguration? = nil, urlSessionConfiguration: URLSessionConfiguration? = nil, pdsURL: String = "https://api.bsky.app", canUseBlueskyRecords: Bool = true) {
         self.sessionConfiguration = sessionConfiguration
+        if let urlSessionConfiguration {
+            self.urlSessionConfiguration = urlSessionConfiguration
+        } else {
+            self.urlSessionConfiguration = sessionConfiguration?.configuration ?? .default
+        }
+
         self.pdsURL = Self.determinePDSURL(customPDSURL: pdsURL)
 
         Task { [recordLexicons] in
+            await APIClientService.shared.configure(with: self.urlSessionConfiguration)
             if canUseBlueskyRecords && !(ATRecordTypeRegistry.areBlueskyRecordsRegistered) {
                 _ = await ATRecordTypeRegistry.shared.register(blueskyLexiconTypes: recordLexicons)
             }
@@ -205,18 +221,28 @@ public class ATProtoKit: ATProtoKitConfiguration, ATRecordConfiguration {
     /// If you're using methods such as
     /// ``ATProtoKit/ATProtoKit/createAccount(email:handle:existingDID:inviteCode:verificationCode:verificationPhone:password:recoveryKey:plcOperation:)``
     /// or ``ATProtoKit/ATProtoKit/getSession(by:)``, be sure to set
-    /// `canUseBlueskyRecords` to false. While the initializer does check to see if the records
+    /// `canUseBlueskyRecords` to `false`. While the initializer does check to see if the records
     /// have been added, it's best not to invoke it, esepcially if you're using ATProtoKit for a
     /// generic AT Protocol service that doesn't use Bluesky records.
     ///
     /// - Parameters:
     ///   - sessionConfiguration: The authenticated user session within the AT Protocol. Optional.
+    ///   - urlSessionConfiguration: A `URLSessionConfiguration` object. Optional.
+    ///   Defaults to `nil`.
     ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `https://api.bsky.app`.
     ///   - canUseBlueskyRecords: Indicates whether Bluesky's lexicons should be used.
     ///   Defaults to `true`.
-    public init(sessionConfiguration: SessionConfiguration? = nil, pdsURL: String = "https://api.bsky.app", canUseBlueskyRecords: Bool = true) async {
+    public init(sessionConfiguration: SessionConfiguration? = nil, urlSessionConfiguration: URLSessionConfiguration? = nil, pdsURL: String = "https://api.bsky.app", canUseBlueskyRecords: Bool = true) async {
         self.sessionConfiguration = sessionConfiguration
+        if let urlSessionConfiguration {
+            self.urlSessionConfiguration = urlSessionConfiguration
+        } else {
+            self.urlSessionConfiguration = sessionConfiguration?.configuration ?? .default
+        }
+
         self.pdsURL = pdsURL
+
+        await APIClientService.shared.configure(with: self.urlSessionConfiguration)
 
         if canUseBlueskyRecords && !(ATRecordTypeRegistry.areBlueskyRecordsRegistered) {
             _ = await ATRecordTypeRegistry.shared.register(blueskyLexiconTypes: recordLexicons)
@@ -277,7 +303,7 @@ public class ATProtoBlueskyChat: ATProtoKitConfiguration {
     ///
     /// - Note: This class will automatically grab the custom `URLSessionConfiguration` instance
     /// from the `ATProtoKit` instance.
-    public var urlSessionConfiguration: URLSessionConfiguration = .default
+    public let urlSessionConfiguration: URLSessionConfiguration
 
     /// Represents an object used for managing sessions.
     public let sessionConfiguration: SessionConfiguration?
@@ -296,6 +322,7 @@ public class ATProtoBlueskyChat: ATProtoKitConfiguration {
     public init(atProtoKitInstance: ATProtoKit) {
         self.atProtoKitInstance = atProtoKitInstance
         self.sessionConfiguration = atProtoKitInstance.sessionConfiguration
+        self.urlSessionConfiguration = atProtoKitInstance.sessionConfiguration?.configuration ?? .default
         self.pdsURL = "https://api.bsky.chat"
     }
 }
@@ -348,7 +375,11 @@ public class ATProtoAdmin: ATProtoKitConfiguration {
     ///     }
     /// }
     /// ```
-    public var urlSessionConfiguration: URLSessionConfiguration = .default
+    ///
+    /// If a ``SessionConfiguration``-conforming `class` is used and the `configuration` property
+    /// is being used, don't use the `urlSessionConfiguration` parameter. Doing so would override
+    /// the `URLSessionConfiguration` implementation from `SessionConfiguration`.
+    public let urlSessionConfiguration: URLSessionConfiguration
 
     /// Specifies the logger that will be used for emitting log messages.
     public private(set) var logger: Logger?
@@ -360,11 +391,17 @@ public class ATProtoAdmin: ATProtoKitConfiguration {
     public let pdsURL: String
 
     /// Initializes a new instance of `ATProtoAdmin`.
+    ///
     /// - Parameters:
     ///   - sessionConfiguration: The authenticated user session within the AT Protocol. Optional.
     ///   Defaults to the project's `CFBundleIdentifier`.
-    public init(sessionConfiguration: SessionConfiguration? = nil) {
+    ///   - urlSessionConfiguration: A `URLSessionConfiguration` object. Optional.
+    ///   Defaults to `nil`.
+    public init(sessionConfiguration: SessionConfiguration? = nil, urlSessionConfiguration: URLSessionConfiguration? = nil) async {
         self.sessionConfiguration = sessionConfiguration
+        self.urlSessionConfiguration = sessionConfiguration?.configuration ?? urlSessionConfiguration ?? .default
         self.pdsURL = "https://api.bsky.app"
+
+        await APIClientService.shared.configure(with: self.urlSessionConfiguration)
     }
 }
