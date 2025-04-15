@@ -187,7 +187,7 @@ extension SessionConfiguration {
                 plcOperation: plcOperation
             )
 
-            guard let didDocument = SessionConfigurationHelpers.convertDIDDocument(response.didDocument) else {
+            guard let didDocument = self.convertDIDDocument(response.didDocument) else {
                 throw DIDDocument.DIDDocumentError.emptyArray
             }
 
@@ -275,7 +275,7 @@ extension SessionConfiguration {
                 throw DIDDocument.DIDDocumentError.emptyArray
             }
 
-            guard let convertedDIDDocument = SessionConfigurationHelpers.convertDIDDocument(response.didDocument) else {
+            guard let convertedDIDDocument = self.convertDIDDocument(response.didDocument) else {
                 throw DIDDocument.DIDDocumentError.emptyArray
             }
 
@@ -337,7 +337,7 @@ extension SessionConfiguration {
                 by: accessToken
             )
 
-            guard let convertedDIDDocument = SessionConfigurationHelpers.convertDIDDocument(response.didDocument) else {
+            guard let convertedDIDDocument = self.convertDIDDocument(response.didDocument) else {
                 throw DIDDocument.DIDDocumentError.emptyArray
             }
 
@@ -417,7 +417,7 @@ extension SessionConfiguration {
                 refreshToken: refreshToken
             )
 
-            guard let convertedDIDDocument = SessionConfigurationHelpers.convertDIDDocument(response.didDocument) else {
+            guard let convertedDIDDocument = self.convertDIDDocument(response.didDocument) else {
                 throw DIDDocument.DIDDocumentError.emptyArray
             }
 
@@ -495,16 +495,13 @@ extension SessionConfiguration {
             throw error
         }
     }
-}
-
-public enum SessionConfigurationHelpers {
 
     /// Converts the DID document from an ``UnknownType`` object to a ``DIDDocument`` object.
     ///
     /// - Parameter didDocument: The DID document as an ``UnknownType`` object. Optional.
     /// Defaults to `nil`.
     /// - Returns: A ``DIDDocument`` object (if there's a value) or `nil` (if not).
-    public static func convertDIDDocument(_ didDocument: UnknownType? = nil) -> DIDDocument? {
+    public func convertDIDDocument(_ didDocument: UnknownType? = nil) -> DIDDocument? {
         var decodedDidDocument: DIDDocument? = nil
 
         do {
@@ -519,6 +516,4 @@ public enum SessionConfigurationHelpers {
 
         return decodedDidDocument
     }
-
-    
 }
