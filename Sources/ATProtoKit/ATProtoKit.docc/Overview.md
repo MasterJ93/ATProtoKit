@@ -44,10 +44,10 @@ ATProtoKit is fully open source under the [MIT license](https://github.com/Maste
 
 ## What's New in ATProtoKit
 @Links(visualStyle: detailedGrid) {
+    - <doc:SessionConfigurationArticle>
     - <doc:0210AuthFlowChange>
     - <doc:getRecordTutorial>
     - <doc:ATProtoIdentifiers>
-    - <doc:Getting-Started-with-ATProtoKit>
 }
 
 ## Topics
@@ -70,6 +70,7 @@ ATProtoKit is fully open source under the [MIT license](https://github.com/Maste
 - ``ATProtocolConfiguration``
 - ``ATProtoKit/ATProtoKitConfiguration``
 - ``SessionConfiguration``
+- <doc:SessionConfigurationArticle>
 - ``UserSessionRegistry``
 - ``UserSession``
 - ``SecureKeychainProtocol``
