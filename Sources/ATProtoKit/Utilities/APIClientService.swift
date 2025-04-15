@@ -18,8 +18,8 @@ import Foundation
 public actor APIClientService {
 
     /// The `URLSession` instance to be used for network requests.
-    private(set) var urlSession: URLSession
-    
+    public private(set) var urlSession: URLSession = URLSession()
+
     /// The `UserAgent` instance to identify all network requests originating from the `ATProtoKit` sdk
     public static let userAgent: String = {
         let info = Bundle.main.infoDictionary
@@ -80,17 +80,30 @@ public actor APIClientService {
 
     /// Creates an instance for use in accepting and returning API requests and
     /// responses respectively.
-    private init() {
-        let sessionConfig = URLSessionConfiguration.default
-        sessionConfig.httpAdditionalHeaders = ["User-Agent": APIClientService.userAgent]
-        self.urlSession = URLSession(configuration: sessionConfig)
-    }
+    private init() {}
 
     /// Configures the singleton instance with a custom `URLSessionConfiguration`.
     ///
-    /// - Parameter configuration: An instance of `URLSessionConfiguration`.
-    public func configure(with configuration: URLSessionConfiguration) async {
-        self.urlSession = URLSession(configuration: configuration)
+    /// - Note: Both `delegate` and `delegateQueue` are related to `URLSession`.
+    ///
+    /// - Parameters:
+    ///   - configuration: An instance of `URLSessionConfiguration`. Optional.
+    ///   Defaults to `.default`.
+    ///   - delegate: A session delegate object that handles requests for authentication and other
+    ///   session-related events.
+    ///   - delegateQueue: An operation queue for scheduling the delegate calls and
+    ///   completion handlers.
+    public func configure(with configuration: URLSessionConfiguration? = .default, delegate: (any URLSessionDelegate)? = nil, delegateQueue: OperationQueue? = nil) async {
+        let urlSessionConfiguration: URLSessionConfiguration
+
+        if let configuration, configuration != .default {
+            configuration.httpAdditionalHeaders = ["User-Agent": APIClientService.userAgent]
+            self.urlSession = URLSession(configuration: configuration, delegate: delegate, delegateQueue: delegateQueue)
+        } else {
+            let defaultConfiguration = URLSessionConfiguration.default
+            defaultConfiguration.httpAdditionalHeaders = ["User-Agent": APIClientService.userAgent]
+            self.urlSession = URLSession(configuration: defaultConfiguration, delegate: delegate, delegateQueue: delegateQueue)
+        }
     }
 
 // MARK: Creating requests -
