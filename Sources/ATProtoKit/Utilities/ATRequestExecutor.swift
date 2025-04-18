@@ -8,7 +8,7 @@
 import Foundation
 
 ///
-public protocol ATRequestExecutor {
+public protocol ATRequestExecutor: Sendable {
 
     ///
     func execute(_ request: URLRequest) async throws -> (Data, URLResponse)

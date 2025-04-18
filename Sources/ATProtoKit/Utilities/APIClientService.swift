@@ -18,7 +18,11 @@ import Foundation
 public actor APIClientService {
 
     /// The `URLSession` instance to be used for network requests.
-    public private(set) var urlSession: URLSession = URLSession()
+    public private(set) var urlSession: URLSession = URLSession(configuration: .default)
+
+    /// An instance of ``ATRequestExecutor``.
+    private var executor: ATRequestExecutor?
+
 
     /// The `UserAgent` instance to identify all network requests originating from the `ATProtoKit` sdk
     public static let userAgent: String = {
@@ -93,17 +97,14 @@ public actor APIClientService {
     ///   session-related events.
     ///   - delegateQueue: An operation queue for scheduling the delegate calls and
     ///   completion handlers.
-    public func configure(with configuration: URLSessionConfiguration? = .default, delegate: (any URLSessionDelegate)? = nil, delegateQueue: OperationQueue? = nil) async {
-        let urlSessionConfiguration: URLSessionConfiguration
+    ///   - responseProvider: A provider used for the response of the `URLRequest`. Optional.
+    ///   Defaults to `nil`.
+    public func configure(with configuration: URLSessionConfiguration? = .default, delegate: (any URLSessionDelegate)? = nil, delegateQueue: OperationQueue? = nil, responseProvider: ATRequestExecutor? = nil) async {
+        self.executor = responseProvider
 
-        if let configuration, configuration != .default {
-            configuration.httpAdditionalHeaders = ["User-Agent": APIClientService.userAgent]
-            self.urlSession = URLSession(configuration: configuration, delegate: delegate, delegateQueue: delegateQueue)
-        } else {
-            let defaultConfiguration = URLSessionConfiguration.default
-            defaultConfiguration.httpAdditionalHeaders = ["User-Agent": APIClientService.userAgent]
-            self.urlSession = URLSession(configuration: defaultConfiguration, delegate: delegate, delegateQueue: delegateQueue)
-        }
+        let config = configuration ?? .default
+        config.httpAdditionalHeaders = ["User-Agent": APIClientService.userAgent]
+        self.urlSession = URLSession(configuration: config, delegate: delegate, delegateQueue: delegateQueue)
     }
 
 // MARK: Creating requests -
@@ -242,66 +243,6 @@ public actor APIClientService {
         return decodedData
     }
 
-    /// Sends a `URLRequest` and returns the raw JSON output as a `Dictionary`.
-    ///
-    /// - Parameters:
-    ///   - request: The `URLRequest` to send.
-    ///   - body: An optional `Encodable` body to be encoded and attached to the request.
-    /// - Returns: A `Dictionary` representation of the JSON response.
-    public func sendRequestWithRawJSONOutput(_ request: URLRequest, withEncodingBody body: Encodable? = nil) async throws -> [String: Any] {
-        var urlRequest = request
-
-        // Encode the body to JSON data if it's not nil
-        if let body = body {
-            do {
-                urlRequest.httpBody = try body.toJsonData()
-            } catch {
-                throw ATHTTPRequestError.unableToEncodeRequestBody
-            }
-        }
-
-        let (data, response) = try await urlSession.data(for: urlRequest)
-
-        guard let httpResponse = response as? HTTPURLResponse else {
-            throw ATHTTPRequestError.errorGettingResponse
-        }
-
-        guard httpResponse.statusCode == 200 else {
-            let responseBody = String(data: data, encoding: .utf8) ?? "No response body"
-            print("HTTP Status Code: \(httpResponse.statusCode) - Response Body: \(responseBody)")
-            throw URLError(.badServerResponse)
-        }
-
-        guard let response = try JSONSerialization.jsonObject(
-            with: data, options: .mutableLeaves) as? [String: Any] else { return ["Response": "No response"] }
-        return response
-    }
-
-    /// Sends a `URLRequest` and returns the raw HTML output as a `String`.
-    ///
-    /// - Parameters:
-    ///   - request: The `URLRequest` to send.
-    /// - Returns: A `String` representation of the HTML response.
-    public static func sendRequestWithRawHTMLOutput(_ request: URLRequest) async throws -> String {
-        let (data, response) = try await URLSession.shared.data(for: request)
-
-        guard let httpResponse = response as? HTTPURLResponse else {
-            throw ATHTTPRequestError.errorGettingResponse
-        }
-
-        guard httpResponse.statusCode == 200 else {
-            let responseBody = String(data: data, encoding: .utf8) ?? "No response body"
-            print("HTTP Status Code: \(httpResponse.statusCode) - Response Body: \(responseBody)")
-            throw URLError(.badServerResponse)
-        }
-
-        guard let htmlString = String(data: data, encoding: .utf8) else {
-            throw ATHTTPRequestError.failedToDecodeHTML
-        }
-
-        return htmlString
-    }
-
     /// Private method to handle the common request sending logic.
     ///
     /// - Parameters:
@@ -323,7 +264,14 @@ public actor APIClientService {
         }
 
         do {
-            let (data, response) = try await urlSession.data(for: urlRequest)
+            let (data, response): (Data, URLResponse)
+            if let executor = self.executor {
+                (data, response) = try await executor.execute(urlRequest)
+            } else {
+                (data, response) = try await urlSession.data(for: urlRequest)
+            }
+
+
 
             if let httpResponse = response as? HTTPURLResponse {
                 switch httpResponse.statusCode {
