@@ -194,19 +194,23 @@ public class ATProtoKit: ATProtoKitConfiguration, ATRecordConfiguration {
     ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `https://api.bsky.app`.
     ///   - canUseBlueskyRecords: Indicates whether Bluesky's lexicons should be used.
     ///   Defaults to `true`.
-    public init(sessionConfiguration: SessionConfiguration? = nil, urlSessionConfiguration: URLSessionConfiguration? = nil, pdsURL: String = "https://api.bsky.app", canUseBlueskyRecords: Bool = true) {
+    public init(
+        sessionConfiguration: SessionConfiguration? = nil,
+        urlSessionConfiguration: URLSessionConfiguration? = nil,
+        pdsURL: String = "https://api.bsky.app",
+        canUseBlueskyRecords: Bool = true
+    ) {
         self.sessionConfiguration = sessionConfiguration
-        if let urlSessionConfiguration {
-            self.urlSessionConfiguration = urlSessionConfiguration
-        } else {
-            self.urlSessionConfiguration = sessionConfiguration?.configuration ?? .default
-        }
 
-        self.pdsURL = Self.determinePDSURL(customPDSURL: pdsURL)
+        let finalConfiguration = urlSessionConfiguration ?? sessionConfiguration?.configuration ?? .default
+        self.urlSessionConfiguration = finalConfiguration
+        self.pdsURL = pdsURL
 
-        Task { [recordLexicons] in
-            await APIClientService.shared.configure(with: self.urlSessionConfiguration)
-            if canUseBlueskyRecords && !(ATRecordTypeRegistry.areBlueskyRecordsRegistered) {
+        let recordLexicons = self.recordLexicons
+
+        Task(priority: .background) {
+            await APIClientService.shared.configure(with: finalConfiguration)
+            if canUseBlueskyRecords && !ATRecordTypeRegistry.areBlueskyRecordsRegistered {
                 _ = await ATRecordTypeRegistry.shared.register(blueskyLexiconTypes: recordLexicons)
             }
         }
