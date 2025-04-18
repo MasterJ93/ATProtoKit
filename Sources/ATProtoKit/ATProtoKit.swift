@@ -191,6 +191,7 @@ public class ATProtoKit: ATProtoKitConfiguration, ATRecordConfiguration {
     ///   - sessionConfiguration: The authenticated user session within the AT Protocol. Optional.
     ///   - urlSessionConfiguration: A `URLSessionConfiguration` object. Optional.
     ///   Defaults to `nil`.
+    ///   - responseProvider: An instance of `ATRequestExecutor`. Optional. Defaults to `nil`.
     ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `https://api.bsky.app`.
     ///   - canUseBlueskyRecords: Indicates whether Bluesky's lexicons should be used.
     ///   Defaults to `true`.
@@ -198,6 +199,7 @@ public class ATProtoKit: ATProtoKitConfiguration, ATRecordConfiguration {
         sessionConfiguration: SessionConfiguration? = nil,
         urlSessionConfiguration: URLSessionConfiguration? = nil,
         pdsURL: String = "https://api.bsky.app",
+        responseProvider: ATRequestExecutor? = nil,
         canUseBlueskyRecords: Bool = true
     ) {
         self.sessionConfiguration = sessionConfiguration
@@ -209,7 +211,7 @@ public class ATProtoKit: ATProtoKitConfiguration, ATRecordConfiguration {
         let recordLexicons = self.recordLexicons
 
         Task(priority: .background) {
-            await APIClientService.shared.configure(with: finalConfiguration)
+            await APIClientService.shared.configure(with: finalConfiguration, responseProvider: responseProvider)
             if canUseBlueskyRecords && !ATRecordTypeRegistry.areBlueskyRecordsRegistered {
                 _ = await ATRecordTypeRegistry.shared.register(blueskyLexiconTypes: recordLexicons)
             }
@@ -233,10 +235,17 @@ public class ATProtoKit: ATProtoKitConfiguration, ATRecordConfiguration {
     ///   - sessionConfiguration: The authenticated user session within the AT Protocol. Optional.
     ///   - urlSessionConfiguration: A `URLSessionConfiguration` object. Optional.
     ///   Defaults to `nil`.
+    ///   - responseProvider: An instance of `ATRequestExecutor`. Optional. Defaults to `nil`.
     ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `https://api.bsky.app`.
     ///   - canUseBlueskyRecords: Indicates whether Bluesky's lexicons should be used.
     ///   Defaults to `true`.
-    public init(sessionConfiguration: SessionConfiguration? = nil, urlSessionConfiguration: URLSessionConfiguration? = nil, pdsURL: String = "https://api.bsky.app", canUseBlueskyRecords: Bool = true) async {
+    public init(
+        sessionConfiguration: SessionConfiguration? = nil,
+        urlSessionConfiguration: URLSessionConfiguration? = nil,
+        pdsURL: String = "https://api.bsky.app",
+        responseProvider: ATRequestExecutor? = nil,
+        canUseBlueskyRecords: Bool = true
+    ) async {
         self.sessionConfiguration = sessionConfiguration
         if let urlSessionConfiguration {
             self.urlSessionConfiguration = urlSessionConfiguration
@@ -246,7 +255,7 @@ public class ATProtoKit: ATProtoKitConfiguration, ATRecordConfiguration {
 
         self.pdsURL = pdsURL
 
-        await APIClientService.shared.configure(with: self.urlSessionConfiguration)
+        await APIClientService.shared.configure(with: self.urlSessionConfiguration, responseProvider: responseProvider)
 
         if canUseBlueskyRecords && !(ATRecordTypeRegistry.areBlueskyRecordsRegistered) {
             _ = await ATRecordTypeRegistry.shared.register(blueskyLexiconTypes: recordLexicons)
