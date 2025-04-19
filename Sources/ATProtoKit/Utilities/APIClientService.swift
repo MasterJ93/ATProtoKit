@@ -123,14 +123,15 @@ public actor APIClientService {
     /// - Returns: A configured `URLRequest` instance.
     public static func createRequest(forRequest requestURL: URL, andMethod httpMethod: HTTPMethod, acceptValue: String? = "application/json",
                                      contentTypeValue: String? = "application/json", authorizationValue: String? = nil,
-                                     labelersValue: String? = nil, proxyValue: String? = nil, isRelatedToBskyChat: Bool = false) -> URLRequest {
+                                     labelersValue: String? = nil, proxyValue: String? = nil, isRelatedToBskyChat: Bool = false) async -> URLRequest {
         var request = URLRequest(url: requestURL)
         request.httpMethod = httpMethod.rawValue
 
         if let acceptValue {
             request.addValue(acceptValue, forHTTPHeaderField: "Accept")
         }
-        if let authorizationValue {
+
+        if let authorizationValue, await APIClientService.shared.executor == nil {
             request.addValue(authorizationValue, forHTTPHeaderField: "Authorization")
         }
 

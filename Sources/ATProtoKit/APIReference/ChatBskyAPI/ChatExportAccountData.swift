@@ -34,7 +34,7 @@ extension ATProtoBlueskyChat {
 
         do {
             // TODO: Figure out what exactly should be done here.
-            let request = APIClientService.createRequest(
+            let request = await APIClientService.createRequest(
                 forRequest: requestURL,
                 andMethod: .get,
                 acceptValue: "application/jsonl",

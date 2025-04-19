@@ -55,7 +55,7 @@ extension ATProtoKit {
                 with: queryItems
             )
 
-            let request = APIClientService.createRequest(
+            let request = await APIClientService.createRequest(
                 forRequest: queryURL,
                 andMethod: .get,
                 acceptValue: "application/json",

@@ -49,7 +49,7 @@ extension ATProtoAdmin {
         )
 
         do {
-            let request = APIClientService.createRequest(forRequest: requestURL,
+            let request = await APIClientService.createRequest(forRequest: requestURL,
                                                          andMethod: .post,
                                                          acceptValue: nil,
                                                          contentTypeValue: "'application/json",
