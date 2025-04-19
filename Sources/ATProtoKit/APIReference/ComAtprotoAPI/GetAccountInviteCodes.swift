@@ -31,13 +31,15 @@ extension ATProtoKit {
         areUsedCodesIncluded: Bool = true,
         areEarnedCodesIncluded: Bool = true
     ) async throws -> ComAtprotoLexicon.Server.GetAccountInviteCodesOutput {
-        guard session != nil,
-              let accessToken = session?.accessToken else {
+        guard let session = try await self.getUserSession(),
+              let keychain = sessionConfiguration?.keychainProtocol else {
             throw ATRequestPrepareError.missingActiveSession
         }
 
-        guard let sessionURL = session?.pdsURL,
-              let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.server.getAccountInviteCodes") else {
+        let accessToken = try await keychain.retrieveAccessToken()
+        let sessionURL = session.serviceEndpoint.absoluteString
+
+        guard let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.server.getAccountInviteCodes") else {
             throw ATRequestPrepareError.invalidRequestURL
         }
 
@@ -54,7 +56,7 @@ extension ATProtoKit {
                 with: queryItems
             )
 
-            let request = APIClientService.createRequest(
+            let request = await APIClientService.createRequest(
                 forRequest: queryURL,
                 andMethod: .get,
                 acceptValue: "application/json",

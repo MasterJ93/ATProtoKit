@@ -27,17 +27,24 @@ extension ATProtoKit {
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func checkAccountStatus() async throws -> ComAtprotoLexicon.Server.CheckAccountStatusOutput {
-        guard let sessionURL = session?.pdsURL,
+        guard let session = try await self.getUserSession(),
+              let keychain = sessionConfiguration?.keychainProtocol else {
+            throw ATRequestPrepareError.missingActiveSession
+        }
+
+        let accessToken = try await keychain.retrieveAccessToken()
+
+        guard let sessionURL = session.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.server.checkAccountStatus") else {
             throw ATRequestPrepareError.invalidRequestURL
         }
 
         do {
-            let request = APIClientService.createRequest(
+            let request = await APIClientService.createRequest(
                 forRequest: requestURL,
                 andMethod: .get,
                 contentTypeValue: nil,
-                authorizationValue: nil
+                authorizationValue: "Bearer \(accessToken)"
             )
             let response = try await APIClientService.shared.sendRequest(
                 request,

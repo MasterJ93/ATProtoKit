@@ -357,6 +357,32 @@ public class ATProtoTools {
         }
     }
 
+    /// Creates a ``ComAtprotoLexicon/Repository/StrongReference`` from a URI.
+    ///
+    /// - Parameters:
+    ///   - recordURI: The URI of the record.
+    ///   - pdsURL: The URL of the Personal Data Server (PDS). Optional.
+    ///   Defaults to `https://api.bsky.app`.
+    /// - Returns: A strong reference of the record.
+    public static func createStrongReference(
+        from recordURI: String,
+        pdsURL: String = "https://api.bsky.app"
+    ) async throws -> ComAtprotoLexicon.Repository.StrongReference {
+        let query = try ATProtoTools().parseURI(recordURI)
+
+        do {
+            let record = try await ATProtoKit(pdsURL: pdsURL, canUseBlueskyRecords: false).getRepositoryRecord(
+                from: query.repository,
+                collection: query.collection,
+                recordKey: query.recordKey
+            )
+
+            return ComAtprotoLexicon.Repository.StrongReference(recordURI: record.uri, cidHash: record.cid)
+        } catch {
+            throw error
+        }
+    }
+
     /// Generates a random alphanumeric string with a specified length
     ///
     /// A maximum of 25 characters can be created for the string. This is useful for generating

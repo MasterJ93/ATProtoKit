@@ -28,7 +28,7 @@ extension ATProtoBluesky {
         shouldValidate: Bool? = true,
         swapCommit: String? = nil
     ) async throws -> ComAtprotoLexicon.Repository.StrongReference {
-        guard let session else {
+        guard let session = try await atProtoKitInstance.getUserSession() else {
             throw ATRequestPrepareError.missingActiveSession
         }
 

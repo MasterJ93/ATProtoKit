@@ -1,32 +1,12 @@
-# 0.20 to 0.21 Authentication Flow Migration
+# 0.21 to 0.26 Authentication Flow Migration
 
 Learn about how to set up your project with the new authentication flow changes.
 
-With the release of 0.21.0 comes a new migration flow for ATProtoKit developers. This change is fairly small, but this article will still cover what to expect in order to clear any confusion.
+With the release of 0.26.0 comes a new migration flow for ATProtoKit developers. This change is fairly small, but this article will still cover what to expect in order to clear any confusion.
 
 ## Authentication Flow
 
-Previously, when you wanted to authenticate to an AT Protocol service, you used an initializer from ``ATProtocolConfiguration``, then used ``ATProtocolConfiguration/authenticate(authenticationFactorToken:)`` and passed the ``UserSession`` object into the main ``ATProtoKit/ATProtoKit`` `class`:
-
-```swift
-let config = ATProtocolConfiguration(
-    handle: example.bsky.social,
-    password: hunter2
-)
-
-Task {
-    do {
-        let session = try await config.authenticate()
-        let atProto = ATProtoKit(session: session)
-    } catch {
-        throw error
-    }
-}
-```
-
-While this worked well, if you wanted to use the `refreshSession()` or `deleteSession()` methods (which would directly replace or delete the `UserSession` object respectively), it would be very difficult to do so.
-
-With version 0.21.0, you can now authenticate like this:
+Previously, when you wanted to authenticate to an AT Protocol service, you used an initializer from ``ATProtocolConfiguration``, which contained the `handle` and `password` parameters. Then, you would use ATProtocolConfiguration.authenticate(authenticationFactorToken:) and passed the instance to the ``ATProtoKit`` `class`:
 
 ```swift
 let config = ATProtocolConfiguration(handle: example.bsky.social, password: hunter2)
@@ -46,43 +26,50 @@ Task {
 }
 ```
 
-Here are the changes being made:
-- ``ATProtocolConfiguration`` now stores the ``UserSession`` object: ``ATProtocolConfiguration/session``.
-- The main ``ATProtoKit/ATProtoKit`` `class` now asks for a ``SessionConfiguration`` object instead of a ``UserSession`` object. ``ATProtocolConfiguration`` is a ``SessionConfiguration``-conforming `class`.
-- ``ATProtocolConfiguration/authenticate(authenticationFactorToken:)`` no longer returns anything.
-  - Due to the above change, you can now have the option to authenticate before or after creating the main `ATProtoKit` `class`.
-- ``ATProtocolConfiguration`` now accesses the following via proxy methods:
-
-`ATProtoKit` method|Proxy Method
----:|:---
-``ATProtoKit/ATProtoKit/createSession(with:and:authenticationFactorToken:)``|``ATProtocolConfiguration/authenticate(authenticationFactorToken:)``
-``ATProtoKit/ATProtoKit/getSession(by:)``|``ATProtocolConfiguration/getSession(by:authenticationFactorToken:)``
-``ATProtoKit/ATProtoKit/refreshSession(refreshToken:)``| ``ATProtocolConfiguration/refreshSession(by:authenticationFactorToken:)``
-``ATProtoKit/ATProtoKit/deleteSession(refreshToken:)``|``ATProtocolConfiguration/deleteSession(with:)``
-``ATProtoKit/ATProtoKit/createAccount(email:handle:existingDID:inviteCode:verificationCode:verificationPhone:password:recoveryKey:plcOperation:)``| ``ATProtocolConfiguration/createAccount(email:handle:existingDID:inviteCode:verificationCode:verificationPhone:password:recoveryKey:plcOperation:)``
-
-
-
----
-
-There isn’t that much you need to do:
-
+With version 0.26, this has been changed slightly:
 ```swift
-// Remove the assignment as it’s no longer needed.
-// Before:
-let session = try await config.authenticate()
+let config = ATProtocolConfiguration()
 
-// After:
-try await config.authenticate()
+Task {
+    do {
 
-// Change the argument name from `session` to `sessionConfiguration`.
-// Before:
-let atProto = ATProtoKit(session: session)
+        let atProto = ATProtoKit(sessionConfiguration: config)
 
-// After:
-let atProto = ATProtoKit(sessionConfiguration: config)
+        // Enter the handle and password in here.
+        try await config.authenticate(
+            handle: example.bsky.social,
+            password: hunter2
+        )
+    } catch {
+        throw error
+    }
+}
 ```
 
-## Creating Your Own SessionConfiguration Class
+Here are the changes being made:
+- ``ATProtocolConfiguration``'s initializer no longer takes the `handle` or `password` parameters: now, ``ATProtocolConfiguration/authenticate(with:password:)`` is responsible.
 
-While this was already possible, new in 0.21.0, you can now create your own ``SessionConfiguration`` (formally called `ProtocolConfiguration`) `class`. This is for situations where you feel like ``ATProtocolConfiguration`` isn’t well-made for your needs. To learn more about creating a `SessionConfiguration` `class`, go to the ``SessionConfiguration`` documentation.
+This is the only external change. However, more has been made internally:
+- ``UserSession`` is no longer stored inside of ``ATProtocolConfiguration``: now, a new `actor` named ``UserSessionRegistry`` holds all instances of the `struct`.
+- A `UUID` value has been added to the ``ATProtocolConfiguration`` `class`. This value is linked to all objects that are related to the session. This is part of the new initializer for ``ATProtocolConfiguration``, named ``ATProtocolConfiguration/init(pdsURL:keychainProtocol:configuration:canResolve:)``.
+- ``ATProtocolConfiguration`` now closely follows ``SessionConfiguration``. In fact, the following methods are no longer stored in the `class`, but have moved to default implementations of the `protocol`:
+  - ``ATProtocolConfiguration/authenticate(with:password:)``
+  - ``ATProtocolConfiguration/getSession()``
+  - ``ATProtocolConfiguration/refreshSession()``
+  - ``ATProtocolConfiguration/deleteSession()``
+- A new `protocol`, named ``SecureKeychainProtocol``, will now manage the management of the password, access token, and refresh token. An `actor`, named ``AppleSecureKeychain`` is available for applications running on Apple's platforms.
+
+## `SessionConfiguration`
+
+As mentioned previously, ``SessionConfiguration`` now has default configurations for each of the required methods. It is also `Sendable` and requires a `class` to conform to it. The default implementation assumes you're using an App Password to authenticate by default, but you're able to create new implementations for your own conforming `class`.
+
+Furthermore, the ``SessionConfiguration/authenticate(with:password:)`` method handles Two-Factor Authentication, but the `protocol` can also handle OAuth. This is thanks to a `AsyncStream`-related properties, named ``SessionConfiguration/codeContinuation`` and ``SessionConfiguration/codeStream``.
+
+## Auto-managing the Keychain
+
+As mentioned earlier, a new `protocol` and `actor` have been made: ``SecureKeychainProtocol`` and ``AppleSecureKeychain`` respectively. This manages the keychain items for the password and refresh token, as well as storing the access token in-memory.
+- Note: The access token is being stored in-memory due to how frequently the token expires.
+
+``AppleSecureKeychain`` conforms to ``SecureKeychainProtocol`` and is the default object used for Apple platforms. It's also the default object used when initializing with ``ATProtocolConfiguration``. However, you're free to create your own implementation if it doesn't suit your needs.
+- Note: At this time, Linux and Windows developers will need to implement their own `actor` or `class` to achieve the same effect. However, default `actor`s for those platforms will be created at a later date.
+

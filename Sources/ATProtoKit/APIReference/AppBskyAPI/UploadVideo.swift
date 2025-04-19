@@ -28,12 +28,11 @@ extension ATProtoKit {
     public func uploadVideo(_ video: Data) async throws -> AppBskyLexicon.Video.JobStatusDefinition {
         var attempts = 0
 
-        guard session != nil,
-              session?.accessToken != nil else {
+        guard let session = try await self.getUserSession() else {
             throw ATRequestPrepareError.missingActiveSession
         }
 
-        guard let serviceEndpoint = session?.didDocument?.service[0].serviceEndpoint,
+        guard let serviceEndpoint = session.didDocument?.service[0].serviceEndpoint,
               let serviceEndpointHost = serviceEndpoint.hostname() else {
             throw ATRequestPrepareError.invalidRequestURL
         }
@@ -51,32 +50,24 @@ extension ATProtoKit {
             throw ATRequestPrepareError.invalidRequestURL
         }
 
-        let requestBody = AppBskyLexicon.Video.UploadVideoRequestBody(
-            video: video
-        )
+        let requestBody = AppBskyLexicon.Video.UploadVideoRequestBody(video: video)
 
-        var queryItems = [(String, String)]()
+        let queryItems: [(String, String)] = [
+            ("did", session.sessionDID),
+            ("name", "\(ATProtoTools().generateRandomString()).mp4")
+        ]
 
-        if let did = session?.sessionDID {
-            queryItems.append(("did", did))
-        }
-
-        queryItems.append(("name", "\(ATProtoTools().generateRandomString()).mp4"))
-
-        let queryURL: URL
-
-
-        let maxRetryCount = session?.maxRetryCount ?? 3
-        let retryTimeDelay = session?.retryTimeDelay ?? 1.0
+        let maxRetryCount = 3
+        let retryTimeDelay = 1.0
 
         while attempts < maxRetryCount {
             do {
-                queryURL = try APIClientService.setQueryItems(
+                let queryURL = try APIClientService.setQueryItems(
                     for: requestURL,
                     with: queryItems
                 )
 
-                var request = APIClientService.createRequest(
+                var request = await APIClientService.createRequest(
                     forRequest: queryURL,
                     andMethod: .post,
                     acceptValue: "application/json",
@@ -106,37 +97,26 @@ extension ATProtoKit {
                             .upgradeRequired(let requestError),
                             .internalServerError(let requestError),
                             .methodNotImplemented(let requestError):
-                        if attempts == maxRetryCount {
+                        if attempts == maxRetryCount - 1 {
                             throw requestError
-                        } else {
-                            attempts += 1
-                            try await Task.sleep(nanoseconds: UInt64(retryTimeDelay * 1_000_000_000))
                         }
                     case .badGateway,
                             .serviceUnavailable,
                             .gatewayTimeout:
-                        if attempts == maxRetryCount {
+                        if attempts == maxRetryCount - 1 {
                             throw error
-                        } else {
-                            attempts += 1
-                            try await Task.sleep(nanoseconds: UInt64(retryTimeDelay * 1_000_000_000))
                         }
                     case .unknown(error: let requestError, errorCode: let errorCode, errorData: let errorData, httpHeaders: let httpHeaders):
-                        if attempts == maxRetryCount {
+                        if attempts == maxRetryCount - 1 {
                             throw ATAPIError.unknown(error: requestError, errorCode: errorCode, errorData: errorData, httpHeaders: httpHeaders)
-                        } else {
-                            attempts += 1
-                            try await Task.sleep(nanoseconds: UInt64(retryTimeDelay * 1_000_000_000))
                         }
                 }
 
                 attempts += 1
                 try await Task.sleep(nanoseconds: UInt64(retryTimeDelay * 1_000_000_000))
-
-                throw error
             }
         }
 
-        throw ATRequestPrepareError.invalidRequestURL
+        throw ATRequestPrepareError.failedAfterRetries
     }
 }

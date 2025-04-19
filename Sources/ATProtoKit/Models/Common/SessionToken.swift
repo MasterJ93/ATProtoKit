@@ -79,15 +79,15 @@ public struct SessionToken: Sendable, Encodable {
             throw SessionTokenError.invalidSessionToken(message: "Could not decode the token.")
         }
 
-        guard let header = try? JSONSerialization.jsonObject(with: headerData, options: []) as? Header else {
-            throw SessionTokenError.invalidHeader(message: "Could not decode the header.")
-        }
+        do {
+            let decoder = JSONDecoder()
 
-        guard let payload = try? JSONSerialization.jsonObject(with: payloadData) as? Payload else {
-            throw SessionTokenError.invalidPayload(message: "Could not decode the payload.")
+            let header = try decoder.decode(Header.self, from: headerData)
+            let payload = try decoder.decode(Payload.self, from: payloadData)
+            return (header, payload, signature)
+        } catch {
+            throw SessionTokenError.invalidSessionToken(message: "Could not decode the token.")
         }
-
-        return (header, payload, signature)
     }
 
     /// The header of the session token.

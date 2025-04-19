@@ -21,7 +21,7 @@ extension ATProtoBluesky {
     /// After that, you can use the ``ComAtprotoLexicon/Repository/StrongReference/recordURI``
     /// property as the value for the `postURI` argument.
     ///
-    /// ## Managing Allowlist Options
+    /// # Managing Allowlist Options
     ///
     /// With the `replyControls` argument, you can specifiy the specific retrictions you want
     /// for the post.
@@ -58,13 +58,13 @@ extension ATProtoBluesky {
         shouldValidate: Bool? = true,
         swapCommit: String? = nil
     ) async throws -> ComAtprotoLexicon.Repository.StrongReference {
-        guard let session else {
+        guard let session = try await atProtoKitInstance.getUserSession() else {
             throw ATRequestPrepareError.missingActiveSession
         }
 
         // Check to see if the post exists.
         guard let post = try await atProtoKitInstance.getPosts([postURI]).posts.first else {
-            throw ATProtoBlueskyError.postNotFound(message: "Post (\(postURI)) not found.")
+            throw ATProtoBlueskyError.recordNotFound(message: "Post record (\(postURI)) not found.")
         }
 
         var threadgateAllowArray: [ATUnion.ThreadgateUnion] = []

@@ -20,22 +20,24 @@ extension ATProtoKit {
     /// - Parameters:
     ///   - codeCount: The number of invite codes to be created. Defaults to `1`.
     ///   - accounts: An array of decentralized identifiers (DIDs) that can use the invite codes.
-    /// - Returns: An array of newly-created invide codes
+    /// - Returns: An array of newly-created invide codes.
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func createInviteCodes(
         codeCount: Int = 1,
         for accounts: [String]
-    ) async throws -> Result<ComAtprotoLexicon.Server.CreateInviteCodesOutput, Error> {
-        guard session != nil,
-              let accessToken = session?.accessToken else {
-            return .failure(ATRequestPrepareError.missingActiveSession)
+    ) async throws -> ComAtprotoLexicon.Server.CreateInviteCodesOutput {
+        guard let session = try await self.getUserSession(),
+              let keychain = sessionConfiguration?.keychainProtocol else {
+            throw ATRequestPrepareError.missingActiveSession
         }
 
-        guard let sessionURL = session?.pdsURL,
+        let accessToken = try await keychain.retrieveAccessToken()
+
+        guard let sessionURL = session.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.server.createInviteCodes") else {
-            return .failure(ATRequestPrepareError.invalidRequestURL)
+            throw ATRequestPrepareError.invalidRequestURL
         }
 
         // Make sure the number isn't lower than one.
@@ -45,7 +47,7 @@ extension ATProtoKit {
         )
 
         do {
-            let request = APIClientService.createRequest(
+            let request = await APIClientService.createRequest(
                 forRequest: requestURL,
                 andMethod: .post,
                 acceptValue: "application/json",
@@ -58,9 +60,9 @@ extension ATProtoKit {
                 decodeTo: ComAtprotoLexicon.Server.CreateInviteCodesOutput.self
             )
 
-            return .success(response)
+            return response
         } catch {
-            return .failure(error)
+            throw error
         }
     }
 }

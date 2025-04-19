@@ -429,12 +429,12 @@ extension AppBskyLexicon.Graph {
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/graph/defs.json
     public enum ListPurpose: String, Sendable, Codable {
 
-        /// An array of actors to apply an aggregate moderation action (mute/block) on.
+        /// A list of actors to apply an aggregate moderation action (mute/block) on.
         ///
         /// - Note: The documentation is taken directly from the lexicon itself.
         case modlist = "app.bsky.graph.defs#modlist"
 
-        /// An array of actors used for curation purposes such as list feeds or interaction gating.
+        /// A list of actors used for curation purposes such as list feeds or interaction gating.
         ///
         /// - Note: The documentation is taken directly from the lexicon itself.
         case curatelist = "app.bsky.graph.defs#curatelist"

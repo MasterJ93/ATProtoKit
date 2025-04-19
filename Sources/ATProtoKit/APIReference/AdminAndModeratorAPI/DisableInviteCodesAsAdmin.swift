@@ -31,12 +31,14 @@ extension ATProtoAdmin {
         _ codes: [String],
         for accountDIDs: [String]
     ) async throws {
-        guard session != nil,
-              let accessToken = session?.accessToken else {
+        guard let session = try await self.getUserSession(),
+              let keychain = sessionConfiguration?.keychainProtocol else {
             throw ATRequestPrepareError.missingActiveSession
         }
 
-        guard let sessionURL = session?.pdsURL,
+        let accessToken = try await keychain.retrieveAccessToken()
+
+        guard let sessionURL = session.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.admin.disableInviteCodes") else {
             throw ATRequestPrepareError.invalidRequestURL
         }
@@ -47,7 +49,7 @@ extension ATProtoAdmin {
         )
 
         do {
-            let request = APIClientService.createRequest(forRequest: requestURL,
+            let request = await APIClientService.createRequest(forRequest: requestURL,
                                                          andMethod: .post,
                                                          acceptValue: nil,
                                                          contentTypeValue: "'application/json",

@@ -32,12 +32,14 @@ extension ATProtoAdmin {
         with did: String,
         and role: ToolsOzoneLexicon.Team.MemberDefinition.Role
     ) async throws -> ToolsOzoneLexicon.Team.MemberDefinition {
-        guard session != nil,
-              let accessToken = session?.accessToken else {
+        guard let session = try await self.getUserSession(),
+              let keychain = sessionConfiguration?.keychainProtocol else {
             throw ATRequestPrepareError.missingActiveSession
         }
 
-        guard let sessionURL = session?.pdsURL,
+        let accessToken = try await keychain.retrieveAccessToken()
+
+        guard let sessionURL = session.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/tools.ozone.team.addMember") else {
             throw ATRequestPrepareError.invalidRequestURL
         }
@@ -48,7 +50,7 @@ extension ATProtoAdmin {
         )
 
         do {
-            let request = APIClientService.createRequest(
+            let request = await APIClientService.createRequest(
                 forRequest: requestURL,
                 andMethod: .post,
                 acceptValue: "application/json",

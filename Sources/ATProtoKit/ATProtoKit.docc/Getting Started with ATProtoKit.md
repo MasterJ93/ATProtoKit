@@ -24,7 +24,7 @@ let config = ATProtocolConfiguration(handle: "lucy.bsky.social", appPassword: "g
  
 > Important: Do not use the password you typically use for signing into Bluesky: only use a specific App Password that's in use for this instance of ATProtoKit only. To generate an App Password, go to the Bluesky website, then go to Settings > Advanced > App Passwords and follow the instructions.
 
-Then, you can create a session with the ``ATProtocolConfiguration/authenticate(authenticationFactorToken:)`` method:
+Then, you can create a session with the ``ATProtocolConfiguration/authenticate(with:password:)`` method:
 
 ```swift
 Task {
@@ -48,7 +48,7 @@ Task {
 }
 ```
 
-> Note: If you've enabled Two-Factor Authentication (via email), you may see an `AuthFactorTokenRequired` error. In that case, check your inbox for a code, then call ``ATProtocolConfiguration/authenticate(authenticationFactorToken:)`` again, but put in the code for the `authenticationFactorToken` parameter.
+> Note: If you've enabled Two-Factor Authentication (via email), you may see an `AuthFactorTokenRequired` error. In that case, check your inbox for a code, then call ``ATProtocolConfiguration/authenticate(with:password:)`` again, but put in the code for the `authenticationFactorToken` parameter.
 
 ``UserSession`` will contain, among other things, the access and refresh tokens. ATProtoKit abstracts this away for you so you don't need to add it every time you use a method that requires an active session.
 
