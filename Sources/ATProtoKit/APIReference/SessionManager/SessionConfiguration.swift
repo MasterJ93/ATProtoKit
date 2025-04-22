@@ -51,6 +51,20 @@ public protocol SessionConfiguration: AnyObject, Sendable {
     /// An instance of `SecureKeychainProtocol`.
     var keychainProtocol: SecureKeychainProtocol { get }
 
+    /// A type alias for defining a closure that takes a `URLRequest` and returns a tuple of `Data`
+    /// and `URLResponse`.
+    ///
+    /// This closure is used for customizing how network requests are executed asynchronously. It allows
+    /// conforming types to specify a different implementation for sending requests and receiving responses,
+    /// which can be useful for dependency injection, testing, or swapping out networking layers.
+    ///
+    /// - Parameters:
+    ///   - URLRequest: The request to be sent.
+    /// - Returns: A tuple containing the raw response `Data` and the associated `URLResponse`.
+    ///
+    /// - Throws: An error if the request fails or cannot be processed.
+    typealias ResponseProvider = @Sendable (URLRequest) async throws -> (Data, URLResponse)
+
     /// Creates an a new account for the user.
     ///
     /// - Note: `plcOp` may be updated when full account migration is implemented.
