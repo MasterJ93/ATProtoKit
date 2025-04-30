@@ -235,27 +235,9 @@ extension SessionConfiguration {
     }
 
     public func authenticate(with handle: String, password: String) async throws {
-        let atProtoKit = await ATProtoKit(pdsURL: self.pdsURL, canUseBlueskyRecords: false)
-        let didDocument: DIDDocument
         let serviceEndpoint: URL
         var response: ComAtprotoLexicon.Server.CreateSessionOutput? = nil
         var userCode: String? = nil
-
-        do {
-            // Resolve the handle to make sure it exists.
-            let identity = try await atProtoKit.resolveIdentity(handle)
-
-            guard let convertedDIDDocument = SessionConfigurationHelpers.convertDIDDocument(identity.didDocument) else {
-                throw DIDDocument.DIDDocumentError.emptyArray
-            }
-
-            didDocument = convertedDIDDocument
-
-            let atService = try didDocument.checkServiceForATProto()
-            serviceEndpoint = atService.serviceEndpoint
-        } catch {
-            throw error
-        }
 
         // Loop until an error has been thrown, or until the response has been added.
         while response == nil {
@@ -312,10 +294,10 @@ extension SessionConfiguration {
                 email: response.email,
                 isEmailConfirmed: response.isEmailConfirmed,
                 isEmailAuthenticationFactorEnabled: response.isEmailAuthenticatedFactor,
-                didDocument: didDocument,
+                didDocument: convertedDIDDocument,
                 isActive: response.isActive,
                 status: status,
-                serviceEndpoint: serviceEndpoint,
+                serviceEndpoint: try convertedDIDDocument.checkServiceForATProto().serviceEndpoint,
                 pdsURL: self.pdsURL
             )
 
