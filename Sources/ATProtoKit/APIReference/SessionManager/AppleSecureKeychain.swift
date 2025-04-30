@@ -186,7 +186,7 @@ public actor AppleSecureKeychain: SecureKeychainProtocol {
     ///   - key: The keychain key.
     ///
     ///   - Throws: `ApplSecureKeychainError.unhandledStatus` if the operation failed.
-    private func saveOrUpdateItem(_ value: String, forKey key: String) async throws {
+    public func saveOrUpdateItem(_ value: String, forKey key: String) async throws {
         let data = Data(value.utf8)
 
         let query: [CFString: Any] = [
@@ -223,7 +223,7 @@ public actor AppleSecureKeychain: SecureKeychainProtocol {
     ///
     /// - Throws: An error if the item wasn't found, the data was invalid, or if there was an
     /// unhandled operation.
-    private func readItem(forKey key: String) async throws -> String {
+    public func readItem(forKey key: String) async throws -> String {
         let query: [CFString: Any] = [
             kSecClass: kSecClassGenericPassword,
             kSecAttrAccount: key,
@@ -255,7 +255,7 @@ public actor AppleSecureKeychain: SecureKeychainProtocol {
     /// - Parameter key: The key of the keychain item to delete.
     ///
     /// - Throws: `ApplSecureKeychainError.unhandledStatus` if there was an unhandled operation.
-    private func deleteItem(forKey key: String) async throws {
+    public func deleteItem(forKey key: String) async throws {
         let query: [CFString: Any] = [
             kSecClass: kSecClassGenericPassword,
             kSecAttrAccount: key,
