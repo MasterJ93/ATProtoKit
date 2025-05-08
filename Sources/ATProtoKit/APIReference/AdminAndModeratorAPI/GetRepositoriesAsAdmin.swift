@@ -16,19 +16,21 @@ extension ATProtoAdmin {
     /// 
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/tools/ozone/moderation/getRepos.json
     /// 
-    /// - Parameter dids: An array of Decentralized Identifiers (DIDs) to extract the
+    /// - Parameter dids: An array of decentralized identifiers (DIDs) to extract the
     /// repository information. Limits to 100 items.
     /// - Returns: An aray of repositories based on the decentralized identifiers (DIDs) given.
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func getRepositories(from dids: [String]) async throws -> ToolsOzoneLexicon.Moderation.GetRepositoriesOutput {
-        guard session != nil,
-              let accessToken = session?.accessToken else {
+        guard let session = try await self.getUserSession(),
+              let keychain = sessionConfiguration?.keychainProtocol else {
             throw ATRequestPrepareError.missingActiveSession
         }
 
-        guard let sessionURL = session?.pdsURL,
+        let accessToken = try await keychain.retrieveAccessToken()
+
+        guard let sessionURL = session.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/tools.ozone.moderation.getRepos") else {
             throw ATRequestPrepareError.invalidRequestURL
         }
@@ -46,7 +48,7 @@ extension ATProtoAdmin {
                 with: queryItems
             )
 
-            let request = APIClientService.createRequest(
+            let request = await APIClientService.createRequest(
                 forRequest: queryURL,
                 andMethod: .get,
                 acceptValue: "application/json",

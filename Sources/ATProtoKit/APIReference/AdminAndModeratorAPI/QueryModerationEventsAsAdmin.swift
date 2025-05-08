@@ -85,12 +85,14 @@ extension ATProtoAdmin {
         policies: [String]? = nil,
         cursor: String? = nil
     ) async throws -> ToolsOzoneLexicon.Moderation.QueryEventsOutput {
-        guard session != nil,
-              let accessToken = session?.accessToken else {
+        guard let session = try await self.getUserSession(),
+              let keychain = sessionConfiguration?.keychainProtocol else {
             throw ATRequestPrepareError.missingActiveSession
         }
 
-        guard let sessionURL = session?.pdsURL,
+        let accessToken = try await keychain.retrieveAccessToken()
+
+        guard let sessionURL = session.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/tools.ozone.moderation.queryEvents") else {
             throw ATRequestPrepareError.invalidRequestURL
         }
@@ -202,7 +204,7 @@ extension ATProtoAdmin {
                 with: queryItems
             )
 
-            let request = APIClientService.createRequest(
+            let request = await APIClientService.createRequest(
                 forRequest: queryURL,
                 andMethod: .get,
                 acceptValue: "application/json",

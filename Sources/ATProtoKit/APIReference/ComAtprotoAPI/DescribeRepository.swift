@@ -29,8 +29,7 @@ extension ATProtoKit {
         _ repositoryDID: String,
         pdsURL: String? = nil
     ) async throws -> ComAtprotoLexicon.Repository.DescribeRepositoryOutput {
-        guard let sessionURL = pdsURL != nil ? pdsURL : session?.pdsURL,
-              let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.repo.describeRepo") else {
+        guard let requestURL = URL(string: "\(self.pdsURL)/xrpc/com.atproto.repo.describeRepo") else {
             throw ATRequestPrepareError.invalidRequestURL
         }
 
@@ -46,7 +45,7 @@ extension ATProtoKit {
                 with: queryItems
             )
 
-            let request = APIClientService.createRequest(
+            let request = await APIClientService.createRequest(
                 forRequest: queryURL,
                 andMethod: .get,
                 acceptValue: "application/json",

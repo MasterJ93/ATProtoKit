@@ -12,7 +12,7 @@ extension ATProtoBluesky {
     /// Creates a block record to block a specific user account.
     ///
     /// - Parameters:
-    ///   - actorDID: The decentralized identifier (DID) for the user account to block.
+    ///   - blockType: The type of block record to create.
     ///   - createdAt: The date and time the block record is created. Defaults to `Date()`.
     ///   - recordKey: The record key of the collection. Optional. Defaults to `nil`.
     ///   - shouldValidate: Indicates whether the record should be validated. Optional.
@@ -28,7 +28,7 @@ extension ATProtoBluesky {
         shouldValidate: Bool? = true,
         swapCommit: String? = nil
     ) async throws -> ComAtprotoLexicon.Repository.StrongReference {
-        guard let session else {
+        guard let session = try await atProtoKitInstance.getUserSession() else {
             throw ATRequestPrepareError.missingActiveSession
         }
 

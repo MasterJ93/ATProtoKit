@@ -26,7 +26,7 @@ extension ATProtoBluesky {
         listURI: String,
         replace: [UpdatedListRecordField]
     ) async throws -> ComAtprotoLexicon.Repository.StrongReference {
-        guard let session else {
+        guard let session = try await atProtoKitInstance.getUserSession() else {
             throw ATRequestPrepareError.missingActiveSession
         }
 
@@ -109,11 +109,13 @@ extension ATProtoBluesky {
                         break
                     }
 
-                    if let listAvatarImageField = listAvatarImageField {
+                    if let listAvatarImageField = listAvatarImageField,
+                       let keychain = sessionConfiguration?.keychainProtocol {
+                        let accessToken = try await keychain.retrieveAccessToken()
                         let postEmbed = try await uploadImages(
                             [listAvatarImageField],
                             pdsURL: sessionURL,
-                            accessToken: session.accessToken
+                            accessToken: accessToken
                         )
 
                         switch postEmbed {

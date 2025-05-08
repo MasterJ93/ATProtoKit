@@ -42,7 +42,7 @@ extension ATProtoKit {
         let mimeType = APIClientService.mimeType(for: filename)
 
         do {
-            var request = APIClientService.createRequest(
+            var request = await APIClientService.createRequest(
                 forRequest: requestURL,
                 andMethod: .post,
                 contentTypeValue: mimeType,

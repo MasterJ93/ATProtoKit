@@ -22,6 +22,7 @@ extension ATProtoAdmin {
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/tools/ozone/team/listMembers.json
     /// 
     /// - Parameters:
+    ///   - query: The string used against a list of members. Optional.
     ///   - isDisabled: Determines whether the members are disabled. Optional.
     ///   - roles: An array of roles for the members. Optional.
     ///   - limit: The number of invite codes in the list. Defaults to `50`.
@@ -33,22 +34,37 @@ extension ATProtoAdmin {
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func listMembers(
+        query: String? = nil,
         isDisabled: Bool? = nil,
         roles: [String]? = nil,
         limit: Int? = 50,
         cursor: String? = nil
     ) async throws -> ToolsOzoneLexicon.Team.ListMembersOutput {
-        guard session != nil,
-              let accessToken = session?.accessToken else {
+        guard let session = try await self.getUserSession(),
+              let keychain = sessionConfiguration?.keychainProtocol else {
             throw ATRequestPrepareError.missingActiveSession
         }
 
-        guard let sessionURL = session?.pdsURL,
+        let accessToken = try await keychain.retrieveAccessToken()
+
+        guard let sessionURL = session.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/tools.ozone.team.listMembers") else {
             throw ATRequestPrepareError.invalidRequestURL
         }
 
         var queryItems = [(String, String)]()
+
+        if let query {
+            queryItems.append(("q", query))
+        }
+        
+        if let isDisabled {
+            queryItems.append(("isDisabled", isDisabled ? "true" : "false"))
+        }
+
+        if let roles {
+            queryItems += roles.map { ("roles", $0) }
+        }
 
         if let limit {
             let finalLimit = max(1, min(limit, 100))
@@ -67,7 +83,7 @@ extension ATProtoAdmin {
                 with: queryItems
             )
 
-            let request = APIClientService.createRequest(
+            let request = await APIClientService.createRequest(
                 forRequest: queryURL,
                 andMethod: .get,
                 acceptValue: "application/json",

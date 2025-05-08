@@ -26,39 +26,41 @@ extension ATProtoBlueskyChat {
         from conversationID: String,
         to messageID: String? = nil
     ) async throws -> ChatBskyLexicon.Conversation.UpdateReadOutput {
-            guard session != nil,
-                  let accessToken = session?.accessToken else {
-                throw ATRequestPrepareError.missingActiveSession
-            }
+        guard let session = try await self.getUserSession(),
+              let keychain = sessionConfiguration?.keychainProtocol else {
+            throw ATRequestPrepareError.missingActiveSession
+        }
 
-            guard let sessionURL = session?.serviceEndpoint,
-                  let requestURL = URL(string: "\(sessionURL)/xrpc/chat.bsky.convo.updateRead") else {
-                throw ATRequestPrepareError.invalidRequestURL
-            }
+        let accessToken = try await keychain.retrieveAccessToken()
+        let sessionURL = session.serviceEndpoint.absoluteString
 
-            let requestBody = ChatBskyLexicon.Conversation.UpdateReadRequestBody(
-                conversationID: conversationID,
-                messageID: messageID
+        guard let requestURL = URL(string: "\(sessionURL)/xrpc/chat.bsky.convo.updateRead") else {
+            throw ATRequestPrepareError.invalidRequestURL
+        }
+
+        let requestBody = ChatBskyLexicon.Conversation.UpdateReadRequestBody(
+            conversationID: conversationID,
+            messageID: messageID
+        )
+
+        do {
+            let request = await APIClientService.createRequest(
+                forRequest: requestURL,
+                andMethod: .get,
+                acceptValue: "application/json",
+                contentTypeValue: "application/json",
+                authorizationValue: "Bearer \(accessToken)",
+                isRelatedToBskyChat: true
+            )
+            let response = try await APIClientService.shared.sendRequest(
+                request,
+                withEncodingBody: requestBody,
+                decodeTo: ChatBskyLexicon.Conversation.UpdateReadOutput.self
             )
 
-            do {
-                let request = APIClientService.createRequest(
-                    forRequest: requestURL,
-                    andMethod: .get,
-                    acceptValue: "application/json",
-                    contentTypeValue: "application/json",
-                    authorizationValue: "Bearer \(accessToken)",
-                    isRelatedToBskyChat: true
-                )
-                let response = try await APIClientService.shared.sendRequest(
-                    request,
-                    withEncodingBody: requestBody,
-                    decodeTo: ChatBskyLexicon.Conversation.UpdateReadOutput.self
-                )
-
-                return response
-            } catch {
-                throw error
-            }
+            return response
+        } catch {
+            throw error
+        }
     }
 }

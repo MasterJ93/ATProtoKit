@@ -5,7 +5,7 @@ Develop and manage client and server-side applications for the AT Protocol and B
 @Metadata {
     @PageImage(
         purpose: icon, 
-        source: "atprotokit_logo", 
+        source: "atprotokit_icon", 
         alt: "A technology icon representing the ATProtoKit framework.")
     @PageColor(blue)
 }
@@ -20,13 +20,13 @@ Below is a very quick example to run the project:
 ```swift
 import ATProtoKit
 
-let config = ATProtocolConfiguration(handle: "example.bsky.social", appPassword: "hunter2")
+let config = ATProtocolConfiguration()
 
 Task {
     print("Starting application...")
 
     do {
-        try await config.authenticate()
+        try await config.authenticate(handle: "example.bsky.social", appPassword: "hunter2")
 
         let atProto = await ATProtoKit(sessionConfiguration: config)
         let atProtoBluesky = ATProtoBluesky(atProtoKitInstance: atProto)
@@ -44,10 +44,10 @@ ATProtoKit is fully open source under the [MIT license](https://github.com/Maste
 
 ## What's New in ATProtoKit
 @Links(visualStyle: detailedGrid) {
+    - <doc:SessionConfigurationArticle>
     - <doc:0210AuthFlowChange>
     - <doc:getRecordTutorial>
     - <doc:ATProtoIdentifiers>
-    - <doc:Getting-Started-with-ATProtoKit>
 }
 
 ## Topics
@@ -67,9 +67,14 @@ ATProtoKit is fully open source under the [MIT license](https://github.com/Maste
 
 ### Authentication and Session Management
 
-- ``ATProtoKit/ATProtoKitConfiguration``
 - ``ATProtocolConfiguration``
+- ``ATProtoKit/ATProtoKitConfiguration``
+- ``SessionConfiguration``
+- <doc:SessionConfigurationArticle>
+- ``UserSessionRegistry``
 - ``UserSession``
+- ``SecureKeychainProtocol``
+- ``AppleSecureKeychain``
  
  @Comment {
      The following should be added:
@@ -134,6 +139,7 @@ ATProtoKit is fully open source under the [MIT license](https://github.com/Maste
 - ``ATProtoTools``
 - <doc:DateFormatting-PropertyWrapper>
 - ``ATFacetParser``
+- ``SessionConfigurationHelpers``
 
 @Comment {
     The following should be added:

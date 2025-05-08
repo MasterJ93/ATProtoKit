@@ -32,13 +32,15 @@ extension ATProtoKit {
         platform: AppBskyLexicon.Notification.RegisterPush.Platform,
         appID: String
     ) async throws {
-        guard session != nil,
-              let accessToken = session?.accessToken else {
+        guard let session = try await self.getUserSession(),
+              let keychain = sessionConfiguration?.keychainProtocol else {
             throw ATRequestPrepareError.missingActiveSession
         }
 
-        guard let sessionURL = session?.serviceEndpoint,
-              let requestURL = URL(string: "\(sessionURL)/xrpc/app.bsky.notification.registerPush") else {
+        let accessToken = try await keychain.retrieveAccessToken()
+        let sessionURL = session.serviceEndpoint.absoluteString
+
+        guard let requestURL = URL(string: "\(sessionURL)/xrpc/app.bsky.notification.registerPush") else {
             throw ATRequestPrepareError.invalidRequestURL
         }
 
@@ -50,7 +52,7 @@ extension ATProtoKit {
         )
 
         do {
-            let request = APIClientService.createRequest(
+            let request = await APIClientService.createRequest(
                 forRequest: requestURL,
                 andMethod: .post,
                 acceptValue: "application/json",

@@ -26,7 +26,8 @@ extension ATProtoBluesky {
         profileURI: String,
         replace: [UpdatedProfileRecordField]
     ) async throws -> ComAtprotoLexicon.Repository.StrongReference {
-        guard let session else {
+        guard let session = try await atProtoKitInstance.getUserSession(),
+              let keychain = sessionConfiguration?.keychainProtocol else {
             throw ATRequestPrepareError.missingActiveSession
         }
 
@@ -72,6 +73,8 @@ extension ATProtoBluesky {
         var newPinnedPost: ComAtprotoLexicon.Repository.StrongReference? = profile.pinnedPost
 
         for uniqueField in uniqueFields {
+            let accessToken = try await keychain.retrieveAccessToken()
+
             switch uniqueField {
                 case .displayName(let displayNameField):
                     // Check if the field is nil. If so, set the displayName variable to nil and break out of the case early.
@@ -103,7 +106,7 @@ extension ATProtoBluesky {
                         let postEmbed = try await uploadImages(
                             [avatarImageField],
                             pdsURL: sessionURL,
-                            accessToken: session.accessToken
+                            accessToken: accessToken
                         )
 
                         switch postEmbed {
@@ -125,7 +128,7 @@ extension ATProtoBluesky {
                         let postEmbed = try await uploadImages(
                             [bannerImageField],
                             pdsURL: sessionURL,
-                            accessToken: session.accessToken
+                            accessToken: accessToken
                         )
 
                         switch postEmbed {
