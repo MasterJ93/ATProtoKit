@@ -235,7 +235,6 @@ extension SessionConfiguration {
     }
 
     public func authenticate(with handle: String, password: String) async throws {
-        let serviceEndpoint: URL
         var response: ComAtprotoLexicon.Server.CreateSessionOutput? = nil
         var userCode: String? = nil
 
