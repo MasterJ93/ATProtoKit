@@ -76,6 +76,3 @@ public func MySessionConfigurationClass: SessionConfiguration {
 In the above example, we create an instance of `ATResolve`. After that, we use `resolveHandle()` and pass in the `handle` property as the argument. `ATResolve` will find the DID document associated with the handle, which will contain the service endpoint. Once you're done, all that's left to do is extract the URL.
 
 You can now use this to pass the `serviceEndpoint` variable into the `pdsURL` parameter of ``ATProtoKit/ATProtoKit/init(sessionConfiguration:pdsURL:canUseBlueskyRecords:)``, and then call the ``ATProtoKit/ATProtoKit/createSession(with:and:authenticationFactorToken:)`` method.
-
-### OAuth
-
