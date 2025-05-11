@@ -362,6 +362,44 @@ extension ToolsOzoneLexicon.Moderation {
         }
     }
 
+    /// A definition model for a subject view.
+    ///
+    /// - Note: According to the AT Protocol specifications: "Detailed view of a subject.
+    /// For record subjects, the author's repo and profile will be returned."
+    ///
+    /// - SeeAlso: This is based on the [`tools.ozone.moderation.defs`][github] lexicon.
+    ///
+    /// [github]: https://github.com/bluesky-social/atproto/blame/main/lexicons/tools/ozone/moderation/defs.json
+    public struct SubjectViewDefinition: Sendable, Codable {
+
+        /// A  tag describing a possible subject for reporting.
+        public let type: ComAtprotoLexicon.Moderation.SubjectTypeDefinition
+
+        /// The subject itself.
+        public let subject: String
+
+        /// The status of the subject. Optional.
+        public let status: SubjectStatusViewDefinition?
+
+        /// The subject's repository. Optional.
+        public let repository: RepositoryViewDetailDefinition?
+
+        /// The subject's profile. Optional.
+        public let profile: String
+
+        /// The subject's record. Optional.
+        public let record: RecordViewDetailDefinition?
+
+        enum CodingKeys: String, CodingKey {
+            case type
+            case subject
+            case status
+            case repository = "repo"
+            case profile
+            case record
+        }
+    }
+
     /// A definition model for statistics about a user account.
     ///
     /// - Note: According to the AT Protocol specifications: "Statistics about a particular

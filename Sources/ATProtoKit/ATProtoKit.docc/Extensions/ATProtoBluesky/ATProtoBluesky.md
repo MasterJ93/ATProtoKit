@@ -6,8 +6,6 @@
 ### Instance Properties
 
 - ``linkBuilder``
-- ``logger``
-- ``session``
 - ``sessionConfiguration``
 - ``urlSessionConfiguration``
 
@@ -45,10 +43,23 @@
 - ``createFollowRecord(actorDID:createdAt:recordKey:shouldValidate:swapCommit:)``
 - ``deleteFollowRecord(_:)``
 
-- ``createBlockRecord(actorDID:createdAt:recordKey:shouldValidate:swapCommit:)``
+- ``createBlockRecord(ofType:createdAt:recordKey:shouldValidate:swapCommit:)``
 - ``deleteBlockRecord(_:)``
 
-<!--### Managing Lists-->
+### Managing Profiles
+
+- ``createProfileRecord(with:description:avatarImage:bannerImage:labels:joinedViaStarterPack:pinnedPost:recordKey:shouldValidate:swapCommit:)``
+- ``updateProfileRecord(profileURI:replace:)``
+- ``deleteProfileRecord(_:)``
+
+### Managing Lists
+
+- ``createListRecord(named:ofType:description:listAvatarImage:labels:creationDate:recordKey:shouldValidate:swapCommit:)``
+- ``updateListRecord(listURI:replace:)``
+- ``deleteListRecord(_:)``
+
+- ``createListItemRecord(for:subjectDID:recordKey:shouldValidate:swapCommit:)``
+- ``deleteListItemRecord(_:)``
 
 <!--### Managing Starter Packs-->
 
@@ -61,3 +72,23 @@
 - ``ATBlueskyError``
 - ``ATProtoBlueskyError``
 - ``ATLinkBuilderError``
+
+### Supporting Methods and Types
+
+- ``addQuotePostToEmbed(_:)``
+- ``buildExternalEmbed(from:title:description:thumbnailImageURL:session:)``
+- ``buildVideo(_:with:altText:aspectRatio:pollingFrequency:pdsURL:accessToken:)``
+- ``grabURL(from:linkbuilder:)``
+- ``updatePostgateRecord(postURI:detachedEmbeddingURIs:embeddingRules:)``
+- ``updateThreadgateRecord(postURI:replyControls:hiddenReplyURIs:)``
+- ``uploadImages(_:pdsURL:accessToken:)``
+- ``pdsURL``
+- ``Caption``
+- ``EmbedIdentifier``
+- ``PostgateEmbeddingRule``
+- ``RecordIdentifier``
+- ``ThreadgateAllowRule``
+- ``BlockType``
+- ``ListType``
+- ``UpdatedListRecordField``
+- ``UpdatedProfileRecordField``

@@ -38,12 +38,14 @@ extension ATProtoAdmin {
         senderDID: String,
         comment: String? = nil
     ) async throws -> ComAtprotoLexicon.Admin.SendEmailOutput {
-        guard session != nil,
-              let accessToken = session?.accessToken else {
+        guard let session = try await self.getUserSession(),
+              let keychain = sessionConfiguration?.keychainProtocol else {
             throw ATRequestPrepareError.missingActiveSession
         }
 
-        guard let sessionURL = session?.pdsURL,
+        let accessToken = try await keychain.retrieveAccessToken()
+
+        guard let sessionURL = session.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.admin.sendEmail") else {
             throw ATRequestPrepareError.invalidRequestURL
         }
@@ -57,7 +59,7 @@ extension ATProtoAdmin {
         )
 
         do {
-            let request = APIClientService.createRequest(
+            let request = await APIClientService.createRequest(
                 forRequest: requestURL,
                 andMethod: .post,
                 acceptValue: "application/json",

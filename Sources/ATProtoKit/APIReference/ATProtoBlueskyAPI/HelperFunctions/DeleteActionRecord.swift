@@ -16,7 +16,7 @@ extension ATProtoBluesky {
     ///
     /// This can be either the URI of the record, or the full record object itself.
     internal func deleteActionRecord(_ record: RecordIdentifier) async throws {
-        guard let session else {
+        guard let session = try await atProtoKitInstance.getUserSession() else {
             throw ATRequestPrepareError.missingActiveSession
         }
 

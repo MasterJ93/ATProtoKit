@@ -37,7 +37,7 @@ extension ATProtoBluesky {
     /// }
     /// ```
     ///
-    /// ## Managing Embedding Post Options
+    /// # Managing Embedding Post Options
     ///
     /// You can detact the post from quote posts by using the `detachedEmbeddingURIs` argument.
     /// When doing so, Bluesky will display a "Removed by author" warning and the quote post will
@@ -81,13 +81,13 @@ extension ATProtoBluesky {
         shouldValidate: Bool? = true,
         swapCommit: String? = nil
     ) async throws -> ComAtprotoLexicon.Repository.StrongReference {
-        guard let session else {
+        guard let session = try await atProtoKitInstance.getUserSession() else {
             throw ATRequestPrepareError.missingActiveSession
         }
 
         // Check to see if the post exists.
         guard let post = try await atProtoKitInstance.getPosts([postURI]).posts.first else {
-            throw ATProtoBlueskyError.postNotFound(message: "Post (\(postURI)) not found.")
+            throw ATProtoBlueskyError.recordNotFound(message: "Post record (\(postURI)) not found.")
         }
 
         var postgateEmbedRules: [ATUnion.EmbeddingRulesUnion] = []

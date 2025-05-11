@@ -24,7 +24,9 @@ extension ATProtoBluesky {
         createdAt: Date = Date(),
         shouldValidate: Bool? = true
     ) async throws -> ComAtprotoLexicon.Repository.StrongReference {
-        guard let session else { throw ATRequestPrepareError.missingActiveSession }
+        guard let session = try await atProtoKitInstance.getUserSession() else {
+            throw ATRequestPrepareError.missingActiveSession
+        }
 
         let repostRecord = AppBskyLexicon.Feed.RepostRecord(
             subject: strongReference,

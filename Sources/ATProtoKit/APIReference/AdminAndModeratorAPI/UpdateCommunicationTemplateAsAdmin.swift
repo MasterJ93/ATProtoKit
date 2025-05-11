@@ -43,12 +43,14 @@ extension ATProtoAdmin {
         updatedBy: String? = nil,
         isDisabled: Bool? = nil
     ) async throws -> ToolsOzoneLexicon.Communication.TemplateViewDefinition {
-        guard session != nil,
-              let accessToken = session?.accessToken else {
+        guard let session = try await self.getUserSession(),
+              let keychain = sessionConfiguration?.keychainProtocol else {
             throw ATRequestPrepareError.missingActiveSession
         }
 
-        guard let sessionURL = session?.pdsURL,
+        let accessToken = try await keychain.retrieveAccessToken()
+
+        guard let sessionURL = session.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/tools.ozone.communication.updateTemplate") else {
             throw ATRequestPrepareError.invalidRequestURL
         }
@@ -64,7 +66,7 @@ extension ATProtoAdmin {
         )
 
         do {
-            let request = APIClientService.createRequest(
+            let request = await APIClientService.createRequest(
                 forRequest: requestURL,
                 andMethod: .post,
                 acceptValue: "application/json",

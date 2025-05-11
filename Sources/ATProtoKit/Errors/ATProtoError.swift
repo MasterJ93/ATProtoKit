@@ -91,15 +91,20 @@ extension ATProtoBluesky {
     /// An error type related to ``ATProtoBluesky``-related issues.
     public enum ATProtoBlueskyError: Decodable, ATProtoError {
 
-        /// The post record could not be found.
+        /// The record could not be found.
         ///
         /// - Parameter message: The message of the error.
-        case postNotFound(message: String)
+        case recordNotFound(message: String)
 
         /// The reply reference could not be validated.
         ///
         /// - Parameter message: The message of the error.
         case invalidReplyReference(message: String)
+
+        /// The `replace` argument is empty.
+        ///
+        /// - Parameter message: The message of the error.
+        case emptyReplaceArray(message: String)
     }
 
     /// An error type specifically related to Bluesky (either before or after interacting with
@@ -330,6 +335,9 @@ public enum ATRequestPrepareError: ATProtoError {
     /// The hostname's URL may be incorrect.
     case invalidHostnameURL
 
+    /// The request failed after several retries.
+    case failedAfterRetries
+
     /// There's no valid or active session in the instance.
     ///
     /// Authentication is required for methods that need it.
@@ -375,6 +383,22 @@ extension APIClientService {
         /// The message for the error.
         public let message: String
     }
+}
+
+/// An error type related to keychain operations.
+public enum ATKeychainError: ATProtoError {
+
+    /// Indicates a failure while storing an item.
+    case storeError(message: String)
+
+    /// Indicates a failure while retrieving an item.
+    case retrievalError(message: String)
+
+    /// Indicates a failure while updating an item.
+    case updateError(message: String)
+
+    /// Indicates a failure while removing an item.
+    case removalError(message: String)
 }
 
 /// An error type related to issues surrounding

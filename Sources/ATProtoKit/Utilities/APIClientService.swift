@@ -13,13 +13,17 @@ import Foundation
 /// An actor which handle the most common HTTP requests for the AT Protocol.
 ///
 /// This is, effectively, the meat of the "XRPC" portion of the AT Protocol, which creates
-/// client-server and server-server communication. Only one instance of this actor can be active
-/// at once.
+/// the communitcation between the client and the server. Only one instance of this actor can be
+/// active at once.
 public actor APIClientService {
 
     /// The `URLSession` instance to be used for network requests.
-    private(set) var urlSession: URLSession
-    
+    public private(set) var urlSession: URLSession = URLSession(configuration: .default)
+
+    /// An instance of ``ATRequestExecutor``.
+    private var executor: ATRequestExecutor?
+
+
     /// The `UserAgent` instance to identify all network requests originating from the `ATProtoKit` sdk
     public static let userAgent: String = {
         let info = Bundle.main.infoDictionary
@@ -80,17 +84,27 @@ public actor APIClientService {
 
     /// Creates an instance for use in accepting and returning API requests and
     /// responses respectively.
-    private init() {
-        let sessionConfig = URLSessionConfiguration.default
-        sessionConfig.httpAdditionalHeaders = ["User-Agent": APIClientService.userAgent]
-        self.urlSession = URLSession(configuration: sessionConfig)
-    }
+    private init() {}
 
     /// Configures the singleton instance with a custom `URLSessionConfiguration`.
     ///
-    /// - Parameter configuration: An instance of `URLSessionConfiguration`.
-    public func configure(with configuration: URLSessionConfiguration) async {
-        self.urlSession = URLSession(configuration: configuration)
+    /// - Note: Both `delegate` and `delegateQueue` are related to `URLSession`.
+    ///
+    /// - Parameters:
+    ///   - configuration: An instance of `URLSessionConfiguration`. Optional.
+    ///   Defaults to `.default`.
+    ///   - delegate: A session delegate object that handles requests for authentication and other
+    ///   session-related events.
+    ///   - delegateQueue: An operation queue for scheduling the delegate calls and
+    ///   completion handlers.
+    ///   - responseProvider: A provider used for the response of the `URLRequest`. Optional.
+    ///   Defaults to `nil`.
+    public func configure(with configuration: URLSessionConfiguration? = .default, delegate: (any URLSessionDelegate)? = nil, delegateQueue: OperationQueue? = nil, responseProvider: ATRequestExecutor? = nil) async {
+        self.executor = responseProvider
+
+        let config = configuration ?? .default
+        config.httpAdditionalHeaders = ["User-Agent": APIClientService.userAgent]
+        self.urlSession = URLSession(configuration: config, delegate: delegate, delegateQueue: delegateQueue)
     }
 
 // MARK: Creating requests -
@@ -106,18 +120,18 @@ public actor APIClientService {
     ///   - labelersValue: The `atproto-accept-labelers` value. Optional.
     ///   - isRelatedToBskyChat: Indicates whether to use the "atproto-proxy" header for
     ///   the value specific to Bluesky DMs. Optional. Defaults to `false`.
-    ///  - userAgent: The user agent of the client. Defaults to `.default`.
     /// - Returns: A configured `URLRequest` instance.
     public static func createRequest(forRequest requestURL: URL, andMethod httpMethod: HTTPMethod, acceptValue: String? = "application/json",
                                      contentTypeValue: String? = "application/json", authorizationValue: String? = nil,
-                                     labelersValue: String? = nil, proxyValue: String? = nil, isRelatedToBskyChat: Bool = false) -> URLRequest {
+                                     labelersValue: String? = nil, proxyValue: String? = nil, isRelatedToBskyChat: Bool = false) async -> URLRequest {
         var request = URLRequest(url: requestURL)
         request.httpMethod = httpMethod.rawValue
 
         if let acceptValue {
             request.addValue(acceptValue, forHTTPHeaderField: "Accept")
         }
-        if let authorizationValue {
+
+        if let authorizationValue, await APIClientService.shared.executor == nil {
             request.addValue(authorizationValue, forHTTPHeaderField: "Authorization")
         }
 
@@ -230,66 +244,6 @@ public actor APIClientService {
         return decodedData
     }
 
-    /// Sends a `URLRequest` and returns the raw JSON output as a `Dictionary`.
-    ///
-    /// - Parameters:
-    ///   - request: The `URLRequest` to send.
-    ///   - body: An optional `Encodable` body to be encoded and attached to the request.
-    /// - Returns: A `Dictionary` representation of the JSON response.
-    public func sendRequestWithRawJSONOutput(_ request: URLRequest, withEncodingBody body: Encodable? = nil) async throws -> [String: Any] {
-        var urlRequest = request
-
-        // Encode the body to JSON data if it's not nil
-        if let body = body {
-            do {
-                urlRequest.httpBody = try body.toJsonData()
-            } catch {
-                throw ATHTTPRequestError.unableToEncodeRequestBody
-            }
-        }
-
-        let (data, response) = try await urlSession.data(for: urlRequest)
-
-        guard let httpResponse = response as? HTTPURLResponse else {
-            throw ATHTTPRequestError.errorGettingResponse
-        }
-
-        guard httpResponse.statusCode == 200 else {
-            let responseBody = String(data: data, encoding: .utf8) ?? "No response body"
-            print("HTTP Status Code: \(httpResponse.statusCode) - Response Body: \(responseBody)")
-            throw URLError(.badServerResponse)
-        }
-
-        guard let response = try JSONSerialization.jsonObject(
-            with: data, options: .mutableLeaves) as? [String: Any] else { return ["Response": "No response"] }
-        return response
-    }
-
-    /// Sends a `URLRequest` and returns the raw HTML output as a `String`.
-    ///
-    /// - Parameters:
-    ///   - request: The `URLRequest` to send.
-    /// - Returns: A `String` representation of the HTML response.
-    public static func sendRequestWithRawHTMLOutput(_ request: URLRequest) async throws -> String {
-        let (data, response) = try await URLSession.shared.data(for: request)
-
-        guard let httpResponse = response as? HTTPURLResponse else {
-            throw ATHTTPRequestError.errorGettingResponse
-        }
-
-        guard httpResponse.statusCode == 200 else {
-            let responseBody = String(data: data, encoding: .utf8) ?? "No response body"
-            print("HTTP Status Code: \(httpResponse.statusCode) - Response Body: \(responseBody)")
-            throw URLError(.badServerResponse)
-        }
-
-        guard let htmlString = String(data: data, encoding: .utf8) else {
-            throw ATHTTPRequestError.failedToDecodeHTML
-        }
-
-        return htmlString
-    }
-
     /// Private method to handle the common request sending logic.
     ///
     /// - Parameters:
@@ -311,7 +265,14 @@ public actor APIClientService {
         }
 
         do {
-            let (data, response) = try await urlSession.data(for: urlRequest)
+            let (data, response): (Data, URLResponse)
+            if let executor = self.executor {
+                (data, response) = try await executor.execute(urlRequest)
+            } else {
+                (data, response) = try await urlSession.data(for: urlRequest)
+            }
+
+
 
             if let httpResponse = response as? HTTPURLResponse {
                 switch httpResponse.statusCode {

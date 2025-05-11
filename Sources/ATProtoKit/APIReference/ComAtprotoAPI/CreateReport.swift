@@ -32,13 +32,15 @@ extension ATProtoAdmin {
         andContextof reason: String? = nil,
         subject: ATUnion.CreateReportSubjectUnion
     ) async throws -> ComAtprotoLexicon.Moderation.CreateReportOutput {
-        guard session != nil,
-              let accessToken = session?.accessToken else {
+        guard let session = try await self.getUserSession(),
+              let keychain = sessionConfiguration?.keychainProtocol else {
             throw ATRequestPrepareError.missingActiveSession
         }
 
-        guard let sessionURL = session?.pdsURL,
-              let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.moderation.createReport") else {
+        let accessToken = try await keychain.retrieveAccessToken()
+        let sessionURL = session.serviceEndpoint.absoluteString
+
+        guard let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.moderation.createReport") else {
             throw ATRequestPrepareError.invalidRequestURL
         }
 
@@ -49,7 +51,7 @@ extension ATProtoAdmin {
         )
 
         do {
-            let request = APIClientService.createRequest(
+            let request = await APIClientService.createRequest(
                 forRequest: requestURL,
                 andMethod: .post,
                 acceptValue: "application/json",

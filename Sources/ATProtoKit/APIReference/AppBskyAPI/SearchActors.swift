@@ -16,12 +16,6 @@ extension ATProtoKit {
     /// suggestion (where it returns results based on a partial term instead of the exact term),
     /// a different method is needed.
     ///
-    /// - Bug: According to the AT Protocol specifications, this API call does not require
-    /// authentication. However, there's an issue where it asks for authentication if there's
-    /// no `accessToken`. It's unknown whether this is an issue on the AT Protocol's end or
-    /// `AKProtoKit`'s end. For now, use the `shouldAuthenticate` parameter when
-    /// using this method.
-    ///
     /// - Note: According to the AT Protocol specifications: "Find actors (profiles) matching
     /// search criteria. Does not require auth."
     ///
@@ -44,19 +38,17 @@ extension ATProtoKit {
     public func searchActors(
         matching query: String,
         limit: Int? = 25,
-        cursor: String? = nil,
-        shouldAuthenticate: Bool = true
+        cursor: String? = nil
     ) async throws -> AppBskyLexicon.Actor.SearchActorsOutput {
-        let authorizationValue = prepareAuthorizationValue(
-            shouldAuthenticate: shouldAuthenticate,
-            session: session
-        )
-
-        guard self.pdsURL != "" else {
-            throw ATRequestPrepareError.emptyPDSURL
+        guard let session = try await self.getUserSession(),
+              let keychain = sessionConfiguration?.keychainProtocol else {
+            throw ATRequestPrepareError.missingActiveSession
         }
 
-        guard let requestURL = URL(string: "\(self.pdsURL)/xrpc/app.bsky.actor.searchActors") else {
+        let accessToken = try await keychain.retrieveAccessToken()
+        let sessionURL = session.serviceEndpoint.absoluteString
+
+        guard let requestURL = URL(string: "\(sessionURL)/xrpc/app.bsky.actor.searchActors") else {
             throw ATRequestPrepareError.invalidRequestURL
         }
 
@@ -80,11 +72,11 @@ extension ATProtoKit {
                 with: queryItems
             )
 
-            let request = APIClientService.createRequest(
+            let request = await APIClientService.createRequest(
                 forRequest: queryURL,
                 andMethod: .get,
                 acceptValue: "application/json",
-                authorizationValue: authorizationValue
+                authorizationValue: "Bearer \(accessToken)"
             )
             let response = try await APIClientService.shared.sendRequest(
                 request,
