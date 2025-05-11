@@ -185,7 +185,7 @@ public actor AppleSecureKeychain: SecureKeychainProtocol {
     ///   - value: The keychain value.
     ///   - key: The keychain key.
     ///
-    ///   - Throws: `ApplSecureKeychainError.unhandledStatus` if the operation failed.
+    /// - Throws: `ApplSecureKeychainError.unhandledStatus` if the operation failed.
     public func saveOrUpdateItem(_ value: String, forKey key: String) async throws {
         let data = Data(value.utf8)
 

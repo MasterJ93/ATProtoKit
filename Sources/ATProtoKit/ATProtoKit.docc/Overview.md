@@ -139,7 +139,6 @@ ATProtoKit is fully open source under the [MIT license](https://github.com/Maste
 - ``ATProtoTools``
 - <doc:DateFormatting-PropertyWrapper>
 - ``ATFacetParser``
-- ``SessionConfigurationHelpers``
 
 @Comment {
     The following should be added:
