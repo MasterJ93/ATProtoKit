@@ -117,10 +117,8 @@ public class ATFacetParser {
             
             let utf8View = text.utf8
             guard let utf8Start = utf8View.index(utf8View.startIndex, offsetBy: start, limitedBy: utf8View.endIndex),
-                  let utf8End = utf8View.index(utf8View.startIndex, offsetBy: end, limitedBy: utf8View.endIndex),
-                  let startIndex = String.Index(utf8Start, within: text),
-                  let endIndex = String.Index(utf8End, within: text) else { continue }
-            
+                  let utf8End = utf8View.index(utf8View.startIndex, offsetBy: end, limitedBy: utf8View.endIndex) else { continue }
+
             let unchangedRange = lastByteIndex..<utf8Start
             if let unchangedStart = String.Index(unchangedRange.lowerBound, within: text),
                let unchangedEnd = String.Index(unchangedRange.upperBound, within: text) {
