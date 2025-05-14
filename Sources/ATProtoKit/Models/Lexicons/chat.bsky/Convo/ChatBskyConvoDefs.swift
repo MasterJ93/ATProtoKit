@@ -53,7 +53,7 @@ extension ChatBskyLexicon.Conversation {
         /// An embed for the message. Optional.
         public let embed: ATUnion.MessageInputEmbedUnion?
 
-        public init(text: String, facets: [AppBskyLexicon.RichText.Facet]?, embed: ATUnion.MessageInputEmbedUnion?) {
+        public init(text: String, facets: [AppBskyLexicon.RichText.Facet]? = nil, embed: ATUnion.MessageInputEmbedUnion? = nil) {
             self.text = text
             self.facets = facets
             self.embed = embed
