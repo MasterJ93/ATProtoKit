@@ -53,6 +53,12 @@ extension ChatBskyLexicon.Conversation {
         /// An embed for the message. Optional.
         public let embed: ATUnion.MessageInputEmbedUnion?
 
+        public init(text: String, facets: [AppBskyLexicon.RichText.Facet]?, embed: ATUnion.MessageInputEmbedUnion?) {
+            self.text = text
+            self.facets = facets
+            self.embed = embed
+        }
+
         public func encode(to encoder: any Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
             try container.truncatedEncode(self.text, forKey: .text, upToCharacterLength: 1_000)
