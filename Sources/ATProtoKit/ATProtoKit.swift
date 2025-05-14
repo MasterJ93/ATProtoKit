@@ -141,7 +141,7 @@ extension ATProtoKitConfiguration {
 ///     }
 /// }
 /// ```
-public class ATProtoKit: ATProtoKitConfiguration, ATRecordConfiguration {
+public final class ATProtoKit: Sendable, ATProtoKitConfiguration, ATRecordConfiguration {
 
     /// An array of record lexicon structs created by Bluesky.
     ///
@@ -153,9 +153,6 @@ public class ATProtoKit: ATProtoKitConfiguration, ATRecordConfiguration {
         AppBskyLexicon.Graph.ListRecord.self, AppBskyLexicon.Graph.ListBlockRecord.self, AppBskyLexicon.Graph.ListItemRecord.self,
         AppBskyLexicon.Graph.StarterpackRecord.self, AppBskyLexicon.Labeler.ServiceRecord.self, ChatBskyLexicon.Actor.DeclarationRecord.self
     ]
-
-    /// Internal state to track initialization completion.
-    public var initializationTask: Task<Void, Error>?
 
     /// Represents an object used for managing sessions.
     public let sessionConfiguration: SessionConfiguration?
@@ -270,13 +267,7 @@ public class ATProtoKit: ATProtoKitConfiguration, ATRecordConfiguration {
 /// will import the session, Bluesky records, and logging information from the instance.
 ///
 /// With some exceptions, the main functionality includes adding, putting, and deleting a record.
-public class ATProtoBluesky: ATProtoKitConfiguration {
-
-    /// An instance of `URLSessionConfiguration`.
-    ///
-    /// - Note: This class will automatically grab the custom `URLSessionConfiguration` instance
-    /// from the `ATProtoKit` instance.
-    public var urlSessionConfiguration: URLSessionConfiguration = .default
+public final class ATProtoBluesky: Sendable, ATProtoKitConfiguration {
 
     /// The ``ATLinkBuilder`` object used to grab the metadata for preview link cards. Optional.
     public let linkBuilder: ATLinkBuilder?
@@ -310,7 +301,7 @@ public class ATProtoBluesky: ATProtoKitConfiguration {
 ///
 /// - Important: Please use an App Password in ``ATProtocolConfiguration`` that has chatting
 /// privileges. Failure to do so will result in an error.
-public class ATProtoBlueskyChat: ATProtoKitConfiguration {
+public final class ATProtoBlueskyChat: Sendable, ATProtoKitConfiguration {
 
     /// An instance of `URLSessionConfiguration`.
     ///
@@ -366,7 +357,7 @@ public class ATProtoBlueskyChat: ATProtoKitConfiguration {
 ///     }
 /// }
 /// ```
-public class ATProtoAdmin: ATProtoKitConfiguration {
+public final class ATProtoAdmin: Sendable, ATProtoKitConfiguration {
 
     /// An instance of `URLSessionConfiguration`.
     ///
@@ -393,9 +384,6 @@ public class ATProtoAdmin: ATProtoKitConfiguration {
     /// is being used, don't use the `urlSessionConfiguration` parameter. Doing so would override
     /// the `URLSessionConfiguration` implementation from `SessionConfiguration`.
     public let urlSessionConfiguration: URLSessionConfiguration
-
-    /// Specifies the logger that will be used for emitting log messages.
-    public private(set) var logger: Logger?
 
     /// Represents an object used for managing sessions.
     public let sessionConfiguration: SessionConfiguration?
