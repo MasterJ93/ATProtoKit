@@ -24,10 +24,10 @@ extension AppBskyLexicon.Unspecced {
     public struct GetTrendingTopicsOutput: Sendable, Codable {
 
         /// An array of trending topics.
-        public let topics: [AppBskyLexicon.Unspecced.TrendingTopic]
+        public let topics: [AppBskyLexicon.Unspecced.TrendingTopicDefinition]
 
         /// An array of suggested feeds.
-        public let suggestedTopics: [AppBskyLexicon.Unspecced.TrendingTopic]
+        public let suggestedTopics: [AppBskyLexicon.Unspecced.TrendingTopicDefinition]
 
         enum CodingKeys: String, CodingKey {
             case topics
