@@ -42,8 +42,31 @@ extension AppBskyLexicon.Labeler {
         /// An array of labels. Optional.
         public let labels: [ComAtprotoLexicon.Label.LabelDefinition]?
 
+        /// A list of reasons that the service are able to accept. Optional.
+        ///
+        /// - Note: According to the AT Protocol specifications: "The set of report reason 'codes' which
+        /// are in-scope for this service to review and action. These usually align to policy categories.
+        /// If not defined (distinct from empty array), all reason types are allowed."
+        public let reasonTypes: ComAtprotoLexicon.Moderation.ReasonTypeDefinition?
+
+        /// A list of user accounts, records, and other subjects that the labeler will accept to be
+        /// reported on. Optional.
+        ///
+        /// - Note: According to the AT Protocol specifications: "The set of subject types (account,
+        /// record, etc) this service accepts reports on."
+        public let subjectTypes: ComAtprotoLexicon.Moderation.SubjectTypeDefinition?
+
+        /// An array of Namespaced Identifiers (NSIDs) that can be reported. Optional.
+        ///
+        /// - Note: According to the AT Protocol specifications: "Set of record types (collection NSIDs)
+        /// which can be reported to this service. If not defined (distinct from empty array), default is
+        /// any record type."
+        public let subjectCollections: [String]?
+
         public init(uri: String, cid: String, creator: AppBskyLexicon.Actor.ProfileViewDefinition, likeCount: Int?,
-                    viewer: LabelerViewerStateDefinition?, indexedAt: Date, labels: [ComAtprotoLexicon.Label.LabelDefinition]?) {
+                    viewer: LabelerViewerStateDefinition?, indexedAt: Date, labels: [ComAtprotoLexicon.Label.LabelDefinition]?,
+                    reasonTypes: ComAtprotoLexicon.Moderation.ReasonTypeDefinition?, subjectTypes: ComAtprotoLexicon.Moderation.SubjectTypeDefinition?,
+                    subjectCollections: [String]?) {
             self.uri = uri
             self.cid = cid
             self.creator = creator
@@ -51,6 +74,9 @@ extension AppBskyLexicon.Labeler {
             self.viewer = viewer
             self.indexedAt = indexedAt
             self.labels = labels
+            self.reasonTypes = reasonTypes
+            self.subjectTypes = subjectTypes
+            self.subjectCollections = subjectCollections
         }
 
         public init(from decoder: any Decoder) throws {
@@ -68,6 +94,9 @@ extension AppBskyLexicon.Labeler {
             self.viewer = try container.decodeIfPresent(AppBskyLexicon.Labeler.LabelerViewerStateDefinition.self, forKey: .viewer)
             self.indexedAt = try container.decodeDate(forKey: .indexedAt)
             self.labels = try container.decodeIfPresent([ComAtprotoLexicon.Label.LabelDefinition].self, forKey: .labels)
+            self.reasonTypes = try container.decodeIfPresent(ComAtprotoLexicon.Moderation.ReasonTypeDefinition.self, forKey: .reasonTypes)
+            self.subjectTypes = try container.decodeIfPresent(ComAtprotoLexicon.Moderation.SubjectTypeDefinition.self, forKey: .subjectTypes)
+            self.subjectCollections = try container.decodeIfPresent([String].self, forKey: .subjectCollections)
         }
         public func encode(to encoder: any Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
@@ -83,6 +112,9 @@ extension AppBskyLexicon.Labeler {
             try container.encodeIfPresent(self.viewer, forKey: .viewer)
             try container.encodeDate(self.indexedAt, forKey: .indexedAt)
             try container.encodeIfPresent(self.labels, forKey: .labels)
+            try container.encodeIfPresent(self.reasonTypes, forKey: .reasonTypes)
+            try container.encodeIfPresent(self.subjectTypes, forKey: .subjectTypes)
+            try container.encodeIfPresent(self.subjectCollections, forKey: .subjectCollections)
         }
 
         enum CodingKeys: String, CodingKey {
@@ -94,6 +126,9 @@ extension AppBskyLexicon.Labeler {
             case viewer
             case indexedAt
             case labels
+            case reasonTypes
+            case subjectTypes
+            case subjectCollections
         }
     }
 

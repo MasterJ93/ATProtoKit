@@ -54,6 +54,9 @@ public struct ATUnion {
         /// The "Post Interaction Setting" preference.
         case postInteractionSettingsPreference(AppBskyLexicon.Actor.PostInteractionSettingsPreferenceDefinition)
 
+        /// The "Verification Visibility" preference.
+        case verificationPreference(AppBskyLexicon.Actor.VerificationPreferenceDefinition)
+
         // Implement custom decoding
         public init(from decoder: Decoder) throws {
             let container = try decoder.singleValueContainer()
@@ -84,6 +87,8 @@ public struct ATUnion {
                 self = .labelersPreferences(value)
             } else if let value = try? container.decode(AppBskyLexicon.Actor.PostInteractionSettingsPreferenceDefinition.self) {
                 self = .postInteractionSettingsPreference(value)
+            } else if let value = try? container.decode(AppBskyLexicon.Actor.VerificationPreferenceDefinition.self) {
+                self = .verificationPreference(value)
             } else {
                 throw DecodingError.typeMismatch(
                     ActorPreferenceUnion.self, DecodingError.Context(
@@ -121,6 +126,8 @@ public struct ATUnion {
                 case .labelersPreferences(let labelersPreferences):
                     try container.encode(labelersPreferences)
                 case .postInteractionSettingsPreference(let preference):
+                    try container.encode(preference)
+                case .verificationPreference(let preference):
                     try container.encode(preference)
             }
         }

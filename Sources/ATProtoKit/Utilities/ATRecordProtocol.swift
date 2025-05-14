@@ -72,21 +72,6 @@ public protocol ATRecordConfiguration {
     ///
     /// If `canUseBlueskyRecords` is set to `false`, these will not be used.
     var recordLexicons: [any ATRecordProtocol.Type] { get }
-
-    /// Internal state to track the process of adding records to ``ATRecordConfiguration``.
-    var initializationTask: Task<Void, Error>? { get }
-
-    /// A method for setting the process of adding records to ``ATRecordTypeRegistry``.
-    func checkInitialization() async throws
-}
-
-extension ATRecordConfiguration {
-
-    public func checkInitialization() async throws {
-        if let task = initializationTask {
-            try await task.value
-        }
-    }
 }
 
 /// A registry for all decodable record types in the AT Protocol.
@@ -418,11 +403,7 @@ public enum UnknownType: Sendable, Codable {
                 return dictionary
             case .record(let record):
                 let data = try JSONEncoder().encode(record)
-                let jsonObject = try JSONSerialization.jsonObject(with: data, options: [])
-                guard let dictionary = jsonObject as? [String: Any] else {
-                    throw CodableValueConversionError.invalidRecordConversion
-                }
-                return try dictionary.mapValues { try CodableValue.fromAny($0) }
+                return try JSONDecoder().decode([String: CodableValue].self, from: data)
         }
     }
 
@@ -438,7 +419,7 @@ public enum UnknownType: Sendable, Codable {
     /// This is essential to decode truly unknown types.
     ///
     /// - Parameter container: The container that the JSON object resides in.
-    /// - Returns: A `[String: Any]` object.
+    /// - Returns: A `[String: CodableValue]` object.
     ///
     /// - Throws: A `DecodingError` if there's a type mismatch.
     private static func decodeNestedDictionary(container: KeyedDecodingContainer<DynamicCodingKeys>) throws -> [String: CodableValue] {
@@ -508,7 +489,9 @@ public enum UnknownType: Sendable, Codable {
             case .record(let record):
                 try container.encode(record)
             case .unknown(let unknownData):
-                let jsonData = try JSONSerialization.data(withJSONObject: unknownData, options: [])
+                let encoder = JSONEncoder()
+                encoder.outputFormatting = [.prettyPrinted]
+                let jsonData = try encoder.encode(unknownData)
                 try container.encode(jsonData)
         }
     }
@@ -618,40 +601,6 @@ public enum CodableValue: Codable, Sendable, Equatable, Hashable {
                 try container.encode(value)
             case .dictionary(let value):
                 try container.encode(value)
-        }
-    }
-
-    /// Converts an `Any` type to a `CodableValue` type.
-    ///
-    /// - Parameter value: The value to convert.
-    /// - Returns: A `CodableValue` value.
-    ///
-    /// - Throws: A `DecodingError` where the value was not supported.
-    public static func fromAny(_ value: Any) throws -> CodableValue {
-        switch value {
-            case let boolValue as Bool:
-                return .bool(boolValue)
-            case let intValue as Int:
-                return .int(intValue)
-            case let doubleValue as Double:
-                return .double(doubleValue)
-            case let stringValue as String:
-                return .string(stringValue)
-            case let arrayValue as [Any]:
-                let codableArray = try arrayValue.map { try CodableValue.fromAny($0) }
-                return .array(codableArray)
-            case let dictValue as [String: Any]:
-                var codableDict = [String: CodableValue]()
-
-                for (key, nestedValue) in dictValue {
-                    codableDict[key] = try CodableValue.fromAny(nestedValue)
-                }
-                return .dictionary(codableDict)
-            default:
-                throw DecodingError.typeMismatch(
-                    CodableValue.self,
-                    DecodingError.Context(codingPath: [], debugDescription: "Unsupported value type \(type(of: value))")
-                )
         }
     }
 }

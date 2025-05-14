@@ -7,7 +7,7 @@
 
 import Foundation
 
-extension ATProtoAdmin {
+extension ATProtoKit {
 
     /// Creates a report to send to moderators.
     /// 

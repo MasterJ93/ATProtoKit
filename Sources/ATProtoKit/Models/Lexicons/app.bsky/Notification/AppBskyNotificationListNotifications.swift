@@ -82,8 +82,8 @@ extension AppBskyLexicon.Notification {
 
         /// The kind of notification received.
         ///
-        /// - Note: According to the AT Protocol specifications: "Expected values are 'like',
-        /// 'repost', 'follow', 'mention', 'reply', 'quote', and 'starterpack-joined'."
+        /// - Note: According to the AT Protocol specifications: "Expected values are 'like', 'repost',
+        /// 'follow', 'mention', 'reply', 'quote', 'starterpack-joined', 'verified', and 'unverified'.
         public let reason: Reason
 
         /// The URI of the subject in the notification. Optional.
@@ -181,6 +181,12 @@ extension AppBskyLexicon.Notification {
             /// Indicates the notification is about someone joining Bluesky using the
             /// user account's starter pack.
             case starterpackjoined = "starterpack-joined"
+
+            /// Indicates the notification is about the user account getting verified.
+            case verified
+
+            /// Indicates the notification is about the user account getting unverified.
+            case unverified
         }
     }
 }

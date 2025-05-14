@@ -22,7 +22,7 @@ import Foundation
 ///
 /// - Note: For more information about using this `protocol`, please read the [Creating Link Previews
 /// with ATLinkBuilder](<doc:ATLinkBuilderProtocol>) article.
-public protocol ATLinkBuilder {
+public protocol ATLinkBuilder: Sendable {
 
     /// Fills the properties of the `struct` conforming to `ATLinkBuilder`.
     ///
