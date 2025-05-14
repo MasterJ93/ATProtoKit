@@ -34,7 +34,7 @@ extension AppBskyLexicon.Labeler {
         public let createdAt: Date
 
         /// The set of report reason codes that this service is authorized to review and take
-        /// action on.
+        /// action on. Optional.
         ///
         /// - Note: According to the AT Protocol specifications: "The set of report reason 'codes'
         /// which are in-scope for this service to review and action. These usually align to
@@ -42,14 +42,14 @@ extension AppBskyLexicon.Labeler {
         /// are allowed."
         public let reasonTypes: ComAtprotoLexicon.Moderation.ReasonTypeDefinition?
 
-        /// The types of subjects this service accepts reports on.
+        /// The types of subjects this service accepts reports on. Optional.
         ///
         /// - Note: According to the AT Protocol specifications: "The set of subject types
         /// (account, record, etc) this service accepts reports on."
         public let subjectTypes: ComAtprotoLexicon.Moderation.SubjectTypeDefinition?
 
         /// An array of Namespaced Identifiers (NSIDs) for records that can be reported to
-        /// this service.
+        /// this service. Optional.
         ///
         /// - Note: According to the AT Protocol specifications: "Set of record types
         /// (collection NSIDs) which can be reported to this service. If not defined
