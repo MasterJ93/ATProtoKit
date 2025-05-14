@@ -121,3 +121,7 @@
 ### app.bsky.graph.unmuteThread
 
 - ``UnmuteThreadRequestBody``
+
+### app.bsky.graph.verification
+
+- ``VerificationRecord``

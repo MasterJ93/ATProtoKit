@@ -11,6 +11,8 @@
 - ``ProfileAssociatedChatDefinition``
 - ``ViewerStateDefinition``
 - ``KnownFollowers``
+- ``VerificationStateDefinition``
+- ``VerificationViewDefinition``
 - ``PreferencesDefinition``
 - ``AdultContentPreferencesDefinition``
 - ``ContentLabelPreferencesDefinition``
@@ -30,7 +32,9 @@
 - ``BskyAppStatePreferencesDefinition``
 - ``BskyAppProgressGuideDefinition``
 - ``NUXDefinition``
+- ``VerificationPreferenceDefinition``
 - ``PostInteractionSettingsPreferenceDefinition``
+- ``StatusViewDefinition``
 
 ### app.bsky.actor.getPreferences
 - ``GetPreferencesOutput``
@@ -55,3 +59,6 @@
 
 ### app.bsky.actor.searchActorsTypeahead
 - ``SearchActorsTypeaheadOutput``
+
+### app.bsky.actor.status
+- ``StatusRecord``

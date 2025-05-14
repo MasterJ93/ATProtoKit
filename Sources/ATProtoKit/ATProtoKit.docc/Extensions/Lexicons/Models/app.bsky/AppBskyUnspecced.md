@@ -7,7 +7,9 @@
 - ``SkeletonSearchPostDefinition``
 - ``SkeletonSearchActorDefinition``
 - ``SkeletonSearchStarterPackDefinition``
-- ``TrendingTopic``
+- ``TrendingTopicDefinition``
+- ``SkeletonTrendDefinition``
+- ``TrendViewDefinition``
 
 ### app.bsky.unspecced.getConfig
 

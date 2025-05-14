@@ -2,6 +2,10 @@
 
 ## Topics
 
+### app.bsky.notification.defs
+
+- ``RecordDeletedDefinition``
+
 ### app.bsky.notification.getUnreadCount
 
 - ``GetUnreadCountOutput``

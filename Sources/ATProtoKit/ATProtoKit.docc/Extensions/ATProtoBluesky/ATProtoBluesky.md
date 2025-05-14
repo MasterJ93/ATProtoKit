@@ -7,7 +7,6 @@
 
 - ``linkBuilder``
 - ``sessionConfiguration``
-- ``urlSessionConfiguration``
 
 ### Initializers
 

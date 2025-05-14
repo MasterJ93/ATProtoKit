@@ -1317,7 +1317,6 @@ extension AppBskyLexicon.Actor {
         }
     }
 
-
     /// A definition model for default post interaction settings that mirror threadgate and
     /// postgate records when creating new posts.
     ///
