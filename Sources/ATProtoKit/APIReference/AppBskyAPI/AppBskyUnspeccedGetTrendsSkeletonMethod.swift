@@ -1,40 +1,37 @@
 //
-//  GetPopularFeedGenerators.swift
+//  AppBskyUnspeccedGetTrendsSkeletonMethod.swift
+//  ATProtoKit
 //
-//
-//  Created by Christopher Jr Riley on 2024-03-17.
+//  Created by Christopher Jr Riley on 2025-05-14.
 //
 
 import Foundation
 
 extension ATProtoKit {
 
-    /// Retrieves an array of globally popular feed generators.
-    /// 
+    /// Gets the skeleton of trends on Bluesky.
+    ///
     /// - Important: This is an unspecced method, and as such, this is highly volatile and may
     /// change or be removed at any time. Use at your own risk.
     ///
-    /// - Note: According to the AT Protocol specifications: "An unspecced view of globally popular
-    /// feed generators."
+    /// - Note: According to the AT Protocol specifications: "Get the skeleton of trends on the network.
+    /// Intended to be called and then hydrated through app.bsky.unspecced.getTrends."
     ///
-    /// - SeeAlso: This is based on the [`app.bsky.unspecced.getPopularFeedGenerators`][github] lexicon.
+    /// - SeeAlso: This is based on the [`app.bsky.unspecced.getTrendsSkeleton`][github] lexicon.
     ///
-    /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/unspecced/getPopularFeedGenerators.json
+    /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/unspecced/getTrendsSkeleton.json
     ///
     /// - Parameters:
-    ///   - query: The string used to 
-    ///   - limit: The number of items that can be in the list. Optional. Defaults to `50`.
-    ///   - cursor: The mark used to indicate the starting point for the next set
-    ///   of result. Optional.
-    /// - Returns: An array of feed generators, with an optional cursor to extend the array.
+    ///   - viewer: The decentralized identifier (DID) of the requested user account. Optional.
+    ///   - limit: The number of items that can be in the list. Optional. Defaults to `10`.
+    /// - Returns: An array of skeletion versions of trends.
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
-    public func getPopularFeedGenerators(
-        matching query: String?,
-        limit: Int? = 50,
-        cursor: String? = nil
-    ) async throws -> AppBskyLexicon.Unspecced.GetPopularFeedGeneratorsOutput {
+    public func getTrendsSkeleton(
+        viewer: String? = nil,
+        limit: Int? = 10
+    ) async throws -> AppBskyLexicon.Unspecced.GetTrendsSkeletonOutput {
         guard let session = try await self.getUserSession(),
               let keychain = sessionConfiguration?.keychainProtocol else {
             throw ATRequestPrepareError.missingActiveSession
@@ -43,23 +40,19 @@ extension ATProtoKit {
         let accessToken = try await keychain.retrieveAccessToken()
         let sessionURL = session.serviceEndpoint.absoluteString
 
-        guard let requestURL = URL(string: "\(sessionURL)/xrpc/app.bsky.unspecced.getPopularFeedGenerators") else {
+        guard let requestURL = URL(string: "\(sessionURL)/xrpc/app.bsky.unspecced.getTrendsSkeleton") else {
             throw ATRequestPrepareError.invalidRequestURL
         }
 
         var queryItems = [(String, String)]()
 
+        if let viewer {
+            queryItems.append(("viewer", viewer))
+        }
+
         if let limit {
-            let finalLimit = max(1, min(limit, 100))
+            let finalLimit = max(1, min(limit, 25))
             queryItems.append(("limit", "\(finalLimit)"))
-        }
-
-        if let cursor {
-            queryItems.append(("cursor", cursor))
-        }
-
-        if let query {
-            queryItems.append(("query", query))
         }
 
         let queryURL: URL
@@ -79,7 +72,7 @@ extension ATProtoKit {
             )
             let response = try await APIClientService.shared.sendRequest(
                 request,
-                decodeTo: AppBskyLexicon.Unspecced.GetPopularFeedGeneratorsOutput.self
+                decodeTo: AppBskyLexicon.Unspecced.GetTrendsSkeletonOutput.self
             )
 
             return response
