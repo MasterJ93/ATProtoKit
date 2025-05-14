@@ -72,21 +72,6 @@ public protocol ATRecordConfiguration {
     ///
     /// If `canUseBlueskyRecords` is set to `false`, these will not be used.
     var recordLexicons: [any ATRecordProtocol.Type] { get }
-
-    /// Internal state to track the process of adding records to ``ATRecordConfiguration``.
-    var initializationTask: Task<Void, Error>? { get }
-
-    /// A method for setting the process of adding records to ``ATRecordTypeRegistry``.
-    func checkInitialization() async throws
-}
-
-extension ATRecordConfiguration {
-
-    public func checkInitialization() async throws {
-        if let task = initializationTask {
-            try await task.value
-        }
-    }
 }
 
 /// A registry for all decodable record types in the AT Protocol.
