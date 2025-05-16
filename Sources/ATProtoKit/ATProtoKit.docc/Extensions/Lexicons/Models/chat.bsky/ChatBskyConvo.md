@@ -7,6 +7,11 @@
 - ``ChatBskyLexicon/Conversation/AcceptConversationRequestBody``
 - ``ChatBskyLexicon/Conversation/AcceptConversationOutput``
 
+### chat.bsky.convo.addReaction
+
+- ``ChatBskyLexicon/Conversation/AddReactionRequestBody``
+- ``ChatBskyLexicon/Conversation/AddReactionOutput``
+
 ### chat.bsky.convo.defs
 
 - ``ChatBskyLexicon/Conversation/MessageReferenceDefinition``
@@ -14,6 +19,9 @@
 - ``ChatBskyLexicon/Conversation/MessageViewDefinition``
 - ``DeletedMessageViewDefinition``
 - ``MessageViewSenderDefinition``
+- ``ReactionViewDefinition``
+- ``ReactionViewSenderDefinition``
+- ``MessageAndReactionViewDefinition``
 - ``ConversationViewDefinition``
 - ``LogBeginConversationDefinition``
 - ``LogAcceptConversationDefinition``
@@ -23,6 +31,8 @@
 - ``LogCreateMessageDefinition``
 - ``LogDeleteMessageDefinition``
 - ``LogReadMessageDefinition``
+- ``LogAddReactionViewDefinition``
+- ``LogRemoveReactionDefinition``
 
 ### chat.bsky.convo.deleteMessageForSelf
 
@@ -62,6 +72,11 @@
 
 - ``ChatBskyLexicon/Conversation/MuteConversationRequestBody``
 - ``ChatBskyLexicon/Conversation/MuteConversationOutput``
+
+### chat.bsky.convo.removeReaction
+
+- ``RemoveReactionRequestBody``
+- ``RemoveReactionOutput``
 
 ### chat.bsky.convo.sendMessage
 
