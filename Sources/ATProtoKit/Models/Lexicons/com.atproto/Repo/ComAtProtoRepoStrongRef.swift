@@ -19,6 +19,11 @@ extension ComAtprotoLexicon.Repository {
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/repo/strongRef.json
     public struct StrongReference: Sendable, Codable, Equatable, Hashable {
 
+        /// The identifier of the lexicon.
+        ///
+        /// - Warning: The value must not change.
+        public let type: String = "com.atproto.repo.strongRef"
+
         /// The URI for the record.
         public let recordURI: String
 
@@ -32,11 +37,13 @@ extension ComAtprotoLexicon.Repository {
 
         public init(from decoder: Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
+
             self.recordURI = try container.decode(String.self, forKey: .recordURI)
             self.recordCID = try container.decode(String.self, forKey: .recordCID)
         }
 
         enum CodingKeys: String, CodingKey {
+            case type = "$type"
             case recordURI = "uri"
             case recordCID = "cid"
         }

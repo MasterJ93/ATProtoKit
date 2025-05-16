@@ -162,10 +162,16 @@ extension ComAtprotoLexicon.Admin {
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/admin/defs.json
     public struct RepositoryReferenceDefinition: Sendable, Codable {
 
+        /// The identifier of the lexicon.
+        ///
+        /// - Warning: The value must not change.
+        public let type: String = "com.atproto.admin.defs#repoRef"
+
         /// The decentralized identifier (DID) of the repository.
         public let repositoryDID: String
 
         enum CodingKeys: String, CodingKey {
+            case type = "$type"
             case repositoryDID = "did"
         }
     }
