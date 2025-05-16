@@ -100,6 +100,9 @@ extension ChatBskyLexicon.Conversation {
         /// An embed for the message. Optional.
         public let embed: ATUnion.MessageInputEmbedUnion?
 
+        /// An array of reactions. Optional.
+        public let reactions: [ChatBskyLexicon.Conversation.ReactionViewDefinition]?
+
         /// The sender of the message.
         public let sender: MessageViewSenderDefinition
 
@@ -107,12 +110,13 @@ extension ChatBskyLexicon.Conversation {
         public let sentAt: Date
 
         public init(messageID: String, revision: String, text: String, facets: [AppBskyLexicon.RichText.Facet]?, embed: ATUnion.MessageInputEmbedUnion?,
-                    sender: MessageViewSenderDefinition, sentAt: Date) {
+                    reactions: [ChatBskyLexicon.Conversation.ReactionViewDefinition]?, sender: MessageViewSenderDefinition, sentAt: Date) {
             self.messageID = messageID
             self.revision = revision
             self.text = text
             self.facets = facets
             self.embed = embed
+            self.reactions = reactions
             self.sender = sender
             self.sentAt = sentAt
         }
@@ -125,6 +129,7 @@ extension ChatBskyLexicon.Conversation {
             self.text = try container.decode(String.self, forKey: .text)
             self.facets = try container.decodeIfPresent([AppBskyLexicon.RichText.Facet].self, forKey: .facets)
             self.embed = try container.decodeIfPresent(ATUnion.MessageInputEmbedUnion.self, forKey: .embed)
+            self.reactions = try container.decodeIfPresent([ChatBskyLexicon.Conversation.ReactionViewDefinition].self, forKey: .reactions)
             self.sender = try container.decode(MessageViewSenderDefinition.self, forKey: .sender)
             self.sentAt = try container.decodeDate(forKey: .sentAt)
         }
@@ -137,6 +142,7 @@ extension ChatBskyLexicon.Conversation {
             try container.truncatedEncode(self.text, forKey: .text, upToCharacterLength: 1_000)
             try container.encodeIfPresent(self.facets, forKey: .facets)
             try container.encodeIfPresent(self.embed, forKey: .embed)
+            try container.encodeIfPresent(self.reactions, forKey: .reactions)
             try container.encode(self.sender, forKey: .sender)
             try container.encodeDate(self.sentAt, forKey: .sentAt)
         }
@@ -147,6 +153,7 @@ extension ChatBskyLexicon.Conversation {
             case text
             case facets
             case embed
+            case reactions
             case sender
             case sentAt
         }
@@ -219,6 +226,48 @@ extension ChatBskyLexicon.Conversation {
         }
     }
 
+    /// A definition model for reaction view.
+    ///
+    /// - SeeAlso: This is based on the [`chat.bsky.convo.defs`][github] lexicon.
+    ///
+    /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/chat/bsky/convo/defs.json
+    public struct ReactionViewDefinition: Sendable, Codable {
+
+        /// The value of the reaction.
+        public let value: String
+
+        /// The sender of the reaction.
+        public let sender: ChatBskyLexicon.Conversation.ReactionViewSenderDefinition
+
+        /// The date and time of the reaction.
+        public let createdAt: Date
+    }
+
+    /// A definition model for the sender of the reaction.
+    ///
+    /// - SeeAlso: This is based on the [`chat.bsky.convo.defs`][github] lexicon.
+    ///
+    /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/chat/bsky/convo/defs.json
+    public struct ReactionViewSenderDefinition: Sendable, Codable {
+
+        /// The decentralized identifier (DID) of the user account that sent the reaction.
+        public let did: String
+    }
+
+    /// A definition model for a view containing a message and reaction.
+    ///
+    /// - SeeAlso: This is based on the [`chat.bsky.convo.defs`][github] lexicon.
+    ///
+    /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/chat/bsky/convo/defs.json
+    public struct MessageAndReactionViewDefinition: Sendable, Codable {
+
+        /// The message itself.
+        public let message: ChatBskyLexicon.Conversation.MessageViewDefinition
+
+        /// The reaction attached to the message.
+        public let reaction: ChatBskyLexicon.Conversation.ReactionViewDefinition
+    }
+
     /// A definition model for a conversation view.
     ///
     /// - SeeAlso: This is based on the [`chat.bsky.convo.defs`][github] lexicon.
@@ -236,7 +285,10 @@ extension ChatBskyLexicon.Conversation {
         public let members: [ChatBskyLexicon.Actor.ProfileViewBasicDefinition]
 
         /// The last message in the conversation. Optional.
-        public let lastMessage: ATUnion.ConversationViewLastMessageUnion?
+        public let lastMessage: LastMessageUnion?
+
+        /// The last reaction in the conversation. Optional.
+        public let lastReaction: LastReactionUnion?
 
         /// Indicates whether the conversation is muted.
         public let isMuted: Bool
@@ -252,11 +304,13 @@ extension ChatBskyLexicon.Conversation {
             case revision = "rev"
             case members
             case lastMessage
+            case lastReaction
             case isMuted = "muted"
             case status
             case unreadCount
         }
 
+        // Enums
         /// The status of the conversation.
         public enum Status: String, Sendable, Codable {
 
@@ -265,6 +319,61 @@ extension ChatBskyLexicon.Conversation {
 
             /// The conversation has been accepted.
             case accepted
+        }
+
+        // Unions
+        /// A reference containing the list of messages.
+        public enum LastMessageUnion: Sendable, Codable {
+
+            /// A message view.
+            case messageView(ChatBskyLexicon.Conversation.MessageViewDefinition)
+
+            /// A deleted message view.
+            case deletedMessageView(ChatBskyLexicon.Conversation.DeletedMessageViewDefinition)
+
+            public init(from decoder: any Decoder) throws {
+                let container = try decoder.singleValueContainer()
+
+                if let value = try? container.decode(ChatBskyLexicon.Conversation.MessageViewDefinition.self) {
+                    self = .messageView(value)
+                } else if let value = try? container.decode(ChatBskyLexicon.Conversation.DeletedMessageViewDefinition.self) {
+                    self = .deletedMessageView(value)
+                } else {
+                    throw DecodingError.typeMismatch(
+                        LastMessageUnion.self, DecodingError.Context(
+                            codingPath: decoder.codingPath, debugDescription: "Unknown LastMessageUnion type"))
+                }
+            }
+
+            public func encode(to encoder: any Encoder) throws {
+                var container = encoder.singleValueContainer()
+
+                switch self {
+                    case .messageView(let messageView):
+                        try container.encode(messageView)
+                    case .deletedMessageView(let deletedMessageView):
+                        try container.encode(deletedMessageView)
+                }
+            }
+        }
+
+        /// A reference containing the list containing a message and reaction.
+        public enum LastReactionUnion: Sendable, Codable {
+
+            /// A view containing a message and reaction.
+            case messageAndReactionView(ChatBskyLexicon.Conversation.MessageAndReactionViewDefinition)
+
+            public init(from decoder: Decoder) throws {
+                let container = try decoder.singleValueContainer()
+
+                if let value = try? container.decode(ChatBskyLexicon.Conversation.MessageAndReactionViewDefinition.self) {
+                    self = .messageAndReactionView(value)
+                } else {
+                    throw DecodingError.typeMismatch(
+                        LastReactionUnion.self, DecodingError.Context(
+                            codingPath: decoder.codingPath, debugDescription: "Unknown LastReactionUnion type"))
+                }
+            }
         }
     }
 
@@ -429,6 +538,124 @@ extension ChatBskyLexicon.Conversation {
             case revision = "rev"
             case conversationID = "convoID"
             case message
+        }
+    }
+
+    /// A definition model for a log for adding a reaction.
+    ///
+    /// - SeeAlso: This is based on the [`chat.bsky.convo.defs`][github] lexicon.
+    ///
+    /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/chat/bsky/convo/defs.json
+    public struct LogAddReactionViewDefinition: Sendable, Codable {
+
+        /// The revision of the log.
+        public let revision: String
+
+        /// The ID of the conversation.
+        public let conversationID: String
+
+        /// The message itself.
+        public let message: MessageUnion
+
+        enum CodingKeys: String, CodingKey {
+            case revision = "rev"
+            case conversationID = "convoID"
+            case message
+        }
+
+        // Unions
+        /// A reference containing the list of messages.
+        public enum MessageUnion: Sendable, Codable {
+
+            /// A message view.
+            case messageView(ChatBskyLexicon.Conversation.MessageViewDefinition)
+
+            /// A deleted message view.
+            case deletedMessageView(ChatBskyLexicon.Conversation.DeletedMessageViewDefinition)
+
+            public init(from decoder: any Decoder) throws {
+                let container = try decoder.singleValueContainer()
+
+                if let value = try? container.decode(ChatBskyLexicon.Conversation.MessageViewDefinition.self) {
+                    self = .messageView(value)
+                } else if let value = try? container.decode(ChatBskyLexicon.Conversation.DeletedMessageViewDefinition.self) {
+                    self = .deletedMessageView(value)
+                } else {
+                    throw DecodingError.typeMismatch(
+                        MessageUnion.self, DecodingError.Context(
+                            codingPath: decoder.codingPath, debugDescription: "Unknown MessageUnion type"))
+                }
+            }
+
+            public func encode(to encoder: any Encoder) throws {
+                var container = encoder.singleValueContainer()
+
+                switch self {
+                    case .messageView(let messageView):
+                        try container.encode(messageView)
+                    case .deletedMessageView(let deletedMessageView):
+                        try container.encode(deletedMessageView)
+                }
+            }
+        }
+    }
+
+    /// A definition model for a log for removing a reaction.
+    ///
+    /// - SeeAlso: This is based on the [`chat.bsky.convo.defs`][github] lexicon.
+    ///
+    /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/chat/bsky/convo/defs.json
+    public struct LogRemoveReactionDefinition: Sendable, Codable {
+
+        /// The revision of the log.
+        public let revision: String
+
+        /// The ID of the conversation.
+        public let conversationID: String
+
+        /// The message itself.
+        public let message: ATUnion.LogReadMessageUnion
+
+        enum CodingKeys: String, CodingKey {
+            case revision = "rev"
+            case conversationID = "convoID"
+            case message
+        }
+
+        // Unions
+        /// A reference containing the list of messages.
+        public enum MessageUnion: Sendable, Codable {
+
+            /// A message view.
+            case messageView(ChatBskyLexicon.Conversation.MessageViewDefinition)
+
+            /// A deleted message view.
+            case deletedMessageView(ChatBskyLexicon.Conversation.DeletedMessageViewDefinition)
+
+            public init(from decoder: any Decoder) throws {
+                let container = try decoder.singleValueContainer()
+
+                if let value = try? container.decode(ChatBskyLexicon.Conversation.MessageViewDefinition.self) {
+                    self = .messageView(value)
+                } else if let value = try? container.decode(ChatBskyLexicon.Conversation.DeletedMessageViewDefinition.self) {
+                    self = .deletedMessageView(value)
+                } else {
+                    throw DecodingError.typeMismatch(
+                        MessageUnion.self, DecodingError.Context(
+                            codingPath: decoder.codingPath, debugDescription: "Unknown MessageUnion type"))
+                }
+            }
+
+            public func encode(to encoder: any Encoder) throws {
+                var container = encoder.singleValueContainer()
+
+                switch self {
+                    case .messageView(let messageView):
+                        try container.encode(messageView)
+                    case .deletedMessageView(let deletedMessageView):
+                        try container.encode(deletedMessageView)
+                }
+            }
         }
     }
 }

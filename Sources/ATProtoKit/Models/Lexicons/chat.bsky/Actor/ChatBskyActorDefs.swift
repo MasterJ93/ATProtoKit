@@ -46,6 +46,9 @@ extension ChatBskyLexicon.Actor {
         /// cannot actively participate in converations"
         public let isChatDisabled: Bool?
 
+        /// The state of verification for the user account. Optional.
+        public let verification: AppBskyLexicon.Actor.VerificationStateDefinition?
+
         public func encode(to encoder: any Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
 
@@ -57,6 +60,7 @@ extension ChatBskyLexicon.Actor {
             try container.encodeIfPresent(self.viewer, forKey: .viewer)
             try container.encodeIfPresent(self.labels, forKey: .labels)
             try container.encodeIfPresent(self.isChatDisabled, forKey: .isChatDisabled)
+            try container.encodeIfPresent(self.verification, forKey: .verification)
         }
 
         enum CodingKeys: String, CodingKey {
@@ -68,6 +72,7 @@ extension ChatBskyLexicon.Actor {
             case viewer
             case labels
             case isChatDisabled = "chatDisabled"
+            case verification
         }
     }
 }
