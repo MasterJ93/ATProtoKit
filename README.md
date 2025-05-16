@@ -41,8 +41,8 @@ Task {
     do {
         try await config.authenticate(handle: "lucy.bsky.social", password: "hunter2")
 
-        let atProto = await ATProtoKit(sessionConfiguration: config)
-        let atProtoBluesky = ATProtoBluesky(atProtoKitInstance: atProto)
+        let atProtoKit = await ATProtoKit(sessionConfiguration: config)
+        let atProtoBluesky = ATProtoBluesky(atProtoKitInstance: atProtoKit)
 
         let postResult = try await atProtoBluesky.createPostRecord(text: "Hello Bluesky!")
 
@@ -106,14 +106,16 @@ By default, `ATProtocolConfiguration` conforms to `https://bsky.social`. However
 let result = ATProtocolConfiguration(pdsURL: "https://example.social")
 ```
 
-After that, use the `authenticate()` method, and pass in the handle and password of the user account. This session contains all of the elements you need, such as the access and refresh tokens:
+After that, use the `authenticate()` method, and pass in the handle and password of the user account. Once you've passed in the `ATProtocolConfiguration` object to the `ATProtoKit` `class`, use the `getUserSession()` method. This session contains all of the elements you need, such as the access and refresh tokens:
 ```swift
 Task {
     do {
-        // The session object is contained in the `ATProtocolConfiguration` object:
         try await config.authenticate(handle: "lucy.bsky.social", appPassword: "hunter2")
 
-        if let session = config.session {
+        // The session object is contains in the `ATProtoKit` object:
+        let atProtoKit = ATProtoKit(ATProtoKit(sessionConfiguration: config)
+
+        if let session = atProtoKit.getUserSession() {
             print("Result (Access Token): \(session.accessToken)")
             print("Result (Refresh Token): \(session.refreshToken)")
         }
