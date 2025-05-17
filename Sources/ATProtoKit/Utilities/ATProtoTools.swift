@@ -49,7 +49,7 @@ public class ATProtoTools {
                 return false
             }
 
-            _ = try await ATProtoKit(pdsURL: session?.pdsURL ?? "https://api.bsky.app", canUseBlueskyRecords: false).getRepositoryRecord(
+            _ = try await ATProtoKit(pdsURL: session?.pdsURL ?? "https://https://public.api.bsky.app", canUseBlueskyRecords: false).getRepositoryRecord(
                 from: repository,
                 collection: collection,
                 recordKey: recordKey
@@ -68,7 +68,7 @@ public class ATProtoTools {
                 return false
             }
 
-            _ = try await ATProtoKit(pdsURL: session?.pdsURL ?? "https://api.bsky.app", canUseBlueskyRecords: false).getRepositoryRecord(
+            _ = try await ATProtoKit(pdsURL: session?.pdsURL ?? "https://public.api.bsky.app", canUseBlueskyRecords: false).getRepositoryRecord(
                 from: repository,
                 collection: collection,
                 recordKey: recordKey
@@ -104,7 +104,7 @@ public class ATProtoTools {
             let collection = recordQuery.collection
             let recordKey = recordQuery.recordKey
 
-            let record = try await ATProtoKit(pdsURL: session.pdsURL ?? "https://api.bsky.app", canUseBlueskyRecords: false).getRepositoryRecord(
+            let record = try await ATProtoKit(pdsURL: session.pdsURL ?? "https://public.api.bsky.app", canUseBlueskyRecords: false).getRepositoryRecord(
                 from: repository,
                 collection: collection,
                 recordKey: recordKey
@@ -155,10 +155,10 @@ public class ATProtoTools {
         session: UserSession
     ) async throws -> ComAtprotoLexicon.Repository.StrongReference {
         // Parse the URI to retrieve the post data.
-        let recordQuery = try parseURI(reference.recordURI, pdsURL: session.pdsURL ?? "https:/api.bsky.app")
+        let recordQuery = try parseURI(reference.recordURI, pdsURL: session.pdsURL ?? "https://public.api.bsky.app")
 
         // Fetch the post record from the repository.
-        let record = try await ATProtoKit(pdsURL: session.pdsURL ?? "https://api.bsky.app", canUseBlueskyRecords: false).getRepositoryRecord(
+        let record = try await ATProtoKit(pdsURL: session.pdsURL ?? "https://public.api.bsky.app", canUseBlueskyRecords: false).getRepositoryRecord(
             from: recordQuery.repository,
             collection: recordQuery.collection,
             recordKey: recordQuery.recordKey
@@ -251,7 +251,7 @@ public class ATProtoTools {
         let query = try parseURI(uri)
 
         do {
-            let record = try await ATProtoKit(pdsURL: session?.pdsURL ?? "https://api.bsky.app", canUseBlueskyRecords: false).getRepositoryRecord(
+            let record = try await ATProtoKit(pdsURL: session?.pdsURL ?? "https://public.api.bsky.app", canUseBlueskyRecords: false).getRepositoryRecord(
                 from: query.repository,
                 collection: query.collection,
                 recordKey: query.recordKey
@@ -366,7 +366,7 @@ public class ATProtoTools {
     /// - Returns: A strong reference of the record.
     public static func createStrongReference(
         from recordURI: String,
-        pdsURL: String = "https://api.bsky.app"
+        pdsURL: String = "https://public.api.bsky.app"
     ) async throws -> ComAtprotoLexicon.Repository.StrongReference {
         let query = try ATProtoTools().parseURI(recordURI)
 

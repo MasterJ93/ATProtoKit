@@ -113,7 +113,7 @@ extension ATProtoKitConfiguration {
         if customPDSURL != "" {
             return customPDSURL
         } else {
-            return "https://api.bsky.app"
+            return "https://public.api.bsky.app"
         }
     }
 }
@@ -195,7 +195,7 @@ public final class ATProtoKit: Sendable, ATProtoKitConfiguration, ATRecordConfig
     public init(
         sessionConfiguration: SessionConfiguration? = nil,
         urlSessionConfiguration: URLSessionConfiguration? = nil,
-        pdsURL: String = "https://api.bsky.app",
+        pdsURL: String = "https://public.api.bsky.app",
         responseProvider: ATRequestExecutor? = nil,
         canUseBlueskyRecords: Bool = true
     ) {
@@ -239,7 +239,7 @@ public final class ATProtoKit: Sendable, ATProtoKitConfiguration, ATRecordConfig
     public init(
         sessionConfiguration: SessionConfiguration? = nil,
         urlSessionConfiguration: URLSessionConfiguration? = nil,
-        pdsURL: String = "https://api.bsky.app",
+        pdsURL: String = "https://public.api.bsky.app",
         responseProvider: ATRequestExecutor? = nil,
         canUseBlueskyRecords: Bool = true
     ) async {
@@ -290,7 +290,7 @@ public final class ATProtoBluesky: Sendable, ATProtoKitConfiguration {
         self.atProtoKitInstance = atProtoKitInstance
         self.sessionConfiguration = atProtoKitInstance.sessionConfiguration
         self.linkBuilder = linkbuilder
-        self.pdsURL = "https://api.bsky.app"
+        self.pdsURL = "https://public.api.bsky.app"
     }
 }
 
