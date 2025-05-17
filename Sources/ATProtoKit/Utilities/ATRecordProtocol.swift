@@ -604,3 +604,49 @@ public enum CodableValue: Codable, Sendable, Equatable, Hashable {
         }
     }
 }
+
+extension CodableValue: ExpressibleByBooleanLiteral, ExpressibleByIntegerLiteral, ExpressibleByFloatLiteral, ExpressibleByStringLiteral,
+                        ExpressibleByArrayLiteral, ExpressibleByDictionaryLiteral {
+
+    public init(booleanLiteral value: Bool) {
+        self = .bool(value)
+    }
+
+    public init(integerLiteral value: Int) {
+        self = .int(value)
+    }
+
+    public init(floatLiteral value: Double) {
+        self = .double(value)
+    }
+
+    public init(stringLiteral value: String) {
+        self = .string(value)
+    }
+
+    public typealias ArrayLiteralElement = CodableValue
+
+    public init(arrayLiteral: ArrayLiteralElement...) {
+        var array: [CodableValue] = []
+
+        for element in arrayLiteral {
+            array.append(element)
+        }
+
+        self = .array(array)
+    }
+
+    public typealias Key = String
+    public typealias Value = CodableValue
+
+    public init(dictionaryLiteral elements: (Key, Value)...) {
+        var dictionary: [String: CodableValue] = [:]
+
+        for (key, value) in elements {
+            // Add entry to dictionary.
+            dictionary[key] = value
+        }
+
+        self = .dictionary(dictionary)
+    }
+}
