@@ -32,7 +32,7 @@ extension ATProtoAdmin {
     public func updateMember(
         with did: String,
         isDisabled: Bool? = nil,
-        role: ToolsOzoneLexicon.Team.MemberDefinition.Role
+        role: ToolsOzoneLexicon.Team.UpdateMember.Role
     ) async throws -> ToolsOzoneLexicon.Team.MemberDefinition {
         guard let session = try await self.getUserSession(),
               let keychain = sessionConfiguration?.keychainProtocol else {

@@ -21,6 +21,24 @@ extension ToolsOzoneLexicon.Setting {
             /// Indicates this is a personal scope.
             case personal
         }
+
+        /// The manager role of the option.
+        public enum Role: String, Sendable, Codable {
+
+            /// A role that allows the member to access actions related to ensuring that rules are
+            /// maintained in the service.
+            case moderator = "tools.ozone.team.defs#roleModerator"
+
+            /// A role that allows the member to access actions related to monitoring and
+            /// escalating issues.
+            case triage = "tools.ozone.team.defs#roleTriage"
+
+            /// A role that allows the member to have nearly full access of the systems.
+            case admin = "tools.ozone.team.defs#roleAdmin"
+
+            /// A role that allows the member to verify user accounts.
+            case verifier = "tools.ozone.team.defs#roleVerifier"
+        }
     }
 
     /// A request body model for upserting options.
@@ -47,7 +65,7 @@ extension ToolsOzoneLexicon.Setting {
         public let description: String?
 
         /// The manager role of the option. Optional.
-        public let managerRole: ToolsOzoneLexicon.Team.MemberDefinition.Role?
+        public let managerRole: UpsertOption.Role?
 
         public func encode(to encoder: any Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)

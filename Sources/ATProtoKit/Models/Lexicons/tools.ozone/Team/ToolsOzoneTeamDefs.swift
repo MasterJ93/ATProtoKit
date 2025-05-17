@@ -104,6 +104,12 @@ extension ToolsOzoneLexicon.Team {
             /// - Note: According to the AT Protocol specifications: "Triage role. Mostly intended
             /// for monitoring and escalating issues."
             case triage = "roleTriage"
+
+            /// A role that allows the member to verify user accounts.
+            ///
+            /// - Note: According to the AT Protocol specifications: "Verifier role. Only allowed to
+            /// issue verifications."
+            case verifier = "roleVerifier"
         }
     }
 }

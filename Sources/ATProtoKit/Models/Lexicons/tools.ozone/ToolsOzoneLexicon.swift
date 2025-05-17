@@ -12,6 +12,9 @@ extension ToolsOzoneLexicon {
     /// A group of lexicons within the `tools.ozone.communication` namespace.
     public struct Communication {}
 
+    /// A group of lexicons within the `tools.ozone.hosting` namespace.
+    public struct Hosting {}
+
     /// A group of lexicons within the `tools.ozone.moderation` namespace.
     public struct Moderation {}
 
@@ -29,4 +32,7 @@ extension ToolsOzoneLexicon {
 
     /// A group of lexicon within the `tools.ozone.team` namespace.
     public struct Team {}
+
+    /// A group of lexicons within the `tools.ozone.verification` namespace.
+    public struct Verification {}
 }

@@ -38,6 +38,9 @@ extension ToolsOzoneLexicon.Server {
 
             /// Indicates a triage role.
             case roleTriage = "tools.ozone.team.defs#roleTriage"
+
+            /// Indicates a role verifier.
+            case roleVerifier = "tools.ozone.team.defs#roleVerifier"
         }
     }
 
@@ -65,5 +68,20 @@ extension ToolsOzoneLexicon.Server {
 
         /// The viewer configurations of the Ozone server.
         public let viewer: GetConfiguration.ViewerConfiguration?
+
+        /// The decentralized identifier of the configuration.
+        ///
+        /// - Note: According to the AT Protocol specifications: "The did of the verifier used
+        /// for verification."
+        public let verifierDID: String
+
+        enum CodingKeys: String, CodingKey {
+            case appview
+            case pds
+            case blobDivert
+            case chat
+            case viewer
+            case verifierDID = "verifierDid"
+        }
     }
 }

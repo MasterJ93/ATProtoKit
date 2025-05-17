@@ -30,7 +30,7 @@ extension ATProtoAdmin {
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func addMember(
         with did: String,
-        and role: ToolsOzoneLexicon.Team.MemberDefinition.Role
+        and role: ToolsOzoneLexicon.Team.AddMember.Role
     ) async throws -> ToolsOzoneLexicon.Team.MemberDefinition {
         guard let session = try await self.getUserSession(),
               let keychain = sessionConfiguration?.keychainProtocol else {

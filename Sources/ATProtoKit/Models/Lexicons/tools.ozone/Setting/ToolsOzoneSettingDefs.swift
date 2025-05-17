@@ -37,7 +37,7 @@ extension ToolsOzoneLexicon.Setting {
         public let updatedAt: Date?
 
         /// The manager role of the option. Optional.
-        public let managerRole: ToolsOzoneLexicon.Team.MemberDefinition.Role?
+        public let managerRole: Role?
 
         /// The scope of the option.
         public let scope: Scope
@@ -49,7 +49,7 @@ extension ToolsOzoneLexicon.Setting {
         public let lastUpdatedBy: String
 
         init(key: String, did: String, value: UnknownType, description: String?, createdAt: Date?, updatedAt: Date?,
-             managerRole: ToolsOzoneLexicon.Team.MemberDefinition.Role?, scope: Scope, createdBy: String, lastUpdatedBy: String) {
+             managerRole: Role?, scope: Scope, createdBy: String, lastUpdatedBy: String) {
             self.key = key
             self.did = did
             self.value = value
@@ -71,7 +71,7 @@ extension ToolsOzoneLexicon.Setting {
             self.description = try container.decodeIfPresent(String.self, forKey: .description)
             self.createdAt = try container.decodeDateIfPresent(forKey: .createdAt)
             self.updatedAt = try container.decodeDateIfPresent(forKey: .updatedAt)
-            self.managerRole = try container.decodeIfPresent(ToolsOzoneLexicon.Team.MemberDefinition.Role.self, forKey: .managerRole)
+            self.managerRole = try container.decodeIfPresent(Role.self, forKey: .managerRole)
             self.scope = try container.decode(ToolsOzoneLexicon.Setting.OptionDefinition.Scope.self, forKey: .scope)
             self.createdBy = try container.decode(String.self, forKey: .createdBy)
             self.lastUpdatedBy = try container.decode(String.self, forKey: .lastUpdatedBy)
@@ -106,6 +106,7 @@ extension ToolsOzoneLexicon.Setting {
             case lastUpdatedBy
         }
 
+        // Enums
         /// The scope of the option.
         public enum Scope: Sendable, Codable {
 
@@ -114,6 +115,24 @@ extension ToolsOzoneLexicon.Setting {
 
             /// Indicates this is a personal scope.
             case personal
+        }
+
+        /// The manager role of the option.
+        public enum Role: String, Sendable, Codable {
+
+            /// A role that allows the member to access actions related to ensuring that rules are
+            /// maintained in the service.
+            case moderator = "tools.ozone.team.defs#roleModerator"
+
+            /// A role that allows the member to access actions related to monitoring and
+            /// escalating issues.
+            case triage = "tools.ozone.team.defs#roleTriage"
+
+            /// A role that allows the member to have nearly full access of the systems.
+            case admin = "tools.ozone.team.defs#roleAdmin"
+
+            /// A role that allows the member to verify user accounts.
+            case verifier = "tools.ozone.team.defs#roleVerifier"
         }
     }
 }
