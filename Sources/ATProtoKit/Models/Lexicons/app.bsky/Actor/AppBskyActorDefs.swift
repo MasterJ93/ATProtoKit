@@ -524,7 +524,7 @@ extension AppBskyLexicon.Actor {
 
         // Enums
         /// The status as a verified user account.
-        public enum VerifiedStatus: Sendable, Codable {
+        public enum VerifiedStatus: String, Sendable, Codable {
 
             /// The user account is verified.
             case valid
@@ -537,7 +537,7 @@ extension AppBskyLexicon.Actor {
         }
 
         /// The status as a trusted verifier user account.
-        public enum TrustedVerifiedStatus: Sendable, Codable {
+        public enum TrustedVerifiedStatus: String, Sendable, Codable {
 
             /// The user account is verified.
             case valid
@@ -568,7 +568,7 @@ extension AppBskyLexicon.Actor {
         /// The URI of the verification.
         ///
         /// - Note: According to the AT Protocol specifications: "The AT-URI of the verification record."
-        public let uri: URL
+        public let uri: String
 
         /// Determines if the verification is valid.
         ///
@@ -581,6 +581,31 @@ extension AppBskyLexicon.Actor {
         /// - Note: According to the AT Protocol specifications: "Timestamp when the verification
         /// was created."
         public let createdAt: Date
+
+        public init(issuerDID: String, uri: String, isValid: Bool, createdAt: Date) {
+            self.issuerDID = issuerDID
+            self.uri = uri
+            self.isValid = isValid
+            self.createdAt = createdAt
+        }
+
+        public init(from decoder: any Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+
+            self.issuerDID = try container.decode(String.self, forKey: .issuerDID)
+            self.uri = try container.decode(String.self, forKey: .uri)
+            self.isValid = try container.decode(Bool.self, forKey: .isValid)
+            self.createdAt = try container.decodeDate(forKey: .createdAt)
+        }
+
+        public func encode(to encoder: any Encoder) throws {
+            var container = encoder.container(keyedBy: CodingKeys.self)
+
+            try container.encode(self.issuerDID, forKey: .issuerDID)
+            try container.encode(self.uri, forKey: .uri)
+            try container.encode(self.isValid, forKey: .isValid)
+            try container.encodeDate(self.createdAt, forKey: .createdAt)
+        }
 
         enum CodingKeys: String, CodingKey {
             case issuerDID = "issuer"
