@@ -7,6 +7,7 @@
 - ``ToolsOzoneLexicon/Moderation/ModerationEventViewDefinition``
 - ``ToolsOzoneLexicon/Moderation/EventViewDetailDefinition``
 - ``ToolsOzoneLexicon/Moderation/SubjectStatusViewDefinition``
+- ``ToolsOzoneLexicon/Moderation/SubjectViewDefinition``
 - ``ToolsOzoneLexicon/Moderation/AccountStatsDefinition``
 - ``ToolsOzoneLexicon/Moderation/RecordsStatsDefinition``
 - ``ToolsOzoneLexicon/Moderation/SubjectReviewStateDefinition``
@@ -59,6 +60,10 @@
 ### tools.ozone.moderation.getRepos
 
 - ``ToolsOzoneLexicon/Moderation/GetRepositoriesOutput``
+
+### tools.ozone.moderation.getSubjects
+
+- ``ToolsOzoneLexicon/Moderation/GetSubjectsOutput``
 
 ### tools.ozone.moderation.queryEvents
 

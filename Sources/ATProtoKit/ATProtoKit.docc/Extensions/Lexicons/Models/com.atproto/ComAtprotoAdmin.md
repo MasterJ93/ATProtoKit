@@ -64,6 +64,10 @@
 
 - ``ComAtprotoLexicon/Admin/UpdateAccountPasswordRequestBody``
 
+### com.atproto.admin.updateAccountSigningKey
+
+- ``ComAtprotoLexicon/Admin/UpdateAccountSigningKeyRequestBody``
+
 ### com.atproto.admin.updateSubjectStatus
 
 - ``ComAtprotoLexicon/Admin/UpdateSubjectStatusRequestBody``
