@@ -19,27 +19,27 @@ ATProtoKit is designed to make it easy for you to interact with the AT Protocol 
 In order to log in, you need to create a session. To get started, create a new ``ATProtocolConfiguration`` instance:
 
 ```swift
-let config = ATProtocolConfiguration(handle: "lucy.bsky.social", appPassword: "g8DBhaj-948uBho-Zh6c8Wl")
+let config = ATProtocolConfiguration()
 ```
- 
-> Important: Do not use the password you typically use for signing into Bluesky: only use a specific App Password that's in use for this instance of ATProtoKit only. To generate an App Password, go to the Bluesky website, then go to Settings > Advanced > App Passwords and follow the instructions.
 
 Then, you can create a session with the ``ATProtocolConfiguration/authenticate(with:password:)`` method:
 
 ```swift
 Task {
-    try await config.authenticate()
+    try await config.authenticate(with: "lucy.bsky.social", password: "hunter2")
 }
 ```
+
+> Important: Do not use the password you typically use for signing into Bluesky: only use a specific App Password that's in use for this instance of ATProtoKit only. To generate an App Password, go to the Bluesky website, then go to Settings > Advanced > App Passwords and follow the instructions.
 
 You can use a `do-catch` block to create the ``UserSession`` object (if the session was successfully created) or handle the error (if an error occured):
 
 ```swift
-let config = ATProtocolConfiguration(handle: "lucy.bsky.social", appPassword: "hunter2")
+let config = ATProtocolConfiguration()
 
 Task {
     do {
-        try await config.authenticate()
+        try await config.authenticate(with: "lucy.bsky.social", password: "hunter2")
 
         // Handle the success.
     } catch {
