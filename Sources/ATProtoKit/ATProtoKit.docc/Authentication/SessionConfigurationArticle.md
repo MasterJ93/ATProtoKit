@@ -1,4 +1,4 @@
-# Implementing `SessionConfiguration`
+# Implementing SessionConfiguration
 
 Discover how to utilize `SessionConfiguration` to better fit your use case.
 
