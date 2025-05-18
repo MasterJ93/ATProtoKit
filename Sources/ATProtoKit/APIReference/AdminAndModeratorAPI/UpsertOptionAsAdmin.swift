@@ -29,7 +29,7 @@ extension ATProtoAdmin {
         scope: ToolsOzoneLexicon.Setting.UpsertOption.Scope = .instance,
         value: UnknownType,
         description: String? = nil,
-        managerRole: ToolsOzoneLexicon.Setting.UpsertOption.ManagerRole?
+        managerRole: ToolsOzoneLexicon.Setting.UpsertOption.Role?
     ) async throws -> ToolsOzoneLexicon.Setting.UpsertOptionOutput {
         guard let session = try await self.getUserSession(),
               let keychain = sessionConfiguration?.keychainProtocol else {

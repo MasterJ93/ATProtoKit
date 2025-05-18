@@ -16,7 +16,7 @@ extension ToolsOzoneLexicon.Verification {
     /// - SeeAlso: This is based on the [`tools.ozone.verification.defs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/tools/ozone/verification/defs.json
-    public struct VerificationDefinition: Sendable, Codable {
+    public struct VerificationViewDefinition: Sendable, Codable {
 
         /// The decentralized identifier (DID) of the user account that issued the verification.
         public let issuerDID: String

@@ -20,7 +20,7 @@ extension ATProtoAdmin {
     ///
     /// - Parameters:
     ///   - did: The decentralized identifier (DID) of the user account.
-    ///   - event: An array of event details to look for. Optional.
+    ///   - events: An array of event details to look for. Optional.
     ///   - cursor: The mark used to indicate the starting point for the next set of results. Optional.
     ///   - limit: The number of repositories in the array. Optional. Defaults to `50`. Can only
     ///   choose between `1` and `100`.

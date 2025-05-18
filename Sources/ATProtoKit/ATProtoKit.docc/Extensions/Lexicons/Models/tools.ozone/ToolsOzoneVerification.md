@@ -4,16 +4,21 @@
 
 ### tools.ozone.verification.defs
 
-- ``VerificationDefinition``
+- ``VerificationViewDefinition``
 
 ### tools.ozone.verification.grantVerifications
 
-- <!--@START_MENU_TOKEN@-->``Symbol``<!--@END_MENU_TOKEN@-->
+- ``GrantVerifications``
+- ``GrantVerificationsRequestBody``
+- ``GrantVerificationsOutput``
 
 ### tools.ozone.verification.listVerifications
 
-- <!--@START_MENU_TOKEN@-->``Symbol``<!--@END_MENU_TOKEN@-->
+- ``ListVerifications``
+- ``ListVerificationsOutput``
 
 ### tools.ozone.verification.revokeVerifications
 
-- <!--@START_MENU_TOKEN@-->``Symbol``<!--@END_MENU_TOKEN@-->
+- ``RevokeVerifications``
+- ``RevokeVerificationsRequestBody``
+- ``RevokeVerificationsOutput``

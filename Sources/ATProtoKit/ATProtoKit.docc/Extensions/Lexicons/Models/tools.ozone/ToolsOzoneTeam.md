@@ -4,6 +4,7 @@
 
 ### tools.ozone.team.addMember
 
+- ``AddMember``
 - ``AddMemberRequestBody``
 
 ### tools.ozone.team.defs
@@ -20,4 +21,5 @@
 
 ### toold.ozone.team.updateMember
 
+- ``UpdateMember``
 - ``UpdateMemberRequestBody``
