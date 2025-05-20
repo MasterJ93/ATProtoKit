@@ -61,7 +61,7 @@ extension ComAtprotoLexicon.Sync {
 
         enum CodingKeys: String, CodingKey {
             case cursor
-            case repositories = "repo"
+            case repositories = "repos"
         }
 
         // Enums
