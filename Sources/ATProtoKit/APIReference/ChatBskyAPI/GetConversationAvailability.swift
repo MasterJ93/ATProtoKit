@@ -34,7 +34,7 @@ extension ATProtoBlueskyChat {
         let accessToken = try await keychain.retrieveAccessToken()
         let sessionURL = session.serviceEndpoint.absoluteString
 
-        guard let requestURL = URL(string: "\(sessionURL)/xrpc/chat.bsky.convo.getConvoAvailability") else {
+        guard let requestURL = URL(string: "https://chat.bsky.app/xrpc/chat.bsky.convo.getConvoAvailability") else {
             throw ATRequestPrepareError.invalidRequestURL
         }
 
