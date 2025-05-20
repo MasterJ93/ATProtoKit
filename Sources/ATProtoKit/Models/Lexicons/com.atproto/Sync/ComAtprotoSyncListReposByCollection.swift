@@ -44,5 +44,10 @@ extension ComAtprotoLexicon.Sync {
 
         /// An array of repositories.
         public let repositories: [ListRepositoriesByCollection.Repository]
+
+        enum CodingKeys: String, CodingKey {
+            case cursor
+            case repositories = "repos"
+        }
     }
 }
