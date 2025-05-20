@@ -32,7 +32,7 @@ extension ATProtoKit {
         limit: Int? = 500,
         cursor: String? = nil
     ) async throws -> ComAtprotoLexicon.Sync.ListRepositoriesOutput {
-        guard let requestURL = URL(string: "\(self.pdsURL)/xrpc/com.atproto.sync.listRepos") else {
+        guard let requestURL = URL(string: "https://bsky.network/xrpc/com.atproto.sync.listRepos") else {
             throw ATRequestPrepareError.invalidRequestURL
         }
 

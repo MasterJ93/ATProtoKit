@@ -26,7 +26,7 @@ extension ATProtoKit {
     public func getLatestCommit(
         from repositoryDID: String
     ) async throws -> ComAtprotoLexicon.Sync.GetLatestCommitOutput {
-        guard let requestURL = URL(string: "\(self.pdsURL)/xrpc/com.atproto.sync.getLatestCommit") else {
+        guard let requestURL = URL(string: "https://bsky.network/xrpc/com.atproto.sync.getLatestCommit") else {
             throw ATRequestPrepareError.invalidRequestURL
         }
 

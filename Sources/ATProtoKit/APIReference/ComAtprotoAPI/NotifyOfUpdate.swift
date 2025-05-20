@@ -34,7 +34,7 @@ extension ATProtoKit {
         in crawlingHostname: URL,
         pdsURL: String = "https://api.bsky.app"
     ) async throws {
-        guard let requestURL = URL(string: "\(self.pdsURL)/xrpc/com.atproto.sync.notifyOfUpdate") else {
+        guard let requestURL = URL(string: "https://bsky.network/xrpc/com.atproto.sync.notifyOfUpdate") else {
             throw ATRequestPrepareError.invalidRequestURL
         }
 

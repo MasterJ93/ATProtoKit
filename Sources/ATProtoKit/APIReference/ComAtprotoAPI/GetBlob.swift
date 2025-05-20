@@ -30,7 +30,7 @@ extension ATProtoKit {
         from accountDID: String,
         cid: String
     ) async throws -> Data {
-        guard let requestURL = URL(string: "\(self.pdsURL)/xrpc/com.atproto.sync.getBlob") else {
+        guard let requestURL = URL(string: "https://bsky.network/xrpc/com.atproto.sync.getBlob") else {
             throw ATRequestPrepareError.invalidRequestURL
         }
 

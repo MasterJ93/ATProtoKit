@@ -38,7 +38,7 @@ extension ATProtoKit {
         let accessToken = try await keychain.retrieveAccessToken()
         let sessionURL = session.serviceEndpoint.absoluteString
 
-        guard let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.sync.listHosts") else {
+        guard let requestURL = URL(string: "https://bsky.network/xrpc/com.atproto.sync.listHosts") else {
             throw ATRequestPrepareError.invalidRequestURL
         }
 

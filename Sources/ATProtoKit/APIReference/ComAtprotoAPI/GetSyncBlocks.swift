@@ -34,7 +34,7 @@ extension ATProtoKit {
         from repositoryDID: String,
         by repositoryCIDs: [String]
     ) async throws -> Data {
-        guard let requestURL = URL(string: "\(self.pdsURL)/xrpc/com.atproto.sync.getBlocks") else {
+        guard let requestURL = URL(string: "https://bsky.network/xrpc/com.atproto.sync.getBlocks") else {
             throw ATRequestPrepareError.invalidRequestURL
         }
 
