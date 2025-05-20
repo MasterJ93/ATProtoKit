@@ -27,13 +27,13 @@ extension ATProtoBlueskyChat {
         from conversationID: String,
         limit: Int? = 50
     ) async throws -> ChatBskyLexicon.Conversation.GetMessagesOutput {
-        guard let session = try await self.getUserSession(),
+        guard let _ = try await self.getUserSession(),
               let keychain = sessionConfiguration?.keychainProtocol else {
             throw ATRequestPrepareError.missingActiveSession
         }
 
         let accessToken = try await keychain.retrieveAccessToken()
-        let sessionURL = session.serviceEndpoint.absoluteString
+//        let sessionURL = session.serviceEndpoint.absoluteString
 
         guard let requestURL = URL(string: "https://chat.bsky.app/xrpc/chat.bsky.convo.getMessages") else {
             throw ATRequestPrepareError.invalidRequestURL

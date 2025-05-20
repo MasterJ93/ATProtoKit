@@ -26,13 +26,13 @@ extension ATProtoBlueskyChat {
         conversationID: String,
         messageID: String
     ) async throws -> ChatBskyLexicon.Conversation.DeletedMessageViewDefinition {
-        guard let session = try await self.getUserSession(),
+        guard let _ = try await self.getUserSession(),
               let keychain = sessionConfiguration?.keychainProtocol else {
             throw ATRequestPrepareError.missingActiveSession
         }
 
         let accessToken = try await keychain.retrieveAccessToken()
-        let sessionURL = session.serviceEndpoint.absoluteString
+//        let sessionURL = session.serviceEndpoint.absoluteString
 
         guard let requestURL = URL(string: "https://chat.bsky.app/xrpc/chat.bsky.convo.deleteMessageForSelf") else {
             throw ATRequestPrepareError.invalidRequestURL

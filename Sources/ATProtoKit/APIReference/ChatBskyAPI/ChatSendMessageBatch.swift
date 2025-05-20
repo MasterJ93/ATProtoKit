@@ -25,13 +25,13 @@ extension ATProtoBlueskyChat {
     public func sendMessageBatch(
         _ messages: [ChatBskyLexicon.Conversation.SendMessageBatch.BatchItem]
     ) async throws -> ChatBskyLexicon.Conversation.SendMessageBatchOutput {
-        guard let session = try await self.getUserSession(),
+        guard let _ = try await self.getUserSession(),
               let keychain = sessionConfiguration?.keychainProtocol else {
             throw ATRequestPrepareError.missingActiveSession
         }
 
         let accessToken = try await keychain.retrieveAccessToken()
-        let sessionURL = session.serviceEndpoint.absoluteString
+//        let sessionURL = session.serviceEndpoint.absoluteString
 
         guard let requestURL = URL(string: "https://chat.bsky.app/xrpc/chat.bsky.convo.sendMessageBatch") else {
             throw ATRequestPrepareError.invalidRequestURL

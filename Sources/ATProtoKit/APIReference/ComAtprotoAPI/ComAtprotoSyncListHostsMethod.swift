@@ -30,13 +30,13 @@ extension ATProtoKit {
         limit: Int? = 200,
         cursor: String? = nil
     ) async throws -> ComAtprotoLexicon.Sync.ListHostsOutput {
-        guard let session = try await self.getUserSession(),
+        guard let _ = try await self.getUserSession(),
               let keychain = sessionConfiguration?.keychainProtocol else {
             throw ATRequestPrepareError.missingActiveSession
         }
 
         let accessToken = try await keychain.retrieveAccessToken()
-        let sessionURL = session.serviceEndpoint.absoluteString
+//        let sessionURL = session.serviceEndpoint.absoluteString
 
         guard let requestURL = URL(string: "https://bsky.network/xrpc/com.atproto.sync.listHosts") else {
             throw ATRequestPrepareError.invalidRequestURL

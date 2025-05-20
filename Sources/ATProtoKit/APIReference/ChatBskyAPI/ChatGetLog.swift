@@ -22,13 +22,13 @@ extension ATProtoBlueskyChat {
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func getLog(cursor: String? = nil) async throws -> ChatBskyLexicon.Conversation.GetLogOutput {
-        guard let session = try await self.getUserSession(),
+        guard let _ = try await self.getUserSession(),
               let keychain = sessionConfiguration?.keychainProtocol else {
             throw ATRequestPrepareError.missingActiveSession
         }
 
         let accessToken = try await keychain.retrieveAccessToken()
-        let sessionURL = session.serviceEndpoint.absoluteString
+//        let sessionURL = session.serviceEndpoint.absoluteString
 
         guard let requestURL = URL(string: "https://chat.bsky.app/xrpc/chat.bsky.convo.getLog") else {
             throw ATRequestPrepareError.invalidRequestURL

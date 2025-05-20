@@ -32,13 +32,13 @@ extension ATProtoBlueskyChat {
         readState: ChatBskyLexicon.Conversation.ListConversations.ReadState? = nil,
         status: ChatBskyLexicon.Conversation.ListConversations.Status? = nil
     ) async throws -> ChatBskyLexicon.Conversation.ListConversationsOutput {
-        guard let session = try await self.getUserSession(),
+        guard let _ = try await self.getUserSession(),
               let keychain = sessionConfiguration?.keychainProtocol else {
             throw ATRequestPrepareError.missingActiveSession
         }
 
         let accessToken = try await keychain.retrieveAccessToken()
-        let sessionURL = session.serviceEndpoint.absoluteString
+//        let sessionURL = session.serviceEndpoint.absoluteString
 
         guard let requestURL = URL(string: "https://chat.bsky.app/xrpc/chat.bsky.convo.listConvos") else {
             throw ATRequestPrepareError.invalidRequestURL

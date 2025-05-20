@@ -35,13 +35,13 @@ extension ATProtoBlueskyChat {
         messagesBefore: Int? = 5,
         messagesAfter: Int? = 5
     ) async throws -> ChatBskyLexicon.Moderation.GetMessageContextOutput {
-        guard let session = try await self.getUserSession(),
+        guard let _ = try await self.getUserSession(),
               let keychain = sessionConfiguration?.keychainProtocol else {
             throw ATRequestPrepareError.missingActiveSession
         }
 
         let accessToken = try await keychain.retrieveAccessToken()
-        let sessionURL = session.serviceEndpoint.absoluteString
+//        let sessionURL = session.serviceEndpoint.absoluteString
 
         guard let requestURL = URL(string: "https://chat.bsky.app/xrpc/chat.bsky.moderation.getMessageContext") else {
             throw ATRequestPrepareError.invalidRequestURL
