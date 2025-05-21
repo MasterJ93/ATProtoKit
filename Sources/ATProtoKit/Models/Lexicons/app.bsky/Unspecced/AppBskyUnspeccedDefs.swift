@@ -219,17 +219,6 @@ extension AppBskyLexicon.Unspecced {
             self.actors = actors
         }
 
-        enum CodingKeys: CodingKey {
-            case topic
-            case displayName
-            case link
-            case startedAt
-            case postCount
-            case status
-            case category
-            case actors
-        }
-
         public init(from decoder: any Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
 
@@ -254,6 +243,17 @@ extension AppBskyLexicon.Unspecced {
             try container.encodeIfPresent(self.status, forKey: .status)
             try container.encodeIfPresent(self.category, forKey: .category)
             try container.encode(self.actors, forKey: .actors)
+        }
+
+        enum CodingKeys: CodingKey {
+            case topic
+            case displayName
+            case link
+            case startedAt
+            case postCount
+            case status
+            case category
+            case actors
         }
 
         // Enums
