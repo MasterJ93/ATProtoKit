@@ -27,7 +27,8 @@ extension ATProtoKit {
     ///   - limit: The number of items that can be in the list. Optional. Defaults to `50`.
     ///   - cursor: The mark used to indicate the starting point for the next set
     ///   of results. Optional.
-    /// - Returns: An array of skeleton feeds, with an optional cursor to extend the array.
+    /// - Returns: An array of skeleton feeds, with an optional cursor to extend the array. May also
+    /// contain a request identifier after an interaction has been established.
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.

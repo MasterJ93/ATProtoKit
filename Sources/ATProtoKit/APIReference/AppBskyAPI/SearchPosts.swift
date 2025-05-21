@@ -11,9 +11,10 @@ extension ATProtoKit {
 
     /// Retrieves the results of a search query.
     ///
-    /// - Note: According to the AT Protocol specifications: "Find posts matching search criteria,
-    /// returning views of those posts."
-    /// 
+    /// - Note: According to the AT Protocol specifications: "Find posts matching search criteria, returning
+    /// views of those posts. Note that this API endpoint may require authentication (eg, not public) for
+    /// some service providers and implementations."
+    ///
     /// - SeeAlso: This is based on the [`app.bsky.feed.searchPosts`][github] lexicon.
     /// 
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/feed/searchPosts.json

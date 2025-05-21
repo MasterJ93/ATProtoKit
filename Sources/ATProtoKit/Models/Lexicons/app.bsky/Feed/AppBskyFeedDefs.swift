@@ -184,6 +184,12 @@ extension AppBskyLexicon.Feed {
         /// feed generator that may be passed back alongside interactions."
         public let feedContext: String?
 
+        /// An interaction identifier that may be given upon an interaction.
+        ///
+        /// - Note: According to the AT Protocol specifications: "Unique identifier per request that may be
+        /// passed back alongside interactions."
+        public let requestID: String?
+
         public func encode(to encoder: any Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
 
@@ -191,13 +197,15 @@ extension AppBskyLexicon.Feed {
             try container.encodeIfPresent(self.reply, forKey: .reply)
             try container.encodeIfPresent(self.reason, forKey: .reason)
             try container.truncatedEncodeIfPresent(self.feedContext, forKey: .feedContext, upToCharacterLength: 300)
+            try container.truncatedEncodeIfPresent(self.requestID, forKey: .requestID, upToCharacterLength: 100)
         }
 
-        public enum CodingKeys: CodingKey {
+        public enum CodingKeys: String, CodingKey {
             case post
             case reply
             case reason
             case feedContext
+            case requestID = "reqId"
         }
     }
 
@@ -594,6 +602,12 @@ extension AppBskyLexicon.Feed {
         /// The interaction event of the feed generator. Optional.
         public let event: Event?
 
+        /// An interaction identifier that may be given upon an interaction.
+        ///
+        /// - Note: According to the AT Protocol specifications: "Unique identifier per request that may be
+        /// passed back alongside interactions."
+        public let requestID: String?
+
         /// The feed generator's context. Optional.
         ///
         /// - Important: Current maximum length is 2,000 characters (these are raw characters).
@@ -608,12 +622,14 @@ extension AppBskyLexicon.Feed {
             try container.encode(self.itemURI, forKey: .itemURI)
             try container.encode(self.event, forKey: .event)
             try container.truncatedEncodeIfPresent(self.feedContext, forKey: .feedContext, upToCharacterLength: 300)
+            try container.truncatedEncodeIfPresent(self.requestID, forKey: .requestID, upToCharacterLength: 100)
         }
 
         enum CodingKeys: String, CodingKey {
             case itemURI = "uri"
             case event
             case feedContext
+            case requestID = "reqId"
         }
 
         // Enums

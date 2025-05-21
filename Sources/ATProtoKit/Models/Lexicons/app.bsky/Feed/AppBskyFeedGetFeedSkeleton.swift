@@ -25,5 +25,25 @@ extension AppBskyLexicon.Feed {
 
         /// An array of skeleton feeds.
         public let feed: [SkeletonFeedPostDefinition]
+
+        /// An interaction identifier that may be given upon an interaction.
+        ///
+        /// - Note: According to the AT Protocol specifications: "Unique identifier per request that may be
+        /// passed back alongside interactions."
+        public let requestID: String?
+
+        public func encode(to encoder: any Encoder) throws {
+            var container = encoder.container(keyedBy: CodingKeys.self)
+
+            try container.encodeIfPresent(self.cursor, forKey: .cursor)
+            try container.encode(self.feed, forKey: .feed)
+            try container.truncatedEncodeIfPresent(self.requestID, forKey: .requestID, upToCharacterLength: 100)
+        }
+
+        enum CodingKeys: String, CodingKey {
+            case cursor
+            case feed
+            case requestID = "reqId"
+        }
     }
 }
