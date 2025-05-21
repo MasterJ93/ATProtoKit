@@ -36,6 +36,38 @@ extension AppBskyLexicon.Actor {
         /// The date and time the record was created.
         public let createdAt: Date
 
+        public init(status: Status, embed: String?, durationMinutes: Int?, createdAt: Date) {
+            self.status = status
+            self.embed = embed
+            self.durationMinutes = durationMinutes
+            self.createdAt = createdAt
+        }
+
+        public init(from decoder: any Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+
+            self.status = try container.decode(AppBskyLexicon.Actor.StatusRecord.Status.self, forKey: .status)
+            self.embed = try container.decodeIfPresent(String.self, forKey: .embed)
+            self.durationMinutes = try container.decodeIfPresent(Int.self, forKey: .durationMinutes)
+            self.createdAt = try container.decodeDate(forKey: .createdAt)
+        }
+
+        public func encode(to encoder: any Encoder) throws {
+            var container = encoder.container(keyedBy: CodingKeys.self)
+
+            try container.encode(self.status, forKey: .status)
+            try container.encodeIfPresent(self.embed, forKey: .embed)
+            try container.encodeIfPresent(self.durationMinutes, forKey: .durationMinutes)
+            try container.encodeDate(self.createdAt, forKey: .createdAt)
+        }
+
+        enum CodingKeys: CodingKey {
+            case status
+            case embed
+            case durationMinutes
+            case createdAt
+        }
+
         // Enums
         /// The status of the user account.
         public enum Status: String, Sendable, Codable, Equatable, Hashable {

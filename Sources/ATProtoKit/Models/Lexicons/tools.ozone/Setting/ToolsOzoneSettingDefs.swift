@@ -48,7 +48,7 @@ extension ToolsOzoneLexicon.Setting {
         /// The decentralized identifier (DID) of the user account that last updated the option.
         public let lastUpdatedBy: String
 
-        init(key: String, did: String, value: UnknownType, description: String?, createdAt: Date?, updatedAt: Date?,
+        public init(key: String, did: String, value: UnknownType, description: String?, createdAt: Date?, updatedAt: Date?,
              managerRole: Role?, scope: Scope, createdBy: String, lastUpdatedBy: String) {
             self.key = key
             self.did = did
