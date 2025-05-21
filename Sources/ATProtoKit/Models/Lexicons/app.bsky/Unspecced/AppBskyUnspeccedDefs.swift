@@ -92,7 +92,7 @@ extension AppBskyLexicon.Unspecced {
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/unspecced/defs.json
     public struct SkeletonTrendDefinition: Sendable, Codable {
 
-        ///
+        /// A shorthand, lowercased version of the topic name.
         public let topic: String
 
         /// The display name of the topic.
