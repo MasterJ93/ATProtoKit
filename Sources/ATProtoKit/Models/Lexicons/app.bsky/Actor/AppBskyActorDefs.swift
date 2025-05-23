@@ -1478,7 +1478,6 @@ extension AppBskyLexicon.Actor {
         public func encode(to encoder: any Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
 
-            // try container.encode(self.isCompleted, forKey: .isCompleted)
             try container.encode(self.status, forKey: .status)
             try container.encode(self.record, forKey: .record)
             try container.encodeIfPresent(self.embed, forKey: .embed)
