@@ -1493,12 +1493,33 @@ extension AppBskyLexicon.Actor {
             case isActive
         }
 
-        // Union
+        // Unions
         /// A reference containing the list of embeds..
         public enum EmbedUnion: Sendable, Codable, Equatable, Hashable {
 
             /// An external embed view.
             case externalView(AppBskyLexicon.Embed.ExternalDefinition.View)
+
+            public init(from decoder: any Decoder) throws {
+                let container = try decoder.singleValueContainer()
+
+                if let value = try? container.decode(AppBskyLexicon.Embed.ExternalDefinition.View.self) {
+                    self = .externalView(value)
+                } else {
+                throw DecodingError.typeMismatch(
+                    EmbedUnion.self, DecodingError.Context(
+                        codingPath: decoder.codingPath, debugDescription: "Unknown EmbedUnion type"))
+                }
+            }
+
+            public func encode(to encoder: any Encoder) throws {
+                var container = encoder.singleValueContainer()
+
+                switch self {
+                    case .externalView(let value):
+                        try container.encode(value)
+                }
+            }
         }
     }
 }
