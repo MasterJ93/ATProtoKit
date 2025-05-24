@@ -107,7 +107,6 @@ extension ToolsOzoneLexicon.Verification {
         public func encode(to encoder: any Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
 
-            try container.encode(self.verifications, forKey: .verifications)
             try container.truncatedEncode(self.verifications, forKey: .verifications, upToArrayLength: 100)
         }
     }

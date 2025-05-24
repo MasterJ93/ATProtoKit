@@ -1457,13 +1457,69 @@ extension AppBskyLexicon.Actor {
         /// if it is expired. Only present if expiration was set."
         public let isActive: Bool?
 
+        public init(status: StatusRecord, record: UnknownType, embed: EmbedUnion?, expiresAt: Date?, isActive: Bool?) {
+            self.status = status
+            self.record = record
+            self.embed = embed
+            self.expiresAt = expiresAt
+            self.isActive = isActive
+        }
 
-        // Union
+        public init(from decoder: any Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+
+            self.status = try container.decode(StatusRecord.self, forKey: .status)
+            self.record = try container.decode(UnknownType.self, forKey: .record)
+            self.embed = try container.decodeIfPresent(EmbedUnion.self, forKey: .embed)
+            self.expiresAt = try container.decodeDateIfPresent(forKey: .expiresAt)
+            self.isActive = try container.decodeIfPresent(Bool.self, forKey: .isActive)
+        }
+
+        public func encode(to encoder: any Encoder) throws {
+            var container = encoder.container(keyedBy: CodingKeys.self)
+
+            try container.encode(self.status, forKey: .status)
+            try container.encode(self.record, forKey: .record)
+            try container.encodeIfPresent(self.embed, forKey: .embed)
+            try container.encodeDateIfPresent(self.expiresAt, forKey: .expiresAt)
+            try container.encodeIfPresent(self.isActive, forKey: .isActive)
+        }
+
+        enum CodingKeys: CodingKey {
+            case status
+            case record
+            case embed
+            case expiresAt
+            case isActive
+        }
+
+        // Unions
         /// A reference containing the list of embeds..
         public enum EmbedUnion: Sendable, Codable, Equatable, Hashable {
 
             /// An external embed view.
             case externalView(AppBskyLexicon.Embed.ExternalDefinition.View)
+
+            public init(from decoder: any Decoder) throws {
+                let container = try decoder.singleValueContainer()
+
+                if let value = try? container.decode(AppBskyLexicon.Embed.ExternalDefinition.View.self) {
+                    self = .externalView(value)
+                } else {
+                throw DecodingError.typeMismatch(
+                    EmbedUnion.self, DecodingError.Context(
+                        codingPath: decoder.codingPath, debugDescription: "Unknown EmbedUnion type"))
+                }
+            }
+
+            public func encode(to encoder: any Encoder) throws {
+                var container = encoder.singleValueContainer()
+
+                switch self {
+                    case .externalView(let value):
+                        try container.encode(value)
+                }
+            }
         }
     }
 }

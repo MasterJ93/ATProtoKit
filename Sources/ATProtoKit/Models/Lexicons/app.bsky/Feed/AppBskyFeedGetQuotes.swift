@@ -30,5 +30,12 @@ extension AppBskyLexicon.Feed {
 
         /// An array of quote posts.
         public let posts: [AppBskyLexicon.Feed.PostViewDefinition]
+
+        enum CodingKeys: String, CodingKey {
+            case postURI = "uri"
+            case postCID = "cid"
+            case cursor
+            case posts
+        }
     }
 }

@@ -241,6 +241,34 @@ extension ChatBskyLexicon.Conversation {
 
         /// The date and time of the reaction.
         public let createdAt: Date
+
+        public init(value: String, sender: ChatBskyLexicon.Conversation.ReactionViewSenderDefinition, createdAt: Date) {
+            self.value = value
+            self.sender = sender
+            self.createdAt = createdAt
+        }
+
+        public init(from decoder: any Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+
+            self.value = try container.decode(String.self, forKey: .value)
+            self.sender = try container.decode(ChatBskyLexicon.Conversation.ReactionViewSenderDefinition.self, forKey: .sender)
+            self.createdAt = try container.decodeDate(forKey: .createdAt)
+        }
+
+        public func encode(to encoder: any Encoder) throws {
+            var container = encoder.container(keyedBy: CodingKeys.self)
+
+            try container.encode(self.value, forKey: .value)
+            try container.encode(self.sender, forKey: .sender)
+            try container.encodeDate(self.createdAt, forKey: .createdAt)
+        }
+
+        enum CodingKeys: CodingKey {
+            case value
+            case sender
+            case createdAt
+        }
     }
 
     /// A definition model for the sender of the reaction.
