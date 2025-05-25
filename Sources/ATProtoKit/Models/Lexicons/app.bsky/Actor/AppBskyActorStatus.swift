@@ -16,7 +16,12 @@ extension AppBskyLexicon.Actor {
     /// - SeeAlso: This is based on the [`app.bsky.actor.defs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/actor/defs.json
-    public struct StatusRecord: Sendable, Codable, Equatable, Hashable {
+    public struct StatusRecord: ATRecordProtocol, Sendable {
+
+        /// The identifier of the lexicon.
+        ///
+        /// - Warning: The value must not change.
+        public static let type: String = "app.bsky.actor.status"
 
         /// The status of the user account.
         public let status: Status
@@ -61,7 +66,8 @@ extension AppBskyLexicon.Actor {
             try container.encodeDate(self.createdAt, forKey: .createdAt)
         }
 
-        enum CodingKeys: CodingKey {
+        enum CodingKeys: String, CodingKey {
+            case type = "$type"
             case status
             case embed
             case durationMinutes
