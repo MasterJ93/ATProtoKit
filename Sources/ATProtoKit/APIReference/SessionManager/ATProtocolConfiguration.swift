@@ -29,6 +29,7 @@ final public class ATProtocolConfiguration: SessionConfiguration {
     /// Determines whether `ATProtocolConfiguration` will automatically resolve the handle.
     public let canResolve: Bool
 
+#if os(iOS) || os(macOS) || os(tvOS) || os(visionOS) || os(watchOS)
     /// Initializes a new instance of `ATProtocolConfiguration`.
     ///
     /// - Parameters:
@@ -38,7 +39,6 @@ final public class ATProtocolConfiguration: SessionConfiguration {
     ///   - configuration: An instance of `URLSessionConfiguration`. Optional.
     ///   - canResolve: Indicates whether `ATProtocolConfiguration` will automatically resolve
     ///   the handle. Defaults to `true`.
-#if os(iOS) || os(macOS) || os(tvOS) || os(visionOS) || os(watchOS)
     public init<Keychain: SecureKeychainProtocol>(
         pdsURL: String = "https://bsky.social",
         keychainProtocol: Keychain = AppleSecureKeychain(),
@@ -57,6 +57,15 @@ final public class ATProtocolConfiguration: SessionConfiguration {
         self.canResolve = canResolve
     }
 #elseif os(Linux)
+    /// Initializes a new instance of `ATProtocolConfiguration`.
+    ///
+    /// - Parameters:
+    ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `https://bsky.social`.
+    ///   - keychainProtocol: An instance of ``SecureKeychainProtocol``. Optional. Defaults to the
+    ///   default implementation of ``SecureKeychainProtocol``.
+    ///   - configuration: An instance of `URLSessionConfiguration`. Optional.
+    ///   - canResolve: Indicates whether `ATProtocolConfiguration` will automatically resolve
+    ///   the handle. Defaults to `true`.
     public init<Keychain: SecureKeychainProtocol>(
         pdsURL: String = "https://bsky.social",
         keychainProtocol: Keychain,
@@ -75,6 +84,15 @@ final public class ATProtocolConfiguration: SessionConfiguration {
         self.canResolve = canResolve
     }
 #elseif os(Windows)
+    /// Initializes a new instance of `ATProtocolConfiguration`.
+    ///
+    /// - Parameters:
+    ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `https://bsky.social`.
+    ///   - keychainProtocol: An instance of ``SecureKeychainProtocol``. Optional. Defaults to the
+    ///   default implementation of ``SecureKeychainProtocol``.
+    ///   - configuration: An instance of `URLSessionConfiguration`. Optional.
+    ///   - canResolve: Indicates whether `ATProtocolConfiguration` will automatically resolve
+    ///   the handle. Defaults to `true`.
     public init<Keychain: SecureKeychainProtocol>(
         pdsURL: String = "https://bsky.social",
         keychainProtocol: Keychain,
@@ -93,6 +111,15 @@ final public class ATProtocolConfiguration: SessionConfiguration {
         self.canResolve = canResolve
     }
 #else
+    /// Initializes a new instance of `ATProtocolConfiguration`.
+    ///
+    /// - Parameters:
+    ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `https://bsky.social`.
+    ///   - keychainProtocol: An instance of ``SecureKeychainProtocol``. Optional. Defaults to the
+    ///   default implementation of ``SecureKeychainProtocol``.
+    ///   - configuration: An instance of `URLSessionConfiguration`. Optional.
+    ///   - canResolve: Indicates whether `ATProtocolConfiguration` will automatically resolve
+    ///   the handle. Defaults to `true`.
     public init<Keychain: SecureKeychainProtocol>(
         pdsURL: String = "https://bsky.social",
         keychainProtocol: Keychain,
