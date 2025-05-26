@@ -82,7 +82,7 @@ extension AppBskyLexicon.Actor {
             ///
             /// - Note: According to the AT Protocol specifications: "Advertises an account as currently
             /// offering live content."
-            case live = "live"
+            case live = "app.bsky.actor.status#live"
         }
 
         // Unions
