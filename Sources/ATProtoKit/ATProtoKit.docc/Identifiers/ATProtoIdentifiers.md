@@ -8,6 +8,8 @@ Find out the requirements for each identifier within the AT Protocol.
 
 ## Overview
 
+- Warning: All of these `class`es, `struct`s, and methods are all deprecated. Please move over to using [ATSyntaxTools](https://github.com/ATProtoKit/ATSyntaxTools) as these are more up to date.
+
 These identifiers and schemes (we'll call them "identifiers" for short) are part of what makes the AT Protocol work. Not only is validation within the scope of best practices with respect to Swift, but it'll help to reduce less potenital bugs and errors.
 
 ## Validation
