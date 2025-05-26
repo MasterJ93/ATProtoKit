@@ -1434,7 +1434,7 @@ extension AppBskyLexicon.Actor {
         /// The user account's status.
         ///
         /// - Note: According to the AT Protocol specifications: "The status for the account."
-        public let status: StatusRecord
+        public let status: StatusViewDefinition.Status
 
         /// The record related to the status.
         public let record: UnknownType
@@ -1457,7 +1457,7 @@ extension AppBskyLexicon.Actor {
         /// if it is expired. Only present if expiration was set."
         public let isActive: Bool?
 
-        public init(status: StatusRecord, record: UnknownType, embed: EmbedUnion?, expiresAt: Date?, isActive: Bool?) {
+        public init(status: StatusViewDefinition.Status, record: UnknownType, embed: EmbedUnion?, expiresAt: Date?, isActive: Bool?) {
             self.status = status
             self.record = record
             self.embed = embed
@@ -1468,7 +1468,7 @@ extension AppBskyLexicon.Actor {
         public init(from decoder: any Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
 
-            self.status = try container.decode(StatusRecord.self, forKey: .status)
+            self.status = try container.decode(StatusViewDefinition.Status.self, forKey: .status)
             self.record = try container.decode(UnknownType.self, forKey: .record)
             self.embed = try container.decodeIfPresent(EmbedUnion.self, forKey: .embed)
             self.expiresAt = try container.decodeDateIfPresent(forKey: .expiresAt)
@@ -1491,6 +1491,17 @@ extension AppBskyLexicon.Actor {
             case embed
             case expiresAt
             case isActive
+        }
+
+        // Enums
+        /// The status of the user account.
+        public enum Status: String, Sendable, Codable, Equatable, Hashable {
+
+            /// The status of the user account is "live."
+            ///
+            /// - Note: According to the AT Protocol specifications: "Advertises an account as currently
+            /// offering live content."
+            case live = "app.bsky.actor.status#live"
         }
 
         // Unions
