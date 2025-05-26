@@ -287,7 +287,7 @@ public final class ATProtoBluesky: Sendable, ATProtoKitConfiguration {
     ///   - atProtoKitInstance: Represents the instance of ``ATProtoKit/ATProtoKit``.
     ///   - linkbuilder: The ``ATLinkBuilder`` object used to grab the metadata for preview
     ///   link cards. Optional.
-    public init(atProtoKitInstance: ATProtoKit, linkbuilder: ATLinkBuilder? = nil) {
+    public init<LinkBuilder: ATLinkBuilder>(atProtoKitInstance: ATProtoKit, linkbuilder: LinkBuilder? = nil) {
         self.atProtoKitInstance = atProtoKitInstance
         self.sessionConfiguration = atProtoKitInstance.sessionConfiguration
         self.linkBuilder = linkbuilder
