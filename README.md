@@ -106,7 +106,7 @@ By default, `ATProtocolConfiguration` conforms to `https://bsky.social`. However
 let result = ATProtocolConfiguration(pdsURL: "https://example.social")
 ```
 
-After that, use the `authenticate()` method, and pass in the handle and password of the user account. Once you've passed in the `ATProtocolConfiguration` object to the `ATProtoKit` `class`, use the `getUserSession()` method. This session contains all of the elements you need, such as the access and refresh tokens:
+After that, use the `authenticate()` method, and pass in the handle and password of the user account. Once you've passed in the `ATProtocolConfiguration` object to the `ATProtoKit` `class`, use the `getUserSession()` method, as well as the `ATProtocolConfiguration.sessionConfiguration.keychainProtocol` property. These two contains all of the elements you need, such as the session tokens, decentralized identifier (DID), and service endpoint:
 ```swift
 Task {
     do {
@@ -115,9 +115,14 @@ Task {
         // The session object is contains in the `ATProtoKit` object:
         let atProtoKit = ATProtoKit(ATProtoKit(sessionConfiguration: config)
 
-        if let session = atProtoKit.getUserSession() {
-            print("Result (Access Token): \(session.accessToken)")
-            print("Result (Refresh Token): \(session.refreshToken)")
+        if let session = try await atProtoKit.getUserSession() {
+            print("Result (Service Endpoint): \(session.serviceEndpoint)")
+            print("Result (DID): \(session.sessionDID)")
+        }
+        
+        if let session = try await atProtoKit.getUserSession() {
+            print("Result (Service Endpoint): \(session.serviceEndpoint)")
+            print("Result (DID): \(session.sessionDID)")
         }
     } catch {
         print("Error: \(error)")
