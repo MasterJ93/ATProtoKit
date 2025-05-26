@@ -13,6 +13,7 @@
 
 ### app.bsky.unspecced.getConfig
 
+- ``GetConfig``
 - ``GetConfigOutput``
 
 ### app.bsky.unspecced.getPopularFeedGenerators
