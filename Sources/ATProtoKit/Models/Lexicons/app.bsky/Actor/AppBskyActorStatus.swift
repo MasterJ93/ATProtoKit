@@ -76,7 +76,7 @@ extension AppBskyLexicon.Actor {
 
         // Enums
         /// The status of the user account.
-        public enum Status: Sendable, Codable, Equatable, Hashable {
+        public enum Status: Sendable, Codable, Equatable, Hashable, ExpressibleByStringLiteral {
 
             /// The status of the user account is "live."
             ///
@@ -93,6 +93,10 @@ extension AppBskyLexicon.Actor {
                     case .live: return "app.bsky.actor.status#live"
                     case .unknown(let value): return value
                 }
+            }
+
+            public init(stringLiteral value: String) {
+                self = .unknown(value)
             }
 
             public init(from decoder: Decoder) throws {
