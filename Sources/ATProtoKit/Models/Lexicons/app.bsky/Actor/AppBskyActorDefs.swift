@@ -751,7 +751,7 @@ extension AppBskyLexicon.Actor {
         enum CodingKeys: String, CodingKey {
             case type = "$type"
             case feedID = "id"
-            case feedType
+            case feedType = "type"
             case value
             case isPinned = "pinned"
         }
@@ -1186,8 +1186,18 @@ extension AppBskyLexicon.Actor {
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/actor/defs.json
     public struct LabelersPreferencesDefinition: Sendable, Codable {
 
+        /// The identifier of the lexicon.
+        ///
+        /// - Warning: The value must not change.
+        public let type: String = "app.bsky.actor.defs#labelersPref"
+
         /// An array of labeler items.
         public let labelers: [LabelersPreferenceItem]
+
+        enum CodingKeys: String, CodingKey {
+            case type = "$type"
+            case labelers
+        }
     }
 
     /// A definition model for a labeler item.
@@ -1217,6 +1227,11 @@ extension AppBskyLexicon.Actor {
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/actor/defs.json
     public struct BskyAppStatePreferencesDefinition: Sendable, Codable {
 
+        /// The identifier of the lexicon.
+        ///
+        /// - Warning: The value must not change.
+        public let type: String = "app.bsky.actor.defs#bskyAppStatePref"
+
         /// An active progress guide. Optional.
         public let activeProgressGuide: String?
 
@@ -1238,6 +1253,13 @@ extension AppBskyLexicon.Actor {
             try container.encodeIfPresent(self.activeProgressGuide, forKey: .activeProgressGuide)
             try container.truncatedEncodeIfPresent(self.queuedNudges, forKey: .queuedNudges, upToCharacterLength: 100, upToArrayLength: 1_000)
             try container.truncatedEncodeIfPresent(self.nuxs, forKey: .nuxs, upToArrayLength: 100)
+        }
+
+        enum CodingKeys: String, CodingKey {
+            case type = "$type"
+            case activeProgressGuide
+            case queuedNudges
+            case nuxs
         }
     }
 
@@ -1330,6 +1352,11 @@ extension AppBskyLexicon.Actor {
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/actor/defs.json
     public struct VerificationPreferenceDefinition: Sendable, Codable {
 
+        /// The identifier of the lexicon.
+        ///
+        /// - Warning: The value must not change.
+        public let type: String = "app.bsky.actor.defs#verificationPrefs"
+
         /// Determines whether the blue badges for both verified and trusted verifier user accounts
         /// are hidden. Defaults to `false`.
         ///
@@ -1338,6 +1365,7 @@ extension AppBskyLexicon.Actor {
         public let willHideBadges: Bool = false
 
         enum CodingKeys: String, CodingKey {
+            case type = "$type"
             case willHideBadges = "hideBadges"
         }
     }
@@ -1353,6 +1381,11 @@ extension AppBskyLexicon.Actor {
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/actor/defs.json
     public struct PostInteractionSettingsPreferenceDefinition: Sendable, Codable {
+
+        /// The identifier of the lexicon.
+        ///
+        /// - Warning: The value must not change.
+        public let type: String = "app.bsky.actor.defs#postInteractionSettingsPref"
 
         /// An array of rules that determines who can reply to the user account's posts.
         ///
@@ -1389,7 +1422,8 @@ extension AppBskyLexicon.Actor {
             try container.truncatedEncode(self.postgateEmbeddingRules, forKey: .postgateEmbeddingRules, upToArrayLength: 5)
         }
 
-        enum CodingKeys: CodingKey {
+        enum CodingKeys: String, CodingKey {
+            case type = "$type"
             case threadgateAllowRules
             case postgateEmbeddingRules
         }
@@ -1495,13 +1529,44 @@ extension AppBskyLexicon.Actor {
 
         // Enums
         /// The status of the user account.
-        public enum Status: String, Sendable, Codable, Equatable, Hashable {
+        public enum Status: Sendable, Codable, Equatable, Hashable, ExpressibleByStringLiteral {
 
             /// The status of the user account is "live."
             ///
             /// - Note: According to the AT Protocol specifications: "Advertises an account as currently
             /// offering live content."
-            case live = "app.bsky.actor.status#live"
+            case live
+
+            /// An unknown value that the object may contain.
+            case unknown(String)
+
+            /// Provides the raw string value for encoding, decoding, and comparison.
+            public var rawValue: String {
+                switch self {
+                    case .live: return "app.bsky.actor.status#live"
+                    case .unknown(let value): return value
+                }
+            }
+
+            public init(stringLiteral value: String) {
+                self = .unknown(value)
+            }
+
+            public init(from decoder: Decoder) throws {
+                let container = try decoder.singleValueContainer()
+                let value = try container.decode(String.self)
+                switch value {
+                    case "app.bsky.actor.status#live":
+                        self = .live
+                    default:
+                        self = .unknown(value)
+                }
+            }
+
+            public func encode(to encoder: Encoder) throws {
+                var container = encoder.singleValueContainer()
+                try container.encode(self.rawValue)
+            }
         }
 
         // Unions

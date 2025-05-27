@@ -78,7 +78,7 @@ extension AppBskyLexicon.Notification {
         public let cid: String
 
         /// The author of the record contained in the notification.
-        public let author: AppBskyLexicon.Actor.ProfileViewBasicDefinition
+        public let author: AppBskyLexicon.Actor.ProfileViewDefinition
 
         /// The kind of notification received.
         ///
@@ -101,7 +101,7 @@ extension AppBskyLexicon.Notification {
         /// An array of labels for the notication. Optional.
         public let labels: [ComAtprotoLexicon.Label.LabelDefinition]?
 
-        public init(uri: String, cid: String, author: AppBskyLexicon.Actor.ProfileViewBasicDefinition, reason: Reason, reasonSubjectURI: String?,
+        public init(uri: String, cid: String, author: AppBskyLexicon.Actor.ProfileViewDefinition, reason: Reason, reasonSubjectURI: String?,
                     record: UnknownType, isRead: Bool, indexedAt: Date, labels: [ComAtprotoLexicon.Label.LabelDefinition]?) {
             self.uri = uri
             self.cid = cid
@@ -119,7 +119,7 @@ extension AppBskyLexicon.Notification {
 
             self.uri = try container.decode(String.self, forKey: .uri)
             self.cid = try container.decode(String.self, forKey: .cid)
-            self.author = try container.decode(AppBskyLexicon.Actor.ProfileViewBasicDefinition.self, forKey: .author)
+            self.author = try container.decode(AppBskyLexicon.Actor.ProfileViewDefinition.self, forKey: .author)
             self.reason = try container.decode(AppBskyLexicon.Notification.Notification.Reason.self, forKey: .reason)
             self.reasonSubjectURI = try container.decodeIfPresent(String.self, forKey: .reasonSubjectURI)
             self.record = try container.decode(UnknownType.self, forKey: .record)
