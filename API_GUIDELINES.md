@@ -347,14 +347,6 @@ There may be times where documentation may be unclear by the lexicon. If this ha
     - If there's a conflict (there's more than one method with the same name in a class), the sub-domain will be addedin a way that somewhat makes grammatical sense at least. For example: `getRepositoryRecord()` and `getSyncRecord()`.
 - The list of parameters should be inline with the lexicon's parameter list. Any additional parameters that need to be added should be at the end.
     - The only exception to this rule is if there's an order that makes more sense and is in alignment with the Swift API Deisgn Guideline's "Strive for Fluent Usage" guidelines.
-- There are three types of lexicon methods: methods where authentication is required (will henceforth be called "AuthRequired"), methods where authentication is optional (will henceforth be called "AuthOptional"), and methods where authentication is not used (will henceforth be called "AuthUnneeded").
-- For AuthUnneeded lexicon methods:
-    - An additional parameter is added at the end: `pdsURL.
-        - `pdsURL` is a `String?` parameter and defaults to `nil`. This is used for if the method call needs to use a Personal Data Server other than the one attached to the `UserSession` instance.
-- For AuthOptional lexicon methods:
-    - Two additional parameters are added at the end: `pdsURL` and `shouldAuthenticate`.
-        - `pdsURL` is a `String?` parameter and defaults to `nil`. This is used for if the method call needs to use a Personal Data Server other than the one attached to the `UserSession` instance.
-        - `shouldAuthenticate` is a `Bool` parameter and defaults to `false`. This is used for is the method call wants the access token to be part of the request payload.
 - If the method is AuthRequired, use a `guard` statement. In it, `session` must not be `nil`, and a variable `accessToken` will have the value `session?.accessToken. In the `else` block, the method will either `return` a `.failure` case containing `ATRequestPrepareError.missingActiveSession` (if the method returns either a response or error) or `throw`s `ATRequestPrepareError.missingActiveSession` (if the method only throws errors).
 ```swift
 guard session != nil,
