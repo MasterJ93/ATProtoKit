@@ -37,20 +37,15 @@ extension ATProtoKit {
     ///   - query: The string used against a list of actors.
     ///   - limit: The number of suggested users to follow. Optional. Defaults to `50`. Can only
     ///   choose between `1` and `100`.
-    ///   - shouldAuthenticate: Indicates whether the method will use the access token when
-    ///   sending the request. Defaults to `true`.
     /// - Returns: An array of actors.
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func searchActorsTypeahead(
         matching query: String,
-        limit: Int? = 10,
-        shouldAuthenticate: Bool = true
+        limit: Int? = 10
     ) async throws -> AppBskyLexicon.Actor.SearchActorsTypeaheadOutput {
-        let authorizationValue = await prepareAuthorizationValue(
-            shouldAuthenticate: shouldAuthenticate
-        )
+        let authorizationValue = await prepareAuthorizationValue()
 
         guard self.pdsURL != "" else {
             throw ATRequestPrepareError.emptyPDSURL

@@ -23,20 +23,14 @@ public protocol ATProtoKitConfiguration {
     /// Prepares an authorization value for API requests based on `session`.
     ///
     /// This determines whether the "Authorization" header will be included in the request payload.
-    /// It takes `shouldAuthenticate` into account if the method has them, as well as the
-    /// current session. You can use this method as-is, or customize the implementation as you
-    /// see fit.
+    /// You can use this method as-is, or customize the implementation as you see fit.
     ///
     /// - Note: Don't use this method if authorization is required or unneeded. This is only for
     /// methods where authorization is optional.
     ///
-    /// - Parameter shouldAuthenticate: Indicates whether the method call should be authenticated.
-    ///   Defaults to `false`.
-    ///
-    /// - Returns: A `String`, containing either `nil` if it's determined that there should be no
-    /// authorization header in the request, or  `"Bearer \(accessToken)"` (where `accessToken`
-    /// is the session's access token) if it's determined there should be an authorization header.
-    func prepareAuthorizationValue(shouldAuthenticate: Bool) async -> String?
+    /// - Returns: A `String`, containing either `"Bearer \(accessToken)"` (where `accessToken` is the
+    /// session's access token), or `nil` (if no session exists).
+    func prepareAuthorizationValue() async -> String?
 
     /// Retrieves the applicable ``UserSession`` instance.
     ///
@@ -60,26 +54,16 @@ extension ATProtoKitConfiguration {
     /// Prepares an authorization value for API requests based on `session` and `pdsURL`.
     ///
     /// This determines whether the "Authorization" header will be included in the request payload.
-    /// It takes `shouldAuthenticate` into account if the method has them, as well as the
-    /// current session.
     ///
     /// - Note: Don't use this method if authorization is required or unneeded. This is only for
     /// methods where authorization is optional.
-    ///
-    /// - Parameter shouldAuthenticate: Indicates whether the method call should be authenticated.
-    ///   Defaults to `false`.
     ///
     /// - Returns: A `String`, containing either `nil` if it's determined that there should be no
     /// authorization header in the request, or  `"Bearer \(accessToken)"`
     /// (where `accessToken` is the session's access token) if it's determined there should be an
     /// authorization header.
-    public func prepareAuthorizationValue(shouldAuthenticate: Bool = false) async -> String? {
-        // If `shouldAuthenticate` is false, return nil regardless of session state.
-        guard shouldAuthenticate else {
-            return nil
-        }
-
-        // If `shouldAuthenticate` is true, check if the session exists and has a valid access token.
+    public func prepareAuthorizationValue() async -> String? {
+        // Check if the session exists and has a valid access token.
         if let sessionConfiguration = sessionConfiguration {
             do {
                 let keychain = try await sessionConfiguration.keychainProtocol.retrieveAccessToken()

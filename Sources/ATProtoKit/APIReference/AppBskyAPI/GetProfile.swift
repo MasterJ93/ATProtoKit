@@ -18,8 +18,7 @@ extension ATProtoKit {
     /// `https://bsky.social` and you're not using authentication, be sure to change it if the
     /// normal URL isn't used for unauthenticated API calls.\
     ///\
-    /// If you need profiles of several users, it's best to use
-    /// ``getProfiles(for:shouldAuthenticate:)`` instead.
+    /// If you need profiles of several users, it's best to use ``getProfiles(for:)`` instead.
     ///
     /// - Note: According to the AT Protocol specifications: "Get detailed profile view of an
     /// actor. Does not require auth, but contains relevant metadata with auth."
@@ -28,21 +27,15 @@ extension ATProtoKit {
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/actor/getProfile.json
     ///
-    /// - Parameters:
-    ///   - actor: The handle or decentralized identifier (DID) of the user's account.
-    ///   - shouldAuthenticate: Indicates whether the method will use the access token when
-    ///   sending the request. Defaults to `true`.
+    /// - Parameter actor: The handle or decentralized identifier (DID) of the user's account.
     /// - Returns: A detailed profile view of the specified user account.
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func getProfile(
-        for actor: String,
-        shouldAuthenticate: Bool = true
+        for actor: String
     ) async throws -> AppBskyLexicon.Actor.ProfileViewDetailedDefinition {
-        let authorizationValue = await prepareAuthorizationValue(
-            shouldAuthenticate: shouldAuthenticate
-        )
+        let authorizationValue = await prepareAuthorizationValue()
 
         guard self.pdsURL != "" else {
             throw ATRequestPrepareError.emptyPDSURL

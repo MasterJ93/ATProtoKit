@@ -29,8 +29,6 @@ extension ATProtoKit {
     ///   Can only choose between `1` and `250`.
     ///   - cursor: The mark used to indicate the starting point for the next set
     ///   of results. Optional.
-    ///   - shouldAuthenticate: Indicates whether the method will use the access token when
-    ///   sending the request. Defaults to `true`.
     /// - Returns: An array of labels, with an optional cursor to extend the array.
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
@@ -39,12 +37,9 @@ extension ATProtoKit {
         uriPatterns: [String],
         sources: [String]? = nil,
         limit: Int? = 50,
-        cursor: String? = nil,
-        shouldAuthenticate: Bool = true
+        cursor: String? = nil
     ) async throws -> ComAtprotoLexicon.Label.QueryLabelsOutput {
-        let authorizationValue = await prepareAuthorizationValue(
-            shouldAuthenticate: shouldAuthenticate
-        )
+        let authorizationValue = await prepareAuthorizationValue()
 
         guard self.pdsURL != "" else {
             throw ATRequestPrepareError.emptyPDSURL

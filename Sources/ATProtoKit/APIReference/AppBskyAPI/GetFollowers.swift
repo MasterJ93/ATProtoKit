@@ -24,8 +24,6 @@ extension ATProtoKit {
     ///   - limit: The number of items the list will hold. Optional. Defaults to `50`.
     ///   - cursor: The mark used to indicate the starting point for the next set
     ///   of results. Optional.
-    ///   - shouldAuthenticate: Indicates whether the method will use the access token when
-    ///   sending the request. Defaults to `true`.
     /// - Returns: An array of user accounts that follow the user account, information about the
     /// user account itself, and an optional cursor to extend the array.
     ///
@@ -34,12 +32,9 @@ extension ATProtoKit {
     public func getFollowers(
         by actorDID: String,
         limit: Int? = 50,
-        cursor: String? = nil,
-        shouldAuthenticate: Bool = true
+        cursor: String? = nil
     ) async throws -> AppBskyLexicon.Graph.GetFollowersOutput {
-        let authorizationValue = await prepareAuthorizationValue(
-            shouldAuthenticate: shouldAuthenticate
-        )
+        let authorizationValue = await prepareAuthorizationValue()
 
         guard self.pdsURL != "" else {
             throw ATRequestPrepareError.emptyPDSURL
