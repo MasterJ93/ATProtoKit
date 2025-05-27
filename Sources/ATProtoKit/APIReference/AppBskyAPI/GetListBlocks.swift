@@ -30,7 +30,7 @@ extension ATProtoKit {
     public func getListBlocks(
         limit: Int? = 50,
         cursor: String? = nil
-    ) async throws -> AppBskyLexicon.Graph.GetBlocksOutput {
+    ) async throws -> AppBskyLexicon.Graph.GetListBlocksOutput {
         guard let session = try await self.getUserSession(),
               let keychain = sessionConfiguration?.keychainProtocol else {
             throw ATRequestPrepareError.missingActiveSession
@@ -71,7 +71,7 @@ extension ATProtoKit {
             )
             let response = try await APIClientService.shared.sendRequest(
                 request,
-                decodeTo: AppBskyLexicon.Graph.GetBlocksOutput.self
+                decodeTo: AppBskyLexicon.Graph.GetListBlocksOutput.self
             )
 
             return response
