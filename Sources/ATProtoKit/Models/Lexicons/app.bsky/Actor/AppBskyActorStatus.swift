@@ -76,13 +76,40 @@ extension AppBskyLexicon.Actor {
 
         // Enums
         /// The status of the user account.
-        public enum Status: String, Sendable, Codable, Equatable, Hashable {
+        public enum Status: Sendable, Codable, Equatable, Hashable {
 
             /// The status of the user account is "live."
             ///
             /// - Note: According to the AT Protocol specifications: "Advertises an account as currently
             /// offering live content."
-            case live = "app.bsky.actor.status#live"
+            case live
+
+            /// An unknown value that the object may contain.
+            case unknown(String)
+
+            /// Provides the raw string value for encoding, decoding, and comparison.
+            public var rawValue: String {
+                switch self {
+                    case .live: return "app.bsky.actor.status#live"
+                    case .unknown(let value): return value
+                }
+            }
+
+            public init(from decoder: Decoder) throws {
+                let container = try decoder.singleValueContainer()
+                let value = try container.decode(String.self)
+                switch value {
+                    case "app.bsky.actor.status#live":
+                        self = .live
+                    default:
+                        self = .unknown(value)
+                }
+            }
+
+            public func encode(to encoder: Encoder) throws {
+                var container = encoder.singleValueContainer()
+                try container.encode(self.rawValue)
+            }
         }
 
         // Unions
