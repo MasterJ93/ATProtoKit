@@ -751,7 +751,7 @@ extension AppBskyLexicon.Actor {
         enum CodingKeys: String, CodingKey {
             case type = "$type"
             case feedID = "id"
-            case feedType
+            case feedType = "type"
             case value
             case isPinned = "pinned"
         }
@@ -1186,8 +1186,18 @@ extension AppBskyLexicon.Actor {
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/actor/defs.json
     public struct LabelersPreferencesDefinition: Sendable, Codable {
 
+        /// The identifier of the lexicon.
+        ///
+        /// - Warning: The value must not change.
+        public let type: String = "app.bsky.actor.defs#labelersPref"
+
         /// An array of labeler items.
         public let labelers: [LabelersPreferenceItem]
+
+        enum CodingKeys: String, CodingKey {
+            case type = "$type"
+            case labelers
+        }
     }
 
     /// A definition model for a labeler item.
@@ -1217,6 +1227,11 @@ extension AppBskyLexicon.Actor {
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/actor/defs.json
     public struct BskyAppStatePreferencesDefinition: Sendable, Codable {
 
+        /// The identifier of the lexicon.
+        ///
+        /// - Warning: The value must not change.
+        public let type: String = "app.bsky.actor.defs#bskyAppStatePref"
+
         /// An active progress guide. Optional.
         public let activeProgressGuide: String?
 
@@ -1238,6 +1253,13 @@ extension AppBskyLexicon.Actor {
             try container.encodeIfPresent(self.activeProgressGuide, forKey: .activeProgressGuide)
             try container.truncatedEncodeIfPresent(self.queuedNudges, forKey: .queuedNudges, upToCharacterLength: 100, upToArrayLength: 1_000)
             try container.truncatedEncodeIfPresent(self.nuxs, forKey: .nuxs, upToArrayLength: 100)
+        }
+
+        enum CodingKeys: String, CodingKey {
+            case type = "$type"
+            case activeProgressGuide
+            case queuedNudges
+            case nuxs
         }
     }
 
@@ -1330,6 +1352,11 @@ extension AppBskyLexicon.Actor {
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/actor/defs.json
     public struct VerificationPreferenceDefinition: Sendable, Codable {
 
+        /// The identifier of the lexicon.
+        ///
+        /// - Warning: The value must not change.
+        public let type: String = "app.bsky.actor.defs#verificationPrefs"
+
         /// Determines whether the blue badges for both verified and trusted verifier user accounts
         /// are hidden. Defaults to `false`.
         ///
@@ -1338,6 +1365,7 @@ extension AppBskyLexicon.Actor {
         public let willHideBadges: Bool = false
 
         enum CodingKeys: String, CodingKey {
+            case type = "$type"
             case willHideBadges = "hideBadges"
         }
     }
@@ -1353,6 +1381,11 @@ extension AppBskyLexicon.Actor {
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/actor/defs.json
     public struct PostInteractionSettingsPreferenceDefinition: Sendable, Codable {
+
+        /// The identifier of the lexicon.
+        ///
+        /// - Warning: The value must not change.
+        public let type: String = "app.bsky.actor.defs#postInteractionSettingsPref"
 
         /// An array of rules that determines who can reply to the user account's posts.
         ///
@@ -1389,7 +1422,8 @@ extension AppBskyLexicon.Actor {
             try container.truncatedEncode(self.postgateEmbeddingRules, forKey: .postgateEmbeddingRules, upToArrayLength: 5)
         }
 
-        enum CodingKeys: CodingKey {
+        enum CodingKeys: String, CodingKey {
+            case type = "$type"
             case threadgateAllowRules
             case postgateEmbeddingRules
         }
