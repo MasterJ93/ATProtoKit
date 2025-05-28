@@ -23,6 +23,8 @@ public actor APIClientService {
     /// An instance of ``ATRequestExecutor``.
     private var executor: ATRequestExecutor?
 
+    /// A logger for logging HTTP requests and responses.
+    private var logger: SessionDebuggable? = nil
 
     /// The `UserAgent` instance to identify all network requests originating from the `ATProtoKit` sdk
     public static let userAgent: String = {
@@ -99,12 +101,21 @@ public actor APIClientService {
     ///   completion handlers.
     ///   - responseProvider: A provider used for the response of the `URLRequest`. Optional.
     ///   Defaults to `nil`.
-    public func configure(with configuration: URLSessionConfiguration? = .default, delegate: (any URLSessionDelegate)? = nil, delegateQueue: OperationQueue? = nil, responseProvider: ATRequestExecutor? = nil) async {
+    public func configure(with configuration: URLSessionConfiguration? = .default, delegate: (any URLSessionDelegate)? = nil,
+                          delegateQueue: OperationQueue? = nil, responseProvider: ATRequestExecutor? = nil) async {
         self.executor = responseProvider
 
         let config = configuration ?? .default
         config.httpAdditionalHeaders = ["User-Agent": APIClientService.userAgent]
         self.urlSession = URLSession(configuration: config, delegate: delegate, delegateQueue: delegateQueue)
+    }
+
+    /// Injects a logger into `APIClientService`.
+    ///
+    /// - Parameter logger: An instance of ``SessionDebuggable`` to attach to `APIClientService`.
+    /// Optional. Defaults to `nil`.
+    public func setLogger(_ logger: SessionDebuggable? = nil) {
+        self.logger = logger
     }
 
 // MARK: Creating requests -
@@ -255,14 +266,18 @@ public actor APIClientService {
         await ATRecordTypeRegistry.shared.waitUntilRegistryIsRead()
 
         var urlRequest = request
+        var httpBodyData: Data? = nil
 
         if let body = body {
             do {
-                urlRequest.httpBody = try body.toJsonData()
+                httpBodyData = try body.toJsonData()
+                urlRequest.httpBody = httpBodyData
             } catch {
                 throw ATHTTPRequestError.unableToEncodeRequestBody
             }
         }
+
+        self.logger?.logRequest(urlRequest, body: httpBodyData)
 
         do {
             let (data, response): (Data, URLResponse)
@@ -272,7 +287,7 @@ public actor APIClientService {
                 (data, response) = try await urlSession.data(for: urlRequest)
             }
 
-
+            self.logger?.logResponse(response, data: data, error: nil)
 
             if let httpResponse = response as? HTTPURLResponse {
                 switch httpResponse.statusCode {
@@ -280,23 +295,34 @@ public actor APIClientService {
                         return data
                     case 400:
                         let errorResponse = try JSONDecoder().decode(ATHTTPResponseError.self, from: data)
+
+                        self.logger?.logResponse(nil, data: nil, error: errorResponse)
                         throw ATAPIError.badRequest(error: errorResponse)
                     case 401:
                         let wwwAuthenticateHeader = httpResponse.allHeaderFields["WWW-Authenticate"] as? String
                         let errorResponse = try JSONDecoder().decode(ATHTTPResponseError.self, from: data)
 
+                        self.logger?.logResponse(nil, data: nil, error: errorResponse)
                         throw ATAPIError.unauthorized(error: errorResponse, wwwAuthenticate: wwwAuthenticateHeader)
                     case 403:
                         let errorResponse = try JSONDecoder().decode(ATHTTPResponseError.self, from: data)
+
+                        self.logger?.logResponse(nil, data: nil, error: errorResponse)
                         throw ATAPIError.forbidden(error: errorResponse)
                     case 404:
                         let errorResponse = try JSONDecoder().decode(ATHTTPResponseError.self, from: data)
+
+                        self.logger?.logResponse(nil, data: nil, error: errorResponse)
                         throw ATAPIError.notFound(error: errorResponse)
                     case 409:
                         let errorResponse = try JSONDecoder().decode(AppBskyLexicon.Video.JobStatusDefinition.self, from: data)
+
+                        self.logger?.logResponse(nil, data: nil, error: errorResponse)
                         throw ATJobStatusError.failedJob(error: errorResponse)
                     case 413:
                         let errorResponse = try JSONDecoder().decode(ATHTTPResponseError.self, from: data)
+
+                        self.logger?.logResponse(nil, data: nil, error: errorResponse)
                         throw ATAPIError.payloadTooLarge(error: errorResponse)
                     case 429:
                         let retryAfterValue: TimeInterval? = if let retryAfterHeader = httpResponse.allHeaderFields["ratelimit-reset"] as? String {
@@ -306,30 +332,48 @@ public actor APIClientService {
                         }
                         let errorResponse = try JSONDecoder().decode(ATHTTPResponseError.self, from: data)
 
+                        self.logger?.logResponse(nil, data: nil, error: errorResponse)
                         throw ATAPIError.tooManyRequests(error: errorResponse, retryAfter: retryAfterValue)
                     case 500:
                         let errorResponse = try JSONDecoder().decode(ATHTTPResponseError.self, from: data)
+
+                        self.logger?.logResponse(nil, data: nil, error: errorResponse)
                         throw ATAPIError.internalServerError(error: errorResponse)
                     case 501:
                         let errorResponse = try JSONDecoder().decode(ATHTTPResponseError.self, from: data)
+
+                        self.logger?.logResponse(nil, data: nil, error: errorResponse)
                         throw ATAPIError.methodNotImplemented(error: errorResponse)
                     case 502:
-                        throw ATAPIError.badGateway
+                        let error = ATAPIError.badGateway
+
+                        self.logger?.logResponse(nil, data: nil, error: error)
+                        throw error
                     case 503:
-                        throw ATAPIError.serviceUnavailable
+                        let error = ATAPIError.serviceUnavailable
+
+                        self.logger?.logResponse(nil, data: nil, error: error)
+                        throw error
                     case 504:
-                        throw ATAPIError.gatewayTimeout
+                        let error = ATAPIError.gatewayTimeout
+
+                        self.logger?.logResponse(nil, data: nil, error: error)
+                        throw error
                     default:
                         let errorResponse = String(data: data, encoding: .utf8) ?? "No response body"
                         let errorCode = httpResponse.statusCode
                         let httpHeaders = httpResponse.allHeaderFields as? [String: String] ?? [:]
+                        let error = ATAPIError.unknown(error: errorResponse, errorCode: errorCode, errorData: data, httpHeaders: httpHeaders)
 
-                        throw ATAPIError.unknown(error: errorResponse, errorCode: errorCode, errorData: data, httpHeaders: httpHeaders)
+                        self.logger?.logResponse(nil, data: nil, error: error)
+                        throw error
                 }
             } else {
+                self.logger?.logResponse(nil, data: nil, error: URLError(.badServerResponse))
                 throw URLError(.badServerResponse)
             }
         } catch {
+            self.logger?.logResponse(nil, data: nil, error: error)
             throw error
         }
     }
