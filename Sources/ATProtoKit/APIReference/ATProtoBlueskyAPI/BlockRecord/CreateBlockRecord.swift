@@ -37,16 +37,12 @@ extension ATProtoBluesky {
 
         switch blockType {
             case .actorBlock(actorDID: let actorDID):
-                do {
-                    record = AppBskyLexicon.Graph.BlockRecord(
-                        subjectDID: actorDID,
-                        createdAt: createdAt
-                    )
+                record = AppBskyLexicon.Graph.BlockRecord(
+                    subjectDID: actorDID,
+                    createdAt: createdAt
+                )
 
-                    collection = "app.bsky.graph.block"
-                } catch {
-                    throw error
-                }
+                collection = "app.bsky.graph.block"
             case .listBlock(listURI: let listURI):
                 do {
                     let uri = try ATProtoTools().parseURI(listURI)
