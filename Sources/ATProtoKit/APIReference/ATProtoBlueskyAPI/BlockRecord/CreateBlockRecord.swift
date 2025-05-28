@@ -38,8 +38,6 @@ extension ATProtoBluesky {
         switch blockType {
             case .actorBlock(actorDID: let actorDID):
                 do {
-                    _ = try await atProtoKitInstance.resolveDID(actorDID)
-
                     record = AppBskyLexicon.Graph.BlockRecord(
                         subjectDID: actorDID,
                         createdAt: createdAt
