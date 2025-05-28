@@ -30,7 +30,7 @@ extension ATProtoBluesky {
     /// print(originalPost)
     /// ```
     ///
-    /// - Parameter quotePost: The quoted post, as a post record.
+    /// - Parameter quotePostView: The quoted post, as a post record.
     /// - Returns: An embedded record view.
     ///
     /// - Throws: An error if the record was deleted, blocked, or otherwise not found or viewable.

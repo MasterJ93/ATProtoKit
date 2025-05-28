@@ -14,7 +14,7 @@ import Foundation
 /// error states.
 ///
 /// Implement this protocol to log data to the console, a file, an in-app debug UI, or send logs remotely.
-/// For convenience, ATProtoKit provides a default implementation called `ConsoleDebugger`.
+/// For convenience, ATProtoKit provides a default implementation called ``ConsoleDebugger``.
 ///
 /// To use a `SessionDebuggable`-conforming `struct` or `class`, use ``APIClientService/setLogger(_:)`` to
 /// add the logger.
