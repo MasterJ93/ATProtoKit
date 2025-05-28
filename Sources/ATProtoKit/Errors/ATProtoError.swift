@@ -444,3 +444,16 @@ public enum CBORProcessingError: Error {
     /// The CBOR string can't be decoded.
     case cannotDecode
 }
+
+/// An error type related to grabbing the original posts from a quote post.
+public enum GetOriginalPostsFromQuotePostsError: ATProtoError {
+
+    /// The record in the quote post has not been found.
+    case recordNotFound
+
+    /// The user account who owns this post has blocked the viewer from seeing it.
+    case recordBlocked
+
+    /// The original post was detacted from the quote post.
+    case recordDetacted
+}
