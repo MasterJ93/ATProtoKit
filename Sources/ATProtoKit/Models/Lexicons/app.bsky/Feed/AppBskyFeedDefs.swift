@@ -282,6 +282,36 @@ extension AppBskyLexicon.Feed {
 
         /// The context of the thread view. Optional.
         public let threadContext: ThreadContextDefinition?
+
+        public init(from decoder: Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+            self.post = try container.decode(PostViewDefinition.self, forKey: .post)
+            self.threadContext = try container.decodeIfPresent(ThreadContextDefinition.self, forKey: .threadContext)
+
+            if let depthState = decoder.userInfo[.decodingDepthState] as? DecodingDepthState {
+                if depthState.currentDepth < depthState.maxDepth {
+                    depthState.currentDepth += 1
+                    defer { depthState.currentDepth -= 1 }
+
+                    self.parent = try container.decodeIfPresent(ATUnion.ThreadViewPostParentUnion.self, forKey: .parent)
+                    self.replies = try container.decodeIfPresent([ATUnion.ThreadViewPostRepliesUnion].self, forKey: .replies)
+                } else {
+                    self.parent = nil
+                    self.replies = nil
+                    print("ATProtoKit: Maximum decoding depth reached for ThreadViewPost. URI: \(post.uri). Further parent/replies will be nil.")
+                }
+            } else {
+                self.parent = try container.decodeIfPresent(ATUnion.ThreadViewPostParentUnion.self, forKey: .parent)
+                self.replies = try container.decodeIfPresent([ATUnion.ThreadViewPostRepliesUnion].self, forKey: .replies)
+            }
+        }
+
+        enum CodingKeys: String, CodingKey {
+            case post
+            case parent
+            case replies
+            case threadContext
+        }
     }
 
     /// A definition model for a post that may not have been found.
@@ -444,7 +474,6 @@ extension AppBskyLexicon.Feed {
             try container.encodeIfPresent(self.descriptionFacets, forKey: .descriptionFacets)
             try container.encodeIfPresent(self.avatarImageURL, forKey: .avatarImageURL)
 
-            // Assuming `likeCount` is not nil, only encode it if it's 0 or higher
             if let likeCount = self.likeCount, likeCount >= 0 {
                 try container.encode(likeCount, forKey: .likeCount)
             }
@@ -569,8 +598,6 @@ extension AppBskyLexicon.Feed {
         /// The record of the feed's threadgate
         public let record: UnknownType
 
-        // TODO: Make sure this is correct.
-        /// An array of user lists.
         public let lists: [AppBskyLexicon.Graph.ListViewBasicDefinition]
 
         enum CodingKeys: String, CodingKey {
@@ -616,12 +643,6 @@ extension AppBskyLexicon.Feed {
             case feedContext
         }
 
-        // Enums
-        /// A definition model for an interaction event.
-        ///
-        /// - SeeAlso: This is based on the [`app.bsky.feed.defs`][github] lexicon.
-        ///
-        /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/feed/defs.json
         public enum Event: Sendable, Codable {
 
             /// Indicates the feed generator should request less content similar to the feed's item.
