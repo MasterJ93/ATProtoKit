@@ -277,7 +277,9 @@ public actor APIClientService {
             }
         }
 
+        #if DEBUG
         self.logger?.logRequest(urlRequest, body: httpBodyData)
+        #endif
 
         do {
             let (data, response): (Data, URLResponse)
@@ -296,33 +298,45 @@ public actor APIClientService {
                     case 400:
                         let errorResponse = try JSONDecoder().decode(ATHTTPResponseError.self, from: data)
 
+                        #if DEBUG
                         self.logger?.logResponse(nil, data: nil, error: errorResponse)
+                        #endif
                         throw ATAPIError.badRequest(error: errorResponse)
                     case 401:
                         let wwwAuthenticateHeader = httpResponse.allHeaderFields["WWW-Authenticate"] as? String
                         let errorResponse = try JSONDecoder().decode(ATHTTPResponseError.self, from: data)
 
+                        #if DEBUG
                         self.logger?.logResponse(nil, data: nil, error: errorResponse)
+                        #endif
                         throw ATAPIError.unauthorized(error: errorResponse, wwwAuthenticate: wwwAuthenticateHeader)
                     case 403:
                         let errorResponse = try JSONDecoder().decode(ATHTTPResponseError.self, from: data)
 
+                        #if DEBUG
                         self.logger?.logResponse(nil, data: nil, error: errorResponse)
+                        #endif
                         throw ATAPIError.forbidden(error: errorResponse)
                     case 404:
                         let errorResponse = try JSONDecoder().decode(ATHTTPResponseError.self, from: data)
 
+                        #if DEBUG
                         self.logger?.logResponse(nil, data: nil, error: errorResponse)
+                        #endif
                         throw ATAPIError.notFound(error: errorResponse)
                     case 409:
                         let errorResponse = try JSONDecoder().decode(AppBskyLexicon.Video.JobStatusDefinition.self, from: data)
 
+                        #if DEBUG
                         self.logger?.logResponse(nil, data: nil, error: errorResponse)
+                        #endif
                         throw ATJobStatusError.failedJob(error: errorResponse)
                     case 413:
                         let errorResponse = try JSONDecoder().decode(ATHTTPResponseError.self, from: data)
 
+                        #if DEBUG
                         self.logger?.logResponse(nil, data: nil, error: errorResponse)
+                        #endif
                         throw ATAPIError.payloadTooLarge(error: errorResponse)
                     case 429:
                         let retryAfterValue: TimeInterval? = if let retryAfterHeader = httpResponse.allHeaderFields["ratelimit-reset"] as? String {
@@ -332,32 +346,44 @@ public actor APIClientService {
                         }
                         let errorResponse = try JSONDecoder().decode(ATHTTPResponseError.self, from: data)
 
+                        #if DEBUG
                         self.logger?.logResponse(nil, data: nil, error: errorResponse)
+                        #endif
                         throw ATAPIError.tooManyRequests(error: errorResponse, retryAfter: retryAfterValue)
                     case 500:
                         let errorResponse = try JSONDecoder().decode(ATHTTPResponseError.self, from: data)
 
+                        #if DEBUG
                         self.logger?.logResponse(nil, data: nil, error: errorResponse)
+                        #endif
                         throw ATAPIError.internalServerError(error: errorResponse)
                     case 501:
                         let errorResponse = try JSONDecoder().decode(ATHTTPResponseError.self, from: data)
 
+                        #if DEBUG
                         self.logger?.logResponse(nil, data: nil, error: errorResponse)
+                        #endif
                         throw ATAPIError.methodNotImplemented(error: errorResponse)
                     case 502:
                         let error = ATAPIError.badGateway
 
+                        #if DEBUG
                         self.logger?.logResponse(nil, data: nil, error: error)
+                        #endif
                         throw error
                     case 503:
                         let error = ATAPIError.serviceUnavailable
 
+                        #if DEBUG
                         self.logger?.logResponse(nil, data: nil, error: error)
+                        #endif
                         throw error
                     case 504:
                         let error = ATAPIError.gatewayTimeout
 
+                        #if DEBUG
                         self.logger?.logResponse(nil, data: nil, error: error)
+                        #endif
                         throw error
                     default:
                         let errorResponse = String(data: data, encoding: .utf8) ?? "No response body"
@@ -365,15 +391,21 @@ public actor APIClientService {
                         let httpHeaders = httpResponse.allHeaderFields as? [String: String] ?? [:]
                         let error = ATAPIError.unknown(error: errorResponse, errorCode: errorCode, errorData: data, httpHeaders: httpHeaders)
 
+                        #if DEBUG
                         self.logger?.logResponse(nil, data: nil, error: error)
+                        #endif
                         throw error
                 }
             } else {
+                #if DEBUG
                 self.logger?.logResponse(nil, data: nil, error: URLError(.badServerResponse))
+                #endif
                 throw URLError(.badServerResponse)
             }
         } catch {
+            #if DEBUG
             self.logger?.logResponse(nil, data: nil, error: error)
+            #endif
             throw error
         }
     }
