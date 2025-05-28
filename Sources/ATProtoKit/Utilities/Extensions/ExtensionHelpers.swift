@@ -190,3 +190,6 @@ extension URL {
         }
     }
 }
+
+// MARK: - JobStatusDefinition Extension
+extension AppBskyLexicon.Video.JobStatusDefinition: Error {}
