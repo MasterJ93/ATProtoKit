@@ -44,10 +44,10 @@ ATProtoKit is fully open source under the [MIT license](https://github.com/Maste
 
 ## What's New in ATProtoKit
 @Links(visualStyle: detailedGrid) {
+    - <doc:SessionDebuggableArticle>
     - <doc:SessionConfigurationArticle>
     - <doc:0210AuthFlowChange>
     - <doc:getRecordTutorial>
-    - <doc:ATProtoIdentifiers>
 }
 
 ## Topics
