@@ -9,7 +9,7 @@ import Foundation
 
 extension ATProtoBluesky {
 
-    /// Views the feed generator of the trending topic.
+    /// Views the feed generator of the trending topic in Bluesky.
     ///
     /// - Important: This deals with trending topics, which is under the
     /// `app.bsky.unspecced.*` Namespaced Identifier (NSID). Lexicons under this can change at any time

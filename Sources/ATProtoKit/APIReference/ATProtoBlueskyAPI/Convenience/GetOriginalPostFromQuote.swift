@@ -9,7 +9,7 @@ import Foundation
 
 extension ATProtoBluesky {
 
-    /// Extracts the original post from the quote post.
+    /// Extracts the original Bluesky post from the quote post.
     ///
     /// Since quote posts are simply posts that have a record embedded inside them, this method is a
     /// short-handed way of:

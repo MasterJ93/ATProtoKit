@@ -11,7 +11,7 @@
 
 - ``init(atProtoKitInstance:linkbuilder:)``
 
-### Managing Posts
+### Creating Posts
 
 - ``createPostRecord(text:inlineFacets:locales:replyTo:embed:labels:tags:creationDate:recordKey:shouldValidate:swapCommit:)``
 - <doc:ATLinkBuilderProtocol>
@@ -20,42 +20,52 @@
 ### Postgates and Threadgates
 
 - ``createPostgateRecord(postURI:detachedEmbeddingURIs:embeddingRules:shouldValidate:swapCommit:)``
+- ``updatePostgateRecord(postURI:detachedEmbeddingURIs:embeddingRules:)``
 
 - ``createThreadgateRecord(postURI:replyControls:hiddenReplyURIs:shouldValidate:swapCommit:)``
+- ``updateThreadgateRecord(postURI:replyControls:hiddenReplyURIs:)``
 
-### Managing Liking and Unliking
+### Likes
 
 - ``createLikeRecord(_:createdAt:recordKey:shouldValidate:swapCommit:)``
 
-### Managing Reposts
+### Reposts
 
 - ``createRepostRecord(_:createdAt:shouldValidate:)``
 
-### Managing Follows and Blocks
+### Follows and Blocks
 
 - ``createFollowRecord(actorDID:createdAt:recordKey:shouldValidate:swapCommit:)``
 
 - ``createBlockRecord(ofType:createdAt:recordKey:shouldValidate:swapCommit:)``
 
-### Managing Profiles
+### Profiles
 
 - ``createProfileRecord(with:description:avatarImage:bannerImage:labels:joinedViaStarterPack:pinnedPost:recordKey:shouldValidate:swapCommit:)``
 - ``updateProfileRecord(profileURI:replace:)``
 
-### Managing Lists
+### Lists
 
 - ``createListRecord(named:ofType:description:listAvatarImage:labels:creationDate:recordKey:shouldValidate:swapCommit:)``
 - ``updateListRecord(listURI:replace:)``
 
 - ``createListItemRecord(for:subjectDID:recordKey:shouldValidate:swapCommit:)``
 
-<!--### Managing Starter Packs-->
+<!--### Starter Packs-->
 
-<!--### Managing Feed Generators-->
+<!--### Feed Generators-->
 
-<!--### Managing Labeler Services-->
+<!--### Labeler Services-->
 
-### Deleting Bluesky Records
+### Thread Navigation
+
+- ``getOriginalPost(from:)``
+
+### Viewing Feeds
+
+- ``viewTrendingFeed(_:limit:)``
+
+### Record Deletion
 
 - ``deleteRecord(_:)``
 
@@ -65,14 +75,12 @@
 - ``ATProtoBlueskyError``
 - ``ATLinkBuilderError``
 
-### Supporting Methods and Types
+### Utilities and Types
 
 - ``addQuotePostToEmbed(_:)``
 - ``buildExternalEmbed(from:title:description:thumbnailImageURL:session:)``
 - ``buildVideo(_:with:altText:aspectRatio:pollingFrequency:pdsURL:accessToken:)``
 - ``grabURL(from:linkbuilder:)``
-- ``updatePostgateRecord(postURI:detachedEmbeddingURIs:embeddingRules:)``
-- ``updateThreadgateRecord(postURI:replyControls:hiddenReplyURIs:)``
 - ``uploadImages(_:pdsURL:accessToken:)``
 - ``pdsURL``
 - ``Caption``
