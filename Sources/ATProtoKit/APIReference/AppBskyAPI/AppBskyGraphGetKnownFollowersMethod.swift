@@ -1,37 +1,38 @@
 //
-//  GetFeed.swift
+//  AppBskyGraphGetKnownFollowersMethod.swift
 //
 //
-//  Created by Christopher Jr Riley on 2024-03-04.
+//  Created by Christopher Jr Riley on 2024-06-12.
 //
 
 import Foundation
 
 extension ATProtoKit {
 
-    /// Views a given feed generator.
+    /// Identifies mutual followers.
     /// 
-    /// - Note: According to the AT Protocol specifications: "Get a hydrated feed from an actor's
-    /// selected feed generator. Implemented by App View."
-    ///
-    /// - SeeAlso: This is based on the [`app.bsky.feed.getFeed`][github] lexicon.
-    ///
-    /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/feed/getFeed.json
-    ///
+    /// - Note: According to the AT Protocol specifications: "Enumerates accounts which follow a
+    /// specified account (actor) and are followed by the viewer."
+    /// 
+    /// - SeeAlso: This is based on the [`app.bsky.graph.getKnownFollowers`][github] lexicon.
+    /// 
+    /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/graph/getKnownFollowers.json
+    /// 
     /// - Parameters:
-    ///   - uri: The URI of the feed generator.
+    ///   - actor: The AT Identifier of the user account to check for mutual followers.
     ///   - limit: The number of items the list will hold. Optional. Defaults to `50`.
     ///   - cursor: The mark used to indicate the starting point for the next set
     ///   of results. Optional.
-    /// - Returns: A view of the feed generator, with an optional cursor to extend the array.
+    /// - Returns: An array of mutual followers, information aabout the user account itself,
+    /// and an optional cursor for extending the array.
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
-    public func getFeed(
-        by uri: String,
+    public func getKnownFollowers(
+        from actor: String,
         limit: Int? = 50,
         cursor: String? = nil
-    ) async throws -> AppBskyLexicon.Feed.GetFeedOutput {
+    ) async throws -> AppBskyLexicon.Graph.GetKnownFollowersOutput {
         guard let session = try await self.getUserSession(),
               let keychain = sessionConfiguration?.keychainProtocol else {
             throw ATRequestPrepareError.missingActiveSession
@@ -40,13 +41,11 @@ extension ATProtoKit {
         let accessToken = try await keychain.retrieveAccessToken()
         let sessionURL = session.serviceEndpoint.absoluteString
 
-        guard let requestURL = URL(string: "\(sessionURL)/xrpc/app.bsky.feed.getFeed") else {
+        guard let requestURL = URL(string: "\(sessionURL)/xrpc/app.bsky.graph.getKnownFollowers") else {
             throw ATRequestPrepareError.invalidRequestURL
         }
 
         var queryItems = [(String, String)]()
-
-        queryItems.append(("feed", uri))
 
         if let limit {
             let finalLimit = max(1, min(limit, 100))
@@ -74,10 +73,11 @@ extension ATProtoKit {
             )
             let response = try await APIClientService.shared.sendRequest(
                 request,
-                decodeTo: AppBskyLexicon.Feed.GetFeedOutput.self
+                decodeTo: AppBskyLexicon.Graph.GetKnownFollowersOutput.self
             )
 
             return response
+
         } catch {
             throw error
         }

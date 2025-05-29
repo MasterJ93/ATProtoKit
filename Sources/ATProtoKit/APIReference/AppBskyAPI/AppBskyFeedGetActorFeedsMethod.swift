@@ -1,5 +1,5 @@
 //
-//  GetActorLikes.swift
+//  AppBskyFeedGetActorFeedsMethod.swift
 //
 //
 //  Created by Christopher Jr Riley on 2024-03-04.
@@ -9,35 +9,30 @@ import Foundation
 
 extension ATProtoKit {
 
-    /// Retrieves all of the user account's likes.
+    /// Retrieving a feed list by a user.
+    /// 
+    /// - Note: According to the AT Protocol specifications: "Get a list of feeds (feed generator
+    /// records) created by the actor (in the actor's repo)."
     ///
-    /// - Important: This will only be able to get like records for the authenticated account.
-    /// This won't work for any other user account. If you need to grab the like records for user
-    /// accounts other than the authenticated one, use
-    /// ``listRecords(from:collection:limit:cursor:isArrayReverse:)`` instead.
+    /// - SeeAlso: This is based on the [`app.bsky.feed.getActorFeeds`][github] lexicon.
     ///
-    /// - Note: According to the AT Protocol specifications: "Get a list of posts liked by an
-    /// actor. Requires auth, actor must be the requesting account."
-    ///
-    /// - SeeAlso: This is based on the [`app.bsky.feed.getActorLikes`][github] lexicon.
-    ///
-    /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/feed/getActorLikes.json
+    /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/feed/getActorFeeds.json
     ///
     /// - Parameters:
-    ///   - actorDID: The decentralized identifier (DID) of the user account.
-    ///   - limit: The number of items the list will hold. Optional. Defaults to `50`.
+    ///   - actorDID: The decentralized identifier (DID) of the user who created the feeds.
+    ///   - limit: The number of items that can be in the list. Optional. Defaults to `50`.
     ///   - cursor: The mark used to indicate the starting point for the next set
     ///   of results. Optional.
-    /// - Returns: An array of like records from the user account, with an optional cursor
-    /// for extending the array.
+    /// - Returns: An array of feeds created by the user account, as well as an optional cursor
+    /// to extend the array.
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
-    public func getActorLikes(
+    public func getActorFeeds(
         by actorDID: String,
         limit: Int? = 50,
         cursor: String? = nil
-    ) async throws -> AppBskyLexicon.Feed.GetActorLikesOutput {
+    ) async throws -> AppBskyLexicon.Feed.GetActorFeedsOutput {
         guard let session = try await self.getUserSession(),
               let keychain = sessionConfiguration?.keychainProtocol else {
             throw ATRequestPrepareError.missingActiveSession
@@ -46,7 +41,7 @@ extension ATProtoKit {
         let accessToken = try await keychain.retrieveAccessToken()
         let sessionURL = session.serviceEndpoint.absoluteString
 
-        guard let requestURL = URL(string: "\(sessionURL)/xrpc/app.bsky.feed.getActorLikes") else {
+        guard let requestURL = URL(string: "\(sessionURL)/xrpc/app.bsky.feed.getActorFeeds") else {
             throw ATRequestPrepareError.invalidRequestURL
         }
 
@@ -80,7 +75,7 @@ extension ATProtoKit {
             )
             let response = try await APIClientService.shared.sendRequest(
                 request,
-                decodeTo: AppBskyLexicon.Feed.GetActorLikesOutput.self
+                decodeTo: AppBskyLexicon.Feed.GetActorFeedsOutput.self
             )
 
             return response

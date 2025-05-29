@@ -1,36 +1,40 @@
 //
-//  GetGraphBlocks.swift
+//  AppBskyFeedGetLikesMethod.swift
 //
 //
-//  Created by Christopher Jr Riley on 2024-03-08.
+//  Created by Christopher Jr Riley on 2024-03-04.
 //
 
 import Foundation
 
 extension ATProtoKit {
 
-    /// Gets all of the block records from the user account.
+    /// Retrieves like records of a specific subject.
     /// 
-    /// - Note: According to the AT Protocol specifications: "Enumerates which accounts the
-    /// requesting account is currently blocking. Requires auth."
+    /// - Note: According to the AT Protocol specifications: "Get like records which reference a
+    /// subject (by AT-URI and CID)."
     ///
-    /// - SeeAlso: This is based on the [`app.bsky.graph.getBlocks`][github] lexicon.
+    /// - SeeAlso: This is based on the [`app.bsky.feed.getLikes`][github] lexicon.
     ///
-    /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/graph/getBlocks.json
+    /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/feed/getLikes.json
     ///
     /// - Parameters:
-    ///   - limit: The number of items the list will hold. Optional. Defaults to `50`.
+    ///   - recordURI: The URI of the record.
+    ///   - recordCID: The CID hash of the subject for filtering likes.
+    ///   - limit: The number of items that can be in the list. Optional. Defaults to `50`.
     ///   - cursor: The mark used to indicate the starting point for the next set
     ///   of results. Optional.
-    /// - Returns: An array of profiles the user account has blocked, with an optional cursor
-    /// for extending the array.
+    /// - Returns: An array of likes for the specified record, including an optional cursor
+    /// for extending the array, as well as the URI and CID hash of the record itself.
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
-    public func getGraphBlocks(
+    public func getLikes(
+        from recordURI: String,
+        recordCID: String? = nil,
         limit: Int? = 50,
         cursor: String? = nil
-    ) async throws -> AppBskyLexicon.Graph.GetBlocksOutput {
+    ) async throws -> AppBskyLexicon.Feed.GetLikesOutput {
         guard let session = try await self.getUserSession(),
               let keychain = sessionConfiguration?.keychainProtocol else {
             throw ATRequestPrepareError.missingActiveSession
@@ -39,11 +43,17 @@ extension ATProtoKit {
         let accessToken = try await keychain.retrieveAccessToken()
         let sessionURL = session.serviceEndpoint.absoluteString
 
-        guard let requestURL = URL(string: "\(sessionURL)/xrpc/app.bsky.graph.getBlocks") else {
+        guard let requestURL = URL(string: "\(sessionURL)/xrpc/app.bsky.feed.getLikes") else {
             throw ATRequestPrepareError.invalidRequestURL
         }
 
         var queryItems = [(String, String)]()
+
+        queryItems.append(("uri", recordURI))
+
+        if let recordCID {
+            queryItems.append(("cid", recordCID))
+        }
 
         if let limit {
             let finalLimit = max(1, min(limit, 100))
@@ -71,7 +81,7 @@ extension ATProtoKit {
             )
             let response = try await APIClientService.shared.sendRequest(
                 request,
-                decodeTo: AppBskyLexicon.Graph.GetBlocksOutput.self
+                decodeTo: AppBskyLexicon.Feed.GetLikesOutput.self
             )
 
             return response

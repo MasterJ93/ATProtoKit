@@ -1,5 +1,5 @@
 //
-//  GetJobStatus.swift
+//  AppBskyVideoGetJobStatusMethod.swift
 //
 //
 //  Created by Christopher Jr Riley on 2024-09-16.
