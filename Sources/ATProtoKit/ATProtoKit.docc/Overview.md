@@ -139,6 +139,10 @@ ATProtoKit is fully open source under the [MIT license](https://github.com/Maste
 - ``ATProtoTools``
 - <doc:DateFormatting-PropertyWrapper>
 - ``ATFacetParser``
+- <doc:SessionDebuggableArticle>
+- ``SessionDebuggable``
+- ``ConsoleDebugger``
+- ``Truncatable``
 
 @Comment {
     The following should be added:

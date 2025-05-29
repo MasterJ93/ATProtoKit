@@ -22,6 +22,8 @@ import Foundation
 /// ```swift
 /// await APIClientService.shared.setLogger(ConsoleDebugger())
 /// ```
+///
+/// - Note: Learn more about this protocol by reading "<doc:SessionDebuggableArticle>."
 public protocol SessionDebuggable: Sendable {
 
     /// Creates a log immediately before an HTTP request is sent.

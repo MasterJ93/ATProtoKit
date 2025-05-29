@@ -13,3 +13,6 @@
 - ``ATEventStreamError``
 - ``WebSocketFrameMessageError``
 - ``CBORProcessingError``
+- ``ApplSecureKeychainError``
+- ``ATKeychainError``
+- ``GetOriginalPostsFromQuotePostsError``
