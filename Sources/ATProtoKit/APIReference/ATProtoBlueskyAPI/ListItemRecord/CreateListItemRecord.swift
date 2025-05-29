@@ -61,8 +61,6 @@ extension ATProtoBluesky {
         }
 
         do {
-            _ = try await atProtoKitInstance.resolveDID(subjectDID)
-
             let uri = try ATProtoTools().parseURI(listURI)
             guard try await atProtoKitInstance.getRepositoryRecord(
                 from: uri.repository,
@@ -80,7 +78,7 @@ extension ATProtoBluesky {
 
             return try await atProtoKitInstance.createRecord(
                 repositoryDID: session.sessionDID,
-                collection: "app.bsky.graph.listItem",
+                collection: "app.bsky.graph.listitem",
                 recordKey: recordKey ?? nil,
                 shouldValidate: shouldValidate,
                 record: UnknownType.record(listItemRecord),
