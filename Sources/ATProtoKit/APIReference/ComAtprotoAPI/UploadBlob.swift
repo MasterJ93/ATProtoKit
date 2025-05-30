@@ -42,14 +42,14 @@ extension ATProtoKit {
         let mimeType = APIClientService.mimeType(for: filename)
 
         do {
-            var request = await APIClientService.createRequest(
+            var request = apiClientService.createRequest(
                 forRequest: requestURL,
                 andMethod: .post,
                 contentTypeValue: mimeType,
                 authorizationValue: "Bearer \(accessToken)")
             request.httpBody = imageData
 
-            let response = try await APIClientService.shared.sendRequest(request,
+            let response = try await apiClientService.sendRequest(request,
                                                       decodeTo: ComAtprotoLexicon.Repository.BlobContainer.self)
 
             return response

@@ -46,14 +46,14 @@ extension ATProtoKit {
         )
 
         do {
-            let request = await APIClientService.createRequest(
+            let request = apiClientService.createRequest(
                 forRequest: requestURL,
                 andMethod: .post,
                 acceptValue: nil,
                 contentTypeValue: nil,
                 authorizationValue: "Bearer \(accessToken)"
             )
-            let response = try await APIClientService.shared.sendRequest(
+            let response = try await apiClientService.sendRequest(
                 request,
                 withEncodingBody: requestBody,
                 decodeTo: AppBskyLexicon.Feed.SendInteractionsOutput.self

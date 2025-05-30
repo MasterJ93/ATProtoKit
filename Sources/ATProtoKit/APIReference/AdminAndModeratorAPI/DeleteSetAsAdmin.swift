@@ -41,7 +41,7 @@ extension ATProtoAdmin {
         )
 
         do {
-            let request = await APIClientService.createRequest(
+            let request = apiClientService.createRequest(
                 forRequest: requestURL,
                 andMethod: .get,
                 acceptValue: "application/json",
@@ -49,7 +49,7 @@ extension ATProtoAdmin {
                 authorizationValue: "Bearer \(accessToken)"
             )
 
-            let response = try await APIClientService.shared.sendRequest(
+            let response = try await apiClientService.sendRequest(
                 request,
                 withEncodingBody: requestBody,
                 decodeTo: ToolsOzoneLexicon.Set.DeleteSetOutput.self

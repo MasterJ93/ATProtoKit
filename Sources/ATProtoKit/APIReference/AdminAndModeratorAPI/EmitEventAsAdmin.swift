@@ -57,14 +57,14 @@ extension ATProtoAdmin {
         )
 
         do {
-            let request = await APIClientService.createRequest(
+            let request = apiClientService.createRequest(
                 forRequest: requestURL,
                 andMethod: .post,
                 acceptValue: "application/json",
                 contentTypeValue: "application/json",
                 authorizationValue: "Bearer \(accessToken)"
             )
-            let response = try await APIClientService.shared.sendRequest(
+            let response = try await apiClientService.sendRequest(
                 request,
                 withEncodingBody: requestBody,
                 decodeTo: ToolsOzoneLexicon.Moderation.ModerationEventViewDefinition.self
