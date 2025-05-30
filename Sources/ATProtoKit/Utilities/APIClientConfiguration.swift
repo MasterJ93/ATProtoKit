@@ -14,11 +14,16 @@ import Foundation
 /// You can use this type to inject custom dependencies or modify default behaviors. All properties are optional, and reasonable defaults are provided where possible.
 ///
 /// - Parameters:
-///   - urlSessionConfiguration: The configuration object that defines behavior and policies for a URL session. If `nil`, uses `URLSessionConfiguration.default`.
-///   - delegate: The delegate object that handles session-level events, such as authentication challenges or background events. If `nil`, no delegate is used.
-///   - delegateQueue: The operation queue on which the delegate callbacks are dispatched. If `nil`, the system provides a default delegate queue.
-///   - responseProvider: An object responsible for executing requests and providing responses. Useful for dependency injection and testing. If `nil`, the default executor is used.
-///   - logger: An object conforming to `SessionDebuggable` for capturing debug information and logging session activity. If `nil`, logging is disabled.
+///   - configuration: An instance of `URLSessionConfiguration`. Optional.
+///   Defaults to `.default`.
+///   - delegate: A session delegate object that handles requests for authentication and other
+///   session-related events.
+///   - delegateQueue: An operation queue for scheduling the delegate calls and
+///   completion handlers.
+///   - responseProvider: A provider used for the response of the `URLRequest`. Optional.
+///   Defaults to `nil`.
+///   - logger: An instance of ``SessionDebuggable`` to attach to `APIClientService`.
+///   Optional. Defaults to `nil`.    
 ///
 /// - SeeAlso: [URLSessionConfiguration](https://developer.apple.com/documentation/foundation/urlsessionconfiguration), [URLSessionDelegate](https://developer.apple.com/documentation/foundation/urlsessiondelegate)
 public struct APIClientConfiguration: Sendable {
