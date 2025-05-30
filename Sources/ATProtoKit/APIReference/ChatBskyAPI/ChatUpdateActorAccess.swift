@@ -49,7 +49,7 @@ extension ATProtoBlueskyChat {
         )
 
         do {
-            let request = await APIClientService.createRequest(
+            let request = apiClientService.createRequest(
                 forRequest: requestURL,
                 andMethod: .get,
                 acceptValue: nil,
@@ -58,7 +58,7 @@ extension ATProtoBlueskyChat {
                 isRelatedToBskyChat: true
             )
 
-            _ = try await APIClientService.shared.sendRequest(
+            _ = try await apiClientService.sendRequest(
                 request,
                 withEncodingBody: requestBody
             )

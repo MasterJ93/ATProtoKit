@@ -35,10 +35,10 @@ extension ATProtoKit {
         }
 
         do {
-            let request = await APIClientService.createRequest(forRequest: requestURL,
+            let request = apiClientService.createRequest(forRequest: requestURL,
                                                          andMethod: .post,
                                                          authorizationValue: "Bearer \(refreshToken)")
-            let response = try await APIClientService.shared.sendRequest(
+            let response = try await apiClientService.sendRequest(
                 request,
                 decodeTo: ComAtprotoLexicon.Server.RefreshSessionOutput.self
             )

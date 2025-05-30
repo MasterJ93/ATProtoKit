@@ -56,19 +56,19 @@ extension ATProtoKit {
         let queryURL: URL
 
         do {
-            queryURL = try APIClientService.setQueryItems(
+            queryURL = try apiClientService.setQueryItems(
                 for: requestURL,
                 with: queryItems
             )
 
-            let request = await APIClientService.createRequest(
+            let request = apiClientService.createRequest(
                 forRequest: queryURL,
                 andMethod: .get,
                 acceptValue: nil,
                 contentTypeValue: "application/json",
                 authorizationValue: nil
             )
-            let response = try await APIClientService.shared.sendRequest(
+            let response = try await apiClientService.sendRequest(
                 request,
                 decodeTo: AppBskyLexicon.Feed.GetFeedSkeletonOutput.self
             )

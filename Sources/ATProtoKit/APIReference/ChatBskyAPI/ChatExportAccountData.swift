@@ -34,7 +34,7 @@ extension ATProtoBlueskyChat {
 
         do {
             // TODO: Figure out what exactly should be done here.
-            let request = await APIClientService.createRequest(
+            let request = apiClientService.createRequest(
                 forRequest: requestURL,
                 andMethod: .get,
                 acceptValue: "application/jsonl",
@@ -43,7 +43,7 @@ extension ATProtoBlueskyChat {
                 isRelatedToBskyChat: true
             )
 
-            let response = try await APIClientService.shared.sendRequest(request)
+            let response = try await apiClientService.sendRequest(request)
 
             return response
         } catch {

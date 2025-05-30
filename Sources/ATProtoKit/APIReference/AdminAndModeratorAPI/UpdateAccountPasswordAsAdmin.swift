@@ -46,7 +46,7 @@ extension ATProtoAdmin {
         )
 
         do {
-            let request = await APIClientService.createRequest(
+            let request = apiClientService.createRequest(
                 forRequest: requestURL,
                 andMethod: .post,
                 acceptValue: nil,
@@ -54,7 +54,7 @@ extension ATProtoAdmin {
                 authorizationValue: "Bearer \(accessToken)"
             )
 
-            _ = try await APIClientService.shared.sendRequest(
+            _ = try await apiClientService.sendRequest(
                 request,
                 withEncodingBody: requestBody
             )
