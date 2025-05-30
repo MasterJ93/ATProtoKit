@@ -419,10 +419,10 @@ guard session != nil,
     ```swift
     let queryURL: URL
     ```
-    - Inside the `do` block, set the value of `queryURL` to `APIClientService.setQueryItems()`, inserting `requestURL` and `queryItems` respectively. Each parameter, and the closing paranthesis, must have a separate line.
+    - Inside the `do` block, set the value of `queryURL` to `apiClientService.setQueryItems()`, inserting `requestURL` and `queryItems` respectively. Each parameter, and the closing paranthesis, must have a separate line.
     ```swift
     do {
-    queryURL = try APIClientService.setQueryItems(
+    queryURL = try apiClientService.setQueryItems(
                 for: requestURL,
                 with: queryItems
     )
