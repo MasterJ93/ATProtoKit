@@ -27,7 +27,7 @@ import Foundation
 ///
 /// - SeeAlso: [URLSessionConfiguration](https://developer.apple.com/documentation/foundation/urlsessionconfiguration), [URLSessionDelegate](https://developer.apple.com/documentation/foundation/urlsessiondelegate)
 public struct APIClientConfiguration: Sendable {
-    var urlSessionConfiguration: URLSessionConfiguration? = .default
+    var urlSessionConfiguration: URLSessionConfiguration?
     var delegate: (any URLSessionDelegate)? = nil
     var delegateQueue: OperationQueue? = nil
     var responseProvider: ATRequestExecutor? = nil
