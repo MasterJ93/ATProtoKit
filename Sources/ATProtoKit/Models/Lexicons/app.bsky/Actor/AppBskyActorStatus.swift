@@ -121,12 +121,12 @@ extension AppBskyLexicon.Actor {
         public enum EmbedUnion: Sendable, Codable, Equatable, Hashable {
 
             /// An external embed view.
-            case externalView(AppBskyLexicon.Embed.ExternalDefinition.View)
+            case externalView(AppBskyLexicon.Embed.ExternalDefinition)
 
             public init(from decoder: any Decoder) throws {
                 let container = try decoder.singleValueContainer()
 
-                if let value = try? container.decode(AppBskyLexicon.Embed.ExternalDefinition.View.self) {
+                if let value = try? container.decode(AppBskyLexicon.Embed.ExternalDefinition.self) {
                     self = .externalView(value)
                 } else {
                     throw DecodingError.typeMismatch(
