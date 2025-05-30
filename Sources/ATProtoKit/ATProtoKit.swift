@@ -144,11 +144,11 @@ public final class ATProtoKit: Sendable, ATProtoKitConfiguration, ATRecordConfig
     /// Represents an object used for managing sessions.
     public let sessionConfiguration: SessionConfiguration?
 
-    /// A `URLSessionConfiguration` object.
-    public let urlSessionConfiguration: URLSessionConfiguration
-
     /// The URL of the Personal Data Server (PDS).
     public let pdsURL: String
+    
+    /// Instance of the APIClientService to perform requests.
+    public let apiClientService: APIClientService
 
     /// Initializes a new instance of `ATProtoKit`.
     /// 
@@ -182,21 +182,24 @@ public final class ATProtoKit: Sendable, ATProtoKitConfiguration, ATRecordConfig
     @available(*, deprecated, message: "Use the async version of this initializer instead. The non-async initializer will be removed in version 0.30.0.")
     public init(
         sessionConfiguration: SessionConfiguration? = nil,
-        urlSessionConfiguration: URLSessionConfiguration? = nil,
+        apiClientConfiguration: APIClientConfiguration? = nil,
         pdsURL: String = "https://public.api.bsky.app",
         responseProvider: ATRequestExecutor? = nil,
         canUseBlueskyRecords: Bool = true
     ) {
         self.sessionConfiguration = sessionConfiguration
-
-        let finalConfiguration = urlSessionConfiguration ?? sessionConfiguration?.configuration ?? .default
-        self.urlSessionConfiguration = finalConfiguration
         self.pdsURL = pdsURL
+        
+        var finalConfiguration = apiClientConfiguration ?? APIClientConfiguration()
+        finalConfiguration.urlSessionConfiguration = apiClientConfiguration?.urlSessionConfiguration ?? sessionConfiguration?.configuration ?? .default
+
+        self.apiClientService = APIClientService(
+            with: finalConfiguration
+        )
 
         let recordLexicons = self.recordLexicons
 
         Task(priority: .background) {
-            await APIClientService.shared.configure(with: finalConfiguration, responseProvider: responseProvider)
             if canUseBlueskyRecords && !ATRecordTypeRegistry.areBlueskyRecordsRegistered {
                 _ = await ATRecordTypeRegistry.shared.register(blueskyLexiconTypes: recordLexicons)
             }
@@ -226,22 +229,21 @@ public final class ATProtoKit: Sendable, ATProtoKitConfiguration, ATRecordConfig
     ///   Defaults to `true`.
     public init(
         sessionConfiguration: SessionConfiguration? = nil,
-        urlSessionConfiguration: URLSessionConfiguration? = nil,
+        apiClientConfiguration: APIClientConfiguration? = nil,
         pdsURL: String = "https://public.api.bsky.app",
         responseProvider: ATRequestExecutor? = nil,
         canUseBlueskyRecords: Bool = true
     ) async {
         self.sessionConfiguration = sessionConfiguration
-        if let urlSessionConfiguration {
-            self.urlSessionConfiguration = urlSessionConfiguration
-        } else {
-            self.urlSessionConfiguration = sessionConfiguration?.configuration ?? .default
-        }
-
         self.pdsURL = pdsURL
+        
+        var finalConfiguration = apiClientConfiguration ?? APIClientConfiguration()
+        finalConfiguration.urlSessionConfiguration = apiClientConfiguration?.urlSessionConfiguration ?? sessionConfiguration?.configuration ?? .default
 
-        await APIClientService.shared.configure(with: self.urlSessionConfiguration, responseProvider: responseProvider)
-
+        self.apiClientService = APIClientService(
+            with: finalConfiguration
+        )
+        
         if canUseBlueskyRecords && !(ATRecordTypeRegistry.areBlueskyRecordsRegistered) {
             _ = await ATRecordTypeRegistry.shared.register(blueskyLexiconTypes: recordLexicons)
         }
@@ -290,13 +292,6 @@ public final class ATProtoBluesky: Sendable, ATProtoKitConfiguration {
 /// - Important: Please use an App Password in ``ATProtocolConfiguration`` that has chatting
 /// privileges. Failure to do so will result in an error.
 public final class ATProtoBlueskyChat: Sendable, ATProtoKitConfiguration {
-
-    /// An instance of `URLSessionConfiguration`.
-    ///
-    /// - Note: This class will automatically grab the custom `URLSessionConfiguration` instance
-    /// from the `ATProtoKit` instance.
-    public let urlSessionConfiguration: URLSessionConfiguration
-
     /// Represents an object used for managing sessions.
     public let sessionConfiguration: SessionConfiguration?
 
@@ -314,7 +309,6 @@ public final class ATProtoBlueskyChat: Sendable, ATProtoKitConfiguration {
     public init(atProtoKitInstance: ATProtoKit) {
         self.atProtoKitInstance = atProtoKitInstance
         self.sessionConfiguration = atProtoKitInstance.sessionConfiguration
-        self.urlSessionConfiguration = atProtoKitInstance.sessionConfiguration?.configuration ?? .default
         self.pdsURL = "https://api.bsky.chat"
     }
 }
@@ -346,38 +340,13 @@ public final class ATProtoBlueskyChat: Sendable, ATProtoKitConfiguration {
 /// }
 /// ```
 public final class ATProtoAdmin: Sendable, ATProtoKitConfiguration {
-
-    /// An instance of `URLSessionConfiguration`.
-    ///
-    /// Please directly add the the `URLSessionConfiguration` instance onto the property if it's
-    /// a custom value.
-    ///
-    /// ```swift
-    /// let config = ATProtocolConfiguration(handle: "example.bsky.social", appPassword: "hunter2")
-    ///
-    /// Task {
-    ///     do {
-    ///         try await config.authenticate()
-    /// 
-    ///         let atProtoAdmin = ATProtoAdmin(sessionConfiguration: session)
-    ///
-    ///         atProtoAdmin.urlSessionConfiguration = config.configuration
-    ///     } catch {
-    ///         // Error...
-    ///     }
-    /// }
-    /// ```
-    ///
-    /// If a ``SessionConfiguration``-conforming `class` is used and the `configuration` property
-    /// is being used, don't use the `urlSessionConfiguration` parameter. Doing so would override
-    /// the `URLSessionConfiguration` implementation from `SessionConfiguration`.
-    public let urlSessionConfiguration: URLSessionConfiguration
-
     /// Represents an object used for managing sessions.
     public let sessionConfiguration: SessionConfiguration?
 
     /// The URL of the Personal Data Server (PDS).
     public let pdsURL: String
+    
+    public let apiClientService: APIClientService
 
     /// Initializes a new instance of `ATProtoAdmin`.
     ///
@@ -386,11 +355,16 @@ public final class ATProtoAdmin: Sendable, ATProtoKitConfiguration {
     ///   Defaults to the project's `CFBundleIdentifier`.
     ///   - urlSessionConfiguration: A `URLSessionConfiguration` object. Optional.
     ///   Defaults to `nil`.
-    public init(sessionConfiguration: SessionConfiguration? = nil, urlSessionConfiguration: URLSessionConfiguration? = nil) async {
+    public init(sessionConfiguration: SessionConfiguration? = nil, apiClientConfiguration: APIClientConfiguration? = nil) async {
         self.sessionConfiguration = sessionConfiguration
-        self.urlSessionConfiguration = sessionConfiguration?.configuration ?? urlSessionConfiguration ?? .default
+
         self.pdsURL = "https://api.bsky.app"
 
-        await APIClientService.shared.configure(with: self.urlSessionConfiguration)
+        var finalConfiguration = apiClientConfiguration ?? APIClientConfiguration()
+        finalConfiguration.urlSessionConfiguration = apiClientConfiguration?.urlSessionConfiguration ?? sessionConfiguration?.configuration ?? .default
+
+        self.apiClientService = APIClientService(
+            with: finalConfiguration
+        )
     }
 }
