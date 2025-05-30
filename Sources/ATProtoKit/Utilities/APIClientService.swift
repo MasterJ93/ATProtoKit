@@ -289,8 +289,10 @@ public actor APIClientService {
                 (data, response) = try await urlSession.data(for: urlRequest)
             }
 
+            #if DEBUG
             self.logger?.logResponse(response, data: data, error: nil)
-
+            #endif
+            
             if let httpResponse = response as? HTTPURLResponse {
                 switch httpResponse.statusCode {
                     case 200:
