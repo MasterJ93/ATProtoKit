@@ -241,7 +241,7 @@ extension SessionConfiguration {
         // Loop until an error has been thrown, or until the response has been added.
         while response == nil {
             do {
-                response = try await ATProtoKit(urlSessionConfiguration: configuration, pdsURL: self.pdsURL, canUseBlueskyRecords: false)
+                response = try await ATProtoKit(apiClientConfiguration: .init(urlSessionConfiguration: configuration), pdsURL: self.pdsURL, canUseBlueskyRecords: false)
                     .createSession(
                         with: handle,
                         and: password,
@@ -328,7 +328,7 @@ extension SessionConfiguration {
         }
 
         do {
-            let response = try await ATProtoKit(urlSessionConfiguration: configuration, pdsURL: self.pdsURL, canUseBlueskyRecords: false)
+            let response = try await ATProtoKit(apiClientConfiguration: .init(urlSessionConfiguration: configuration), pdsURL: self.pdsURL, canUseBlueskyRecords: false)
                 .getSession(
                 by: accessToken
             )
@@ -409,7 +409,7 @@ extension SessionConfiguration {
         }
 
         do {
-            let response = try await ATProtoKit(urlSessionConfiguration: configuration, pdsURL: self.pdsURL, canUseBlueskyRecords: false)
+            let response = try await ATProtoKit(apiClientConfiguration: .init(urlSessionConfiguration: configuration), pdsURL: self.pdsURL, canUseBlueskyRecords: false)
                 .refreshSession(
                 refreshToken: refreshToken
             )
@@ -483,7 +483,7 @@ extension SessionConfiguration {
         }
 
         do {
-            try await ATProtoKit(urlSessionConfiguration: configuration, pdsURL: self.pdsURL, canUseBlueskyRecords: false)
+            try await ATProtoKit(apiClientConfiguration: .init(urlSessionConfiguration: configuration), pdsURL: self.pdsURL, canUseBlueskyRecords: false)
                 .deleteSession(
                 refreshToken: refreshToken
             )
