@@ -182,7 +182,6 @@ public final class ATProtoKit: Sendable, ATProtoKitConfiguration, ATRecordConfig
         sessionConfiguration: SessionConfiguration? = nil,
         apiClientConfiguration: APIClientConfiguration? = nil,
         pdsURL: String = "https://public.api.bsky.app",
-        responseProvider: ATRequestExecutor? = nil,
         canUseBlueskyRecords: Bool = true
     ) {
         self.sessionConfiguration = sessionConfiguration
@@ -229,7 +228,6 @@ public final class ATProtoKit: Sendable, ATProtoKitConfiguration, ATRecordConfig
         sessionConfiguration: SessionConfiguration? = nil,
         apiClientConfiguration: APIClientConfiguration? = nil,
         pdsURL: String = "https://public.api.bsky.app",
-        responseProvider: ATRequestExecutor? = nil,
         canUseBlueskyRecords: Bool = true
     ) async {
         self.sessionConfiguration = sessionConfiguration
@@ -298,6 +296,11 @@ public final class ATProtoBlueskyChat: Sendable, ATProtoKitConfiguration {
 
     /// Represents the instance of ``ATProtoKit/ATProtoKit``.
     internal let atProtoKitInstance: ATProtoKit
+    
+    /// The instance of ``APIClientService`` in  ``atProtoKitInstance``
+    internal var apiClientService: APIClientService {
+        atProtoKitInstance.apiClientService
+    }
 
     /// Initializes a new instance of `ATProtoBlueskyChat`.
     ///
