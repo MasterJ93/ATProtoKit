@@ -610,7 +610,7 @@ extension ATProtoBluesky {
         if let captions = captions {
             print("Beginning caption collection...")
             for caption in captions {
-                let blobReference = try await ATProtoKit(canUseBlueskyRecords: false).uploadBlob(
+                let blobReference = try await atProtoKitInstance.uploadBlob(
                     pdsURL: pdsURL,
                     accessToken: accessToken,
                     filename: "\(ATProtoTools().generateRandomString())_caption.vtt",
