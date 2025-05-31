@@ -242,6 +242,12 @@ extension AppBskyLexicon.Feed {
         /// The basic details of the user who reposted the post.
         public let by: AppBskyLexicon.Actor.ProfileViewBasicDefinition
 
+        /// The URI of the repost. Optional.
+        public let uri: String?
+
+        /// The CID of the repost. Optional.
+        public let cid: String?
+
         /// The date and time the repost was last indexed.
         public let indexedAt: Date
 
@@ -249,6 +255,8 @@ extension AppBskyLexicon.Feed {
             let container = try decoder.container(keyedBy: CodingKeys.self)
 
             self.by = try container.decode(AppBskyLexicon.Actor.ProfileViewBasicDefinition.self, forKey: .by)
+            self.uri = try container.decodeIfPresent(String.self, forKey: .uri)
+            self.cid = try container.decodeIfPresent(String.self, forKey: .cid)
             self.indexedAt = try container.decodeDate(forKey: .indexedAt)
         }
 
@@ -256,11 +264,15 @@ extension AppBskyLexicon.Feed {
             var container = encoder.container(keyedBy: CodingKeys.self)
 
             try container.encode(self.by, forKey: .by)
+            try container.encodeIfPresent(self.uri, forKey: .uri)
+            try container.encodeIfPresent(self.cid, forKey: .cid)
             try container.encodeDate(self.indexedAt, forKey: .indexedAt)
         }
 
         enum CodingKeys: CodingKey {
             case by
+            case uri
+            case cid
             case indexedAt
         }
     }
