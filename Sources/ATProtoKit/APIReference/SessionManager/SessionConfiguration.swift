@@ -368,7 +368,7 @@ extension SessionConfiguration {
                 pdsURL: self.pdsURL
             )
 
-            _ = await UserSessionRegistry.shared.update(instanceUUID, with: updatedUserSession)
+          _ = await UserSessionRegistry.shared.register(instanceUUID, session: updatedUserSession)
         } catch {
             throw error
         }
@@ -451,7 +451,7 @@ extension SessionConfiguration {
                 pdsURL: self.pdsURL
             )
 
-            _ = await UserSessionRegistry.shared.update(instanceUUID, with: updatedUserSession)
+          _ = await UserSessionRegistry.shared.register(instanceUUID, session: updatedUserSession)
         } catch {
             throw error
         }
