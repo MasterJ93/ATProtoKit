@@ -105,19 +105,21 @@ extension ATProtoKitConfiguration {
 /// The base class that handles the main functionality of the `ATProtoKit` API library.
 ///
 /// For methods which require authentication using an access token, instantiating `ATProtoKit` is
-/// required. To get the access token, an instance of ``ATProtocolConfiguration`` is required:
-/// ```swift
-/// let config = ATProtocolConfiguration(handle: "example.bsky.social", appPassword: "hunter2")
-/// ```
+/// required.
+///
+/// To get the access token, an instance of ``ATProtocolConfiguration`` is required.
 /// ``ATProtocolConfiguration/authenticate(with:password:)`` should then be used to get information
 /// about the session. The result is handed over to the `ATProtoKit`'s instance:
 ///
 /// ```swift
 /// Task {
 ///     do {
-///         try await config.authenticate()
+///         let config = ATProtocolConfiguration()
+///         try await config.authenticate(with: "example.bsky.social", appPassword: "hunter2")
 ///
-///         print("Access token: \(session.accessToken)")
+///        if let keychain = try await atProtoKit.keychainProtocol() {
+///            print("Access Token: \(keychain.retrieveAccessToken())")
+///        }
 ///
 ///         let atProtoKit = await ATProtoKit(sessionConfiguration: config)
 ///     } catch {

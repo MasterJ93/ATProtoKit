@@ -39,7 +39,7 @@ Task {
     print("Starting application...")
 
     do {
-        try await config.authenticate(handle: "lucy.bsky.social", password: "hunter2")
+        try await config.authenticate(with: "lucy.bsky.social", password: "hunter2")
 
         let atProtoKit = await ATProtoKit(sessionConfiguration: config)
         let atProtoBluesky = ATProtoBluesky(atProtoKitInstance: atProtoKit)
@@ -110,14 +110,14 @@ After that, use the `authenticate()` method, and pass in the handle and password
 ```swift
 Task {
     do {
-        try await config.authenticate(handle: "lucy.bsky.social", appPassword: "hunter2")
+        try await config.authenticate(with: "lucy.bsky.social", appPassword: "hunter2")
 
         // The session object is contains in the `ATProtoKit` object:
         let atProtoKit = ATProtoKit(ATProtoKit(sessionConfiguration: config)
 
-        if let session = try await atProtoKit.getUserSession() {
-            print("Result (Service Endpoint): \(session.serviceEndpoint)")
-            print("Result (DID): \(session.sessionDID)")
+        if let keychain = try await atProtoKit.keychainProtocol() {
+            print("Result (Access Token): \(keychain.retrieveAccessToken())")
+            print("Result (Refresh Token): \(keychain.retrieveRefreshToken())")
         }
         
         if let session = try await atProtoKit.getUserSession() {

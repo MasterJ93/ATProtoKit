@@ -26,7 +26,7 @@ Task {
     print("Starting application...")
 
     do {
-        try await config.authenticate(handle: "example.bsky.social", password: "hunter2")
+        try await config.authenticate(with: "example.bsky.social", password: "hunter2")
 
         let atProto = await ATProtoKit(sessionConfiguration: config)
         let atProtoBluesky = ATProtoBluesky(atProtoKitInstance: atProto)
