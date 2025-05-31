@@ -14,6 +14,7 @@ extension ATProtoBluesky {
     /// - Parameters:
     ///   - strongReference: The URI of the record, which contains the `recordURI` and `cidHash`.
     ///   - createdAt: The date and time the like record was created. Defaults to `Date.now`.
+    ///   - via: A strong reference of a repost. Optional. Defaults to `nil`.
     ///   - shouldValidate: Indicates whether the record should be validated. Optional.
     ///   Defaults to `true`.
     /// - Returns: A
@@ -22,6 +23,7 @@ extension ATProtoBluesky {
     public func createRepostRecord(
         _ strongReference: ComAtprotoLexicon.Repository.StrongReference,
         createdAt: Date = Date(),
+        via: ComAtprotoLexicon.Repository.StrongReference? = nil,
         shouldValidate: Bool? = true
     ) async throws -> ComAtprotoLexicon.Repository.StrongReference {
         guard let session = try await atProtoKitInstance.getUserSession() else {
@@ -30,7 +32,8 @@ extension ATProtoBluesky {
 
         let repostRecord = AppBskyLexicon.Feed.RepostRecord(
             subject: strongReference,
-            createdAt: createdAt
+            createdAt: createdAt,
+            via: via
         )
 
         do {

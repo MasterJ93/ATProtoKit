@@ -32,9 +32,13 @@ extension AppBskyLexicon.Feed {
         /// This is the date where the user "reposted" a post.
         public let createdAt: Date
 
-        public init(subject: ComAtprotoLexicon.Repository.StrongReference, createdAt: Date) {
+        /// A strong reference of a referred repost. Optional.
+        public let via: ComAtprotoLexicon.Repository.StrongReference?
+
+        public init(subject: ComAtprotoLexicon.Repository.StrongReference, createdAt: Date, via: ComAtprotoLexicon.Repository.StrongReference?) {
             self.subject = subject
             self.createdAt = createdAt
+            self.via = via
         }
 
         public init(from decoder: Decoder) throws {
@@ -42,6 +46,7 @@ extension AppBskyLexicon.Feed {
 
             self.subject = try container.decode(ComAtprotoLexicon.Repository.StrongReference.self, forKey: .subject)
             self.createdAt = try container.decodeDate(forKey: .createdAt)
+            self.via = try container.decodeIfPresent(ComAtprotoLexicon.Repository.StrongReference.self, forKey: .via)
         }
 
         public func encode(to encoder: Encoder) throws {
@@ -49,12 +54,14 @@ extension AppBskyLexicon.Feed {
 
             try container.encode(self.subject, forKey: .subject)
             try container.encodeDate(self.createdAt, forKey: .createdAt)
+            try container.encodeIfPresent(self.via, forKey: .via)
         }
 
         enum CodingKeys: String, CodingKey {
             case type = "$type"
             case subject
             case createdAt
+            case via
         }
     }
 }

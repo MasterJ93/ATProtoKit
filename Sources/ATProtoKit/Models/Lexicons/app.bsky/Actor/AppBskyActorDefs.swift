@@ -1543,8 +1543,10 @@ extension AppBskyLexicon.Actor {
             /// Provides the raw string value for encoding, decoding, and comparison.
             public var rawValue: String {
                 switch self {
-                    case .live: return "app.bsky.actor.status#live"
-                    case .unknown(let value): return value
+                    case .live:
+                        return "app.bsky.actor.status#live"
+                    case .unknown(let value):
+                        return value
                 }
             }
 
@@ -1555,6 +1557,7 @@ extension AppBskyLexicon.Actor {
             public init(from decoder: Decoder) throws {
                 let container = try decoder.singleValueContainer()
                 let value = try container.decode(String.self)
+
                 switch value {
                     case "app.bsky.actor.status#live":
                         self = .live

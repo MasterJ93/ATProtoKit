@@ -156,7 +156,7 @@ extension AppBskyLexicon.Notification {
 
         // Enums
         /// The kind of notification received.
-        public enum Reason: String, Sendable, Codable {
+        public enum Reason: Sendable, Codable, ExpressibleByStringLiteral {
 
             /// Indicates the notification is about someone liking a post from the user account.
             case like
@@ -180,13 +180,92 @@ extension AppBskyLexicon.Notification {
 
             /// Indicates the notification is about someone joining Bluesky using the
             /// user account's starter pack.
-            case starterpackjoined = "starterpack-joined"
+            case starterpackjoined
 
             /// Indicates the notification is about the user account getting verified.
             case verified
 
             /// Indicates the notification is about the user account getting unverified.
             case unverified
+
+            /// Indicates the notification is about the user account receiving a referred like.
+            case likeViaRepost
+
+            /// Indicates the notification is about the user account receiving a referred repost.
+            case repostViaRepost
+
+            /// An unknown value that the object may contain.
+            case unknown(String)
+
+            public var rawValue: String {
+                switch self {
+                    case .like:
+                        return "like"
+                    case .repost:
+                        return "repost"
+                    case .follow:
+                        return "follow"
+                    case .mention:
+                        return "mention"
+                    case .reply:
+                        return "reply"
+                    case .quote:
+                        return "quote"
+                    case .starterpackjoined:
+                        return "starterpack-joined"
+                    case .verified:
+                        return "verified"
+                    case .unverified:
+                        return "unverified"
+                    case .likeViaRepost:
+                        return "like-via-repost"
+                    case .repostViaRepost:
+                        return "repost-via-repost"
+                    case .unknown(let value):
+                        return value
+                }
+            }
+
+            public init(stringLiteral value: String) {
+                self = .unknown(value)
+            }
+
+            public init(from decoder: Decoder) throws {
+                let container = try decoder.singleValueContainer()
+                let value = try container.decode(String.self)
+
+                switch value {
+                    case "like":
+                        self = .like
+                    case "repost":
+                        self = .repost
+                    case "follow":
+                        self = .follow
+                    case "mention":
+                        self = .mention
+                    case "reply":
+                        self = .reply
+                    case "quote":
+                        self = .quote
+                    case "starterpack-joined":
+                        self = .starterpackjoined
+                    case "verified":
+                        self = .verified
+                    case "unverified":
+                        self = .unverified
+                    case "like-via-repost":
+                        self = .likeViaRepost
+                    case "repost-via-repost":
+                        self = .repostViaRepost
+                    default:
+                        self = .unknown(value)
+                }
+            }
+
+            public func encode(to encoder: Encoder) throws {
+                var container = encoder.singleValueContainer()
+                try container.encode(self.rawValue)
+            }
         }
     }
 }

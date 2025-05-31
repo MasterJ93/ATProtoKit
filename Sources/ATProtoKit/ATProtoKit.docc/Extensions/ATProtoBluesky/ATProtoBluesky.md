@@ -27,11 +27,13 @@
 
 ### Likes
 
-- ``createLikeRecord(_:createdAt:recordKey:shouldValidate:swapCommit:)``
+- ``createLikeRecord(_:createdAt:via:recordKey:shouldValidate:swapCommit:)``
+- ``deleteLikeRecord(_:)``
 
 ### Reposts
 
-- ``createRepostRecord(_:createdAt:shouldValidate:)``
+- ``createRepostRecord(_:createdAt:via:shouldValidate:)``
+- ``deleteRepostRecord(_:)``
 
 ### Follows and Blocks
 

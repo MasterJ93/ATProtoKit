@@ -1828,6 +1828,9 @@ public struct ATUnion {
         /// A strong reference.
         case strongReference(ComAtprotoLexicon.Repository.StrongReference)
 
+        /// A message reference.
+        case messageReference(ChatBskyLexicon.Conversation.MessageReferenceDefinition)
+
         public init(from decoder: Decoder) throws {
             let container = try decoder.singleValueContainer()
 
@@ -1835,6 +1838,8 @@ public struct ATUnion {
                 self = .repositoryReference(value)
             } else if let value = try? container.decode(ComAtprotoLexicon.Repository.StrongReference.self) {
                 self = .strongReference(value)
+            } else if let value = try? container.decode(ChatBskyLexicon.Conversation.MessageReferenceDefinition.self) {
+                self = .messageReference(value)
             } else {
                 throw DecodingError.typeMismatch(
                     SubjectStatusViewSubjectUnion.self, DecodingError.Context(
@@ -1850,6 +1855,8 @@ public struct ATUnion {
                     try container.encode(repositoryReference)
                 case .strongReference(let strongReference):
                     try container.encode(strongReference)
+                case .messageReference(let value):
+                    try container.encode(value)
             }
         }
     }
