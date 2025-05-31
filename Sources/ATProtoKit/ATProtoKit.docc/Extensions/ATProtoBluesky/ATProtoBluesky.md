@@ -29,12 +29,12 @@
 
 ### Managing Liking and Unliking
 
-- ``createLikeRecord(_:createdAt:recordKey:shouldValidate:swapCommit:)``
+- ``createLikeRecord(_:createdAt:via:recordKey:shouldValidate:swapCommit:)``
 - ``deleteLikeRecord(_:)``
 
 ### Managing Reposts
 
-- ``createRepostRecord(_:createdAt:shouldValidate:)``
+- ``createRepostRecord(_:createdAt:via:shouldValidate:)``
 - ``deleteRepostRecord(_:)``
 
 ### Managing Follows and Blocks
