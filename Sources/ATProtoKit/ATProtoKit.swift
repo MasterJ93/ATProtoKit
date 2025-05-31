@@ -177,7 +177,7 @@ public final class ATProtoKit: Sendable, ATProtoKitConfiguration, ATRecordConfig
     ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `https://api.bsky.app`.
     ///   - canUseBlueskyRecords: Indicates whether Bluesky's lexicons should be used.
     ///   Defaults to `true`.
-    @available(*, deprecated, message: "Use the async version of this initializer instead.")
+    @available(*, deprecated, message: "Use the async version of this initializer instead. The non-async initializer will be removed in version 0.30.0.")
     public init(
         sessionConfiguration: SessionConfiguration? = nil,
         urlSessionConfiguration: URLSessionConfiguration? = nil,
