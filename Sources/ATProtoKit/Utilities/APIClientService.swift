@@ -142,7 +142,7 @@ public actor APIClientService {
             request.addValue(acceptValue, forHTTPHeaderField: "Accept")
         }
 
-        if let authorizationValue, await APIClientService.shared.executor == nil {
+        if let authorizationValue {
             request.addValue(authorizationValue, forHTTPHeaderField: "Authorization")
         }
 
