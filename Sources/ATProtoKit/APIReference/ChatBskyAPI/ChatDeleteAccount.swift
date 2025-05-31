@@ -35,7 +35,7 @@ extension ATProtoBlueskyChat {
         let requestBody = ChatBskyLexicon.Actor.DeleteAccount()
 
         do {
-            let request = await APIClientService.createRequest(
+            let request = apiClientService.createRequest(
                 forRequest: requestURL,
                 andMethod: .get,
                 acceptValue: "application/json",
@@ -44,7 +44,7 @@ extension ATProtoBlueskyChat {
                 isRelatedToBskyChat: true
             )
 
-            _ = try await APIClientService.shared.sendRequest(
+            _ = try await apiClientService.sendRequest(
                 request,
                 withEncodingBody: requestBody
             )

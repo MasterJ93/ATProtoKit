@@ -62,12 +62,12 @@ extension ATProtoKit {
 
         while attempts < maxRetryCount {
             do {
-                let queryURL = try APIClientService.setQueryItems(
+                let queryURL = try apiClientService.setQueryItems(
                     for: requestURL,
                     with: queryItems
                 )
 
-                var request = await APIClientService.createRequest(
+                var request = apiClientService.createRequest(
                     forRequest: queryURL,
                     andMethod: .post,
                     acceptValue: "application/json",
@@ -77,7 +77,7 @@ extension ATProtoKit {
                 request.httpBody = requestBody.video
                 print("requestURL: \(requestURL)")
 
-                let response = try await APIClientService.shared.sendRequest(
+                let response = try await apiClientService.sendRequest(
                     request,
                     decodeTo: AppBskyLexicon.Video.JobStatusDefinition.self
                 )

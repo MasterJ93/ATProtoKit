@@ -45,12 +45,12 @@ extension ATProtoBlueskyChat {
         let queryURL: URL
 
         do {
-            queryURL = try APIClientService.setQueryItems(
+            queryURL = try apiClientService.setQueryItems(
                 for: requestURL,
                 with: queryItems
             )
 
-            let request = await APIClientService.createRequest(
+            let request = apiClientService.createRequest(
                 forRequest: queryURL,
                 andMethod: .get,
                 acceptValue: "application/json",
@@ -58,7 +58,7 @@ extension ATProtoBlueskyChat {
                 authorizationValue: "Bearer \(accessToken)",
                 isRelatedToBskyChat: true
             )
-            let response = try await APIClientService.shared.sendRequest(
+            let response = try await apiClientService.sendRequest(
                 request,
                 decodeTo: ChatBskyLexicon.Conversation.GetConversationForMembersOutput.self
             )

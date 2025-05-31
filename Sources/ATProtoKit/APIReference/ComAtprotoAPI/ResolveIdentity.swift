@@ -36,19 +36,19 @@ extension ATProtoKit {
         let queryURL: URL
 
         do {
-            queryURL = try APIClientService.setQueryItems(
+            queryURL = try apiClientService.setQueryItems(
                 for: requestURL,
                 with: queryItems
             )
 
-            let request = await APIClientService.createRequest(
+            let request = apiClientService.createRequest(
                 forRequest: queryURL,
                 andMethod: .post,
                 acceptValue: "application/json",
                 contentTypeValue: nil,
                 authorizationValue: nil
             )
-            let response = try await APIClientService.shared.sendRequest(
+            let response = try await apiClientService.sendRequest(
                 request,
                 decodeTo: ComAtprotoLexicon.Identity.IdentityInfoDefinition.self
             )
