@@ -85,7 +85,7 @@ extension ATProtoBluesky {
                 swapCommit: swapCommit ?? nil
             )
 
-            try await Task.sleep(for: .seconds(0.5))
+            try await Task.sleep(nanoseconds: 500_000_000)
 
             return record
         } catch {
