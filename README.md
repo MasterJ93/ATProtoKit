@@ -148,7 +148,9 @@ For Linux, you need to use Swift 6.0 or later. On Linux, the minimum requirement
 You can also use this project for any programs you make using Swift and running on **Docker**.
 
 > [!WARNING]
-> As of right now, Windows support is theoretically possible, but not has not been tested to work. For other platforms (such as Android), this is also not tested, but should be theoretically possible. While it’s not a goal to make it fully compatible, contributions and feedback on the matter are welcomed.
+> As of right now, Windows support is theoretically possible, but not has not been tested to work. While it’s not a goal to make it fully compatible, contributions and feedback on the matter are welcomed.
+> 
+> Support for WebAssembly and Android are currently not supported, but will be soon.
 
 
 ## Submitting Contributions and Feedback
