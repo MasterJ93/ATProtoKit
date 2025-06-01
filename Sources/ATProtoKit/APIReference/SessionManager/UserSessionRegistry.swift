@@ -48,21 +48,6 @@ public actor UserSessionRegistry {
         return sessions.keys.contains(id)
     }
 
-    /// Updates an existing instance of `UserSession` with a new instance.
-    ///
-    /// - Parameters:
-    ///   - id: The UUID of the existing session to update.
-    ///   - newSession: The updated `UserSession` instance.
-    /// - Returns: `true` if the update succeeded, `false` if the session didn’t exist.
-    public func update(_ id: UUID, with newSession: UserSession) -> Bool {
-        guard sessions.keys.contains(id) else {
-            return false
-        }
-
-        sessions[id] = newSession
-        return true
-    }
-
     /// Removes a specific user session by UUID.
     ///
     /// - Parameter id: The UUID of the session to remove.
