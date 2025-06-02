@@ -38,7 +38,7 @@ extension ATProtoBlueskyChat {
         let accessToken = try await keychain.retrieveAccessToken()
 //        let sessionURL = session.serviceEndpoint.absoluteString
 
-        guard let requestURL = URL(string: "https://api.bsky.chat/xrpc/chat.bsky.moderation.updateActorAccess") else {
+        guard let requestURL = URL(string: "\(APIHostname.bskyChat)/xrpc/chat.bsky.moderation.updateActorAccess") else {
             throw ATRequestPrepareError.invalidRequestURL
         }
 
