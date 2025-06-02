@@ -143,6 +143,7 @@ ATProtoKit is fully open source under the [MIT license](https://github.com/Maste
 - ``SessionDebuggable``
 - ``ConsoleDebugger``
 - ``Truncatable``
+- ``APIHostname``
 
 @Comment {
     The following should be added:
