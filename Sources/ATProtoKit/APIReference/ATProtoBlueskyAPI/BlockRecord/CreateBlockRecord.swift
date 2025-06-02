@@ -66,7 +66,7 @@ extension ATProtoBluesky {
         }
 
         do {
-            return try await atProtoKitInstance.createRecord(
+            let record = try await atProtoKitInstance.createRecord(
                 repositoryDID: session.sessionDID,
                 collection: collection,
                 recordKey: recordKey,
@@ -74,6 +74,10 @@ extension ATProtoBluesky {
                 record: UnknownType.record(record),
                 swapCommit: swapCommit
             )
+
+            try await Task.sleep(nanoseconds: 500_000_000)
+
+            return record
         } catch {
             throw error
         }

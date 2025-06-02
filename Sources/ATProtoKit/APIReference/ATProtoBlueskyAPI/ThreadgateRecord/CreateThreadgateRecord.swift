@@ -99,7 +99,7 @@ extension ATProtoBluesky {
             let recordURI = post.uri
             let recordKey = try ATProtoTools().parseURI(recordURI).recordKey
 
-            return try await atProtoKitInstance.createRecord(
+            let record = try await atProtoKitInstance.createRecord(
                 repositoryDID: session.sessionDID,
                 collection: "app.bsky.feed.threadgate",
                 recordKey: recordKey,
@@ -107,6 +107,10 @@ extension ATProtoBluesky {
                 record: UnknownType.record(threadgateRecord),
                 swapCommit: swapCommit ?? nil
             )
+
+            try await Task.sleep(nanoseconds: 500_000_000)
+
+            return record
         } catch {
             throw error
         }
