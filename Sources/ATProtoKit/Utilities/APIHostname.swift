@@ -17,11 +17,11 @@ public enum APIHostname {
     public static let entryway: String = "https://bsky.social"
 
     /// The hostname for Bluesky's AppView.
-    public static let bskyAppView = "https://public.api.bsky.app"
+    public static let bskyAppView: String = "https://public.api.bsky.app"
 
     /// The hostname for Bluesky's chat API.
-    public static let bskyChat = "https://api.bsky.chat"
+    public static let bskyChat: String = "https://api.bsky.chat"
 
     /// The hostname for the Ozone moderation API.
-    public static let moderation = "https://mod.bsky.app"
+    public static let moderation: String = "https://mod.bsky.app"
 }
