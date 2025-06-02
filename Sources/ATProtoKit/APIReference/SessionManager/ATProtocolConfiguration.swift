@@ -110,6 +110,60 @@ final public class ATProtocolConfiguration: SessionConfiguration {
         self.configuration = configuration
         self.canResolve = canResolve
     }
+#elseif os(Android)
+    /// Initializes a new instance of `ATProtocolConfiguration`.
+    ///
+    /// - Parameters:
+    ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `https://bsky.social`.
+    ///   - keychainProtocol: An instance of ``SecureKeychainProtocol``. Optional. Defaults to the
+    ///   default implementation of ``SecureKeychainProtocol``.
+    ///   - configuration: An instance of `URLSessionConfiguration`. Optional.
+    ///   - canResolve: Indicates whether `ATProtocolConfiguration` will automatically resolve
+    ///   the handle. Defaults to `true`.
+    public init<Keychain: SecureKeychainProtocol>(
+        pdsURL: String = "https://bsky.social",
+        keychainProtocol: Keychain,
+        configuration: URLSessionConfiguration = .default,
+        canResolve: Bool = true
+    ) {
+        self.keychainProtocol = keychainProtocol
+        self.instanceUUID = keychainProtocol.identifier
+        self.pdsURL = pdsURL
+
+        let (stream, continuation) = AsyncStream<String>.makeStream()
+        self.codeStream = stream
+        self.codeContinuation = continuation
+
+        self.configuration = configuration
+        self.canResolve = canResolve
+    }
+#elseif os(Wasm)
+    /// Initializes a new instance of `ATProtocolConfiguration`.
+    ///
+    /// - Parameters:
+    ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `https://bsky.social`.
+    ///   - keychainProtocol: An instance of ``SecureKeychainProtocol``. Optional. Defaults to the
+    ///   default implementation of ``SecureKeychainProtocol``.
+    ///   - configuration: An instance of `URLSessionConfiguration`. Optional.
+    ///   - canResolve: Indicates whether `ATProtocolConfiguration` will automatically resolve
+    ///   the handle. Defaults to `true`.
+    public init<Keychain: SecureKeychainProtocol>(
+        pdsURL: String = "https://bsky.social",
+        keychainProtocol: Keychain,
+        configuration: URLSessionConfiguration = .default,
+        canResolve: Bool = true
+    ) {
+        self.keychainProtocol = keychainProtocol
+        self.instanceUUID = keychainProtocol.identifier
+        self.pdsURL = pdsURL
+
+        let (stream, continuation) = AsyncStream<String>.makeStream()
+        self.codeStream = stream
+        self.codeContinuation = continuation
+
+        self.configuration = configuration
+        self.canResolve = canResolve
+    }
 #else
     /// Initializes a new instance of `ATProtocolConfiguration`.
     ///
