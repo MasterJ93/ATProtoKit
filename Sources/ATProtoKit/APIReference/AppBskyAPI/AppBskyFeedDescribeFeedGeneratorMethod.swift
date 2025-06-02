@@ -34,14 +34,14 @@ extension ATProtoKit {
         }
 
         do {
-            let request = await APIClientService.createRequest(
+            let request = apiClientService.createRequest(
                 forRequest: requestURL,
                 andMethod: .get,
                 acceptValue: nil,
                 contentTypeValue: "application/json",
                 authorizationValue: nil
             )
-            let response = try await APIClientService.shared.sendRequest(
+            let response = try await apiClientService.sendRequest(
                 request,
                 decodeTo: AppBskyLexicon.Feed.DescribeFeedGeneratorOutput.self
             )

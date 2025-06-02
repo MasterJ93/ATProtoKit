@@ -40,7 +40,7 @@ extension ATProtoKit {
         )
 
         do {
-            let request = await APIClientService.createRequest(
+            let request = apiClientService.createRequest(
                 forRequest: requestURL,
                 andMethod: .post,
                 acceptValue: "application/json",
@@ -48,7 +48,7 @@ extension ATProtoKit {
                 authorizationValue: nil
             )
 
-            _ = try await APIClientService.shared.sendRequest(
+            _ = try await apiClientService.sendRequest(
                 request,
                 withEncodingBody: requestBody
             )

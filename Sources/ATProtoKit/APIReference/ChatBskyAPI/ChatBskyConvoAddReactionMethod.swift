@@ -51,7 +51,7 @@ extension ATProtoBlueskyChat {
         )
 
         do {
-            let request = await APIClientService.createRequest(
+            let request = apiClientService.createRequest(
                 forRequest: requestURL,
                 andMethod: .get,
                 acceptValue: "application/json",
@@ -60,7 +60,7 @@ extension ATProtoBlueskyChat {
                 isRelatedToBskyChat: true
             )
 
-            let response = try await APIClientService.shared.sendRequest(
+            let response = try await apiClientService.sendRequest(
                 request,
                 withEncodingBody: requestBody,
                 decodeTo: ChatBskyLexicon.Conversation.AddReactionOutput.self

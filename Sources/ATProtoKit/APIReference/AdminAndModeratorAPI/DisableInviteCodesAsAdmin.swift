@@ -49,13 +49,13 @@ extension ATProtoAdmin {
         )
 
         do {
-            let request = await APIClientService.createRequest(forRequest: requestURL,
+            let request = apiClientService.createRequest(forRequest: requestURL,
                                                          andMethod: .post,
                                                          acceptValue: nil,
                                                          contentTypeValue: "'application/json",
                                                          authorizationValue: "Bearer \(accessToken)")
 
-            _ = try await APIClientService.shared.sendRequest(
+            _ = try await apiClientService.sendRequest(
                 request,
                 withEncodingBody: requestBody
             )

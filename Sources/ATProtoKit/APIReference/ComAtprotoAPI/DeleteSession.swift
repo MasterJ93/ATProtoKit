@@ -38,11 +38,11 @@ extension ATProtoKit {
         }
 
         do {
-            let request = await APIClientService.createRequest(forRequest: requestURL,
+            let request = apiClientService.createRequest(forRequest: requestURL,
                                                          andMethod: .post,
                                                          authorizationValue: "Bearer \(refreshToken)")
 
-            _ = try await APIClientService.shared.sendRequest(
+            _ = try await apiClientService.sendRequest(
                 request
             )
         } catch {

@@ -10,12 +10,11 @@ import Foundation
 @_exported import FoundationNetworking
 #endif
 
-/// An actor which handle the most common HTTP requests for the AT Protocol.
+/// A struct which handle the most common HTTP requests for the AT Protocol.
 ///
 /// This is, effectively, the meat of the "XRPC" portion of the AT Protocol, which creates
-/// the communitcation between the client and the server. Only one instance of this actor can be
-/// active at once.
-public actor APIClientService {
+/// the communitcation between the client and the server.
+public struct APIClientService: Sendable {
 
     /// The `URLSession` instance to be used for network requests.
     public private(set) var urlSession: URLSession = URLSession(configuration: .default)
@@ -81,41 +80,25 @@ public actor APIClientService {
         return userAgent
     }()
 
-    /// A `URLSession` object for use in all HTTP requests.
-    public static let shared = APIClientService()
-
-    /// Creates an instance for use in accepting and returning API requests and
-    /// responses respectively.
-    private init() {}
-
-    /// Configures the singleton instance with a custom `URLSessionConfiguration`.
+    /// Initializes an API client service using the specified configuration.
     ///
-    /// - Note: Both `delegate` and `delegateQueue` are related to `URLSession`.
+    /// Use this initializer to create an API client that accepts and returns API requests and responses,
+    /// with support for custom session configuration, delegate handling, response providers, and logging.
     ///
     /// - Parameters:
-    ///   - configuration: An instance of `URLSessionConfiguration`. Optional.
-    ///   Defaults to `.default`.
-    ///   - delegate: A session delegate object that handles requests for authentication and other
-    ///   session-related events.
-    ///   - delegateQueue: An operation queue for scheduling the delegate calls and
-    ///   completion handlers.
-    ///   - responseProvider: A provider used for the response of the `URLRequest`. Optional.
-    ///   Defaults to `nil`.
-    public func configure(with configuration: URLSessionConfiguration? = .default, delegate: (any URLSessionDelegate)? = nil,
-                          delegateQueue: OperationQueue? = nil, responseProvider: ATRequestExecutor? = nil) async {
-        self.executor = responseProvider
-
-        let config = configuration ?? .default
-        config.httpAdditionalHeaders = ["User-Agent": APIClientService.userAgent]
-        self.urlSession = URLSession(configuration: config, delegate: delegate, delegateQueue: delegateQueue)
-    }
-
-    /// Injects a logger into `APIClientService`.
+    ///   - configuration: The ``APIClientConfiguration`` instance containing all customization options.
+    ///     This includes the session configuration, delegate, delegate queue, response provider, and logger.
+    ///     If `urlSessionConfiguration` is `nil`, `.default` is used. If `responseProvider` or `logger` are
+    ///     `nil`, the defaults are used.
     ///
-    /// - Parameter logger: An instance of ``SessionDebuggable`` to attach to `APIClientService`.
-    /// Optional. Defaults to `nil`.
-    public func setLogger(_ logger: SessionDebuggable? = nil) {
-        self.logger = logger
+    /// - SeeAlso:
+    ///   - ``APIClientConfiguration``
+    public init(with configuration: APIClientConfiguration) {
+        let config = configuration.urlSessionConfiguration ?? .default
+        config.httpAdditionalHeaders = ["User-Agent": APIClientService.userAgent]
+        self.urlSession = URLSession(configuration: config, delegate: configuration.delegate, delegateQueue: configuration.delegateQueue)
+        self.executor = configuration.responseProvider
+        self.logger = configuration.logger
     }
 
 // MARK: Creating requests -
@@ -132,9 +115,9 @@ public actor APIClientService {
     ///   - isRelatedToBskyChat: Indicates whether to use the "atproto-proxy" header for
     ///   the value specific to Bluesky DMs. Optional. Defaults to `false`.
     /// - Returns: A configured `URLRequest` instance.
-    public static func createRequest(forRequest requestURL: URL, andMethod httpMethod: HTTPMethod, acceptValue: String? = "application/json",
+    public func createRequest(forRequest requestURL: URL, andMethod httpMethod: HTTPMethod, acceptValue: String? = "application/json",
                                      contentTypeValue: String? = "application/json", authorizationValue: String? = nil,
-                                     labelersValue: String? = nil, proxyValue: String? = nil, isRelatedToBskyChat: Bool = false) async -> URLRequest {
+                                     labelersValue: String? = nil, proxyValue: String? = nil, isRelatedToBskyChat: Bool = false) -> URLRequest {
         var request = URLRequest(url: requestURL)
         request.httpMethod = httpMethod.rawValue
 
@@ -142,7 +125,7 @@ public actor APIClientService {
             request.addValue(acceptValue, forHTTPHeaderField: "Accept")
         }
 
-        if let authorizationValue, await APIClientService.shared.executor == nil {
+        if let authorizationValue, executor == nil {
             request.addValue(authorizationValue, forHTTPHeaderField: "Authorization")
         }
 
@@ -182,7 +165,7 @@ public actor APIClientService {
     ///   - requestURL: The base URL to append query items to.
     ///   - queryItems: An array of key-value pairs to be set as query items.
     /// - Returns: A new URL with the query items appended.
-    public static func setQueryItems(for requestURL: URL, with queryItems: [(String, String)]) throws -> URL {
+    public func setQueryItems(for requestURL: URL, with queryItems: [(String, String)]) throws -> URL {
         var components = URLComponents(url: requestURL, resolvingAgainstBaseURL: true)
 
         // Map out each URLQueryItem with the key ($0.0) and value ($0.1) of the item.
@@ -289,8 +272,10 @@ public actor APIClientService {
                 (data, response) = try await urlSession.data(for: urlRequest)
             }
 
+            #if DEBUG
             self.logger?.logResponse(response, data: data, error: nil)
-
+            #endif
+            
             if let httpResponse = response as? HTTPURLResponse {
                 switch httpResponse.statusCode {
                     case 200:

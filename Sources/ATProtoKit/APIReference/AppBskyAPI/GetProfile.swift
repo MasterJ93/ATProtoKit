@@ -53,18 +53,18 @@ extension ATProtoKit {
         let queryURL: URL
 
         do {
-            queryURL = try APIClientService.setQueryItems(
+            queryURL = try apiClientService.setQueryItems(
                 for: requestURL,
                 with: queryItems
             )
 
-            let request = await APIClientService.createRequest(
+            let request = apiClientService.createRequest(
                 forRequest: queryURL,
                 andMethod: .get,
                 contentTypeValue: nil,
                 authorizationValue: authorizationValue
             )
-            let result = try await APIClientService.shared.sendRequest(
+            let result = try await apiClientService.sendRequest(
                 request,
                 decodeTo: AppBskyLexicon.Actor.ProfileViewDetailedDefinition.self
             )
