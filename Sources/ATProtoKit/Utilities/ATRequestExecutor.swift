@@ -9,7 +9,7 @@ import Foundation
 
 /// An abstraction for executing network requests and returning raw data and response metadata.
 ///
-/// `ATRequestExecutor` enables decoupling network transport logic from higher-level API clients.
+/// This protocol enables decoupling network transport logic from higher-level API clients.
 /// Implementers of this protocol are responsible for performing a given `URLRequest`
 /// asynchronously, returning the resulting response data and associated metadata. This allows for
 /// swapping networking layers, providing mock tests, or customizing transport strategies without
@@ -24,8 +24,6 @@ public protocol ATRequestExecutor: Sendable {
     ///
     /// - Important: Implementers should not modify the provided `URLRequest`. All mutations must be
     /// performed on a copy if needed.
-    ///
-    /// - Note: The method uses Swift Concurrency (`async`) for suspension and error propagation.
     ///
     /// - Parameter request: The `URLRequest` to execute.
     /// - Returns: A tuple, containing the response body as `Data`, and the `URLResponse` metadata.

@@ -125,7 +125,7 @@ public struct APIClientService: Sendable {
             request.addValue(acceptValue, forHTTPHeaderField: "Accept")
         }
 
-        if let authorizationValue, executor == nil {
+        if let authorizationValue {
             request.addValue(authorizationValue, forHTTPHeaderField: "Authorization")
         }
 
