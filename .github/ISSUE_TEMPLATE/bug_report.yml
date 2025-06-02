@@ -12,6 +12,7 @@ body:
     attributes:
       label: Summary
       description: Summarize the bug in one or two sentences.
+      placeholder: "ATProtoKit fails to decode posts with custom facets, resulting in a decoding error."
     validations:
       required: true
   - type: textarea
@@ -19,6 +20,10 @@ body:
     attributes:
       label: Reproduction Steps
       description: Describe how you were able to get the bug.
+      placeholder: |
+        1. Authenticate with a valid Bluesky account using ATProtoKit v1.2.0 on macOS Sonoma 14.4.
+        2. Fetch a post containing a custom facet (e.g., a tag or link with a custom feature).
+        3. Observe that decoding fails with a `DecodingError.dataCorrupted` error.
     validations:
       required: true
   - type: textarea
@@ -26,6 +31,7 @@ body:
     attributes:
       label: Expected Results
       description: What were you expecting to happen?
+      placeholder: "The post should be successfully decoded and all facets—including custom ones—should be present in the resulting data model."
     validations:
       required: true
   - type: textarea
@@ -33,6 +39,7 @@ body:
     attributes:
       label: Actual Results
       description: What actually happened?
+      placeholder: "A `DecodingError.dataCorrupted` error is thrown, and the post is not decoded. The error appears to be triggered by an unexpected or missing field in the facet JSON."
     validations:
       required: true
   - type: dropdown
@@ -56,6 +63,9 @@ body:
     attributes:
       label: Operating System Version
       description: For each operating system, give us the version numbers. For "Linux," state what distro you're using. For "Other," state what operating system you're using. For "Docker," state what version and Linux distro you're using.
+      placeholder: |
+        macOS Sonoma 14.4
+        Linux (Ubuntu 22.04 LTS)
     validations:
       required: true
   - type: input
@@ -63,10 +73,35 @@ body:
     attributes:
       label: ATProtoKit Version
       description: State what version of ATProtoKit you're using.
+      placeholder: "0.18.0"
     validations:
       required: true
   - type: textarea
     id: additional-context
     attributes:
       label: Additional Context
-      description: Add any other context, screenshots, or videos about the bug here.
+      description: "Add any other context, screenshots, or videos about the bug here. Please note: if the JSON response is too large, please attach it as a .json file in here."
+      placeholder: |
+        This error only occurs for posts that contain custom facets. Standard posts without custom facets decode successfully.
+        
+        Debug logs and a snippet of the failing JSON are attached below:
+        ```json
+        {
+          "facets": [
+            {
+              "type": "app.bsky.richtext.facet",
+              "features": [
+                {
+                  "type": "custom",
+                  "value": "example"
+                }
+              ]
+            }
+          ]
+        }
+        ```
+
+        The error in question:
+        ```
+        DecodingError.dataCorrupted(Swift.DecodingError.Context(codingPath: [...], debugDescription: "Invalid facet type", underlyingError: nil))
+        ```
