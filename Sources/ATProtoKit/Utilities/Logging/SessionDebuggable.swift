@@ -16,11 +16,16 @@ import Foundation
 /// Implement this protocol to log data to the console, a file, an in-app debug UI, or send logs remotely.
 /// For convenience, ATProtoKit provides a default implementation called ``ConsoleDebugger``.
 ///
-/// To use a `SessionDebuggable`-conforming `struct` or `class`, use ``APIClientService/setLogger(_:)`` to
-/// add the logger.
+/// To use a `SessionDebuggable`-conforming `struct` or `class`, create an instance of
+/// ``APIClientConfiguration`` and attach the `struct` or `class` in it. Then insert it into the instance
+/// of `ATProtoKit`.
 ///
 /// ```swift
-/// await APIClientService.shared.setLogger(ConsoleDebugger())
+/// let apiClientConfiguration = APIClientConfiguration(logger: ConsoleDebugger())
+/// let atProtoKit = ATProtoKit(
+///     sessionConfiguration: config,
+///     apiClientConfiguration: apiClientConfiguration
+/// )
 /// ```
 ///
 /// - Note: Learn more about this protocol by reading "<doc:SessionDebuggableArticle>."

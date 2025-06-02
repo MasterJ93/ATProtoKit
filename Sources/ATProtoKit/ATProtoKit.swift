@@ -147,7 +147,7 @@ public final class ATProtoKit: Sendable, ATProtoKitConfiguration, ATRecordConfig
     /// The URL of the Personal Data Server (PDS).
     public let pdsURL: String
     
-    /// Instance of the APIClientService to perform requests.
+    /// An instance of ``APIClientService`` to perform requests.
     public let apiClientService: APIClientService
 
     /// Initializes a new instance of `ATProtoKit`.
@@ -173,9 +173,8 @@ public final class ATProtoKit: Sendable, ATProtoKitConfiguration, ATRecordConfig
     ///
     /// - Parameters:
     ///   - sessionConfiguration: The authenticated user session within the AT Protocol. Optional.
-    ///   - urlSessionConfiguration: A `URLSessionConfiguration` object. Optional.
+    ///   - apiClientConfiguration: An ``APIClientConfiguration`` object. Optional.
     ///   Defaults to `nil`.
-    ///   - responseProvider: An instance of `ATRequestExecutor`. Optional. Defaults to `nil`.
     ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `https://api.bsky.app`.
     ///   - canUseBlueskyRecords: Indicates whether Bluesky's lexicons should be used.
     ///   Defaults to `true`.
@@ -220,9 +219,8 @@ public final class ATProtoKit: Sendable, ATProtoKitConfiguration, ATRecordConfig
     ///
     /// - Parameters:
     ///   - sessionConfiguration: The authenticated user session within the AT Protocol. Optional.
-    ///   - urlSessionConfiguration: A `URLSessionConfiguration` object. Optional.
+    ///   - apiClientConfiguration: An ``APIClientConfiguration`` object. Optional.
     ///   Defaults to `nil`.
-    ///   - responseProvider: An instance of `ATRequestExecutor`. Optional. Defaults to `nil`.
     ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `https://api.bsky.app`.
     ///   - canUseBlueskyRecords: Indicates whether Bluesky's lexicons should be used.
     ///   Defaults to `true`.
@@ -348,7 +346,8 @@ public final class ATProtoAdmin: Sendable, ATProtoKitConfiguration {
 
     /// The URL of the Personal Data Server (PDS).
     public let pdsURL: String
-    
+
+    /// An instance of ``APIClientService`` to perform requests.
     public let apiClientService: APIClientService
 
     /// Initializes a new instance of `ATProtoAdmin`.
@@ -356,8 +355,7 @@ public final class ATProtoAdmin: Sendable, ATProtoKitConfiguration {
     /// - Parameters:
     ///   - sessionConfiguration: The authenticated user session within the AT Protocol. Optional.
     ///   Defaults to the project's `CFBundleIdentifier`.
-    ///   - urlSessionConfiguration: A `URLSessionConfiguration` object. Optional.
-    ///   Defaults to `nil`.
+    ///   - apiClientConfiguration: An ``APIClientConfiguration`` object. Optional. Defaults to `nil`.
     public init(sessionConfiguration: SessionConfiguration? = nil, apiClientConfiguration: APIClientConfiguration? = nil) async {
         self.sessionConfiguration = sessionConfiguration
 
