@@ -40,7 +40,11 @@ ATProtoKit provides a default implementation called ``ConsoleDebugger``. It prin
 To enable it, add this line before making network requests:
 
 ```swift
-await APIClientService.shared.setLogger(ConsoleDebugger())
+let apiClientConfiguration = APIClientConfiguration(logger: ConsoleDebugger())
+let atProtoKit = ATProtoKit(
+    sessionConfiguration: config,
+    apiClientConfiguration: apiClientConfiguration
+)
 ```
 
 - Tip: If you do nothing, debugging is disabled by default (`nil`), so there’s no runtime overhead in production.
@@ -68,5 +72,9 @@ public struct FileDebugger: SessionDebuggable {
 Then, enable your custom debugger:
 
 ```swift
-await APIClientService.shared.setLogger(FileDebugger())
+let apiClientConfiguration = APIClientConfiguration(logger: FileDebugger())
+let atProtoKit = ATProtoKit(
+    sessionConfiguration: config,
+    apiClientConfiguration: apiClientConfiguration
+)
 ```
