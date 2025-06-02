@@ -451,6 +451,9 @@ extension SessionConfiguration {
                 pdsURL: self.pdsURL
             )
 
+          try await keychainProtocol.saveAccessToken(response.accessToken)
+          try await keychainProtocol.saveRefreshToken(response.refreshToken)
+          
           _ = await UserSessionRegistry.shared.register(instanceUUID, session: updatedUserSession)
         } catch {
             throw error
