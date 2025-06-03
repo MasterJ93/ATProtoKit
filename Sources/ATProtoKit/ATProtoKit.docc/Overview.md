@@ -135,13 +135,20 @@ ATProtoKit is fully open source under the [MIT license](https://github.com/Maste
         LepidWatch: Accessing Bluesky’s Firehose Data Stream (Sample Code)
 }
 
+### APIClientService
+
+- ``APIClientService``
+- ``APIClientConfiguration``
+- ``ATRequestExecutor``
+- ``SessionDebuggable``
+- ``ConsoleDebugger``
+- <doc:SessionDebuggableArticle>
+
+
 ### Utilities
 - ``ATProtoTools``
 - <doc:DateFormatting-PropertyWrapper>
 - ``ATFacetParser``
-- <doc:SessionDebuggableArticle>
-- ``SessionDebuggable``
-- ``ConsoleDebugger``
 - ``Truncatable``
 - ``APIHostname``
 
