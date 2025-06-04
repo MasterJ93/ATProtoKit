@@ -35,29 +35,12 @@ extension ATProtoKit {
     public func getProfile(
         for actor: String
     ) async throws -> AppBskyLexicon.Actor.ProfileViewDetailedDefinition {
-        let authorizationValue = await prepareAuthorizationValue()
-
-        guard self.pdsURL != "" else {
-            throw ATRequestPrepareError.emptyPDSURL
-        }
-
-        guard let sessionURL = authorizationValue != nil ? try await self.getUserSession()?.serviceEndpoint.absoluteString : self.pdsURL,
-              let requestURL = URL(string: "\(sessionURL)/xrpc/app.bsky.actor.getProfile") else {
-            throw ATRequestPrepareError.invalidRequestURL
-        }
-
-        let queryItems = [
-            ("actor", actor)
-        ]
-
-        let queryURL: URL
-
         do {
-            queryURL = try apiClientService.setQueryItems(
-                for: requestURL,
-                with: queryItems
-            )
-
+            let (authorizationValue, sessionURL) = try await prepareAuthorization(rquiresAuth: false)
+            
+            let queryURL = try await prepareRequest(sessionURL: sessionURL, endpoint: "/xrpc/app.bsky.actor.getProfile") { queryItems in
+                addActor(actor, to: &queryItems)
+            }
             let request = apiClientService.createRequest(
                 forRequest: queryURL,
                 andMethod: .get,
@@ -68,7 +51,7 @@ extension ATProtoKit {
                 request,
                 decodeTo: AppBskyLexicon.Actor.ProfileViewDetailedDefinition.self
             )
-
+            
             return result
         } catch {
             throw error

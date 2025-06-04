@@ -44,53 +44,23 @@ extension ATProtoKit {
         postFilter: AppBskyLexicon.Feed.GetAuthorFeed.Filter? = .postsWithReplies,
         shouldIncludePins: Bool? = false
     ) async throws -> AppBskyLexicon.Feed.GetAuthorFeedOutput {
-        guard let session = try await self.getUserSession(),
-              let keychain = sessionConfiguration?.keychainProtocol else {
-            throw ATRequestPrepareError.missingActiveSession
-        }
-
-        let accessToken = try await keychain.retrieveAccessToken()
-        let sessionURL = session.serviceEndpoint.absoluteString
-
-        guard let requestURL = URL(string: "\(sessionURL)/xrpc/app.bsky.feed.getAuthorFeed") else {
-            throw ATRequestPrepareError.invalidRequestURL
-        }
-
-        var queryItems = [(String, String)]()
-
-        queryItems.append(("actor", actorDID))
-
-        if let limit {
-            let finalLimit = max(1, min(limit, 100))
-            queryItems.append(("limit", "\(finalLimit)"))
-        }
-
-        if let cursor {
-            queryItems.append(("cursor", cursor))
-        }
-
-        if let postFilter {
-            queryItems.append(("filter", "\(postFilter.rawValue)"))
-        }
-
-        if let shouldIncludePins {
-            queryItems.append(("includePins", "\(shouldIncludePins)"))
-        }
-
-        let queryURL: URL
-
         do {
-            queryURL = try apiClientService.setQueryItems(
-                for: requestURL,
-                with: queryItems
-            )
-
+            let (authorizationValue, sessionURL) = try await prepareAuthorization(rquiresAuth: false)
+            
+            let queryURL = try await prepareRequest(sessionURL: sessionURL, endpoint: "/xrpc/app.bsky.feed.getAuthorFeed") { queryItems in
+                addQueryItem("actor", value: actorDID, to: &queryItems)
+                addLimit(limit, max: 100, to: &queryItems)
+                addCursor(cursor, to: &queryItems)
+                addQueryItem("filter", value: postFilter?.rawValue, to: &queryItems)
+                addQueryItem("includePins", value: shouldIncludePins, to: &queryItems)
+            }
+            
             let request = apiClientService.createRequest(
                 forRequest: queryURL,
                 andMethod: .get,
                 acceptValue: "application/json",
                 contentTypeValue: nil,
-                authorizationValue: "Bearer \(accessToken)"
+                authorizationValue: authorizationValue
             )
             let response = try await apiClientService.sendRequest(
                 request,

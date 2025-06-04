@@ -30,38 +30,19 @@ extension ATProtoKit {
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func getPosts(_ uris: [String]) async throws -> AppBskyLexicon.Feed.GetPostsOutput {
-        guard let session = try await self.getUserSession(),
-              let keychain = sessionConfiguration?.keychainProtocol else {
-            throw ATRequestPrepareError.missingActiveSession
-        }
-
-        let accessToken = try await keychain.retrieveAccessToken()
-        let sessionURL = session.serviceEndpoint.absoluteString
-
-        guard let requestURL = URL(string: "\(sessionURL)/xrpc/app.bsky.feed.getPosts") else {
-            throw ATRequestPrepareError.invalidRequestURL
-        }
-
-        var queryItems = [(String, String)]()
-
-        // Cap the array to 25 items.
-        let cappedURIArray = uris.prefix(25)
-        queryItems += cappedURIArray.map { ("uris", $0) }
-
-        let queryURL: URL
-
         do {
-            queryURL = try apiClientService.setQueryItems(
-                for: requestURL,
-                with: queryItems
-            )
+            let (authorizationValue, sessionURL) = try await prepareAuthorization(rquiresAuth: false)
+            
+            let queryURL = try await prepareRequest(sessionURL: sessionURL, endpoint: "/xrpc/app.bsky.feed.getPosts") { queryItems in
+                queryItems += uris.prefix(25).map { ("uris", $0) }
+            }
 
             let request = apiClientService.createRequest(
                 forRequest: queryURL,
                 andMethod: .get,
                 acceptValue: "application/json",
                 contentTypeValue: nil,
-                authorizationValue: "Bearer \(accessToken)"
+                authorizationValue: authorizationValue
             )
             let response = try await apiClientService.sendRequest(
                 request,
