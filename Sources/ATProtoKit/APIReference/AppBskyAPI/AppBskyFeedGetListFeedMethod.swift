@@ -35,10 +35,6 @@ extension ATProtoKit {
         cursor: String? = nil,
         accessToken: String? = nil
     ) async throws -> AppBskyLexicon.Feed.GetListFeedOutput {
-        guard self.pdsURL != "" else {
-            throw ATRequestPrepareError.emptyPDSURL
-        }
-
         guard let requestURL = URL(string: "\(self.pdsURL)/xrpc/app.bsky.feed.getListFeed") else {
             throw ATRequestPrepareError.invalidRequestURL
         }

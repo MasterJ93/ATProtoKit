@@ -38,9 +38,11 @@ extension ATProtoKit {
         }
 
         do {
-            let request = apiClientService.createRequest(forRequest: requestURL,
-                                                         andMethod: .post,
-                                                         authorizationValue: "Bearer \(refreshToken)")
+            let request = apiClientService.createRequest(
+                forRequest: requestURL,
+                andMethod: .post,
+                authorizationValue: "Bearer \(refreshToken)"
+            )
 
             _ = try await apiClientService.sendRequest(
                 request

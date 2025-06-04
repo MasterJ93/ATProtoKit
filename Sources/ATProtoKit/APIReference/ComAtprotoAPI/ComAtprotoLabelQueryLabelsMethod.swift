@@ -41,10 +41,6 @@ extension ATProtoKit {
     ) async throws -> ComAtprotoLexicon.Label.QueryLabelsOutput {
         let authorizationValue = await prepareAuthorizationValue()
 
-        guard self.pdsURL != "" else {
-            throw ATRequestPrepareError.emptyPDSURL
-        }
-
         guard let sessionURL = authorizationValue != nil ? try await self.getUserSession()?.serviceEndpoint.absoluteString : self.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.label.queryLabels") else {
             throw ATRequestPrepareError.missingActiveSession

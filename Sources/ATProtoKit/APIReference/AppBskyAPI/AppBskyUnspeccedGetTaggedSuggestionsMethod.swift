@@ -26,10 +26,6 @@ extension ATProtoKit {
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func getTaggedSuggestions() async throws -> AppBskyLexicon.Unspecced.GetTaggedSuggestionsOutput {
-        guard self.pdsURL != "" else {
-            throw ATRequestPrepareError.emptyPDSURL
-        }
-
         guard let requestURL = URL(string: "\(self.pdsURL)/xrpc/app.bsky.unspecced.getTaggedSuggestions") else {
             throw ATRequestPrepareError.invalidRequestURL
         }

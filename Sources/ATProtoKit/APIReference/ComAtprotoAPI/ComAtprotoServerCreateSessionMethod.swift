@@ -38,10 +38,6 @@ extension ATProtoKit {
         and password: String,
         authenticationFactorToken: String? = nil
     ) async throws -> ComAtprotoLexicon.Server.CreateSessionOutput {
-        guard self.pdsURL != "" else {
-            throw ATRequestPrepareError.emptyPDSURL
-        }
-
         guard let requestURL = URL(string: "\(self.pdsURL)/xrpc/com.atproto.server.createSession") else {
             throw ATRequestPrepareError.invalidRequestURL
         }

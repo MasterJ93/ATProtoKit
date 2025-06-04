@@ -47,10 +47,6 @@ extension ATProtoKit {
     ) async throws -> AppBskyLexicon.Actor.SearchActorsTypeaheadOutput {
         let authorizationValue = await prepareAuthorizationValue()
 
-        guard self.pdsURL != "" else {
-            throw ATRequestPrepareError.emptyPDSURL
-        }
-
         guard let sessionURL = authorizationValue != nil ? try await self.getUserSession()?.serviceEndpoint.absoluteString : self.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/app.bsky.actor.searchActorsTypeahead") else {
             throw ATRequestPrepareError.invalidRequestURL
