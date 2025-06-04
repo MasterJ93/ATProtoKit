@@ -25,10 +25,6 @@ extension ATProtoKit {
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func describeFeedGenerator() async throws -> AppBskyLexicon.Feed.DescribeFeedGeneratorOutput {
-        guard self.pdsURL != "" else {
-            throw ATRequestPrepareError.emptyPDSURL
-        }
-
         guard let requestURL = URL(string: "\(self.pdsURL)/app.bsky.feed.describeFeedGenerator") else {
             throw ATRequestPrepareError.invalidRequestURL
         }

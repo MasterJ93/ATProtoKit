@@ -29,10 +29,6 @@ extension ATProtoKit {
         labelerDIDs: [String],
         isDetailed: Bool? = nil
     ) async throws -> AppBskyLexicon.Labeler.GetServicesOutput {
-        guard self.pdsURL != "" else {
-            throw ATRequestPrepareError.emptyPDSURL
-        }
-
         guard let requestURL = URL(string: "\(self.pdsURL)/xrpc/app.bsky.labeler.getServices") else {
             throw ATRequestPrepareError.invalidFormat
         }

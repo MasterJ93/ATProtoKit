@@ -38,15 +38,7 @@ extension ATProtoKit {
         limit: Int? = 25,
         cursor: String? = nil
     ) async throws -> AppBskyLexicon.Actor.SearchActorsOutput {
-        guard let session = try await self.getUserSession(),
-              let keychain = sessionConfiguration?.keychainProtocol else {
-            throw ATRequestPrepareError.missingActiveSession
-        }
-
-        let accessToken = try await keychain.retrieveAccessToken()
-        let sessionURL = session.serviceEndpoint.absoluteString
-
-        guard let requestURL = URL(string: "\(sessionURL)/xrpc/app.bsky.actor.searchActors") else {
+        guard let requestURL = URL(string: "\(self.pdsURL)/xrpc/app.bsky.actor.searchActors") else {
             throw ATRequestPrepareError.invalidRequestURL
         }
 
@@ -73,8 +65,7 @@ extension ATProtoKit {
             let request = apiClientService.createRequest(
                 forRequest: queryURL,
                 andMethod: .get,
-                acceptValue: "application/json",
-                authorizationValue: "Bearer \(accessToken)"
+                acceptValue: "application/json"
             )
             let response = try await apiClientService.sendRequest(
                 request,

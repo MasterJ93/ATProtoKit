@@ -38,10 +38,6 @@ extension ATProtoKit {
     ) async throws -> AppBskyLexicon.Actor.GetProfilesOutput {
         let authorizationValue = await prepareAuthorizationValue()
 
-        guard self.pdsURL != "" else {
-            throw ATRequestPrepareError.emptyPDSURL
-        }
-
         guard let sessionURL = authorizationValue != nil ? try await self.getUserSession()?.serviceEndpoint.absoluteString : self.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/app.bsky.actor.getProfiles") else {
             throw ATRequestPrepareError.invalidRequestURL

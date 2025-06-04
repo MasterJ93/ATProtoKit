@@ -35,10 +35,6 @@ extension ATProtoKit {
         limit: Int? = 25,
         cursor: String? = nil
     ) async throws -> AppBskyLexicon.Unspecced.SearchStarterPackSkeletonOutput {
-        guard self.pdsURL != "" else {
-            throw ATRequestPrepareError.emptyPDSURL
-        }
-
         guard let requestURL = URL(string: "\(self.pdsURL)/xrpc/app.bsky.unspecced.searchStarterPacksSkeleton") else {
             throw ATRequestPrepareError.invalidRequestURL
         }

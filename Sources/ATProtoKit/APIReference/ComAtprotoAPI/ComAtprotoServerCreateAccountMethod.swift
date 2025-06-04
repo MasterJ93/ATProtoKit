@@ -55,10 +55,6 @@ extension ATProtoKit {
         recoveryKey: String? = nil,
         plcOperation: UnknownType? = nil
     ) async throws -> ComAtprotoLexicon.Server.CreateAccountOutput {
-        guard self.pdsURL != "" else {
-            throw ATRequestPrepareError.emptyPDSURL
-        }
-
         guard let requestURL = URL(string: "\(self.pdsURL)/xrpc/com.atproto.server.createAccount") else {
             throw ATRequestPrepareError.invalidRequestURL
         }

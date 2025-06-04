@@ -175,19 +175,19 @@ public final class ATProtoKit: Sendable, ATProtoKitConfiguration, ATRecordConfig
     ///   - sessionConfiguration: The authenticated user session within the AT Protocol. Optional.
     ///   - apiClientConfiguration: An ``APIClientConfiguration`` object. Optional.
     ///   Defaults to `nil`.
-    ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `https://api.bsky.app`.
+    ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to ``APIHostname/bskyAppView``.
     ///   - canUseBlueskyRecords: Indicates whether Bluesky's lexicons should be used.
     ///   Defaults to `true`.
     @available(*, deprecated, message: "Use the async version of this initializer instead. The non-async initializer will be removed in version 0.30.0.")
     public init(
         sessionConfiguration: SessionConfiguration? = nil,
         apiClientConfiguration: APIClientConfiguration? = nil,
-        pdsURL: String = "https://public.api.bsky.app",
+        pdsURL: String = APIHostname.bskyAppView,
         canUseBlueskyRecords: Bool = true
     ) {
         self.sessionConfiguration = sessionConfiguration
-        self.pdsURL = pdsURL
-        
+        self.pdsURL = !pdsURL.isEmpty ? pdsURL : APIHostname.bskyAppView
+
         var finalConfiguration = apiClientConfiguration ?? APIClientConfiguration()
         finalConfiguration.urlSessionConfiguration = apiClientConfiguration?.urlSessionConfiguration ?? sessionConfiguration?.configuration ?? .default
 
@@ -221,18 +221,18 @@ public final class ATProtoKit: Sendable, ATProtoKitConfiguration, ATRecordConfig
     ///   - sessionConfiguration: The authenticated user session within the AT Protocol. Optional.
     ///   - apiClientConfiguration: An ``APIClientConfiguration`` object. Optional.
     ///   Defaults to `nil`.
-    ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `https://api.bsky.app`.
+    ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to ``APIHostname/bskyAppView``.
     ///   - canUseBlueskyRecords: Indicates whether Bluesky's lexicons should be used.
     ///   Defaults to `true`.
     public init(
         sessionConfiguration: SessionConfiguration? = nil,
         apiClientConfiguration: APIClientConfiguration? = nil,
-        pdsURL: String = "https://public.api.bsky.app",
+        pdsURL: String = APIHostname.bskyAppView,
         canUseBlueskyRecords: Bool = true
     ) async {
         self.sessionConfiguration = sessionConfiguration
-        self.pdsURL = pdsURL
-        
+        self.pdsURL = !pdsURL.isEmpty ? pdsURL : APIHostname.bskyAppView
+
         var finalConfiguration = apiClientConfiguration ?? APIClientConfiguration()
         finalConfiguration.urlSessionConfiguration = apiClientConfiguration?.urlSessionConfiguration ?? sessionConfiguration?.configuration ?? .default
 
