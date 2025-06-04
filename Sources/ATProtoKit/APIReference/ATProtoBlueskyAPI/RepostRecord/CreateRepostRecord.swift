@@ -9,7 +9,9 @@ import Foundation
 
 extension ATProtoBluesky {
 
-    /// Create a repost record to a user's post.
+    /// A convenience method to create a repost record to the user account in Bluesky.
+    ///
+    /// This record is loosely linked to the post that the user account is reposting.
     ///
     /// - Parameters:
     ///   - strongReference: The URI of the record, which contains the `recordURI` and `cidHash`.

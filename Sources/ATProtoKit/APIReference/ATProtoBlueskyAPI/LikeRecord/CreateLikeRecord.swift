@@ -9,7 +9,9 @@ import Foundation
 
 extension ATProtoBluesky {
 
-    /// Creates a like record to a user's post.
+    /// A convenience method to create a like record to the user account in Bluesky.
+    ///
+    /// This record is loosely linked to the post that the user account is liking.
     ///
     /// - Parameters:
     ///   - strongReference: The URI of the record, which contains the `recordURI` and `cidHash`.
