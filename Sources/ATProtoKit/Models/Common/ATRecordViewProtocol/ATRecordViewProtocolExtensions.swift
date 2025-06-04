@@ -51,7 +51,8 @@ extension AppBskyLexicon.Graph.StarterPackViewDefinition: ATRecordViewProtocol {
     }
 }
 
-extension AppBskyLexicon.Feed.FeedViewPostDefinition: ATRecordViewProtocol {
+// MARK: Identifiable-only Extensions -
+extension AppBskyLexicon.Feed.FeedViewPostDefinition: Identifiable {
 
     public var id: String {
         return self.post.uri
@@ -65,7 +66,6 @@ extension AppBskyLexicon.Feed.FeedViewPostDefinition: ATRecordViewProtocol {
     }
 }
 
-// MARK: Identifiable-only Extensions -
 extension AppBskyLexicon.Actor.ProfileViewBasicDefinition: Identifiable {
     public var id: String {
         return "\(self.actorDID)"
