@@ -51,6 +51,10 @@
 
 - ``createListItemRecord(for:subjectDID:recordKey:shouldValidate:swapCommit:)``
 
+### Status
+
+- ``createStatusRecord(_:embed:durationMinutes:shouldValidate:)``
+
 <!--### Starter Packs-->
 
 <!--### Feed Generators-->
