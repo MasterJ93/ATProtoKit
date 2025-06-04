@@ -369,3 +369,94 @@ public final class ATProtoAdmin: Sendable, ATProtoKitConfiguration {
         )
     }
 }
+
+extension ATProtoKit {
+    /// Prepares the necessary authorization credentials and session URL for making requests.
+    ///
+    /// This method checks whether authorization is required and returns the appropriate access token and session URL.
+    /// - If `rquiresAuth` is `true`, it retrieves the current user session and access token from the keychain.
+    /// - If `rquiresAuth` is `false`, it attempts to prepare a fallback authorization value and uses the `pdsURL` if available.
+    ///
+    /// - Parameter rquiresAuth: A Boolean value indicating whether authorization is required for the request.
+    /// - Returns: A tuple containing an optional access token and the session URL as a `String`.
+    /// - Throws:
+    ///   - `ATRequestPrepareError.missingActiveSession` if an active session or keychain is missing when authorization is required.
+    ///   - `ATRequestPrepareError.emptyPDSURL` if the `pdsURL` is empty when authorization is not required.
+    ///   - `ATRequestPrepareError.invalidRequestURL` if a valid request URL cannot be constructed.
+    /// - Note: This method is asynchronous and may perform network or keychain access.
+    /// - Important: Ensure that `sessionConfiguration` and `pdsURL` are properly set before calling this method.
+    ///
+    /// Example usage:
+    /// ```swift
+    /// let (accessToken, sessionURL) = try await kit.prepareAuthorization(rquiresAuth: true)
+    /// ```
+    public func prepareAuthorization(rquiresAuth: Bool) async throws -> (accessToken: String?, sessionURL: String) {
+        if rquiresAuth {
+            guard let session = try await self.getUserSession(),
+                  let keychain = sessionConfiguration?.keychainProtocol else {
+                throw ATRequestPrepareError.missingActiveSession
+            }
+
+            let accessToken = try await keychain.retrieveAccessToken()
+            let sessionURL = session.serviceEndpoint.absoluteString
+
+            return (accessToken, sessionURL)
+        } else {
+            let authorizationValue = await prepareAuthorizationValue()
+
+            guard self.pdsURL != "" else {
+                throw ATRequestPrepareError.emptyPDSURL
+            }
+
+            guard let sessionURL = authorizationValue != nil ? try await self.getUserSession()?.serviceEndpoint.absoluteString : self.pdsURL else {
+                throw ATRequestPrepareError.invalidRequestURL
+            }
+            
+            return (nil, sessionURL)
+        }
+    }
+
+    func prepareRequest(sessionURL: String, endpoint: String, _ prepareQueryItems: (inout [(String, String)]) -> Void) async throws -> URL {
+        guard let requestURL = URL(string: "\(sessionURL)\(endpoint)") else {
+            throw ATRequestPrepareError.invalidRequestURL
+        }
+        
+        var queryItems: [(String, String)] = []
+        prepareQueryItems(&queryItems)
+        
+        let queryURL = try queryURL(
+            for: requestURL,
+            with: queryItems
+        )
+        
+        return queryURL
+    }
+    
+    func addQueryItem<T>(_ name: String, value: T?, to queryItems: inout [(String, String)]) {
+        if let value {
+            queryItems.append((name, "\(value)"))
+        }
+    }
+    
+    func addActor(_ actor: String?, to queryItems: inout [(String, String)]) {
+        addQueryItem("actor", value: actor, to: &queryItems)
+    }
+    
+    func addCursor(_ cursor: String?, to queryItems: inout [(String, String)]) {
+        addQueryItem("cursor", value: cursor, to: &queryItems)
+    }
+    
+    func addLimit(_ limit: Int?, max maxLimit: Int = 100, to queryItems: inout [(String, String)]) {
+        if let limit {
+            let finalLimit = max(1, min(limit, maxLimit))
+            addQueryItem("limit", value: "\(finalLimit)", to: &queryItems)
+        }
+    }
+    
+    func queryURL(for requestURL: URL, with queryItems: [(String, String)]) throws -> URL {
+        try apiClientService.setQueryItems(
+            for: requestURL,
+            with: queryItems
+        )
+    }
+}

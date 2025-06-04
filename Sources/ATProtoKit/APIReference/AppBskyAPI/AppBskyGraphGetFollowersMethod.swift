@@ -34,37 +34,14 @@ extension ATProtoKit {
         limit: Int? = 50,
         cursor: String? = nil
     ) async throws -> AppBskyLexicon.Graph.GetFollowersOutput {
-        let authorizationValue = await prepareAuthorizationValue()
-
-        guard self.pdsURL != "" else {
-            throw ATRequestPrepareError.emptyPDSURL
-        }
-
-        guard let sessionURL = authorizationValue != nil ? try await self.getUserSession()?.serviceEndpoint.absoluteString : self.pdsURL,
-              let requestURL = URL(string: "\(sessionURL)/xrpc/app.bsky.graph.getFollowers") else {
-            throw ATRequestPrepareError.invalidRequestURL
-        }
-
-        var queryItems = [(String, String)]()
-
-        queryItems.append(("actor", actorDID))
-
-        if let limit {
-            let finalLimit = max(1, min(limit, 100))
-            queryItems.append(("limit", "\(finalLimit)"))
-        }
-
-        if let cursor {
-            queryItems.append(("cursor", cursor))
-        }
-
-        let queryURL: URL
-
         do {
-            queryURL = try apiClientService.setQueryItems(
-                for: requestURL,
-                with: queryItems
-            )
+            let (authorizationValue, sessionURL) = try await prepareAuthorization(rquiresAuth: false)
+
+            let queryURL = try await prepareRequest(sessionURL: sessionURL, endpoint: "/xrpc/app.bsky.graph.getFollowers") { queryItems in
+                addQueryItem("actor", value: actorDID, to: &queryItems)
+                addLimit(limit, to: &queryItems)
+                addCursor(cursor, to: &queryItems)
+            }
 
             let request = apiClientService.createRequest(
                 forRequest: queryURL,
