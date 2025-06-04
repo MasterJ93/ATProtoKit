@@ -23,8 +23,7 @@ extension ATProtoKit {
     /// - Bug: According to the AT Protocol specifications, this API call does not require
     /// authentication. However, there's an issue where it asks for authentication if there's
     /// no `accessToken`. It's unknown whether this is an issue on the AT Protocol's end or
-    /// `AKProtoKit`'s end. For now, use the `shouldAuthenticate` parameter when using
-    /// this method.
+    /// `AKProtoKit`'s end. For now, call this method with an authenticated `ATProtoKit` `class`.
     ///
     /// - Note: According to the AT Protocol specifications: "Find actor suggestions for a prefix
     /// search term. Expected use is for auto-completion during text field entry. Does not require auth."
