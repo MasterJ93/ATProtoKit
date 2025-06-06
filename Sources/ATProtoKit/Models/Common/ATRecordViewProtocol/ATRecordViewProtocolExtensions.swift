@@ -58,11 +58,39 @@ extension AppBskyLexicon.Feed.FeedViewPostDefinition: Identifiable {
         return self.post.uri
     }
 
-    public func refresh(with sessionConfiguration: SessionConfiguration) async throws -> AppBskyLexicon.Feed.FeedViewPostDefinition {
-        let atProto = await ATProtoKit(sessionConfiguration: sessionConfiguration, canUseBlueskyRecords: false)
-        let record = try await atProto.getFeed(by: self.post.uri)
+    /// Refreshes the record view with updated information.
+    ///  
+    /// You need to pass in the instance of ``SessionConfiguration`` in order to establish
+    /// a connection. Once that happens, use the appropriate method to get the record view.
+    /// For example, for ``AppBskyLexicon/Feed/PostViewDefinition``, you can use
+    /// ``ATProtoKit/ATProtoKit/getPosts(_:)``, which returns that object.
+    /// 
+    /// 
+    /// 
+    /// - Parameters:
+    ///   - atProtoKitConfiguration: An instance of ``ATProtoKit/ATProtoKit``.
+    ///   - array: The array of the
+    ///   - index: The index number
+    ///   - feedURI: The URI of the feed.
+    /// - Returns: An updated version of the feed's array.
+    ///
+    /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
+    /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
+    public func refresh(
+        with atProtoKitConfiguration: ATProtoKit,
+        from array: [AppBskyLexicon.Feed.FeedViewPostDefinition],
+        at index: Int,
+        feedURI: String
+    ) async throws -> [AppBskyLexicon.Feed.FeedViewPostDefinition] {
+        let post = try await atProtoKitConfiguration.getFeed(by: feedURI).feed[index]
 
-        return record.feed[0]
+        if index > 99 {
+            throw FeedViewPostDefinitionError.indexTooHigh(index: index)
+        }
+
+        var newArray = array
+        newArray[index] = post
+        return newArray
     }
 }
 

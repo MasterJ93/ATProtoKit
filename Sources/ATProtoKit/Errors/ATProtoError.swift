@@ -457,3 +457,12 @@ public enum GetOriginalPostsFromQuotePostsError: ATProtoError {
     /// The original post was detacted from the quote post.
     case recordDetacted
 }
+
+/// An error type related to refreshing feed view posts.
+public enum FeedViewPostDefinitionError: ATProtoError {
+
+    /// The index number is too high.
+    ///
+    /// - Parameter index: The index number.
+    case indexTooHigh(index: Int)
+}
