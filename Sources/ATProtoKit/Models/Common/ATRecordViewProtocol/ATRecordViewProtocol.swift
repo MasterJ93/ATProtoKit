@@ -42,12 +42,12 @@ public protocol ATRecordViewProtocol: Identifiable {
     /// For example, for ``AppBskyLexicon/Feed/PostViewDefinition``, you can use
     /// ``ATProtoKit/ATProtoKit/getPosts(_:)``, which returns that object.
     ///
-    /// - Parameter sessionConfiguration: An instance of ``SessionConfiguration``.
+    /// - Parameter atProtoKitInstance: An instance of ``ATProtoKit/ATProtoKit``.
     /// - Returns: An updated version of the record view.
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
-    func refresh(with sessionConfiguration: SessionConfiguration) async throws -> Self
+    func refresh(with atProtoKitInstance: ATProtoKit) async throws -> Self
 }
 
 extension ATRecordViewProtocol {

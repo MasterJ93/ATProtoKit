@@ -9,9 +9,8 @@ import Foundation
 
 extension AppBskyLexicon.Feed.PostViewDefinition: ATRecordViewProtocol {
 
-    public func refresh(with sessionConfiguration: SessionConfiguration) async throws -> AppBskyLexicon.Feed.PostViewDefinition {
-        let atProto = await ATProtoKit(sessionConfiguration: sessionConfiguration, canUseBlueskyRecords: false)
-        let record = try await atProto.getPosts([self.uri])
+    public func refresh(with atProtoKitInstance: ATProtoKit) async throws -> AppBskyLexicon.Feed.PostViewDefinition {
+        let record = try await atProtoKitInstance.getPosts([self.uri])
 
         return record.posts[0]
     }
@@ -23,9 +22,8 @@ extension AppBskyLexicon.Feed.GeneratorViewDefinition: ATRecordViewProtocol {
         return self.feedURI
     }
 
-    public func refresh(with sessionConfiguration: SessionConfiguration) async throws -> AppBskyLexicon.Feed.GeneratorViewDefinition {
-        let atProto = await ATProtoKit(sessionConfiguration: sessionConfiguration, canUseBlueskyRecords: false)
-        let record = try await atProto.getFeedGenerator(by: self.feedURI)
+    public func refresh(with atProtoKitInstance: ATProtoKit) async throws -> AppBskyLexicon.Feed.GeneratorViewDefinition {
+        let record = try await atProtoKitInstance.getFeedGenerator(by: self.feedURI)
 
         return record.view
     }
@@ -33,9 +31,8 @@ extension AppBskyLexicon.Feed.GeneratorViewDefinition: ATRecordViewProtocol {
 
 extension AppBskyLexicon.Graph.ListViewDefinition: ATRecordViewProtocol {
 
-    public func refresh(with sessionConfiguration: SessionConfiguration) async throws -> AppBskyLexicon.Graph.ListViewDefinition {
-        let atProto = await ATProtoKit(sessionConfiguration: sessionConfiguration, canUseBlueskyRecords: false)
-        let record = try await atProto.getList(from: self.uri)
+    public func refresh(with atProtoKitInstance: ATProtoKit) async throws -> AppBskyLexicon.Graph.ListViewDefinition {
+        let record = try await atProtoKitInstance.getList(from: self.uri)
 
         return record.list
     }
@@ -43,9 +40,8 @@ extension AppBskyLexicon.Graph.ListViewDefinition: ATRecordViewProtocol {
 
 extension AppBskyLexicon.Graph.StarterPackViewDefinition: ATRecordViewProtocol {
 
-    public func refresh(with sessionConfiguration: SessionConfiguration) async throws -> AppBskyLexicon.Graph.StarterPackViewDefinition {
-        let atProto = await ATProtoKit(sessionConfiguration: sessionConfiguration, canUseBlueskyRecords: false)
-        let record = try await atProto.getStarterPack(uri: self.uri)
+    public func refresh(with atProtoKitInstance: ATProtoKit) async throws -> AppBskyLexicon.Graph.StarterPackViewDefinition {
+        let record = try await atProtoKitInstance.getStarterPack(uri: self.uri)
 
         return record.starterPack
     }
