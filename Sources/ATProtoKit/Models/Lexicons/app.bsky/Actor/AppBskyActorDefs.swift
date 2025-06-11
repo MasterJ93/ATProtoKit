@@ -620,7 +620,157 @@ extension AppBskyLexicon.Actor {
     /// - SeeAlso: This is based on the [`app.bsky.actor.defs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/actor/defs.json
-    public typealias PreferencesDefinition = [ATUnion.ActorPreferenceUnion]
+    public typealias PreferencesDefinition = [PreferenceUnion]
+
+    /// A union type for preferences.
+    public enum PreferenceUnion: ATUnionProtocol {
+
+        /// The "Adult Content" preference.
+        case adultContent(AppBskyLexicon.Actor.AdultContentPreferencesDefinition)
+
+        /// The "Content Label" preference.
+        case contentLabel(AppBskyLexicon.Actor.ContentLabelPreferencesDefinition)
+
+        /// Version 2 of the "Saved Feeds" preference.
+        case savedFeedsVersion2(AppBskyLexicon.Actor.SavedFeedPreferencesVersion2Definition)
+
+        /// The "Saved Feeds" preference.
+        case savedFeeds(AppBskyLexicon.Actor.SavedFeedsPreferencesDefinition)
+
+        /// The "Personal Details" preference.
+        case personalDetails(AppBskyLexicon.Actor.PersonalDetailsPreferencesDefinition)
+
+        /// The "Feed View" preference.
+        case feedView(AppBskyLexicon.Actor.FeedViewPreferencesDefinition)
+
+        /// The "Thread View" preference.
+        case threadView(AppBskyLexicon.Actor.ThreadViewPreferencesDefinition)
+
+        /// The "Interest View" preference.
+        case interestViewPreferences(AppBskyLexicon.Actor.InterestViewPreferencesDefinition)
+
+        /// The "Muted Words" preference.
+        case mutedWordsPreferences(AppBskyLexicon.Actor.MutedWordsPreferencesDefinition)
+
+        /// The "Hidden Posts" preference.
+        case hiddenPostsPreferences(AppBskyLexicon.Actor.HiddenPostsPreferencesDefinition)
+
+        /// The "Bluesky App State" preference.
+        ///
+        /// - Important: This should never be used, as it's supposed to be for the official Bluesky iOS client.
+        case bskyAppStatePreferences(AppBskyLexicon.Actor.BskyAppStatePreferencesDefinition)
+
+        /// The "Labelers" preference.
+        case labelersPreferences(AppBskyLexicon.Actor.LabelersPreferencesDefinition)
+
+        /// The "Post Interaction Setting" preference.
+        case postInteractionSettingsPreference(AppBskyLexicon.Actor.PostInteractionSettingsPreferenceDefinition)
+
+        /// The "Verification Visibility" preference.
+        case verificationPreference(AppBskyLexicon.Actor.VerificationPreferenceDefinition)
+
+        /// An uuknown case.
+        case unknown(String, [String: CodableValue])
+
+        // Implement custom decoding
+        public init(from decoder: Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+            let type = try container.decode(String.self, forKey: .type)
+
+            switch type {
+                case "app.bsky.actor.defs#adultContentPref":
+                    self = .adultContent(try AppBskyLexicon.Actor.AdultContentPreferencesDefinition(from: decoder))
+                case "app.bsky.actor.defs#contentLabelPref":
+                    self = .contentLabel(try AppBskyLexicon.Actor.ContentLabelPreferencesDefinition(from: decoder))
+                case "app.bsky.actor.defs#savedFeedsPrefV2":
+                    self = .savedFeedsVersion2(try AppBskyLexicon.Actor.SavedFeedPreferencesVersion2Definition(from: decoder))
+                case "app.bsky.actor.defs#savedFeedsPref":
+                    self = .savedFeeds(try AppBskyLexicon.Actor.SavedFeedsPreferencesDefinition(from: decoder))
+                case "app.bsky.actor.defs#personalDetailsPref":
+                    self = .personalDetails(try AppBskyLexicon.Actor.PersonalDetailsPreferencesDefinition(from: decoder))
+                case "app.bsky.actor.defs#feedViewPref":
+                    self = .feedView(try AppBskyLexicon.Actor.FeedViewPreferencesDefinition(from: decoder))
+                case "app.bsky.actor.defs#threadViewPref":
+                    self = .threadView(try AppBskyLexicon.Actor.ThreadViewPreferencesDefinition(from: decoder))
+                case "app.bsky.actor.defs#interestsPref":
+                    self = .interestViewPreferences(try AppBskyLexicon.Actor.InterestViewPreferencesDefinition(from: decoder))
+                case "app.bsky.actor.defs#mutedWordsPref":
+                    self = .mutedWordsPreferences(try AppBskyLexicon.Actor.MutedWordsPreferencesDefinition(from: decoder))
+                case "app.bsky.actor.defs#hiddenPostsPref":
+                    self = .hiddenPostsPreferences(try AppBskyLexicon.Actor.HiddenPostsPreferencesDefinition(from: decoder))
+                case "app.bsky.actor.defs#bskyAppStatePref":
+                    self = .bskyAppStatePreferences(try AppBskyLexicon.Actor.BskyAppStatePreferencesDefinition(from: decoder))
+                case "app.bsky.actor.defs#labelersPref":
+                    self = .labelersPreferences(try AppBskyLexicon.Actor.LabelersPreferencesDefinition(from: decoder))
+                case "app.bsky.actor.defs#postInteractionSettingsPref":
+                    self = .postInteractionSettingsPreference(try AppBskyLexicon.Actor.PostInteractionSettingsPreferenceDefinition(from: decoder))
+                case "app.bsky.actor.defs#verificationPrefs":
+                    self = .verificationPreference(try AppBskyLexicon.Actor.VerificationPreferenceDefinition(from: decoder))
+                default:
+                    try self.init(fromUnknown: decoder)
+            }
+        }
+
+        public init(fromUnknown decoder: Decoder) throws {
+            do {
+                let container = try decoder.container(keyedBy: CodingKeys.self)
+                let type = try container.decode(String.self, forKey: .type)
+
+                let dict = try decoder.singleValueContainer().decode([String: CodableValue].self)
+                self = .unknown(type, dict)
+            } catch {
+                throw DecodingError.dataCorrupted(
+                    .init(
+                        codingPath: decoder.codingPath,
+                        debugDescription: "Failed to decode within the '\(String(describing: type(of: self)))' union type.",
+                        underlyingError: error
+                    )
+                )
+            }
+        }
+
+        // Implement custom encoding
+        public func encode(to encoder: Encoder) throws {
+            var container = encoder.singleValueContainer()
+
+            switch self {
+                case .adultContent(let adultContent):
+                    try container.encode(adultContent)
+                case .contentLabel(let contentLabel):
+                    try container.encode(contentLabel)
+                case .savedFeedsVersion2(let savedFeedsVersion2):
+                    try container.encode(savedFeedsVersion2)
+                case .savedFeeds(let savedFeeds):
+                    try container.encode(savedFeeds)
+                case .personalDetails(let personalDetails):
+                    try container.encode(personalDetails)
+                case .feedView(let feedView):
+                    try container.encode(feedView)
+                case .threadView(let threadView):
+                    try container.encode(threadView)
+                case .interestViewPreferences(let interestViewPreferences):
+                    try container.encode(interestViewPreferences)
+                case .mutedWordsPreferences(let mutedWordsPreferences):
+                    try container.encode(mutedWordsPreferences)
+                case .hiddenPostsPreferences(let hiddenPostsPreferences):
+                    try container.encode(hiddenPostsPreferences)
+                case .bskyAppStatePreferences(let bskyAppStatePreferences):
+                    try container.encode(bskyAppStatePreferences)
+                case .labelersPreferences(let labelersPreferences):
+                    try container.encode(labelersPreferences)
+                case .postInteractionSettingsPreference(let preference):
+                    try container.encode(preference)
+                case .verificationPreference(let preference):
+                    try container.encode(preference)
+                default:
+                    break
+            }
+        }
+
+        enum CodingKeys: String, CodingKey {
+            case type = "$type"
+        }
+    }
 
     /// A definition model for an "Adult Content" preference.
     ///
