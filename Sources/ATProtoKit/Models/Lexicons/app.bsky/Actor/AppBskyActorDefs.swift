@@ -707,25 +707,10 @@ extension AppBskyLexicon.Actor {
                 case "app.bsky.actor.defs#verificationPrefs":
                     self = .verificationPreference(try AppBskyLexicon.Actor.VerificationPreferenceDefinition(from: decoder))
                 default:
-                    try self.init(fromUnknown: decoder)
-            }
-        }
+                    let singleValueDecodingContainer = try decoder.singleValueContainer()
+                    let dictionary = try Self.decodeDictionary(from: singleValueDecodingContainer, decoder: decoder)
 
-        public init(fromUnknown decoder: Decoder) throws {
-            do {
-                let container = try decoder.container(keyedBy: CodingKeys.self)
-                let type = try container.decode(String.self, forKey: .type)
-
-                let dict = try decoder.singleValueContainer().decode([String: CodableValue].self)
-                self = .unknown(type, dict)
-            } catch {
-                throw DecodingError.dataCorrupted(
-                    .init(
-                        codingPath: decoder.codingPath,
-                        debugDescription: "Failed to decode within the '\(String(describing: type(of: self)))' union type.",
-                        underlyingError: error
-                    )
-                )
+                    self = .unknown(type, dictionary)
             }
         }
 
@@ -1579,6 +1564,26 @@ extension AppBskyLexicon.Actor {
         }
 
         // Unions
+        /// A reference containing the list of post interaction setting preferences.
+                        try self.init(fromUnknown: decoder)
+                }
+            }
+
+            public init(fromUnknown decoder: Decoder) throws {
+                do {
+                    let container = try decoder.container(keyedBy: CodingKeys.self)
+                    let typeKey = try container.decode(String.self, forKey: .type)
+
+                    let dict = try decoder.singleValueContainer().decode([String: CodableValue].self)
+                    self = .unknown(typeKey, dict)
+                } catch {
+                    throw DecodingError.dataCorrupted(
+                        .init(
+                            codingPath: decoder.codingPath,
+                            debugDescription: "Failed to decode within the '\(String(describing: Swift.type(of: self)))' union type.",
+                            underlyingError: error
+                        )
+                    )
         /// A reference containing rules for embedding posts.
         public enum PostgateEmbeddingRulesUnion: Sendable, Codable {
 
