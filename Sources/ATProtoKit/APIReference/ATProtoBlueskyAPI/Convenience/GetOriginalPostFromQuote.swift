@@ -55,7 +55,7 @@ extension ATProtoBluesky {
     /// - Returns: A view of the record.
     ///
     /// - Throws: An error if the record was deleted, blocked, or otherwise not found or viewable.
-    private func getEmbeddedRecord(_ embeddedRecordViewContainer: ATUnion.RecordViewUnion) throws -> AppBskyLexicon.Feed.PostRecord? {
+    private func getEmbeddedRecord(_ embeddedRecordViewContainer: AppBskyLexicon.Embed.RecordDefinition.View.RecordViewUnion) throws -> AppBskyLexicon.Feed.PostRecord? {
         switch embeddedRecordViewContainer {
             case .viewRecord(let viewRecord):
                 let recordValue = viewRecord.value

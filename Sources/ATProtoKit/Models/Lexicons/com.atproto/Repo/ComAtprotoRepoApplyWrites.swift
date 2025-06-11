@@ -192,7 +192,7 @@ extension ComAtprotoLexicon.Repository {
         public let shouldValidate: Bool?
 
         /// The write operation itself.
-        public let writes: [ATUnion.ApplyWritesUnion]?
+        public let writes: [WritesUnion]?
 
         /// Swaps out an operation based on the CID. Optional.
         ///
@@ -210,6 +210,60 @@ extension ComAtprotoLexicon.Repository {
             case writes
             case swapCommit
         }
+
+        /// The write operation itself.
+        public enum WritesUnion: ATUnionProtocol {
+
+            /// A "Create" write operation.
+            case create(ComAtprotoLexicon.Repository.ApplyWrites.Create)
+
+            /// An "Update" write operation.
+            case update(ComAtprotoLexicon.Repository.ApplyWrites.Update)
+
+            /// A "Delete" write operation.
+            case delete(ComAtprotoLexicon.Repository.ApplyWrites.Delete)
+
+            /// An unknown case.
+            case unknown(String, [String: CodableValue])
+
+            public init(from decoder: Decoder) throws {
+                let container = try decoder.container(keyedBy: CodingKeys.self)
+                let type = try container.decode(String.self, forKey: .type)
+
+                switch type {
+                    case "com.atproto.repo.applyWrites#create":
+                        self = .create(try ComAtprotoLexicon.Repository.ApplyWrites.Create(from: decoder))
+                    case "com.atproto.repo.applyWrites#update":
+                        self = .update(try ComAtprotoLexicon.Repository.ApplyWrites.Update(from: decoder))
+                    case "com.atproto.repo.applyWrites#delete":
+                        self = .delete(try ComAtprotoLexicon.Repository.ApplyWrites.Delete(from: decoder))
+                    default:
+                        let singleValueDecodingContainer = try decoder.singleValueContainer()
+                        let dictionary = try Self.decodeDictionary(from: singleValueDecodingContainer, decoder: decoder)
+
+                        self = .unknown(type, dictionary)
+                }
+            }
+
+            public func encode(to encoder: Encoder) throws {
+                var container = encoder.singleValueContainer()
+
+                switch self {
+                    case .create(let value):
+                        try container.encode(value)
+                    case .update(let value):
+                        try container.encode(value)
+                    case .delete(let value):
+                        try container.encode(value)
+                    default:
+                        break
+                }
+            }
+
+            enum CodingKeys: String, CodingKey {
+                case type = "$type"
+            }
+        }
     }
 
     /// An output model for applying batch CRUD transactions.
@@ -226,44 +280,60 @@ extension ComAtprotoLexicon.Repository {
         public let commit: ComAtprotoLexicon.Repository.CommitMetaDefinition?
 
         /// An array of results. Optional.
-        public let results: [ATUnion.ApplyWritesResultUnion]?
-    }
-}
+        public let results: [ResultsUnion]?
 
-extension ATUnion {
+        // Unions
+        /// An array of results.
+        public enum ResultsUnion: ATUnionProtocol {
 
-    /// A reference containing the list of write operation results.
-    public enum ApplyWritesResultUnion: Sendable, Codable {
-        case createResult(ComAtprotoLexicon.Repository.ApplyWrites.CreateResult)
-        case updateResult(ComAtprotoLexicon.Repository.ApplyWrites.UpdateResult)
-        case deleteResult(ComAtprotoLexicon.Repository.ApplyWrites.DeleteResult)
+            /// A "Create" write operation result.
+            case createResult(ComAtprotoLexicon.Repository.ApplyWrites.CreateResult)
 
-        public init(from decoder: any Decoder) throws {
-            let container = try decoder.singleValueContainer()
+            /// An "Update" write operation result.
+            case updateResult(ComAtprotoLexicon.Repository.ApplyWrites.UpdateResult)
 
-            if let value = try? container.decode(ComAtprotoLexicon.Repository.ApplyWrites.CreateResult.self) {
-                self = .createResult(value)
-            } else if let value = try? container.decode(ComAtprotoLexicon.Repository.ApplyWrites.UpdateResult.self) {
-                self = .updateResult(value)
-            } else if let value = try? container.decode(ComAtprotoLexicon.Repository.ApplyWrites.DeleteResult.self) {
-                self = .deleteResult(value)
-            } else {
-                throw DecodingError.typeMismatch(
-                    ApplyWritesResultUnion.self, DecodingError.Context(
-                        codingPath: decoder.codingPath, debugDescription: "Unknown ApplyWritesResultUnion value"))
+            /// A "Delete" write operation result.
+            case deleteResult(ComAtprotoLexicon.Repository.ApplyWrites.DeleteResult)
+
+            /// An unknown case.
+            case unknown(String, [String: CodableValue])
+
+            public init(from decoder: any Decoder) throws {
+                let container = try decoder.container(keyedBy: CodingKeys.self)
+                let type = try container.decode(String.self, forKey: .type)
+
+                switch type {
+                    case "com.atproto.repo.applyWrites#createResult":
+                        self = .createResult(try ComAtprotoLexicon.Repository.ApplyWrites.CreateResult(from: decoder))
+                    case "com.atproto.repo.applyWrites#updateResult":
+                        self = .updateResult(try ComAtprotoLexicon.Repository.ApplyWrites.UpdateResult(from: decoder))
+                    case "com.atproto.repo.applyWrites#deleteResult":
+                        self = .deleteResult(try ComAtprotoLexicon.Repository.ApplyWrites.DeleteResult(from: decoder))
+                    default:
+                        let singleValueDecodingContainer = try decoder.singleValueContainer()
+                        let dictionary = try Self.decodeDictionary(from: singleValueDecodingContainer, decoder: decoder)
+
+                        self = .unknown(type, dictionary)
+                }
             }
-        }
 
-        public func encode(to encoder: any Encoder) throws {
-            var container = encoder.singleValueContainer()
+            public func encode(to encoder: any Encoder) throws {
+                var container = encoder.singleValueContainer()
 
-            switch self {
-                case .createResult(let value):
-                    try container.encode(value)
-                case .updateResult(let value):
-                    try container.encode(value)
-                case .deleteResult(let value):
-                    try container.encode(value)
+                switch self {
+                    case .createResult(let value):
+                        try container.encode(value)
+                    case .updateResult(let value):
+                        try container.encode(value)
+                    case .deleteResult(let value):
+                        try container.encode(value)
+                    default:
+                        break
+                }
+            }
+
+            enum CodingKeys: String, CodingKey {
+                case type = "$type"
             }
         }
     }

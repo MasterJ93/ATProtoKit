@@ -66,7 +66,7 @@ extension ATProtoBluesky {
         ofType listType: ListType,
         description: String? = nil,
         listAvatarImage: ATProtoTools.ImageQuery? = nil,
-        labels: ATUnion.ListLabelsUnion? = nil,
+        labels: ComAtprotoLexicon.Label.SelfLabelsDefinition? = nil,
         creationDate: Date = Date(),
         recordKey: String? = nil,
         shouldValidate: Bool? = true,
@@ -129,13 +129,19 @@ extension ATProtoBluesky {
             }
         }
 
+        // labels
+        var selfLabels: AppBskyLexicon.Graph.ListRecord.LabelsUnion? = nil
+        if let labels = labels {
+            selfLabels = .selfLabels(labels)
+        }
+
         let listRecord = AppBskyLexicon.Graph.ListRecord(
             purpose: listPurpose,
             name: nameText,
             description: descriptionText,
             descriptionFacets: descriptionFacets,
             avatarImageBlob: avatarImage,
-            labels: labels,
+            labels: selfLabels,
             createdAt: creationDate
         )
 

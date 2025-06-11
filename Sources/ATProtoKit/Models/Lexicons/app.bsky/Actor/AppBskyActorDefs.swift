@@ -669,7 +669,7 @@ extension AppBskyLexicon.Actor {
         /// The "Verification Visibility" preference.
         case verificationPreference(AppBskyLexicon.Actor.VerificationPreferenceDefinition)
 
-        /// An uuknown case.
+        /// An unknown case.
         case unknown(String, [String: CodableValue])
 
         // Implement custom decoding
@@ -719,34 +719,34 @@ extension AppBskyLexicon.Actor {
             var container = encoder.singleValueContainer()
 
             switch self {
-                case .adultContent(let adultContent):
-                    try container.encode(adultContent)
-                case .contentLabel(let contentLabel):
-                    try container.encode(contentLabel)
-                case .savedFeedsVersion2(let savedFeedsVersion2):
-                    try container.encode(savedFeedsVersion2)
-                case .savedFeeds(let savedFeeds):
-                    try container.encode(savedFeeds)
-                case .personalDetails(let personalDetails):
-                    try container.encode(personalDetails)
-                case .feedView(let feedView):
-                    try container.encode(feedView)
-                case .threadView(let threadView):
-                    try container.encode(threadView)
-                case .interestViewPreferences(let interestViewPreferences):
-                    try container.encode(interestViewPreferences)
-                case .mutedWordsPreferences(let mutedWordsPreferences):
-                    try container.encode(mutedWordsPreferences)
-                case .hiddenPostsPreferences(let hiddenPostsPreferences):
-                    try container.encode(hiddenPostsPreferences)
-                case .bskyAppStatePreferences(let bskyAppStatePreferences):
-                    try container.encode(bskyAppStatePreferences)
-                case .labelersPreferences(let labelersPreferences):
-                    try container.encode(labelersPreferences)
-                case .postInteractionSettingsPreference(let preference):
-                    try container.encode(preference)
-                case .verificationPreference(let preference):
-                    try container.encode(preference)
+                case .adultContent(let value):
+                    try container.encode(value)
+                case .contentLabel(let value):
+                    try container.encode(value)
+                case .savedFeedsVersion2(let value):
+                    try container.encode(value)
+                case .savedFeeds(let value):
+                    try container.encode(value)
+                case .personalDetails(let value):
+                    try container.encode(value)
+                case .feedView(let value):
+                    try container.encode(value)
+                case .threadView(let value):
+                    try container.encode(value)
+                case .interestViewPreferences(let value):
+                    try container.encode(value)
+                case .mutedWordsPreferences(let value):
+                    try container.encode(value)
+                case .hiddenPostsPreferences(let value):
+                    try container.encode(value)
+                case .bskyAppStatePreferences(let value):
+                    try container.encode(value)
+                case .labelersPreferences(let value):
+                    try container.encode(value)
+                case .postInteractionSettingsPreference(let value):
+                    try container.encode(value)
+                case .verificationPreference(let value):
+                    try container.encode(value)
                 default:
                     break
             }
@@ -1529,16 +1529,16 @@ extension AppBskyLexicon.Actor {
         /// - Note: According to the AT Protocol specifications: "Matches threadgate record. List of rules
         /// defining who can reply to this users posts. If value is an empty array, no one can reply. If
         /// value is undefined, anyone can reply."
-        public let threadgateAllowRules: [ATUnion.ActorPostInteractionSettingsPreferencesUnion]
+        public let threadgateAllowRules: [ThreadgateAllowRulesUnion]
 
         /// An array of rules that determines the default settings for determining who can embed the post.
         ///
         /// - Note: According to the AT Protocol specifications: "Matches postgate record. List of rules
         /// defining who can embed this users posts. If value is an empty array or is undefined, no
         /// particular rules apply and anyone can embed."
-        public let postgateEmbeddingRules: [String]
+        public let postgateEmbeddingRules: [PostgateEmbeddingRulesUnion]
 
-        public init(threadgateAllowRules: [ATUnion.ActorPostInteractionSettingsPreferencesUnion], postgateEmbeddingRules: [String]) {
+        public init(threadgateAllowRules: [ThreadgateAllowRulesUnion], postgateEmbeddingRules: [PostgateEmbeddingRulesUnion]) {
             self.threadgateAllowRules = threadgateAllowRules
             self.postgateEmbeddingRules = postgateEmbeddingRules
         }
@@ -1546,8 +1546,8 @@ extension AppBskyLexicon.Actor {
         public init(from decoder: any Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
 
-            self.threadgateAllowRules = try container.decode([ATUnion.ActorPostInteractionSettingsPreferencesUnion].self, forKey: .threadgateAllowRules)
-            self.postgateEmbeddingRules = try container.decode([String].self, forKey: .postgateEmbeddingRules)
+            self.threadgateAllowRules = try container.decode([ThreadgateAllowRulesUnion].self, forKey: .threadgateAllowRules)
+            self.postgateEmbeddingRules = try container.decode([PostgateEmbeddingRulesUnion].self, forKey: .postgateEmbeddingRules)
         }
 
         public func encode(to encoder: any Encoder) throws {
@@ -1564,41 +1564,89 @@ extension AppBskyLexicon.Actor {
         }
 
         // Unions
-        /// A reference containing the list of post interaction setting preferences.
-                        try self.init(fromUnknown: decoder)
+        /// An array of rules that determines who can reply to the user account's posts.
+        public enum ThreadgateAllowRulesUnion: ATUnionProtocol, Equatable, Hashable {
+
+            /// A rule that allows users that were mentioned in the user account's post to reply to
+            /// said post.
+            case mentionRule(AppBskyLexicon.Feed.ThreadgateRecord.MentionRule)
+
+            /// A rule that allows users who follow you to reply to the user account's post.
+            case followerRule(AppBskyLexicon.Feed.ThreadgateRecord.FollowerRule)
+
+            /// A rule that allows users that are followed by the user account to reply to the post.
+            case followingRule(AppBskyLexicon.Feed.ThreadgateRecord.FollowingRule)
+
+            /// A rule that allows users are in a specified list to reply to the post.
+            case listRule(AppBskyLexicon.Feed.ThreadgateRecord.ListRule)
+
+            /// An unknown case.
+            case unknown(String, [String: CodableValue])
+
+            public init(from decoder: any Decoder) throws {
+                let container = try decoder.container(keyedBy: CodingKeys.self)
+                let type = try container.decode(String.self, forKey: .type)
+
+                switch type {
+                    case "app.bsky.feed.threadgate#mentionRule":
+                        self = .mentionRule(try AppBskyLexicon.Feed.ThreadgateRecord.MentionRule(from: decoder))
+                    case "app.bsky.feed.threadgate#followerRule":
+                        self = .followerRule(try AppBskyLexicon.Feed.ThreadgateRecord.FollowerRule(from: decoder))
+                    case "app.bsky.feed.threadgate#followingRule":
+                        self = .followingRule(try AppBskyLexicon.Feed.ThreadgateRecord.FollowingRule(from: decoder))
+                    case "app.bsky.feed.threadgate#listRule":
+                        self = .listRule(try AppBskyLexicon.Feed.ThreadgateRecord.ListRule(from: decoder))
+                    default:
+                        let singleValueDecodingContainer = try decoder.singleValueContainer()
+                        let dictionary = try Self.decodeDictionary(from: singleValueDecodingContainer, decoder: decoder)
+
+                        self = .unknown(type, dictionary)
                 }
             }
 
-            public init(fromUnknown decoder: Decoder) throws {
-                do {
-                    let container = try decoder.container(keyedBy: CodingKeys.self)
-                    let typeKey = try container.decode(String.self, forKey: .type)
+            public func encode(to encoder: any Encoder) throws {
+                var container = encoder.singleValueContainer()
 
-                    let dict = try decoder.singleValueContainer().decode([String: CodableValue].self)
-                    self = .unknown(typeKey, dict)
-                } catch {
-                    throw DecodingError.dataCorrupted(
-                        .init(
-                            codingPath: decoder.codingPath,
-                            debugDescription: "Failed to decode within the '\(String(describing: Swift.type(of: self)))' union type.",
-                            underlyingError: error
-                        )
-                    )
+                switch self {
+                    case .mentionRule(let value):
+                        try container.encode(value)
+                    case .followerRule(let value):
+                        try container.encode(value)
+                    case .followingRule(let value):
+                        try container.encode(value)
+                    case .listRule(let value):
+                        try container.encode(value)
+                    default:
+                        break
+                }
+            }
+
+            enum CodingKeys: String, CodingKey {
+                case type = "$type"
+            }
+        }
+
         /// A reference containing rules for embedding posts.
-        public enum PostgateEmbeddingRulesUnion: Sendable, Codable {
+        public enum PostgateEmbeddingRulesUnion: ATUnionProtocol {
 
             /// A rule saying that embedding posts is not allowed at all.
             case disabledRule(AppBskyLexicon.Feed.PostgateRecord.DisableRule)
 
-            public init(from decoder: any Decoder) throws {
-                let container = try decoder.singleValueContainer()
+            /// An unknown case.
+            case unknown(String, [String: CodableValue])
 
-                if let value = try? container.decode(AppBskyLexicon.Feed.PostgateRecord.DisableRule.self) {
-                    self = .disabledRule(value)
-                } else {
-                    throw DecodingError.typeMismatch(
-                        PostgateEmbeddingRulesUnion.self, DecodingError.Context(
-                            codingPath: decoder.codingPath, debugDescription: "Unknown PostgateEmbeddingRulesUnion type"))
+            public init(from decoder: any Decoder) throws {
+                let container = try decoder.container(keyedBy: CodingKeys.self)
+                let type = try container.decode(String.self, forKey: .type)
+
+                switch type {
+                    case "app.bsky.feed.postgate#disableRule":
+                        self = .disabledRule(try AppBskyLexicon.Feed.PostgateRecord.DisableRule(from: decoder))
+                    default:
+                        let singleValueDecodingContainer = try decoder.singleValueContainer()
+                        let dictionary = try Self.decodeDictionary(from: singleValueDecodingContainer, decoder: decoder)
+
+                        self = .unknown(type, dictionary)
                 }
             }
 
@@ -1608,7 +1656,13 @@ extension AppBskyLexicon.Actor {
                 switch self {
                     case .disabledRule(let value):
                         try container.encode(value)
+                    default:
+                        break
                 }
+            }
+
+            enum CodingKeys: String, CodingKey {
+                case type = "$type"
             }
         }
     }
@@ -1729,20 +1783,26 @@ extension AppBskyLexicon.Actor {
 
         // Unions
         /// A reference containing the list of embeds..
-        public enum EmbedUnion: Sendable, Codable, Equatable, Hashable {
+        public enum EmbedUnion: ATUnionProtocol, Equatable, Hashable {
 
             /// An external embed view.
             case externalView(AppBskyLexicon.Embed.ExternalDefinition.View)
 
-            public init(from decoder: any Decoder) throws {
-                let container = try decoder.singleValueContainer()
+            /// An unknown case.
+            case unknown(String, [String: CodableValue])
 
-                if let value = try? container.decode(AppBskyLexicon.Embed.ExternalDefinition.View.self) {
-                    self = .externalView(value)
-                } else {
-                throw DecodingError.typeMismatch(
-                    EmbedUnion.self, DecodingError.Context(
-                        codingPath: decoder.codingPath, debugDescription: "Unknown EmbedUnion type"))
+            public init(from decoder: any Decoder) throws {
+                let container = try decoder.container(keyedBy: CodingKeys.self)
+                let type = try container.decode(String.self, forKey: .type)
+
+                switch type {
+                    case "app.bsky.embed.external#view":
+                        self = .externalView(try AppBskyLexicon.Embed.ExternalDefinition.View(from: decoder))
+                    default:
+                        let singleValueDecodingContainer = try decoder.singleValueContainer()
+                        let dictionary = try Self.decodeDictionary(from: singleValueDecodingContainer, decoder: decoder)
+
+                        self = .unknown(type, dictionary)
                 }
             }
 
@@ -1752,7 +1812,13 @@ extension AppBskyLexicon.Actor {
                 switch self {
                     case .externalView(let value):
                         try container.encode(value)
+                    default:
+                        break
                 }
+            }
+
+            enum CodingKeys: String, CodingKey {
+                case type = "$type"
             }
         }
     }

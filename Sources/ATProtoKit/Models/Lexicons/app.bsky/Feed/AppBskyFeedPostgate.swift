@@ -45,9 +45,9 @@ extension AppBskyLexicon.Feed {
         /// An array of rules for embedding the post. Optional.
         ///
         /// - Important: Current maximum length is 5 items.
-        public let embeddingRules: [ATUnion.EmbeddingRulesUnion]?
+        public let embeddingRules: [EmbeddingRulesUnion]?
 
-        public init(createdAt: Date, postURI: String, detachedEmbeddingURIs: [String]?, embeddingRules: [ATUnion.EmbeddingRulesUnion]?) {
+        public init(createdAt: Date, postURI: String, detachedEmbeddingURIs: [String]?, embeddingRules: [EmbeddingRulesUnion]?) {
             self.createdAt = createdAt
             self.postURI = postURI
             self.detachedEmbeddingURIs = detachedEmbeddingURIs
@@ -60,7 +60,7 @@ extension AppBskyLexicon.Feed {
             self.createdAt = try container.decodeDate(forKey: .createdAt)
             self.postURI = try container.decode(String.self, forKey: .postURI)
             self.detachedEmbeddingURIs = try container.decodeIfPresent([String].self, forKey: .detachedEmbeddingURIs)
-            self.embeddingRules = try container.decodeIfPresent([ATUnion.EmbeddingRulesUnion].self, forKey: .embeddingRules)
+            self.embeddingRules = try container.decodeIfPresent([EmbeddingRulesUnion].self, forKey: .embeddingRules)
         }
 
         public func encode(to encoder: any Encoder) throws {
@@ -94,6 +94,46 @@ extension AppBskyLexicon.Feed {
                 var container = encoder.container(keyedBy: CodingKeys.self)
 
                 try container.encode(self.type, forKey: .type)
+            }
+
+            enum CodingKeys: String, CodingKey {
+                case type = "$type"
+            }
+        }
+
+        /// An array of rules for embedding the post.
+        public enum EmbeddingRulesUnion: ATUnionProtocol, Equatable, Hashable {
+
+            /// A marker that disables the embedding of this post.
+            case disabledRule(AppBskyLexicon.Feed.PostgateRecord.DisableRule)
+
+            /// An unknown case.
+            case unknown(String, [String: CodableValue])
+
+            public init(from decoder: any Decoder) throws {
+                let container = try decoder.container(keyedBy: CodingKeys.self)
+                let type = try container.decode(String.self, forKey: .type)
+
+                switch type {
+                    case "app.bsky.feed.postgate#disableRule":
+                        self = .disabledRule(try AppBskyLexicon.Feed.PostgateRecord.DisableRule(from: decoder))
+                    default:
+                        let singleValueDecodingContainer = try decoder.singleValueContainer()
+                        let dictionary = try Self.decodeDictionary(from: singleValueDecodingContainer, decoder: decoder)
+
+                        self = .unknown(type, dictionary)
+                }
+            }
+
+            public func encode(to encoder: Encoder) throws {
+                var container = encoder.singleValueContainer()
+
+                switch self {
+                    case .disabledRule(let disabledRule):
+                        try container.encode(disabledRule)
+                    default:
+                        break
+                }
             }
 
             enum CodingKeys: String, CodingKey {

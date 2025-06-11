@@ -51,9 +51,9 @@ extension ChatBskyLexicon.Conversation {
         public let facets: [AppBskyLexicon.RichText.Facet]?
 
         /// An embed for the message. Optional.
-        public let embed: ATUnion.MessageInputEmbedUnion?
+        public let embed: EmbedUnion?
 
-        public init(text: String, facets: [AppBskyLexicon.RichText.Facet]? = nil, embed: ATUnion.MessageInputEmbedUnion? = nil) {
+        public init(text: String, facets: [AppBskyLexicon.RichText.Facet]? = nil, embed: EmbedUnion? = nil) {
             self.text = text
             self.facets = facets
             self.embed = embed
@@ -70,6 +70,47 @@ extension ChatBskyLexicon.Conversation {
             case text
             case facets
             case embed
+        }
+
+        // Unions
+        /// An embed for the message.
+        public enum EmbedUnion: ATUnionProtocol {
+
+            /// A record within the embed.
+            case record(AppBskyLexicon.Embed.RecordDefinition)
+
+            /// An unknown case.
+            case unknown(String, [String: CodableValue])
+
+            public init(from decoder: any Decoder) throws {
+                let container = try decoder.container(keyedBy: CodingKeys.self)
+                let type = try container.decode(String.self, forKey: .type)
+
+                switch type {
+                    case "app.bsky.embed.record":
+                        self = .record(try AppBskyLexicon.Embed.RecordDefinition(from: decoder))
+                    default:
+                        let singleValueDecodingContainer = try decoder.singleValueContainer()
+                        let dictionary = try Self.decodeDictionary(from: singleValueDecodingContainer, decoder: decoder)
+
+                        self = .unknown(type, dictionary)
+                }
+            }
+
+            public func encode(to encoder: any Encoder) throws {
+                var container = encoder.singleValueContainer()
+
+                switch self {
+                    case .record(let record):
+                        try container.encode(record)
+                    default:
+                        break
+                }
+            }
+
+            enum CodingKeys: String, CodingKey {
+                case type = "$type"
+            }
         }
     }
 
@@ -98,7 +139,7 @@ extension ChatBskyLexicon.Conversation {
         public let facets: [AppBskyLexicon.RichText.Facet]?
 
         /// An embed for the message. Optional.
-        public let embed: ATUnion.MessageInputEmbedUnion?
+        public let embed: EmbedUnion?
 
         /// An array of reactions. Optional.
         public let reactions: [ChatBskyLexicon.Conversation.ReactionViewDefinition]?
@@ -109,7 +150,7 @@ extension ChatBskyLexicon.Conversation {
         /// The date and time the message was seen.
         public let sentAt: Date
 
-        public init(messageID: String, revision: String, text: String, facets: [AppBskyLexicon.RichText.Facet]?, embed: ATUnion.MessageInputEmbedUnion?,
+        public init(messageID: String, revision: String, text: String, facets: [AppBskyLexicon.RichText.Facet]?, embed: EmbedUnion?,
                     reactions: [ChatBskyLexicon.Conversation.ReactionViewDefinition]?, sender: MessageViewSenderDefinition, sentAt: Date) {
             self.messageID = messageID
             self.revision = revision
@@ -128,7 +169,7 @@ extension ChatBskyLexicon.Conversation {
             self.revision = try container.decode(String.self, forKey: .revision)
             self.text = try container.decode(String.self, forKey: .text)
             self.facets = try container.decodeIfPresent([AppBskyLexicon.RichText.Facet].self, forKey: .facets)
-            self.embed = try container.decodeIfPresent(ATUnion.MessageInputEmbedUnion.self, forKey: .embed)
+            self.embed = try container.decodeIfPresent(EmbedUnion.self, forKey: .embed)
             self.reactions = try container.decodeIfPresent([ChatBskyLexicon.Conversation.ReactionViewDefinition].self, forKey: .reactions)
             self.sender = try container.decode(MessageViewSenderDefinition.self, forKey: .sender)
             self.sentAt = try container.decodeDate(forKey: .sentAt)
@@ -156,6 +197,47 @@ extension ChatBskyLexicon.Conversation {
             case reactions
             case sender
             case sentAt
+        }
+
+        // Unions
+        /// An embed for the message.
+        public enum EmbedUnion: ATUnionProtocol {
+
+            /// A record within the embed.
+            case recordView(AppBskyLexicon.Embed.RecordDefinition.View)
+
+            /// An unknown case.
+            case unknown(String, [String: CodableValue])
+
+            public init(from decoder: any Decoder) throws {
+                let container = try decoder.container(keyedBy: CodingKeys.self)
+                let type = try container.decode(String.self, forKey: .type)
+
+                switch type {
+                    case "app.bsky.embed.record":
+                        self = .recordView(try AppBskyLexicon.Embed.RecordDefinition.View(from: decoder))
+                    default:
+                        let singleValueDecodingContainer = try decoder.singleValueContainer()
+                        let dictionary = try Self.decodeDictionary(from: singleValueDecodingContainer, decoder: decoder)
+
+                        self = .unknown(type, dictionary)
+                }
+            }
+
+            public func encode(to encoder: any Encoder) throws {
+                var container = encoder.singleValueContainer()
+
+                switch self {
+                    case .recordView(let value):
+                        try container.encode(value)
+                    default:
+                        break
+                }
+            }
+
+            enum CodingKeys: String, CodingKey {
+                case type = "$type"
+            }
         }
     }
 
@@ -351,7 +433,7 @@ extension ChatBskyLexicon.Conversation {
 
         // Unions
         /// A reference containing the list of messages.
-        public enum LastMessageUnion: Sendable, Codable {
+        public enum LastMessageUnion: ATUnionProtocol {
 
             /// A message view.
             case messageView(ChatBskyLexicon.Conversation.MessageViewDefinition)
@@ -359,17 +441,23 @@ extension ChatBskyLexicon.Conversation {
             /// A deleted message view.
             case deletedMessageView(ChatBskyLexicon.Conversation.DeletedMessageViewDefinition)
 
-            public init(from decoder: any Decoder) throws {
-                let container = try decoder.singleValueContainer()
+            /// An unknown case.
+            case unknown(String, [String: CodableValue])
 
-                if let value = try? container.decode(ChatBskyLexicon.Conversation.MessageViewDefinition.self) {
-                    self = .messageView(value)
-                } else if let value = try? container.decode(ChatBskyLexicon.Conversation.DeletedMessageViewDefinition.self) {
-                    self = .deletedMessageView(value)
-                } else {
-                    throw DecodingError.typeMismatch(
-                        LastMessageUnion.self, DecodingError.Context(
-                            codingPath: decoder.codingPath, debugDescription: "Unknown LastMessageUnion type"))
+            public init(from decoder: any Decoder) throws {
+                let container = try decoder.container(keyedBy: CodingKeys.self)
+                let type = try container.decode(String.self, forKey: .type)
+
+                switch type {
+                    case "chat.bsky.convo.defs#messageView":
+                        self = .messageView(try ChatBskyLexicon.Conversation.MessageViewDefinition(from: decoder))
+                    case "chat.bsky.convo.defs#deletedMessageView":
+                        self = .deletedMessageView(try ChatBskyLexicon.Conversation.DeletedMessageViewDefinition(from: decoder))
+                    default:
+                        let singleValueDecodingContainer = try decoder.singleValueContainer()
+                        let dictionary = try Self.decodeDictionary(from: singleValueDecodingContainer, decoder: decoder)
+
+                        self = .unknown(type, dictionary)
                 }
             }
 
@@ -377,30 +465,57 @@ extension ChatBskyLexicon.Conversation {
                 var container = encoder.singleValueContainer()
 
                 switch self {
-                    case .messageView(let messageView):
-                        try container.encode(messageView)
-                    case .deletedMessageView(let deletedMessageView):
-                        try container.encode(deletedMessageView)
+                    case .messageView(let value):
+                        try container.encode(value)
+                    case .deletedMessageView(let value):
+                        try container.encode(value)
+                    default:
+                        break
                 }
+            }
+
+            enum CodingKeys: String, CodingKey {
+                case type = "$type"
             }
         }
 
         /// A reference containing the list containing a message and reaction.
-        public enum LastReactionUnion: Sendable, Codable {
+        public enum LastReactionUnion: ATUnionProtocol {
 
             /// A view containing a message and reaction.
             case messageAndReactionView(ChatBskyLexicon.Conversation.MessageAndReactionViewDefinition)
 
-            public init(from decoder: Decoder) throws {
-                let container = try decoder.singleValueContainer()
+            /// An unknown case.
+            case unknown(String, [String: CodableValue])
 
-                if let value = try? container.decode(ChatBskyLexicon.Conversation.MessageAndReactionViewDefinition.self) {
-                    self = .messageAndReactionView(value)
-                } else {
-                    throw DecodingError.typeMismatch(
-                        LastReactionUnion.self, DecodingError.Context(
-                            codingPath: decoder.codingPath, debugDescription: "Unknown LastReactionUnion type"))
+            public init(from decoder: Decoder) throws {
+                let container = try decoder.container(keyedBy: CodingKeys.self)
+                let type = try container.decode(String.self, forKey: .type)
+
+                switch type {
+                    case "chat.bsky.convo.defs#messageAndReactionView":
+                        self = .messageAndReactionView(try ChatBskyLexicon.Conversation.MessageAndReactionViewDefinition(from: decoder))
+                    default:
+                        let singleValueDecodingContainer = try decoder.singleValueContainer()
+                        let dictionary = try Self.decodeDictionary(from: singleValueDecodingContainer, decoder: decoder)
+
+                        self = .unknown(type, dictionary)
                 }
+            }
+
+            public func encode(to encoder: any Encoder) throws {
+                var container = encoder.singleValueContainer()
+
+                switch self {
+                    case .messageAndReactionView(let value):
+                        try container.encode(value)
+                    default:
+                        break
+                }
+            }
+
+            enum CodingKeys: String, CodingKey {
+                case type = "$type"
             }
         }
     }
@@ -514,12 +629,60 @@ extension ChatBskyLexicon.Conversation {
         public let conversationID: String
 
         /// The message itself.
-        public let message: ATUnion.LogCreateMessageUnion
+        public let message: MessageUnion
 
         enum CodingKeys: String, CodingKey {
             case revision = "rev"
             case conversationID = "convoID"
             case message
+        }
+
+        // Unions
+        /// The message itself.
+        public enum MessageUnion: ATUnionProtocol {
+
+            /// A message view.
+            case messageView(ChatBskyLexicon.Conversation.MessageViewDefinition)
+
+            /// A deleted message view.
+            case deletedMessageView(ChatBskyLexicon.Conversation.DeletedMessageViewDefinition)
+
+            /// An unknown case.
+            case unknown(String, [String: CodableValue])
+
+            public init(from decoder: any Decoder) throws {
+                let container = try decoder.container(keyedBy: CodingKeys.self)
+                let type = try container.decode(String.self, forKey: .type)
+
+                switch type {
+                    case "chat.bsky.convo.defs#messageView":
+                        self = .messageView(try ChatBskyLexicon.Conversation.MessageViewDefinition(from: decoder))
+                    case "chat.bsky.convo.defs#deletedMessageView":
+                        self = .deletedMessageView(try ChatBskyLexicon.Conversation.DeletedMessageViewDefinition(from: decoder))
+                    default:
+                        let singleValueDecodingContainer = try decoder.singleValueContainer()
+                        let dictionary = try Self.decodeDictionary(from: singleValueDecodingContainer, decoder: decoder)
+
+                        self = .unknown(type, dictionary)
+                }
+            }
+
+            public func encode(to encoder: any Encoder) throws {
+                var container = encoder.singleValueContainer()
+
+                switch self {
+                    case .messageView(let value):
+                        try container.encode(value)
+                    case .deletedMessageView(let value):
+                        try container.encode(value)
+                    default:
+                        break
+                }
+            }
+
+            enum CodingKeys: String, CodingKey {
+                case type = "$type"
+            }
         }
     }
 
@@ -537,12 +700,60 @@ extension ChatBskyLexicon.Conversation {
         public let conversationID: String
 
         /// The message itself.
-        public let message: ATUnion.LogDeleteMessageUnion
+        public let message: MessageUnion
 
         enum CodingKeys: String, CodingKey {
             case revision = "rev"
             case conversationID = "convoID"
             case message
+        }
+
+        // Unions
+        /// The message itself.
+        public enum MessageUnion: ATUnionProtocol {
+
+            /// A message view.
+            case messageView(ChatBskyLexicon.Conversation.MessageViewDefinition)
+
+            /// A deleted message view.
+            case deletedMessageView(ChatBskyLexicon.Conversation.DeletedMessageViewDefinition)
+
+            /// An unknown case.
+            case unknown(String, [String: CodableValue])
+
+            public init(from decoder: any Decoder) throws {
+                let container = try decoder.container(keyedBy: CodingKeys.self)
+                let type = try container.decode(String.self, forKey: .type)
+
+                switch type {
+                    case "chat.bsky.convo.defs#messageView":
+                        self = .messageView(try ChatBskyLexicon.Conversation.MessageViewDefinition(from: decoder))
+                    case "chat.bsky.convo.defs#deletedMessageView":
+                        self = .deletedMessageView(try ChatBskyLexicon.Conversation.DeletedMessageViewDefinition(from: decoder))
+                    default:
+                        let singleValueDecodingContainer = try decoder.singleValueContainer()
+                        let dictionary = try Self.decodeDictionary(from: singleValueDecodingContainer, decoder: decoder)
+
+                        self = .unknown(type, dictionary)
+                }
+            }
+
+            public func encode(to encoder: any Encoder) throws {
+                var container = encoder.singleValueContainer()
+
+                switch self {
+                    case .messageView(let value):
+                        try container.encode(value)
+                    case .deletedMessageView(let value):
+                        try container.encode(value)
+                    default:
+                        break
+                }
+            }
+
+            enum CodingKeys: String, CodingKey {
+                case type = "$type"
+            }
         }
     }
 
@@ -560,12 +771,60 @@ extension ChatBskyLexicon.Conversation {
         public let conversationID: String
 
         /// The message itself.
-        public let message: ATUnion.LogReadMessageUnion
+        public let message: MessageUnion
 
         enum CodingKeys: String, CodingKey {
             case revision = "rev"
             case conversationID = "convoID"
             case message
+        }
+
+        // Unions
+        /// The message itself.
+        public enum MessageUnion: ATUnionProtocol {
+
+            /// A message view.
+            case messageView(ChatBskyLexicon.Conversation.MessageViewDefinition)
+
+            /// A deleted message view.
+            case deletedMessageView(ChatBskyLexicon.Conversation.DeletedMessageViewDefinition)
+
+            /// An unknown case.
+            case unknown(String, [String: CodableValue])
+
+            public init(from decoder: any Decoder) throws {
+                let container = try decoder.container(keyedBy: CodingKeys.self)
+                let type = try container.decode(String.self, forKey: .type)
+
+                switch type {
+                    case "chat.bsky.convo.defs#messageView":
+                        self = .messageView(try ChatBskyLexicon.Conversation.MessageViewDefinition(from: decoder))
+                    case "chat.bsky.convo.defs#deletedMessageView":
+                        self = .deletedMessageView(try ChatBskyLexicon.Conversation.DeletedMessageViewDefinition(from: decoder))
+                    default:
+                        let singleValueDecodingContainer = try decoder.singleValueContainer()
+                        let dictionary = try Self.decodeDictionary(from: singleValueDecodingContainer, decoder: decoder)
+
+                        self = .unknown(type, dictionary)
+                }
+            }
+
+            public func encode(to encoder: any Encoder) throws {
+                var container = encoder.singleValueContainer()
+
+                switch self {
+                    case .messageView(let value):
+                        try container.encode(value)
+                    case .deletedMessageView(let value):
+                        try container.encode(value)
+                    default:
+                        break
+                }
+            }
+
+            enum CodingKeys: String, CodingKey {
+                case type = "$type"
+            }
         }
     }
 
@@ -592,8 +851,8 @@ extension ChatBskyLexicon.Conversation {
         }
 
         // Unions
-        /// A reference containing the list of messages.
-        public enum MessageUnion: Sendable, Codable {
+        /// The message itself.
+        public enum MessageUnion: ATUnionProtocol {
 
             /// A message view.
             case messageView(ChatBskyLexicon.Conversation.MessageViewDefinition)
@@ -601,17 +860,23 @@ extension ChatBskyLexicon.Conversation {
             /// A deleted message view.
             case deletedMessageView(ChatBskyLexicon.Conversation.DeletedMessageViewDefinition)
 
-            public init(from decoder: any Decoder) throws {
-                let container = try decoder.singleValueContainer()
+            /// An unknown case.
+            case unknown(String, [String: CodableValue])
 
-                if let value = try? container.decode(ChatBskyLexicon.Conversation.MessageViewDefinition.self) {
-                    self = .messageView(value)
-                } else if let value = try? container.decode(ChatBskyLexicon.Conversation.DeletedMessageViewDefinition.self) {
-                    self = .deletedMessageView(value)
-                } else {
-                    throw DecodingError.typeMismatch(
-                        MessageUnion.self, DecodingError.Context(
-                            codingPath: decoder.codingPath, debugDescription: "Unknown MessageUnion type"))
+            public init(from decoder: any Decoder) throws {
+                let container = try decoder.container(keyedBy: CodingKeys.self)
+                let type = try container.decode(String.self, forKey: .type)
+
+                switch type {
+                    case "chat.bsky.convo.defs#messageView":
+                        self = .messageView(try ChatBskyLexicon.Conversation.MessageViewDefinition(from: decoder))
+                    case "chat.bsky.convo.defs#deletedMessageView":
+                        self = .deletedMessageView(try ChatBskyLexicon.Conversation.DeletedMessageViewDefinition(from: decoder))
+                    default:
+                        let singleValueDecodingContainer = try decoder.singleValueContainer()
+                        let dictionary = try Self.decodeDictionary(from: singleValueDecodingContainer, decoder: decoder)
+
+                        self = .unknown(type, dictionary)
                 }
             }
 
@@ -619,11 +884,17 @@ extension ChatBskyLexicon.Conversation {
                 var container = encoder.singleValueContainer()
 
                 switch self {
-                    case .messageView(let messageView):
-                        try container.encode(messageView)
-                    case .deletedMessageView(let deletedMessageView):
-                        try container.encode(deletedMessageView)
+                    case .messageView(let value):
+                        try container.encode(value)
+                    case .deletedMessageView(let value):
+                        try container.encode(value)
+                    default:
+                        break
                 }
+            }
+
+            enum CodingKeys: String, CodingKey {
+                case type = "$type"
             }
         }
     }
@@ -642,7 +913,7 @@ extension ChatBskyLexicon.Conversation {
         public let conversationID: String
 
         /// The message itself.
-        public let message: ATUnion.LogReadMessageUnion
+        public let message: MessageUnion
 
         enum CodingKeys: String, CodingKey {
             case revision = "rev"
@@ -651,8 +922,8 @@ extension ChatBskyLexicon.Conversation {
         }
 
         // Unions
-        /// A reference containing the list of messages.
-        public enum MessageUnion: Sendable, Codable {
+        /// The message itself.
+        public enum MessageUnion: ATUnionProtocol {
 
             /// A message view.
             case messageView(ChatBskyLexicon.Conversation.MessageViewDefinition)
@@ -660,17 +931,23 @@ extension ChatBskyLexicon.Conversation {
             /// A deleted message view.
             case deletedMessageView(ChatBskyLexicon.Conversation.DeletedMessageViewDefinition)
 
-            public init(from decoder: any Decoder) throws {
-                let container = try decoder.singleValueContainer()
+            /// An unknown case.
+            case unknown(String, [String: CodableValue])
 
-                if let value = try? container.decode(ChatBskyLexicon.Conversation.MessageViewDefinition.self) {
-                    self = .messageView(value)
-                } else if let value = try? container.decode(ChatBskyLexicon.Conversation.DeletedMessageViewDefinition.self) {
-                    self = .deletedMessageView(value)
-                } else {
-                    throw DecodingError.typeMismatch(
-                        MessageUnion.self, DecodingError.Context(
-                            codingPath: decoder.codingPath, debugDescription: "Unknown MessageUnion type"))
+            public init(from decoder: any Decoder) throws {
+                let container = try decoder.container(keyedBy: CodingKeys.self)
+                let type = try container.decode(String.self, forKey: .type)
+
+                switch type {
+                    case "chat.bsky.convo.defs#messageView":
+                        self = .messageView(try ChatBskyLexicon.Conversation.MessageViewDefinition(from: decoder))
+                    case "chat.bsky.convo.defs#deletedMessageView":
+                        self = .deletedMessageView(try ChatBskyLexicon.Conversation.DeletedMessageViewDefinition(from: decoder))
+                    default:
+                        let singleValueDecodingContainer = try decoder.singleValueContainer()
+                        let dictionary = try Self.decodeDictionary(from: singleValueDecodingContainer, decoder: decoder)
+
+                        self = .unknown(type, dictionary)
                 }
             }
 
@@ -678,11 +955,17 @@ extension ChatBskyLexicon.Conversation {
                 var container = encoder.singleValueContainer()
 
                 switch self {
-                    case .messageView(let messageView):
-                        try container.encode(messageView)
-                    case .deletedMessageView(let deletedMessageView):
-                        try container.encode(deletedMessageView)
+                    case .messageView(let value):
+                        try container.encode(value)
+                    case .deletedMessageView(let value):
+                        try container.encode(value)
+                    default:
+                        break
                 }
+            }
+
+            enum CodingKeys: String, CodingKey {
+                case type = "$type"
             }
         }
     }

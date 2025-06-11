@@ -51,13 +51,13 @@ extension AppBskyLexicon.Graph {
         public let avatarImageBlob: ComAtprotoLexicon.Repository.UploadBlobOutput?
 
         /// The user-defined labels for the list. Optional.
-        public let labels: ATUnion.ListLabelsUnion?
+        public let labels: LabelsUnion?
 
         /// The date and time the list was created.
         public let createdAt: Date
 
         public init(purpose: AppBskyLexicon.Graph.ListPurpose, name: String, description: String?, descriptionFacets: [AppBskyLexicon.RichText.Facet]?,
-                    avatarImageBlob: ComAtprotoLexicon.Repository.UploadBlobOutput?, labels: ATUnion.ListLabelsUnion?, createdAt: Date) {
+                    avatarImageBlob: ComAtprotoLexicon.Repository.UploadBlobOutput?, labels: LabelsUnion?, createdAt: Date) {
             self.purpose = purpose
             self.name = name
             self.description = description
@@ -75,7 +75,7 @@ extension AppBskyLexicon.Graph {
             self.description = try container.decodeIfPresent(String.self, forKey: .description)
             self.descriptionFacets = try container.decodeIfPresent([AppBskyLexicon.RichText.Facet].self, forKey: .descriptionFacets)
             self.avatarImageBlob = try container.decodeIfPresent(ComAtprotoLexicon.Repository.UploadBlobOutput.self, forKey: .avatarImageBlob)
-            self.labels = try container.decodeIfPresent(ATUnion.ListLabelsUnion.self, forKey: .labels)
+            self.labels = try container.decodeIfPresent(LabelsUnion.self, forKey: .labels)
             self.createdAt = try container.decodeDate(forKey: .createdAt)
         }
 
@@ -101,6 +101,46 @@ extension AppBskyLexicon.Graph {
             case avatarImageBlob = "avatar"
             case labels
             case createdAt
+        }
+
+        /// An array of user-defined labels.
+        public enum LabelsUnion: ATUnionProtocol, Equatable, Hashable {
+
+            /// An array of user-defined labels.
+            case selfLabels(ComAtprotoLexicon.Label.SelfLabelsDefinition)
+
+            /// An unknown case.
+            case unknown(String, [String: CodableValue])
+
+            public init(from decoder: Decoder) throws {
+                let container = try decoder.container(keyedBy: CodingKeys.self)
+                let type = try container.decode(String.self, forKey: .type)
+
+                switch type {
+                    case "com.atproto.label.defs#selfLabels":
+                        self = .selfLabels(try ComAtprotoLexicon.Label.SelfLabelsDefinition(from: decoder))
+                    default:
+                        let singleValueDecodingContainer = try decoder.singleValueContainer()
+                        let dictionary = try Self.decodeDictionary(from: singleValueDecodingContainer, decoder: decoder)
+
+                        self = .unknown(type, dictionary)
+                }
+            }
+
+            public func encode(to encoder: Encoder) throws {
+                var container = encoder.singleValueContainer()
+
+                switch self {
+                    case .selfLabels(let value):
+                        try container.encode(value)
+                    default:
+                        break
+                }
+            }
+
+            enum CodingKeys: String, CodingKey {
+                case type = "$type"
+            }
         }
     }
 }

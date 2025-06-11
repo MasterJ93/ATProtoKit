@@ -195,12 +195,20 @@ extension ATProtoBluesky {
             }
         }
 
+        // labels
+        var labelsArray: [AppBskyLexicon.Actor.ProfileRecord.LabelsUnion]? = nil
+        if let labels = labels {
+            for label in labels {
+                labelsArray?.append(.selfLabel(label))
+            }
+        }
+
         let profileRecord = AppBskyLexicon.Actor.ProfileRecord(
             displayName: displayNameText,
             description: descriptionText,
             avatarBlob: profileAvatarImage,
             bannerBlob: profileBannerImage,
-            labels: labels,
+            labels: labelsArray,
             joinedViaStarterPack: joinedViaStarterPack,
             pinnedPost: pinnedPost,
             createdAt: Date()

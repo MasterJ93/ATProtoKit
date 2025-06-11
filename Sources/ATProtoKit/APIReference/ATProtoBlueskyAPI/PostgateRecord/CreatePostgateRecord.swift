@@ -90,7 +90,7 @@ extension ATProtoBluesky {
             throw ATProtoBlueskyError.recordNotFound(message: "Post record (\(postURI)) not found.")
         }
 
-        var postgateEmbedRules: [ATUnion.EmbeddingRulesUnion] = []
+        var postgateEmbedRules: [AppBskyLexicon.Feed.PostgateRecord.EmbeddingRulesUnion] = []
 
         // Loop through any items in embedRules, if any.
         if let embeddingRules = embeddingRules, embeddingRules.isEmpty == false {

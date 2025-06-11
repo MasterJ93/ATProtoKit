@@ -174,6 +174,8 @@ extension AppBskyLexicon.Embed.RecordDefinition.View: Identifiable {
                 return labelerView.id
             case .starterPackViewBasic(let starterPackViewBasic):
                 return starterPackViewBasic.id
+            case .unknown(_, let dictionary):
+                return String(dictionary.hashValue)
         }
     }
 }
@@ -214,6 +216,8 @@ extension AppBskyLexicon.Embed.RecordWithMediaDefinition.View: Identifiable {
                 return mediaView.id
             case .embedVideoView(let mediaView):
                 return mediaView.id
+            case .unknown(_, let dictionary):
+                return String(dictionary.hashValue)
         }
 
         return "\(record)_\(media)"

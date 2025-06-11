@@ -47,11 +47,101 @@ extension AppBskyLexicon.Embed {
             public let type: String = "app.bsky.embed.record#view"
 
             /// The record of a specific type.
-            public let record: ATUnion.RecordViewUnion
+            public let record: RecordViewUnion
 
             enum CodingKeys: String, CodingKey {
                 case type = "$type"
                 case record
+            }
+
+            // Unions
+            /// A reference containing the list of the status of a record.
+            public enum RecordViewUnion: ATUnionProtocol, Equatable, Hashable {
+
+                /// A normal record type.
+                case viewRecord(AppBskyLexicon.Embed.RecordDefinition.ViewRecord)
+
+                /// A record that may not have been found.
+                case viewNotFound(AppBskyLexicon.Embed.RecordDefinition.ViewNotFound)
+
+                /// A record that may have been blocked.
+                case viewBlocked(AppBskyLexicon.Embed.RecordDefinition.ViewBlocked)
+
+                /// A record that may have been detached.
+                case viewDetached(AppBskyLexicon.Embed.RecordDefinition.ViewDetached)
+
+                /// A generator view.
+                case generatorView(AppBskyLexicon.Feed.GeneratorViewDefinition)
+
+                /// A list view.
+                case listView(AppBskyLexicon.Graph.ListViewDefinition)
+
+                /// A labeler view.
+                case labelerView(AppBskyLexicon.Labeler.LabelerViewDefinition)
+
+                /// A starter pack view.
+                case starterPackViewBasic(AppBskyLexicon.Graph.StarterPackViewBasicDefinition)
+
+                /// An unknown case.
+                case unknown(String, [String: CodableValue])
+
+                public init(from decoder: Decoder) throws {
+                    let container = try decoder.container(keyedBy: CodingKeys.self)
+                    let type = try container.decode(String.self, forKey: .type)
+
+                    switch type {
+                        case "app.bsky.embed.record#viewRecord":
+                            self = .viewRecord(try AppBskyLexicon.Embed.RecordDefinition.ViewRecord(from: decoder))
+                        case "app.bsky.embed.record#viewNotFound":
+                            self = .viewNotFound(try AppBskyLexicon.Embed.RecordDefinition.ViewNotFound(from: decoder))
+                        case "app.bsky.embed.record#viewBlocked":
+                            self = .viewBlocked(try AppBskyLexicon.Embed.RecordDefinition.ViewBlocked(from: decoder))
+                        case "app.bsky.embed.record#viewDetached":
+                            self = .viewDetached(try AppBskyLexicon.Embed.RecordDefinition.ViewDetached(from: decoder))
+                        case "app.bsky.feed.defs#generatorView":
+                            self = .generatorView(try AppBskyLexicon.Feed.GeneratorViewDefinition(from: decoder))
+                        case "app.bsky.graph.defs#listView":
+                            self = .listView(try AppBskyLexicon.Graph.ListViewDefinition(from: decoder))
+                        case "app.bsky.labeler.defs#labelerView":
+                            self = .labelerView(try AppBskyLexicon.Labeler.LabelerViewDefinition(from: decoder))
+                        case "app.bsky.graph.defs#starterPackViewBasic":
+                            self = .starterPackViewBasic(try AppBskyLexicon.Graph.StarterPackViewBasicDefinition(from: decoder))
+                        default:
+                            let singleValueDecodingContainer = try decoder.singleValueContainer()
+                            let dictionary = try Self.decodeDictionary(from: singleValueDecodingContainer, decoder: decoder)
+
+                            self = .unknown(type, dictionary)
+                    }
+                }
+
+                public func encode(to encoder: Encoder) throws {
+                    var container = encoder.singleValueContainer()
+
+                    switch self {
+                        case .viewRecord(let value):
+                            try container.encode(value)
+                        case .viewNotFound(let value):
+                            try container.encode(value)
+                        case .viewBlocked(let value):
+                            try container.encode(value)
+                        case .viewDetached(let value):
+                            try container.encode(value)
+                        case .generatorView(let value):
+                            try container.encode(value)
+                        case .listView(let value):
+                            try container.encode(value)
+                        case .labelerView(let value):
+                            try container.encode(value)
+                        case .starterPackViewBasic(let value):
+                            try container.encode(value)
+                        default:
+                            break
+                    }
+                }
+
+                enum CodingKeys: String, CodingKey {
+                    case type = "$type"
+                }
             }
         }
 
@@ -97,7 +187,7 @@ extension AppBskyLexicon.Embed {
             public let quoteCount: Int?
 
             /// An array of embed views of various types.
-            public let embeds: [ATUnion.EmbedViewUnion]?
+            public let embeds: [EmbedsUnion]?
 
             /// The date the record was last indexed.
             public let indexedAt: Date
@@ -114,7 +204,7 @@ extension AppBskyLexicon.Embed {
                 self.repostCount = try container.decodeIfPresent(Int.self, forKey: .repostCount)
                 self.likeCount = try container.decodeIfPresent(Int.self, forKey: .likeCount)
                 self.quoteCount = try container.decodeIfPresent(Int.self, forKey: .quoteCount)
-                self.embeds = try container.decodeIfPresent([ATUnion.EmbedViewUnion].self, forKey: .embeds)
+                self.embeds = try container.decodeIfPresent([EmbedsUnion].self, forKey: .embeds)
                 self.indexedAt = try container.decodeDate(forKey: .indexedAt)
             }
 
@@ -147,6 +237,76 @@ extension AppBskyLexicon.Embed {
                 case quoteCount
                 case embeds
                 case indexedAt
+            }
+
+            // Unions
+            /// An array of embed views of various types.
+            public enum EmbedsUnion: ATUnionProtocol, Equatable, Hashable {
+
+                /// The view of an external embed.
+                case embedExternalView(AppBskyLexicon.Embed.ExternalDefinition.View)
+
+                /// The view of an image embed.
+                case embedImagesView(AppBskyLexicon.Embed.ImagesDefinition.View)
+
+                /// The view of a record embed.
+                case embedRecordView(AppBskyLexicon.Embed.RecordDefinition.View)
+
+                /// The view of a record embed alongside an embed of some compatible media.
+                case embedRecordWithMediaView(AppBskyLexicon.Embed.RecordWithMediaDefinition.View)
+
+                /// The view of a video embed.
+                case embedVideoView(AppBskyLexicon.Embed.VideoDefinition.View)
+
+                /// An unknown case.
+                case unknown(String, [String: CodableValue])
+
+                public init(from decoder: Decoder) throws {
+                    let container = try decoder.container(keyedBy: CodingKeys.self)
+                    let type = try container.decode(String.self, forKey: .type)
+
+                    switch type {
+                        case "app.bsky.embed.images#view":
+                            self = .embedExternalView(try AppBskyLexicon.Embed.ExternalDefinition.View(from: decoder))
+                        case "app.bsky.embed.video#view":
+                            self = .embedImagesView(try AppBskyLexicon.Embed.ImagesDefinition.View(from: decoder))
+                        case "app.bsky.embed.external#view":
+                            self = .embedVideoView(try AppBskyLexicon.Embed.VideoDefinition.View(from: decoder))
+                        case "app.bsky.embed.record#view":
+                            self = .embedRecordView(try AppBskyLexicon.Embed.RecordDefinition.View(from: decoder))
+                        case "app.bsky.embed.recordWithMedia#view":
+                            self = .embedRecordWithMediaView(try AppBskyLexicon.Embed.RecordWithMediaDefinition.View(from: decoder))
+                        default:
+                            let singleValueDecodingContainer = try decoder.singleValueContainer()
+                            let dictionary = try Self.decodeDictionary(from: singleValueDecodingContainer, decoder: decoder)
+
+                            self = .unknown(type, dictionary)
+
+                    }
+                }
+
+                public func encode(to encoder: Encoder) throws {
+                    var container = encoder.singleValueContainer()
+
+                    switch self {
+                        case .embedExternalView(let value):
+                            try container.encode(value)
+                        case .embedImagesView(let value):
+                            try container.encode(value)
+                        case .embedRecordView(let value):
+                            try container.encode(value)
+                        case .embedRecordWithMediaView(let value):
+                            try container.encode(value)
+                        case .embedVideoView(let value):
+                            try container.encode(value)
+                        default:
+                            break
+                    }
+                }
+
+                enum CodingKeys: String, CodingKey {
+                    case type = "$type"
+                }
             }
         }
 

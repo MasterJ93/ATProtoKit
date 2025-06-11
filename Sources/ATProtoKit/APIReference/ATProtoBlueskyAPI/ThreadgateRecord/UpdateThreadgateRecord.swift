@@ -32,7 +32,7 @@ extension ATProtoBluesky {
             throw ATProtoBlueskyError.recordNotFound(message: "Post record (\(postURI)) not found.")
         }
 
-        var threadgateAllowArray: [ATUnion.ThreadgateUnion] = []
+        var threadgateAllowArray: [AppBskyLexicon.Feed.ThreadgateRecord.ThreadgateUnion] = []
 
         if let replyControls = replyControls, replyControls.isEmpty == false {
             let cappedReplyControls = Array(replyControls.prefix(5))

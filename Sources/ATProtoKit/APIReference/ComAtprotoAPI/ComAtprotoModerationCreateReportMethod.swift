@@ -30,7 +30,7 @@ extension ATProtoKit {
     public func createReport(
         with reasonType: ComAtprotoLexicon.Moderation.ReasonTypeDefinition,
         andContextof reason: String? = nil,
-        subject: ATUnion.CreateReportSubjectUnion
+        subject: ComAtprotoLexicon.Moderation.CreateReportRequestBody.SubjectUnion
     ) async throws -> ComAtprotoLexicon.Moderation.CreateReportOutput {
         guard let session = try await self.getUserSession(),
               let keychain = sessionConfiguration?.keychainProtocol else {

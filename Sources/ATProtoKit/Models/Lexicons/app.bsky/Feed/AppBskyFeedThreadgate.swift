@@ -37,7 +37,7 @@ extension AppBskyLexicon.Feed {
         /// An array of rules used as an allowlist. Optional.
         ///
         /// - Important: Current maximum length is 5 items.
-        public let allow: [ATUnion.ThreadgateUnion]?
+        public let allow: [ThreadgateUnion]?
 
         /// The date and time of the creation of the threadgate.
         public let createdAt: Date
@@ -49,7 +49,7 @@ extension AppBskyLexicon.Feed {
         /// - Note: According to the AT Protocol specifications: "List of hidden reply URIs."
         public let hiddenReplies: [String]?
 
-        public init(postURI: String, allow: [ATUnion.ThreadgateUnion]?, createdAt: Date, hiddenReplies: [String]?) {
+        public init(postURI: String, allow: [ThreadgateUnion]?, createdAt: Date, hiddenReplies: [String]?) {
             self.postURI = postURI
             self.allow = allow
             self.createdAt = createdAt
@@ -60,7 +60,7 @@ extension AppBskyLexicon.Feed {
             let container = try decoder.container(keyedBy: CodingKeys.self)
 
             self.postURI = try container.decode(String.self, forKey: .postURI)
-            self.allow = try container.decodeIfPresent([ATUnion.ThreadgateUnion].self, forKey: .allow)
+            self.allow = try container.decodeIfPresent([ThreadgateUnion].self, forKey: .allow)
             self.createdAt = try container.decodeDate(forKey: .createdAt)
             self.hiddenReplies = try container.decodeIfPresent([String].self, forKey: .hiddenReplies)
         }
@@ -138,6 +138,69 @@ extension AppBskyLexicon.Feed {
             enum CodingKeys: String, CodingKey {
                 case type = "$type"
                 case listURI = "list"
+            }
+        }
+
+        // Unions
+        /// An array of rules used as an allowlist.
+        public enum ThreadgateUnion: ATUnionProtocol, Equatable, Hashable {
+
+            /// A rule that allows users that were mentioned in the user account's post to reply to
+            /// said post.
+            case mentionRule(AppBskyLexicon.Feed.ThreadgateRecord.MentionRule)
+
+            /// A rule that allows users who follow you to reply to the user account's post.
+            case followerRule(AppBskyLexicon.Feed.ThreadgateRecord.FollowerRule)
+
+            /// A rule that allows users that are followed by the user account to reply to the post.
+            case followingRule(AppBskyLexicon.Feed.ThreadgateRecord.FollowingRule)
+
+            /// A rule that allows users are in a specified list to reply to the post.
+            case listRule(AppBskyLexicon.Feed.ThreadgateRecord.ListRule)
+
+            /// An unknown case.
+            case unknown(String, [String: CodableValue])
+
+            public init(from decoder: Decoder) throws {
+                let container = try decoder.container(keyedBy: CodingKeys.self)
+                let type = try container.decode(String.self, forKey: .type)
+
+                switch type {
+                    case "app.bsky.feed.threadgate#mentionRule":
+                        self = .mentionRule(try AppBskyLexicon.Feed.ThreadgateRecord.MentionRule(from: decoder))
+                    case "app.bsky.feed.threadgate#followerRule":
+                        self = .followerRule(try AppBskyLexicon.Feed.ThreadgateRecord.FollowerRule(from: decoder))
+                    case "app.bsky.feed.threadgate#followingRule":
+                        self = .followingRule(try AppBskyLexicon.Feed.ThreadgateRecord.FollowingRule(from: decoder))
+                    case "app.bsky.feed.threadgate#listRule":
+                        self = .listRule(try AppBskyLexicon.Feed.ThreadgateRecord.ListRule(from: decoder))
+                    default:
+                        let singleValueDecodingContainer = try decoder.singleValueContainer()
+                        let dictionary = try Self.decodeDictionary(from: singleValueDecodingContainer, decoder: decoder)
+
+                        self = .unknown(type, dictionary)
+                }
+            }
+
+            public func encode(to encoder: Encoder) throws {
+                var container = encoder.singleValueContainer()
+
+                switch self {
+                    case .mentionRule(let embedView):
+                        try container.encode(embedView)
+                    case .followerRule(let embedView):
+                        try container.encode(embedView)
+                    case .followingRule(let embedView):
+                        try container.encode(embedView)
+                    case .listRule(let embedView):
+                        try container.encode(embedView)
+                    default:
+                        break
+                }
+            }
+
+            enum CodingKeys: String, CodingKey {
+                case type = "$type"
             }
         }
     }

@@ -28,7 +28,7 @@ extension AppBskyLexicon.Labeler {
         public let policies: LabelerPolicies
 
         /// An array of labels the labeler uses. Optional.
-        public let labels: [ComAtprotoLexicon.Label.SelfLabelDefinition]?
+        public let labels: [LabelsUnion]?
 
         /// The date and time the labeler service was created.
         public let createdAt: Date
@@ -56,7 +56,7 @@ extension AppBskyLexicon.Labeler {
         /// (distinct from empty array), default is any record type."
         public let subjectCollections: [String]?
 
-        public init(policies: LabelerPolicies, labels: [ComAtprotoLexicon.Label.SelfLabelDefinition], createdAt: Date,
+        public init(policies: LabelerPolicies, labels: [LabelsUnion], createdAt: Date,
                     reasonTypes: ComAtprotoLexicon.Moderation.ReasonTypeDefinition?, subjectTypes: ComAtprotoLexicon.Moderation.SubjectTypeDefinition?,
                     subjectCollections: [String]?) {
             self.policies = policies
@@ -71,7 +71,7 @@ extension AppBskyLexicon.Labeler {
             let container = try decoder.container(keyedBy: CodingKeys.self)
 
             self.policies = try container.decode(LabelerPolicies.self, forKey: .policies)
-            self.labels = try container.decode([ComAtprotoLexicon.Label.SelfLabelDefinition].self, forKey: .labels)
+            self.labels = try container.decode([LabelsUnion].self, forKey: .labels)
             self.createdAt = try container.decodeDate(forKey: .createdAt)
             self.reasonTypes = try container.decodeIfPresent(ComAtprotoLexicon.Moderation.ReasonTypeDefinition.self, forKey: .reasonTypes)
             self.subjectTypes = try container.decodeIfPresent(ComAtprotoLexicon.Moderation.SubjectTypeDefinition.self, forKey: .subjectTypes)
@@ -97,6 +97,46 @@ extension AppBskyLexicon.Labeler {
             case reasonTypes
             case subjectTypes
             case subjectCollections
+        }
+
+        /// An array of user-defined labels.
+        public enum LabelsUnion: ATUnionProtocol, Equatable, Hashable {
+
+            /// An array of user-defined labels.
+            case selfLabels(ComAtprotoLexicon.Label.SelfLabelsDefinition)
+
+            /// An unknown case.
+            case unknown(String, [String: CodableValue])
+
+            public init(from decoder: Decoder) throws {
+                let container = try decoder.container(keyedBy: CodingKeys.self)
+                let type = try container.decode(String.self, forKey: .type)
+
+                switch type {
+                    case "com.atproto.label.defs#selfLabels":
+                        self = .selfLabels(try ComAtprotoLexicon.Label.SelfLabelsDefinition(from: decoder))
+                    default:
+                        let singleValueDecodingContainer = try decoder.singleValueContainer()
+                        let dictionary = try Self.decodeDictionary(from: singleValueDecodingContainer, decoder: decoder)
+
+                        self = .unknown(type, dictionary)
+                }
+            }
+
+            public func encode(to encoder: Encoder) throws {
+                var container = encoder.singleValueContainer()
+
+                switch self {
+                    case .selfLabels(let value):
+                        try container.encode(value)
+                    default:
+                        break
+                }
+            }
+
+            enum CodingKeys: String, CodingKey {
+                case type = "$type"
+            }
         }
     }
 }

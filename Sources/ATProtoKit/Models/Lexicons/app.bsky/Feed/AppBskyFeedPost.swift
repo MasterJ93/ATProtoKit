@@ -42,7 +42,7 @@ extension AppBskyLexicon.Feed {
         public var reply: ReplyReference?
 
         /// The embed of the post. Optional.
-        public var embed: ATUnion.PostEmbedUnion?
+        public var embed: EmbedUnion?
 
         /// An array of languages the post text contains. Optional.
         ///
@@ -57,7 +57,7 @@ extension AppBskyLexicon.Feed {
         ///
         /// - Note: According to the AT Protocol specifications: "Self-label values for this post.
         /// Effectively content warnings."
-        public var labels: ATUnion.PostSelfLabelsUnion?
+        public var labels: LabelsUnion?
 
         /// An array of user-defined tags. Optional.
         ///
@@ -75,8 +75,8 @@ extension AppBskyLexicon.Feed {
         /// post was originally created."
         public let createdAt: Date
 
-        public init(text: String, facets: [AppBskyLexicon.RichText.Facet]?, reply: ReplyReference?, embed: ATUnion.PostEmbedUnion?, languages: [String]?,
-                    labels: ATUnion.PostSelfLabelsUnion?, tags: [String]?, createdAt: Date) {
+        public init(text: String, facets: [AppBskyLexicon.RichText.Facet]?, reply: ReplyReference?, embed: EmbedUnion?, languages: [String]?,
+                    labels: LabelsUnion?, tags: [String]?, createdAt: Date) {
             self.text = text
             self.facets = facets
             self.reply = reply
@@ -93,9 +93,9 @@ extension AppBskyLexicon.Feed {
             self.text = try container.decode(String.self, forKey: .text)
             self.facets = try container.decodeIfPresent([AppBskyLexicon.RichText.Facet].self, forKey: .facets)
             self.reply = try container.decodeIfPresent(ReplyReference.self, forKey: .reply)
-            self.embed = try container.decodeIfPresent(ATUnion.PostEmbedUnion.self, forKey: .embed)
+            self.embed = try container.decodeIfPresent(EmbedUnion.self, forKey: .embed)
             self.languages = try container.decodeIfPresent([String].self, forKey: .languages)
-            self.labels = try container.decodeIfPresent(ATUnion.PostSelfLabelsUnion.self, forKey: .labels)
+            self.labels = try container.decodeIfPresent(LabelsUnion.self, forKey: .labels)
             self.tags = try container.decodeIfPresent([String].self, forKey: .tags)
             self.createdAt = try container.decodeDate(forKey: .createdAt)
         }
@@ -144,6 +144,115 @@ extension AppBskyLexicon.Feed {
             /// - Note: If `parent` and `root` are identical, the post is a direct reply to the original
             /// post of the thread.
             public let parent: ComAtprotoLexicon.Repository.StrongReference
+        }
+
+        // Unions
+        /// The embed of the post.
+        public enum EmbedUnion: ATUnionProtocol, Equatable, Hashable {
+
+            /// An image embed.
+            case images(AppBskyLexicon.Embed.ImagesDefinition)
+
+            /// A video embed.
+            case video(AppBskyLexicon.Embed.VideoDefinition)
+
+            /// An external embed.
+            case external(AppBskyLexicon.Embed.ExternalDefinition)
+
+            /// A record embed.
+            case record(AppBskyLexicon.Embed.RecordDefinition)
+
+            /// A embed with both a record and some compatible media.
+            case recordWithMedia(AppBskyLexicon.Embed.RecordWithMediaDefinition)
+
+            /// An unknown case.
+            case unknown(String, [String: CodableValue])
+
+            public init(from decoder: Decoder) throws {
+                let container = try decoder.container(keyedBy: CodingKeys.self)
+                let type = try container.decode(String.self, forKey: .type)
+
+                switch type {
+                    case "app.bsky.embed.images":
+                        self = .images(try AppBskyLexicon.Embed.ImagesDefinition(from: decoder))
+                    case "app.bsky.embed.video":
+                        self = .video(try AppBskyLexicon.Embed.VideoDefinition(from: decoder))
+                    case "app.bsky.embed.external":
+                        self = .external(try AppBskyLexicon.Embed.ExternalDefinition(from: decoder))
+                    case "app.bsky.embed.record":
+                        self = .record(try AppBskyLexicon.Embed.RecordDefinition(from: decoder))
+                    case "app.bsky.embed.recordWithMedia":
+                        self = .recordWithMedia(try AppBskyLexicon.Embed.RecordWithMediaDefinition(from: decoder))
+                    default:
+                        let singleValueDecodingContainer = try decoder.singleValueContainer()
+                        let dictionary = try Self.decodeDictionary(from: singleValueDecodingContainer, decoder: decoder)
+
+                        self = .unknown(type, dictionary)
+                }
+            }
+
+            public func encode(to encoder: Encoder) throws {
+                var container = encoder.singleValueContainer()
+
+                switch self {
+                    case .images(let imagesValue):
+                        try container.encode(imagesValue)
+                    case .video(let value):
+                        try container.encode(value)
+                    case .external(let externalValue):
+                        try container.encode(externalValue)
+                    case .record(let recordValue):
+                        try container.encode(recordValue)
+                    case .recordWithMedia(let recordWithMediaValue):
+                        try container.encode(recordWithMediaValue)
+                    default:
+                        break
+                }
+            }
+
+            enum CodingKeys: String, CodingKey {
+                case type = "$type"
+            }
+        }
+
+        /// An array of user-defined labels.
+        public enum LabelsUnion: ATUnionProtocol, Equatable, Hashable {
+
+            /// An array of user-defined labels.
+            case selfLabels(ComAtprotoLexicon.Label.SelfLabelsDefinition)
+
+            /// An unknown case.
+            case unknown(String, [String: CodableValue])
+
+            public init(from decoder: Decoder) throws {
+                let container = try decoder.container(keyedBy: CodingKeys.self)
+                let type = try container.decode(String.self, forKey: .type)
+
+                switch type {
+                    case "com.atproto.label.defs#selfLabels":
+                        self = .selfLabels(try ComAtprotoLexicon.Label.SelfLabelsDefinition(from: decoder))
+                    default:
+                        let singleValueDecodingContainer = try decoder.singleValueContainer()
+                        let dictionary = try Self.decodeDictionary(from: singleValueDecodingContainer, decoder: decoder)
+
+                        self = .unknown(type, dictionary)
+                }
+            }
+
+            public func encode(to encoder: Encoder) throws {
+                var container = encoder.singleValueContainer()
+
+                switch self {
+                    case .selfLabels(let value):
+                        try container.encode(value)
+                    default:
+                        break
+                }
+            }
+
+            enum CodingKeys: String, CodingKey {
+                case type = "$type"
+            }
         }
     }
 }

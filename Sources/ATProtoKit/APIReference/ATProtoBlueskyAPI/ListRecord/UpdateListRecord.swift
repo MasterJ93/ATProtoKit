@@ -70,7 +70,7 @@ extension ATProtoBluesky {
         var newDescription: String? = list.description
         var newDescriptionFacets: [AppBskyLexicon.RichText.Facet]? = list.descriptionFacets
         var newListAvatarImage: ComAtprotoLexicon.Repository.UploadBlobOutput? = list.avatarImageBlob
-        var newLabels: ATUnion.ListLabelsUnion? = list.labels
+        var newLabels: AppBskyLexicon.Graph.ListRecord.LabelsUnion? = list.labels
 
         // Loop through each item of the array.
         for uniqueField in uniqueFields {
@@ -178,7 +178,7 @@ extension ATProtoBluesky {
         /// An array of labels made by the user.
         ///
         /// - Parameter with: The object to update the record with. Optional. Defaults to `nil`.
-        case labels(with: ATUnion.ListLabelsUnion? = nil)
+        case labels(with: AppBskyLexicon.Graph.ListRecord.LabelsUnion? = nil)
 
         /// Identifies the field.
         var identifier: String {

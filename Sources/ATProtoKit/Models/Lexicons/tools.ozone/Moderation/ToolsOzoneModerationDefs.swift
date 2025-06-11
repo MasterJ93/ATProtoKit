@@ -91,7 +91,7 @@ extension ToolsOzoneLexicon.Moderation {
 
         // Unions
         /// A reference containing the list of event views.
-        public enum EventUnion: Sendable, Codable {
+        public enum EventUnion: ATUnionProtocol {
 
             /// A takedown event.
             case moderationEventTakedown(ToolsOzoneLexicon.Moderation.EventTakedownDefinition)
@@ -138,49 +138,70 @@ extension ToolsOzoneLexicon.Moderation {
             /// A tag event.
             case moderationEventTag(ToolsOzoneLexicon.Moderation.EventTagDefinition)
 
+            /// An account event.
+            case moderationEventAccount(ToolsOzoneLexicon.Moderation.AccountEventDefinition)
+
+            /// An identity event.
+            case moderationEventIdentity(ToolsOzoneLexicon.Moderation.IdentityEventDefinition)
+
+            /// A record event.
+            case moderationEventRecord(ToolsOzoneLexicon.Moderation.EventReportDefinition)
+
             /// A priority score event.
             case moderationEventPriorityScore(ToolsOzoneLexicon.Moderation.EventPriorityScoreDefinition)
 
+            /// An unknown case.
+            case unknown(String, [String: CodableValue])
 
             public init(from decoder: Decoder) throws {
-                let container = try decoder.singleValueContainer()
+                let container = try decoder.container(keyedBy: CodingKeys.self)
+                let type = try container.decode(String.self, forKey: .type)
 
-                if let value = try? container.decode(ToolsOzoneLexicon.Moderation.EventTakedownDefinition.self) {
-                    self = .moderationEventTakedown(value)
-                } else if let value = try? container.decode(ToolsOzoneLexicon.Moderation.EventReverseTakedownDefinition.self) {
-                    self = .moderationEventReverseTakedown(value)
-                } else if let value = try? container.decode(ToolsOzoneLexicon.Moderation.EventCommentDefinition.self) {
-                    self = .moderationEventComment(value)
-                } else if let value = try? container.decode(ToolsOzoneLexicon.Moderation.EventReportDefinition.self) {
-                    self = .moderationEventReport(value)
-                } else if let value = try? container.decode(ToolsOzoneLexicon.Moderation.EventLabelDefinition.self) {
-                    self = .moderationEventLabel(value)
-                } else if let value = try? container.decode(ToolsOzoneLexicon.Moderation.EventAcknowledgeDefinition.self) {
-                    self = .moderationEventAcknowledge(value)
-                } else if let value = try? container.decode(ToolsOzoneLexicon.Moderation.EventEscalateDefinition.self) {
-                    self = .moderationEventEscalate(value)
-                } else if let value = try? container.decode(ToolsOzoneLexicon.Moderation.EventMuteDefinition.self) {
-                    self = .moderationEventMute(value)
-                } else if let value = try? container.decode(ToolsOzoneLexicon.Moderation.EventUnmuteDefinition.self) {
-                    self = .moderationEventUnmute(value)
-                } else if let value = try? container.decode(ToolsOzoneLexicon.Moderation.EventMuteReporterDefinition.self) {
-                    self = .moderationEventMuteReporter(value)
-                } else if let value = try? container.decode(ToolsOzoneLexicon.Moderation.EventUnmuteReporterDefinition.self) {
-                    self = .moderationEventUnmuteReporter(value)
-                } else if let value = try? container.decode(ToolsOzoneLexicon.Moderation.EventEmailDefinition.self) {
-                    self = .moderationEventEmail(value)
-                } else if let value = try? container.decode(ToolsOzoneLexicon.Moderation.EventResolveAppealDefinition.self) {
-                    self = .moderationEventResolveAppeal(value)
-                } else if let value = try? container.decode(ToolsOzoneLexicon.Moderation.EventDivertDefinition.self) {
-                    self = .moderationEventDivert(value)
-                } else if let value = try? container.decode(ToolsOzoneLexicon.Moderation.EventTagDefinition.self) {
-                    self = .moderationEventTag(value)
-                } else if let value = try? container.decode(ToolsOzoneLexicon.Moderation.EventPriorityScoreDefinition.self) {
-                    self = .moderationEventPriorityScore(value)
-                } else {
-                    throw DecodingError.typeMismatch(
-                        EventUnion.self, DecodingError.Context(
-                            codingPath: decoder.codingPath, debugDescription: "Unknown EventUnion type"))
+                switch type {
+                    case "tools.ozone.moderation.defs#modEventTakedown":
+                        self = .moderationEventTakedown(try ToolsOzoneLexicon.Moderation.EventTakedownDefinition(from: decoder))
+                    case "tools.ozone.moderation.defs#modEventReverseTakedown":
+                        self = .moderationEventReverseTakedown(try ToolsOzoneLexicon.Moderation.EventReverseTakedownDefinition(from: decoder))
+                    case "tools.ozone.moderation.defs#modEventComment":
+                        self = .moderationEventComment(try ToolsOzoneLexicon.Moderation.EventCommentDefinition(from: decoder))
+                    case "tools.ozone.moderation.defs#modEventReport":
+                        self = .moderationEventReport(try ToolsOzoneLexicon.Moderation.EventReportDefinition(from: decoder))
+                    case "tools.ozone.moderation.defs#modEventLabel":
+                        self = .moderationEventLabel(try ToolsOzoneLexicon.Moderation.EventLabelDefinition(from: decoder))
+                    case "tools.ozone.moderation.defs#modEventAcknowledge":
+                        self = .moderationEventAcknowledge(try ToolsOzoneLexicon.Moderation.EventAcknowledgeDefinition(from: decoder))
+                    case "tools.ozone.moderation.defs#modEventEscalate":
+                        self = .moderationEventEscalate(try ToolsOzoneLexicon.Moderation.EventEscalateDefinition(from: decoder))
+                    case "tools.ozone.moderation.defs#modEventMute":
+                        self = .moderationEventMute(try ToolsOzoneLexicon.Moderation.EventMuteDefinition(from: decoder))
+                    case "tools.ozone.moderation.defs#modEventUnmute":
+                        self = .moderationEventUnmute(try ToolsOzoneLexicon.Moderation.EventUnmuteDefinition(from: decoder))
+                    case "tools.ozone.moderation.defs#modEventMuteReporter":
+                        self = .moderationEventMuteReporter(try ToolsOzoneLexicon.Moderation.EventMuteReporterDefinition(from: decoder))
+                    case "tools.ozone.moderation.defs#modEventUnmuteReporter":
+                        self = .moderationEventUnmuteReporter(try ToolsOzoneLexicon.Moderation.EventUnmuteReporterDefinition(from: decoder))
+                    case "tools.ozone.moderation.defs#modEventEmail":
+                        self = .moderationEventEmail(try ToolsOzoneLexicon.Moderation.EventEmailDefinition(from: decoder))
+                    case "tools.ozone.moderation.defs#modEventResolveAppeal":
+                        self = .moderationEventResolveAppeal(try ToolsOzoneLexicon.Moderation.EventResolveAppealDefinition(from: decoder))
+                    case "tools.ozone.moderation.defs#modEventDivert":
+                        self = .moderationEventDivert(try ToolsOzoneLexicon.Moderation.EventDivertDefinition(from: decoder))
+                    case "tools.ozone.moderation.defs#modEventTag":
+                        self = .moderationEventTag(try ToolsOzoneLexicon.Moderation.EventTagDefinition(from: decoder))
+                    case "tools.ozone.moderation.defs#accountEvent":
+                        self = .moderationEventAccount(try ToolsOzoneLexicon.Moderation.AccountEventDefinition(from: decoder))
+                    case "tools.ozone.moderation.defs#identityEvent":
+                        self = .moderationEventIdentity(try ToolsOzoneLexicon.Moderation.IdentityEventDefinition(from: decoder))
+                    case "tools.ozone.moderation.defs#recordEvent":
+                        self = .moderationEventRecord(try ToolsOzoneLexicon.Moderation.EventReportDefinition(from: decoder))
+                    case "tools.ozone.moderation.defs#modEventPriorityScore":
+                        self = .moderationEventPriorityScore(try ToolsOzoneLexicon.Moderation.EventPriorityScoreDefinition(from: decoder))
+                    default:
+                        let singleValueDecodingContainer = try decoder.singleValueContainer()
+                        let dictionary = try Self.decodeDictionary(from: singleValueDecodingContainer, decoder: decoder)
+
+                        self = .unknown(type, dictionary)
+
                 }
             }
 
@@ -188,39 +209,45 @@ extension ToolsOzoneLexicon.Moderation {
                 var container = encoder.singleValueContainer()
 
                 switch self {
-                    case .moderationEventTakedown(let moderationEventTakedown):
-                        try container.encode(moderationEventTakedown)
-                    case .moderationEventReverseTakedown(let moderationEventReverseTakedown):
-                        try container.encode(moderationEventReverseTakedown)
-                    case .moderationEventComment(let moderationEventComment):
-                        try container.encode(moderationEventComment)
-                    case .moderationEventReport(let moderationEventReport):
-                        try container.encode(moderationEventReport)
-                    case .moderationEventLabel(let moderationEventLabel):
-                        try container.encode(moderationEventLabel)
-                    case .moderationEventAcknowledge(let moderationEventAcknowledge):
-                        try container.encode(moderationEventAcknowledge)
-                    case .moderationEventEscalate(let moderationEventEscalate):
-                        try container.encode(moderationEventEscalate)
-                    case .moderationEventMute(let moderationEventMute):
-                        try container.encode(moderationEventMute)
-                    case .moderationEventUnmute(let moderationEventUnmute):
-                        try container.encode(moderationEventUnmute)
-                    case .moderationEventMuteReporter(let moderationEventMuteReporter):
-                        try container.encode(moderationEventMuteReporter)
-                    case .moderationEventUnmuteReporter(let moderationEventUnmuteReporter):
-                        try container.encode(moderationEventUnmuteReporter)
-                    case .moderationEventEmail(let moderationEventEmail):
-                        try container.encode(moderationEventEmail)
-                    case .moderationEventResolveAppeal(let moderationEventResolveAppeal):
-                        try container.encode(moderationEventResolveAppeal)
-                    case .moderationEventDivert(let moderationEventDivert):
-                        try container.encode(moderationEventDivert)
-                    case .moderationEventTag(let moderationEventTag):
-                        try container.encode(moderationEventTag)
-                    case .moderationEventPriorityScore(let event):
-                        try container.encode(event)
+                    case .moderationEventTakedown(let value):
+                        try container.encode(value)
+                    case .moderationEventReverseTakedown(let value):
+                        try container.encode(value)
+                    case .moderationEventComment(let value):
+                        try container.encode(value)
+                    case .moderationEventReport(let value):
+                        try container.encode(value)
+                    case .moderationEventLabel(let value):
+                        try container.encode(value)
+                    case .moderationEventAcknowledge(let value):
+                        try container.encode(value)
+                    case .moderationEventEscalate(let value):
+                        try container.encode(value)
+                    case .moderationEventMute(let value):
+                        try container.encode(value)
+                    case .moderationEventUnmute(let value):
+                        try container.encode(value)
+                    case .moderationEventMuteReporter(let value):
+                        try container.encode(value)
+                    case .moderationEventUnmuteReporter(let value):
+                        try container.encode(value)
+                    case .moderationEventEmail(let value):
+                        try container.encode(value)
+                    case .moderationEventResolveAppeal(let value):
+                        try container.encode(value)
+                    case .moderationEventDivert(let value):
+                        try container.encode(value)
+                    case .moderationEventTag(let value):
+                        try container.encode(value)
+                    case .moderationEventPriorityScore(let value):
+                        try container.encode(value)
+                    default:
+                        break
                 }
+            }
+
+            enum CodingKeys: String, CodingKey {
+                case type = "$type"
             }
         }
 
@@ -345,10 +372,10 @@ extension ToolsOzoneLexicon.Moderation {
         public let id: Int
 
         /// The subject reference of the status view.
-        public let subject: ATUnion.SubjectStatusViewSubjectUnion
+        public let subject: SubjectUnion
 
         /// The hosting type of the status view.
-        public let hosting: ATUnion.SubjectStatusViewHostingUnion?
+        public let hosting: HostingUnion?
 
         /// An array of CID hashes related to blobs. Optional.
         public let subjectBlobCIDs: [String]?
@@ -424,7 +451,7 @@ extension ToolsOzoneLexicon.Moderation {
         /// subjects authored by the subject's account."
         public let recordsStats: RecordsStatsDefinition?
 
-        public init(id: Int, subject: ATUnion.SubjectStatusViewSubjectUnion, hosting: ATUnion.SubjectStatusViewHostingUnion?,
+        public init(id: Int, subject: SubjectUnion, hosting: HostingUnion?,
                     subjectBlobCIDs: [String]? = nil, subjectRepoHandle: String? = nil, updatedAt: Date, createdAt: Date,
                     reviewState: ToolsOzoneLexicon.Moderation.SubjectReviewStateDefinition, comment: String? = nil, priorityScore: Int? = nil,
                     muteUntil: Date? = nil, muteReportingUntil: Date? = nil, lastReviewedBy: String? = nil, lastReviewedAt: Date? = nil,
@@ -458,8 +485,8 @@ extension ToolsOzoneLexicon.Moderation {
             let container = try decoder.container(keyedBy: CodingKeys.self)
 
             self.id = try container.decode(Int.self, forKey: .id)
-            self.subject = try container.decode(ATUnion.SubjectStatusViewSubjectUnion.self, forKey: .subject)
-            self.hosting = try container.decodeIfPresent(ATUnion.SubjectStatusViewHostingUnion.self, forKey: .hosting)
+            self.subject = try container.decode(SubjectUnion.self, forKey: .subject)
+            self.hosting = try container.decodeIfPresent(HostingUnion.self, forKey: .hosting)
             self.subjectBlobCIDs = try container.decodeIfPresent([String].self, forKey: .subjectBlobCIDs)
             self.subjectRepoHandle = try container.decodeIfPresent(String.self, forKey: .subjectRepoHandle)
             self.updatedAt = try container.decodeDate(forKey: .updatedAt)
@@ -537,6 +564,108 @@ extension ToolsOzoneLexicon.Moderation {
             case accountStats
             case recordsStats
         }
+
+        // Unions
+        /// The subject reference of the status view.
+        public enum SubjectUnion: ATUnionProtocol {
+
+            /// A repository reference.
+            case repositoryReference(ComAtprotoLexicon.Admin.RepositoryReferenceDefinition)
+
+            /// A strong reference.
+            case strongReference(ComAtprotoLexicon.Repository.StrongReference)
+
+            /// A message reference.
+            case messageReference(ChatBskyLexicon.Conversation.MessageReferenceDefinition)
+
+            /// An unknown case.
+            case unknown(String, [String: CodableValue])
+
+            public init(from decoder: Decoder) throws {
+                let container = try decoder.container(keyedBy: CodingKeys.self)
+                let type = try container.decode(String.self, forKey: .type)
+
+                switch type {
+                    case "com.atproto.admin.defs#repoRef":
+                        self = .repositoryReference(try ComAtprotoLexicon.Admin.RepositoryReferenceDefinition(from: decoder))
+                    case "com.atproto.repo.strongRef":
+                        self = .strongReference(try ComAtprotoLexicon.Repository.StrongReference(from: decoder))
+                    case "chat.bsky.convo.defs#messageRef":
+                        self = .messageReference(try ChatBskyLexicon.Conversation.MessageReferenceDefinition(from: decoder))
+                    default:
+                        let singleValueDecodingContainer = try decoder.singleValueContainer()
+                        let dictionary = try Self.decodeDictionary(from: singleValueDecodingContainer, decoder: decoder)
+
+                        self = .unknown(type, dictionary)
+                }
+            }
+
+            public func encode(to encoder: Encoder) throws {
+                var container = encoder.singleValueContainer()
+
+                switch self {
+                    case .repositoryReference(let repositoryReference):
+                        try container.encode(repositoryReference)
+                    case .strongReference(let strongReference):
+                        try container.encode(strongReference)
+                    case .messageReference(let value):
+                        try container.encode(value)
+                    default:
+                        break
+                }
+            }
+
+            enum CodingKeys: String, CodingKey {
+                case type = "$type"
+            }
+        }
+
+        /// The hosting type of the status view.
+        public enum HostingUnion: ATUnionProtocol {
+
+            /// A repository reference.
+            case accountHosting(ToolsOzoneLexicon.Moderation.AccountHostingDefinition)
+
+            /// A strong reference.
+            case recordHosting(ToolsOzoneLexicon.Moderation.RecordHostingDefinition)
+
+            /// An unknown case.
+            case unknown(String, [String: CodableValue])
+
+            public init(from decoder: Decoder) throws {
+                let container = try decoder.container(keyedBy: CodingKeys.self)
+                let type = try container.decode(String.self, forKey: .type)
+
+                switch type {
+                    case "tools.ozone.moderation.defs#accountHosting":
+                        self = .accountHosting(try ToolsOzoneLexicon.Moderation.AccountHostingDefinition(from: decoder))
+                    case "tools.ozone.moderation.defs#recordHosting":
+                        self = .recordHosting(try ToolsOzoneLexicon.Moderation.RecordHostingDefinition(from: decoder))
+                    default:
+                        let singleValueDecodingContainer = try decoder.singleValueContainer()
+                        let dictionary = try Self.decodeDictionary(from: singleValueDecodingContainer, decoder: decoder)
+
+                        self = .unknown(type, dictionary)
+                }
+            }
+
+            public func encode(to encoder: Encoder) throws {
+                var container = encoder.singleValueContainer()
+
+                switch self {
+                    case .accountHosting(let value):
+                        try container.encode(value)
+                    case .recordHosting(let value):
+                        try container.encode(value)
+                    default:
+                        break
+                }
+            }
+
+            enum CodingKeys: String, CodingKey {
+                case type = "$type"
+            }
+        }
     }
 
     /// A definition model for a subject view.
@@ -562,7 +691,7 @@ extension ToolsOzoneLexicon.Moderation {
         public let repository: RepositoryViewDetailDefinition?
 
         /// The subject's profile. Optional.
-        public let profile: String
+        public let profile: ProfileUnion
 
         /// The subject's record. Optional.
         public let record: RecordViewDetailDefinition?
@@ -574,6 +703,40 @@ extension ToolsOzoneLexicon.Moderation {
             case repository = "repo"
             case profile
             case record
+        }
+
+        // Unions
+        /// The subject's profile.
+        public enum ProfileUnion: ATUnionProtocol {
+
+            /// An unknown case.
+            case unknown(String, [String: CodableValue])
+
+            public init(from decoder: Decoder) throws {
+                let container = try decoder.container(keyedBy: CodingKeys.self)
+                let type = try container.decode(String.self, forKey: .type)
+
+                switch type {
+                    default:
+                        let singleValueDecodingContainer = try decoder.singleValueContainer()
+                        let dictionary = try Self.decodeDictionary(from: singleValueDecodingContainer, decoder: decoder)
+
+                        self = .unknown(type, dictionary)
+                }
+            }
+
+            public func encode(to encoder: any Encoder) throws {
+                // var container = encoder.singleValueContainer()
+
+                switch self {
+                    default:
+                        break
+                }
+            }
+
+            enum CodingKeys: String, CodingKey {
+                case type = "$type"
+            }
         }
     }
 
@@ -1772,12 +1935,12 @@ extension ToolsOzoneLexicon.Moderation {
         public let createdAt: Date
 
         /// The type of media in the blob.
-        public let details: ATUnion.BlobViewDetailUnion
+        public let details: DetailsUnion
 
         /// The status of the subject.
         public let moderation: ToolsOzoneLexicon.Moderation.ModerationDefinition
 
-        public init(cid: String, mimeType: String, size: Int, createdAt: Date, details: ATUnion.BlobViewDetailUnion,
+        public init(cid: String, mimeType: String, size: Int, createdAt: Date, details: DetailsUnion,
                     moderation: ToolsOzoneLexicon.Moderation.ModerationDefinition) {
             self.cid = cid
             self.mimeType = mimeType
@@ -1794,7 +1957,7 @@ extension ToolsOzoneLexicon.Moderation {
             self.mimeType = try container.decode(String.self, forKey: .mimeType)
             self.size = try container.decode(Int.self, forKey: .size)
             self.createdAt = try container.decodeDate(forKey: .createdAt)
-            self.details = try container.decode(ATUnion.BlobViewDetailUnion.self, forKey: .details)
+            self.details = try container.decode(DetailsUnion.self, forKey: .details)
             self.moderation = try container.decode(ToolsOzoneLexicon.Moderation.ModerationDefinition.self, forKey: .moderation)
         }
 
@@ -1816,6 +1979,55 @@ extension ToolsOzoneLexicon.Moderation {
             case createdAt
             case details
             case moderation
+        }
+
+        // Unions
+        /// The type of media in the blob.
+        public enum DetailsUnion: ATUnionProtocol {
+
+            /// The details for an image.
+            case imageDetails(ToolsOzoneLexicon.Moderation.ImageDetailsDefinition)
+
+            /// The details for a video.
+            case videoDetails(ToolsOzoneLexicon.Moderation.VideoDetailsDefinition)
+
+            /// An unknown case.
+            case unknown(String, [String: CodableValue])
+
+            public init(from decoder: Decoder) throws {
+                let container = try decoder.container(keyedBy: CodingKeys.self)
+                let type = try container.decode(String.self, forKey: .type)
+
+                switch type {
+                    case "tools.ozone.moderation.defs#imageDetails":
+                        self = .imageDetails(try ToolsOzoneLexicon.Moderation.ImageDetailsDefinition(from: decoder))
+                    case "tools.ozone.moderation.defs#videoDetails":
+                        self = .videoDetails(try ToolsOzoneLexicon.Moderation.VideoDetailsDefinition(from: decoder))
+                    default:
+                        let singleValueDecodingContainer = try decoder.singleValueContainer()
+                        let dictionary = try Self.decodeDictionary(from: singleValueDecodingContainer, decoder: decoder)
+
+                        self = .unknown(type, dictionary)
+
+                }
+            }
+
+            public func encode(to encoder: Encoder) throws {
+                var container = encoder.singleValueContainer()
+
+                switch self {
+                    case .imageDetails(let value):
+                        try container.encode(value)
+                    case .videoDetails(let value):
+                        try container.encode(value)
+                    default:
+                        break
+                }
+            }
+
+            enum CodingKeys: String, CodingKey {
+                case type = "$type"
+            }
         }
     }
 

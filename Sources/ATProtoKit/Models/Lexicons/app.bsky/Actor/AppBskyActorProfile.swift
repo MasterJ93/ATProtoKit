@@ -61,7 +61,7 @@ extension AppBskyLexicon.Actor {
         ///
         /// - Note: According to the AT Protocol specifications: "Self-label values, specific to
         /// the Bluesky application, on the overall account."
-        public let labels: [ComAtprotoLexicon.Label.SelfLabelsDefinition]?
+        public let labels: [LabelsUnion]?
 
         /// The starter pack the user account used to join Bluesky. Optional.
         public let joinedViaStarterPack: ComAtprotoLexicon.Repository.StrongReference?
@@ -73,7 +73,7 @@ extension AppBskyLexicon.Actor {
         public let createdAt: Date?
 
         public init(displayName: String?, description: String?, avatarBlob: ComAtprotoLexicon.Repository.UploadBlobOutput?,
-                    bannerBlob: ComAtprotoLexicon.Repository.UploadBlobOutput?, labels: [ComAtprotoLexicon.Label.SelfLabelsDefinition]?,
+                    bannerBlob: ComAtprotoLexicon.Repository.UploadBlobOutput?, labels: [LabelsUnion]?,
                     joinedViaStarterPack: ComAtprotoLexicon.Repository.StrongReference?, pinnedPost: ComAtprotoLexicon.Repository.StrongReference?,
                     createdAt: Date?) {
             self.displayName = displayName
@@ -93,7 +93,7 @@ extension AppBskyLexicon.Actor {
             self.description = try container.decodeIfPresent(String.self, forKey: .description)
             self.avatarBlob = try container.decodeIfPresent(ComAtprotoLexicon.Repository.UploadBlobOutput.self, forKey: .avatarBlob)
             self.bannerBlob = try container.decodeIfPresent(ComAtprotoLexicon.Repository.UploadBlobOutput.self, forKey: .bannerBlob)
-            self.labels = try container.decodeIfPresent([ComAtprotoLexicon.Label.SelfLabelsDefinition].self, forKey: .labels)
+            self.labels = try container.decodeIfPresent([LabelsUnion].self, forKey: .labels)
             self.joinedViaStarterPack = try container.decodeIfPresent(ComAtprotoLexicon.Repository.StrongReference.self, forKey: .joinedViaStarterPack)
             self.pinnedPost = try container.decodeIfPresent(ComAtprotoLexicon.Repository.StrongReference.self, forKey: .pinnedPost)
             self.createdAt = try container.decodeDateIfPresent(forKey: .createdAt)
@@ -122,6 +122,46 @@ extension AppBskyLexicon.Actor {
             case joinedViaStarterPack
             case pinnedPost
             case createdAt
+        }
+
+        /// An array of user-defined labels.
+        public enum LabelsUnion: ATUnionProtocol, Equatable, Hashable {
+
+            /// A definition model for an array of self-defined labels.
+            case selfLabel(ComAtprotoLexicon.Label.SelfLabelsDefinition)
+
+            /// An unknown case.
+            case unknown(String, [String: CodableValue])
+
+            public init(from decoder: any Decoder) throws {
+                let container = try decoder.container(keyedBy: CodingKeys.self)
+                let type = try container.decode(String.self, forKey: .type)
+
+                switch type {
+                    case "com.atproto.label.defs#selfLabels":
+                        self = .selfLabel(try ComAtprotoLexicon.Label.SelfLabelsDefinition(from: decoder))
+                    default:
+                        let singleValueDecodingContainer = try decoder.singleValueContainer()
+                        let dictionary = try Self.decodeDictionary(from: singleValueDecodingContainer, decoder: decoder)
+
+                        self = .unknown(type, dictionary)
+                }
+            }
+
+            public func encode(to encoder: any Encoder) throws {
+                var container = encoder.singleValueContainer()
+
+                switch self {
+                    case .selfLabel(let value):
+                        try container.encode(value)
+                    default:
+                        break
+                }
+            }
+
+            enum CodingKeys: String, CodingKey {
+                case type = "$type"
+            }
         }
     }
 }

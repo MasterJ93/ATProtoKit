@@ -258,7 +258,7 @@ extension ATProtoBluesky {
         locales: [Locale] = [],
         replyTo: AppBskyLexicon.Feed.PostRecord.ReplyReference? = nil,
         embed: EmbedIdentifier? = nil,
-        labels: ATUnion.PostSelfLabelsUnion? = nil,
+        labels: ComAtprotoLexicon.Label.SelfLabelsDefinition? = nil,
         tags: [String]? = nil,
         creationDate: Date = Date(),
         recordKey: String? = nil,
@@ -336,7 +336,7 @@ extension ATProtoBluesky {
         }
 
         // Embed
-        var resolvedEmbed: ATUnion.PostEmbedUnion? = nil
+        var resolvedEmbed: AppBskyLexicon.Feed.PostRecord.EmbedUnion? = nil
 
         if let embedUnion = embed {
             do {
@@ -395,6 +395,12 @@ extension ATProtoBluesky {
             }
         }
 
+        // Labels
+        var selfLabels: AppBskyLexicon.Feed.PostRecord.LabelsUnion? = nil
+        if let labels = labels {
+            selfLabels = .selfLabels(labels)
+        }
+
         // Compiling all parts of the post into one.
         let postRecord = AppBskyLexicon.Feed.PostRecord(
             text: postText,
@@ -402,7 +408,7 @@ extension ATProtoBluesky {
             reply: resolvedReplyTo,
             embed: resolvedEmbed,
             languages: localeIdentifiers,
-            labels: labels,
+            labels: selfLabels,
             tags: tags,
             createdAt: creationDate
         )
@@ -432,12 +438,12 @@ extension ATProtoBluesky {
     ///   4 images.
     ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `https://bsky.social`.
     ///   - accessToken: The access token used to authenticate to the user.
-    /// - Returns: An ``ATUnion/EmbedViewUnion``, which contains an array of
+    /// - Returns: An ``AppBskyLexicon/Feed/PostRecord/EmbedUnion``, which contains an array of
     /// ``AppBskyLexicon/Embed/ImagesDefinition``s for use in a record.
     ///
     /// - Important: Each image can only be 1 MB in size.
     public func uploadImages(_ images: [ATProtoTools.ImageQuery], pdsURL: String = "https://bsky.social",
-                             accessToken: String) async throws -> ATUnion.PostEmbedUnion {
+                             accessToken: String) async throws -> AppBskyLexicon.Feed.PostRecord.EmbedUnion {
         var embedImages = [AppBskyLexicon.Embed.ImagesDefinition.Image]()
 
         for image in images {
@@ -500,14 +506,14 @@ extension ATProtoBluesky {
     ///   Defaults to 5 seconds.
     ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `https://bsky.social`.
     ///   - accessToken: The access token used to authenticate to the user.
-    /// - Returns: An ``ATUnion/EmbedViewUnion``, which contains an instance of
+    /// - Returns: An ``AppBskyLexicon/Feed/PostRecord/EmbedUnion``, which contains an instance of
     /// ``AppBskyLexicon/Embed/VideoDefinition`` for use in a record.
     /// - Throws: Errors related to whether the video or caption file doesn't match the video file
     /// requirements, whether the files failed to upload, or whether anything related to the
     /// AT Protocol.
     public func buildVideo(_ video: Data, with captions: [Caption]? = nil, altText: String? = nil,
                            aspectRatio: AppBskyLexicon.Embed.AspectRatioDefinition? = nil, pollingFrequency: Int = 3, pdsURL: String = "https://bsky.social",
-                           accessToken: String) async throws -> ATUnion.PostEmbedUnion {
+                           accessToken: String) async throws -> AppBskyLexicon.Feed.PostRecord.EmbedUnion {
         // Check if the size of the video is small enough.
         let sizeLimit = 100 * 1024 * 1024 // 100MB in bytes
         if video.count >= sizeLimit {
@@ -645,15 +651,15 @@ extension ATProtoBluesky {
     ///   - description: The description of the website.
     ///   - thumbnailImageURL: The URL of the thumbnail image. Optional.
     ///   - session: The ``UserSession`` object.
-    /// - Returns: An ``ATUnion/EmbedViewUnion`` which contains an ``AppBskyLexicon/Embed/ExternalDefinition`` for use
-    /// in a record.
+    /// - Returns: An ``AppBskyLexicon/Feed/PostRecord/EmbedUnion`` which contains an
+    /// ``AppBskyLexicon/Embed/ExternalDefinition`` for use in a record.
     public func buildExternalEmbed(
         from url: URL,
         title: String,
         description: String?,
         thumbnailImageURL: URL? = nil,
         session: UserSession
-    ) async -> ATUnion.PostEmbedUnion? {
+    ) async -> AppBskyLexicon.Feed.PostRecord.EmbedUnion? {
         // Attempt to load the thumbnail image, if provided.
         let image: Data? = {
             guard let thumbnailImageURL,
@@ -704,7 +710,7 @@ extension ATProtoBluesky {
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
-    public func addQuotePostToEmbed(_ strongReference: ComAtprotoLexicon.Repository.StrongReference) async throws -> ATUnion.PostEmbedUnion {
+    public func addQuotePostToEmbed(_ strongReference: ComAtprotoLexicon.Repository.StrongReference) async throws -> AppBskyLexicon.Feed.PostRecord.EmbedUnion {
         let record = try await ATProtoTools().fetchRecordForURI(strongReference.recordURI)
         let reference = ComAtprotoLexicon.Repository.StrongReference(recordURI: record.uri, cidHash: record.cid)
         let embedRecord = AppBskyLexicon.Embed.RecordDefinition(record: reference)
@@ -761,7 +767,7 @@ extension ATProtoBluesky {
         /// - Parameters:
         ///   - record: An `EmbedRecord`, representing the post to be embedded.
         ///   - media: A `MediaUnion`, representing the media content associated with the post.
-        case recordWithMedia(record: AppBskyLexicon.Embed.RecordDefinition, media: ATUnion.RecordWithMediaUnion)
+        case recordWithMedia(record: AppBskyLexicon.Embed.RecordDefinition, media: AppBskyLexicon.Embed.RecordWithMediaDefinition.MediaUnion)
     }
 
     // MARK: Helper methods -

@@ -29,7 +29,7 @@ extension AppBskyLexicon.Feed {
         public let record: UnknownType
 
         /// An embed view of a specific type. Optional.
-        public var embed: ATUnion.EmbedViewUnion?
+        public var embed: EmbedUnion?
 
         /// The number of replies in the post. Optional.
         public let replyCount: Int?
@@ -62,7 +62,7 @@ extension AppBskyLexicon.Feed {
             self.cid = try container.decode(String.self, forKey: .cid)
             self.author = try container.decode(AppBskyLexicon.Actor.ProfileViewBasicDefinition.self, forKey: .author)
             self.record = try container.decode(UnknownType.self, forKey: .record)
-            self.embed = try container.decodeIfPresent(ATUnion.EmbedViewUnion.self, forKey: .embed)
+            self.embed = try container.decodeIfPresent(EmbedUnion.self, forKey: .embed)
             self.replyCount = try container.decodeIfPresent(Int.self, forKey: .replyCount)
             self.repostCount = try container.decodeIfPresent(Int.self, forKey: .repostCount)
             self.likeCount = try container.decodeIfPresent(Int.self, forKey: .likeCount)
@@ -105,6 +105,75 @@ extension AppBskyLexicon.Feed {
             case viewer
             case labels
             case threadgate
+        }
+
+        // Unions
+        /// An embed view of a specific type.
+        public enum EmbedUnion: ATUnionProtocol, Equatable, Hashable {
+
+            /// The view of an image embed.
+            case embedImagesView(AppBskyLexicon.Embed.ImagesDefinition.View)
+
+            /// The view of a video embed.
+            case embedVideoView(AppBskyLexicon.Embed.VideoDefinition.View)
+
+            /// The view of an external embed.
+            case embedExternalView(AppBskyLexicon.Embed.ExternalDefinition.View)
+
+            /// The view of a record embed.
+            case embedRecordView(AppBskyLexicon.Embed.RecordDefinition.View)
+
+            /// The view of a record embed alongside an embed of some compatible media.
+            case embedRecordWithMediaView(AppBskyLexicon.Embed.RecordWithMediaDefinition.View)
+
+            /// An unknown case.
+            case unknown(String, [String: CodableValue])
+
+            public init(from decoder: Decoder) throws {
+                let container = try decoder.container(keyedBy: CodingKeys.self)
+                let type = try container.decode(String.self, forKey: .type)
+
+                switch type {
+                    case "app.bsky.embed.images#view":
+                        self = .embedImagesView(try AppBskyLexicon.Embed.ImagesDefinition.View(from: decoder))
+                    case "app.bsky.embed.video#view":
+                        self = .embedVideoView(try AppBskyLexicon.Embed.VideoDefinition.View(from: decoder))
+                    case "app.bsky.embed.external#view":
+                        self = .embedExternalView(try AppBskyLexicon.Embed.ExternalDefinition.View(from: decoder))
+                    case "app.bsky.embed.record#view":
+                        self = .embedRecordView(try AppBskyLexicon.Embed.RecordDefinition.View(from: decoder))
+                    case "app.bsky.embed.recordWithMedia#view":
+                        self = .embedRecordWithMediaView(try AppBskyLexicon.Embed.RecordWithMediaDefinition.View(from: decoder))
+                    default:
+                        let singleValueDecodingContainer = try decoder.singleValueContainer()
+                        let dictionary = try Self.decodeDictionary(from: singleValueDecodingContainer, decoder: decoder)
+
+                        self = .unknown(type, dictionary)
+                }
+            }
+
+            public func encode(to encoder: Encoder) throws {
+                var container = encoder.singleValueContainer()
+
+                switch self {
+                    case .embedImagesView(let value):
+                        try container.encode(value)
+                    case .embedVideoView(let value):
+                        try container.encode(value)
+                    case .embedExternalView(let value):
+                        try container.encode(value)
+                    case .embedRecordView(let value):
+                        try container.encode(value)
+                    case .embedRecordWithMediaView(let value):
+                        try container.encode(value)
+                    default:
+                        break
+                }
+            }
+
+            enum CodingKeys: String, CodingKey {
+                case type = "$type"
+            }
         }
     }
 
@@ -174,7 +243,7 @@ extension AppBskyLexicon.Feed {
         public let reply: ReplyReferenceDefinition?
 
         /// Determines whether the repost is a normal repost or pinned. Optional.
-        public let reason: ATUnion.ReasonRepostUnion?
+        public let reason: ReasonUnion?
 
         /// The feed generator's context. Optional
         ///
@@ -207,6 +276,54 @@ extension AppBskyLexicon.Feed {
             case feedContext
             case requestID = "reqId"
         }
+
+        // Unions
+        /// Determines whether the repost is a normal repost or pinned.
+        public enum ReasonUnion: ATUnionProtocol, Equatable, Hashable {
+
+            /// A very stripped down version of a repost.
+            case reasonRepost(AppBskyLexicon.Feed.ReasonRepostDefinition)
+
+            /// A marker for pinned posts.
+            case reasonPin(AppBskyLexicon.Feed.ReasonPinDefinition)
+
+            /// An unknown case.
+            case unknown(String, [String: CodableValue])
+
+            public init(from decoder: any Decoder) throws {
+                let container = try decoder.container(keyedBy: CodingKeys.self)
+                let type = try container.decode(String.self, forKey: .type)
+
+                switch type {
+                    case "app.bsky.feed.defs#reasonRepost":
+                        self = .reasonRepost(try AppBskyLexicon.Feed.ReasonRepostDefinition(from: decoder))
+                    case "app.bsky.feed.defs#reasonPin":
+                        self = .reasonPin(try AppBskyLexicon.Feed.ReasonPinDefinition(from: decoder))
+                    default:
+                        let singleValueDecodingContainer = try decoder.singleValueContainer()
+                        let dictionary = try Self.decodeDictionary(from: singleValueDecodingContainer, decoder: decoder)
+
+                        self = .unknown(type, dictionary)
+                }
+            }
+
+            public func encode(to encoder: any Encoder) throws {
+                var container = encoder.singleValueContainer()
+
+                switch self {
+                    case .reasonRepost(let value):
+                        try container.encode(value)
+                    case .reasonPin(let value):
+                        try container.encode(value)
+                    default:
+                        break
+                }
+            }
+
+            enum CodingKeys: String, CodingKey {
+                case type = "$type"
+            }
+        }
     }
 
     /// A definition model for a reply reference.
@@ -217,19 +334,128 @@ extension AppBskyLexicon.Feed {
     public struct ReplyReferenceDefinition: Sendable, Codable, Equatable, Hashable {
 
         /// The original post of the thread.
-        public let root: ATUnion.ReplyReferenceRootUnion
+        public let root: RootUnion
 
         /// The direct post that the user's post is replying to.
         ///
         /// If `parent` and `root` are identical, the post is a direct reply to the
         /// original post of the thread.
-        public let parent: ATUnion.ReplyReferenceParentUnion
+        public let parent: ParentUnion
 
         /// The author of the parent's post. Optional.
         ///
         /// - Note: According to the AT Protocol specifications: "When parent is a reply to another
         /// post, this is the author of that post."
         public let grandparentAuthor: AppBskyLexicon.Actor.ProfileViewBasicDefinition?
+
+        // Unions
+        /// The original post of the thread.
+        public enum RootUnion: ATUnionProtocol, Equatable, Hashable {
+
+            /// The view of a post.
+            case postView(AppBskyLexicon.Feed.PostViewDefinition)
+
+            /// The view of a post that may not have been found.
+            case notFoundPost(AppBskyLexicon.Feed.NotFoundPostDefinition)
+
+            /// The view of a post that's been blocked by the post author.
+            case blockedPost(AppBskyLexicon.Feed.BlockedPostDefinition)
+
+            /// An unknown case.
+            case unknown(String, [String: CodableValue])
+
+            public init(from decoder: Decoder) throws {
+                let container = try decoder.container(keyedBy: CodingKeys.self)
+                let type = try container.decode(String.self, forKey: .type)
+
+                switch type {
+                    case "app.bsky.feed.defs#postView":
+                        self = .postView(try AppBskyLexicon.Feed.PostViewDefinition(from: decoder))
+                    case "app.bsky.feed.defs#notFoundPost":
+                        self = .notFoundPost(try AppBskyLexicon.Feed.NotFoundPostDefinition(from: decoder))
+                    case "app.bsky.feed.defs#blockedPost":
+                        self = .blockedPost(try AppBskyLexicon.Feed.BlockedPostDefinition(from: decoder))
+                    default:
+                        let singleValueDecodingContainer = try decoder.singleValueContainer()
+                        let dictionary = try Self.decodeDictionary(from: singleValueDecodingContainer, decoder: decoder)
+
+                        self = .unknown(type, dictionary)
+                }
+            }
+
+            public func encode(to encoder: Encoder) throws {
+                var container = encoder.singleValueContainer()
+
+                switch self {
+                    case .postView(let value):
+                        try container.encode(value)
+                    case .notFoundPost(let value):
+                        try container.encode(value)
+                    case .blockedPost(let value):
+                        try container.encode(value)
+                    default:
+                        break
+                }
+            }
+
+            enum CodingKeys: String, CodingKey {
+                case type = "$type"
+            }
+        }
+
+        /// The direct post that the user's post is replying to.
+        public enum ParentUnion: ATUnionProtocol, Equatable, Hashable {
+
+            /// The view of a post.
+            case postView(AppBskyLexicon.Feed.PostViewDefinition)
+
+            /// The view of a post that may not have been found.
+            case notFoundPost(AppBskyLexicon.Feed.NotFoundPostDefinition)
+
+            /// The view of a post that's been blocked by the post author.
+            case blockedPost(AppBskyLexicon.Feed.BlockedPostDefinition)
+
+            /// An unknown case.
+            case unknown(String, [String: CodableValue])
+
+            public init(from decoder: Decoder) throws {
+                let container = try decoder.container(keyedBy: CodingKeys.self)
+                let type = try container.decode(String.self, forKey: .type)
+
+                switch type {
+                    case "app.bsky.feed.defs#postView":
+                        self = .postView(try AppBskyLexicon.Feed.PostViewDefinition(from: decoder))
+                    case "app.bsky.feed.defs#notFoundPost":
+                        self = .notFoundPost(try AppBskyLexicon.Feed.NotFoundPostDefinition(from: decoder))
+                    case "app.bsky.feed.defs#blockedPost":
+                        self = .blockedPost(try AppBskyLexicon.Feed.BlockedPostDefinition(from: decoder))
+                    default:
+                        let singleValueDecodingContainer = try decoder.singleValueContainer()
+                        let dictionary = try Self.decodeDictionary(from: singleValueDecodingContainer, decoder: decoder)
+
+                        self = .unknown(type, dictionary)
+                }
+            }
+
+            public func encode(to encoder: Encoder) throws {
+                var container = encoder.singleValueContainer()
+
+                switch self {
+                    case .postView(let value):
+                        try container.encode(value)
+                    case .notFoundPost(let value):
+                        try container.encode(value)
+                    case .blockedPost(let value):
+                        try container.encode(value)
+                    default:
+                        break
+                }
+            }
+
+            enum CodingKeys: String, CodingKey {
+                case type = "$type"
+            }
+        }
     }
 
     /// A definition model for a very stripped down version of a repost.
@@ -289,19 +515,128 @@ extension AppBskyLexicon.Feed {
     /// - SeeAlso: This is based on the [`app.bsky.feed.defs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/feed/defs.json
-    public struct ThreadViewPostDefinition: Sendable, Codable {
+    public struct ThreadViewPostDefinition: Sendable, Codable, Equatable, Hashable {
 
         /// The post contained in a thread.
         public let post: PostViewDefinition
 
         /// The direct post that the user's post is replying to. Optional.
-        public let parent: ATUnion.ThreadViewPostParentUnion?
+        public let parent: ParentUnion?
 
         /// An array of posts of various types. Optional.
-        public let replies: [ATUnion.ThreadViewPostRepliesUnion]?
+        public let replies: [RepliesUnion]?
 
         /// The context of the thread view. Optional.
         public let threadContext: ThreadContextDefinition?
+
+        // Unions
+        /// The direct post that the user's post is replying to.
+        public indirect enum ParentUnion: ATUnionProtocol, Equatable, Hashable {
+
+            /// The view of a post.
+            case threadViewPost(AppBskyLexicon.Feed.ThreadViewPostDefinition)
+
+            /// The view of a post that may not have been found.
+            case notFoundPost(AppBskyLexicon.Feed.NotFoundPostDefinition)
+
+            /// The view of a post that's been blocked by the post author.
+            case blockedPost(AppBskyLexicon.Feed.BlockedPostDefinition)
+
+            /// An unknown case.
+            case unknown(String, [String: CodableValue])
+
+            public init(from decoder: Decoder) throws {
+                let container = try decoder.container(keyedBy: CodingKeys.self)
+                let type = try container.decode(String.self, forKey: .type)
+
+                switch type {
+                    case "app.bsky.feed.defs#threadViewPost":
+                        self = .threadViewPost(try AppBskyLexicon.Feed.ThreadViewPostDefinition(from: decoder))
+                    case "app.bsky.feed.defs#notFoundPost":
+                        self = .notFoundPost(try AppBskyLexicon.Feed.NotFoundPostDefinition(from: decoder))
+                    case "app.bsky.feed.defs#blockedPost":
+                        self = .blockedPost(try AppBskyLexicon.Feed.BlockedPostDefinition(from: decoder))
+                    default:
+                        let singleValueDecodingContainer = try decoder.singleValueContainer()
+                        let dictionary = try Self.decodeDictionary(from: singleValueDecodingContainer, decoder: decoder)
+
+                        self = .unknown(type, dictionary)
+                }
+            }
+
+            public func encode(to encoder: Encoder) throws {
+                var container = encoder.singleValueContainer()
+
+                switch self {
+                    case .threadViewPost(let value):
+                        try container.encode(value)
+                    case .notFoundPost(let value):
+                        try container.encode(value)
+                    case .blockedPost(let value):
+                        try container.encode(value)
+                    default:
+                        break
+                }
+            }
+
+            enum CodingKeys: String, CodingKey {
+                case type = "$type"
+            }
+        }
+
+        /// An array of posts of various types. Optional.
+        public indirect enum RepliesUnion: ATUnionProtocol, Equatable, Hashable {
+
+            /// The view of a post.
+            case threadViewPost(AppBskyLexicon.Feed.ThreadViewPostDefinition)
+
+            /// The view of a post that may not have been found.
+            case notFoundPost(AppBskyLexicon.Feed.NotFoundPostDefinition)
+
+            /// The view of a post that's been blocked by the post author.
+            case blockedPost(AppBskyLexicon.Feed.BlockedPostDefinition)
+
+            /// An unknown case.
+            case unknown(String, [String: CodableValue])
+
+            public init(from decoder: Decoder) throws {
+                let container = try decoder.container(keyedBy: CodingKeys.self)
+                let type = try container.decode(String.self, forKey: .type)
+
+                switch type {
+                    case "app.bsky.feed.defs#threadViewPost":
+                        self = .threadViewPost(try AppBskyLexicon.Feed.ThreadViewPostDefinition(from: decoder))
+                    case "app.bsky.feed.defs#notFoundPost":
+                        self = .notFoundPost(try AppBskyLexicon.Feed.NotFoundPostDefinition(from: decoder))
+                    case "app.bsky.feed.defs#blockedPost":
+                        self = .blockedPost(try AppBskyLexicon.Feed.BlockedPostDefinition(from: decoder))
+                    default:
+                        let singleValueDecodingContainer = try decoder.singleValueContainer()
+                        let dictionary = try Self.decodeDictionary(from: singleValueDecodingContainer, decoder: decoder)
+
+                        self = .unknown(type, dictionary)
+                }
+            }
+
+            public func encode(to encoder: Encoder) throws {
+                var container = encoder.singleValueContainer()
+
+                switch self {
+                    case .threadViewPost(let value):
+                        try container.encode(value)
+                    case .notFoundPost(let value):
+                        try container.encode(value)
+                    case .blockedPost(let value):
+                        try container.encode(value)
+                    default:
+                        break
+                }
+            }
+
+            enum CodingKeys: String, CodingKey {
+                case type = "$type"
+            }
+        }
     }
 
     /// A definition model for a post that may not have been found.
@@ -532,7 +867,7 @@ extension AppBskyLexicon.Feed {
         public let postURI: String
 
         /// The indication that the post was a repost. Optional.
-        public let reason: ATUnion.SkeletonReasonRepostUnion?
+        public let reason: SkeletonReasonRepostUnion?
 
         /// The feed generator's context. Optional
         ///
@@ -546,6 +881,54 @@ extension AppBskyLexicon.Feed {
             case postURI = "post"
             case reason
             case feedContext
+        }
+
+        // Unions
+        /// The indication that the post was a repost.
+        public enum SkeletonReasonRepostUnion: ATUnionProtocol {
+
+            /// A very stripped down version of a repost.
+            case skeletonReasonRepost(AppBskyLexicon.Feed.SkeletonReasonRepostDefinition)
+
+            /// A pin in a feed generator.
+            case skeletonReasonPin(AppBskyLexicon.Feed.SkeletonReasonPinDefinition)
+
+            /// An unknown case.
+            case unknown(String, [String: CodableValue])
+
+            public init(from decoder: any Decoder) throws {
+                let container = try decoder.container(keyedBy: CodingKeys.self)
+                let type = try container.decode(String.self, forKey: .type)
+
+                switch type {
+                    case "app.bsky.feed.defs#skeletonReasonRepost":
+                        self = .skeletonReasonRepost(try AppBskyLexicon.Feed.SkeletonReasonRepostDefinition(from: decoder))
+                    case "app.bsky.feed#.defs#skeletonReasonPin":
+                        self = .skeletonReasonPin(try AppBskyLexicon.Feed.SkeletonReasonPinDefinition(from: decoder))
+                    default:
+                        let singleValueDecodingContainer = try decoder.singleValueContainer()
+                        let dictionary = try Self.decodeDictionary(from: singleValueDecodingContainer, decoder: decoder)
+
+                        self = .unknown(type, dictionary)
+                }
+            }
+
+            public func encode(to encoder: any Encoder) throws {
+                var container = encoder.singleValueContainer()
+
+                switch self {
+                    case .skeletonReasonRepost(let value):
+                        try container.encode(value)
+                    case .skeletonReasonPin(let value):
+                        try container.encode(value)
+                    default:
+                        break
+                }
+            }
+
+            enum CodingKeys: String, CodingKey {
+                case type = "$type"
+            }
         }
     }
 

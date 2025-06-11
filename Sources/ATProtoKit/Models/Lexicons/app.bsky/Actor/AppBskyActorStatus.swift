@@ -117,21 +117,27 @@ extension AppBskyLexicon.Actor {
         }
 
         // Unions
-        /// A reference containing the list of embeds.
-        public enum EmbedUnion: Sendable, Codable, Equatable, Hashable {
+        /// A reference containing the list of embeds..
+        public enum EmbedUnion: ATUnionProtocol, Equatable, Hashable {
 
             /// An external embed view.
             case externalView(AppBskyLexicon.Embed.ExternalDefinition)
 
-            public init(from decoder: any Decoder) throws {
-                let container = try decoder.singleValueContainer()
+            /// An unknown case.
+            case unknown(String, [String: CodableValue])
 
-                if let value = try? container.decode(AppBskyLexicon.Embed.ExternalDefinition.self) {
-                    self = .externalView(value)
-                } else {
-                    throw DecodingError.typeMismatch(
-                        EmbedUnion.self, DecodingError.Context(
-                            codingPath: decoder.codingPath, debugDescription: "Unknown EmbedUnion type"))
+            public init(from decoder: any Decoder) throws {
+                let container = try decoder.container(keyedBy: CodingKeys.self)
+                let type = try container.decode(String.self, forKey: .type)
+
+                switch type {
+                    case "app.bsky.embed.external#view":
+                        self = .externalView(try AppBskyLexicon.Embed.ExternalDefinition(from: decoder))
+                    default:
+                        let singleValueDecodingContainer = try decoder.singleValueContainer()
+                        let dictionary = try Self.decodeDictionary(from: singleValueDecodingContainer, decoder: decoder)
+
+                        self = .unknown(type, dictionary)
                 }
             }
 
@@ -141,7 +147,13 @@ extension AppBskyLexicon.Actor {
                 switch self {
                     case .externalView(let value):
                         try container.encode(value)
+                    default:
+                        break
                 }
+            }
+
+            enum CodingKeys: String, CodingKey {
+                case type = "$type"
             }
         }
     }

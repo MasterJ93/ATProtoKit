@@ -29,7 +29,7 @@ extension ATProtoKit {
     public func applyWrites(
         repository did: String,
         shouldValidate: Bool? = true,
-        writes: [ATUnion.ApplyWritesUnion],
+        writes: [ComAtprotoLexicon.Repository.ApplyWritesRequestBody.WritesUnion],
         swapCommit: String? = nil
     ) async throws {
         guard let session = try await self.getUserSession(),

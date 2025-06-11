@@ -56,7 +56,7 @@ extension AppBskyLexicon.Feed {
         public let canAcceptInteractions: Bool?
 
         /// An array of labels created by the user. Optional.
-        public let labels: ATUnion.GeneratorLabelsUnion?
+        public let labels: LabelsUnion?
 
         /// The content mode for the feed generator. Optional.
         public let contentMode: ContentMode?
@@ -73,7 +73,7 @@ extension AppBskyLexicon.Feed {
             self.descriptionFacets = try container.decodeIfPresent([AppBskyLexicon.RichText.Facet].self, forKey: .descriptionFacets)
             self.avatarImageBlob = try container.decodeIfPresent(ComAtprotoLexicon.Repository.BlobContainer?.self, forKey: .avatarImageBlob)
             self.canAcceptInteractions = try container.decodeIfPresent(Bool.self, forKey: .canAcceptInteractions)
-            self.labels = try container.decodeIfPresent(ATUnion.GeneratorLabelsUnion.self, forKey: .labels)
+            self.labels = try container.decodeIfPresent(LabelsUnion.self, forKey: .labels)
             self.contentMode = try container.decodeIfPresent(ContentMode.self, forKey: .contentMode)
             self.createdAt = try container.decodeDate(forKey: .createdAt)
         }
@@ -113,6 +113,47 @@ extension AppBskyLexicon.Feed {
 
             /// Declares the feed generator returns posts with embeds from `app.bsky.embed.video`.
             case video = "app.bsky.feed.defs#contentModeVideo"
+        }
+
+        // Unions
+        /// An array of labels created by the user.
+        public enum LabelsUnion: ATUnionProtocol, Equatable, Hashable {
+
+            /// An array of user-defined labels.
+            case selfLabels(ComAtprotoLexicon.Label.SelfLabelsDefinition)
+
+            /// An unknown case.
+            case unknown(String, [String: CodableValue])
+
+            public init(from decoder: Decoder) throws {
+                let container = try decoder.container(keyedBy: CodingKeys.self)
+                let type = try container.decode(String.self, forKey: .type)
+
+                switch type {
+                    case "com.atproto.label.defs#selfLabels":
+                        self = .selfLabels(try ComAtprotoLexicon.Label.SelfLabelsDefinition(from: decoder))
+                    default:
+                        let singleValueDecodingContainer = try decoder.singleValueContainer()
+                        let dictionary = try Self.decodeDictionary(from: singleValueDecodingContainer, decoder: decoder)
+
+                        self = .unknown(type, dictionary)
+                }
+            }
+
+            public func encode(to encoder: Encoder) throws {
+                var container = encoder.singleValueContainer()
+
+                switch self {
+                    case .selfLabels(let value):
+                        try container.encode(value)
+                    default:
+                        break
+                }
+            }
+
+            enum CodingKeys: String, CodingKey {
+                case type = "$type"
+            }
         }
     }
 }

@@ -68,7 +68,7 @@ extension ATProtoBluesky {
         var newDescription: String? = profile.description
         var newAvatarImage: ComAtprotoLexicon.Repository.UploadBlobOutput? = profile.avatarBlob
         var newBannerImage: ComAtprotoLexicon.Repository.UploadBlobOutput? = profile.bannerBlob
-        var newLabels: [ComAtprotoLexicon.Label.SelfLabelsDefinition]? = profile.labels
+        var newLabels: [AppBskyLexicon.Actor.ProfileRecord.LabelsUnion]? = profile.labels
         var newJoinedViaStarterPack: ComAtprotoLexicon.Repository.StrongReference? = profile.joinedViaStarterPack
         var newPinnedPost: ComAtprotoLexicon.Repository.StrongReference? = profile.pinnedPost
 
@@ -146,7 +146,11 @@ extension ATProtoBluesky {
                         break
                     }
 
-                    newLabels = labelsField
+                    if let labelsField = labelsField {
+                        for labelField in labelsField {
+                            newLabels?.append(.selfLabel(labelField))
+                        }
+                    }
                 case .joinedViaStarterPack(let joinedViaStarterPackField):
                     // Check if the field is nil. If so, set the joinedViaStarterPack variable to nil and break out of the case early.
                     if joinedViaStarterPackField == nil {
