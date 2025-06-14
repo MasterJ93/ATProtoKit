@@ -10,7 +10,6 @@ import Foundation
 import Regex
 #endif
 
-
 /// A group of methods for miscellaneous aspects of ATProtoKit.
 ///
 /// These methods are useful for anything that's too small or too niche to be added elsewhere.

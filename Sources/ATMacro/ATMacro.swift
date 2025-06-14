@@ -5,6 +5,11 @@
 //  Created by Christopher Jr Riley on 2024-08-21.
 //
 
+@available(
+    *,
+     deprecated,
+     message: "Create the union enum to the applicable struct, then conform it to ATUnionProtocol."
+)
 /// A marco that adds an enum for the purposes of adding a union type for a given lexicon.
 ///
 /// To use the macro, put it inside of an extension. It's recommended to attach it to a struct.
@@ -64,6 +69,7 @@
 @freestanding(declaration, names: arbitrary)
 public macro ATUnionBuilder(named: String, containing: [String: String]) = #externalMacro(module: "Macros", type: "ATUnionBuilderMacro")
 
+@available(*, deprecated)
 /// A helper macro for lexicon models.
 ///
 /// This automatically creates the `init()`, `init(from decoder: any Decoder) throws`,
