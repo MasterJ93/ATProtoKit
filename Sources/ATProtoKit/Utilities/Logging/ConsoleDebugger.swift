@@ -25,6 +25,9 @@ import Foundation
 /// ```
 public struct ConsoleDebugger: SessionDebuggable {
 
+    /// Initializes an instance of `ConsoleDebugger`.
+    public init() {}
+
     /// Logs an outgoing HTTP request to the console.
     ///
     /// This method prints the request URL, HTTP method, headers, and HTTP body (if any) in a
