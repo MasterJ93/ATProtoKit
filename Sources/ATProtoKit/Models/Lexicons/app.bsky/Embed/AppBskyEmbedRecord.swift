@@ -266,11 +266,11 @@ extension AppBskyLexicon.Embed {
                     let type = try container.decode(String.self, forKey: .type)
 
                     switch type {
-                        case "app.bsky.embed.images#view":
-                            self = .embedExternalView(try AppBskyLexicon.Embed.ExternalDefinition.View(from: decoder))
-                        case "app.bsky.embed.video#view":
-                            self = .embedImagesView(try AppBskyLexicon.Embed.ImagesDefinition.View(from: decoder))
                         case "app.bsky.embed.external#view":
+                            self = .embedExternalView(try AppBskyLexicon.Embed.ExternalDefinition.View(from: decoder))
+                        case "app.bsky.embed.images#view":
+                            self = .embedImagesView(try AppBskyLexicon.Embed.ImagesDefinition.View(from: decoder))
+                        case "app.bsky.embed.video#view":
                             self = .embedVideoView(try AppBskyLexicon.Embed.VideoDefinition.View(from: decoder))
                         case "app.bsky.embed.record#view":
                             self = .embedRecordView(try AppBskyLexicon.Embed.RecordDefinition.View(from: decoder))
