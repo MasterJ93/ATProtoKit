@@ -20,7 +20,7 @@ extension ChatBskyLexicon.Conversation {
         public let cursor: String?
 
         /// An array of messages.
-        public let messages: [ATUnion.GetMessagesOutputMessagesUnion]
+        public let messages: [MessagesUnion]
 
         // Unions
         /// An array of messages.

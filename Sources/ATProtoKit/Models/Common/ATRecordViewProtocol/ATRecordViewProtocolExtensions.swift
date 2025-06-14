@@ -120,7 +120,7 @@ extension AppBskyLexicon.Graph.StarterPackViewBasicDefinition: Identifiable {
     }
 }
 
-extension ATUnion.EmbedViewUnion: Identifiable {
+extension AppBskyLexicon.Embed.RecordDefinition.ViewRecord.EmbedsUnion: Identifiable {
     public var id: String {
         switch self {
             case .embedExternalView(let view):
@@ -133,6 +133,8 @@ extension ATUnion.EmbedViewUnion: Identifiable {
                 return view.id
             case .embedVideoView(let view):
                 return view.id
+            case .unknown(_, let dictionary):
+                return String(dictionary.hashValue)
         }
     }
 }

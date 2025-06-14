@@ -24,12 +24,39 @@ extension ToolsOzoneLexicon.Moderation {
         enum CodingKeys: String, CodingKey {
             case repositories = "repos"
         }
-    }
-}
 
-extension ATUnion {
-    #ATUnionBuilder(named: "ModerationGetRepositoriesOutputUnion", containing: [
-        "repoViewDetail" : "ToolsOzoneLexicon.Moderation.RepositoryViewDetailDefinition",
-        "repoViewNotFound" : "ToolsOzoneLexicon.Moderation.RepositoryViewNotFoundDefinition"
-    ])
+        // Unions
+        ///
+        public enum ModerationGetRepositoriesOutputUnion: Codable, Sendable {
+
+            ///
+            case repoViewDetail(ToolsOzoneLexicon.Moderation.RepositoryViewDetailDefinition)
+
+            ///
+            case repoViewNotFound(ToolsOzoneLexicon.Moderation.RepositoryViewNotFoundDefinition)
+
+            public init(from decoder: Decoder) throws {
+                let container = try decoder.singleValueContainer()
+                if let value = try? container.decode(ToolsOzoneLexicon.Moderation.RepositoryViewDetailDefinition.self) {
+                    self = .repoViewDetail(value)
+                } else if let value = try? container.decode(ToolsOzoneLexicon.Moderation.RepositoryViewNotFoundDefinition.self) {
+                    self = .repoViewNotFound(value)
+                } else {
+                    throw DecodingError.typeMismatch(
+                        ModerationGetRepositoriesOutputUnion.self, DecodingError.Context(
+                            codingPath: decoder.codingPath, debugDescription: "Unknown ModerationGetRepositoriesOutputUnion type"))
+                }
+            }
+
+            public func encode(to encoder: Encoder) throws {
+                var container = encoder.singleValueContainer()
+                switch self {
+                    case .repoViewDetail(let unionValue):
+                        try container.encode(unionValue)
+                    case .repoViewNotFound(let unionValue):
+                        try container.encode(unionValue)
+                }
+            }
+        }
+    }
 }

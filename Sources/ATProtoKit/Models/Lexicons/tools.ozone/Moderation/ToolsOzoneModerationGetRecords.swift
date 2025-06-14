@@ -18,14 +18,40 @@ extension ToolsOzoneLexicon.Moderation {
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/tools/ozone/moderation/getRecords.json
     public struct GetRecordsOutput: Sendable, Codable {
 
-        /// An array of records that belong to the
-        public var records: [String]
-    }
-}
+        /// An array of records.
+        public var records: [ModerationGetRecordsOutputUnion]
 
-extension ATUnion {
-    #ATUnionBuilder(named: "ModerationGetRecordsOutputUnion", containing: [
-        "recordViewDetail" : "ToolsOzoneLexicon.Moderation.RecordViewDetailDefinition",
-        "recordViewNotFound" : "ToolsOzoneLexicon.Moderation.RecordViewNotFoundDefinition"
-    ])
+        // Unions
+        public enum ModerationGetRecordsOutputUnion: Codable, Sendable {
+
+            ///
+            case recordViewDetail(ToolsOzoneLexicon.Moderation.RecordViewDetailDefinition)
+
+            ///
+            case recordViewNotFound(ToolsOzoneLexicon.Moderation.RecordViewNotFoundDefinition)
+
+            public init(from decoder: Decoder) throws {
+                let container = try decoder.singleValueContainer()
+                if let value = try? container.decode(ToolsOzoneLexicon.Moderation.RecordViewDetailDefinition.self) {
+                    self = .recordViewDetail(value)
+                } else if let value = try? container.decode(ToolsOzoneLexicon.Moderation.RecordViewNotFoundDefinition.self) {
+                    self = .recordViewNotFound(value)
+                } else {
+                    throw DecodingError.typeMismatch(
+                        ModerationGetRecordsOutputUnion.self, DecodingError.Context(
+                            codingPath: decoder.codingPath, debugDescription: "Unknown ModerationGetRecordsOutputUnion type"))
+                }
+            }
+
+            public func encode(to encoder: Encoder) throws {
+                var container = encoder.singleValueContainer()
+                switch self {
+                    case .recordViewDetail(let unionValue):
+                        try container.encode(unionValue)
+                    case .recordViewNotFound(let unionValue):
+                        try container.encode(unionValue)
+                }
+            }
+        }
+    }
 }

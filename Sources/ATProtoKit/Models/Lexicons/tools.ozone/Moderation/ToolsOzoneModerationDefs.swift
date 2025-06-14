@@ -305,10 +305,10 @@ extension ToolsOzoneLexicon.Moderation {
         public let id: Int
 
         /// The type of the moderator's event view.
-        public let event: ATUnion.ModerationEventViewDetailUnion
+        public let event: ModerationEventViewDetailUnion
 
         /// The subject reference of the moderator's event view.
-        public let subject: ATUnion.ModerationEventViewDetailSubjectUnion
+        public let subject: ModerationEventViewDetailSubjectUnion
 
         /// An array of blobs for a moderator to look at.
         public let subjectBlobs: [ToolsOzoneLexicon.Moderation.BlobViewDefinition]
@@ -319,7 +319,7 @@ extension ToolsOzoneLexicon.Moderation {
         /// The date and time the event view was created.
         public let createdAt: Date
 
-        public init(id: Int, event: ATUnion.ModerationEventViewDetailUnion, subject: ATUnion.ModerationEventViewDetailSubjectUnion,
+        public init(id: Int, event: ModerationEventViewDetailUnion, subject: ModerationEventViewDetailSubjectUnion,
                     subjectBlobs: [ToolsOzoneLexicon.Moderation.BlobViewDefinition], createdBy: String, createdAt: Date) {
             self.id = id
             self.event = event
@@ -333,8 +333,8 @@ extension ToolsOzoneLexicon.Moderation {
             let container = try decoder.container(keyedBy: CodingKeys.self)
 
             self.id = try container.decode(Int.self, forKey: .id)
-            self.event = try container.decode(ATUnion.ModerationEventViewDetailUnion.self, forKey: .event)
-            self.subject = try container.decode(ATUnion.ModerationEventViewDetailSubjectUnion.self, forKey: .subject)
+            self.event = try container.decode(ModerationEventViewDetailUnion.self, forKey: .event)
+            self.subject = try container.decode(ModerationEventViewDetailSubjectUnion.self, forKey: .subject)
             self.subjectBlobs = try container.decode([ToolsOzoneLexicon.Moderation.BlobViewDefinition].self, forKey: .subjectBlobs)
             self.createdBy = try container.decode(String.self, forKey: .createdBy)
             self.createdAt = try container.decodeDate(forKey: .createdAt)
@@ -358,6 +358,147 @@ extension ToolsOzoneLexicon.Moderation {
             case subjectBlobs
             case createdBy
             case createdAt
+        }
+
+        // Unions
+        ///
+        public enum ModerationEventViewDetailUnion: Sendable, Codable {
+
+            /// A takedown event.
+            case moderationEventTakedown(ToolsOzoneLexicon.Moderation.EventTakedownDefinition)
+
+            /// A reverse takedown event.
+            case moderationEventReverseTakedown(ToolsOzoneLexicon.Moderation.EventReverseTakedownDefinition)
+
+            /// A comment event.
+            case moderationEventComment(ToolsOzoneLexicon.Moderation.EventCommentDefinition)
+
+            /// A report event.
+            case moderationEventReport(ToolsOzoneLexicon.Moderation.EventReportDefinition)
+
+            /// A label event.
+            case moderationEventLabel(ToolsOzoneLexicon.Moderation.EventLabelDefinition)
+
+            /// An acknowledgment event.
+            case moderationEventAcknowledge(ToolsOzoneLexicon.Moderation.EventAcknowledgeDefinition)
+
+            /// An escalation event.
+            case moderationEventEscalate(ToolsOzoneLexicon.Moderation.EventEscalateDefinition)
+
+            /// A mute event.
+            case moderationEventMute(ToolsOzoneLexicon.Moderation.EventMuteDefinition)
+
+            /// A resolve appeal event.
+            case moderationEventResolveAppeal(ToolsOzoneLexicon.Moderation.EventResolveAppealDefinition)
+
+            /// A tag event.
+            case moderationEventTag(ToolsOzoneLexicon.Moderation.EventTagDefinition)
+
+            /// A priority score event.
+            case moderationEventPriorityScore(ToolsOzoneLexicon.Moderation.EventPriorityScoreDefinition)
+
+            public init(from decoder: Decoder) throws {
+                let container = try decoder.singleValueContainer()
+
+                if let value = try? container.decode(ToolsOzoneLexicon.Moderation.EventTakedownDefinition.self) {
+                    self = .moderationEventTakedown(value)
+                } else if let value = try? container.decode(ToolsOzoneLexicon.Moderation.EventReverseTakedownDefinition.self) {
+                    self = .moderationEventReverseTakedown(value)
+                } else if let value = try? container.decode(ToolsOzoneLexicon.Moderation.EventCommentDefinition.self) {
+                    self = .moderationEventComment(value)
+                } else if let value = try? container.decode(ToolsOzoneLexicon.Moderation.EventReportDefinition.self) {
+                    self = .moderationEventReport(value)
+                } else if let value = try? container.decode(ToolsOzoneLexicon.Moderation.EventLabelDefinition.self) {
+                    self = .moderationEventLabel(value)
+                } else if let value = try? container.decode(ToolsOzoneLexicon.Moderation.EventAcknowledgeDefinition.self) {
+                    self = .moderationEventAcknowledge(value)
+                } else if let value = try? container.decode(ToolsOzoneLexicon.Moderation.EventEscalateDefinition.self) {
+                    self = .moderationEventEscalate(value)
+                } else if let value = try? container.decode(ToolsOzoneLexicon.Moderation.EventMuteDefinition.self) {
+                    self = .moderationEventMute(value)
+                } else if let value = try? container.decode(ToolsOzoneLexicon.Moderation.EventResolveAppealDefinition.self) {
+                    self = .moderationEventResolveAppeal(value)
+                } else if let value = try? container.decode(ToolsOzoneLexicon.Moderation.EventTagDefinition.self) {
+                    self = .moderationEventTag(value)
+                } else if let value = try? container.decode(ToolsOzoneLexicon.Moderation.EventPriorityScoreDefinition.self) {
+                    self = .moderationEventPriorityScore(value)
+                } else {
+                    throw DecodingError.typeMismatch(
+                        ModerationEventViewDetailUnion.self, DecodingError.Context(
+                            codingPath: decoder.codingPath, debugDescription: "Unknown ModerationEventViewDetailUnion type"))
+                }
+            }
+
+            public func encode(to encoder: Encoder) throws {
+                var container = encoder.singleValueContainer()
+
+                switch self {
+                    case .moderationEventTakedown(let moderationEventTakedown):
+                        try container.encode(moderationEventTakedown)
+                    case .moderationEventReverseTakedown(let moderationEventDetail):
+                        try container.encode(moderationEventDetail)
+                    case .moderationEventComment(let moderationEventComment):
+                        try container.encode(moderationEventComment)
+                    case .moderationEventReport(let moderationEventReport):
+                        try container.encode(moderationEventReport)
+                    case .moderationEventLabel(let moderationEventLabel):
+                        try container.encode(moderationEventLabel)
+                    case .moderationEventAcknowledge(let moderationEventAcknowledge):
+                        try container.encode(moderationEventAcknowledge)
+                    case .moderationEventEscalate(let moderationEventEscalate):
+                        try container.encode(moderationEventEscalate)
+                    case .moderationEventMute(let moderationEventMute):
+                        try container.encode(moderationEventMute)
+                    case .moderationEventResolveAppeal(let moderationEventResolveAppeal):
+                        try container.encode(moderationEventResolveAppeal)
+                    case .moderationEventTag(let moderationEventTag):
+                        try container.encode(moderationEventTag)
+                    case .moderationEventPriorityScore(let event):
+                        try container.encode(event)
+                }
+            }
+        }
+
+        ///
+        public enum ModerationEventViewDetailSubjectUnion: Sendable, Codable {
+
+            /// A repository reference.
+            case repositoryReference(ComAtprotoLexicon.Admin.RepositoryReferenceDefinition)
+
+            /// A strong reference.
+            case strongReference(ComAtprotoLexicon.Repository.StrongReference)
+
+            /// A message reference for a conversation.
+            case messageReference(ChatBskyLexicon.Conversation.MessageReferenceDefinition)
+
+            public init(from decoder: Decoder) throws {
+                let container = try decoder.singleValueContainer()
+
+                if let value = try? container.decode(ComAtprotoLexicon.Admin.RepositoryReferenceDefinition.self) {
+                    self = .repositoryReference(value)
+                } else if let value = try? container.decode(ComAtprotoLexicon.Repository.StrongReference.self) {
+                    self = .strongReference(value)
+                } else if let value = try? container.decode(ChatBskyLexicon.Conversation.MessageReferenceDefinition.self) {
+                    self = .messageReference(value)
+                } else {
+                    throw DecodingError.typeMismatch(
+                        ModerationEventViewDetailSubjectUnion.self, DecodingError.Context(
+                            codingPath: decoder.codingPath, debugDescription: "Unknown ModerationEventViewDetailSubjectUnion type"))
+                }
+            }
+
+            public func encode(to encoder: Encoder) throws {
+                var container = encoder.singleValueContainer()
+
+                switch self {
+                    case .repositoryReference(let repositoryReference):
+                        try container.encode(repositoryReference)
+                    case .strongReference(let strongReference):
+                        try container.encode(strongReference)
+                    case .messageReference(let messageReference):
+                        try container.encode(messageReference)
+                }
+            }
         }
     }
 

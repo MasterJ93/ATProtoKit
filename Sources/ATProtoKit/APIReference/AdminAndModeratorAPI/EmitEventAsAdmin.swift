@@ -32,8 +32,8 @@ extension ATProtoAdmin {
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func emitEvent(
-        _ event: ATUnion.EmitEventUnion,
-        subject: ATUnion.EmitEventSubjectUnion,
+        _ event: ToolsOzoneLexicon.Moderation.EmitEventRequestBody.EmitEventUnion,
+        subject: ToolsOzoneLexicon.Moderation.EmitEventRequestBody.EmitEventSubjectUnion,
         subjectBlobCIDs: [String]? = nil,
         createdBy: String
     ) async throws -> ToolsOzoneLexicon.Moderation.ModerationEventViewDefinition {
