@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import SwiftCBOR
+//import SwiftCBOR
 
 /// A class that handles CBOR-related objects.
 public class ATCBORManager {
@@ -36,20 +36,20 @@ public class ATCBORManager {
     ///
     /// - Parameter base64String: The CBOR string to be decoded.
     func decodeCBOR(from base64String: String) {
-        guard let data = Data(base64Encoded: base64String) else {
-            print("Invalid Base64 string")
-            return
-        }
+//        guard let data = Data(base64Encoded: base64String) else {
+//            print("Invalid Base64 string")
+//            return
+//        }
         
-        do {
-            let items = try decodeItems(from: data)
+//        do {
+//            let items = try decodeItems(from: data)
 //            if let cborBlocks = extractCborBlocks(from: items) {
 //                print("Decoded CBOR:", cborBlocks)
 //            }
-            print("Decoded CBOR: \(items)")
-        } catch {
-            print("Failed to decode CBOR: \(error)")
-        }
+//            print("Decoded CBOR: \(items)")
+//        } catch {
+//            print("Failed to decode CBOR: \(error)")
+//        }
     }
     
     /// Decodes individual items from the CBOR string.
@@ -59,13 +59,13 @@ public class ATCBORManager {
     ///
     /// - Parameter data: The CBOR string to be decoded.
     /// - Returns: An array of `CBOR` objects.
-    private func decodeItems(from data: Data) throws -> [CBOR] {
-        guard let decoded = try CBOR.decodeMultipleItems(data.bytes, options: CBOROptions(useStringKeys: false, forbidNonStringMapKeys: true)) else {
-            throw CBORProcessingError.cannotDecode
-        }
-        
-        return decoded
-    }
+//    private func decodeItems(from data: Data) throws -> [CBOR] {
+//        guard let decoded = try CBOR.decodeMultipleItems(data.bytes, options: CBOROptions(useStringKeys: false, forbidNonStringMapKeys: true)) else {
+//            throw CBORProcessingError.cannotDecode
+//        }
+//        
+//        return decoded
+//    }
     
 //    /// Extracts a CBOR block for the purpose of decoding.
 //    ///

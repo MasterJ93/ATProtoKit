@@ -26,7 +26,6 @@ let package = Package(
     dependencies: [
         .package(url: "https://github.com/swiftlang/swift-docc-plugin.git", from: "1.4.0"),
         .package(url: "https://github.com/apple/swift-log.git", from: "1.6.0"),
-        .package(url: "https://github.com/MasterJ93/SwiftCBOR.git", from: "0.4.0"),
         .package(url: "https://github.com/swiftlang/swift-syntax.git", "509.0.0" ..< "601.0.0-prerelease")
     ],
     targets: [
@@ -36,8 +35,7 @@ let package = Package(
             name: "ATProtoKit",
             dependencies: [
                 "ATMacro",
-                .product(name: "Logging", package: "swift-log"),
-                .product(name: "SwiftCBOR", package: "swiftcbor")
+                .product(name: "Logging", package: "swift-log")
             ]
 //            plugins: ["VersionNumberPlugin"]
         ),
