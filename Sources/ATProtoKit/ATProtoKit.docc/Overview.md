@@ -92,6 +92,7 @@ ATProtoKit is fully open source under the [MIT license](https://github.com/Maste
 - ``ATRecordTypeRegistry``
 - ``ATRecordConfiguration``
 - ``ATUnion``
+- ``ATUnionProtocol``
 
 @Comment {
     The following should be added:
