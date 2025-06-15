@@ -64,13 +64,14 @@ extension ATProtoKit {
         do {
             let request = apiClientService.createRequest(
                 forRequest: requestURL,
-                andMethod: .get,
+                andMethod: .post,
                 acceptValue: "application/json",
                 contentTypeValue: nil,
                 authorizationValue: "Bearer \(accessToken)"
             )
             let response = try await apiClientService.sendRequest(
                 request,
+                withEncodingBody: requestBody,
                 decodeTo: AppBskyLexicon.Notification.PutPreferencesV2Output.self
             )
 
