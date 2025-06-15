@@ -93,11 +93,17 @@ extension AppBskyLexicon.Notification {
         /// A filter of what conversations to get push notifications for.
         public let filter: Filter
 
-        ///
-        public let isList: Bool
+        /// Determines whether the notification will appear in the notification list.
+        public let willAppearInNotificationList: Bool
 
         /// Determines whether push notifications for chat messages.
         public let willPush: Bool
+
+        enum CodingKeys: String, CodingKey {
+            case filter
+            case willAppearInNotificationList = "list"
+            case willPush = "push"
+        }
 
         // Enums
         /// A filter of what conversations to get push notifications for.
@@ -155,11 +161,16 @@ extension AppBskyLexicon.Notification {
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/notification/defs.json
     public struct PreferenceDefinition: Sendable, Codable {
 
-        ///
-        public let isList: Bool
+        /// Determines whether the notification will appear in the notification list.
+        public let willAppearInNotificationList: Bool
 
         /// Determines whether push notifications for chat messages.
         public let willPush: Bool
+
+        enum CodingKeys: String, CodingKey {
+            case willAppearInNotificationList = "list"
+            case willPush = "push"
+        }
 
         // Enums
         /// A filter of what conversations to get push notifications for.
