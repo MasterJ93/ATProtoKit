@@ -14,6 +14,7 @@
 - ``VerificationStateDefinition``
 - ``VerificationViewDefinition``
 - ``PreferencesDefinition``
+- ``PreferenceUnion``
 - ``AdultContentPreferencesDefinition``
 - ``ContentLabelPreferencesDefinition``
 - ``SavedFeed``

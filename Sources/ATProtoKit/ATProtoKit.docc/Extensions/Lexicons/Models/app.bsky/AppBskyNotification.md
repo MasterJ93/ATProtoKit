@@ -5,6 +5,14 @@
 ### app.bsky.notification.defs
 
 - ``RecordDeletedDefinition``
+- ``ChatPreferenceDefinition``
+- ``FilterablePreferenceDefinition``
+- ``PreferenceDefinition``
+- ``PreferencesDefinition``
+
+### app.bsky.notification.getPreferences
+
+- ``GetPreferencesOutput``
 
 ### app.bsky.notification.getUnreadCount
 
@@ -18,6 +26,11 @@
 ### app.bsky.notification.putPreferences
 
 - ``PutNotificationRequestBody``
+
+### app.bsky.notification.putPreferencesV2
+
+- ``PutPreferencesV2RequestBody``
+- ``PutPreferencesV2Output``
 
 ### app.bsky.notification.registerPush
 
