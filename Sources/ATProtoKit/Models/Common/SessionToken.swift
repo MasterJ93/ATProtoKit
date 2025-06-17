@@ -262,21 +262,21 @@ public struct SessionToken: Sendable, Encodable {
         /// - Parameter message: The message of the error.
         case missingSignature(message: String)
     }
-}
 
-/// The token's signing key type.
-///
-/// - Note: According to the AT Protocol specifications: "Indicates the signing key type
-/// (see Cryptography)."
-///
-/// - SeeAlso: The [Cyptography][cyptography] section of the AT Protocol specifications.
-///
-/// [cyptography]: https://atproto.com/specs/cryptography
-public enum SessionTokenAlgorithm: String, Codable {
+    /// The token's signing key type.
+    ///
+    /// - Note: According to the AT Protocol specifications: "Indicates the signing key type
+    /// (see Cryptography)."
+    ///
+    /// - SeeAlso: The [Cyptography][cyptography] section of the AT Protocol specifications.
+    ///
+    /// [cyptography]: https://atproto.com/specs/cryptography
+    public enum SessionTokenAlgorithm: String, Codable {
 
-    /// The "p256" elliptic curve.
-    case ES256
+        /// The "p256" elliptic curve.
+        case ES256
 
-    /// The "k265" elliptic curve.
-    case ES256K
+        /// The "k265" elliptic curve.
+        case ES256K
+    }
 }
