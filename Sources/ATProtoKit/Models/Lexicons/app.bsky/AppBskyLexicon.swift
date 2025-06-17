@@ -11,29 +11,29 @@ import Foundation
 extension AppBskyLexicon {
 
     /// A group of lexicons within the `app.bsky.actor` namespace.
-    public struct Actor {}
+    public enum Actor {}
 
     /// A group of lexicons within the `app.bsky.embed` namespace.
-    public struct Embed {}
+    public enum Embed {}
 
     /// A group of lexicons within the `app.bsky.feed` namespace.
-    public struct Feed {}
+    public enum Feed {}
 
     /// A group of lexicons within the `app.bsky.graph` namespace.
-    public struct Graph {}
+    public enum Graph {}
 
     /// A group of lexicons within the `app.bsky.labeler` namespace.
-    public struct Labeler {}
+    public enum Labeler {}
 
     /// A group of lexicons within the `app.bsky.notification` namespace.
-    public struct Notification {}
+    public enum Notification {}
 
     /// A group of lexicons within the `app.bsky.video.*` namespace.
-    public struct Video {}
+    public enum Video {}
 
     /// A group of lexicons within the `app.bsky.richtext` namespace.
-    public struct RichText {}
+    public enum RichText {}
 
     /// A group of lexicons within the `app.bsky.unspecced` namespace.
-    public struct Unspecced {}
+    public enum Unspecced {}
 }

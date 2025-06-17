@@ -10,29 +10,29 @@ import Foundation
 extension ToolsOzoneLexicon {
 
     /// A group of lexicons within the `tools.ozone.communication` namespace.
-    public struct Communication {}
+    public enum Communication {}
 
     /// A group of lexicons within the `tools.ozone.hosting` namespace.
-    public struct Hosting {}
+    public enum Hosting {}
 
     /// A group of lexicons within the `tools.ozone.moderation` namespace.
-    public struct Moderation {}
+    public enum Moderation {}
 
     /// A group of lexicons within the `tools.ozone.server` namespace.
-    public struct Server {}
+    public enum Server {}
 
     /// A group of lexicons within the `tools.ozone.set` namespace.
-    public struct Set {}
+    public enum Set {}
 
     /// A group of lexicons within the `tools.ozone.setting` namespace.
-    public struct Setting {}
+    public enum Setting {}
 
     /// A group of lexicons within the `tools.ozone.signature` namespace.
-    public struct Signature {}
+    public enum Signature {}
 
     /// A group of lexicon within the `tools.ozone.team` namespace.
-    public struct Team {}
+    public enum Team {}
 
     /// A group of lexicons within the `tools.ozone.verification` namespace.
-    public struct Verification {}
+    public enum Verification {}
 }

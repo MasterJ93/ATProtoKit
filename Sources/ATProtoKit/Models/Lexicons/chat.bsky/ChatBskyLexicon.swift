@@ -10,11 +10,11 @@ import Foundation
 extension ChatBskyLexicon {
 
     /// A group of lexicons within the `chat.bsky.actor` namespace.
-    public struct Actor {}
+    public enum Actor {}
 
     /// A group of lexicons within the `chat.bsky.convo` namespace.
-    public struct Conversation {}
+    public enum Conversation {}
 
     /// A group of lexicons within the `chat.bsky.moderation` namespace.
-    public struct Moderation {}
+    public enum Moderation {}
 }

@@ -8,13 +8,13 @@
 import Foundation
 
 /// A group of lexicons within the `app.bsky` namespace.
-public struct AppBskyLexicon {}
+public enum AppBskyLexicon {}
 
 /// A group of lexicons within the `com.atproto` namespace.
-public struct ComAtprotoLexicon {}
+public enum ComAtprotoLexicon {}
 
 /// A group of lexicons within the `chat.bsky` namespace.
-public struct ChatBskyLexicon {}
+public enum ChatBskyLexicon {}
 
 /// A group of lexicons within the `tools.ozone` namespace.
-public struct ToolsOzoneLexicon {}
+public enum ToolsOzoneLexicon {}

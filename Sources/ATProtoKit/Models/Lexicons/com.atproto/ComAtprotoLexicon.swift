@@ -10,29 +10,29 @@ import Foundation
 extension ComAtprotoLexicon {
 
     /// A group of lexicons within the `com.atproto.admin` namespace.
-    public struct Admin {}
+    public enum Admin {}
 
     /// A group of lexicons within the `com.atproto.identity` namespace.
-    public struct Identity {}
+    public enum Identity {}
 
     /// A group of lexicons within the `com.atproto.label` namespace.
-    public struct Label {}
+    public enum Label {}
 
     /// A group of lexicons within the `com.atproto.lexicon` namespace.
-    public struct Lexicon {}
+    public enum Lexicon {}
 
     /// A group of lexicons within the `com.atproto.moderation` namespace.
-    public struct Moderation {}
+    public enum Moderation {}
 
     /// A group of lexicons within the `com.atproto.repo` namespace.
-    public struct Repository {}
+    public enum Repository {}
 
     /// A group of lexicons within the `com.atproto.server` namespace.
-    public struct Server {}
+    public enum Server {}
 
     /// A group of lexicons within the `com.atproto.sync` namespace.
-    public struct Sync {}
+    public enum Sync {}
 
     /// A group of lexicons within the `com.atproto.temp` namespace.
-    public struct Temp {}
+    public enum Temp {}
 }
