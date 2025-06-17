@@ -150,60 +150,6 @@ public final class ATProtoKit: Sendable, ATProtoKitConfiguration, ATRecordConfig
     /// An instance of ``APIClientService`` to perform requests.
     public let apiClientService: APIClientService
 
-    /// Initializes a new instance of `ATProtoKit`.
-    /// 
-    /// This will also handle some of the logging-related setup. The identifier will either be your
-    /// project's `CFBundleIdentifier` or an identifier named
-    /// `com.cjrriley.ATProtoKit`. However, you can manually override this.
-    ///
-    /// If you're using methods such as
-    /// ``ATProtoKit/ATProtoKit/createAccount(email:handle:existingDID:inviteCode:verificationCode:verificationPhone:password:recoveryKey:plcOperation:)``
-    /// or ``ATProtoKit/ATProtoKit/getSession(by:)``, be sure to set
-    /// `canUseBlueskyRecords` to `false`. While the initializer does check to see if the records
-    /// have been added, it's best not to invoke it, esepcially if you're using ATProtoKit for a
-    /// generic AT Protocol service that doesn't use Bluesky records.
-    ///
-    /// - Important: This initializer may potentially block the thread if
-    /// `canUseBlueskyRecords` is `true`. In this case, it's a good idea to move the initializer
-    /// to a `Task` block in order to prevent that from happening.
-    ///
-    /// If a ``SessionConfiguration``-conforming `class` is used and the `configuration` property
-    /// is being used, don't use the `urlSessionConfiguration` parameter. Doing so would override
-    /// the `URLSessionConfiguration` implementation from `SessionConfiguration`.
-    ///
-    /// - Parameters:
-    ///   - sessionConfiguration: The authenticated user session within the AT Protocol. Optional.
-    ///   - apiClientConfiguration: An ``APIClientConfiguration`` object. Optional.
-    ///   Defaults to `nil`.
-    ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to ``APIHostname/bskyAppView``.
-    ///   - canUseBlueskyRecords: Indicates whether Bluesky's lexicons should be used.
-    ///   Defaults to `true`.
-    @available(*, deprecated, message: "Use the async version of this initializer instead. The non-async initializer will be removed in version 0.30.0.")
-    public init(
-        sessionConfiguration: SessionConfiguration? = nil,
-        apiClientConfiguration: APIClientConfiguration? = nil,
-        pdsURL: String = APIHostname.bskyAppView,
-        canUseBlueskyRecords: Bool = true
-    ) {
-        self.sessionConfiguration = sessionConfiguration
-        self.pdsURL = !pdsURL.isEmpty ? pdsURL : APIHostname.bskyAppView
-
-        var finalConfiguration = apiClientConfiguration ?? APIClientConfiguration()
-        finalConfiguration.urlSessionConfiguration = apiClientConfiguration?.urlSessionConfiguration ?? sessionConfiguration?.configuration ?? .default
-
-        self.apiClientService = APIClientService(
-            with: finalConfiguration
-        )
-
-        let recordLexicons = self.recordLexicons
-
-        Task(priority: .background) {
-            if canUseBlueskyRecords && !ATRecordTypeRegistry.areBlueskyRecordsRegistered {
-                _ = await ATRecordTypeRegistry.shared.register(blueskyLexiconTypes: recordLexicons)
-            }
-        }
-    }
-
     /// Initializes a new, asyncronous instance of `ATProtoKit`.
     ///
     /// This will also handle some of the logging-related setup. The identifier will either be your
