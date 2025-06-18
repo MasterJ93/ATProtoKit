@@ -6,6 +6,9 @@
 //
 
 import Foundation
+#if canImport(FoundationNetworking)
+import FoundationNetworking
+#endif
 
 /// A protocol for debugging and inspecting HTTP requests and responses within a network session.
 ///

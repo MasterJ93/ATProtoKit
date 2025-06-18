@@ -6,6 +6,9 @@
 //
 
 import Foundation
+#if canImport(FoundationNetworking)
+import FoundationNetworking
+#endif
 
 /// A utility class designed for parsing various elements like mentions, URLs, and hashtags from text.
 public class ATFacetParser {

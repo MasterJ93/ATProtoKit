@@ -6,6 +6,9 @@
 //
 
 import Foundation
+#if canImport(FoundationNetworking)
+import FoundationNetworking
+#endif
 
 /// A protocol used for the basic skeleton of the model definitions.
 public protocol FirehoseEventRepresentable: Decodable {

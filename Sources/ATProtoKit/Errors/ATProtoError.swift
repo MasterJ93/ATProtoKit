@@ -6,6 +6,9 @@
 //
 
 import Foundation
+#if canImport(FoundationNetworking)
+import FoundationNetworking
+#endif
 
 /// The base exception class for ATProtoKit.
 public protocol ATProtoError: Error {}

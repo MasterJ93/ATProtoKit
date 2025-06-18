@@ -6,6 +6,9 @@
 //
 
 import Foundation
+#if canImport(FoundationNetworking)
+import FoundationNetworking
+#endif
 
 /// A class that identifies and validates Namespaced Identifiers (NSIDs).
 public struct NSIDManager {

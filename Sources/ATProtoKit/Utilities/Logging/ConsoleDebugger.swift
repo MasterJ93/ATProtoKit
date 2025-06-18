@@ -6,6 +6,9 @@
 //
 
 import Foundation
+#if canImport(FoundationNetworking)
+import FoundationNetworking
+#endif
 
 /// A default implementation of the `SessionDebuggable` protocol that logs requests and responses to
 /// the console.

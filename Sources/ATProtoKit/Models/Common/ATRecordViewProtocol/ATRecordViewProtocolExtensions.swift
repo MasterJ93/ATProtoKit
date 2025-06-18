@@ -6,6 +6,9 @@
 //
 
 import Foundation
+#if canImport(FoundationNetworking)
+import FoundationNetworking
+#endif
 
 extension AppBskyLexicon.Feed.PostViewDefinition: ATRecordViewProtocol {
 

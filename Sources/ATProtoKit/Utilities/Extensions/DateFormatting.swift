@@ -6,6 +6,9 @@
 //
 
 import Foundation
+#if canImport(FoundationNetworking)
+import FoundationNetworking
+#endif
 
 /// A structure for custom date formatting to and from the ISO8601 format.
 public struct CustomDateFormatter: Sendable {

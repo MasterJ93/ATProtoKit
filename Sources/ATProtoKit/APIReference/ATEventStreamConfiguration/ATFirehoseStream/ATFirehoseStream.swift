@@ -6,6 +6,9 @@
 //
 
 import Foundation
+#if canImport(FoundationNetworking)
+import FoundationNetworking
+#endif
 
 /// The base class for Bluesky's Firehose event stream.
 public class ATFirehoseStream: ATEventStreamConfiguration {

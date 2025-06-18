@@ -6,6 +6,9 @@
 //
 
 import Foundation
+#if canImport(FoundationNetworking)
+import FoundationNetworking
+#endif
 //import SwiftCBOR
 
 /// A class that handles CBOR-related objects.
