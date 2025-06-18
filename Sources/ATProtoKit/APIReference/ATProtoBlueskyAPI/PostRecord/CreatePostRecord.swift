@@ -124,6 +124,10 @@ extension ATProtoBluesky {
     /// You can upload up to 25 videos per day and the 25 videos can't exceed a total of 500 MB
     /// for the day.
     ///
+    /// - Tip: Bluesky allows you to upload GIFs the same way, as it considers it to be a special kind
+    /// of video.. The only difference with a GIF is the lack a player scrubber. The same restrictions
+    /// with respect to videos apply to uploaded GIFs.
+    ///
     /// ## External Links
     /// You can attach a website card to the post.
     ///
