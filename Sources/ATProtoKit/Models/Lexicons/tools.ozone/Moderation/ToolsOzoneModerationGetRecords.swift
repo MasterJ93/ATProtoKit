@@ -5,7 +5,6 @@
 //
 
 import Foundation
-import ATMacro
 
 extension ToolsOzoneLexicon.Moderation {
 
