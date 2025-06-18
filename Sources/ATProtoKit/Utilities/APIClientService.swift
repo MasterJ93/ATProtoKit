@@ -7,7 +7,7 @@
 
 import Foundation
 #if canImport(FoundationNetworking)
-@_exported import FoundationNetworking
+import FoundationNetworking
 #endif
 
 /// A struct which handle the most common HTTP requests for the AT Protocol.
