@@ -11,6 +11,6 @@ import Foundation
 @available(
     *,
     deprecated,
-    message: "Insert the union enum to the applicable struct, then conform it to ATUnionProtocol."
+    message: "Insert the union enum to the applicable struct, then conform it to ATUnionProtocol. This will be removed in version 0.31.0."
 )
 public struct ATUnion {}
