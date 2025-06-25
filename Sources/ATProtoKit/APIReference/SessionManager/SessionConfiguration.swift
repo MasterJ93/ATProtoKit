@@ -241,6 +241,10 @@ extension SessionConfiguration {
         var response: ComAtprotoLexicon.Server.CreateSessionOutput? = nil
         var userCode: String? = nil
 
+        guard let _pdsURL = URL(string: pdsURL) else {
+            throw ATRequestPrepareError.emptyPDSURL
+        }
+
         // Loop until an error has been thrown, or until the response has been added.
         while response == nil {
             do {
@@ -273,9 +277,7 @@ extension SessionConfiguration {
                 throw DIDDocument.DIDDocumentError.emptyArray
             }
 
-            guard let convertedDIDDocument = self.convertDIDDocument(response.didDocument) else {
-                throw DIDDocument.DIDDocumentError.emptyArray
-            }
+            let convertedDIDDocument = self.convertDIDDocument(response.didDocument)
 
             var status: UserAccountStatus? = nil
 
@@ -299,7 +301,7 @@ extension SessionConfiguration {
                 didDocument: convertedDIDDocument,
                 isActive: response.isActive,
                 status: status,
-                serviceEndpoint: try convertedDIDDocument.checkServiceForATProto().serviceEndpoint,
+                serviceEndpoint: try convertedDIDDocument?.checkServiceForATProto().serviceEndpoint ?? _pdsURL,
                 pdsURL: self.pdsURL
             )
 
@@ -315,6 +317,10 @@ extension SessionConfiguration {
 
     public func getSession() async throws {
         let accessToken: String
+
+        guard let _pdsURL = URL(string: pdsURL) else {
+            throw ATRequestPrepareError.emptyPDSURL
+        }
 
         do {
             accessToken = try await keychainProtocol.retrieveAccessToken()
@@ -336,14 +342,12 @@ extension SessionConfiguration {
                 by: accessToken
             )
 
-            guard let convertedDIDDocument = self.convertDIDDocument(response.didDocument) else {
-                throw DIDDocument.DIDDocumentError.emptyArray
-            }
+            let convertedDIDDocument = self.convertDIDDocument(response.didDocument)
 
             let didDocument = convertedDIDDocument
 
-            let atService = try didDocument.checkServiceForATProto()
-            let serviceEndpoint = atService.serviceEndpoint
+            let atService = try didDocument?.checkServiceForATProto()
+            let serviceEndpoint = atService?.serviceEndpoint
 
             var status: UserAccountStatus? = nil
 
@@ -367,7 +371,7 @@ extension SessionConfiguration {
                 didDocument: didDocument,
                 isActive: response.isActive,
                 status: status,
-                serviceEndpoint: serviceEndpoint,
+                serviceEndpoint: serviceEndpoint ?? _pdsURL,
                 pdsURL: self.pdsURL
             )
 
@@ -388,6 +392,10 @@ extension SessionConfiguration {
 
     public func refreshSession() async throws {
         let refreshToken: String
+
+        guard let _pdsURL = URL(string: pdsURL) else {
+            throw ATRequestPrepareError.emptyPDSURL
+        }
 
         do {
             refreshToken = try await keychainProtocol.retrieveRefreshToken()
@@ -417,14 +425,12 @@ extension SessionConfiguration {
                 refreshToken: refreshToken
             )
 
-            guard let convertedDIDDocument = self.convertDIDDocument(response.didDocument) else {
-                throw DIDDocument.DIDDocumentError.emptyArray
-            }
+            let convertedDIDDocument = self.convertDIDDocument(response.didDocument)
 
             let didDocument = convertedDIDDocument
 
-            let atService = try didDocument.checkServiceForATProto()
-            let serviceEndpoint = atService.serviceEndpoint
+            let atService = try didDocument?.checkServiceForATProto()
+            let serviceEndpoint = atService?.serviceEndpoint
 
             var status: UserAccountStatus? = nil
 
@@ -450,7 +456,7 @@ extension SessionConfiguration {
                 didDocument: didDocument,
                 isActive: response.isActive,
                 status: status,
-                serviceEndpoint: serviceEndpoint,
+                serviceEndpoint: serviceEndpoint ?? _pdsURL,
                 pdsURL: self.pdsURL
             )
 
