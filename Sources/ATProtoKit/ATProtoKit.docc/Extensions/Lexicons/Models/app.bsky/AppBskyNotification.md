@@ -2,6 +2,10 @@
 
 ## Topics
 
+### app.bsky.notification.declaration
+
+- ``DeclarationRecord``
+
 ### app.bsky.notification.defs
 
 - ``RecordDeletedDefinition``
@@ -9,6 +13,8 @@
 - ``FilterablePreferenceDefinition``
 - ``PreferenceDefinition``
 - ``PreferencesDefinition``
+- ``ActivitySubscriptionDefinition``
+- ``SubjectActivitySubscriptionDefinition``
 
 ### app.bsky.notification.getPreferences
 
@@ -18,10 +24,19 @@
 
 - ``GetUnreadCountOutput``
 
+### app.bsky.notification.listActivitySubscriptions
+
+- ``ListActivitySubscriptionsOutput``
+
 ### app.bsky.notification.listNotifications
 
 - ``ListNotificationsOutput``
 - ``Notification``
+
+### app.bsky.notification.putActivitySubscription
+
+- ``PutActivitySubscriptionRequestBody``
+- ``PutActivitySubscriptionOutput``
 
 ### app.bsky.notification.putPreferences
 

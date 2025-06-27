@@ -27,19 +27,19 @@ extension AppBskyLexicon.Notification {
     public struct ChatPreferenceDefinition: Sendable, Codable {
 
         /// A filter of what conversations to get push notifications for.
-        public let filter: Filter
+        public let include: Include
 
         /// Determines whether push notifications for chat messages.
         public let willPush: Bool
 
         enum CodingKeys: String, CodingKey {
-            case filter
+            case include
             case willPush = "push"
         }
 
         // Enums
         /// A filter of what conversations to get push notifications for.
-        public enum Filter: Sendable, Codable, ExpressibleByStringLiteral {
+        public enum Include: Sendable, Codable, ExpressibleByStringLiteral {
 
             /// Display all conversations.
             case all
@@ -94,7 +94,7 @@ extension AppBskyLexicon.Notification {
     public struct FilterablePreferenceDefinition: Sendable, Codable {
 
         /// A filter of what conversations to get push notifications for.
-        public let filter: Filter
+        public let include: Include
 
         /// Determines whether the notification will appear in the notification list.
         public let willAppearInNotificationList: Bool
@@ -103,14 +103,14 @@ extension AppBskyLexicon.Notification {
         public let willPush: Bool
 
         enum CodingKeys: String, CodingKey {
-            case filter
+            case include
             case willAppearInNotificationList = "list"
             case willPush = "push"
         }
 
         // Enums
         /// A filter of what conversations to get push notifications for.
-        public enum Filter: Sendable, Codable, ExpressibleByStringLiteral {
+        public enum Include: Sendable, Codable, ExpressibleByStringLiteral {
 
             /// Display all conversations.
             case all
@@ -269,5 +269,45 @@ extension AppBskyLexicon.Notification {
 
         /// A list of preferences for notifications related to getting verified.
         public let verified: PreferenceDefinition
+    }
+
+    /// A definition model for an activity subscription.
+    ///
+    /// - SeeAlso: This is based on the [`app.bsky.notification.defs`][github] lexicon.
+    ///
+    /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/notification/defs.json
+    public struct ActivitySubscriptionDefinition: Sendable, Codable, Equatable, Hashable {
+
+        /// Determines whether the user account will be notified from every new post.
+        public let isPost: Bool
+
+        /// Determines whether the user account will be notified from every new reply.
+        public let isReply: Bool
+
+        enum CodingKeys: String, CodingKey {
+            case isPost = "post"
+            case isReply = "reply"
+        }
+    }
+
+    /// A definition model for the activity subscription data.
+    ///
+    /// - Note: According to the AT Protocol specifications: "Object used to store activity subscription data in stash."
+    ///
+    /// - SeeAlso: This is based on the [`app.bsky.notification.defs`][github] lexicon.
+    ///
+    /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/notification/defs.json
+    public struct SubjectActivitySubscriptionDefinition: Sendable, Codable {
+
+        /// The decentralized identifier (DID) of the user account being subscribed to.
+        public let subjectDID: String
+
+        /// The activity subscription of the specificed user account.
+        public let activitySubscription: ActivitySubscriptionDefinition
+
+        enum CodingKeys: String, CodingKey {
+            case subjectDID = "subject"
+            case activitySubscription
+        }
     }
 }

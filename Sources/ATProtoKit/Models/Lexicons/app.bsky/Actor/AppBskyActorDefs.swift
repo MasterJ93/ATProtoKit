@@ -373,8 +373,11 @@ extension AppBskyLexicon.Actor {
         /// Indicates whether the user account is a labeler. Optional.
         public let isActorLabeler: Bool?
 
-        ///
+        /// The actor's associated chat profile. Optional.
         public let chats: ProfileAssociatedChatDefinition?
+
+        /// The actor's associated profile with respect to the activity subscription. Optional.
+        public let activitySubscription: ProfileAssociatedActivitySubscriptionDefinition?
 
         enum CodingKeys: String, CodingKey {
             case lists
@@ -382,6 +385,7 @@ extension AppBskyLexicon.Actor {
             case starterPacks
             case isActorLabeler = "labeler"
             case chats = "chat"
+            case activitySubscription
         }
     }
 
@@ -411,6 +415,77 @@ extension AppBskyLexicon.Actor {
             /// Indicates that all messages can be allowed if it belongs to someone the
             /// user account is following the owner of the message.
             case following
+        }
+    }
+
+    /// A definition model for the actor's associated profile with respect to the activity subscription.
+    ///
+    /// - SeeAlso: This is based on the [`app.bsky.actor.defs`][github] lexicon.
+    ///
+    /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/actor/defs.json
+    public struct ProfileAssociatedActivitySubscriptionDefinition: Sendable, Codable, Equatable, Hashable {
+
+        /// Determines what kind of subsciptions are allowed.
+        public let allowSubscriptions: AllowSubscriptions
+
+        enum CodingKeys: CodingKey {
+            case allowSubscriptions
+        }
+
+        // Enums
+        /// Determines what kind of subsciptions are allowed.
+        public enum AllowSubscriptions: Sendable, Codable, Equatable, Hashable, ExpressibleByStringLiteral {
+
+            /// Those who are following the user account can subscribe.
+            case followers
+
+            /// Those who are mutually following the user account can subscribe.
+            case mutuals
+
+            /// No one can subscribe.
+            case none
+
+            /// An unknown value that the object may contain.
+            case unknown(String)
+
+            /// Provides the raw string value for encoding, decoding, and comparison.
+            public var rawValue: String {
+                switch self {
+                    case .followers:
+                        return "followers"
+                    case .mutuals:
+                        return "mutuals"
+                    case .none:
+                        return "none"
+                    case .unknown(let value):
+                        return value
+                }
+            }
+
+            public init(stringLiteral value: String) {
+                self = .unknown(value)
+            }
+
+            public init(from decoder: Decoder) throws {
+                let container = try decoder.singleValueContainer()
+                let value = try container.decode(String.self)
+
+                switch value {
+                    case "followers":
+                        self = .followers
+                    case "mutuals":
+                        self = .mutuals
+                    case "none":
+                        self = .none
+                    default:
+                        self = .unknown(value)
+                }
+            }
+
+            public func encode(to encoder: Encoder) throws {
+                var container = encoder.singleValueContainer()
+                try container.encode(self.rawValue)
+            }
         }
     }
 
@@ -453,6 +528,9 @@ extension AppBskyLexicon.Actor {
         /// also follow."
         public let knownFollowers: KnownFollowers?
 
+        /// The actor's associated profile with respect to the activity subscription.
+        public let activitySubscription: AppBskyLexicon.Notification.ActivitySubscriptionDefinition?
+
         enum CodingKeys: String, CodingKey {
             case isMuted = "muted"
             case mutedByArray = "mutedByList"
@@ -462,6 +540,7 @@ extension AppBskyLexicon.Actor {
             case followingURI = "following"
             case followedByURI = "followedBy"
             case knownFollowers
+            case activitySubscription
         }
     }
 

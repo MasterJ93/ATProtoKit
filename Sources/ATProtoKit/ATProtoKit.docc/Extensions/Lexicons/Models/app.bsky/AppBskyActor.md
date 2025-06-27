@@ -9,6 +9,7 @@
 - ``ProfileViewDetailedDefinition``
 - ``ProfileAssociatedDefinition``
 - ``ProfileAssociatedChatDefinition``
+- ``ProfileAssociatedActivitySubscriptionDefinition``
 - ``ViewerStateDefinition``
 - ``KnownFollowers``
 - ``VerificationStateDefinition``
