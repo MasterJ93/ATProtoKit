@@ -524,11 +524,14 @@ extension AppBskyLexicon.Actor {
 
         /// An array of mutual followers. Optional.
         ///
-        /// - Note: According to the AT Protocol specifications: "The subject's followers whom you
-        /// also follow."
+        /// - Note: According to the AT Protocol specifications: "This property is present only in selected
+        /// cases, as an optimization."
         public let knownFollowers: KnownFollowers?
 
-        /// The actor's associated profile with respect to the activity subscription.
+        /// The actor's associated profile with respect to the activity subscription. Optional.
+        ///
+        /// - Note: According to the AT Protocol specifications: "This property is present only in selected
+        /// cases, as an optimization."
         public let activitySubscription: AppBskyLexicon.Notification.ActivitySubscriptionDefinition?
 
         enum CodingKeys: String, CodingKey {

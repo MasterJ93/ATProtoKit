@@ -197,6 +197,9 @@ extension AppBskyLexicon.Notification {
             /// Indicates the notification is about the user account receiving a referred repost.
             case repostViaRepost
 
+            /// Indicates the notification is about the user account subscribing to a post.
+            case subscribedPost
+
             /// An unknown value that the object may contain.
             case unknown(String)
 
@@ -224,6 +227,8 @@ extension AppBskyLexicon.Notification {
                         return "like-via-repost"
                     case .repostViaRepost:
                         return "repost-via-repost"
+                    case .subscribedPost:
+                        return "subscribed-post"
                     case .unknown(let value):
                         return value
                 }
@@ -260,6 +265,8 @@ extension AppBskyLexicon.Notification {
                         self = .likeViaRepost
                     case "repost-via-repost":
                         self = .repostViaRepost
+                    case "subscribed-post":
+                        self = .subscribedPost
                     default:
                         self = .unknown(value)
                 }
