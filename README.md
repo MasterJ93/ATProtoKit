@@ -161,7 +161,12 @@ While this project will change significantly, feedback, issues, and contribution
 
 If you have any questions, you can ask me on Bluesky ([@cjrriley.com](https://bsky.app/profile/cjrriley.com)). And while you're at it, give me a follow! I'm also active on the [ATProto Touchers](https://discord.gg/3srmDsHSZJ) Discord server.
 
-## License
+## License and Acknowledgments
 This Swift package is using the MIT License. Please view [LICENSE.md](https://github.com/MasterJ93/ATProtoKit/blob/main/LICENSE.md) for more details.
 
 The documentation text used by Bluesky is licenced under the MIT Licence. Please view [ATPROTO-LICENSE.md](ATProtoLicense/ATPROTO-LICENSE.txt) for more details.
+
+The following Swift packages have been used to help run ATProtoKit:
+- [swift-docc-plugin](https://github.com/swiftlang/swift-docc-plugin) from [The Swift Programming Language](https://github.com/swiftlang).
+- [swift-log](https://github.com/apple/swift-log) from [Apple](https://github.com/apple).
+- [swift-syntax](https://github.com/swiftlang/swift-syntax) from [The Swift Programming Language](https://github.com/swiftlang).
