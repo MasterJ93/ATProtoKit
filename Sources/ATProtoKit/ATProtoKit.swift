@@ -7,7 +7,7 @@ import Logging
 /// Defines a protocol for configurations in the `ATProtoKit` API library.
 ///
 /// `ATProtoKitConfiguration` defines the basic requirements for any class that may hold
-/// exicon methods.  Any class that conforms to this protocol must be geared for sending API calls
+/// lexicon methods.  Any class that conforms to this protocol must be geared for sending API calls
 /// to the AT Protocol. Creating a class that conforms to this is useful if you have additional
 /// lexicons specific to the service you're running.
 ///
