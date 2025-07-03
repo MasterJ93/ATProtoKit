@@ -54,6 +54,13 @@ extension ComAtprotoLexicon.Repository {
         /// The size of the blob.
         public let size: Int
 
+        public init(type: String, reference: ComAtprotoLexicon.Repository.BlobReference, mimeType: String, size: Int) {
+            self.type = type
+            self.reference = reference
+            self.mimeType = mimeType
+            self.size = size
+        }
+        
         enum CodingKeys: String, CodingKey {
             case type = "$type"
             case reference = "ref"
@@ -67,6 +74,10 @@ extension ComAtprotoLexicon.Repository {
 
         /// The link of the blob reference.
         public let link: String
+        
+        public init(link: String) {
+            self.link = link
+        }
 
         enum CodingKeys: String, CodingKey {
             case link = "$link"
