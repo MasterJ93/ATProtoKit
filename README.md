@@ -153,7 +153,7 @@ You can also use this project for any programs you make using Swift and running 
 > [!WARNING]
 > As of right now, Windows support is theoretically possible, but not has not been tested to work. While it’s not a goal to make it fully compatible, contributions and feedback on the matter are welcomed.
 > 
-> Support for WebAssembly and Android are currently not supported, but will be soon.
+> Support for WebAssembly is currently not supported, but will be soon. Support for Android will be supported soon.
 
 
 ## Submitting Contributions and Feedback
