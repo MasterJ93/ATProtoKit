@@ -54,6 +54,31 @@ extension ComAtprotoLexicon.Repository {
         /// The size of the blob.
         public let size: Int
 
+        public init(type: String, reference: ComAtprotoLexicon.Repository.BlobReference, mimeType: String, size: Int) {
+            self.type = type
+            self.reference = reference
+            self.mimeType = mimeType
+            self.size = size
+        }
+        
+        public init(from decoder: any Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+            
+            self.type = try? container.decodeIfPresent(String.self, forKey: .type)
+            self.reference = try container.decode(ComAtprotoLexicon.Repository.BlobReference.self, forKey: .reference)
+            self.mimeType = try container.decode(String.self, forKey: .mimeType)
+            self.size = try container.decode(Int.self, forKey: .size)
+        }
+        
+        public func encode(to encoder: any Encoder) throws {
+            var container = encoder.container(keyedBy: CodingKeys.self)
+            
+            try container.encodeIfPresent(self.type, forKey: .type)
+            try container.encode(self.reference, forKey: .reference)
+            try container.encode(self.mimeType, forKey: .mimeType)
+            try container.encode(self.size, forKey: .size)
+        }
+        
         enum CodingKeys: String, CodingKey {
             case type = "$type"
             case reference = "ref"
@@ -67,7 +92,21 @@ extension ComAtprotoLexicon.Repository {
 
         /// The link of the blob reference.
         public let link: String
+        
+        public init(link: String) {
+            self.link = link
+        }
 
+        public init(from decoder: Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+            self.link = try container.decode(String.self, forKey: .link)
+        }
+        
+        public func encode(to encoder: any Encoder) throws {
+            var container = encoder.container(keyedBy: CodingKeys.self)
+            try container.encode(self.link, forKey: .link)
+        }
+        
         enum CodingKeys: String, CodingKey {
             case link = "$link"
         }
