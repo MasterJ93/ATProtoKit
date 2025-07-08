@@ -10,14 +10,6 @@ import Logging
 /// lexicon methods.  Any class that conforms to this protocol must be geared for sending API calls
 /// to the AT Protocol. Creating a class that conforms to this is useful if you have additional
 /// lexicons specific to the service you're running.
-///
-/// For logging-related tasks, make sure you set up the logging instide the `init()` method
-/// and attach it to the `logger` property.
-/// ```swift
-/// public init(sessionConfiguration: SessionConfiguration? = nil, logIdentifier: String? = nil, logCategory: String?, logLevel: Logger.Level? = .info) {
-///     self.logger = session?.logger ?? logger
-/// }
-/// ```
 public protocol ATProtoKitConfiguration {
 
     /// Represents an object used for managing sessions.
