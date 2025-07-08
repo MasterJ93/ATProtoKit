@@ -14,7 +14,7 @@ import FoundationNetworking
 public struct RecordKeyManager {
 
     /// The last timestamp recorded.
-    public var lastTimestamp: UInt64 = UInt64(0)
+    private var lastTimestamp: UInt64 = UInt64(0)
 
     /// A number used for reducing the risk of collisions.
     private let clockIdentifier: UInt64
