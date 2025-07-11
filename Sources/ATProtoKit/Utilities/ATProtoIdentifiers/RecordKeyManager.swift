@@ -22,7 +22,7 @@ public struct RecordKeyManager {
     /// A list of the valid characters in base32.
     private let base32Alphabet = "234567abcdefghijklmnopqrstuvwxyz"
 
-    init() {
+    public init() {
         // Generate a random 10-bit clock identifier.
         clockIdentifier = UInt64.random(in: 0..<1023)
     }
