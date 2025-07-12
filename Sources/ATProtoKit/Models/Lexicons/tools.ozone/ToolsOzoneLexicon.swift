@@ -21,6 +21,9 @@ extension ToolsOzoneLexicon {
     /// A group of lexicons within the `tools.ozone.moderation` namespace.
     public enum Moderation {}
 
+    /// A group of lexicons within the `tools.ozone.safelink` namespace.
+    public enum Safelink {}
+
     /// A group of lexicons within the `tools.ozone.server` namespace.
     public enum Server {}
 
