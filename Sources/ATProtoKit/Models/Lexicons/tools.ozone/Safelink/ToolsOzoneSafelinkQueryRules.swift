@@ -12,7 +12,7 @@ import FoundationNetworking
 
 extension ToolsOzoneLexicon.Safelink {
 
-    /// The main data model definition for querying URL rules events.
+    /// The main data model definition for querying URL rule events.
     ///
     /// - Note: According to the AT Protocol specifications: "Query URL safety rules."
     ///
@@ -32,7 +32,7 @@ extension ToolsOzoneLexicon.Safelink {
         }
     }
 
-    /// A request body model for querying URL rules events.
+    /// A request body model for querying URL rule events.
     ///
     /// - Note: According to the AT Protocol specifications: "Query URL safety rules."
     ///
@@ -51,28 +51,28 @@ extension ToolsOzoneLexicon.Safelink {
         /// - Note: According to the AT Protocol specifications: "Maximum number of results to return."
         public let limit: Int?
 
-        /// An array of filtered results based on URL or domain.
+        /// An array of filtered results based on URL or domain. Optional.
         ///
         /// - Note: According to the AT Protocol specifications: "Filter by specific URLs or domains."
         public let urls: [URL]?
 
-        /// Filter results based on the pattern type of the URL rule.
+        /// Filter results based on the pattern type of the URL rule. Optional.
         ///
         /// - Note: According to the AT Protocol specifications: "Filter by pattern type."
         public let patternType: String?
 
-        /// An array of filtered results based on the actions of the URL rule.
+        /// An array of filtered results based on the actions of the URL rule. Optional.
         ///
         /// - Note: According to the AT Protocol specifications: "Filter by action types."
         public let actions: [String]?
 
-        /// Filter results based on the reason for the URL rule.
+        /// Filter results based on the reason for the URL rule. Optional.
         ///
         /// - Note: According to the AT Protocol specifications: "Filter by reason type."
         public let reason: String?
 
         /// Filter results based on the decentralized identifier (DID) of the user account that created
-        /// the URL rules.
+        /// the URL rules. Optional.
         ///
         /// - Note: According to the AT Protocol specifications: "Filter by rule creator."
         public let createdBy: String?
@@ -83,7 +83,7 @@ extension ToolsOzoneLexicon.Safelink {
         public let sortDirection: ToolsOzoneLexicon.Safelink.QueryRules.SortDirection?
     }
 
-    /// An output model for querying URL rules events.
+    /// An output model for querying URL rule events.
     ///
     /// - Note: According to the AT Protocol specifications: "Query URL safety rules."
     ///
