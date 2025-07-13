@@ -53,11 +53,18 @@ extension AppBskyLexicon.Notification {
         /// The app ID for the push notification.
         public let appID: String
 
+        /// Determines whether the user account is age restricted.
+        ///
+        /// - Note: According to the AT Protocol specifications: "Set to true when the actor is
+        /// age restricted."
+        public let isAgeRestricted: Bool?
+
         enum CodingKeys: String, CodingKey {
             case serviceDID = "serviceDid"
             case token
             case platform
             case appID = "appId"
+            case isAgeRestricted = "ageRestricted"
         }
     }
 }

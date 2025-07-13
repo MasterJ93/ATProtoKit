@@ -26,6 +26,7 @@ extension ATProtoKit {
     ///   - token: The token of the service.
     ///   - platform: The platform of the client.
     ///   - appID: The identifier of the client.
+    ///   - isAgeRestricted: Determines whether the user account is age restricted. Optional.
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
@@ -33,7 +34,8 @@ extension ATProtoKit {
         serviceDID: String,
         token: String,
         platform: AppBskyLexicon.Notification.RegisterPush.Platform,
-        appID: String
+        appID: String,
+        isAgeRestricted: Bool? = nil
     ) async throws {
         guard let session = try await self.getUserSession(),
               let keychain = sessionConfiguration?.keychainProtocol else {
@@ -51,7 +53,8 @@ extension ATProtoKit {
             serviceDID: serviceDID,
             token: token,
             platform: platform,
-            appID: appID
+            appID: appID,
+            isAgeRestricted: isAgeRestricted
         )
 
         do {
