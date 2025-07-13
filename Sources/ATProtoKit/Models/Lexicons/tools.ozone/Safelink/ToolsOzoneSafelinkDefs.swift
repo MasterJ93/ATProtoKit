@@ -77,10 +77,8 @@ extension ToolsOzoneLexicon.Safelink {
             self.eventType = try container.decode(ToolsOzoneLexicon.Safelink.EventTypeDefinition.self, forKey: .eventType)
             self.url = try container.decode(URL.self, forKey: .url)
             self.urlPattern = try container.decode(ToolsOzoneLexicon.Safelink.PatternTypeDefinition.self, forKey: .urlPattern)
-            self.action = try container
-                .decode(ToolsOzoneLexicon.Safelink.ActionTypeDefinition.self, forKey: .action)
-            self.reason = try container
-                .decode(ToolsOzoneLexicon.Safelink.ReasonTypeDefinition.self, forKey: .reason)
+            self.action = try container.decode(ToolsOzoneLexicon.Safelink.ActionTypeDefinition.self, forKey: .action)
+            self.reason = try container.decode(ToolsOzoneLexicon.Safelink.ReasonTypeDefinition.self, forKey: .reason)
             self.createdBy = try container.decode(String.self, forKey: .createdBy)
             self.createdAt = try container.decodeDate(forKey: .createdAt)
             self.comment = try container.decodeIfPresent(String.self, forKey: .comment)

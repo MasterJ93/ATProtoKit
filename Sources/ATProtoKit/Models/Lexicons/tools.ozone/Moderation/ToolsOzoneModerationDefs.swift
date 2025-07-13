@@ -400,6 +400,12 @@ extension ToolsOzoneLexicon.Moderation {
             /// A priority score event.
             case moderationEventPriorityScore(ToolsOzoneLexicon.Moderation.EventPriorityScoreDefinition)
 
+            /// An age assurance event.
+            case eventAgeAssurance(ToolsOzoneLexicon.Moderation.AgeAssuranceEventDefinition)
+
+            /// An age assurance override event.
+            case eventAgeAssuranceOverride(ToolsOzoneLexicon.Moderation.AgeAssuranceOverrideEventDefinition)
+
             public init(from decoder: Decoder) throws {
                 let container = try decoder.singleValueContainer()
 
@@ -425,6 +431,10 @@ extension ToolsOzoneLexicon.Moderation {
                     self = .moderationEventTag(value)
                 } else if let value = try? container.decode(ToolsOzoneLexicon.Moderation.EventPriorityScoreDefinition.self) {
                     self = .moderationEventPriorityScore(value)
+                } else if let value = try? container.decode(ToolsOzoneLexicon.Moderation.AgeAssuranceEventDefinition.self) {
+                    self = .eventAgeAssurance(value)
+                } else if let value = try? container.decode(ToolsOzoneLexicon.Moderation.AgeAssuranceOverrideEventDefinition.self) {
+                    self = .eventAgeAssuranceOverride(value)
                 } else {
                     throw DecodingError.typeMismatch(
                         ModerationEventViewDetailUnion.self, DecodingError.Context(
@@ -436,28 +446,32 @@ extension ToolsOzoneLexicon.Moderation {
                 var container = encoder.singleValueContainer()
 
                 switch self {
-                    case .moderationEventTakedown(let moderationEventTakedown):
-                        try container.encode(moderationEventTakedown)
-                    case .moderationEventReverseTakedown(let moderationEventDetail):
-                        try container.encode(moderationEventDetail)
-                    case .moderationEventComment(let moderationEventComment):
-                        try container.encode(moderationEventComment)
-                    case .moderationEventReport(let moderationEventReport):
-                        try container.encode(moderationEventReport)
-                    case .moderationEventLabel(let moderationEventLabel):
-                        try container.encode(moderationEventLabel)
-                    case .moderationEventAcknowledge(let moderationEventAcknowledge):
-                        try container.encode(moderationEventAcknowledge)
-                    case .moderationEventEscalate(let moderationEventEscalate):
-                        try container.encode(moderationEventEscalate)
-                    case .moderationEventMute(let moderationEventMute):
-                        try container.encode(moderationEventMute)
-                    case .moderationEventResolveAppeal(let moderationEventResolveAppeal):
-                        try container.encode(moderationEventResolveAppeal)
-                    case .moderationEventTag(let moderationEventTag):
-                        try container.encode(moderationEventTag)
-                    case .moderationEventPriorityScore(let event):
-                        try container.encode(event)
+                    case .moderationEventTakedown(let value):
+                        try container.encode(value)
+                    case .moderationEventReverseTakedown(let value):
+                        try container.encode(value)
+                    case .moderationEventComment(let value):
+                        try container.encode(value)
+                    case .moderationEventReport(let value):
+                        try container.encode(value)
+                    case .moderationEventLabel(let value):
+                        try container.encode(value)
+                    case .moderationEventAcknowledge(let value):
+                        try container.encode(value)
+                    case .moderationEventEscalate(let value):
+                        try container.encode(value)
+                    case .moderationEventMute(let value):
+                        try container.encode(value)
+                    case .moderationEventResolveAppeal(let value):
+                        try container.encode(value)
+                    case .moderationEventTag(let value):
+                        try container.encode(value)
+                    case .moderationEventPriorityScore(let value):
+                        try container.encode(value)
+                    case .eventAgeAssurance(let value):
+                        try container.encode(value)
+                    case .eventAgeAssuranceOverride(let value):
+                        try container.encode(value)
                 }
             }
         }
@@ -595,12 +609,25 @@ extension ToolsOzoneLexicon.Moderation {
         /// subjects authored by the subject's account."
         public let recordsStats: RecordsStatsDefinition?
 
+        /// The current state for the user account with respect to age assurance. Optional.
+        ///
+        /// - Note: According to the AT Protocol specifications: "Current age assurance state of
+        /// the subject."
+        public let ageAssuranceState: AgeAssuranceState?
+
+        /// Whether the age assurance update was done by the user account or an admin. Optional.
+        ///
+        /// - Note: According to the AT Protocol specifications: "Whether or not the last successful update
+        /// to age assurance was made by the user or admin."
+        public let ageAssuranceUpdatedBy: AgeAssuranceUpdatedBy?
+
         public init(id: Int, subject: SubjectUnion, hosting: HostingUnion?,
                     subjectBlobCIDs: [String]? = nil, subjectRepoHandle: String? = nil, updatedAt: Date, createdAt: Date,
                     reviewState: ToolsOzoneLexicon.Moderation.SubjectReviewStateDefinition, comment: String? = nil, priorityScore: Int? = nil,
                     muteUntil: Date? = nil, muteReportingUntil: Date? = nil, lastReviewedBy: String? = nil, lastReviewedAt: Date? = nil,
                     lastReportedAt: Date? = nil, lastAppealedAt: Date? = nil, isTakenDown: Bool? = nil, wasAppealed: Bool? = nil, suspendUntil: Date? = nil,
-                    tags: [String]? = nil, accountStats: AccountStatsDefinition? = nil, recordsStats: RecordsStatsDefinition? = nil) {
+                    tags: [String]? = nil, accountStats: AccountStatsDefinition? = nil, recordsStats: RecordsStatsDefinition? = nil,
+                    ageAssuranceState: AgeAssuranceState? = nil, ageAssuranceUpdatedBy: AgeAssuranceUpdatedBy? = nil) {
             self.id = id
             self.subject = subject
             self.hosting = hosting
@@ -623,6 +650,8 @@ extension ToolsOzoneLexicon.Moderation {
             self.tags = tags
             self.accountStats = accountStats
             self.recordsStats = recordsStats
+            self.ageAssuranceState = ageAssuranceState
+            self.ageAssuranceUpdatedBy = ageAssuranceUpdatedBy
         }
 
         public init(from decoder: any Decoder) throws {
@@ -650,6 +679,8 @@ extension ToolsOzoneLexicon.Moderation {
             self.tags = try container.decodeIfPresent([String].self, forKey: .tags)
             self.accountStats = try container.decodeIfPresent(AccountStatsDefinition.self, forKey: .accountStats)
             self.recordsStats = try container.decodeIfPresent(RecordsStatsDefinition.self, forKey: .recordsStats)
+            self.ageAssuranceState = try container.decodeIfPresent(AgeAssuranceState.self, forKey: .ageAssuranceState)
+            self.ageAssuranceUpdatedBy = try container.decodeIfPresent(AgeAssuranceUpdatedBy.self, forKey: .ageAssuranceUpdatedBy)
         }
 
         public func encode(to encoder: Encoder) throws {
@@ -682,6 +713,8 @@ extension ToolsOzoneLexicon.Moderation {
             try container.encode(self.tags, forKey: .tags)
             try container.encodeIfPresent(self.accountStats, forKey: .accountStats)
             try container.encodeIfPresent(self.recordsStats, forKey: .recordsStats)
+            try container.encodeIfPresent(self.ageAssuranceState, forKey: .ageAssuranceState)
+            try container.encodeIfPresent(self.ageAssuranceUpdatedBy, forKey: .ageAssuranceUpdatedBy)
         }
 
         enum CodingKeys: String, CodingKey {
@@ -707,6 +740,126 @@ extension ToolsOzoneLexicon.Moderation {
             case tags
             case accountStats
             case recordsStats
+            case ageAssuranceState
+            case ageAssuranceUpdatedBy
+        }
+
+        // Enums
+        /// The current state for the user account with respect to age assurance.
+        public enum AgeAssuranceState: Sendable, Codable, ExpressibleByStringLiteral {
+
+            /// The state is pending.
+            case pending
+
+            /// The state is assured.
+            case assured
+
+            /// The state is unknown.
+            case unknown
+
+            /// The state is reset.
+            case reset
+
+            /// The state is blocked.
+            case blocked
+
+            /// A custom string value that the object may contain.
+            case customString(String)
+
+            /// Provides the raw string value for encoding, decoding, and comparison.
+            public var rawValue: String {
+                switch self {
+                    case .pending:
+                        return "pending"
+                    case .assured:
+                        return "assured"
+                    case .unknown:
+                        return "unknown"
+                    case .reset:
+                        return "reset"
+                    case .blocked:
+                        return "blocked"
+                    case .customString(let value):
+                        return value
+                }
+            }
+
+            public init(stringLiteral value: String) {
+                self = .customString(value)
+            }
+
+            public init(from decoder: Decoder) throws {
+                let container = try decoder.singleValueContainer()
+                let value = try container.decode(String.self)
+
+                switch value {
+                    case "pending":
+                        self = .pending
+                    case "assured":
+                        self = .assured
+                    case "unknown":
+                        self = .unknown
+                    case "reset":
+                        self = .reset
+                    case "blocked":
+                        self = .blocked
+                    default:
+                        self = .customString(value)
+                }
+            }
+
+            public func encode(to encoder: Encoder) throws {
+                var container = encoder.singleValueContainer()
+                try container.encode(self.rawValue)
+            }
+        }
+
+        /// Whether the age assurance update was done by the user account or an admin.
+        public enum AgeAssuranceUpdatedBy: Sendable, Codable, ExpressibleByStringLiteral {
+
+            /// The age assurance update was updated by an admin.
+            case admin
+
+            /// The age assurance update was updated by the user account.
+            case user
+
+            /// A custom string value that the object may contain.
+            case customString(String)
+
+            /// Provides the raw string value for encoding, decoding, and comparison.
+            public var rawValue: String {
+                switch self {
+                    case .admin:
+                        return "admin"
+                    case .user:
+                        return "user"
+                    case .customString(let value):
+                        return value
+                }
+            }
+
+            public init(stringLiteral value: String) {
+                self = .customString(value)
+            }
+
+            public init(from decoder: Decoder) throws {
+                let container = try decoder.singleValueContainer()
+                let value = try container.decode(String.self)
+
+                switch value {
+                    case "admin":
+                        self = .admin
+                    case "user":
+                        self = .user
+                    default:
+                        self = .customString(value)
+                }
+            }
+
+            public func encode(to encoder: Encoder) throws {
+                var container = encoder.singleValueContainer()
+                try container.encode(self.rawValue)
+            }
         }
 
         // Unions
@@ -1202,6 +1355,236 @@ extension ToolsOzoneLexicon.Moderation {
         enum CodingKeys: CodingKey {
             case comment
             case score
+        }
+    }
+
+    /// A definition model for age assurance information directly provided by users.
+    ///
+    /// - Note: According to the AT Protocol specifications: "Age assurance info coming directly from users.
+    /// Only works on DID subjects."
+    ///
+    /// - SeeAlso: This is based on the [`tools.ozone.moderation.defs`][github] lexicon.
+    ///
+    /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/tools/ozone/moderation/defs.json
+    public struct AgeAssuranceEventDefinition: Sendable, Codable {
+
+        /// The date and time the age assurance flow completed.
+        ///
+        /// - Note: According to the AT Protocol specifications: "The date and time of this
+        /// write operation."
+        public let createdAt: Date
+
+        /// The age assurance flow's status.
+        ///
+        /// - Note: According to the AT Protocol specifications: "The status of the age assurance process."
+        public let status: Status
+
+        /// A UUID-formatted identifier of the age assurance attempt.
+        ///
+        /// - Note: According to the AT Protocol specifications: "The unique identifier for this instance of
+        /// the age assurance flow, in UUID format."
+        public let attemptID: String
+
+        /// The IP address used when the age assurance flow began. Optional.
+        ///
+        /// - Note: According to the AT Protocol specifications: "The IP address used when initiating the
+        /// AA flow."
+        public let initialIPAddress: String?
+
+        /// The user agent used when the age assurance flow began. Optional.
+        ///
+        /// - Note: According to the AT Protocol specifications: "The user agent used when initiating the
+        /// AA flow."
+        public let initialUserAgent: String?
+
+        /// The IP address used when the age assurance flow completed. Optional.
+        ///
+        /// - Note: According to the AT Protocol specifications: "The IP address used when completing the
+        /// AA flow"
+        public let completedIPAddress: String?
+
+        /// The user agent used when the age assurance flow completed. Optional.
+        ///
+        /// - Note: According to the AT Protocol specifications: "The user agent used when completing the
+        /// AA flow."
+        public let completedUserAgent: String?
+
+        public init(createdAt: Date, status: Status, attemptID: String, initialIPAddress: String?, initialUserAgent: String?, completedIPAddress: String?,
+                    completedUserAgent: String?) {
+            self.createdAt = createdAt
+            self.status = status
+            self.attemptID = attemptID
+            self.initialIPAddress = initialIPAddress
+            self.initialUserAgent = initialUserAgent
+            self.completedIPAddress = completedIPAddress
+            self.completedUserAgent = completedUserAgent
+        }
+
+        public init(from decoder: any Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+
+            self.createdAt = try container.decodeDate(forKey: .createdAt)
+            self.status = try container.decode(Status.self, forKey: .status)
+            self.attemptID = try container.decode(String.self, forKey: .attemptID)
+            self.initialIPAddress = try container.decodeIfPresent(String.self, forKey: .initialIPAddress)
+            self.initialUserAgent = try container.decodeIfPresent(String.self, forKey: .initialUserAgent)
+            self.completedIPAddress = try container.decodeIfPresent(String.self, forKey: .completedIPAddress)
+            self.completedUserAgent = try container.decodeIfPresent(String.self, forKey: .completedUserAgent)
+        }
+
+        public func encode(to encoder: any Encoder) throws {
+            var container = encoder.container(keyedBy: CodingKeys.self)
+
+            try container.encodeDate(self.createdAt, forKey: .createdAt)
+            try container.encode(self.status, forKey: .status)
+            try container.encode(self.attemptID, forKey: .attemptID)
+            try container.encodeIfPresent(self.initialIPAddress, forKey: .initialIPAddress)
+            try container.encodeIfPresent(self.initialUserAgent, forKey: .initialUserAgent)
+            try container.encodeIfPresent(self.completedIPAddress, forKey: .completedIPAddress)
+            try container.encodeIfPresent(self.completedUserAgent, forKey: .completedUserAgent)
+        }
+
+        enum CodingKeys: String, CodingKey {
+            case createdAt
+            case status
+            case attemptID = "attemptId"
+            case initialIPAddress = "initIp"
+            case initialUserAgent = "initUa"
+            case completedIPAddress = "completeIp"
+            case completedUserAgent = "completeUa"
+        }
+
+        // Enums
+        /// The age assurance flow's status.
+        public enum Status: Sendable, Codable, ExpressibleByStringLiteral {
+
+            /// The status is unknown.
+            case unknown
+
+            /// The status is pending.
+            case pending
+
+            /// The status is assured.
+            case assured
+
+            /// A custom string value the object may contain.
+            case customString(String)
+
+            /// Provides the raw string value for encoding, decoding, and comparison.
+            public var rawValue: String {
+                switch self {
+                    case .unknown:
+                        return "unknown"
+                    case .pending:
+                        return "pending"
+                    case .assured:
+                        return "assured"
+                    case .customString(let value):
+                        return value
+                }
+            }
+
+            public init(stringLiteral value: String) {
+                self = .customString(value)
+            }
+
+            public init(from decoder: Decoder) throws {
+                let container = try decoder.singleValueContainer()
+                let value = try container.decode(String.self)
+
+                switch value {
+                    case "unknown":
+                        self = .unknown
+                    case "pending":
+                        self = .pending
+                    case "assured":
+                        self = .assured
+                    default:
+                        self = .customString(value)
+                }
+            }
+
+            public func encode(to encoder: Encoder) throws {
+                var container = encoder.singleValueContainer()
+                try container.encode(self.rawValue)
+            }
+        }
+    }
+
+    /// A definition model for moderators overriding an age assurance status.
+    ///
+    /// - Note: According to the AT Protocol specifications: "Age assurance status override by moderators.
+    /// Only works on DID subjects."
+    ///
+    /// - SeeAlso: This is based on the [`tools.ozone.moderation.defs`][github] lexicon.
+    ///
+    /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/tools/ozone/moderation/defs.json
+    public struct AgeAssuranceOverrideEventDefinition: Sendable, Codable {
+
+        /// The status set by the moderator, overriding the status of the user account.
+        ///
+        /// - Note: According to the AT Protocol specifications: "The status to be set for the user decided
+        /// by a moderator, overriding whatever value the user had previously. Use reset to default to
+        /// original state."
+        public let status: Status
+
+        /// A comment attached to the operation.
+        public let comment: String
+
+        // Enums
+        /// The status set by the moderator, overriding the status of the user account.
+        public enum Status: Sendable, Codable, ExpressibleByStringLiteral {
+
+            /// The status is assured.
+            case assured
+
+            /// The status is unknown.
+            case reset
+
+            /// The status is pending.
+            case blocked
+
+            /// A custom string value the object may contain.
+            case customString(String)
+
+            /// Provides the raw string value for encoding, decoding, and comparison.
+            public var rawValue: String {
+                switch self {
+                    case .assured:
+                        return "assured"
+                    case .reset:
+                        return "reset"
+                    case .blocked:
+                        return "blocked"
+                    case .customString(let value):
+                        return value
+                }
+            }
+
+            public init(stringLiteral value: String) {
+                self = .customString(value)
+            }
+
+            public init(from decoder: Decoder) throws {
+                let container = try decoder.singleValueContainer()
+                let value = try container.decode(String.self)
+
+                switch value {
+                    case "assured":
+                        self = .assured
+                    case "reset":
+                        self = .reset
+                    case "blocked":
+                        self = .blocked
+                    default:
+                        self = .customString(value)
+                }
+            }
+
+            public func encode(to encoder: Encoder) throws {
+                var container = encoder.singleValueContainer()
+                try container.encode(self.rawValue)
+            }
         }
     }
 
@@ -2338,5 +2721,28 @@ extension ToolsOzoneLexicon.Moderation {
         /// - Note: According to the AT Protocol specifications: "The total number of records
         /// labeled as a result of the user's reports."
         public let labeledRecordCount: Int
+    }
+
+    /// A definition model for moderation tool information that can trace the source of an action.
+    ///
+    /// - Note: According to the AT Protocol specifications: "Moderation tool information for tracing the
+    /// source of the action."
+    ///
+    /// - SeeAlso: This is based on the [`tools.ozone.moderation.defs`][github] lexicon.
+    ///
+    /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/admin/defs.json
+    public struct ModToolDefinition: Sendable, Codable {
+
+        /// The moderation tool's name.
+        ///
+        /// - Note: According to the AT Protocol specifications: "Name/identifier of the source
+        /// (e.g., 'automod', 'ozone/workspace')."
+        public let name: String
+
+        /// Any additional metadata about the moderation tool.
+        ///
+        /// - Note: According to the AT Protocol specifications: "Additional arbitrary metadata about
+        /// the source."
+        public let meta: UnknownType
     }
 }
