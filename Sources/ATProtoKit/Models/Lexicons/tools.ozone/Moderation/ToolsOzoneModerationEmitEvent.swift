@@ -33,11 +33,23 @@ extension ToolsOzoneLexicon.Moderation {
         /// The decentralized identifier (DID) of the moderator taking this action.
         public let createdBy: String
 
+        /// The moderation tool related to the event. Optional.
+        public let moderationTool: ToolsOzoneLexicon.Moderation.ModToolDefinition?
+
+        /// An identifier used for deduplicating events from external systems. Optional.
+        ///
+        /// - Note: According to the AT Protocol specifications: "An optional external ID for the event,
+        /// used to deduplicate events from external systems. Fails when an event of same type with the same
+        /// external ID exists for the same subject."
+        public let externalID: String?
+
         enum CodingKeys: String, CodingKey {
             case event
             case subject
             case subjectBlobCIDs = "subjectBlobCids"
             case createdBy
+            case moderationTool = "modTool"
+            case externalID = "externalId"
         }
 
         // Unions
