@@ -77,7 +77,7 @@ I believe Bluesky and its accompanying AT Protocol gives the perfect balance bet
 You can use the Swift Package Manager to download and import the library into your project:
 ```swift
 dependencies: [
-    .package(url: "https://github.com/MasterJ93/ATProtoKit.git", from: "0.29.0")
+    .package(url: "https://github.com/MasterJ93/ATProtoKit.git", from: "0.30.0")
 ]
 ```
 
@@ -116,7 +116,7 @@ Task {
         try await config.authenticate(with: "lucy.bsky.social", appPassword: "hunter2")
 
         // The session object is contains in the `ATProtoKit` object:
-        let atProtoKit = ATProtoKit(ATProtoKit(sessionConfiguration: config)
+        let atProtoKit = ATProtoKit(sessionConfiguration: config)
 
         if let keychain = try await atProtoKit.keychainProtocol() {
             print("Result (Access Token): \(keychain.retrieveAccessToken())")
