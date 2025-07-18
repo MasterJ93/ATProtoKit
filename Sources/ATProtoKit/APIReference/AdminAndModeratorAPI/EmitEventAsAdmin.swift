@@ -30,6 +30,8 @@ extension ATProtoAdmin {
     ///   - subjectBlobCIDs: An array of CID hashes related to blobs for the moderator's
     ///   event view. Optional.
     ///   - createdBy: The decentralized identifier (DID) of the moderator taking this action.
+    ///   - moderationTool: The moderation tool related to the event. Optional.
+    ///   - externalID: The moderation tool related to the event. Optional.
     /// - Returns: A moderation event view.
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
@@ -38,7 +40,9 @@ extension ATProtoAdmin {
         _ event: ToolsOzoneLexicon.Moderation.EmitEventRequestBody.EmitEventUnion,
         subject: ToolsOzoneLexicon.Moderation.EmitEventRequestBody.EmitEventSubjectUnion,
         subjectBlobCIDs: [String]? = nil,
-        createdBy: String
+        createdBy: String,
+        moderationTool: ToolsOzoneLexicon.Moderation.ModToolDefinition? = nil,
+        externalID: String? = nil
     ) async throws -> ToolsOzoneLexicon.Moderation.ModerationEventViewDefinition {
         guard let session = try await self.getUserSession(),
               let keychain = sessionConfiguration?.keychainProtocol else {
@@ -56,7 +60,9 @@ extension ATProtoAdmin {
             event: event,
             subject: subject,
             subjectBlobCIDs: subjectBlobCIDs,
-            createdBy: createdBy
+            createdBy: createdBy,
+            moderationTool: moderationTool,
+            externalID: externalID
         )
 
         do {
