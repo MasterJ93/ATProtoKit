@@ -52,6 +52,11 @@
 - ``RegisterPush``
 - ``RegisterPushRequestBody``
 
+### app.bsky.notification.unregisterPush
+
+- ``UnregisterPush``
+- ``UnregisterPushRequestBody``
+
 ### app.bsky.notification.updateSeen
 
 - ``UpdateSeenRequestBody``

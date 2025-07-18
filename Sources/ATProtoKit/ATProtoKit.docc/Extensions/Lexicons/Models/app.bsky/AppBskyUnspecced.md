@@ -10,6 +10,8 @@
 - ``TrendingTopicDefinition``
 - ``SkeletonTrendDefinition``
 - ``TrendViewDefinition``
+- ``AgeAssuranceEventDefinition``
+- ``AgeAssuranceStateDefinition``
 
 ### app.bsky.unspecced.getConfig
 
@@ -63,6 +65,10 @@
 ### app.bsky.unspecced.getTrendsSkeleton
 
 - ``GetTrendsSkeletonOutput``
+
+### app.bsky.unspecced.initAgeAssurance
+
+- ``InitAgeAssuranceRequestBody``
 
 ### app.bsky.unspecced.searchActorsSkeleton
 

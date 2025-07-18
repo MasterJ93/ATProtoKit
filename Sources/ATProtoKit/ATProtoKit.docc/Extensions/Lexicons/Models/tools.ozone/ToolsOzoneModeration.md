@@ -18,6 +18,8 @@
 - ``ToolsOzoneLexicon/Moderation/EventReportDefinition``
 - ``ToolsOzoneLexicon/Moderation/EventLabelDefinition``
 - ``ToolsOzoneLexicon/Moderation/EventPriorityScoreDefinition``
+- ``ToolsOzoneLexicon/Moderation/AgeAssuranceEventDefinition``
+- ``ToolsOzoneLexicon/Moderation/AgeAssuranceOverrideEventDefinition``
 - ``ToolsOzoneLexicon/Moderation/EventAcknowledgeDefinition``
 - ``ToolsOzoneLexicon/Moderation/EventEscalateDefinition``
 - ``ToolsOzoneLexicon/Moderation/EventMuteDefinition``
@@ -44,6 +46,7 @@
 - ``ToolsOzoneLexicon/Moderation/AccountHostingDefinition``
 - ``ToolsOzoneLexicon/Moderation/RecordHostingDefinition``
 - ``ToolsOzoneLexicon/Moderation/ReporterStatsDefinition``
+- ``ToolsOzoneLexicon/Moderation/ModToolDefinition``
 
 ### tools.ozone.moderation.emitEvent
 
