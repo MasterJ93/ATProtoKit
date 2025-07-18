@@ -13,7 +13,10 @@ import FoundationNetworking
 extension ATProtoKit {
 
     /// Counts the number of unread notifications.
-    /// 
+    ///
+    /// - Bug: The `seenAt` parameter has not yet been implemented by Bluesky. For now, leave the
+    /// parameter blank.
+    ///
     /// - Note: According to the AT Protocol specifications: "Count the number of unread
     /// notifications for the requesting account. Requires auth."
     ///
@@ -23,7 +26,7 @@ extension ATProtoKit {
     ///
     /// - Parameters:
     ///   - priority: Indicates whether the notification is a priority. Optional.
-    ///   - seenAt: The date and time the notifications were seen. Defaults to the date and
+    ///   - seenAt: The date and time the notifications were seen. Optional. Defaults to the date and
     ///   time the request was sent.
     /// - Returns: The number of unread notifications.
     ///
@@ -31,7 +34,7 @@ extension ATProtoKit {
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func getUnreadCount(
         priority: Bool?,
-        seenAt: Date = Date()
+        seenAt: Date? = nil
     ) async throws -> AppBskyLexicon.Notification.GetUnreadCountOutput {
         guard let session = try await self.getUserSession(),
               let keychain = sessionConfiguration?.keychainProtocol else {
@@ -51,7 +54,8 @@ extension ATProtoKit {
             queryItems.append(("priority", "\(priority)"))
         }
 
-        if let seenAtDate = CustomDateFormatter.shared.string(from: seenAt) {
+        if let seenAt,
+           let seenAtDate = CustomDateFormatter.shared.string(from: seenAt) {
             queryItems.append(("seenAt", "\(seenAtDate)"))
         }
 

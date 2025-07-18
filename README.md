@@ -20,7 +20,7 @@
 </div>
 <div align="center">
 
-[![Static Badge](https://img.shields.io/badge/Follow-%40cjrriley.com-0073fa?style=flat&logo=bluesky&labelColor=%23151e27&link=https%3A%2F%2Fbsky.app%2Fprofile%2Fcjrriley.com)](https://bsky.app/profile/cjrriley.com)
+[![Static Badge](https://img.shields.io/badge/Follow-%40cjrriley.ca-0073fa?style=flat&logo=bluesky&labelColor=%23151e27&link=https%3A%2F%2Fbsky.app%2Fprofile%2Fcjrriley.ca)](https://bsky.app/profile/cjrriley.ca)
 [![GitHub Sponsors](https://img.shields.io/github/sponsors/masterj93?color=%23cb5f96&link=https%3A%2F%2Fgithub.com%2Fsponsors%2FMasterJ93)](https://github.com/sponsors/MasterJ93)
 
 </div>
@@ -77,7 +77,7 @@ I believe Bluesky and its accompanying AT Protocol gives the perfect balance bet
 You can use the Swift Package Manager to download and import the library into your project:
 ```swift
 dependencies: [
-    .package(url: "https://github.com/MasterJ93/ATProtoKit.git", from: "0.29.0")
+    .package(url: "https://github.com/MasterJ93/ATProtoKit.git", from: "0.30.0")
 ]
 ```
 
@@ -116,7 +116,7 @@ Task {
         try await config.authenticate(with: "lucy.bsky.social", appPassword: "hunter2")
 
         // The session object is contains in the `ATProtoKit` object:
-        let atProtoKit = ATProtoKit(ATProtoKit(sessionConfiguration: config)
+        let atProtoKit = ATProtoKit(sessionConfiguration: config)
 
         if let keychain = try await atProtoKit.keychainProtocol() {
             print("Result (Access Token): \(keychain.retrieveAccessToken())")
