@@ -948,6 +948,20 @@ extension AppBskyLexicon.Actor {
         /// Indicated whether the saved feed generator is pinned.
         public let isPinned: Bool
 
+        /// Creates a new saved feed instance.
+        ///
+        /// - Parameters:
+        ///   - feedID: The ID for the saved feed.
+        ///   - feedType: The type of feed generator.
+        ///   - value: The value of the saved feed generator.
+        ///   - isPinned: Indicates whether the saved feed generator is pinned.
+        public init(feedID: String, feedType: FeedType, value: String, isPinned: Bool) {
+            self.feedID = feedID
+            self.feedType = feedType
+            self.value = value
+            self.isPinned = isPinned
+        }
+
         /// The type of feed generator.
         ///
         /// This is usually referring to the location of the feed in context to the
@@ -988,6 +1002,13 @@ extension AppBskyLexicon.Actor {
 
         /// An array of saved feed generators.
         public let items: [SavedFeed]
+
+        /// Creates a new saved feed preferences version 2 instance.
+        ///
+        /// - Parameter items: An array of saved feed generators.
+        public init(items: [SavedFeed]) {
+            self.items = items
+        }
 
         enum CodingKeys: String, CodingKey {
             case type = "$type"
