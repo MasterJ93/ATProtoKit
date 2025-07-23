@@ -240,6 +240,8 @@ extension SessionConfiguration {
     public func authenticate(with handle: String, password: String) async throws {
         var response: ComAtprotoLexicon.Server.CreateSessionOutput? = nil
         var userCode: String? = nil
+        let maxTwoFactorAuthenticationAttempts = 3
+        var twoFactorAuthenticationAttempts = 0
 
         guard let _pdsURL = URL(string: pdsURL) else {
             throw ATRequestPrepareError.emptyPDSURL
@@ -248,24 +250,37 @@ extension SessionConfiguration {
         // Loop until an error has been thrown, or until the response has been added.
         while response == nil {
             do {
-                response = try await ATProtoKit(apiClientConfiguration: .init(urlSessionConfiguration: configuration), pdsURL: self.pdsURL, canUseBlueskyRecords: false)
-                    .createSession(
-                        with: handle,
-                        and: password,
-                        authenticationFactorToken: userCode
-                    )
+                response = try await ATProtoKit(
+                    apiClientConfiguration: .init(urlSessionConfiguration: configuration),
+                    pdsURL: self.pdsURL,
+                    canUseBlueskyRecords: false
+                ).createSession(
+                    with: handle,
+                    and: password,
+                    authenticationFactorToken: userCode
+                )
             } catch let error as ATAPIError {
                 switch error {
                     case .badRequest(error: let responseError):
                         if responseError.error == "AuthFactorTokenRequired" {
-                            userCode = await waitForUserCode()
+                            twoFactorAuthenticationAttempts += 1
+                            if twoFactorAuthenticationAttempts > maxTwoFactorAuthenticationAttempts {
+                                throw ATAPIError.badRequest(error: APIClientService.ATHTTPResponseError(
+                                    error: "TooManyTwoFactorAuthenticationAttempts",
+                                    message: "Too many invalid two-factor authentication codes. Please try again later."
+                                ))
+                            }
 
+                            // Ask the user for a new code, then continue the loop.
+                            userCode = await waitForUserCode()
                             continue
+                        } else {
+                            throw error
                         }
                     default:
                         throw error
                 }
-
+            } catch {
                 throw error
             }
         }
