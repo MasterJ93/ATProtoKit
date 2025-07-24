@@ -22,7 +22,7 @@ public class ATFacetParser {
         var spans = [[String: Any]]()
 
         // Regex for grabbing @mentions based on Bluesky's regex.
-        let mentionRegex = "[\\s|^](@([a-zA-Z0-9]([a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\\.)+[a-zA-Z]([a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)"
+        let mentionRegex = "(?:(?<=\\s)|(?<=^))(@([a-zA-Z0-9]([a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\\.)+[a-zA-Z]([a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)"
 
         do {
             let regex = try NSRegularExpression(pattern: mentionRegex)
@@ -65,7 +65,7 @@ public class ATFacetParser {
         var spans = [[String: Any]]()
 
         // Regular expression pattern for identifying URLs.
-        let linkRegex = "[\\s|^](https?:\\/\\/(www\\.)?[-a-zA-Z0-9@:%._\\+~#=]{1,256}\\.[a-zA-Z0-9()]{1,6}\\b([-a-zA-Z0-9()@:%_\\+.~#?&//=]*[-a-zA-Z0-9@%_\\+~#//=])?)"
+        let linkRegex = "(?:(?<=\\s)|(?<=^))(https?:\\/\\/(www\\.)?[-a-zA-Z0-9@:%._\\+~#=]{1,256}\\.[a-zA-Z0-9()]{1,6}\\b([-a-zA-Z0-9()@:%_\\+.~#?&//=]*[-a-zA-Z0-9@%_\\+~#//=])?)"
 
         do {
             let regex = try NSRegularExpression(pattern: linkRegex)
