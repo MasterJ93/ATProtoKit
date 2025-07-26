@@ -798,37 +798,51 @@ extension AppBskyLexicon.Actor {
 
         // Implement custom encoding
         public func encode(to encoder: Encoder) throws {
-            var container = encoder.singleValueContainer()
+            var container = encoder.container(keyedBy: CodingKeys.self)
 
             switch self {
                 case .adultContent(let value):
-                    try container.encode(value)
+                    try container.encode("app.bsky.actor.defs#adultContentPref", forKey: .type)
+                    try value.encode(to: encoder)
                 case .contentLabel(let value):
-                    try container.encode(value)
+                    try container.encode("app.bsky.actor.defs#contentLabelPref", forKey: .type)
+                    try value.encode(to: encoder)
                 case .savedFeedsVersion2(let value):
-                    try container.encode(value)
+                    try container.encode("app.bsky.actor.defs#savedFeedsPrefV2", forKey: .type)
+                    try value.encode(to: encoder)
                 case .savedFeeds(let value):
-                    try container.encode(value)
+                    try container.encode("app.bsky.actor.defs#savedFeedsPref", forKey: .type)
+                    try value.encode(to: encoder)
                 case .personalDetails(let value):
-                    try container.encode(value)
+                    try container.encode("app.bsky.actor.defs#personalDetailsPref", forKey: .type)
+                    try value.encode(to: encoder)
                 case .feedView(let value):
-                    try container.encode(value)
+                    try container.encode("app.bsky.actor.defs#feedViewPref", forKey: .type)
+                    try value.encode(to: encoder)
                 case .threadView(let value):
-                    try container.encode(value)
+                    try container.encode("app.bsky.actor.defs#threadViewPref", forKey: .type)
+                    try value.encode(to: encoder)
                 case .interestViewPreferences(let value):
-                    try container.encode(value)
+                    try container.encode("app.bsky.actor.defs#interestsPref", forKey: .type)
+                    try value.encode(to: encoder)
                 case .mutedWordsPreferences(let value):
-                    try container.encode(value)
+                    try container.encode("app.bsky.actor.defs#mutedWordsPref", forKey: .type)
+                    try value.encode(to: encoder)
                 case .hiddenPostsPreferences(let value):
-                    try container.encode(value)
+                    try container.encode("app.bsky.actor.defs#hiddenPostsPref", forKey: .type)
+                    try value.encode(to: encoder)
                 case .bskyAppStatePreferences(let value):
-                    try container.encode(value)
+                    try container.encode("app.bsky.actor.defs#bskyAppStatePref", forKey: .type)
+                    try value.encode(to: encoder)
                 case .labelersPreferences(let value):
-                    try container.encode(value)
+                    try container.encode("app.bsky.actor.defs#labelersPref", forKey: .type)
+                    try value.encode(to: encoder)
                 case .postInteractionSettingsPreference(let value):
-                    try container.encode(value)
+                    try container.encode("app.bsky.actor.defs#postInteractionSettingsPref", forKey: .type)
+                    try value.encode(to: encoder)
                 case .verificationPreference(let value):
-                    try container.encode(value)
+                    try container.encode("app.bsky.actor.defs#verificationPrefs", forKey: .type)
+                    try value.encode(to: encoder)
                 default:
                     break
             }
