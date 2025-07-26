@@ -10,7 +10,14 @@ import Foundation
 import FoundationNetworking
 #endif
 
-/// A utility class designed for parsing various elements like mentions, URLs, and hashtags from text.
+/// A utility class designed for parsing various elements like mentions, URLs, and hashtags
+/// from text.
+///
+/// This is a robust, extensible utility for parsing, identifying, and structuring rich text
+/// facets (mentions, URLs, and hashtags) from Bluesky content. This type provides static methods
+/// to extract these entities, annotate their locations in UTF-8 byte offsets, and convert them
+/// into strongly-typed ``AppBskyLexicon/RichText/Facet`` models suitable for rendering, rich-text
+/// editing, and transforming them to interactable links.
 public enum ATFacetParser {
 
     /// Parses mentions from a given text and returns them along with their positions.
