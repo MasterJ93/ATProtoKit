@@ -217,19 +217,24 @@ extension AppBskyLexicon.Feed {
             }
 
             public func encode(to encoder: Encoder) throws {
-                var container = encoder.singleValueContainer()
+                var container = encoder.container(keyedBy: CodingKeys.self)
 
                 switch self {
                     case .images(let imagesValue):
-                        try container.encode(imagesValue)
+                        try container.encode("app.bsky.embed.images", forKey: .type)
+                        try imagesValue.encode(to: encoder)
                     case .video(let value):
-                        try container.encode(value)
+                        try container.encode("app.bsky.embed.video", forKey: .type)
+                        try value.encode(to: encoder)
                     case .external(let externalValue):
-                        try container.encode(externalValue)
+                        try container.encode("app.bsky.embed.external", forKey: .type)
+                        try externalValue.encode(to: encoder)
                     case .record(let recordValue):
-                        try container.encode(recordValue)
+                        try container.encode("app.bsky.embed.record", forKey: .type)
+                        try recordValue.encode(to: encoder)
                     case .recordWithMedia(let recordWithMediaValue):
-                        try container.encode(recordWithMediaValue)
+                        try container.encode("app.bsky.embed.recordWithMedia", forKey: .type)
+                        try recordWithMediaValue.encode(to: encoder)
                     default:
                         break
                 }
@@ -265,11 +270,12 @@ extension AppBskyLexicon.Feed {
             }
 
             public func encode(to encoder: Encoder) throws {
-                var container = encoder.singleValueContainer()
+                var container = encoder.container(keyedBy: CodingKeys.self)
 
                 switch self {
                     case .selfLabels(let value):
-                        try container.encode(value)
+                        try container.encode("com.atproto.label.defs#selfLabels", forKey: .type)
+                        try value.encode(to: encoder)
                     default:
                         break
                 }

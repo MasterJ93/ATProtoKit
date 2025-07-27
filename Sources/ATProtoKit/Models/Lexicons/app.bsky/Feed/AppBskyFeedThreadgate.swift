@@ -186,17 +186,21 @@ extension AppBskyLexicon.Feed {
             }
 
             public func encode(to encoder: Encoder) throws {
-                var container = encoder.singleValueContainer()
+                var container = encoder.container(keyedBy: CodingKeys.self)
 
                 switch self {
                     case .mentionRule(let embedView):
-                        try container.encode(embedView)
+                        try container.encode("app.bsky.feed.threadgate#mentionRule", forKey: .type)
+                        try embedView.encode(to: encoder)
                     case .followerRule(let embedView):
-                        try container.encode(embedView)
+                        try container.encode("app.bsky.feed.threadgate#followerRule", forKey: .type)
+                        try embedView.encode(to: encoder)
                     case .followingRule(let embedView):
-                        try container.encode(embedView)
+                        try container.encode("app.bsky.feed.threadgate#followingRule", forKey: .type)
+                        try embedView.encode(to: encoder)
                     case .listRule(let embedView):
-                        try container.encode(embedView)
+                        try container.encode("app.bsky.feed.threadgate#listRule", forKey: .type)
+                        try embedView.encode(to: encoder)
                     default:
                         break
                 }
