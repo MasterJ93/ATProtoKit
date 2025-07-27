@@ -249,15 +249,18 @@ extension ComAtprotoLexicon.Repository {
             }
 
             public func encode(to encoder: Encoder) throws {
-                var container = encoder.singleValueContainer()
+                var container = encoder.container(keyedBy: CodingKeys.self)
 
                 switch self {
                     case .create(let value):
-                        try container.encode(value)
+                        try container.encode("com.atproto.repo.applyWrites#create", forKey: .type)
+                        try value.encode(to: encoder)
                     case .update(let value):
-                        try container.encode(value)
+                        try container.encode("com.atproto.repo.applyWrites#update", forKey: .type)
+                        try value.encode(to: encoder)
                     case .delete(let value):
-                        try container.encode(value)
+                        try container.encode("com.atproto.repo.applyWrites#delete", forKey: .type)
+                        try value.encode(to: encoder)
                     default:
                         break
                 }
@@ -321,15 +324,18 @@ extension ComAtprotoLexicon.Repository {
             }
 
             public func encode(to encoder: any Encoder) throws {
-                var container = encoder.singleValueContainer()
+                var container = encoder.container(keyedBy: CodingKeys.self)
 
                 switch self {
                     case .createResult(let value):
-                        try container.encode(value)
+                        try container.encode("com.atproto.repo.applyWrites#createResult", forKey: .type)
+                        try value.encode(to: encoder)
                     case .updateResult(let value):
-                        try container.encode(value)
+                        try container.encode("com.atproto.repo.applyWrites#updateResult", forKey: .type)
+                        try value.encode(to: encoder)
                     case .deleteResult(let value):
-                        try container.encode(value)
+                        try container.encode("com.atproto.repo.applyWrites#deleteResult", forKey: .type)
+                        try value.encode(to: encoder)
                     default:
                         break
                 }
