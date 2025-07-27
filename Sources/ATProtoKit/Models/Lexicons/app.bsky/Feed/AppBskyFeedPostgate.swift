@@ -129,11 +129,12 @@ extension AppBskyLexicon.Feed {
             }
 
             public func encode(to encoder: Encoder) throws {
-                var container = encoder.singleValueContainer()
+                var container = encoder.container(keyedBy: CodingKeys.self)
 
                 switch self {
                     case .disabledRule(let disabledRule):
-                        try container.encode(disabledRule)
+                        try container.encode("app.bsky.feed.postgate#disableRule", forKey: .type)
+                        try disabledRule.encode(to: encoder)
                     default:
                         break
                 }
