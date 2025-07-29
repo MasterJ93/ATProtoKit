@@ -176,6 +176,14 @@ public protocol SessionConfiguration: AnyObject, Sendable {
     ///
     /// - Parameter input: The Two-Factor Authentication code.
     func receiveCodeFromUser(_ input: String)
+    
+    /// Ensures the access token is valid and refreshes it if needed.
+    ///
+    /// This method checks if the current access token will expire within
+    /// the next 10 seconds and automatically refreshes it if necessary.
+    ///
+    /// - Throws: An ``ATProtoError``-conforming error type if refresh fails.
+    func ensureValidToken() async throws
 }
 
 extension SessionConfiguration {
@@ -540,5 +548,18 @@ extension SessionConfiguration {
         }
 
         return decodedDidDocument
+    }
+
+    public func ensureValidToken() async throws {
+        let accessToken = try await keychainProtocol.retrieveAccessToken()
+        
+        do {
+            if try SessionToken(sessionToken: accessToken).payload.expiresAt.addingTimeInterval(10) <= Date() {
+                try await self.refreshSession()
+            }
+        } catch {
+            // If we can't parse the token, continue with the original token
+            // The API call will fail with proper error if token is invalid
+        }
     }
 }

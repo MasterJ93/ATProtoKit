@@ -41,10 +41,11 @@ extension ATProtoKit {
             throw ATRequestPrepareError.missingActiveSession
         }
 
+        try await sessionConfiguration?.ensureValidToken()
         let accessToken = try await keychain.retrieveAccessToken()
         let sessionURL = session.serviceEndpoint.absoluteString
 
-        guard let requestURL = URL(string: "\(sessionURL)/xrpc/app.bsky.graph.getActorStarterPack") else {
+        guard let requestURL = URL(string: "\(sessionURL)/xrpc/app.bsky.graph.getActorStarterPacks") else {
             throw ATRequestPrepareError.invalidRequestURL
         }
 

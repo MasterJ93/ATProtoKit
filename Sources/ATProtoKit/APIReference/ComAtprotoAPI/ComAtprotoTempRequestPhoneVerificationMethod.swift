@@ -37,6 +37,7 @@ extension ATProtoKit {
             throw ATRequestPrepareError.missingActiveSession
         }
 
+        try await sessionConfiguration?.ensureValidToken()
         let accessToken = try await keychain.retrieveAccessToken()
 
         guard let sessionURL = session.pdsURL,
