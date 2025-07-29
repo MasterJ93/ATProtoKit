@@ -34,10 +34,11 @@ extension ATProtoKit {
             throw ATRequestPrepareError.missingActiveSession
         }
 
+        try await sessionConfiguration?.ensureValidToken()
         let accessToken = try await keychain.retrieveAccessToken()
         let sessionURL = session.serviceEndpoint.absoluteString
 
-        guard let requestURL = URL(string: "\(sessionURL)/xrpc/app.bsky.unspecced.getSuggestedFeedsSkeleton") else {
+        guard let requestURL = URL(string: "\(sessionURL)/xrpc/app.bsky.unspecced.getSuggestedStarterPacks") else {
             throw ATRequestPrepareError.invalidRequestURL
         }
 
