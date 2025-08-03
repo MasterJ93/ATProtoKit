@@ -61,8 +61,10 @@ extension ATProtoKitConfiguration {
         // Check if the session exists and has a valid access token.
         if let sessionConfiguration = sessionConfiguration {
             do {
-                let keychain = try await sessionConfiguration.keychainProtocol.retrieveAccessToken()
-                return "Bearer \(keychain)"
+                // Ensure token is valid before retrieving it
+                try await sessionConfiguration.ensureValidToken()
+                let accessToken = try await sessionConfiguration.keychainProtocol.retrieveAccessToken()
+                return "Bearer \(accessToken)"
             } catch {
                 return nil
             }
