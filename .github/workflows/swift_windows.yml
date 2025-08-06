@@ -1,0 +1,22 @@
+name: Swift CI on Windows (Manual Run)
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Install Swift
+      uses: SwiftyLab/setup-swift@latest
+      with:
+        swift-version: '6.1.0'
+
+    - name: Build Swift Package
+      run: swift build --verbose
+
+    # - name: Run Tests
+    #   run: swift test --verbose
