@@ -68,15 +68,18 @@ extension ComAtprotoLexicon.Admin {
             }
 
             public func encode(to encoder: Encoder) throws {
-                var container = encoder.singleValueContainer()
+                var container = encoder.container(keyedBy: CodingKeys.self)
 
                 switch self {
                     case .repositoryReference(let value):
-                        try container.encode(value)
+                        try container.encode("com.atproto.admin.defs#repoRef", forKey: .type)
+                        try value.encode(to: encoder)
                     case .strongReference(let value):
-                        try container.encode(value)
+                        try container.encode("com.atproto.repo.strongRef", forKey: .type)
+                        try value.encode(to: encoder)
                     case .repositoryBlobReference(let value):
-                        try container.encode(value)
+                        try container.encode("com.atproto.admin.defs#repoBlobRef", forKey: .type)
+                        try value.encode(to: encoder)
                     default:
                         break
                 }
@@ -141,15 +144,18 @@ extension ComAtprotoLexicon.Admin {
             }
 
             public func encode(to encoder: Encoder) throws {
-                var container = encoder.singleValueContainer()
+                var container = encoder.container(keyedBy: CodingKeys.self)
 
                 switch self {
                     case .repositoryReference(let value):
-                        try container.encode(value)
+                        try container.encode("com.atproto.admin.defs#repoRef", forKey: .type)
+                        try value.encode(to: encoder)
                     case .strongReference(let value):
-                        try container.encode(value)
+                        try container.encode("com.atproto.repo.strongRef", forKey: .type)
+                        try value.encode(to: encoder)
                     case .repositoryBlobReference(let value):
-                        try container.encode(value)
+                        try container.encode("com.atproto.admin.defs#repoBlobRef", forKey: .type)
+                        try value.encode(to: encoder)
                     default:
                         break
                 }
