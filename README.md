@@ -148,12 +148,23 @@ For Linux, you need to use Swift 6.0 or later. On Linux, the minimum requirement
 - **Red Hat UBI** 9
 - **Ubuntu** 20.04
 
+For Windows, you'll need Swift 6.1 or later. On Windows, the minimum requirements include:
+- **Windows 10** or later
+- **Windows Server** 2022 or later.
+
+> [!WARNING]
+> Direct support for Windows 11 on ARM is not supported. x86 builds may not fully work on Windows on ARM, either.
+
+For Android, you'll need Swift 6.1 or later. On Linux, the minimum requirements include:
+- **Android** 10 or later.
+- **Android SDK** version 29 or later.
+
+At the moment, Android is in its experimental phase. Plans to take it out of this phase will require testing all parts of the package.
+
 You can also use this project for any programs you make using Swift and running on **Docker**.
 
 > [!WARNING]
-> As of right now, Windows support is theoretically possible, but not has not been tested to work. While it’s not a goal to make it fully compatible, contributions and feedback on the matter are welcomed.
-> 
-> Support for WebAssembly is currently not supported, but will be soon. Support for Android will be supported soon.
+> Support for WebAssembly is currently not supported. Plans are underway to make this package a supported platform.
 
 
 ## Submitting Contributions and Feedback
