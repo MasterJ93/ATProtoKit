@@ -29,7 +29,7 @@ public enum ATFacetParser {
         var spans = [[String: Any]]()
 
         // Regex for grabbing @mentions based on Bluesky's regex.
-        let mentionRegex = "[\\s|^](@([a-zA-Z0-9]([a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\\.)+[a-zA-Z]([a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)"
+        let mentionRegex = "(?:^|\\s)(@([a-zA-Z0-9]([a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\\.)+[a-zA-Z]([a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)"
 
         do {
             let regex = try NSRegularExpression(pattern: mentionRegex)
@@ -72,7 +72,7 @@ public enum ATFacetParser {
         var spans = [[String: Any]]()
 
         // Regular expression pattern for identifying URLs.
-        let linkRegex = "[\\s|^](https?:\\/\\/(www\\.)?[-a-zA-Z0-9@:%._\\+~#=]{1,256}\\.[a-zA-Z0-9()]{1,6}\\b([-a-zA-Z0-9()@:%_\\+.~#?&//=]*[-a-zA-Z0-9@%_\\+~#//=])?)"
+        let linkRegex = "(?:^|\\s)(https?:\\/\\/(www\\.)?[-a-zA-Z0-9@:%._\\+~#=]{1,256}\\.[a-zA-Z0-9()]{1,6}\\b([-a-zA-Z0-9()@:%_\\+.~#?&//=]*[-a-zA-Z0-9@%_\\+~#//=])?)"
 
         do {
             let regex = try NSRegularExpression(pattern: linkRegex)
@@ -356,6 +356,7 @@ internal protocol FeatureCodable: Codable {
 // MARK: AttributedString -
 @available(iOS 15, tvOS 15, macOS 12, watchOS 8, *)
 extension AttributedString {
+
     /// Converts a ``AppBskyLexicon/RichText/Facet/ByteSlice`` instance into
     /// a `Range<AttributedString.Index>`.
     ///
@@ -383,6 +384,7 @@ extension AttributedString {
 
 // MARK: NSAttributedString -
 extension NSAttributedString {
+
     /// Converts a ``AppBskyLexicon/RichText/Facet/ByteSlice`` instance into an `NSRange`.
     ///
     /// - Parameter index: The `ByteSlice` object containing `byteStart` and `byteEnd`.

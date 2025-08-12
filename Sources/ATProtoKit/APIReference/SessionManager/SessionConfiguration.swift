@@ -176,6 +176,14 @@ public protocol SessionConfiguration: AnyObject, Sendable {
     ///
     /// - Parameter input: The Two-Factor Authentication code.
     func receiveCodeFromUser(_ input: String)
+    
+    /// Ensures the access token is valid and refreshes it if needed.
+    ///
+    /// This method checks if the current access token will expire within
+    /// the next 10 seconds and automatically refreshes it if necessary.
+    ///
+    /// - Throws: An ``ATProtoError``-conforming error type if refresh fails.
+    func ensureValidToken() async throws
 }
 
 extension SessionConfiguration {
@@ -240,6 +248,8 @@ extension SessionConfiguration {
     public func authenticate(with handle: String, password: String) async throws {
         var response: ComAtprotoLexicon.Server.CreateSessionOutput? = nil
         var userCode: String? = nil
+        let maxTwoFactorAuthenticationAttempts = 3
+        var twoFactorAuthenticationAttempts = 0
 
         guard let _pdsURL = URL(string: pdsURL) else {
             throw ATRequestPrepareError.emptyPDSURL
@@ -248,24 +258,37 @@ extension SessionConfiguration {
         // Loop until an error has been thrown, or until the response has been added.
         while response == nil {
             do {
-                response = try await ATProtoKit(apiClientConfiguration: .init(urlSessionConfiguration: configuration), pdsURL: self.pdsURL, canUseBlueskyRecords: false)
-                    .createSession(
-                        with: handle,
-                        and: password,
-                        authenticationFactorToken: userCode
-                    )
+                response = try await ATProtoKit(
+                    apiClientConfiguration: .init(urlSessionConfiguration: configuration),
+                    pdsURL: self.pdsURL,
+                    canUseBlueskyRecords: false
+                ).createSession(
+                    with: handle,
+                    and: password,
+                    authenticationFactorToken: userCode
+                )
             } catch let error as ATAPIError {
                 switch error {
                     case .badRequest(error: let responseError):
                         if responseError.error == "AuthFactorTokenRequired" {
-                            userCode = await waitForUserCode()
+                            twoFactorAuthenticationAttempts += 1
+                            if twoFactorAuthenticationAttempts > maxTwoFactorAuthenticationAttempts {
+                                throw ATAPIError.badRequest(error: APIClientService.ATHTTPResponseError(
+                                    error: "TooManyTwoFactorAuthenticationAttempts",
+                                    message: "Too many invalid two-factor authentication codes. Please try again later."
+                                ))
+                            }
 
+                            // Ask the user for a new code, then continue the loop.
+                            userCode = await waitForUserCode()
                             continue
+                        } else {
+                            throw error
                         }
                     default:
                         throw error
                 }
-
+            } catch {
                 throw error
             }
         }
@@ -525,5 +548,18 @@ extension SessionConfiguration {
         }
 
         return decodedDidDocument
+    }
+
+    public func ensureValidToken() async throws {
+        let accessToken = try await keychainProtocol.retrieveAccessToken()
+        
+        do {
+            if try SessionToken(sessionToken: accessToken).payload.expiresAt.addingTimeInterval(10) <= Date() {
+                try await self.refreshSession()
+            }
+        } catch {
+            // If we can't parse the token, continue with the original token
+            // The API call will fail with proper error if token is invalid
+        }
     }
 }

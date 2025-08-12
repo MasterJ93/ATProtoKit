@@ -29,6 +29,7 @@ extension ATProtoKit {
             throw ATRequestPrepareError.missingActiveSession
         }
 
+        try await sessionConfiguration?.ensureValidToken()
         let accessToken = try await keychain.retrieveAccessToken()
         let sessionURL = session.serviceEndpoint.absoluteString
 
