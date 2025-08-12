@@ -49,7 +49,7 @@ This project adopts the [Contributor Covenant Code of Conduct]() to make sure ev
 
 ## Need Help?
 If you have any questions or assistance, I’m available at the following places:
-- Bluesky [@cjrriley.com](https://bsky.app/profile/cjrriley.com)
+- Bluesky [@cjrriley.ca](https://bsky.app/profile/cjrriley.ca)
 - I’m active in the [Bluesky API Touchers Discord server](https://discord.gg/3srmDsHSZJ) as well.
 - I’m available for you to email at [chrisjr@cjrriley.com](mailto:chrisjr@cjrriley.com).
 
