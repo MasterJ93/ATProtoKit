@@ -112,8 +112,8 @@ public protocol SessionConfiguration: AnyObject, Sendable {
     /// while adding the password and tokens to the `keychainProtocol` instance. Additional
     /// Two-Factor Authentication implementations must be handled as well.
     ///
-    /// - Note: 2FA detection now supports both `.badRequest` (400) and `.unauthorized` (401)
-    /// responses containing the `AuthFactorTokenRequired` error.
+    /// - Note: Two-Factor Authentication detection supports both `.badRequest` (400) and
+    /// `.unauthorized` (401) responses containing the `AuthFactorTokenRequired` error.
     ///
     /// - Parameters:
     ///   - handle: The hanle used for the account.
