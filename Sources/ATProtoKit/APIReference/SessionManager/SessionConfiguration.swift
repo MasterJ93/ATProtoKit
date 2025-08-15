@@ -112,6 +112,9 @@ public protocol SessionConfiguration: AnyObject, Sendable {
     /// while adding the password and tokens to the `keychainProtocol` instance. Additional
     /// Two-Factor Authentication implementations must be handled as well.
     ///
+    /// - Note: 2FA detection now supports both `.badRequest` (400) and `.unauthorized` (401)
+    /// responses containing the `AuthFactorTokenRequired` error.
+    ///
     /// - Parameters:
     ///   - handle: The hanle used for the account.
     ///   - password: The password used for the account.
@@ -269,24 +272,41 @@ extension SessionConfiguration {
                 )
             } catch let error as ATAPIError {
                 switch error {
-                    case .badRequest(error: let responseError):
-                        if responseError.error == "AuthFactorTokenRequired" {
-                            twoFactorAuthenticationAttempts += 1
-                            if twoFactorAuthenticationAttempts > maxTwoFactorAuthenticationAttempts {
-                                throw ATAPIError.badRequest(error: APIClientService.ATHTTPResponseError(
-                                    error: "TooManyTwoFactorAuthenticationAttempts",
-                                    message: "Too many invalid two-factor authentication codes. Please try again later."
-                                ))
-                            }
-
-                            // Ask the user for a new code, then continue the loop.
-                            userCode = await waitForUserCode()
-                            continue
-                        } else {
-                            throw error
+                case .badRequest(error: let responseError):
+                    if responseError.error == "AuthFactorTokenRequired" {
+                        twoFactorAuthenticationAttempts += 1
+                        if twoFactorAuthenticationAttempts > maxTwoFactorAuthenticationAttempts {
+                            throw ATAPIError.badRequest(error: APIClientService.ATHTTPResponseError(
+                                error: "TooManyTwoFactorAuthenticationAttempts",
+                                message: "Too many invalid two-factor authentication codes. Please try again later."
+                            ))
                         }
-                    default:
+                        
+                        // Ask the user for a new code, then continue the loop.
+                        userCode = await waitForUserCode()
+                        continue
+                    } else {
                         throw error
+                    }
+                case .unauthorized(error: let responseError, wwwAuthenticate: _):
+                    // Handle 2FA requirement that comes as unauthorized instead of badRequest
+                    if responseError.error == "AuthFactorTokenRequired" {
+                        twoFactorAuthenticationAttempts += 1
+                        if twoFactorAuthenticationAttempts > maxTwoFactorAuthenticationAttempts {
+                            throw ATAPIError.badRequest(error: APIClientService.ATHTTPResponseError(
+                                error: "TooManyTwoFactorAuthenticationAttempts",
+                                message: "Too many invalid two-factor authentication codes. Please try again later."
+                            ))
+                        }
+                        
+                        // Ask the user for a new code, then continue the loop.
+                        userCode = await waitForUserCode()
+                        continue
+                    } else {
+                        throw error
+                    }
+                default:
+                    throw error
                 }
             } catch {
                 throw error

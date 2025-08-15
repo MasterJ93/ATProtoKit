@@ -155,7 +155,7 @@ For Windows, you'll need Swift 6.1 or later. On Windows, the minimum requirement
 > [!WARNING]
 > Direct support for Windows 11 on ARM is not supported. x86 builds may not fully work on Windows on ARM, either.
 
-For Android, you'll need Swift 6.1 or later. On Linux, the minimum requirements include:
+For Android, you'll need Swift 6.1 or later. On Android, the minimum requirements include:
 - **Android** 10 or later.
 - **Android SDK** version 29 or later.
 
@@ -170,7 +170,7 @@ You can also use this project for any programs you make using Swift and running 
 ## Submitting Contributions and Feedback
 While this project will change significantly, feedback, issues, and contributions are highly welcomed and encouraged. If you'd like to contribute to this project, please be sure to read both the [API Guidelines](https://github.com/MasterJ93/ATProtoKit/blob/main/API_GUIDELINES.md) as well as the [Contributor Guidelines](https://github.com/MasterJ93/ATProtoKit/blob/main/CONTRIBUTING.md) before submitting a pull request. Any issues (such as bug reports or feedback) can be submitted in the [Issues](https://github.com/MasterJ93/ATProtoKit/issues) tab. Finally, if there are any security vulnerabilities, please read [SECURITY.md](https://github.com/MasterJ93/ATProtoKit/blob/main/SECURITY.md) for how to report it.
 
-If you have any questions, you can ask me on Bluesky ([@cjrriley.com](https://bsky.app/profile/cjrriley.com)). And while you're at it, give me a follow! I'm also active on the [ATProto Touchers](https://discord.gg/3srmDsHSZJ) Discord server.
+If you have any questions, you can ask me on Bluesky ([@cjrriley.ca](https://bsky.app/profile/cjrriley.ca)). And while you're at it, give me a follow! I'm also active on the [ATProto Touchers](https://discord.gg/3srmDsHSZJ) Discord server.
 
 ## License and Acknowledgments
 This Swift package is using the MIT License. Please view [LICENSE.md](https://github.com/MasterJ93/ATProtoKit/blob/main/LICENSE.md) for more details.

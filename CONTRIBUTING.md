@@ -1,7 +1,7 @@
 # Contribution Guidelines
 ## Introduction
 
-Thanks for your interest in contributing to `ATProtoKit`. This project aims to be a leading Swift API library for the AT Protocol and Bluesky and as a go-to choice for Swift developers to build projects for iOS, iPadOS, macOS, tvOS, watchOS, visionOS, Linux, and Docker.
+Thanks for your interest in contributing to `ATProtoKit`. This project aims to be a leading Swift API library for the AT Protocol and Bluesky and as a go-to choice for Swift developers to build projects for Apple platforms, Linux, Windows, and Android.
 
 ## How to Contribute
 Contributions to ATProtoKit are welcomed and appreciated. Here are the areas where you can help:
@@ -49,7 +49,7 @@ This project adopts the [Contributor Covenant Code of Conduct]() to make sure ev
 
 ## Need Help?
 If you have any questions or assistance, I’m available at the following places:
-- Bluesky [@cjrriley.com](https://bsky.app/profile/cjrriley.com)
+- Bluesky [@cjrriley.ca](https://bsky.app/profile/cjrriley.ca)
 - I’m active in the [Bluesky API Touchers Discord server](https://discord.gg/3srmDsHSZJ) as well.
 - I’m available for you to email at [chrisjr@cjrriley.com](mailto:chrisjr@cjrriley.com).
 
