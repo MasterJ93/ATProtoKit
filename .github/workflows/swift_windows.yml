@@ -1,6 +1,8 @@
-name: Swift CI on Windows (Manual Run)
+name: Build Swift Package on Windows
 
 on:
+  push:
+    branches: [ "main" ]
   workflow_dispatch:
 
 jobs:
