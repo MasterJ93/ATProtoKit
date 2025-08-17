@@ -17,16 +17,11 @@ let package = Package(
         // Products define the executables and libraries a package produces, making them visible to other packages.
         .library(
             name: "ATProtoKit",
-            targets: ["ATProtoKit"]),
-        .library(
-            name: "ATMacro",
-            targets: ["ATMacro"]
-        )
+            targets: ["ATProtoKit"])
     ],
     dependencies: [
         .package(url: "https://github.com/swiftlang/swift-docc-plugin.git", from: "1.4.0"),
-        .package(url: "https://github.com/apple/swift-log.git", from: "1.6.0"),
-        .package(url: "https://github.com/swiftlang/swift-syntax.git", "509.0.0" ..< "601.0.0-prerelease")
+        .package(url: "https://github.com/apple/swift-log.git", from: "1.6.0")
     ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
@@ -34,25 +29,9 @@ let package = Package(
         .target(
             name: "ATProtoKit",
             dependencies: [
-                "ATMacro",
                 .product(name: "Logging", package: "swift-log")
             ]
         ),
-
-        // Macro implementation that performs the source transformations
-        .macro(
-            name: "Macros",
-            dependencies: [
-                .product(name: "SwiftSyntaxMacros", package: "swift-syntax"),
-                .product(name: "SwiftCompilerPlugin", package: "swift-syntax")
-            ]
-        ),
-        .target(
-            name: "ATMacro",
-            dependencies: [
-                "Macros"
-            ]
-        )
         //        .plugin(
         //            name: "VersionNumberPlugin",
         //            capability: .buildTool(),

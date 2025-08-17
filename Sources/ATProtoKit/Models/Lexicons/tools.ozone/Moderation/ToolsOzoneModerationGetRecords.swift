@@ -8,7 +8,6 @@ import Foundation
 #if canImport(FoundationNetworking)
 import FoundationNetworking
 #endif
-import ATMacro
 
 extension ToolsOzoneLexicon.Moderation {
 
