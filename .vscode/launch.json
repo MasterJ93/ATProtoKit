@@ -1,0 +1,22 @@
+{
+    "configurations": [
+        {
+            "type": "swift",
+            "request": "launch",
+            "args": [],
+            "cwd": "${workspaceFolder:ATProtoKit}",
+            "name": "Debug ATProtoKit",
+            "program": "${workspaceFolder:atprotokit-website}/.build/debug/ATProtoKit",
+            "preLaunchTask": "swift: Build Debug ATProtoKit"
+        },
+        {
+            "type": "swift",
+            "request": "launch",
+            "args": [],
+            "cwd": "${workspaceFolder:ATProtoKit}",
+            "name": "Release ATProtoKit",
+            "program": "${workspaceFolder:atprotokit-website}/.build/release/ATProtoKit",
+            "preLaunchTask": "swift: Build Release ATProtoKit"
+        }
+    ]
+}
