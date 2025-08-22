@@ -39,7 +39,8 @@ extension ATProtoKit {
         cursor: String? = nil,
         isArrayReverse: Bool? = nil
     ) async throws -> ComAtprotoLexicon.Repository.ListRecordsOutput {
-        guard let requestURL = URL(string: "\(self.pdsURL)/xrpc/com.atproto.repo.listRecords") else {
+        // TODO: Change this back to "\(self.pdsURL)" once ATIdentityProtocol has been implemented.
+        guard let requestURL = URL(string: "https://bsky.social/xrpc/com.atproto.repo.listRecords") else {
             throw ATRequestPrepareError.invalidRequestURL
         }
 
