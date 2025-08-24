@@ -1488,7 +1488,7 @@ extension AppBskyLexicon.Actor {
         public let type: String = "app.bsky.actor.defs#bskyAppStatePref"
 
         /// An active progress guide. Optional.
-        public let activeProgressGuide: String?
+        public let activeProgressGuide: BskyAppProgressGuideDefinition?
 
         /// An array of elements that the user will see. Optional.
         ///
@@ -1531,13 +1531,23 @@ extension AppBskyLexicon.Actor {
         /// The progress guide itself.
         ///
         /// - Important: Current maximum length is 100 characters.
-        public let guide: [BskyAppStatePreferencesDefinition]
-
+        public let guide: String
+        
+        public init(from decoder: any Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+            self.guide = try container.decode(String.self, forKey: .guide)
+        }
+        
         public func encode(to encoder: any Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
 
             try container.truncatedEncode(self.guide, forKey: .guide, upToArrayLength: 100)
         }
+        
+        enum CodingKeys: CodingKey {
+            case guide
+        }
+
     }
 
     /// A definition model for a NUX.

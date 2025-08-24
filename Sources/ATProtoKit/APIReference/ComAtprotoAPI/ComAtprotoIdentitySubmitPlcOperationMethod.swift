@@ -26,7 +26,7 @@ extension ATProtoKit {
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
-    public func submitPLCOperation(_ operation: UnknownType) async throws {
+    public func submitPLCOperation(_ operation: ComAtprotoLexicon.Identity.SignedPLCOperation) async throws {
         guard let requestURL = URL(string: "\(self.pdsURL)/xrpc/com.atproto.identity.submitPlcOperation") else {
             throw ATRequestPrepareError.invalidRequestURL
         }
