@@ -24,6 +24,6 @@ extension ComAtprotoLexicon.Identity {
     public struct SubmitPLCOperationRequestBody: Sendable, Codable {
 
         /// A PLC operation.
-        public let operation: UnknownType
+        public let operation: SignedPLCOperation
     }
 }
