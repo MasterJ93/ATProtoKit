@@ -25,7 +25,7 @@ import Regex
 /// - Important: The rule where the method becomes deprecated will be active either
 /// when version 1.0 is launched or `ATProtoTools` is stabilized, whichever comes first.
 /// Until then, if a method is better suited elsewhere, it will be immediately moved.
-public class ATProtoTools {
+public struct ATProtoTools {
 
     public init() {}
 
