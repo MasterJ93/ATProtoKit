@@ -38,8 +38,8 @@ extension ATProtoKit {
         token: String,
         rotationKeys: [String]? = nil,
         alsoKnownAs: [String]? = nil,
-        verificationMethods: VerificationMethod?,
-        service: ATService?
+        verificationMethods: [String:String]?,
+        services: [String: ComAtprotoLexicon.Identity.PLCOperationATService]?
     ) async throws -> ComAtprotoLexicon.Identity.SignPLCOperationOutput {
         guard let session = try await self.getUserSession(),
               let keychain = sessionConfiguration?.keychainProtocol else {
@@ -59,7 +59,7 @@ extension ATProtoKit {
             rotationKeys: rotationKeys,
             alsoKnownAs: alsoKnownAs,
             verificationMethods: verificationMethods,
-            service: service
+            services: services
         )
 
         do {
