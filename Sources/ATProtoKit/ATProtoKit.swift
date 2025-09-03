@@ -195,7 +195,11 @@ public final class ATProtoKit: Sendable, ATProtoKitConfiguration, ATRecordConfig
 /// This class requires you to first create an instance of ``ATProtoKit/ATProtoKit``. The class
 /// will import the session, Bluesky records, and logging information from the instance.
 ///
-/// With some exceptions, the main functionality includes adding, putting, and deleting a record.
+/// With some exceptions, the main functionality includes adding and replacing (putting) a record.
+///
+/// To delete
+/// a record, use ``ATProtoBluesky/deleteRecord(_:)`` or
+/// ``ATProtoKit/ATProtoKit/deleteRecord(repositoryDID:collection:recordKey:swapRecord:swapCommit:)``.
 public final class ATProtoBluesky: Sendable, ATProtoKitConfiguration {
 
     /// The ``ATLinkBuilder`` object used to grab the metadata for preview link cards. Optional.
