@@ -159,7 +159,7 @@ extension AppBskyLexicon.Notification {
 
         // Enums
         /// The kind of notification received.
-        public enum Reason: Sendable, Codable, ExpressibleByStringLiteral {
+        public enum Reason: Sendable, Codable, Equatable, ExpressibleByStringLiteral {
 
             /// Indicates the notification is about someone liking a post from the user account.
             case like
