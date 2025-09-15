@@ -1659,16 +1659,16 @@ extension AppBskyLexicon.Actor {
         /// - Note: According to the AT Protocol specifications: "Matches threadgate record. List of rules
         /// defining who can reply to this users posts. If value is an empty array, no one can reply. If
         /// value is undefined, anyone can reply."
-        public let threadgateAllowRules: [ThreadgateAllowRulesUnion]
+        public let threadgateAllowRules: [ThreadgateAllowRulesUnion]?
 
         /// An array of rules that determines the default settings for determining who can embed the post.
         ///
         /// - Note: According to the AT Protocol specifications: "Matches postgate record. List of rules
         /// defining who can embed this users posts. If value is an empty array or is undefined, no
         /// particular rules apply and anyone can embed."
-        public let postgateEmbeddingRules: [PostgateEmbeddingRulesUnion]
+        public let postgateEmbeddingRules: [PostgateEmbeddingRulesUnion]?
 
-        public init(threadgateAllowRules: [ThreadgateAllowRulesUnion], postgateEmbeddingRules: [PostgateEmbeddingRulesUnion]) {
+        public init(threadgateAllowRules: [ThreadgateAllowRulesUnion]? = nil, postgateEmbeddingRules: [PostgateEmbeddingRulesUnion]? = nil) {
             self.threadgateAllowRules = threadgateAllowRules
             self.postgateEmbeddingRules = postgateEmbeddingRules
         }
@@ -1676,15 +1676,15 @@ extension AppBskyLexicon.Actor {
         public init(from decoder: any Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
 
-            self.threadgateAllowRules = try container.decode([ThreadgateAllowRulesUnion].self, forKey: .threadgateAllowRules)
-            self.postgateEmbeddingRules = try container.decode([PostgateEmbeddingRulesUnion].self, forKey: .postgateEmbeddingRules)
+            self.threadgateAllowRules = try container.decodeIfPresent([ThreadgateAllowRulesUnion].self, forKey: .threadgateAllowRules)
+            self.postgateEmbeddingRules = try container.decodeIfPresent([PostgateEmbeddingRulesUnion].self, forKey: .postgateEmbeddingRules)
         }
 
         public func encode(to encoder: any Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
 
-            try container.truncatedEncode(self.threadgateAllowRules, forKey: .threadgateAllowRules, upToArrayLength: 5)
-            try container.truncatedEncode(self.postgateEmbeddingRules, forKey: .postgateEmbeddingRules, upToArrayLength: 5)
+            try container.truncatedEncodeIfPresent(self.threadgateAllowRules, forKey: .threadgateAllowRules, upToArrayLength: 5)
+            try container.truncatedEncodeIfPresent(self.postgateEmbeddingRules, forKey: .postgateEmbeddingRules, upToArrayLength: 5)
         }
 
         enum CodingKeys: String, CodingKey {
