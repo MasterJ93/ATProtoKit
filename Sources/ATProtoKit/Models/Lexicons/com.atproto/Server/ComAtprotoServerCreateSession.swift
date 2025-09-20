@@ -62,6 +62,19 @@ extension ComAtprotoLexicon.Server {
         /// A token used for Two-Factor Authentication. Optional.
         let authenticationFactorToken: String?
 
+        public init(identifier: String, password: String, authenticationFactorToken: String?) {
+            self.identifier = identifier
+            self.password = password
+            self.authenticationFactorToken = authenticationFactorToken
+        }
+        
+        public func encode(to encoder: any Encoder) throws {
+            var container = encoder.container(keyedBy: CodingKeys.self)
+            try container.encode(self.identifier, forKey: .identifier)
+            try container.encode(self.password, forKey: .password)
+            try container.encodeIfPresent(self.authenticationFactorToken, forKey: .authenticationFactorToken)
+        }
+        
         enum CodingKeys: String, CodingKey {
             case identifier
             case password

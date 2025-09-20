@@ -30,6 +30,10 @@ extension AppBskyLexicon.Actor {
         /// A list of preferences by the user.
         public let preferences: [AppBskyLexicon.Actor.PreferenceUnion]
 
+        public init(preferences: [AppBskyLexicon.Actor.PreferenceUnion]) {
+            self.preferences = preferences
+        }
+        
         enum CodingKeys: String, CodingKey {
             case type = "$type"
             case preferences

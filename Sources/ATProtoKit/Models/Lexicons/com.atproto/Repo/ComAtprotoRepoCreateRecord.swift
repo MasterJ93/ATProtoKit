@@ -59,6 +59,15 @@ extension ComAtprotoLexicon.Repository {
         /// commit by CID."
         public let swapCommit: String?
 
+        public init(repositoryDID: String, collection: String, recordKey: String? = nil, shouldValidate: Bool? = nil, record: UnknownType, swapCommit: String? = nil) {
+            self.repositoryDID = repositoryDID
+            self.collection = collection
+            self.recordKey = recordKey
+            self.shouldValidate = shouldValidate
+            self.record = record
+            self.swapCommit = swapCommit
+        }
+        
         public func encode(to encoder: any Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
 
