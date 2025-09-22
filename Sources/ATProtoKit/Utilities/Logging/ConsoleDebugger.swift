@@ -44,8 +44,8 @@ public struct ConsoleDebugger: SessionDebuggable {
         print("URL: \(request.url?.absoluteString ?? "(nil)")")
         print("Method: \(request.httpMethod ?? "(nil)")")
         print("Headers: \(request.allHTTPHeaderFields ?? [:])")
-        if let body = body, let bodyStr = String(data: body, encoding: .utf8) {
-            print("Body: \(bodyStr)")
+        if let body = body, let bodyString = String(data: body, encoding: .utf8) {
+            print("Body: \(bodyString)")
         }
         print("-------------------\n")
     }
@@ -65,8 +65,8 @@ public struct ConsoleDebugger: SessionDebuggable {
             print("Status: \(httpResponse.statusCode)")
             print("Headers: \(httpResponse.allHeaderFields)")
         }
-        if let data = data, let jsonStr = String(data: data, encoding: .utf8) {
-            print("Body: \(jsonStr)")
+        if let data = data, let jsonString = String(data: data, encoding: .utf8) {
+            print("Body: \(jsonString)")
         }
         if let error = error {
             print("Error: \(error)")

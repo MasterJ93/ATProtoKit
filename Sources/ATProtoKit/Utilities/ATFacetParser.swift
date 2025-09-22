@@ -20,6 +20,17 @@ import FoundationNetworking
 /// editing, and transforming them to interactable links.
 public enum ATFacetParser {
 
+    /// A regular expression related to identifying @mentions.
+    ///
+    /// Based on Bluesky's regular expression.
+    internal static let mentionRegex = "(?:^|\\s)(@([a-zA-Z0-9]([a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\\.)+[a-zA-Z]([a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)"
+
+    /// A regular expression related to identifying links.
+    internal static let linkRegex = "(?:^|\\s)(https?:\\/\\/(www\\.)?[-a-zA-Z0-9@:%._\\+~#=]{1,256}\\.[a-zA-Z0-9()]{1,6}\\b([-a-zA-Z0-9()@:%_\\+.~#?&//=]*[-a-zA-Z0-9@%_\\+~#//=])?)"
+
+    /// A regular expression related to identifying hashtags.
+    internal static let hashtagRegex = "(?<!\\w)(#[\\p{L}\\p{M}\\p{N}_]+)"
+
     /// Parses mentions from a given text and returns them along with their positions.
     ///
     /// - Parameter text: The text to parse for mentions.
@@ -28,11 +39,8 @@ public enum ATFacetParser {
     public static func parseMentions(from text: String) -> [[String: Any]] {
         var spans = [[String: Any]]()
 
-        // Regex for grabbing @mentions based on Bluesky's regex.
-        let mentionRegex = "(?:^|\\s)(@([a-zA-Z0-9]([a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\\.)+[a-zA-Z]([a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)"
-
         do {
-            let regex = try NSRegularExpression(pattern: mentionRegex)
+            let regex = try NSRegularExpression(pattern: Self.mentionRegex)
             let nsRange = NSRange(text.startIndex..<text.endIndex, in: text)
 
             regex.enumerateMatches(in: text, range: nsRange) { match, _, _ in
@@ -71,11 +79,8 @@ public enum ATFacetParser {
     public static func parseURLs(from text: String) -> [[String: Any]] {
         var spans = [[String: Any]]()
 
-        // Regular expression pattern for identifying URLs.
-        let linkRegex = "(?:^|\\s)(https?:\\/\\/(www\\.)?[-a-zA-Z0-9@:%._\\+~#=]{1,256}\\.[a-zA-Z0-9()]{1,6}\\b([-a-zA-Z0-9()@:%_\\+.~#?&//=]*[-a-zA-Z0-9@%_\\+~#//=])?)"
-
         do {
-            let regex = try NSRegularExpression(pattern: linkRegex)
+            let regex = try NSRegularExpression(pattern: Self.linkRegex)
             let nsRange = NSRange(text.startIndex..<text.endIndex, in: text)
 
             regex.enumerateMatches(in: text, range: nsRange) { match, _, _ in
@@ -167,9 +172,6 @@ public enum ATFacetParser {
     /// hashtag and the hashtag text.
     public static func parseHashtags(from text: String) -> [[String: Any]] {
         var spans = [[String: Any]]()
-
-        // Regex pattern for identifying hashtags.
-        let hashtagRegex = "(?<!\\w)(#[\\p{L}\\p{M}\\p{N}_]+)"
 
         do {
             let regex = try NSRegularExpression(pattern: hashtagRegex)

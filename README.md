@@ -77,7 +77,7 @@ I believe Bluesky and its accompanying AT Protocol gives the perfect balance bet
 You can use the Swift Package Manager to download and import the library into your project:
 ```swift
 dependencies: [
-    .package(url: "https://github.com/MasterJ93/ATProtoKit.git", from: "0.31.0")
+    .package(url: "https://github.com/MasterJ93/ATProtoKit.git", from: "0.32.0")
 ]
 ```
 
@@ -180,4 +180,3 @@ The documentation text used by Bluesky is licenced under the MIT Licence. Please
 The following Swift packages have been used to help run ATProtoKit:
 - [swift-docc-plugin](https://github.com/swiftlang/swift-docc-plugin) from [The Swift Programming Language](https://github.com/swiftlang).
 - [swift-log](https://github.com/apple/swift-log) from [Apple](https://github.com/apple).
-- [swift-syntax](https://github.com/swiftlang/swift-syntax) from [The Swift Programming Language](https://github.com/swiftlang).

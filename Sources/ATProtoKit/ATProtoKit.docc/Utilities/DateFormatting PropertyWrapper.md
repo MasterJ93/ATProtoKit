@@ -8,31 +8,9 @@ Convert dates to and from the ISO8601 format.
 
 ## Overview
 
-AT Protocol requires that dates must be formatted in the ISO8601 format. ATProtoKit gives you the tools to convert from `Date` to ISO8601 formatted dates and vice versa with custom `Decodable` and `Encodable` methods. All methods use ``CustomDateFormatter`` to do the decoding and encoding.
-
-> Note: The methods should be used over the ``ATProtoKit/DateFormatting`` and ``ATProtoKit/DateFormattingOptional`` property wrappers, which are now deprecated.
+The AT Protocol requires that dates must be formatted in the ISO8601 format. ATProtoKit gives you the tools to convert from `Date` to ISO8601 formatted dates and vice versa with custom `Decodable` and `Encodable` methods. All methods use ``CustomDateFormatter`` to do the decoding and encoding.
 
 ## Usage
-
-The easiest way to do this is by using the `@ATLexiconModel` macro:
-
-```swift
-@ATLexiconModel
-public struct UserProfile: ATRecordProtocol {
-    public static private(set) var type = "com.example.actor.profile"
-    public let userID: Int
-    public let username: String
-    public var bio: String?
-    public var avatarURL: URL?
-    public var followerCount: Int?
-    public var followingCount: Int?
-    public let createdAt: Date
-}
-```
-
-This will automatically create the custom initializer, as well as the custom decoding initializer and encoding method, in order to insert the appropriate methods.
-
-## Manual Entry
 
 If you rather write the custom initializers and methods manually, you can do so as well. When creating the custom initializers and methods, you'll want to replace the following methods with the custom ones:
 Replace|With...
@@ -90,14 +68,14 @@ public struct UserProfile: ATRecordProtocol {
         try container.encodeDate(self.createdAt, forKey: .createdAt)
     }
 
-    enum CodingKeys: CodingKey {
-        case userID
+    enum CodingKeys: String, CodingKey {
+        case userID = "user_id"
         case username
         case bio
-        case avatarURL
-        case followerCount
-        case followingCount
-        case createdAt
+        case avatarURL = "avatar_url"
+        case followerCount = "follower_count"
+        case followingCount = "following_count"
+        case createdAt = "created_at"
     }
 }
 ```
@@ -114,7 +92,3 @@ public struct UserProfile: ATRecordProtocol {
 ### Encodable Methods
 - ``Swift/KeyedEncodingContainer/encodeDate(_:forKey:)``
 - ``Swift/KeyedEncodingContainer/encodeDateIfPresent(_:forKey:)``
-
-### Deprecated Property Wrappers
-- ``ATProtoKit/DateFormatting``
-- ``ATProtoKit/DateFormattingOptional``

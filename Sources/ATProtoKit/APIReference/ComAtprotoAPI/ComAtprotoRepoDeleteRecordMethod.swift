@@ -12,7 +12,7 @@ import FoundationNetworking
 
 extension ATProtoKit {
 
-    /// Deletes a record attached to a user account..
+    /// Deletes a record attached to a user account.
     /// 
     /// - Note: According to the AT Protocol specifications: "Delete a repository record, or
     /// ensure it doesn't exist. Requires auth, implemented by PDS."
