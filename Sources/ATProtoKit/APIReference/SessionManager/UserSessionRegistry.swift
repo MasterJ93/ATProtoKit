@@ -18,7 +18,7 @@ import Foundation
 public actor UserSessionRegistry {
 
     /// A singleton instance of `UserSessionRegistry`.
-    public static var shared = UserSessionRegistry()
+    public static let shared = UserSessionRegistry()
 
     /// The internal registry of user sessions.
     private var sessions: [UUID: UserSession] = [:]
