@@ -29,7 +29,7 @@ extension ATProtoKit {
     ///   - alsoKnownAs: An array of aliases of the user account. Optional.
     ///   - verificationMethods: A verification method recommeneded to be added in the
     ///   DID document. Optional.
-    ///   - service: The service endpoint recommended in the DID document. Optional.
+    ///   - services: The service endpoint recommended in the DID document. Optional.
     /// - Returns: A signed PLC operation.
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
