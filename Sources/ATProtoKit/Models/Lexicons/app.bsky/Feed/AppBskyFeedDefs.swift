@@ -37,6 +37,9 @@ extension AppBskyLexicon.Feed {
         /// The number of replies in the post. Optional.
         public let replyCount: Int?
 
+        /// The number of bookmarks.
+        public let bookmarkCount: Int?
+
         /// The number of reposts in the post. Optional.
         public let repostCount: Int?
 
@@ -67,6 +70,7 @@ extension AppBskyLexicon.Feed {
             self.record = try container.decode(UnknownType.self, forKey: .record)
             self.embed = try container.decodeIfPresent(EmbedUnion.self, forKey: .embed)
             self.replyCount = try container.decodeIfPresent(Int.self, forKey: .replyCount)
+            self.bookmarkCount = try container.decodeIfPresent(Int.self, forKey: .bookmarkCount)
             self.repostCount = try container.decodeIfPresent(Int.self, forKey: .repostCount)
             self.likeCount = try container.decodeIfPresent(Int.self, forKey: .likeCount)
             self.quoteCount = try container.decodeIfPresent(Int.self, forKey: .quoteCount)
@@ -85,6 +89,7 @@ extension AppBskyLexicon.Feed {
             try container.encode(self.record, forKey: .record)
             try container.encodeIfPresent(self.embed, forKey: .embed)
             try container.encodeIfPresent(self.replyCount, forKey: .replyCount)
+            try container.encodeIfPresent(self.bookmarkCount, forKey: .bookmarkCount)
             try container.encodeIfPresent(self.repostCount, forKey: .repostCount)
             try container.encodeIfPresent(self.likeCount, forKey: .likeCount)
             try container.encodeIfPresent(self.quoteCount, forKey: .quoteCount)
@@ -101,6 +106,7 @@ extension AppBskyLexicon.Feed {
             case record
             case embed
             case replyCount
+            case bookmarkCount
             case repostCount
             case likeCount
             case quoteCount
@@ -197,8 +203,11 @@ extension AppBskyLexicon.Feed {
         /// The URI of the requesting account's like of the subject account's post. Optional.
         public let likeURI: String?
 
-        /// Indicates whether the thread has been muted.
-        public let isThreadMuted: Bool
+        /// Indicates whether the thread has been bookmarked. Optional.
+        public let isBookmarked: Bool?
+
+        /// Indicates whether the thread has been muted. Optional.
+        public let isThreadMuted: Bool?
 
         /// Indicates whether the requesting account can reply to the account's post. Optional.
         public let areRepliesDisabled: Bool?
@@ -212,6 +221,7 @@ extension AppBskyLexicon.Feed {
         enum CodingKeys: String, CodingKey {
             case repostURI = "repost"
             case likeURI = "like"
+            case isBookmarked = "bookmarked"
             case isThreadMuted = "threadMuted"
             case areRepliesDisabled = "replyDisabled"
             case isEmbeddingDisabled = "embeddingDisabled"

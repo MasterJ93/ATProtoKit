@@ -20,6 +20,7 @@
 - ``ToolsOzoneLexicon/Moderation/EventPriorityScoreDefinition``
 - ``ToolsOzoneLexicon/Moderation/AgeAssuranceEventDefinition``
 - ``ToolsOzoneLexicon/Moderation/AgeAssuranceOverrideEventDefinition``
+- ``ToolsOzoneLexicon/Moderation/RevokeAccountCredentialsEventDefinition``
 - ``ToolsOzoneLexicon/Moderation/EventAcknowledgeDefinition``
 - ``ToolsOzoneLexicon/Moderation/EventEscalateDefinition``
 - ``ToolsOzoneLexicon/Moderation/EventMuteDefinition``
@@ -47,10 +48,18 @@
 - ``ToolsOzoneLexicon/Moderation/RecordHostingDefinition``
 - ``ToolsOzoneLexicon/Moderation/ReporterStatsDefinition``
 - ``ToolsOzoneLexicon/Moderation/ModToolDefinition``
+- ``ToolsOzoneLexicon/Moderation/timelineEventPLCCreateTokenDefinition``
+- ``ToolsOzoneLexicon/Moderation/timelineEventPLCOperationTokenDefinition``
+- ``ToolsOzoneLexicon/Moderation/timelineEventPLCTombstoneTokenDefinition``
 
 ### tools.ozone.moderation.emitEvent
 
 - ``ToolsOzoneLexicon/Moderation/EmitEventRequestBody``
+
+### tools.ozone.moderation.getAccountTimeline
+
+- ``ToolsOzoneLexicon/Moderation/GetAccountTimeline``
+- ``ToolsOzoneLexicon/Moderation/GetAccountTimelineOutput``
 
 ### tools.ozone.moderation.getRecords
 

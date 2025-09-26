@@ -115,6 +115,8 @@ extension ATProtoBluesky {
     /// - Parameters:
     ///   - displayName: A display name for the profile. Optional. Defaults to `nil`.
     ///   - description: A description for the profile. Optional. Defaults to `nil`.
+    ///   - pronouns: The user account's pronoun preferences. Optional. Defaults to `nil`.
+    ///   - websiteURL: The user account's website. Optional. Defaults to `nil`.
     ///   - avatarImage: An image used for the profile picture. Optional. Defaults to `nil`.
     ///   - bannerImage: An image used for the banner image. Optional,Defaults to `nil`.
     ///   - labels: An array of user-defined labels. Optional. Defaults to `nil`.
@@ -130,6 +132,8 @@ extension ATProtoBluesky {
     public func createProfileRecord(
         with displayName: String? = nil,
         description: String? = nil,
+        pronouns: String? = nil,
+        websiteURL: URL? = nil,
         avatarImage: ATProtoTools.ImageQuery? = nil,
         bannerImage: ATProtoTools.ImageQuery? = nil,
         labels: [ComAtprotoLexicon.Label.SelfLabelsDefinition]? = nil,
@@ -158,6 +162,18 @@ extension ATProtoBluesky {
         var descriptionText: String? = nil
         if let description = description {
             descriptionText = description.truncated(toLength: 256)
+        }
+
+        // pronouns
+        var pronounsText: String? = nil
+        if let pronouns = pronouns {
+            pronounsText = pronouns.truncated(toLength: 20)
+        }
+
+        // website
+        var website: URL? = nil
+        if let websiteURL = websiteURL {
+            website = websiteURL
         }
 
         // avatarImage
@@ -209,6 +225,8 @@ extension ATProtoBluesky {
         let profileRecord = AppBskyLexicon.Actor.ProfileRecord(
             displayName: displayNameText,
             description: descriptionText,
+            pronouns: pronounsText,
+            websiteURL: website,
             avatarBlob: profileAvatarImage,
             bannerBlob: profileBannerImage,
             labels: labelsArray,

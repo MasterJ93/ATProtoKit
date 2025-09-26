@@ -16,6 +16,9 @@ extension AppBskyLexicon {
     /// A group of lexicons within the `app.bsky.actor` namespace.
     public enum Actor {}
 
+    /// A group of lexicons within the `app.bsky.bookmark` namespace.
+    public enum Bookmark {}
+
     /// A group of lexicons within the `app.bsky.embed` namespace.
     public enum Embed {}
 

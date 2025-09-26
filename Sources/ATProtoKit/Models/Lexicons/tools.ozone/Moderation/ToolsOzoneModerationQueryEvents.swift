@@ -34,6 +34,30 @@ extension ToolsOzoneLexicon.Moderation {
             /// Indicates the subject type is a record.
             case record
         }
+
+        /// Filters the results to events whose age-assurance state matches the specified value.
+        ///
+        /// - Note: According to the AT Protocol specifications: "If specified, only events where the age
+        /// assurance state matches the given value are returned"
+        public enum AgeAssuranceState: String, Codable {
+
+            /// Indicates that an age-assurance evaluation has been initiated but is not yet complete.
+            case pending
+
+            /// Indicates that the subject has been verified as meeting the required age threshold.
+            case assured
+
+            /// Indicates that no age-assurance information is available for the subject.
+            case unknown
+
+            /// Indicates that any previously established age-assurance determination has been cleared and
+            /// must be re-established.
+            case reset
+
+            /// Indicates that the subject failed age-assurance or is blocked from age-restricted content
+            /// due to age-assurance policy.
+            case blocked
+        }
     }
 
     /// An output model for listing all moderation events pertaining a subject.

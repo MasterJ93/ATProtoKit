@@ -41,7 +41,7 @@
 
 ### Profiles
 
-- ``createProfileRecord(with:description:avatarImage:bannerImage:labels:joinedViaStarterPack:pinnedPost:recordKey:shouldValidate:swapCommit:)``
+- ``createProfileRecord(with:description:pronouns:websiteURL:avatarImage:bannerImage:labels:joinedViaStarterPack:pinnedPost:recordKey:shouldValidate:swapCommit:)``
 - ``updateProfileRecord(profileURI:replace:)``
 
 ### Lists

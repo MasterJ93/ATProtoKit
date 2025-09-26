@@ -153,6 +153,15 @@ extension ToolsOzoneLexicon.Moderation {
             /// A priority score event.
             case moderationEventPriorityScore(ToolsOzoneLexicon.Moderation.EventPriorityScoreDefinition)
 
+            /// An age assurance event.
+            case moderationEventAgeAssurance(ToolsOzoneLexicon.Moderation.AgeAssuranceEventDefinition)
+
+            /// An age assurance override event.
+            case moderationEventAgeAssuranceOverride(ToolsOzoneLexicon.Moderation.AgeAssuranceOverrideEventDefinition)
+
+            /// A revoke account credentials event.
+            case moderationEventAccountCredentials(ToolsOzoneLexicon.Moderation.RevokeAccountCredentialsEventDefinition)
+
             /// An unknown case.
             case unknown(String, [String: CodableValue])
 
@@ -199,12 +208,17 @@ extension ToolsOzoneLexicon.Moderation {
                         self = .moderationEventRecord(try ToolsOzoneLexicon.Moderation.EventReportDefinition(from: decoder))
                     case "tools.ozone.moderation.defs#modEventPriorityScore":
                         self = .moderationEventPriorityScore(try ToolsOzoneLexicon.Moderation.EventPriorityScoreDefinition(from: decoder))
+                    case "tools.ozone.moderation.defs#ageAssuranceEvent":
+                        self = .moderationEventAgeAssurance(try ToolsOzoneLexicon.Moderation.AgeAssuranceEventDefinition(from: decoder))
+                    case "tools.ozone.moderation.defs#ageAssuranceOverrideEvent":
+                        self = .moderationEventAgeAssuranceOverride(try ToolsOzoneLexicon.Moderation.AgeAssuranceOverrideEventDefinition(from: decoder))
+                    case "tools.ozone.moderation.defs#revokeAccountCredentialsEvent":
+                      self = .moderationEventAccountCredentials(try ToolsOzoneLexicon.Moderation.RevokeAccountCredentialsEventDefinition(from: decoder))
                     default:
                         let singleValueDecodingContainer = try decoder.singleValueContainer()
                         let dictionary = try Self.decodeDictionary(from: singleValueDecodingContainer, decoder: decoder)
 
                         self = .unknown(type, dictionary)
-
                 }
             }
 
@@ -365,7 +379,7 @@ extension ToolsOzoneLexicon.Moderation {
 
         // Unions
         ///
-        public enum ModerationEventViewDetailUnion: Sendable, Codable {
+        public enum ModerationEventViewDetailUnion: ATUnionProtocol {
 
             /// A takedown event.
             case moderationEventTakedown(ToolsOzoneLexicon.Moderation.EventTakedownDefinition)
@@ -391,54 +405,105 @@ extension ToolsOzoneLexicon.Moderation {
             /// A mute event.
             case moderationEventMute(ToolsOzoneLexicon.Moderation.EventMuteDefinition)
 
+            /// An unmute event.
+            case moderationEventUnmute(ToolsOzoneLexicon.Moderation.EventUnmuteDefinition)
+
+            /// A mute reporter event.
+            case moderationEventMuteReporter(ToolsOzoneLexicon.Moderation.EventMuteReporterDefinition)
+
+            /// An unmute reporter event.
+            case moderationEventUnmuteReporter(ToolsOzoneLexicon.Moderation.EventUnmuteReporterDefinition)
+
+            /// An email event.
+            case moderationEventEmail(ToolsOzoneLexicon.Moderation.EventEmailDefinition)
+
             /// A resolve appeal event.
             case moderationEventResolveAppeal(ToolsOzoneLexicon.Moderation.EventResolveAppealDefinition)
 
+            /// A divert event.
+            case moderationEventDivert(ToolsOzoneLexicon.Moderation.EventDivertDefinition)
+
             /// A tag event.
             case moderationEventTag(ToolsOzoneLexicon.Moderation.EventTagDefinition)
+
+            /// An account event.
+            case accountEvent(ToolsOzoneLexicon.Moderation.AccountEventDefinition)
+
+            /// An identity event.
+            case identityEvent(ToolsOzoneLexicon.Moderation.IdentityEventDefinition)
+
+            /// An record event.
+            case recordEvent(ToolsOzoneLexicon.Moderation.RecordViewDefinition)
 
             /// A priority score event.
             case moderationEventPriorityScore(ToolsOzoneLexicon.Moderation.EventPriorityScoreDefinition)
 
             /// An age assurance event.
-            case eventAgeAssurance(ToolsOzoneLexicon.Moderation.AgeAssuranceEventDefinition)
+            case moderationEventAgeAssurance(ToolsOzoneLexicon.Moderation.AgeAssuranceEventDefinition)
 
             /// An age assurance override event.
-            case eventAgeAssuranceOverride(ToolsOzoneLexicon.Moderation.AgeAssuranceOverrideEventDefinition)
+            case moderationEventAgeAssuranceOverride(ToolsOzoneLexicon.Moderation.AgeAssuranceOverrideEventDefinition)
+
+            /// A revoke account credentials event.
+            case moderationEventAccountCredentials(ToolsOzoneLexicon.Moderation.RevokeAccountCredentialsEventDefinition)
+
+            /// An unknown case.
+            case unknown(String, [String: CodableValue])
 
             public init(from decoder: Decoder) throws {
-                let container = try decoder.singleValueContainer()
+                let container = try decoder.container(keyedBy: CodingKeys.self)
+                let type = try container.decode(String.self, forKey: .type)
 
-                if let value = try? container.decode(ToolsOzoneLexicon.Moderation.EventTakedownDefinition.self) {
-                    self = .moderationEventTakedown(value)
-                } else if let value = try? container.decode(ToolsOzoneLexicon.Moderation.EventReverseTakedownDefinition.self) {
-                    self = .moderationEventReverseTakedown(value)
-                } else if let value = try? container.decode(ToolsOzoneLexicon.Moderation.EventCommentDefinition.self) {
-                    self = .moderationEventComment(value)
-                } else if let value = try? container.decode(ToolsOzoneLexicon.Moderation.EventReportDefinition.self) {
-                    self = .moderationEventReport(value)
-                } else if let value = try? container.decode(ToolsOzoneLexicon.Moderation.EventLabelDefinition.self) {
-                    self = .moderationEventLabel(value)
-                } else if let value = try? container.decode(ToolsOzoneLexicon.Moderation.EventAcknowledgeDefinition.self) {
-                    self = .moderationEventAcknowledge(value)
-                } else if let value = try? container.decode(ToolsOzoneLexicon.Moderation.EventEscalateDefinition.self) {
-                    self = .moderationEventEscalate(value)
-                } else if let value = try? container.decode(ToolsOzoneLexicon.Moderation.EventMuteDefinition.self) {
-                    self = .moderationEventMute(value)
-                } else if let value = try? container.decode(ToolsOzoneLexicon.Moderation.EventResolveAppealDefinition.self) {
-                    self = .moderationEventResolveAppeal(value)
-                } else if let value = try? container.decode(ToolsOzoneLexicon.Moderation.EventTagDefinition.self) {
-                    self = .moderationEventTag(value)
-                } else if let value = try? container.decode(ToolsOzoneLexicon.Moderation.EventPriorityScoreDefinition.self) {
-                    self = .moderationEventPriorityScore(value)
-                } else if let value = try? container.decode(ToolsOzoneLexicon.Moderation.AgeAssuranceEventDefinition.self) {
-                    self = .eventAgeAssurance(value)
-                } else if let value = try? container.decode(ToolsOzoneLexicon.Moderation.AgeAssuranceOverrideEventDefinition.self) {
-                    self = .eventAgeAssuranceOverride(value)
-                } else {
-                    throw DecodingError.typeMismatch(
-                        ModerationEventViewDetailUnion.self, DecodingError.Context(
-                            codingPath: decoder.codingPath, debugDescription: "Unknown ModerationEventViewDetailUnion type"))
+                switch type {
+                    case "tools.ozone.moderation.defs#modEventTakedown":
+                        self = .moderationEventTakedown(try ToolsOzoneLexicon.Moderation.EventTakedownDefinition(from: decoder))
+                    case "tools.ozone.moderation.defs#modEventReverseTakedown":
+                        self = .moderationEventReverseTakedown(try ToolsOzoneLexicon.Moderation.EventReverseTakedownDefinition(from: decoder))
+                    case "tools.ozone.moderation.defs#modEventComment":
+                        self = .moderationEventComment(try ToolsOzoneLexicon.Moderation.EventCommentDefinition(from: decoder))
+                    case "tools.ozone.moderation.defs#modEventReport":
+                        self = .moderationEventReport(try ToolsOzoneLexicon.Moderation.EventReportDefinition(from: decoder))
+                    case "tools.ozone.moderation.defs#modEventLabel":
+                        self = .moderationEventLabel(try ToolsOzoneLexicon.Moderation.EventLabelDefinition(from: decoder))
+                    case "tools.ozone.moderation.defs#modEventAcknowledge":
+                        self = .moderationEventAcknowledge(try ToolsOzoneLexicon.Moderation.EventAcknowledgeDefinition(from: decoder))
+                    case "tools.ozone.moderation.defs#modEventEscalate":
+                        self = .moderationEventEscalate(try ToolsOzoneLexicon.Moderation.EventEscalateDefinition(from: decoder))
+                    case "tools.ozone.moderation.defs#modEventMute":
+                        self = .moderationEventMute(try ToolsOzoneLexicon.Moderation.EventMuteDefinition(from: decoder))
+                    case "tools.ozone.moderation.defs#modEventUnmute":
+                        self = .moderationEventUnmute(try ToolsOzoneLexicon.Moderation.EventUnmuteDefinition(from: decoder))
+                    case "tools.ozone.moderation.defs#modEventMuteReporter":
+                        self = .moderationEventMuteReporter(try ToolsOzoneLexicon.Moderation.EventMuteReporterDefinition(from: decoder))
+                    case "tools.ozone.moderation.defs#modEventUnmuteReporter":
+                        self = .moderationEventUnmuteReporter(try ToolsOzoneLexicon.Moderation.EventUnmuteReporterDefinition(from: decoder))
+                    case "tools.ozone.moderation.defs#modEventEmail":
+                        self = .moderationEventEmail(try ToolsOzoneLexicon.Moderation.EventEmailDefinition(from: decoder))
+                    case "tools.ozone.moderation.defs#modEventResolveAppeal":
+                        self = .moderationEventResolveAppeal(try ToolsOzoneLexicon.Moderation.EventResolveAppealDefinition(from: decoder))
+                    case "tools.ozone.moderation.defs#modEventDivert":
+                        self = .moderationEventDivert(try ToolsOzoneLexicon.Moderation.EventDivertDefinition(from: decoder))
+                    case "tools.ozone.moderation.defs#modEventTag":
+                        self = .moderationEventTag(try ToolsOzoneLexicon.Moderation.EventTagDefinition(from: decoder))
+                    case "tools.ozone.moderation.defs#accountEvent":
+                        self = .accountEvent(try ToolsOzoneLexicon.Moderation.AccountEventDefinition(from: decoder))
+                    case "tools.ozone.moderation.defs#identityEvent":
+                        self = .identityEvent(try ToolsOzoneLexicon.Moderation.IdentityEventDefinition(from: decoder))
+                    case "tools.ozone.moderation.defs#recordEvent":
+                        self = .recordEvent(try ToolsOzoneLexicon.Moderation.RecordViewDefinition(from: decoder))
+                    case "tools.ozone.moderation.defs#modEventPriorityScore":
+                        self = .moderationEventPriorityScore(try ToolsOzoneLexicon.Moderation.EventPriorityScoreDefinition(from: decoder))
+                    case "tools.ozone.moderation.defs#ageAssuranceEvent":
+                        self = .moderationEventAgeAssurance(try ToolsOzoneLexicon.Moderation.AgeAssuranceEventDefinition(from: decoder))
+                    case "tools.ozone.moderation.defs#ageAssuranceOverrideEvent":
+                        self = .moderationEventAgeAssuranceOverride(try ToolsOzoneLexicon.Moderation.AgeAssuranceOverrideEventDefinition(from: decoder))
+                    case "tools.ozone.moderation.defs#revokeAccountCredentialsEvent":
+                        self = .moderationEventAccountCredentials(try ToolsOzoneLexicon.Moderation.RevokeAccountCredentialsEventDefinition(from: decoder))
+                    default:
+                        let singleValueDecodingContainer = try decoder.singleValueContainer()
+                        let dictionary = try Self.decodeDictionary(from: singleValueDecodingContainer, decoder: decoder)
+
+                        self = .unknown(type, dictionary)
                 }
             }
 
@@ -462,17 +527,41 @@ extension ToolsOzoneLexicon.Moderation {
                         try container.encode(value)
                     case .moderationEventMute(let value):
                         try container.encode(value)
+                    case .moderationEventUnmute(let value):
+                        try container.encode(value)
+                    case .moderationEventMuteReporter(let value):
+                        try container.encode(value)
+                    case .moderationEventUnmuteReporter(let value):
+                        try container.encode(value)
+                    case .moderationEventEmail(let value):
+                        try container.encode(value)
                     case .moderationEventResolveAppeal(let value):
+                        try container.encode(value)
+                    case .moderationEventDivert(let value):
                         try container.encode(value)
                     case .moderationEventTag(let value):
                         try container.encode(value)
+                    case .accountEvent(let value):
+                        try container.encode(value)
+                    case .identityEvent(let value):
+                        try container.encode(value)
+                    case .recordEvent(let value):
+                        try container.encode(value)
                     case .moderationEventPriorityScore(let value):
                         try container.encode(value)
-                    case .eventAgeAssurance(let value):
+                    case .moderationEventAgeAssurance(let value):
                         try container.encode(value)
-                    case .eventAgeAssuranceOverride(let value):
+                    case .moderationEventAgeAssuranceOverride(let value):
                         try container.encode(value)
+                    case .moderationEventAccountCredentials(let value):
+                        try container.encode(value)
+                    default:
+                        break
                 }
+            }
+
+            enum CodingKeys: String, CodingKey {
+                case type = "$type"
             }
         }
 
@@ -1586,6 +1675,23 @@ extension ToolsOzoneLexicon.Moderation {
                 try container.encode(self.rawValue)
             }
         }
+    }
+
+    /// A definition model for a revoke account credentials event.
+    ///
+    /// - Note: According to the AT Protocol specifications: "Account credentials revocation by moderators.
+    /// Only works on DID subjects."
+    ///
+    /// - SeeAlso: This is based on the [`tools.ozone.moderation.defs`][github] lexicon.
+    ///
+    /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/tools/ozone/moderation/defs.json
+    public struct RevokeAccountCredentialsEventDefinition: Sendable, Codable {
+
+        /// Any comments for the moderator's revoke account credentials event. Optional.
+        ///
+        /// - Note: According to the AT Protocol specifications: "Comment describing the reason for
+        /// the revocation."
+        public let comment: String?
     }
 
     /// A definition model for an acknowledgement event.
@@ -2745,4 +2851,34 @@ extension ToolsOzoneLexicon.Moderation {
         /// the source."
         public let meta: UnknownType
     }
+
+    /// A definition for a moderation timeline event representing a PLC create operation.
+    ///
+    /// - Note: According to the AT Protocol specifications: "Moderation event timeline event for a PLC
+    /// create operation."
+    ///
+    /// - SeeAlso: This is based on the [`tools.ozone.moderation.defs`][github] lexicon.
+    ///
+    /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/admin/defs.json
+    public static let timelineEventPLCCreateTokenDefinition: String = "‎tools.ozone.moderation.defs#timelineEventPlcCreate"
+
+    /// A definition for a moderation timeline event representing a generic PLC create operation.
+    ///
+    /// - Note: According to the AT Protocol specifications: "Moderation event timeline event for generic
+    /// PLC operation."
+    ///
+    /// - SeeAlso: This is based on the [`tools.ozone.moderation.defs`][github] lexicon.
+    ///
+    /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/admin/defs.json
+    public static let timelineEventPLCOperationTokenDefinition: String = "tools.ozone.moderation.defs#timelineEventPlcOperation"
+
+    /// A definition for a moderation timeline event representing a tombstone PLC create operation.
+    ///
+    /// - Note: According to the AT Protocol specifications: "Moderation event timeline event for a PLC
+    /// tombstone operation."
+    ///
+    /// - SeeAlso: This is based on the [`tools.ozone.moderation.defs`][github] lexicon.
+    ///
+    /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/admin/defs.json
+    public static let timelineEventPLCTombstoneTokenDefinition: String = "tools.ozone.moderation.defs#timelineEventPlcTombstone"
 }

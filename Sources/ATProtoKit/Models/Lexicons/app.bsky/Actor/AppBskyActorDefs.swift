@@ -30,6 +30,9 @@ extension AppBskyLexicon.Actor {
         /// - Important: Current maximum length is 64 characters.
         public let displayName: String?
 
+        /// The user account's pronoun preferences. Optional.
+        public let pronouns: String?
+
         /// The avatar image URL of the user's profile. Optional.
         public let avatarImageURL: URL?
 
@@ -58,6 +61,7 @@ extension AppBskyLexicon.Actor {
             self.actorDID = try container.decode(String.self, forKey: .actorDID)
             self.actorHandle = try container.decode(String.self, forKey: .actorHandle)
             self.displayName = try container.decodeIfPresent(String.self, forKey: .displayName)
+            self.pronouns = try container.decodeIfPresent(String.self, forKey: .pronouns)
             self.avatarImageURL = try container.decodeIfPresent(URL.self, forKey: .avatarImageURL)
             self.associated = try container.decodeIfPresent(AppBskyLexicon.Actor.ProfileAssociatedDefinition.self, forKey: .associated)
             self.viewer = try container.decodeIfPresent(AppBskyLexicon.Actor.ViewerStateDefinition.self, forKey: .viewer)
@@ -73,6 +77,7 @@ extension AppBskyLexicon.Actor {
             try container.encode(self.actorDID, forKey: .actorDID)
             try container.encode(self.actorHandle, forKey: .actorHandle)
             try container.truncatedEncodeIfPresent(self.displayName, forKey: .displayName, upToCharacterLength: 64)
+            try container.encodeIfPresent(self.pronouns, forKey: .pronouns)
             try container.encodeIfPresent(self.avatarImageURL, forKey: .avatarImageURL)
             try container.encodeIfPresent(self.associated, forKey: .associated)
             try container.encodeIfPresent(self.viewer, forKey: .viewer)
@@ -86,6 +91,7 @@ extension AppBskyLexicon.Actor {
             case actorDID = "did"
             case actorHandle = "handle"
             case displayName
+            case pronouns
             case avatarImageURL = "avatar"
             case associated
             case viewer
@@ -119,6 +125,12 @@ extension AppBskyLexicon.Actor {
         /// - Important: Current maximum length is 256 characters.
         public let description: String?
 
+        /// The user account's pronoun preferences. Optional.
+        public let pronouns: String?
+
+        /// The user account's website. Optional.
+        public let websiteURL: URL?
+
         /// The avatar image URL of a user's profile. Optional.
         public let avatarImageURL: URL?
 
@@ -151,6 +163,8 @@ extension AppBskyLexicon.Actor {
             self.actorHandle = try container.decode(String.self, forKey: .actorHandle)
             self.displayName = try container.decodeIfPresent(String.self, forKey: .displayName)
             self.description = try container.decodeIfPresent(String.self, forKey: .description)
+            self.pronouns = try container.decodeIfPresent(String.self, forKey: .pronouns)
+            self.websiteURL = try container.decodeIfPresent(URL.self, forKey: .websiteURL)
             self.avatarImageURL = try container.decodeIfPresent(URL.self, forKey: .avatarImageURL)
             self.associated = try container.decodeIfPresent(AppBskyLexicon.Actor.ProfileAssociatedDefinition.self, forKey: .associated)
             self.indexedAt = try container.decodeDateIfPresent(forKey: .indexedAt)
@@ -168,6 +182,8 @@ extension AppBskyLexicon.Actor {
             try container.encode(self.actorHandle, forKey: .actorHandle)
             try container.truncatedEncodeIfPresent(self.displayName, forKey: .displayName, upToCharacterLength: 64)
             try container.truncatedEncodeIfPresent(self.description, forKey: .description, upToCharacterLength: 256)
+            try container.truncatedEncodeIfPresent(self.pronouns, forKey: .pronouns, upToCharacterLength: 20)
+            try container.encodeIfPresent(self.websiteURL, forKey: .websiteURL)
             try container.encodeIfPresent(self.avatarImageURL, forKey: .avatarImageURL)
             try container.encodeIfPresent(self.associated, forKey: .associated)
             try container.encodeDateIfPresent(self.indexedAt, forKey: .indexedAt)
@@ -183,6 +199,8 @@ extension AppBskyLexicon.Actor {
             case actorHandle = "handle"
             case displayName
             case description
+            case pronouns
+            case websiteURL = "website"
             case avatarImageURL = "avatar"
             case associated
             case indexedAt
@@ -211,6 +229,9 @@ extension AppBskyLexicon.Actor {
         ///
         /// - Important: Current maximum length is 64 characters.
         public let displayName: String?
+
+        /// The user account's pronoun preferences. Optional.
+        public let pronouns: String?
 
         /// The description of the user's profile. Optional.
         ///
@@ -260,8 +281,8 @@ extension AppBskyLexicon.Actor {
         /// The status of the user account. Optional.
         public let status: StatusViewDefinition?
 
-        public init(actorDID: String, actorHandle: String, displayName: String? = nil, description: String? = nil, avatarImageURL: URL? = nil,
-                    bannerImageURL: URL? = nil, followerCount: Int? = nil, followCount: Int? = nil, postCount: Int? = nil,
+        public init(actorDID: String, actorHandle: String, displayName: String? = nil, pronouns: String? = nil, description: String? = nil,
+                    avatarImageURL: URL? = nil, bannerImageURL: URL? = nil, followerCount: Int? = nil, followCount: Int? = nil, postCount: Int? = nil,
                     associated: ProfileAssociatedDefinition?, joinedViaStarterPack: AppBskyLexicon.Graph.StarterPackViewBasicDefinition?, indexedAt: Date?,
                     createdAt: Date?, viewer: ViewerStateDefinition? = nil, labels: [ComAtprotoLexicon.Label.LabelDefinition]? = nil,
                     pinnedPost: ComAtprotoLexicon.Repository.StrongReference?, verificationState: VerificationStateDefinition? = nil,
@@ -269,6 +290,7 @@ extension AppBskyLexicon.Actor {
             self.actorDID = actorDID
             self.actorHandle = actorHandle
             self.displayName = displayName
+            self.pronouns = pronouns
             self.description = description
             self.avatarImageURL = avatarImageURL
             self.bannerImageURL = bannerImageURL
@@ -292,6 +314,7 @@ extension AppBskyLexicon.Actor {
             self.actorDID = try container.decode(String.self, forKey: .actorDID)
             self.actorHandle = try container.decode(String.self, forKey: .actorHandle)
             self.displayName = try container.decodeIfPresent(String.self, forKey: .displayName)
+            self.pronouns = try container.decodeIfPresent(String.self, forKey: .pronouns)
             self.description = try container.decodeIfPresent(String.self, forKey: .description)
             self.avatarImageURL = try container.decodeIfPresent(URL.self, forKey: .avatarImageURL)
             self.bannerImageURL = try container.decodeIfPresent(URL.self, forKey: .bannerImageURL)
@@ -316,6 +339,7 @@ extension AppBskyLexicon.Actor {
             try container.encode(self.actorHandle, forKey: .actorHandle)
             try container.truncatedEncodeIfPresent(self.displayName, forKey: .displayName, upToCharacterLength: 64)
             try container.truncatedEncodeIfPresent(self.description, forKey: .description, upToCharacterLength: 256)
+            try container.encodeIfPresent(self.pronouns, forKey: .pronouns)
             try container.encodeIfPresent(self.avatarImageURL, forKey: .avatarImageURL)
             try container.encodeIfPresent(self.bannerImageURL, forKey: .bannerImageURL)
             try container.encodeIfPresent(self.followerCount, forKey: .followerCount)
@@ -336,6 +360,7 @@ extension AppBskyLexicon.Actor {
             case actorDID = "did"
             case actorHandle = "handle"
             case displayName
+            case pronouns
             case description
             case avatarImageURL = "avatar"
             case bannerImageURL = "banner"

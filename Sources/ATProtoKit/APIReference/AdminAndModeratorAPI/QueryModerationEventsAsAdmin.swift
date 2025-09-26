@@ -60,6 +60,10 @@ extension ATProtoAdmin {
     ///   the added tags. Optional.
     ///   - reportTypes: An array of report types. Optional.
     ///   - policies: Filters events based on the action policies. Optional.
+    ///   - modTool: Filters the results by the modTool name. Optional. Defaults to `nil`.
+    ///   - batchID: Filters the results by the batch ID. Optional. Defaults to `nil`.
+    ///   - ageAssuranceState: Filters the results to events whose age-assurance state matches the
+    ///   specified value. Optional. Defaults to `nil`.
     ///   - cursor: The mark used to indicate the starting point for the next set
     ///   of results. Optional.
     /// - Returns: An array of all moderation events pertaining a subject, with an optional cursor
@@ -86,6 +90,9 @@ extension ATProtoAdmin {
         removedTags: [String]? = nil,
         reportTypes: [String]? = nil,
         policies: [String]? = nil,
+        modTool: [String]? = nil,
+        batchID: String? = nil,
+        ageAssuranceState: ToolsOzoneLexicon.Moderation.QueryEvents.AgeAssuranceState? = nil,
         cursor: String? = nil
     ) async throws -> ToolsOzoneLexicon.Moderation.QueryEventsOutput {
         guard let session = try await self.getUserSession(),
@@ -193,6 +200,18 @@ extension ATProtoAdmin {
         // policies
         if let policies {
             queryItems += policies.map { ("policies", $0) }
+        }
+
+        if let modTool {
+            queryItems += modTool.map { ("modTool", $0) }
+        }
+
+        if let batchID {
+            queryItems.append(("batchId", batchID))
+        }
+
+        if let ageAssuranceState {
+            queryItems.append(("ageAssuranceState", "\(ageAssuranceState.rawValue)"))
         }
 
         // cursor
