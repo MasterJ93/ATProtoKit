@@ -61,7 +61,7 @@ extension ATProtoKit {
                 forRequest: requestURL,
                 andMethod: .post,
                 acceptValue: "application/json",
-                contentTypeValue: nil,
+                contentTypeValue: "application/json",
                 authorizationValue: "Bearer \(accessToken)"
             )
 
