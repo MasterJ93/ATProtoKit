@@ -24,6 +24,25 @@ extension AppBskyLexicon.Graph {
     public struct MuteThreadRequestBody: Sendable, Codable {
 
         /// The URI of the root of the post.
-        public let root: String
+        public let rootURI: String
+        
+        public init(rootURI: String) {
+            self.rootURI = rootURI
+        }
+        
+        public init(from decoder: any Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+            self.rootURI = try container.decode(String.self, forKey: CodingKeys.rootURI)
+        }
+        
+        
+        public func encode(to encoder: any Encoder) throws {
+            var container = encoder.container(keyedBy: CodingKeys.self)
+            try container.encode(self.rootURI, forKey: CodingKeys.rootURI)
+        }
+        
+        enum CodingKeys: String, CodingKey {
+            case rootURI = "root"
+        }
     }
 }
