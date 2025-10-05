@@ -167,7 +167,7 @@ extension ToolsOzoneLexicon.Moderation {
 
             public init(from decoder: Decoder) throws {
                 let container = try decoder.container(keyedBy: CodingKeys.self)
-                let type = try container.decode(String.self, forKey: .type)
+                let type = try container.decodeIfPresent(String.self, forKey: .type)
 
                 switch type {
                     case "tools.ozone.moderation.defs#modEventTakedown":
@@ -218,7 +218,7 @@ extension ToolsOzoneLexicon.Moderation {
                         let singleValueDecodingContainer = try decoder.singleValueContainer()
                         let dictionary = try Self.decodeDictionary(from: singleValueDecodingContainer, decoder: decoder)
 
-                        self = .unknown(type, dictionary)
+                        self = .unknown(type ?? "unknown", dictionary)
                 }
             }
 
@@ -452,7 +452,7 @@ extension ToolsOzoneLexicon.Moderation {
 
             public init(from decoder: Decoder) throws {
                 let container = try decoder.container(keyedBy: CodingKeys.self)
-                let type = try container.decode(String.self, forKey: .type)
+                let type = try container.decodeIfPresent(String.self, forKey: .type)
 
                 switch type {
                     case "tools.ozone.moderation.defs#modEventTakedown":
@@ -503,7 +503,7 @@ extension ToolsOzoneLexicon.Moderation {
                         let singleValueDecodingContainer = try decoder.singleValueContainer()
                         let dictionary = try Self.decodeDictionary(from: singleValueDecodingContainer, decoder: decoder)
 
-                        self = .unknown(type, dictionary)
+                        self = .unknown(type ?? "unknown", dictionary)
                 }
             }
 
@@ -969,7 +969,7 @@ extension ToolsOzoneLexicon.Moderation {
 
             public init(from decoder: Decoder) throws {
                 let container = try decoder.container(keyedBy: CodingKeys.self)
-                let type = try container.decode(String.self, forKey: .type)
+                let type = try container.decodeIfPresent(String.self, forKey: .type)
 
                 switch type {
                     case "com.atproto.admin.defs#repoRef":
@@ -982,7 +982,7 @@ extension ToolsOzoneLexicon.Moderation {
                         let singleValueDecodingContainer = try decoder.singleValueContainer()
                         let dictionary = try Self.decodeDictionary(from: singleValueDecodingContainer, decoder: decoder)
 
-                        self = .unknown(type, dictionary)
+                        self = .unknown(type ?? "unknown", dictionary)
                 }
             }
 
@@ -1020,7 +1020,7 @@ extension ToolsOzoneLexicon.Moderation {
 
             public init(from decoder: Decoder) throws {
                 let container = try decoder.container(keyedBy: CodingKeys.self)
-                let type = try container.decode(String.self, forKey: .type)
+                let type = try container.decodeIfPresent(String.self, forKey: .type)
 
                 switch type {
                     case "tools.ozone.moderation.defs#accountHosting":
@@ -1031,7 +1031,7 @@ extension ToolsOzoneLexicon.Moderation {
                         let singleValueDecodingContainer = try decoder.singleValueContainer()
                         let dictionary = try Self.decodeDictionary(from: singleValueDecodingContainer, decoder: decoder)
 
-                        self = .unknown(type, dictionary)
+                        self = .unknown(type ?? "unknown", dictionary)
                 }
             }
 
@@ -1100,14 +1100,14 @@ extension ToolsOzoneLexicon.Moderation {
 
             public init(from decoder: Decoder) throws {
                 let container = try decoder.container(keyedBy: CodingKeys.self)
-                let type = try container.decode(String.self, forKey: .type)
+                let type = try container.decodeIfPresent(String.self, forKey: .type)
 
                 switch type {
                     default:
                         let singleValueDecodingContainer = try decoder.singleValueContainer()
                         let dictionary = try Self.decodeDictionary(from: singleValueDecodingContainer, decoder: decoder)
 
-                        self = .unknown(type, dictionary)
+                        self = .unknown(type ?? "unknown", dictionary)
                 }
             }
 
@@ -2629,7 +2629,7 @@ extension ToolsOzoneLexicon.Moderation {
 
             public init(from decoder: Decoder) throws {
                 let container = try decoder.container(keyedBy: CodingKeys.self)
-                let type = try container.decode(String.self, forKey: .type)
+                let type = try container.decodeIfPresent(String.self, forKey: .type)
 
                 switch type {
                     case "tools.ozone.moderation.defs#imageDetails":
@@ -2640,7 +2640,7 @@ extension ToolsOzoneLexicon.Moderation {
                         let singleValueDecodingContainer = try decoder.singleValueContainer()
                         let dictionary = try Self.decodeDictionary(from: singleValueDecodingContainer, decoder: decoder)
 
-                        self = .unknown(type, dictionary)
+                        self = .unknown(type ?? "unknown", dictionary)
 
                 }
             }

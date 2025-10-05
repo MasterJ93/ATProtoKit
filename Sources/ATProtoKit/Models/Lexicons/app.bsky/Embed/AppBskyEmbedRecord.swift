@@ -90,7 +90,7 @@ extension AppBskyLexicon.Embed {
 
                 public init(from decoder: Decoder) throws {
                     let container = try decoder.container(keyedBy: CodingKeys.self)
-                    let type = try container.decode(String.self, forKey: .type)
+                    let type = try container.decodeIfPresent(String.self, forKey: .type)
 
                     switch type {
                         case "app.bsky.embed.record#viewRecord":
@@ -113,7 +113,7 @@ extension AppBskyLexicon.Embed {
                             let singleValueDecodingContainer = try decoder.singleValueContainer()
                             let dictionary = try Self.decodeDictionary(from: singleValueDecodingContainer, decoder: decoder)
 
-                            self = .unknown(type, dictionary)
+                            self = .unknown(type ?? "unknown", dictionary)
                     }
                 }
 
@@ -266,7 +266,7 @@ extension AppBskyLexicon.Embed {
 
                 public init(from decoder: Decoder) throws {
                     let container = try decoder.container(keyedBy: CodingKeys.self)
-                    let type = try container.decode(String.self, forKey: .type)
+                    let type = try container.decodeIfPresent(String.self, forKey: .type)
 
                     switch type {
                         case "app.bsky.embed.external#view":
@@ -283,7 +283,7 @@ extension AppBskyLexicon.Embed {
                             let singleValueDecodingContainer = try decoder.singleValueContainer()
                             let dictionary = try Self.decodeDictionary(from: singleValueDecodingContainer, decoder: decoder)
 
-                            self = .unknown(type, dictionary)
+                            self = .unknown(type ?? "unknown", dictionary)
 
                     }
                 }

@@ -87,7 +87,7 @@ extension ChatBskyLexicon.Conversation {
 
             public init(from decoder: any Decoder) throws {
                 let container = try decoder.container(keyedBy: CodingKeys.self)
-                let type = try container.decode(String.self, forKey: .type)
+                let type = try container.decodeIfPresent(String.self, forKey: .type)
 
                 switch type {
                     case "app.bsky.embed.record":
@@ -96,7 +96,7 @@ extension ChatBskyLexicon.Conversation {
                         let singleValueDecodingContainer = try decoder.singleValueContainer()
                         let dictionary = try Self.decodeDictionary(from: singleValueDecodingContainer, decoder: decoder)
 
-                        self = .unknown(type, dictionary)
+                        self = .unknown(type ?? "unknown", dictionary)
                 }
             }
 
@@ -214,7 +214,7 @@ extension ChatBskyLexicon.Conversation {
 
             public init(from decoder: any Decoder) throws {
                 let container = try decoder.container(keyedBy: CodingKeys.self)
-                let type = try container.decode(String.self, forKey: .type)
+                let type = try container.decodeIfPresent(String.self, forKey: .type)
 
                 switch type {
                     case "app.bsky.embed.record":
@@ -223,7 +223,7 @@ extension ChatBskyLexicon.Conversation {
                         let singleValueDecodingContainer = try decoder.singleValueContainer()
                         let dictionary = try Self.decodeDictionary(from: singleValueDecodingContainer, decoder: decoder)
 
-                        self = .unknown(type, dictionary)
+                        self = .unknown(type ?? "unknown", dictionary)
                 }
             }
 
@@ -449,7 +449,7 @@ extension ChatBskyLexicon.Conversation {
 
             public init(from decoder: any Decoder) throws {
                 let container = try decoder.container(keyedBy: CodingKeys.self)
-                let type = try container.decode(String.self, forKey: .type)
+                let type = try container.decodeIfPresent(String.self, forKey: .type)
 
                 switch type {
                     case "chat.bsky.convo.defs#messageView":
@@ -460,7 +460,7 @@ extension ChatBskyLexicon.Conversation {
                         let singleValueDecodingContainer = try decoder.singleValueContainer()
                         let dictionary = try Self.decodeDictionary(from: singleValueDecodingContainer, decoder: decoder)
 
-                        self = .unknown(type, dictionary)
+                        self = .unknown(type ?? "unknown", dictionary)
                 }
             }
 
@@ -493,7 +493,7 @@ extension ChatBskyLexicon.Conversation {
 
             public init(from decoder: Decoder) throws {
                 let container = try decoder.container(keyedBy: CodingKeys.self)
-                let type = try container.decode(String.self, forKey: .type)
+                let type = try container.decodeIfPresent(String.self, forKey: .type)
 
                 switch type {
                     case "chat.bsky.convo.defs#messageAndReactionView":
@@ -502,7 +502,7 @@ extension ChatBskyLexicon.Conversation {
                         let singleValueDecodingContainer = try decoder.singleValueContainer()
                         let dictionary = try Self.decodeDictionary(from: singleValueDecodingContainer, decoder: decoder)
 
-                        self = .unknown(type, dictionary)
+                        self = .unknown(type ?? "unknown", dictionary)
                 }
             }
 
@@ -655,7 +655,7 @@ extension ChatBskyLexicon.Conversation {
 
             public init(from decoder: any Decoder) throws {
                 let container = try decoder.container(keyedBy: CodingKeys.self)
-                let type = try container.decode(String.self, forKey: .type)
+                let type = try container.decodeIfPresent(String.self, forKey: .type)
 
                 switch type {
                     case "chat.bsky.convo.defs#messageView":
@@ -666,7 +666,7 @@ extension ChatBskyLexicon.Conversation {
                         let singleValueDecodingContainer = try decoder.singleValueContainer()
                         let dictionary = try Self.decodeDictionary(from: singleValueDecodingContainer, decoder: decoder)
 
-                        self = .unknown(type, dictionary)
+                        self = .unknown(type ?? "unknown", dictionary)
                 }
             }
 
@@ -726,7 +726,7 @@ extension ChatBskyLexicon.Conversation {
 
             public init(from decoder: any Decoder) throws {
                 let container = try decoder.container(keyedBy: CodingKeys.self)
-                let type = try container.decode(String.self, forKey: .type)
+                let type = try container.decodeIfPresent(String.self, forKey: .type)
 
                 switch type {
                     case "chat.bsky.convo.defs#messageView":
@@ -737,7 +737,7 @@ extension ChatBskyLexicon.Conversation {
                         let singleValueDecodingContainer = try decoder.singleValueContainer()
                         let dictionary = try Self.decodeDictionary(from: singleValueDecodingContainer, decoder: decoder)
 
-                        self = .unknown(type, dictionary)
+                        self = .unknown(type ?? "unknown", dictionary)
                 }
             }
 
@@ -797,7 +797,7 @@ extension ChatBskyLexicon.Conversation {
 
             public init(from decoder: any Decoder) throws {
                 let container = try decoder.container(keyedBy: CodingKeys.self)
-                let type = try container.decode(String.self, forKey: .type)
+                let type = try container.decodeIfPresent(String.self, forKey: .type)
 
                 switch type {
                     case "chat.bsky.convo.defs#messageView":
@@ -808,7 +808,7 @@ extension ChatBskyLexicon.Conversation {
                         let singleValueDecodingContainer = try decoder.singleValueContainer()
                         let dictionary = try Self.decodeDictionary(from: singleValueDecodingContainer, decoder: decoder)
 
-                        self = .unknown(type, dictionary)
+                        self = .unknown(type ?? "unknown", dictionary)
                 }
             }
 
@@ -868,7 +868,7 @@ extension ChatBskyLexicon.Conversation {
 
             public init(from decoder: any Decoder) throws {
                 let container = try decoder.container(keyedBy: CodingKeys.self)
-                let type = try container.decode(String.self, forKey: .type)
+                let type = try container.decodeIfPresent(String.self, forKey: .type)
 
                 switch type {
                     case "chat.bsky.convo.defs#messageView":
@@ -879,7 +879,7 @@ extension ChatBskyLexicon.Conversation {
                         let singleValueDecodingContainer = try decoder.singleValueContainer()
                         let dictionary = try Self.decodeDictionary(from: singleValueDecodingContainer, decoder: decoder)
 
-                        self = .unknown(type, dictionary)
+                        self = .unknown(type ?? "unknown", dictionary)
                 }
             }
 
@@ -939,7 +939,7 @@ extension ChatBskyLexicon.Conversation {
 
             public init(from decoder: any Decoder) throws {
                 let container = try decoder.container(keyedBy: CodingKeys.self)
-                let type = try container.decode(String.self, forKey: .type)
+                let type = try container.decodeIfPresent(String.self, forKey: .type)
 
                 switch type {
                     case "chat.bsky.convo.defs#messageView":
@@ -950,7 +950,7 @@ extension ChatBskyLexicon.Conversation {
                         let singleValueDecodingContainer = try decoder.singleValueContainer()
                         let dictionary = try Self.decodeDictionary(from: singleValueDecodingContainer, decoder: decoder)
 
-                        self = .unknown(type, dictionary)
+                        self = .unknown(type ?? "unknown", dictionary)
                 }
             }
 
