@@ -1,8 +1,8 @@
 //
-//  AppBskyGraphGetListsMethod.swift
+//  AppBskyBookmarkGetBookmarkMethod.swift
+//  ATProtoKit
 //
-//
-//  Created by Christopher Jr Riley on 2024-03-10.
+//  Created by Christopher Jr Riley on 2025-09-26.
 //
 
 import Foundation
@@ -12,32 +12,28 @@ import FoundationNetworking
 
 extension ATProtoKit {
 
-    /// Retrieves the lists created by the user account.
+    /// Retrieves a list of private bookmarks.
     ///
-    /// - Note: According to the AT Protocol specifications: "Enumerates the lists created by a
-    /// specified account (actor)."
+    /// - Note: According to the AT Protocol specifications: "Gets views of records bookmarked by the
+    /// authenticated user. Requires authentication."
     ///
-    /// - SeeAlso: This is based on the [`app.bsky.graph.getLists`][github] lexicon.
+    /// - SeeAlso: This is based on the [`app.bsky.bookmark.getBookmarks`][github] lexicon.
     ///
-    /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/graph/getLists.json
+    /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/bookmark/getBookmarks.json
     ///
     /// - Parameters:
-    ///   - actorDID: The decentralized identifier (DID) of the user account.
-    ///   - limit: The number of items that can be in the list. Optional. Defaults to `50`.
+    ///   - limit: The number of suggested users to follow. Optional. Defaults to `50`.
+    ///   Can only choose between 1 and 100.
     ///   - cursor: The mark used to indicate the starting point for the next set
     ///   of results. Optional.
-    ///   - purposes: A filter to determine the list's purpose. Optional. Defaults to `nil`.
-    /// - Returns: An array of lists created by the user account, with an optional cursor to extend
-    /// the array.
+    /// - Returns: An array of bookmarks, with an optional cursor to expand the array.
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
-    public func getLists(
-        from actorDID: String,
+    public func getBookmarks(
         limit: Int? = 50,
-        cursor: String? = nil,
-        purposes: [AppBskyLexicon.Graph.GetLists.Purpose]? = nil
-    ) async throws -> AppBskyLexicon.Graph.GetListsOutput {
+        cursor: String? = nil
+    ) async throws -> AppBskyLexicon.Bookmark.GetBookmarksOutput {
         guard let session = try await self.getUserSession(),
               let keychain = sessionConfiguration?.keychainProtocol else {
             throw ATRequestPrepareError.missingActiveSession
@@ -47,13 +43,11 @@ extension ATProtoKit {
         let accessToken = try await keychain.retrieveAccessToken()
         let sessionURL = session.serviceEndpoint.absoluteString
 
-        guard let requestURL = URL(string: "\(sessionURL)/xrpc/app.bsky.graph.getLists") else {
+        guard let requestURL = URL(string: "\(sessionURL)/xrpc/app.bsky.bookmark.getBookmark") else {
             throw ATRequestPrepareError.invalidRequestURL
         }
 
         var queryItems = [(String, String)]()
-
-        queryItems.append(("actor", actorDID))
 
         if let limit {
             let finalLimit = max(1, min(limit, 100))
@@ -62,10 +56,6 @@ extension ATProtoKit {
 
         if let cursor {
             queryItems.append(("cursor", cursor))
-        }
-
-        if let purposes {
-            queryItems += purposes.map { ("purposes", $0.rawValue) }
         }
 
         let queryURL: URL
@@ -85,7 +75,7 @@ extension ATProtoKit {
             )
             let response = try await apiClientService.sendRequest(
                 request,
-                decodeTo: AppBskyLexicon.Graph.GetListsOutput.self
+                decodeTo: AppBskyLexicon.Bookmark.GetBookmarksOutput.self
             )
 
             return response

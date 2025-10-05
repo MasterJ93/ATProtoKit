@@ -12,6 +12,27 @@ import FoundationNetworking
 
 extension AppBskyLexicon.Graph {
 
+    /// A definition model for retrieving the lists created by the user account.
+    ///
+    /// - Note: According to the AT Protocol specifications: "Enumerates the lists created by a
+    /// specified account (actor)."
+    ///
+    /// - SeeAlso: This is based on the [`app.bsky.graph.getLists`][github] lexicon.
+    ///
+    /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/graph/getLists.json
+    public struct GetLists: Sendable, Codable {
+
+        /// The purpose of the list.
+        public enum Purpose: String, Sendable, Codable {
+
+            /// Determines the list is a moderation list.
+            case moderationList = "modlist"
+
+            /// Determines the list is a curation list.
+            case curatationList = "curatelist"
+        }
+    }
+
     /// An output model for retrieving the lists created by the user account.
     ///
     /// - Note: According to the AT Protocol specifications: "Enumerates the lists created by a

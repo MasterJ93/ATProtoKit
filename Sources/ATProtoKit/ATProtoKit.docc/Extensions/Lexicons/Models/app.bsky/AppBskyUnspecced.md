@@ -2,11 +2,6 @@
 
 ## Topics
 
-### app.bsky.unspecced.checkHandleAvailability
-
-- ``CheckHandleAvailability``
-- ``CheckHandleAvailabilityOutput``
-
 ### app.bsky.unspecced.defs
 
 - ``SkeletonSearchPostDefinition``

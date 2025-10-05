@@ -56,7 +56,13 @@
 
 ### app.bsky.graph.getLists
 
+- ``GetLists``
 - ``GetListsOutput``
+
+### app.bsky.graph.getListsWithMembership
+
+- ``GetListsWithMembership``
+- ``GetListsWithMembershipOutput``
 
 ### app.bsky.graph.getMutes
 

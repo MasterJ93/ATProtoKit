@@ -1,5 +1,5 @@
 //
-//  AppBskyUnspeccedCheckHandleAvailability.swift
+//  ComAtprotoTempCheckHandleAvailability.swift
 //  ATProtoKit
 //
 //  Created by Christopher Jr Riley on 2025-07-23.
@@ -10,7 +10,7 @@ import Foundation
 import FoundationNetworking
 #endif
 
-extension AppBskyLexicon.Unspecced {
+extension ComAtprotoLexicon.Temp {
 
     /// A definition model for checking if the provided handle is available.
     ///
@@ -23,7 +23,7 @@ extension AppBskyLexicon.Unspecced {
     ///
     /// - SeeAlso: This is based on the [`app.bsky.unspecced.checkHandleAvailability`][github] lexicon.
     ///
-    /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/unspecced/checkHandleAvailability.json
+    /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/temp/checkHandleAvailability.json
     public struct CheckHandleAvailability: Sendable, Codable {
 
         /// Indicates the specified handle is available for use.
@@ -33,7 +33,7 @@ extension AppBskyLexicon.Unspecced {
         ///
         /// - SeeAlso: This is based on the [`app.bsky.unspecced.checkHandleAvailability`][github] lexicon.
         ///
-        /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/unspecced/checkHandleAvailability.json
+        /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/temp/checkHandleAvailability.json
         public struct ResultAvailable: Sendable, Codable {}
 
         /// Indicates the specified handle is not available for use.
@@ -43,7 +43,7 @@ extension AppBskyLexicon.Unspecced {
         ///
         /// - SeeAlso: This is based on the [`app.bsky.unspecced.checkHandleAvailability`][github] lexicon.
         ///
-        /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/unspecced/checkHandleAvailability.json
+        /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/temp/checkHandleAvailability.json
         public struct ResultUnavailable: Sendable, Codable {
 
             /// An array of suggested user handles.
@@ -61,7 +61,7 @@ extension AppBskyLexicon.Unspecced {
         ///
         /// - SeeAlso: This is based on the [`app.bsky.unspecced.checkHandleAvailability`][github] lexicon.
         ///
-        /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/unspecced/checkHandleAvailability.json
+        /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/temp/checkHandleAvailability.json
         public struct Suggestion: Sendable, Codable {
 
             /// The specified alternative handle for the user account.
@@ -86,7 +86,7 @@ extension AppBskyLexicon.Unspecced {
     ///
     /// - SeeAlso: This is based on the [`app.bsky.unspecced.checkHandleAvailability`][github] lexicon.
     ///
-    /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/unspecced/checkHandleAvailability.json
+    /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/temp/checkHandleAvailability.json
     public struct CheckHandleAvailabilityOutput: Sendable, Codable {
 
         /// The handle the user wants to use for their user account.
@@ -105,10 +105,10 @@ extension AppBskyLexicon.Unspecced {
         public enum ResultUnion: ATUnionProtocol {
 
             /// Indicates the specified handle is available for use.
-            case resultAvailable(AppBskyLexicon.Unspecced.CheckHandleAvailability.ResultAvailable)
+            case resultAvailable(ComAtprotoLexicon.Temp.CheckHandleAvailability.ResultAvailable)
 
             /// Indicates the specified handle is not available for use.
-            case resultUnavailable(AppBskyLexicon.Unspecced.CheckHandleAvailability.ResultUnavailable)
+            case resultUnavailable(ComAtprotoLexicon.Temp.CheckHandleAvailability.ResultUnavailable)
 
             /// An unknown case.
             case unknown(String, [String: CodableValue])
@@ -119,9 +119,9 @@ extension AppBskyLexicon.Unspecced {
 
                 switch type {
                     case "app.bsky.unspecced.checkHandleAvailability#resultAvailable":
-                        self = .resultAvailable(try AppBskyLexicon.Unspecced.CheckHandleAvailability.ResultAvailable(from: decoder))
+                        self = .resultAvailable(try ComAtprotoLexicon.Temp.CheckHandleAvailability.ResultAvailable(from: decoder))
                     case "app.bsky.unspecced.checkHandleAvailability#resultUnavailable":
-                        self = .resultUnavailable(try AppBskyLexicon.Unspecced.CheckHandleAvailability.ResultUnavailable(from: decoder))
+                        self = .resultUnavailable(try ComAtprotoLexicon.Temp.CheckHandleAvailability.ResultUnavailable(from: decoder))
                     default:
                         let singleValueDecodingContainer = try decoder.singleValueContainer()
                         let dictionary = try Self.decodeDictionary(from: singleValueDecodingContainer, decoder: decoder)
