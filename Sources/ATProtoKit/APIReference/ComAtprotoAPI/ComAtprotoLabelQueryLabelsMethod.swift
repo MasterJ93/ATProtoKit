@@ -76,7 +76,7 @@ extension ATProtoKit {
 
             let request = apiClientService.createRequest(
                 forRequest: queryURL,
-                andMethod: .post,
+                andMethod: .get,
                 acceptValue: "application/json",
                 contentTypeValue: nil,
                 authorizationValue: authorizationValue
