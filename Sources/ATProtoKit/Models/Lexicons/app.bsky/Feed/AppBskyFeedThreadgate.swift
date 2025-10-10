@@ -74,7 +74,7 @@ extension AppBskyLexicon.Feed {
             try container.encode(self.postURI, forKey: .postURI)
             try container.truncatedEncodeIfPresent(self.allow, forKey: .allow, upToArrayLength: 5)
             try container.encodeDate(self.createdAt, forKey: .createdAt)
-            try container.truncatedEncodeIfPresent(self.hiddenReplies, forKey: .hiddenReplies, upToArrayLength: 50)
+            try container.truncatedEncodeIfPresent(self.hiddenReplies, forKey: .hiddenReplies, upToArrayLength: 300)
         }
 
         enum CodingKeys: String, CodingKey {
