@@ -175,4 +175,4 @@ If you have any questions, you can ask me on Bluesky ([@cjrriley.ca](https://bsk
 ## License and Acknowledgments
 This Swift package is using the MIT License. Please view [LICENSE.md](https://github.com/MasterJ93/ATProtoKit/blob/main/LICENSE.md) for more details.
 
-The documentation text used by Bluesky is licenced under the MIT Licence. Additional Swift packages have also been used to help run ATProtoKit. Please view [NOTICE.md](NOTICE.md) for more details.
+ATProtoKit contains a number of third-party Swift packages in order to run effectively. Please see [NOTICE.txt](NOTICE.txt) for more information.
