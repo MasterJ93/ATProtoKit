@@ -25,5 +25,10 @@ extension AppBskyLexicon.Bookmark {
 
         /// The URI of the bookmark to delete.
         public let uri: String
+        
+        public init(uri: String) {
+            self.uri = uri
+        }
+        
     }
 }
