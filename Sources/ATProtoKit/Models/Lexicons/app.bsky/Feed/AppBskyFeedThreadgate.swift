@@ -74,7 +74,7 @@ extension AppBskyLexicon.Feed {
             try container.encode(self.postURI, forKey: .postURI)
             try container.truncatedEncodeIfPresent(self.allow, forKey: .allow, upToArrayLength: 5)
             try container.encodeDate(self.createdAt, forKey: .createdAt)
-            try container.truncatedEncodeIfPresent(self.hiddenReplies, forKey: .hiddenReplies, upToArrayLength: 50)
+            try container.truncatedEncodeIfPresent(self.hiddenReplies, forKey: .hiddenReplies, upToArrayLength: 300)
         }
 
         enum CodingKeys: String, CodingKey {
@@ -166,7 +166,7 @@ extension AppBskyLexicon.Feed {
 
             public init(from decoder: Decoder) throws {
                 let container = try decoder.container(keyedBy: CodingKeys.self)
-                let type = try container.decode(String.self, forKey: .type)
+                let type = try container.decodeIfPresent(String.self, forKey: .type)
 
                 switch type {
                     case "app.bsky.feed.threadgate#mentionRule":
@@ -181,7 +181,7 @@ extension AppBskyLexicon.Feed {
                         let singleValueDecodingContainer = try decoder.singleValueContainer()
                         let dictionary = try Self.decodeDictionary(from: singleValueDecodingContainer, decoder: decoder)
 
-                        self = .unknown(type, dictionary)
+                        self = .unknown(type ?? "unknown", dictionary)
                 }
             }
 

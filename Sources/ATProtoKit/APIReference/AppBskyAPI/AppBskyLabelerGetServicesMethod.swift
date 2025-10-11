@@ -38,6 +38,9 @@ extension ATProtoKit {
 
         var queryItems = [(String, String)]()
 
+        if let isDetailed {
+			queryItems += [("detailed", "\(isDetailed)")]
+		}
         queryItems += labelerDIDs.map { ("dids", $0) }
 
         let queryURL: URL

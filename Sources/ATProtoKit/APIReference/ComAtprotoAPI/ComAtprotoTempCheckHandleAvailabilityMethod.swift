@@ -1,5 +1,5 @@
 //
-//  AppBskyUnspeccedCheckHandleAvailabilityMethod.swift
+//  ComAtprotoTempCheckHandleAvailabilityMethod.swift
 //  ATProtoKit
 //
 //  Created by Christopher Jr Riley on 2025-07-23.
@@ -23,7 +23,7 @@ extension ATProtoKit {
     ///
     /// - SeeAlso: This is based on the [`app.bsky.unspecced.checkHandleAvailability`][github] lexicon.
     ///
-    /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/unspecced/checkHandleAvailability.json
+    /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/temp/checkHandleAvailability.json
     ///
     /// - Parameters:
     ///   - handle: The specified handle the user wants to use.
@@ -38,7 +38,7 @@ extension ATProtoKit {
         handle: String,
         email: String? = nil,
         birthDate: Date? = nil
-    ) async throws -> AppBskyLexicon.Unspecced.CheckHandleAvailabilityOutput {
+    ) async throws -> ComAtprotoLexicon.Temp.CheckHandleAvailabilityOutput {
         guard let session = try await self.getUserSession(),
               let keychain = sessionConfiguration?.keychainProtocol else {
             throw ATRequestPrepareError.missingActiveSession
@@ -81,7 +81,7 @@ extension ATProtoKit {
             )
             let response = try await apiClientService.sendRequest(
                 request,
-                decodeTo: AppBskyLexicon.Unspecced.CheckHandleAvailabilityOutput.self
+                decodeTo: ComAtprotoLexicon.Temp.CheckHandleAvailabilityOutput.self
             )
 
             return response

@@ -1,0 +1,28 @@
+# Notices
+
+ATProtoKit incorporates documentation text sourced from the following repositories:
+
+* LICENSE (Apache License v2.0):
+  * https://github.com/bluesky-social/atproto/blob/main/LICENSE-MIT.txt
+* HOMEPAGE:
+  * https://github.com/bluesky-social/atproto
+
+[bluesky-social/atproto](https://github.com/bluesky-social/atproto) repository. Please view the [license included the repository](ATProtoLicense/ATPROTO-LICENSE.txt).
+
+-------------------------------------------------------------------------------
+
+ATProtoKit also contains the following repositories:
+
+This product contains swift-docc-plugin from The Swift Programming Language:
+
+* LICENSE (Apache License v2.0):
+  * https://github.com/swiftlang/swift-docc-plugin/blob/main/LICENSE.txt
+* HOMEPAGE:
+  * https://github.com/swiftlang/swift-docc-plugin
+    
+---
+
+* LICENSE (Apache License v2.0):
+  * https://github.com/apple/swift-log/blob/main/LICENSE.txt
+* HOMEPAGE:
+  * https://github.com/apple/swift-log

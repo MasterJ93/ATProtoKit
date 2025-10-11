@@ -69,6 +69,8 @@ extension ATProtoBluesky {
 
         var newDisplayName: String? = profile.displayName
         var newDescription: String? = profile.description
+        var newPronouns: String? = profile.pronouns
+        var newWebsiteURL: URL? = profile.websiteURL
         var newAvatarImage: ComAtprotoLexicon.Repository.UploadBlobOutput? = profile.avatarBlob
         var newBannerImage: ComAtprotoLexicon.Repository.UploadBlobOutput? = profile.bannerBlob
         var newLabels: [AppBskyLexicon.Actor.ProfileRecord.LabelsUnion]? = profile.labels
@@ -97,6 +99,22 @@ extension ATProtoBluesky {
                     }
 
                     newDescription = descriptionField?.truncated(toLength: 256)
+                case .pronouns(let pronounsField):
+                    if pronounsField == nil {
+                        newPronouns = nil
+                        
+                        break
+                    }
+                    
+                    newPronouns = pronounsField?.truncated(toLength: 20)
+                case .website(let websiteField):
+                    if websiteField == nil {
+                        newWebsiteURL = nil
+
+                        break
+                    }
+
+                    newWebsiteURL = websiteField
                 case .avatarImage(let avatarImageField):
                     // Check if the field is nil. If so, set the avatarImage variable to nil and break out of the case early.
                     if avatarImageField == nil {
@@ -178,6 +196,8 @@ extension ATProtoBluesky {
         let profileRecord = AppBskyLexicon.Actor.ProfileRecord(
             displayName: newDisplayName,
             description: newDescription,
+            pronouns: newPronouns,
+            websiteURL: newWebsiteURL,
             avatarBlob: newAvatarImage,
             bannerBlob: newBannerImage,
             labels: newLabels,
@@ -211,6 +231,12 @@ extension ATProtoBluesky {
         /// - Parameter with: The object to update the record with. Optional. Defaults to `nil`.
         case description(with: String? = nil)
 
+        /// The user account's pronoun preferences.
+        case pronouns(with: String? = nil)
+
+        /// The user account's website.
+        case website(with: URL? = nil)
+
         /// An image used for the profile picture.
         ///
         /// - Parameter with: The object to update the record with. Optional. Defaults to `nil`.
@@ -240,6 +266,8 @@ extension ATProtoBluesky {
             switch self {
                 case .displayName: return "displayName"
                 case .description: return "description"
+                case .pronouns: return "pronouns"
+                case .website: return "website"
                 case .avatarImage: return "avatarImage"
                 case .bannerImage: return "bannerImage"
                 case .labels: return "labels"

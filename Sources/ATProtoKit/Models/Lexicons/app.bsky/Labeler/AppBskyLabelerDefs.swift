@@ -264,7 +264,7 @@ extension AppBskyLexicon.Labeler {
         ///
         /// - Note: According to the AT Protocol specifications: "The label values which this
         /// labeler publishes. May include global or custom labels."
-        public let labelValues: [ComAtprotoLexicon.Label.LabelValueDefinition]
+        public let labelValues: [String]
 
         /// An array of labeler-created labels. Optional.
         ///

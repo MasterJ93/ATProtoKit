@@ -37,7 +37,7 @@ extension ChatBskyLexicon.Moderation {
 
             public init(from decoder: any Decoder) throws {
                 let container = try decoder.container(keyedBy: CodingKeys.self)
-                let type = try container.decode(String.self, forKey: .type)
+                let type = try container.decodeIfPresent(String.self, forKey: .type)
 
                 switch type {
                     case "chat.bsky.convo.defs#messageView":
@@ -48,7 +48,7 @@ extension ChatBskyLexicon.Moderation {
                         let singleValueDecodingContainer = try decoder.singleValueContainer()
                         let dictionary = try Self.decodeDictionary(from: singleValueDecodingContainer, decoder: decoder)
 
-                        self = .unknown(type, dictionary)
+                        self = .unknown(type ?? "unknown", dictionary)
                 }
             }
 

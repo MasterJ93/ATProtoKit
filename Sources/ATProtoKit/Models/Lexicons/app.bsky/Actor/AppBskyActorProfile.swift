@@ -40,6 +40,14 @@ extension AppBskyLexicon.Actor {
         /// description text."
         public let description: String?
 
+        /// The user account's pronoun preferences. Optional.
+        ///
+        /// - Note: According to the AT Protocol specifications: "Free-form pronouns text."
+        public let pronouns: String?
+
+        /// The user account's website. Optional.
+        public let websiteURL: URL?
+
         /// The avatar image blob of the profile. Optional.
         ///
         /// - Note: Only JPEGs and PNGs are accepted.
@@ -75,12 +83,15 @@ extension AppBskyLexicon.Actor {
         /// The date and time the profile was created. Optional.
         public let createdAt: Date?
 
-        public init(displayName: String?, description: String?, avatarBlob: ComAtprotoLexicon.Repository.UploadBlobOutput?,
+        public init(displayName: String?, description: String?, pronouns: String?, websiteURL: URL?,
+                    avatarBlob: ComAtprotoLexicon.Repository.UploadBlobOutput?,
                     bannerBlob: ComAtprotoLexicon.Repository.UploadBlobOutput?, labels: [LabelsUnion]?,
                     joinedViaStarterPack: ComAtprotoLexicon.Repository.StrongReference?, pinnedPost: ComAtprotoLexicon.Repository.StrongReference?,
                     createdAt: Date?) {
             self.displayName = displayName
             self.description = description
+            self.pronouns = pronouns
+            self.websiteURL = websiteURL
             self.avatarBlob = avatarBlob
             self.bannerBlob = bannerBlob
             self.labels = labels
@@ -94,6 +105,8 @@ extension AppBskyLexicon.Actor {
 
             self.displayName = try container.decodeIfPresent(String.self, forKey: .displayName)
             self.description = try container.decodeIfPresent(String.self, forKey: .description)
+            self.pronouns = try container.decodeIfPresent(String.self, forKey: .pronouns)
+            self.websiteURL = try container.decodeIfPresent(URL.self, forKey: .websiteURL)
             self.avatarBlob = try container.decodeIfPresent(ComAtprotoLexicon.Repository.UploadBlobOutput.self, forKey: .avatarBlob)
             self.bannerBlob = try container.decodeIfPresent(ComAtprotoLexicon.Repository.UploadBlobOutput.self, forKey: .bannerBlob)
             self.labels = try container.decodeIfPresent([LabelsUnion].self, forKey: .labels)
@@ -105,8 +118,10 @@ extension AppBskyLexicon.Actor {
         public func encode(to encoder: any Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
 
-            try container.encodeIfPresent(self.displayName, forKey: .displayName)
-            try container.encodeIfPresent(self.description, forKey: .description)
+            try container.truncatedEncodeIfPresent(self.displayName, forKey: .displayName, upToCharacterLength: 64)
+            try container.truncatedEncodeIfPresent(self.description, forKey: .description, upToCharacterLength: 256)
+            try container.truncatedEncodeIfPresent(self.pronouns, forKey: .pronouns, upToCharacterLength: 20)
+            try container.encodeIfPresent(self.websiteURL, forKey: .websiteURL)
             try container.encodeIfPresent(self.avatarBlob, forKey: .avatarBlob)
             try container.encodeIfPresent(self.bannerBlob, forKey: .bannerBlob)
             try container.encodeIfPresent(self.labels, forKey: .labels)
@@ -119,6 +134,8 @@ extension AppBskyLexicon.Actor {
             case type = "$type"
             case displayName
             case description
+            case pronouns
+            case websiteURL = "website"
             case avatarBlob = "avatar"
             case bannerBlob = "banner"
             case labels

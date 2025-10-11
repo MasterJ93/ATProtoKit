@@ -2,11 +2,6 @@
 
 ## Topics
 
-### app.bsky.unspecced.checkHandleAvailability
-
-- ``CheckHandleAvailability``
-- ``CheckHandleAvailabilityOutput``
-
 ### app.bsky.unspecced.defs
 
 - ``SkeletonSearchPostDefinition``
@@ -22,6 +17,14 @@
 
 - ``GetConfig``
 - ``GetConfigOutput``
+
+### app.bsky.unspecced.getOnboardingSuggestedStarterPacks
+
+- ``GetOnboardingSuggestedStarterPacksOutput``
+
+### app.bsky.unspecced.getOnboardingSuggestedStarterPacksSkeleton
+
+- ``GetOnboardingSuggestedStarterPacksSkeletonOutput``
 
 ### app.bsky.unspecced.getPopularFeedGenerators
 
