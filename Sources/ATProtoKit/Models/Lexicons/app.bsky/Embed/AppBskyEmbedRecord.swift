@@ -31,6 +31,21 @@ extension AppBskyLexicon.Embed {
         /// The strong reference of the record.
         public let record: ComAtprotoLexicon.Repository.StrongReference
 
+        public init(record: ComAtprotoLexicon.Repository.StrongReference) {
+            self.record = record
+        }
+        
+        public init(from decoder: any Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+            self.record = try container.decode(ComAtprotoLexicon.Repository.StrongReference.self, forKey: CodingKeys.record)
+        }
+        
+        public func encode(to encoder: any Encoder) throws {
+            var container = encoder.container(keyedBy: CodingKeys.self)
+            try container.encode(self.type, forKey: CodingKeys.type)
+            try container.encode(self.record, forKey: CodingKeys.record)
+        }
+        
         enum CodingKeys: String, CodingKey {
             case type = "$type"
             case record
@@ -52,6 +67,21 @@ extension AppBskyLexicon.Embed {
             /// The record of a specific type.
             public let record: RecordViewUnion
 
+            public init(record: RecordViewUnion) {
+                self.record = record
+            }
+            
+            public init(from decoder: any Decoder) throws {
+                let container = try decoder.container(keyedBy: CodingKeys.self)
+                self.record = try container.decode(RecordViewUnion.self, forKey: CodingKeys.record)
+            }
+            
+            public func encode(to encoder: any Encoder) throws {
+                var container = encoder.container(keyedBy: CodingKeys.self)
+                try container.encode(self.type, forKey: CodingKeys.type)
+                try container.encode(self.record, forKey: CodingKeys.record)
+            }
+            
             enum CodingKeys: String, CodingKey {
                 case type = "$type"
                 case record
@@ -194,7 +224,7 @@ extension AppBskyLexicon.Embed {
 
             /// The date the record was last indexed.
             public let indexedAt: Date
-
+            
             public init(from decoder: any Decoder) throws {
                 let container = try decoder.container(keyedBy: CodingKeys.self)
 

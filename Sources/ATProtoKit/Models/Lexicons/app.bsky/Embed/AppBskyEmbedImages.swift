@@ -36,6 +36,17 @@ extension AppBskyLexicon.Embed {
             self.images = images
         }
 
+        public init(from decoder: any Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+            self.images = try container.decode([AppBskyLexicon.Embed.ImagesDefinition.Image].self, forKey: CodingKeys.images)
+        }
+        
+        public func encode(to encoder: any Encoder) throws {
+            var container = encoder.container(keyedBy: CodingKeys.self)
+            try container.encode(self.type, forKey: CodingKeys.type)
+            try container.encode(self.images, forKey: CodingKeys.images)
+        }
+        
         enum CodingKeys: String, CodingKey {
             case type = "$type"
             case images
@@ -75,6 +86,20 @@ extension AppBskyLexicon.Embed {
                 self.aspectRatio = aspectRatio
             }
 
+            public init(from decoder: any Decoder) throws {
+                let container = try decoder.container(keyedBy: CodingKeys.self)
+                self.imageBlob = try container.decode(ComAtprotoLexicon.Repository.UploadBlobOutput.self, forKey: CodingKeys.imageBlob)
+                self.altText = try container.decode(String.self, forKey: CodingKeys.altText)
+                self.aspectRatio = try container.decodeIfPresent(AppBskyLexicon.Embed.AspectRatioDefinition.self, forKey: CodingKeys.aspectRatio)
+            }
+            
+            public func encode(to encoder: any Encoder) throws {
+                var container = encoder.container(keyedBy: CodingKeys.self)
+                try container.encode(self.imageBlob, forKey: CodingKeys.imageBlob)
+                try container.encode(self.altText, forKey: CodingKeys.altText)
+                try container.encodeIfPresent(self.aspectRatio, forKey: CodingKeys.aspectRatio)
+            }
+            
             enum CodingKeys: String, CodingKey {
                 case imageBlob = "image"
                 case altText = "alt"
@@ -163,6 +188,14 @@ extension AppBskyLexicon.Embed {
                 self.aspectRatio = aspectRatio
             }
 
+            public init(from decoder: any Decoder) throws {
+                let container = try decoder.container(keyedBy: CodingKeys.self)
+                self.thumbnailImageURL = try container.decode(URL.self, forKey: CodingKeys.thumbnailImageURL)
+                self.fullSizeImageURL = try container.decode(URL.self, forKey: CodingKeys.fullSizeImageURL)
+                self.altText = try container.decode(String.self, forKey: CodingKeys.altText)
+                self.aspectRatio = try container.decodeIfPresent(AppBskyLexicon.Embed.AspectRatioDefinition.self, forKey: CodingKeys.aspectRatio)
+            }
+            
             public func encode(to encoder: any Encoder) throws {
                 var container = encoder.container(keyedBy: CodingKeys.self)
 

@@ -53,6 +53,21 @@ extension AppBskyLexicon.Embed {
         /// The aspect ratio of the video. Optional.
         public let aspectRatio: AspectRatioDefinition?
 
+        public init(video: ComAtprotoLexicon.Repository.UploadBlobOutput, captions: [Caption]?, altText: String?, aspectRatio: AspectRatioDefinition?) {
+            self.video = video
+            self.captions = captions
+            self.altText = altText
+            self.aspectRatio = aspectRatio
+        }
+        
+        public init(from decoder: any Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+            self.video = try container.decode(ComAtprotoLexicon.Repository.UploadBlobOutput.self, forKey: CodingKeys.video)
+            self.captions = try container.decodeIfPresent([Caption].self, forKey: CodingKeys.captions)
+            self.altText = try container.decodeIfPresent(String.self, forKey: CodingKeys.altText)
+            self.aspectRatio = try container.decodeIfPresent(AppBskyLexicon.Embed.AspectRatioDefinition.self, forKey: CodingKeys.aspectRatio)
+        }
+        
         public func encode(to encoder: any Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
 
@@ -92,6 +107,24 @@ extension AppBskyLexicon.Embed {
             /// 20,000 bytes (or 2 KB).
             public let fileBlob: ComAtprotoLexicon.Repository.UploadBlobOutput
 
+            public init(language: String, fileBlob: ComAtprotoLexicon.Repository.UploadBlobOutput) {
+                self.language = language
+                self.fileBlob = fileBlob
+            }
+            
+            public init(from decoder: any Decoder) throws {
+                let container = try decoder.container(keyedBy: CodingKeys.self)
+                self.language = try container.decode(String.self, forKey: CodingKeys.language)
+                self.fileBlob = try container.decode(ComAtprotoLexicon.Repository.UploadBlobOutput.self, forKey: CodingKeys.fileBlob)
+            }
+            
+            public func encode(to encoder: any Encoder) throws {
+                var container = encoder.container(keyedBy: CodingKeys.self)
+                try container.encode(self.type, forKey: CodingKeys.type)
+                try container.encode(self.language, forKey: CodingKeys.language)
+                try container.encode(self.fileBlob, forKey: CodingKeys.fileBlob)
+            }
+            
             enum CodingKeys: String, CodingKey {
                 case type = "$type"
                 case language = "lang"

@@ -54,7 +54,7 @@ extension ComAtprotoLexicon.Sync {
         public let isActive: Bool
 
         /// The status of the repository. Optional.
-        public let status: GetRepositoryStatus.Status
+        public let status: GetRepositoryStatus.Status?
 
         /// The revision of the repository. Optional.
         ///
@@ -62,6 +62,14 @@ extension ComAtprotoLexicon.Sync {
         /// of the repo, if active=true"
         public let revision: String?
 
+        public init(from decoder: any Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+            self.repositoryDID = try container.decode(String.self, forKey: CodingKeys.repositoryDID)
+            self.isActive = try container.decode(Bool.self, forKey: CodingKeys.isActive)
+            self.status = try container.decodeIfPresent(ComAtprotoLexicon.Sync.GetRepositoryStatus.Status.self, forKey: CodingKeys.status)
+            self.revision = try container.decodeIfPresent(String.self, forKey: CodingKeys.revision)
+        }
+        
         enum CodingKeys: String, CodingKey {
             case repositoryDID = "did"
             case isActive = "active"

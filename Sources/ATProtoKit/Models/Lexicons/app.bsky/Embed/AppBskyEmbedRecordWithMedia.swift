@@ -34,6 +34,24 @@ extension AppBskyLexicon.Embed {
         /// The media of a specific type.
         public let media: MediaUnion
 
+        public init(record: RecordDefinition, media: MediaUnion) {
+            self.record = record
+            self.media = media
+        }
+        
+        public init(from decoder: any Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+            self.record = try container.decode(AppBskyLexicon.Embed.RecordDefinition.self, forKey: CodingKeys.record)
+            self.media = try container.decode(MediaUnion.self, forKey: CodingKeys.media)
+        }
+        
+        public func encode(to encoder: any Encoder) throws {
+            var container = encoder.container(keyedBy: CodingKeys.self)
+            try container.encode(self.type, forKey: CodingKeys.type)
+            try container.encode(self.record, forKey: CodingKeys.record)
+            try container.encode(self.media, forKey: CodingKeys.media)
+        }
+        
         enum CodingKeys: String, CodingKey {
             case type = "$type"
             case record
@@ -113,6 +131,24 @@ extension AppBskyLexicon.Embed {
             /// The embedded media.
             public let media: MediaUnion
 
+            public init(record: AppBskyLexicon.Embed.RecordDefinition.View, media: MediaUnion) {
+                self.record = record
+                self.media = media
+            }
+            
+            public init(from decoder: any Decoder) throws {
+                let container = try decoder.container(keyedBy: CodingKeys.self)
+                self.record = try container.decode(AppBskyLexicon.Embed.RecordDefinition.View.self, forKey: CodingKeys.record)
+                self.media = try container.decode(MediaUnion.self, forKey: CodingKeys.media)
+            }
+            
+            public func encode(to encoder: any Encoder) throws {
+                var container = encoder.container(keyedBy: CodingKeys.self)
+                try container.encode(self.type, forKey: CodingKeys.type)
+                try container.encode(self.record, forKey: CodingKeys.record)
+                try container.encode(self.media, forKey: CodingKeys.media)
+            }
+            
             enum CodingKeys: String, CodingKey {
                 case type = "$type"
                 case record

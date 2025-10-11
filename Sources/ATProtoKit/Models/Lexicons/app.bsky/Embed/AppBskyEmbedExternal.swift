@@ -30,6 +30,21 @@ extension AppBskyLexicon.Embed {
         /// The external content needed to be embeeded.
         public let external: External
 
+        public init(external: External) {
+            self.external = external
+        }
+        
+        public init(from decoder: any Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+            self.external = try container.decode(AppBskyLexicon.Embed.ExternalDefinition.External.self, forKey: CodingKeys.external)
+        }
+        
+        public func encode(to encoder: any Encoder) throws {
+            var container = encoder.container(keyedBy: CodingKeys.self)
+            try container.encode(self.type, forKey: CodingKeys.type)
+            try container.encode(self.external, forKey: CodingKeys.external)
+        }
+        
         enum CodingKeys: String, CodingKey {
             case type = "$type"
             case external
@@ -63,6 +78,30 @@ extension AppBskyLexicon.Embed {
             /// in the image failing to upload.
             public let thumbnailImage: ComAtprotoLexicon.Repository.UploadBlobOutput?
 
+            public init(uri: URL, title: String, description: String, thumbnailImage: ComAtprotoLexicon.Repository.UploadBlobOutput?) {
+                self.uri = uri
+                self.title = title
+                self.description = description
+                self.thumbnailImage = thumbnailImage
+            }
+            
+            public init(from decoder: any Decoder) throws {
+                let container = try decoder.container(keyedBy: CodingKeys.self)
+                self.uri = try container.decode(URL.self, forKey: CodingKeys.uri)
+                self.title = try container.decode(String.self, forKey: CodingKeys.title)
+                self.description = try container.decode(String.self, forKey: CodingKeys.description)
+                self.thumbnailImage = try container.decodeIfPresent(ComAtprotoLexicon.Repository.UploadBlobOutput.self, forKey: CodingKeys.thumbnailImage)
+            }
+            
+            public func encode(to encoder: any Encoder) throws {
+                var container = encoder.container(keyedBy: CodingKeys.self)
+                try container.encode(self.type, forKey: CodingKeys.type)
+                try container.encode(self.uri, forKey: CodingKeys.uri)
+                try container.encode(self.title, forKey: CodingKeys.title)
+                try container.encode(self.description, forKey: CodingKeys.description)
+                try container.encodeIfPresent(self.thumbnailImage, forKey: CodingKeys.thumbnailImage)
+            }
+            
             enum CodingKeys: String, CodingKey {
                 case type = "$type"
                 case uri
@@ -87,6 +126,21 @@ extension AppBskyLexicon.Embed {
             /// The external content embedded in a post.
             public let external: ViewExternal
 
+            public init(external: ViewExternal) {
+                self.external = external
+            }
+            
+            public init(from decoder: any Decoder) throws {
+                let container = try decoder.container(keyedBy: CodingKeys.self)
+                self.external = try container.decode(ViewExternal.self, forKey: CodingKeys.external)
+            }
+            
+            public func encode(to encoder: any Encoder) throws {
+                var container = encoder.container(keyedBy: CodingKeys.self)
+                try container.encode(self.type, forKey: CodingKeys.type)
+                try container.encode(self.external, forKey: CodingKeys.external)
+            }
+            
             enum CodingKeys: String, CodingKey {
                 case type = "$type"
                 case external
@@ -113,6 +167,30 @@ extension AppBskyLexicon.Embed {
             /// The thumbnail image URL of the external content.
             public let thumbnailImageURL: URL?
 
+            public init(uri: String, title: String, description: String, thumbnailImageURL: URL?) {
+                self.uri = uri
+                self.title = title
+                self.description = description
+                self.thumbnailImageURL = thumbnailImageURL
+            }
+            
+            public init(from decoder: any Decoder) throws {
+                let container = try decoder.container(keyedBy: CodingKeys.self)
+                self.uri = try container.decode(String.self, forKey: CodingKeys.uri)
+                self.title = try container.decode(String.self, forKey: CodingKeys.title)
+                self.description = try container.decode(String.self, forKey: CodingKeys.description)
+                self.thumbnailImageURL = try container.decodeIfPresent(URL.self, forKey: CodingKeys.thumbnailImageURL)
+            }
+            
+            public func encode(to encoder: any Encoder) throws {
+                var container = encoder.container(keyedBy: CodingKeys.self)
+                try container.encode(self.type, forKey: CodingKeys.type)
+                try container.encode(self.uri, forKey: CodingKeys.uri)
+                try container.encode(self.title, forKey: CodingKeys.title)
+                try container.encode(self.description, forKey: CodingKeys.description)
+                try container.encodeIfPresent(self.thumbnailImageURL, forKey: CodingKeys.thumbnailImageURL)
+            }
+            
             enum CodingKeys: String, CodingKey {
                 case type = "$type"
                 case uri
