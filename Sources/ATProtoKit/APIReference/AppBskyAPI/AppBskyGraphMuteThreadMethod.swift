@@ -41,7 +41,7 @@ extension ATProtoKit {
         }
 
         let requestBody = AppBskyLexicon.Graph.MuteThreadRequestBody(
-            root: rootPostURI
+            rootURI: rootPostURI
         )
 
         do {

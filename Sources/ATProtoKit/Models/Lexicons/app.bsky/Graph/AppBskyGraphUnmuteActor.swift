@@ -25,6 +25,20 @@ extension AppBskyLexicon.Graph {
         /// The AT Identifier or handle of a user account.
         public let actor: String
 
+        public init(actor: String) {
+            self.actor = actor
+        }
+        
+        public init(from decoder: any Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+            self.actor = try container.decode(String.self, forKey: CodingKeys.actor)
+        }
+        
+        public func encode(to encoder: any Encoder) throws {
+            var container = encoder.container(keyedBy: CodingKeys.self)
+            try container.encode(self.actor, forKey: CodingKeys.actor)
+        }
+        
         enum CodingKeys: String, CodingKey {
             case actor = "actor"
         }
