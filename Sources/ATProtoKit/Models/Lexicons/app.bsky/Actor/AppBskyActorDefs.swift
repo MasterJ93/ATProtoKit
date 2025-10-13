@@ -895,12 +895,23 @@ extension AppBskyLexicon.Actor {
 
         /// Indicates whether the user will be able to see adult content in their feed. Set to
         /// `false` by default.
-        public var isAdultContentEnabled: Bool = false
+        public var isAdultContentEnabled: Bool
 
-        public init(isAdultContentEnabled: Bool) {
+        public init(isAdultContentEnabled: Bool = false) {
             self.isAdultContentEnabled = isAdultContentEnabled
         }
 
+        public init(from decoder: any Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+            self.isAdultContentEnabled = try container.decode(Bool.self, forKey: .isAdultContentEnabled)
+        }
+        
+        public func encode(to encoder: any Encoder) throws {
+            var container = encoder.container(keyedBy: CodingKeys.self)
+            try container.encode(self.type, forKey: .type)
+            try container.encode(self.isAdultContentEnabled, forKey: .isAdultContentEnabled)
+        }
+        
         enum CodingKeys: String, CodingKey {
             case type = "$type"
             case isAdultContentEnabled = "enabled"
@@ -933,12 +944,27 @@ extension AppBskyLexicon.Actor {
         /// Indicates the visibility of the label's content.
         public let visibility: Visibility
 
-        public init(did: String?, label: String, visibility: Visibility) {
+        public init(did: String? = nil, label: String, visibility: Visibility) {
             self.did = did
             self.label = label
             self.visibility = visibility
         }
 
+        public init(from decoder: any Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+            self.did = try container.decodeIfPresent(String.self, forKey: .did)
+            self.label = try container.decode(String.self, forKey: .label)
+            self.visibility = try container.decode(Visibility.self, forKey: .visibility)
+        }
+        
+        public func encode(to encoder: any Encoder) throws {
+            var container = encoder.container(keyedBy: CodingKeys.self)
+            try container.encode(self.type, forKey: .type)
+            try container.encodeIfPresent(self.did, forKey: .did)
+            try container.encode(self.label, forKey: .label)
+            try container.encode(self.visibility, forKey: .visibility)
+        }
+        
         enum CodingKeys: String, CodingKey {
             case type = "$type"
             case did = "Did"
@@ -947,7 +973,7 @@ extension AppBskyLexicon.Actor {
         }
 
         /// Determines how visible a label's content is.
-        public enum Visibility: String, Sendable, Codable {
+        public enum Visibility: Sendable, Codable, Equatable, Hashable, ExpressibleByStringLiteral {
 
             /// Indicates the content can be ignored.
             case ignore
@@ -960,6 +986,54 @@ extension AppBskyLexicon.Actor {
 
             /// Indicates the content is fully invisible by the user.
             case hide
+            
+            /// Indicates an unknown, possibly new, Visibility option
+            case unknown(String)
+            
+            /// Provides the raw string value for encoding, decoding, and comparison.
+            public var rawValue: String {
+                switch self {
+                    case .ignore:
+                        return "ignore"
+                    case .show:
+                        return "show"
+                    case .warn:
+                        return "warn"
+                    case .hide:
+                        return "hide"
+                    case .unknown(let value):
+                        return value
+                }
+            }
+            
+            public init(stringLiteral value: String) {
+                self = .unknown(value)
+            }
+            
+            // Implement custom decoding
+            public init(from decoder: Decoder) throws {
+                let container = try decoder.singleValueContainer()
+
+                let value = try container.decode(String.self)
+                
+                switch value {
+                    case "ignore":
+                        self = .ignore
+                    case "show":
+                        self = .show
+                    case "warn":
+                        self = .warn
+                    case "hide":
+                        self = .hide
+                    default:
+                        self = .unknown(value)
+                    }
+            }
+            
+            public func encode(to encoder: Encoder) throws {
+                var container = encoder.singleValueContainer()
+                try container.encode(self.rawValue)
+            }
         }
     }
 
@@ -1004,11 +1078,28 @@ extension AppBskyLexicon.Actor {
             self.isPinned = isPinned
         }
 
+        public init(from decoder: any Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+            
+            self.feedID = try container.decode(String.self, forKey: .feedID)
+            self.feedType = try container.decode(FeedType.self, forKey: .feedType)
+            self.value = try container.decode(String.self, forKey: .value)
+            self.isPinned = try container.decode(Bool.self, forKey: .isPinned)
+        }
+        
+        public func encode(to encoder: any Encoder) throws {
+            var container = encoder.container(keyedBy: CodingKeys.self)
+            try container.encode(self.feedID, forKey: .feedID)
+            try container.encode(self.feedType, forKey: .feedType)
+            try container.encode(self.value, forKey: .value)
+            try container.encode(self.isPinned, forKey: .isPinned)
+        }
+        
         /// The type of feed generator.
         ///
         /// This is usually referring to the location of the feed in context to the
         /// user account's choice of placement within Bluesky.
-        public enum FeedType: String, Sendable, Codable {
+        public enum FeedType: Sendable, Codable, Equatable, Hashable, ExpressibleByStringLiteral {
 
             /// Indicates the feed generator resides only in the "Feeds" section of Bluesky.
             case feed
@@ -1019,6 +1110,50 @@ extension AppBskyLexicon.Actor {
             /// Indicates the feed generator additionally resides within the
             /// user account's timeline.
             case timeline
+            
+            /// Indicates an unknown, possibly new, FeedType  option
+            case unknown(String)
+            
+            /// Provides the raw string value for encoding, decoding, and comparison.
+            public var rawValue: String {
+                switch self {
+                    case .feed:
+                        return "feed"
+                    case .list:
+                        return "list"
+                    case .timeline:
+                        return "timeline"
+                    case .unknown(let value):
+                        return value
+                }
+            }
+            
+            public init(stringLiteral value: String) {
+                self = .unknown(value)
+            }
+            
+            // Implement custom decoding
+            public init(from decoder: Decoder) throws {
+                let container = try decoder.singleValueContainer()
+
+                let value = try container.decode(String.self)
+                
+                switch value {
+                    case "feed":
+                        self = .feed
+                    case "list":
+                        self = .list
+                    case "timeline":
+                        self = .timeline
+                    default:
+                        self = .unknown(value)
+                    }
+            }
+            
+            public func encode(to encoder: Encoder) throws {
+                var container = encoder.singleValueContainer()
+                try container.encode(self.rawValue)
+            }
         }
 
         enum CodingKeys: String, CodingKey {
@@ -1052,6 +1187,17 @@ extension AppBskyLexicon.Actor {
             self.items = items
         }
 
+        public init(from decoder: any Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+            self.items = try container.decode([AppBskyLexicon.Actor.SavedFeed].self, forKey: .items)
+        }
+        
+        public func encode(to encoder: any Encoder) throws {
+            var container = encoder.container(keyedBy: CodingKeys.self)
+            try container.encode(self.type, forKey: .type)
+            try container.encode(self.items, forKey: .items)
+        }
+        
         enum CodingKeys: String, CodingKey {
             case type = "$type"
             case items
@@ -1079,12 +1225,27 @@ extension AppBskyLexicon.Actor {
         /// The index number of the timeline for the list of feeds. Optional.
         public var timelineIndex: Int?
 
-        public init(pinned: [String], saved: [String], timelineIndex: Int?) {
+        public init(pinned: [String], saved: [String], timelineIndex: Int? = nil) {
             self.pinned = pinned
             self.saved = saved
             self.timelineIndex = timelineIndex
         }
 
+        public init(from decoder: any Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+            self.pinned = try container.decode([String].self, forKey: .pinned)
+            self.saved = try container.decode([String].self, forKey: .saved)
+            self.timelineIndex = try container.decodeIfPresent(Int.self, forKey: .timelineIndex)
+        }
+        
+        public func encode(to encoder: any Encoder) throws {
+            var container = encoder.container(keyedBy: CodingKeys.self)
+            try container.encode(self.type, forKey: .type)
+            try container.encode(self.pinned, forKey: .pinned)
+            try container.encode(self.saved, forKey: .saved)
+            try container.encodeIfPresent(self.timelineIndex, forKey: .timelineIndex)
+        }
+    
         enum CodingKeys: String, CodingKey {
             case type = "$type"
             case pinned
@@ -1110,6 +1271,10 @@ extension AppBskyLexicon.Actor {
         /// - Note: From the AT Protocol specification: "The birth date of account owner."
         public var birthDate: Date?
 
+        public init(birthDate: Date? = nil) {
+            self.birthDate = birthDate
+        }
+        
         public init(from decoder: any Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
 
@@ -1175,6 +1340,36 @@ extension AppBskyLexicon.Actor {
         /// - Note: From the AT Protocol specification: "Hide quote posts in the feed."
         public let areQuotePostsHidden: Bool?
 
+        public init(feedURI: String, areRepliesHidden: Bool? = nil, areUnfollowedRepliesHidden: Bool? = nil, hideRepliesByLikeCount: Int? = nil, areRepostsHidden: Bool? = nil, areQuotePostsHidden: Bool? = nil) {
+            self.feedURI = feedURI
+            self.areRepliesHidden = areRepliesHidden
+            self.areUnfollowedRepliesHidden = areUnfollowedRepliesHidden
+            self.hideRepliesByLikeCount = hideRepliesByLikeCount
+            self.areRepostsHidden = areRepostsHidden
+            self.areQuotePostsHidden = areQuotePostsHidden
+        }
+        
+        public init(from decoder: any Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+            self.feedURI = try container.decode(String.self, forKey: .feedURI)
+            self.areRepliesHidden = try container.decodeIfPresent(Bool.self, forKey: .areRepliesHidden)
+            self.areUnfollowedRepliesHidden = try container.decodeIfPresent(Bool.self, forKey: .areUnfollowedRepliesHidden)
+            self.hideRepliesByLikeCount = try container.decodeIfPresent(Int.self, forKey: .hideRepliesByLikeCount)
+            self.areRepostsHidden = try container.decodeIfPresent(Bool.self, forKey: .areRepostsHidden)
+            self.areQuotePostsHidden = try container.decodeIfPresent(Bool.self, forKey: .areQuotePostsHidden)
+        }
+        
+        public func encode(to encoder: any Encoder) throws {
+            var container = encoder.container(keyedBy: CodingKeys.self)
+            try container.encode(self.type, forKey: .type)
+            try container.encode(self.feedURI, forKey: .feedURI)
+            try container.encodeIfPresent(self.areRepliesHidden, forKey: .areRepliesHidden)
+            try container.encodeIfPresent(self.areUnfollowedRepliesHidden, forKey: .areUnfollowedRepliesHidden)
+            try container.encodeIfPresent(self.hideRepliesByLikeCount, forKey: .hideRepliesByLikeCount)
+            try container.encodeIfPresent(self.areRepostsHidden, forKey: .areRepostsHidden)
+            try container.encodeIfPresent(self.areQuotePostsHidden, forKey: .areQuotePostsHidden)
+        }
+        
         enum CodingKeys: String, CodingKey {
             case type = "$type"
             case feedURI = "feed"
@@ -1208,9 +1403,12 @@ extension AppBskyLexicon.Actor {
         /// - Note: From the AT Protocol specification: "Show followed users at the top of
         /// all replies."
         public let areFollowedUsersPrioritized: Bool?
+        
+        /// Indicates whether post threads show replies in a threaded tree view. Optional.
+        public let treeViewEnabled: Bool?
 
         /// The sorting mode for a thread.
-        public enum SortingMode: String, Sendable, Codable {
+        public enum SortingMode: Sendable, Codable, Equatable, Hashable, ExpressibleByStringLiteral {
 
             /// Indicates the thread will be sorted from the oldest post.
             case oldest
@@ -1220,7 +1418,7 @@ extension AppBskyLexicon.Actor {
 
             /// Indicates the thread will be sorted from the posts with the most number
             /// of likes.
-            case mostLikes = "most-likes"
+            case mostLikes// = "most-likes"
 
             /// Indicates the thread will be completely random.
             case random
@@ -1232,12 +1430,93 @@ extension AppBskyLexicon.Actor {
             /// [lemmy]:https://join-lemmy.org/docs/contributors/07-ranking-algo.html
             /// [bsky_repo]:https://github.com/bluesky-social/social-app/blob/c6d26a0a9c6606cccaee38adb535be257f19809d/src/state/queries/post-thread.ts#L312
             case hotness
-        }
+            
+            /// Indicates the thread will be sorted with the top replies first
+            case top
+            
+            /// Indicates an unknown, possibly new, SortingMode  option
+            case unknown(String)
+            
+            /// Provides the raw string value for encoding, decoding, and comparison.
+            public var rawValue: String {
+                switch self {
+                    case .oldest:
+                        return "oldest"
+                    case .newest:
+                        return "newest"
+                    case .mostLikes:
+                        return "most-likes"
+                    case .random:
+                        return "random"
+                    case .hotness:
+                        return "hotness"
+                    case .top:
+                        return "top"
+                    case .unknown(let value):
+                        return value
+                }
+            }
+            
+            public init(stringLiteral value: String) {
+                self = .unknown(value)
+            }
 
+            // Implement custom decoding
+            public init(from decoder: Decoder) throws {
+                let container = try decoder.singleValueContainer()
+
+                let value = try container.decode(String.self)
+                
+                switch value {
+                    case "oldest":
+                        self = .oldest
+                    case "newest":
+                        self = .newest
+                    case "most-likes":
+                        self = .mostLikes
+                    case "random":
+                        self = .random
+                    case "hotness":
+                        self = .hotness
+                    case "top":
+                        self = .top
+                    default:
+                        self = .unknown(value)
+                    }
+            }
+            
+            public func encode(to encoder: Encoder) throws {
+                var container = encoder.singleValueContainer()
+                try container.encode(self.rawValue)
+            }
+        }
+        
+        public init(sortingMode: SortingMode? = nil, areFollowedUsersPrioritized: Bool? = nil, treeViewEnabled: Bool? = nil) {
+            self.sortingMode = sortingMode
+            self.areFollowedUsersPrioritized = areFollowedUsersPrioritized
+            self.treeViewEnabled = treeViewEnabled
+        }
+        
+        public init(from decoder: any Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+            self.sortingMode = try container.decodeIfPresent(AppBskyLexicon.Actor.ThreadViewPreferencesDefinition.SortingMode.self, forKey: .sortingMode)
+            self.areFollowedUsersPrioritized = try container.decodeIfPresent(Bool.self, forKey: .areFollowedUsersPrioritized)
+            self.treeViewEnabled = try container.decodeIfPresent(Bool.self, forKey: .treeViewEnabled)
+        }
+        
+        public func encode(to encoder: any Encoder) throws {
+            var container = encoder.container(keyedBy: CodingKeys.self)
+            try container.encode(self.type, forKey: .type)
+            try container.encodeIfPresent(self.sortingMode, forKey: .sortingMode)
+            try container.encodeIfPresent(self.areFollowedUsersPrioritized, forKey: .areFollowedUsersPrioritized)
+            try container.encodeIfPresent(self.treeViewEnabled, forKey: .treeViewEnabled)
+        }
+        
         enum CodingKeys: String, CodingKey {
             case type = "$type"
             case sortingMode = "sort"
             case areFollowedUsersPrioritized = "prioritizeFollowedUsers"
+            case treeViewEnabled = "lab_treeViewEnabled"
         }
     }
 
@@ -1372,6 +1651,14 @@ extension AppBskyLexicon.Actor {
         /// muted word will expire and no longer be applied."
         public let expiresAt: Date?
 
+        public init(id: String? = nil, value: String, targets: [MutedWordTarget], actorTarget: ActorTarget? = nil, expiresAt: Date? = nil) {
+            self.id = id
+            self.value = value
+            self.targets = targets
+            self.actorTarget = actorTarget
+            self.expiresAt = expiresAt
+        }
+
         public init(from decoder: any Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
 
@@ -1381,7 +1668,7 @@ extension AppBskyLexicon.Actor {
             self.actorTarget = try container.decodeIfPresent(AppBskyLexicon.Actor.MutedWord.ActorTarget.self, forKey: .actorTarget)
             self.expiresAt = try container.decodeDateIfPresent(forKey: .expiresAt)
         }
-
+        
         public func encode(to encoder: Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
 
@@ -1401,13 +1688,53 @@ extension AppBskyLexicon.Actor {
         }
 
         /// An array of user accounts that the muted word applies to.
-        public enum ActorTarget: String, Sendable, Codable {
+        public enum ActorTarget: Sendable, Codable, Equatable, Hashable, ExpressibleByStringLiteral {
 
             /// The muted word applies to everyone.
             case all
 
             /// The muted word applies to everyone but a select array of user accounts.
-            case excludeFollowing = "exclude-following"
+            case excludeFollowing
+            
+            /// Indicates an unknown, possibly new, ActorTarget  option
+            case unknown(String)
+            
+            /// Provides the raw string value for encoding, decoding, and comparison.
+            public var rawValue: String {
+                switch self {
+                    case .all:
+                        return "all"
+                    case .excludeFollowing:
+                        return "exclude-following"
+                    case .unknown(let value):
+                        return value
+                }
+            }
+            
+            public init(stringLiteral value: String) {
+                self = .unknown(value)
+            }
+
+            // Implement custom decoding
+            public init(from decoder: Decoder) throws {
+                let container = try decoder.singleValueContainer()
+
+                let value = try container.decode(String.self)
+                
+                switch value {
+                    case "all":
+                        self = .all
+                    case "exclude-following":
+                        self = .excludeFollowing
+                    default:
+                        self = .unknown(value)
+                    }
+            }
+            
+            public func encode(to encoder: Encoder) throws {
+                var container = encoder.singleValueContainer()
+                try container.encode(self.rawValue)
+            }
         }
     }
 
@@ -1433,6 +1760,21 @@ extension AppBskyLexicon.Actor {
             case type = "$type"
             case items
         }
+        
+        public init(items: [MutedWord]) {
+            self.items = items
+        }
+        
+        public init(from decoder: any Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+            self.items = try container.decode([AppBskyLexicon.Actor.MutedWord].self, forKey: .items)
+        }
+        
+        public func encode(to encoder: any Encoder) throws {
+            var container = encoder.container(keyedBy: CodingKeys.self)
+            try container.encode(self.type, forKey: .type)
+            try container.encode(self.items, forKey: .items)
+        }
     }
 
     /// A definition model for a "Hidden Posts" preference.
@@ -1453,6 +1795,21 @@ extension AppBskyLexicon.Actor {
         /// account owner has hidden."
         public let items: [String]
 
+        public init(items: [String]) {
+            self.items = items
+        }
+        
+        public init(from decoder: any Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+            self.items = try container.decode([String].self, forKey: .items)
+        }
+        
+        public func encode(to encoder: any Encoder) throws {
+            var container = encoder.container(keyedBy: CodingKeys.self)
+            try container.encode(self.type, forKey: .type)
+            try container.encode(self.items, forKey: .items)
+        }
+        
         enum CodingKeys: String, CodingKey {
             case type = "$type"
             case items
@@ -1478,6 +1835,21 @@ extension AppBskyLexicon.Actor {
             case type = "$type"
             case labelers
         }
+        
+        public init(labelers: [LabelersPreferenceItem]) {
+            self.labelers = labelers
+        }
+        
+        public init(from decoder: any Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+            self.labelers = try container.decode([AppBskyLexicon.Actor.LabelersPreferenceItem].self, forKey: .labelers)
+        }
+        
+        public func encode(to encoder: any Encoder) throws {
+            var container = encoder.container(keyedBy: CodingKeys.self)
+            try container.encode(self.type, forKey: .type)
+            try container.encode(self.labelers, forKey: .labelers)
+        }
     }
 
     /// A definition model for a labeler item.
@@ -1490,6 +1862,20 @@ extension AppBskyLexicon.Actor {
         /// The decentralized identifier (DID) of the labeler.
         public let did: String
 
+        public init(did: String) {
+            self.did = did
+        }
+        
+        public init(from decoder: any Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+            self.did = try container.decode(String.self, forKey: .did)
+        }
+        
+        public func encode(to encoder: any Encoder) throws {
+            var container = encoder.container(keyedBy: CodingKeys.self)
+            try container.encode(self.did, forKey: .did)
+        }
+        
         enum CodingKeys: String, CodingKey {
             case did
         }
@@ -1527,6 +1913,19 @@ extension AppBskyLexicon.Actor {
         /// has encountered."
         public let nuxs: [NUXDefinition]?
 
+        public init(activeProgressGuide: BskyAppProgressGuideDefinition? = nil, queuedNudges: [String]? = nil, nuxs: [NUXDefinition]? = nil) {
+            self.activeProgressGuide = activeProgressGuide
+            self.queuedNudges = queuedNudges
+            self.nuxs = nuxs
+        }
+        
+        public init(from decoder: any Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+            self.activeProgressGuide = try container.decodeIfPresent(AppBskyLexicon.Actor.BskyAppProgressGuideDefinition.self, forKey: .activeProgressGuide)
+            self.queuedNudges = try container.decodeIfPresent([String].self, forKey: .queuedNudges)
+            self.nuxs = try container.decodeIfPresent([AppBskyLexicon.Actor.NUXDefinition].self, forKey: .nuxs)
+        }
+        
         public func encode(to encoder: any Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
 
@@ -1558,6 +1957,10 @@ extension AppBskyLexicon.Actor {
         /// - Important: Current maximum length is 100 characters.
         public let guide: String
         
+        public init(guide: String) {
+            self.guide = guide
+        }
+        
         public init(from decoder: any Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
             self.guide = try container.decode(String.self, forKey: .guide)
@@ -1572,7 +1975,6 @@ extension AppBskyLexicon.Actor {
         enum CodingKeys: CodingKey {
             case guide
         }
-
     }
 
     /// A definition model for a NUX.
@@ -1589,7 +1991,7 @@ extension AppBskyLexicon.Actor {
         public let id: String
 
         /// Indicated whether the experience was completed.
-        public var isCompleted: Bool = false
+        public var isCompleted: Bool
 
         /// Data created for the NUX. Optional.
         ///
@@ -1604,7 +2006,14 @@ extension AppBskyLexicon.Actor {
         /// - Note: According to the AT Protocol specifications: "The date and time at which the
         /// NUX will expire and should be considered completed."
         public let expiresAt: Date?
-
+        
+        public init(id: String, isCompleted: Bool = false, data: String? = nil, expiresAt: Date? = nil) {
+            self.id = id
+            self.isCompleted = isCompleted
+            self.data = data
+            self.expiresAt = expiresAt
+        }
+        
         public init(from decoder: any Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
 
@@ -1652,8 +2061,22 @@ extension AppBskyLexicon.Actor {
         ///
         /// - Note: According to the AT Protocol specifications: "Hide the blue check badges for verified
         /// accounts and trusted verifiers."
-        public let willHideBadges: Bool = false
+        public let willHideBadges: Bool
 
+        public init(willHideBadges: Bool = false) throws {
+            self.willHideBadges = willHideBadges
+        }
+        
+        public init(from decoder: any Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+            self.willHideBadges = try container.decode(Bool.self, forKey: .willHideBadges)
+        }
+        public func encode(to encoder: any Encoder) throws {
+            var container = encoder.container(keyedBy: CodingKeys.self)
+            try container.encode(self.type, forKey: .type)
+            try container.encode(self.willHideBadges, forKey: .willHideBadges)
+        }
+        
         enum CodingKeys: String, CodingKey {
             case type = "$type"
             case willHideBadges = "hideBadges"
@@ -1855,7 +2278,7 @@ extension AppBskyLexicon.Actor {
         /// if it is expired. Only present if expiration was set."
         public let isActive: Bool?
 
-        public init(status: StatusViewDefinition.Status, record: UnknownType, embed: EmbedUnion?, expiresAt: Date?, isActive: Bool?) {
+        public init(status: StatusViewDefinition.Status, record: UnknownType, embed: EmbedUnion? = nil, expiresAt: Date? = nil, isActive: Bool? = nil) {
             self.status = status
             self.record = record
             self.embed = embed
