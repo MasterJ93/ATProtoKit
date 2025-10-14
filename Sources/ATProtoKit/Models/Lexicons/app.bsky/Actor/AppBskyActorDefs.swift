@@ -1404,9 +1404,6 @@ extension AppBskyLexicon.Actor {
         /// all replies."
         public let areFollowedUsersPrioritized: Bool?
         
-        /// Indicates whether post threads show replies in a threaded tree view. Optional.
-        public let treeViewEnabled: Bool?
-
         /// The sorting mode for a thread.
         public enum SortingMode: Sendable, Codable, Equatable, Hashable, ExpressibleByStringLiteral {
 
@@ -1418,7 +1415,7 @@ extension AppBskyLexicon.Actor {
 
             /// Indicates the thread will be sorted from the posts with the most number
             /// of likes.
-            case mostLikes// = "most-likes"
+            case mostLikes
 
             /// Indicates the thread will be completely random.
             case random
@@ -1491,17 +1488,15 @@ extension AppBskyLexicon.Actor {
             }
         }
         
-        public init(sortingMode: SortingMode? = nil, areFollowedUsersPrioritized: Bool? = nil, treeViewEnabled: Bool? = nil) {
+        public init(sortingMode: SortingMode? = nil, areFollowedUsersPrioritized: Bool? = nil) {
             self.sortingMode = sortingMode
             self.areFollowedUsersPrioritized = areFollowedUsersPrioritized
-            self.treeViewEnabled = treeViewEnabled
         }
         
         public init(from decoder: any Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
             self.sortingMode = try container.decodeIfPresent(AppBskyLexicon.Actor.ThreadViewPreferencesDefinition.SortingMode.self, forKey: .sortingMode)
             self.areFollowedUsersPrioritized = try container.decodeIfPresent(Bool.self, forKey: .areFollowedUsersPrioritized)
-            self.treeViewEnabled = try container.decodeIfPresent(Bool.self, forKey: .treeViewEnabled)
         }
         
         public func encode(to encoder: any Encoder) throws {
@@ -1509,14 +1504,12 @@ extension AppBskyLexicon.Actor {
             try container.encode(self.type, forKey: .type)
             try container.encodeIfPresent(self.sortingMode, forKey: .sortingMode)
             try container.encodeIfPresent(self.areFollowedUsersPrioritized, forKey: .areFollowedUsersPrioritized)
-            try container.encodeIfPresent(self.treeViewEnabled, forKey: .treeViewEnabled)
         }
         
         enum CodingKeys: String, CodingKey {
             case type = "$type"
             case sortingMode = "sort"
             case areFollowedUsersPrioritized = "prioritizeFollowedUsers"
-            case treeViewEnabled = "lab_treeViewEnabled"
         }
     }
 
