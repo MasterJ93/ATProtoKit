@@ -33,9 +33,13 @@ extension AppBskyLexicon.Graph {
         /// The date and time the record was created.
         public let createdAt: Date
 
-        public init(subjectDID: String, createdAt: Date) {
+        /// A strong reference to the user account that recommended the followed account. Optional.
+        public let via: ComAtprotoLexicon.Repository.StrongReference?
+
+        public init(subjectDID: String, createdAt: Date, via: ComAtprotoLexicon.Repository.StrongReference?) {
             self.subjectDID = subjectDID
             self.createdAt = createdAt
+            self.via = via
         }
 
         public init(from decoder: any Decoder) throws {
@@ -43,6 +47,7 @@ extension AppBskyLexicon.Graph {
 
             self.subjectDID = try container.decode(String.self, forKey: .subjectDID)
             self.createdAt = try container.decodeDate(forKey: .createdAt)
+            self.via = try container.decodeIfPresent(ComAtprotoLexicon.Repository.StrongReference.self, forKey: .via)
         }
 
         public func encode(to encoder: any Encoder) throws {
@@ -50,12 +55,14 @@ extension AppBskyLexicon.Graph {
 
             try container.encode(self.subjectDID, forKey: .subjectDID)
             try container.encodeDate(self.createdAt, forKey: .createdAt)
+            try container.encodeIfPresent(self.via, forKey: .via)
         }
 
         enum CodingKeys: String, CodingKey {
             case type = "$type"
             case subjectDID = "subject"
             case createdAt
+            case via
         }
     }
 }

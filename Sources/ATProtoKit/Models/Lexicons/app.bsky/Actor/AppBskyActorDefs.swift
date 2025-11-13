@@ -55,6 +55,11 @@ extension AppBskyLexicon.Actor {
         /// The status of the user account. Optional.
         public let status: StatusViewDefinition?
 
+        /// An internal object used for debugging. Optional.
+        ///
+        /// - Note: According to the AT Protocol specifications: "Debug information for internal development."
+        public let debug: UnknownType?
+
         public init(from decoder: any Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
 
@@ -69,6 +74,7 @@ extension AppBskyLexicon.Actor {
             self.createdAt = try container.decodeDateIfPresent(forKey: .createdAt)
             self.verificationState = try container.decodeIfPresent(VerificationStateDefinition.self, forKey: .verificationState)
             self.status = try container.decodeIfPresent(StatusViewDefinition.self, forKey: .status)
+            self.debug = try container.decodeIfPresent(UnknownType.self, forKey: .debug)
         }
 
         public func encode(to encoder: Encoder) throws {
@@ -85,6 +91,7 @@ extension AppBskyLexicon.Actor {
             try container.encodeDateIfPresent(self.createdAt, forKey: .createdAt)
             try container.encodeIfPresent(self.verificationState, forKey: .verificationState)
             try container.encodeIfPresent(self.status, forKey: .status)
+            try container.encodeIfPresent(self.debug, forKey: .debug)
         }
 
         enum CodingKeys: String, CodingKey {
@@ -99,6 +106,7 @@ extension AppBskyLexicon.Actor {
             case createdAt
             case verificationState = "verification"
             case status
+            case debug
         }
     }
 
@@ -156,6 +164,11 @@ extension AppBskyLexicon.Actor {
         /// The status of the user account. Optional.
         public let status: StatusViewDefinition?
 
+        /// An internal object used for debugging. Optional.
+        ///
+        /// - Note: According to the AT Protocol specifications: "Debug information for internal development."
+        public let debug: UnknownType?
+
         public init(from decoder: any Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
 
@@ -173,6 +186,7 @@ extension AppBskyLexicon.Actor {
             self.labels = try container.decodeIfPresent([ComAtprotoLexicon.Label.LabelDefinition].self, forKey: .labels)
             self.verificationState = try container.decodeIfPresent(VerificationStateDefinition.self, forKey: .verificationState)
             self.status = try container.decodeIfPresent(StatusViewDefinition.self, forKey: .status)
+            self.debug = try container.decodeIfPresent(UnknownType.self, forKey: .debug)
         }
 
         public func encode(to encoder: Encoder) throws {
@@ -192,6 +206,7 @@ extension AppBskyLexicon.Actor {
             try container.encodeIfPresent(self.labels, forKey: .labels)
             try container.encodeIfPresent(self.verificationState, forKey: .verificationState)
             try container.encodeIfPresent(self.status, forKey: .status)
+            try container.encodeIfPresent(self.debug, forKey: .debug)
         }
         
         enum CodingKeys: String, CodingKey {
@@ -209,6 +224,7 @@ extension AppBskyLexicon.Actor {
             case labels
             case verificationState = "verification"
             case status
+            case debug
         }
     }
 
@@ -281,12 +297,17 @@ extension AppBskyLexicon.Actor {
         /// The status of the user account. Optional.
         public let status: StatusViewDefinition?
 
+        /// An internal object used for debugging. Optional.
+        ///
+        /// - Note: According to the AT Protocol specifications: "Debug information for internal development."
+        public let debug: UnknownType?
+
         public init(actorDID: String, actorHandle: String, displayName: String? = nil, pronouns: String? = nil, description: String? = nil,
                     avatarImageURL: URL? = nil, bannerImageURL: URL? = nil, followerCount: Int? = nil, followCount: Int? = nil, postCount: Int? = nil,
                     associated: ProfileAssociatedDefinition?, joinedViaStarterPack: AppBskyLexicon.Graph.StarterPackViewBasicDefinition?, indexedAt: Date?,
                     createdAt: Date?, viewer: ViewerStateDefinition? = nil, labels: [ComAtprotoLexicon.Label.LabelDefinition]? = nil,
                     pinnedPost: ComAtprotoLexicon.Repository.StrongReference?, verificationState: VerificationStateDefinition? = nil,
-                    status: StatusViewDefinition? = nil) {
+                    status: StatusViewDefinition? = nil, debug: UnknownType? = nil) {
             self.actorDID = actorDID
             self.actorHandle = actorHandle
             self.displayName = displayName
@@ -306,6 +327,7 @@ extension AppBskyLexicon.Actor {
             self.pinnedPost = pinnedPost
             self.verificationState = verificationState
             self.status = status
+            self.debug = debug
         }
 
         public init(from decoder: any Decoder) throws {
@@ -330,6 +352,7 @@ extension AppBskyLexicon.Actor {
             self.pinnedPost = try container.decodeIfPresent(ComAtprotoLexicon.Repository.StrongReference.self, forKey: .pinnedPost)
             self.verificationState = try container.decodeIfPresent(VerificationStateDefinition.self, forKey: .verificationState)
             self.status = try container.decodeIfPresent(StatusViewDefinition.self, forKey: .status)
+            self.debug = try container.decodeIfPresent(UnknownType.self, forKey: .debug)
         }
 
         public func encode(to encoder: Encoder) throws {
@@ -354,6 +377,7 @@ extension AppBskyLexicon.Actor {
             try container.encodeIfPresent(self.pinnedPost, forKey: .pinnedPost)
             try container.encodeIfPresent(self.verificationState, forKey: .verificationState)
             try container.encodeIfPresent(self.status, forKey: .status)
+            try container.encodeIfPresent(self.debug, forKey: .debug)
         }
         
         enum CodingKeys: String, CodingKey {
@@ -376,6 +400,7 @@ extension AppBskyLexicon.Actor {
             case pinnedPost
             case verificationState = "verification"
             case status
+            case debug
         }
     }
 

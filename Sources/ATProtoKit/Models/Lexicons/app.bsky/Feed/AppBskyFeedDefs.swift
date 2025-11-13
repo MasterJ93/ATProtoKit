@@ -61,6 +61,11 @@ extension AppBskyLexicon.Feed {
         /// The ruleset of who can reply to the post. Optional.
         public let threadgate: ThreadgateViewDefinition?
 
+        /// An internal object used for debugging. Optional.
+        ///
+        /// - Note: According to the AT Protocol specifications: "Debug information for internal development."
+        public let debug: UnknownType?
+
         public init(from decoder: any Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
 
@@ -78,6 +83,7 @@ extension AppBskyLexicon.Feed {
             self.viewer = try container.decodeIfPresent(AppBskyLexicon.Feed.ViewerStateDefinition.self, forKey: .viewer)
             self.labels = try container.decodeIfPresent([ComAtprotoLexicon.Label.LabelDefinition].self, forKey: .labels)
             self.threadgate = try container.decodeIfPresent(AppBskyLexicon.Feed.ThreadgateViewDefinition.self, forKey: .threadgate)
+            self.debug = try container.decodeIfPresent(UnknownType.self, forKey: .debug)
         }
 
         public func encode(to encoder: any Encoder) throws {
@@ -97,6 +103,7 @@ extension AppBskyLexicon.Feed {
             try container.encodeIfPresent(self.viewer, forKey: .viewer)
             try container.encodeIfPresent(self.labels, forKey: .labels)
             try container.encodeIfPresent(self.threadgate, forKey: .threadgate)
+            try container.encodeIfPresent(self.debug, forKey: .debug)
         }
 
         enum CodingKeys: CodingKey {
@@ -114,6 +121,7 @@ extension AppBskyLexicon.Feed {
             case viewer
             case labels
             case threadgate
+            case debug
         }
 
         // Unions

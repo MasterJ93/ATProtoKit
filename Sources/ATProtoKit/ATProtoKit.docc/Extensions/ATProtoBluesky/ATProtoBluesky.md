@@ -35,7 +35,7 @@
 
 ### Follows and Blocks
 
-- ``createFollowRecord(actorDID:createdAt:recordKey:shouldValidate:swapCommit:)``
+- ``createFollowRecord(actorDID:createdAt:via:recordKey:shouldValidate:swapCommit:)``
 
 - ``createBlockRecord(ofType:createdAt:recordKey:shouldValidate:swapCommit:)``
 
