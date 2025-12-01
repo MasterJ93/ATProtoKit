@@ -40,5 +40,9 @@ extension ChatBskyLexicon.Conversation {
 
         /// The conversation itself.
         public let conversationView: ConversationViewDefinition
+
+        enum CodingKeys: String, CodingKey {
+            case conversationView = "convo"
+        }
     }
 }
