@@ -160,7 +160,13 @@ extension ToolsOzoneLexicon.Moderation {
             case moderationEventAgeAssuranceOverride(ToolsOzoneLexicon.Moderation.AgeAssuranceOverrideEventDefinition)
 
             /// A revoke account credentials event.
-            case moderationEventAccountCredentials(ToolsOzoneLexicon.Moderation.RevokeAccountCredentialsEventDefinition)
+            case moderationEventRevokeAccountCredentials(ToolsOzoneLexicon.Moderation.RevokeAccountCredentialsEventDefinition)
+
+            /// A schedule takedown event.
+            case moderationEventScheduleTakedown(ToolsOzoneLexicon.Moderation.ScheduleTakedownEventDefinition)
+
+            /// A cancel scheduled takedown event.
+            case moderationEventCancelScheduledTakedown(ToolsOzoneLexicon.Moderation.CancelScheduledTakedownEventDefinition)
 
             /// An unknown case.
             case unknown(String, [String: CodableValue])
@@ -213,7 +219,11 @@ extension ToolsOzoneLexicon.Moderation {
                     case "tools.ozone.moderation.defs#ageAssuranceOverrideEvent":
                         self = .moderationEventAgeAssuranceOverride(try ToolsOzoneLexicon.Moderation.AgeAssuranceOverrideEventDefinition(from: decoder))
                     case "tools.ozone.moderation.defs#revokeAccountCredentialsEvent":
-                      self = .moderationEventAccountCredentials(try ToolsOzoneLexicon.Moderation.RevokeAccountCredentialsEventDefinition(from: decoder))
+                      self = .moderationEventRevokeAccountCredentials(try ToolsOzoneLexicon.Moderation.RevokeAccountCredentialsEventDefinition(from: decoder))
+                    case "tools.ozone.moderation.defs#scheduleTakedownEvent":
+                        self = .moderationEventScheduleTakedown(try ToolsOzoneLexicon.Moderation.ScheduleTakedownEventDefinition(from: decoder))
+                    case "tools.ozone.moderation.defs#cancelScheduledTakedownEvent":
+                        self = .moderationEventCancelScheduledTakedown(try ToolsOzoneLexicon.Moderation.CancelScheduledTakedownEventDefinition(from: decoder))
                     default:
                         let singleValueDecodingContainer = try decoder.singleValueContainer()
                         let dictionary = try Self.decodeDictionary(from: singleValueDecodingContainer, decoder: decoder)
@@ -257,6 +267,22 @@ extension ToolsOzoneLexicon.Moderation {
                     case .moderationEventTag(let value):
                         try container.encode(value)
                     case .moderationEventPriorityScore(let value):
+                        try container.encode(value)
+                    case .moderationEventAccount(let value):
+                        try container.encode(value)
+                    case .moderationEventIdentity(let value):
+                        try container.encode(value)
+                    case .moderationEventRecord(let value):
+                        try container.encode(value)
+                    case .moderationEventAgeAssurance(let value):
+                        try container.encode(value)
+                    case .moderationEventAgeAssuranceOverride(let value):
+                        try container.encode(value)
+                    case .moderationEventRevokeAccountCredentials(let value):
+                        try container.encode(value)
+                    case .moderationEventScheduleTakedown(let value):
+                        try container.encode(value)
+                    case .moderationEventCancelScheduledTakedown(let value):
                         try container.encode(value)
                     default:
                         break
@@ -445,7 +471,13 @@ extension ToolsOzoneLexicon.Moderation {
             case moderationEventAgeAssuranceOverride(ToolsOzoneLexicon.Moderation.AgeAssuranceOverrideEventDefinition)
 
             /// A revoke account credentials event.
-            case moderationEventAccountCredentials(ToolsOzoneLexicon.Moderation.RevokeAccountCredentialsEventDefinition)
+            case moderationEventRevokeAccountCredentials(ToolsOzoneLexicon.Moderation.RevokeAccountCredentialsEventDefinition)
+
+            /// A schedule takedown event.
+            case moderationEventScheduleTakedown(ToolsOzoneLexicon.Moderation.ScheduleTakedownEventDefinition)
+
+            /// A cancel scheduled takedown event.
+            case moderationEventCancelScheduledTakedown(ToolsOzoneLexicon.Moderation.CancelScheduledTakedownEventDefinition)
 
             /// An unknown case.
             case unknown(String, [String: CodableValue])
@@ -498,7 +530,11 @@ extension ToolsOzoneLexicon.Moderation {
                     case "tools.ozone.moderation.defs#ageAssuranceOverrideEvent":
                         self = .moderationEventAgeAssuranceOverride(try ToolsOzoneLexicon.Moderation.AgeAssuranceOverrideEventDefinition(from: decoder))
                     case "tools.ozone.moderation.defs#revokeAccountCredentialsEvent":
-                        self = .moderationEventAccountCredentials(try ToolsOzoneLexicon.Moderation.RevokeAccountCredentialsEventDefinition(from: decoder))
+                        self = .moderationEventRevokeAccountCredentials(try ToolsOzoneLexicon.Moderation.RevokeAccountCredentialsEventDefinition(from: decoder))
+                    case "tools.ozone.moderation.defs#scheduleTakedownEvent":
+                        self = .moderationEventScheduleTakedown(try ToolsOzoneLexicon.Moderation.ScheduleTakedownEventDefinition(from: decoder))
+                    case "tools.ozone.moderation.defs#cancelScheduledTakedownEvent":
+                        self = .moderationEventCancelScheduledTakedown(try ToolsOzoneLexicon.Moderation.CancelScheduledTakedownEventDefinition(from: decoder))
                     default:
                         let singleValueDecodingContainer = try decoder.singleValueContainer()
                         let dictionary = try Self.decodeDictionary(from: singleValueDecodingContainer, decoder: decoder)
@@ -553,7 +589,11 @@ extension ToolsOzoneLexicon.Moderation {
                         try container.encode(value)
                     case .moderationEventAgeAssuranceOverride(let value):
                         try container.encode(value)
-                    case .moderationEventAccountCredentials(let value):
+                    case .moderationEventRevokeAccountCredentials(let value):
+                        try container.encode(value)
+                    case .moderationEventScheduleTakedown(let value):
+                        try container.encode(value)
+                    case .moderationEventCancelScheduledTakedown(let value):
                         try container.encode(value)
                     default:
                         break
@@ -698,6 +738,12 @@ extension ToolsOzoneLexicon.Moderation {
         /// subjects authored by the subject's account."
         public let recordsStats: RecordsStatsDefinition?
 
+        /// Information about the strikes that have been attached to the user account. Optional.
+        ///
+        /// - Note: According to the AT Protocol specifications: "Strike information for the account
+        /// (account-level only)."
+        public let accountStrike: AccountStrikeDefinition?
+
         /// The current state for the user account with respect to age assurance. Optional.
         ///
         /// - Note: According to the AT Protocol specifications: "Current age assurance state of
@@ -716,7 +762,8 @@ extension ToolsOzoneLexicon.Moderation {
                     muteUntil: Date? = nil, muteReportingUntil: Date? = nil, lastReviewedBy: String? = nil, lastReviewedAt: Date? = nil,
                     lastReportedAt: Date? = nil, lastAppealedAt: Date? = nil, isTakenDown: Bool? = nil, wasAppealed: Bool? = nil, suspendUntil: Date? = nil,
                     tags: [String]? = nil, accountStats: AccountStatsDefinition? = nil, recordsStats: RecordsStatsDefinition? = nil,
-                    ageAssuranceState: AgeAssuranceState? = nil, ageAssuranceUpdatedBy: AgeAssuranceUpdatedBy? = nil) {
+                    accountStrike: AccountStrikeDefinition? = nil, ageAssuranceState: AgeAssuranceState? = nil,
+                    ageAssuranceUpdatedBy: AgeAssuranceUpdatedBy? = nil) {
             self.id = id
             self.subject = subject
             self.hosting = hosting
@@ -739,6 +786,7 @@ extension ToolsOzoneLexicon.Moderation {
             self.tags = tags
             self.accountStats = accountStats
             self.recordsStats = recordsStats
+            self.accountStrike = accountStrike
             self.ageAssuranceState = ageAssuranceState
             self.ageAssuranceUpdatedBy = ageAssuranceUpdatedBy
         }
@@ -768,6 +816,7 @@ extension ToolsOzoneLexicon.Moderation {
             self.tags = try container.decodeIfPresent([String].self, forKey: .tags)
             self.accountStats = try container.decodeIfPresent(AccountStatsDefinition.self, forKey: .accountStats)
             self.recordsStats = try container.decodeIfPresent(RecordsStatsDefinition.self, forKey: .recordsStats)
+            self.accountStrike = try container.decodeIfPresent(AccountStrikeDefinition.self, forKey: .accountStrike)
             self.ageAssuranceState = try container.decodeIfPresent(AgeAssuranceState.self, forKey: .ageAssuranceState)
             self.ageAssuranceUpdatedBy = try container.decodeIfPresent(AgeAssuranceUpdatedBy.self, forKey: .ageAssuranceUpdatedBy)
         }
@@ -802,6 +851,7 @@ extension ToolsOzoneLexicon.Moderation {
             try container.encode(self.tags, forKey: .tags)
             try container.encodeIfPresent(self.accountStats, forKey: .accountStats)
             try container.encodeIfPresent(self.recordsStats, forKey: .recordsStats)
+            try container.encodeIfPresent(self.accountStrike, forKey: .accountStrike)
             try container.encodeIfPresent(self.ageAssuranceState, forKey: .ageAssuranceState)
             try container.encodeIfPresent(self.ageAssuranceUpdatedBy, forKey: .ageAssuranceUpdatedBy)
         }
@@ -829,6 +879,7 @@ extension ToolsOzoneLexicon.Moderation {
             case tags
             case accountStats
             case recordsStats
+            case accountStrike
             case ageAssuranceState
             case ageAssuranceUpdatedBy
         }
@@ -1228,7 +1279,72 @@ extension ToolsOzoneLexicon.Moderation {
         public let takendownCount: Int?
     }
 
-    /// A definition model for  the subject review state.
+    /// A definition model for the user account's strike information.
+    ///
+    /// - Note: According to the AT Protocol specifications: "Strike information for an account."
+    ///
+    /// - SeeAlso: This is based on the [`tools.ozone.moderation.defs`][github] lexicon.
+    ///
+    /// [github]: https://github.com/bluesky-social/atproto/blame/main/lexicons/tools/ozone/moderation/defs.json
+    public struct AccountStrikeDefinition: Sendable, Codable {
+
+        /// The number of strikes that are active on the user account. Optional.
+        ///
+        /// - Note: According to the AT Protocol specifications: "Current number of active strikes
+        /// (excluding expired strikes)."
+        public let activeStrikeCount: Int?
+
+        /// The total number of strikes on the user account. Optional.
+        ///
+        /// - Note: According to the AT Protocol specifications: "Total number of strikes ever received
+        /// (including expired strikes)."
+        public let totalStrikeCount: Int?
+
+        /// The date and time the most recent account strike was given to the user account. Optional.
+        ///
+        /// - Note: According to the AT Protocol specifications: "Timestamp of the first strike received."
+        public let firstStrikeAt: Date?
+
+        /// The date and time the most recent account strike was given to the user account. Optional.
+        ///
+        /// - Note: According to the AT Protocol specifications: "Timestamp of the most recent
+        /// strike received."
+        public let lastStrikeAt: Date?
+
+        public init(activeStrikeCount: Int?, totalStrikeCount: Int?, firstStrikeAt: Date?, lastStrikeAt: Date?) {
+            self.activeStrikeCount = activeStrikeCount
+            self.totalStrikeCount = totalStrikeCount
+            self.firstStrikeAt = firstStrikeAt
+            self.lastStrikeAt = lastStrikeAt
+        }
+
+        public init(from decoder: any Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+
+            self.activeStrikeCount = try container.decodeIfPresent(Int.self, forKey: .activeStrikeCount)
+            self.totalStrikeCount = try container.decodeIfPresent(Int.self, forKey: .totalStrikeCount)
+            self.firstStrikeAt = try container.decodeDateIfPresent(forKey: .firstStrikeAt)
+            self.lastStrikeAt = try container.decodeDateIfPresent(forKey: .lastStrikeAt)
+        }
+
+        public func encode(to encoder: any Encoder) throws {
+            var container = encoder.container(keyedBy: CodingKeys.self)
+
+            try container.encodeIfPresent(self.activeStrikeCount, forKey: .activeStrikeCount)
+            try container.encodeIfPresent(self.totalStrikeCount, forKey: .totalStrikeCount)
+            try container.encodeDateIfPresent(self.firstStrikeAt, forKey: .firstStrikeAt)
+            try container.encodeDateIfPresent(self.lastStrikeAt, forKey: .lastStrikeAt)
+        }
+
+        enum CodingKeys: String, CodingKey {
+            case activeStrikeCount
+            case totalStrikeCount
+            case firstStrikeAt
+            case lastStrikeAt
+        }
+    }
+
+    /// A definition model for the subject review state.
     ///
     /// - SeeAlso: This is based on the [`tools.ozone.moderation.defs`][github] lexicon.
     ///
@@ -1292,6 +1408,61 @@ extension ToolsOzoneLexicon.Moderation {
         /// - Note: According to the AT Protocol specifications: "Names/Keywords of the policies
         /// that drove the decision."
         public let policies: [String]?
+
+        /// The Severity level (`sev`) of the violation. Optional.
+        ///
+        /// - Note: According to the AT Protocol specifications: "Severity level of the violation (e.g.,
+        /// 'sev-0', 'sev-1', 'sev-2', etc.)."
+        public let severityLevel: String?
+
+        /// The total number of strikes the user account will receive. Optional.
+        ///
+        /// - Note: According to the AT Protocol specifications: "Number of strikes to assign to the user
+        /// for this violation."
+        public let strikeCount: Int?
+
+        /// The date and time the strike(s) will expire. Optional.
+        ///
+        /// If left empty and there are strikes inputted, the strikes will stick to the
+        /// user account indefinetly.
+        ///
+        /// - Note: According to the AT Protocol specifications: "When the strike should expire. If not
+        /// provided, the strike never expires."
+        public let strikeExpiresAt: Date?
+
+        public init(from decoder: any Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+
+            self.comment = try container.decodeIfPresent(String.self, forKey: .comment)
+            self.durationInHours = try container.decodeIfPresent(Int.self, forKey: .durationInHours)
+            self.acknowledgeAccountSubjects = try container.decodeIfPresent(Bool.self, forKey: .acknowledgeAccountSubjects)
+            self.policies = try container.decodeIfPresent([String].self, forKey: .policies)
+            self.severityLevel = try container.decodeIfPresent(String.self, forKey: .severityLevel)
+            self.strikeCount = try container.decodeIfPresent(Int.self, forKey: .strikeCount)
+            self.strikeExpiresAt = try container.decodeDateIfPresent(forKey: .strikeExpiresAt)
+        }
+
+        public func encode(to encoder: any Encoder) throws {
+            var container = encoder.container(keyedBy: CodingKeys.self)
+
+            try container.encodeIfPresent(self.comment, forKey: .comment)
+            try container.encodeIfPresent(self.durationInHours, forKey: .durationInHours)
+            try container.encodeIfPresent(self.acknowledgeAccountSubjects, forKey: .acknowledgeAccountSubjects)
+            try container.encodeIfPresent(self.policies, forKey: .policies)
+            try container.encodeIfPresent(self.severityLevel, forKey: .severityLevel)
+            try container.encodeIfPresent(self.strikeCount, forKey: .strikeCount)
+            try container.encodeDateIfPresent(self.strikeExpiresAt, forKey: .strikeExpiresAt)
+        }
+
+        enum CodingKeys: CodingKey {
+            case comment
+            case durationInHours
+            case acknowledgeAccountSubjects
+            case policies
+            case severityLevel
+            case strikeCount
+            case strikeExpiresAt
+        }
     }
 
     /// A definition model for a reverse takedown event.
@@ -1309,6 +1480,57 @@ extension ToolsOzoneLexicon.Moderation {
         /// - Note: According to the AT Protocol specifications: "Describe reasoning behind
         /// the reversal."
         public let comment: String?
+
+        /// An array of keywords and names of the policy infractions. Optional.
+        ///
+        /// - Note: According to the AT Protocol specifications: "Names/Keywords of the policy infraction
+        /// for which takedown is being reversed."
+        public let policies: [String]?
+
+        /// The Severity level (`sev`) of the violation. Optional.
+        ///
+        /// - Note: According to the AT Protocol specifications: "Severity level of the violation.
+        /// Usually set from the last policy infraction's severity."
+        public let severityLevel: String?
+
+        /// The total number of strikes that will be removed from the user account. Optional.
+        ///
+        /// - Note: According to the AT Protocol specifications: "Number of strikes to subtract from the
+        /// user's strike count. Usually set from the last policy infraction's severity."
+        public let strikeCount: Int?
+
+        public init(comment: String?, policies: [String]?, severityLevel: String?, strikeCount: Int?) {
+            self.comment = comment
+            self.policies = policies
+            self.severityLevel = severityLevel
+            self.strikeCount = strikeCount
+        }
+
+        public init(from decoder: any Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+
+            self.comment = try container.decodeIfPresent(String.self, forKey: .comment)
+            self.policies = try container.decodeIfPresent([String].self, forKey: .policies)
+            self.severityLevel = try container.decodeIfPresent(String.self, forKey: .severityLevel)
+            self.strikeCount = try container.decodeIfPresent(Int.self, forKey: .strikeCount)
+        }
+
+        public func encode(to encoder: any Encoder) throws {
+            var container = encoder.container(keyedBy: CodingKeys.self)
+
+            try container.encodeIfPresent(self.comment, forKey: .comment)
+            try container.encodeIfPresent(self.policies, forKey: .policies)
+            try container.truncatedEncodeIfPresent(self.policies, forKey: .policies, upToArrayLength: 5)
+            try container.encodeIfPresent(self.severityLevel, forKey: .severityLevel)
+            try container.encodeIfPresent(self.strikeCount, forKey: .strikeCount)
+        }
+
+        enum CodingKeys: CodingKey {
+            case comment
+            case policies
+            case severityLevel
+            case strikeCount
+        }
     }
 
     /// A definition model for an resolved appeal event.
@@ -1813,7 +2035,79 @@ extension ToolsOzoneLexicon.Moderation {
         ///
         /// - Note: According to the AT Protocol specifications: "Additional comment about
         /// the outgoing comm."
-        public var comment: String?
+        public let comment: String?
+
+        /// An array of keywords and names of the policies violated.
+        ///
+        /// - Note: According to the AT Protocol specifications: "Names/Keywords of the policies that
+        /// necessitated the email."
+        public let policies: [String]?
+
+        /// The Severity level (`sev`) of the violation. Optional.
+        ///
+        /// - Note: According to the AT Protocol specifications: "Severity level of the violation.
+        /// Normally 'sev-1' that adds strike on repeat offense."
+        public let severityLevel: String?
+
+        /// The total number of strikes to give to the user account. Optional.
+        ///
+        /// - Note: According to the AT Protocol specifications: "Number of strikes to assign to the user
+        /// for this violation. Normally 0 as an indicator of a warning and only added as a strike on a
+        /// repeat offense."
+        public let strikeCount: Int?
+
+        /// The date and time the strike(s) will expire from the user account. Optional.
+        ///
+        /// If left empty, and a strike is given, the strike will stick to the user account indefinetly.
+        ///
+        /// - Note: According to the AT Protocol specifications: "When the strike should expire. If not
+        /// provided, the strike never expires."
+        public let strikeExpiresAt: Date?
+
+        public init(subjectLine: String, content: String, comment: String?, policies: [String]?, severityLevel: String?,
+            strikeCount: Int?, strikeExpiresAt: Date?) {
+            self.subjectLine = subjectLine
+            self.content = content
+            self.comment = comment
+            self.policies = policies
+            self.severityLevel = severityLevel
+            self.strikeCount = strikeCount
+            self.strikeExpiresAt = strikeExpiresAt
+        }
+
+        public init(from decoder: any Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+
+            self.subjectLine = try container.decode(String.self, forKey: .subjectLine)
+            self.content = try container.decode(String.self, forKey: .content)
+            self.comment = try container.decodeIfPresent(String.self, forKey: .comment)
+            self.policies = try container.decodeIfPresent([String].self, forKey: .policies)
+            self.severityLevel = try container.decodeIfPresent(String.self, forKey: .severityLevel)
+            self.strikeCount = try container.decodeIfPresent(Int.self, forKey: .strikeCount)
+            self.strikeExpiresAt = try container.decodeDateIfPresent(forKey: .strikeExpiresAt)
+        }
+
+        public func encode(to encoder: any Encoder) throws {
+            var container = encoder.container(keyedBy: CodingKeys.self)
+
+            try container.encode(self.subjectLine, forKey: .subjectLine)
+            try container.encode(self.content, forKey: .content)
+            try container.encodeIfPresent(self.comment, forKey: .comment)
+            try container.encodeIfPresent(self.policies, forKey: .policies)
+            try container.encodeIfPresent(self.severityLevel, forKey: .severityLevel)
+            try container.encodeIfPresent(self.strikeCount, forKey: .strikeCount)
+            try container.encodeDateIfPresent(self.strikeExpiresAt, forKey: .strikeExpiresAt)
+        }
+
+        enum CodingKeys: String, CodingKey {
+            case subjectLine
+            case content
+            case comment
+            case policies
+            case severityLevel
+            case strikeCount
+            case strikeExpiresAt
+        }
     }
 
     /// A definition model for a diversion event.
@@ -2060,6 +2354,76 @@ extension ToolsOzoneLexicon.Moderation {
             /// Indicates a "deleted" operation occurred.
             case deleted
         }
+    }
+
+    /// A definition model for logging a scheduled takedown action for a user account.
+    ///
+    /// - Note: According to the AT Protocol specifications: "Logs a scheduled takedown action for
+    /// an account."
+    ///
+    /// - SeeAlso: This is based on the [`com.atproto.admin.defs`][github] lexicon.
+    ///
+    /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/admin/defs.json
+    public struct ScheduleTakedownEventDefinition: Sendable, Codable {
+
+        /// The comment attached to the event. Optional.
+        public let comment: String?
+
+        /// The date and time the takedown action was executed. Optional.
+        public let executeAt: Date?
+
+        /// The date and time when the takedown action may begin. Optional.
+        public let executeAfter: Date?
+
+        /// The date and time by which the takedown action must be completed. Optional.
+        public let executeUntil: Date?
+
+        public init(comment: String?, executeAt: Date?, executeAfter: Date?, executeUntil: Date?) {
+            self.comment = comment
+            self.executeAt = executeAt
+            self.executeAfter = executeAfter
+            self.executeUntil = executeUntil
+        }
+
+        public init(from decoder: any Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+
+            self.comment = try container.decodeIfPresent(String.self, forKey: .comment)
+            self.executeAt = try container.decodeDateIfPresent(forKey: .executeAt)
+            self.executeAfter = try container.decodeDateIfPresent(forKey: .executeAfter)
+            self.executeUntil = try container.decodeDateIfPresent(forKey: .executeUntil)
+        }
+
+        public func encode(to encoder: any Encoder) throws {
+            var container = encoder.container(keyedBy: CodingKeys.self)
+
+            try container.encodeIfPresent(self.comment, forKey: .comment)
+            try container.encodeDateIfPresent(self.executeAt, forKey: .executeAt)
+            try container.encodeDateIfPresent(self.executeAfter, forKey: .executeAfter)
+            try container.encodeDateIfPresent(self.executeUntil, forKey: .executeUntil)
+        }
+
+        enum CodingKeys: CodingKey {
+            case comment
+            case executeAt
+            case executeAfter
+            case executeUntil
+        }
+    }
+
+    /// A definition model for logging a scheduled takedown cancellation.
+    ///
+    /// - Note: According to the AT Protocol specifications: "Logs cancellation of a scheduled takedown
+    /// action for an account."
+    ///
+    /// - SeeAlso: This is based on the [`com.atproto.admin.defs`][github] lexicon.
+    ///
+    /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/admin/defs.json
+    public struct CancelScheduledTakedownEventDefinition: Sendable, Codable {
+
+        /// The comment attached to the event. Optional.
+        public let comment: String?
+
     }
 
     /// A definition model for a repository view.
@@ -2881,4 +3245,191 @@ extension ToolsOzoneLexicon.Moderation {
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/admin/defs.json
     public static let timelineEventPLCTombstoneTokenDefinition: String = "tools.ozone.moderation.defs#timelineEventPlcTombstone"
+
+    /// A definition model for a scheduled moderation action view.
+    ///
+    /// - Note: According to the AT Protocol specifications: "View of a scheduled moderation action."
+    ///
+    /// - SeeAlso: This is based on the [`tools.ozone.moderation.defs`][github] lexicon.
+    ///
+    /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/admin/defs.json
+    public struct ScheduledActionViewDefinition: Sendable, Codable {
+
+        /// The ID number of the scheduled action.
+        ///
+        /// - Note: According to the AT Protocol specifications: "Auto-incrementing row ID."
+        public let id: String
+
+        /// The type of action that needs to be executed.
+        ///
+        /// - Note: According to the AT Protocol specifications: "Type of action to be executed."
+        public let action: String
+
+        /// Optional.
+        ///
+        /// - Note: According to the AT Protocol specifications: "Serialized event object that will be
+        /// propagated to the event when performed."
+        public let eventData: UnknownType?
+
+        /// The decentralized identifier (DID) of the user account to perform this action to.
+        ///
+        /// - Note: According to the AT Protocol specifications: "Subject DID for the action."
+        public let did: String
+
+        /// The date and time to excute this action. Optional.
+        ///
+        /// - Note: According to the AT Protocol specifications: "Exact time to execute the action."
+        public let executeAt: Date?
+
+        /// The date and time of the earliest time to execute the action. Optional.
+        ///
+        /// - Note: According to the AT Protocol specifications: "Earliest time to execute the action (for
+        /// randomized scheduling)."
+        public let executeAfter: Date?
+
+        /// The date and time of the latest time to execute the action. Optional.
+        ///
+        /// - Note: According to the AT Protocol specifications: "Latest time to execute the action (for
+        /// randomized scheduling)."
+        public let executeUntil: Date?
+
+        /// Determines whether the execution time should be randomized between `executeAfter`
+        /// and `executeUntil`. Optional.
+        ///
+        /// - Note: According to the AT Protocol specifications: "Whether execution time should be
+        /// randomized within the specified range."
+        public let shouldRandomizeExecution: Bool?
+
+        /// The decentralized identifier (DID) of the user account that created the scheduled action.
+        ///
+        /// - Note: According to the AT Protocol specifications: "DID of the user who created this
+        /// scheduled action."
+        public let createdBy: String
+
+        /// The date and time of when the scheduled action was created.
+        ///
+        /// - Note: According to the AT Protocol specifications: "When the scheduled action was created."
+        public let createdAt: Date
+
+        /// The date and time of when the scheduled action was updated. Optional.
+        ///
+        /// - Note: According to the AT Protocol specifications: "When the scheduled action was last updated."
+        public let updatedAt: Date?
+
+        /// The current status of the scheduled action.
+        ///
+        /// - Note: According to the AT Protocol specifications: "Current status of the scheduled action."
+        public let status: Status
+
+        /// The date and time when the action last attempted to be executed.  Optional.
+        ///
+        /// - Note: According to the AT Protocol specifications: "When the action was last attempted to be executed."
+        public let lastExecutedAt: Date?
+
+        /// The reason for the failed execution. Optional.
+        ///
+        /// - Note: According to the AT Protocol specifications: "Reason for the last execution failure."
+        public let lastFailureReason: String?
+
+        /// The moderatior ID event associated with the successful execution. Optional.
+        ///
+        /// - Note: According to the AT Protocol specifications: "ID of the moderation event created when
+        /// action was successfully executed."
+        public let executionEventID: Int?
+
+        public init(id: String, action: String, eventData: UnknownType?, did: String, executeAt: Date?, executeAfter: Date?,
+            executeUntil: Date?, shouldRandomizeExecution: Bool?, createdBy: String, createdAt: Date, updatedAt: Date?,
+            status: Status, lastExecutedAt: Date?, lastFailureReason: String?, executionEventID: Int?) {
+            self.id = id
+            self.action = action
+            self.eventData = eventData
+            self.did = did
+            self.executeAt = executeAt
+            self.executeAfter = executeAfter
+            self.executeUntil = executeUntil
+            self.shouldRandomizeExecution = shouldRandomizeExecution
+            self.createdBy = createdBy
+            self.createdAt = createdAt
+            self.updatedAt = updatedAt
+            self.status = status
+            self.lastExecutedAt = lastExecutedAt
+            self.lastFailureReason = lastFailureReason
+            self.executionEventID = executionEventID
+        }
+
+        public init(from decoder: any Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+
+            self.id = try container.decode(String.self, forKey: .id)
+            self.action = try container.decode(String.self, forKey: .action)
+            self.eventData = try container.decode(UnknownType?.self, forKey: .eventData)
+            self.did = try container.decode(String.self, forKey: .did)
+            self.executeAt = try container.decodeDateIfPresent(forKey: .executeAt)
+            self.executeAfter = try container.decodeDateIfPresent(forKey: .executeAfter)
+            self.executeUntil = try container.decodeDateIfPresent(forKey: .executeUntil)
+            self.shouldRandomizeExecution = try container.decodeIfPresent(Bool.self, forKey: .shouldRandomizeExecution)
+            self.createdBy = try container.decode(String.self, forKey: .createdBy)
+            self.createdAt = try container.decodeDate(forKey: .createdAt)
+            self.updatedAt = try container.decodeDateIfPresent(forKey: .updatedAt)
+            self.status = try container.decode(Status.self, forKey: .status)
+            self.lastExecutedAt = try container.decodeDateIfPresent(forKey: .lastExecutedAt)
+            self.lastFailureReason = try container.decodeIfPresent(String.self, forKey: .lastFailureReason)
+            self.executionEventID = try container.decodeIfPresent(Int.self, forKey: .executionEventID)
+        }
+
+        public func encode(to encoder: Encoder) throws {
+            var container = encoder.container(keyedBy: CodingKeys.self)
+
+            try container.encode(self.id, forKey: .id)
+            try container.encode(self.action, forKey: .action)
+            try container.encode(self.eventData, forKey: .eventData)
+            try container.encode(self.did, forKey: .did)
+            try container.encodeDateIfPresent(self.executeAt, forKey: .executeAt)
+            try container.encodeDateIfPresent(self.executeAfter, forKey: .executeAfter)
+            try container.encodeDateIfPresent(self.executeUntil, forKey: .executeUntil)
+            try container.encode(self.shouldRandomizeExecution, forKey: .shouldRandomizeExecution)
+            try container.encode(self.createdBy, forKey: .createdBy)
+            try container.encodeDateIfPresent(self.createdAt, forKey: .createdAt)
+            try container.encodeDateIfPresent(self.updatedAt, forKey: .updatedAt)
+            try container.encode(self.status, forKey: .status)
+            try container.encodeDateIfPresent(self.lastExecutedAt, forKey: .lastExecutedAt)
+            try container.encodeIfPresent(self.lastFailureReason, forKey: .lastFailureReason)
+            try container.encodeIfPresent(self.executionEventID, forKey: .executionEventID)
+        }
+
+        enum CodingKeys: String, CodingKey {
+            case id
+            case action
+            case eventData
+            case did
+            case executeAt
+            case executeAfter
+            case executeUntil
+            case shouldRandomizeExecution = "randomizeExecution"
+            case createdBy
+            case createdAt
+            case updatedAt
+            case status
+            case lastExecutedAt
+            case lastFailureReason
+            case executionEventID
+        }
+
+        // Enums
+        /// The current status of the scheduled action.
+        public enum Status: String, Sendable, Codable, Equatable {
+
+            /// The scheduled action is currently pending.
+            case pending
+
+            /// The scheduled action has been successfully executed.
+            case executed
+
+            /// The scheduled action has been cancelled.
+            case cancelled
+
+            /// The scheduled action failed to be executed.
+            case failed
+        }
+    }
 }

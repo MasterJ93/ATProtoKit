@@ -158,6 +158,12 @@ extension ToolsOzoneLexicon.Moderation {
 
                 /// A handle updated event.
                 case handleUpdated = "tools.ozone.hosting.getAccountHistory#handleUpdated"
+
+                /// A schedule takedown event.
+                case scheduleTakedown = "tools.ozone.moderation.defs#scheduleTakedownEvent"
+
+                /// A cancel scheduled takedown event.
+                case cancelScheduledTakedown = "tools.ozone.moderation.defs#cancelScheduledTakedownEvent"
             }
         }
     }

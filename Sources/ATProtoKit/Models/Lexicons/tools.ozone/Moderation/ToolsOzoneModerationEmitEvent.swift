@@ -120,7 +120,13 @@ extension ToolsOzoneLexicon.Moderation {
             case ageAssuranceOverrideEvent(ToolsOzoneLexicon.Moderation.AgeAssuranceOverrideEventDefinition)
 
             /// A revoke account credentials event.
-            case revokeAccountCredentialsEvent(ToolsOzoneLexicon.Moderation.RevokeAccountCredentialsEventDefinition)
+            case moderationEventRevokeAccountCredentials(ToolsOzoneLexicon.Moderation.RevokeAccountCredentialsEventDefinition)
+
+            /// A schedule takedown event.
+            case moderationEventScheduleTakedown(ToolsOzoneLexicon.Moderation.ScheduleTakedownEventDefinition)
+
+            /// A cancel scheduled takedown event.
+            case moderationEventCancelScheduledTakedown(ToolsOzoneLexicon.Moderation.CancelScheduledTakedownEventDefinition)
 
             /// An unknown case.
             case unknown(String, [String: CodableValue])
@@ -173,7 +179,11 @@ extension ToolsOzoneLexicon.Moderation {
                     case "tools.ozone.moderation.defs#ageAssuranceOverrideEvent":
                         self = .ageAssuranceOverrideEvent(try ToolsOzoneLexicon.Moderation.AgeAssuranceOverrideEventDefinition(from: decoder))
                     case "tools.ozone.moderation.defs#revokeAccountCredentialsEvent":
-                        self = .revokeAccountCredentialsEvent(try ToolsOzoneLexicon.Moderation.RevokeAccountCredentialsEventDefinition(from: decoder))
+                        self = .moderationEventRevokeAccountCredentials(try ToolsOzoneLexicon.Moderation.RevokeAccountCredentialsEventDefinition(from: decoder))
+                    case "tools.ozone.moderation.defs#scheduleTakedownEvent":
+                        self = .moderationEventScheduleTakedown(try ToolsOzoneLexicon.Moderation.ScheduleTakedownEventDefinition(from: decoder))
+                    case "tools.ozone.moderation.defs#cancelScheduledTakedownEvent":
+                        self = .moderationEventCancelScheduledTakedown(try ToolsOzoneLexicon.Moderation.CancelScheduledTakedownEventDefinition(from: decoder))
                     default:
                         let singleValueDecodingContainer = try decoder.singleValueContainer()
                         let dictionary = try Self.decodeDictionary(from: singleValueDecodingContainer, decoder: decoder)
