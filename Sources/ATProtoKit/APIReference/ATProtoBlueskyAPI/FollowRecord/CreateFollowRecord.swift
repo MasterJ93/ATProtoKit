@@ -31,7 +31,7 @@ extension ATProtoBluesky {
     public func createFollowRecord(
         actorDID: String,
         createdAt: Date = Date(),
-        via: ComAtprotoLexicon.Repository.StrongReference,
+        via: ComAtprotoLexicon.Repository.StrongReference? = nil,
         recordKey: String? = nil,
         shouldValidate: Bool? = true,
         swapCommit: String? = nil
