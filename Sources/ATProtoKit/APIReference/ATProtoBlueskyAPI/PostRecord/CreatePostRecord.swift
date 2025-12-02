@@ -240,6 +240,72 @@ extension ATProtoBluesky {
     /// }
     /// ```
     ///
+    /// # Adding Audience Controls
+    /// You can control who can reply to your post and whether it can be embedded by other posts.
+    ///
+    /// ## Controlling Replies (Threadgate)
+    /// Use the `replyControls` parameter to restrict who can reply:
+    ///
+    /// ```swift
+    /// do {
+    ///     let postResult = try await atProtoBluesky.createPostRecord(
+    ///         text: "Only my followers can reply to this post!",
+    ///         replyControls: [.allowFollowers]
+    ///     )
+    ///
+    ///     print(postResult)
+    /// } catch {
+    ///     throw error
+    /// }
+    /// ```
+    ///
+    /// You can combine multiple rules:
+    ///
+    /// ```swift
+    /// do {
+    ///     let postResult = try await atProtoBluesky.createPostRecord(
+    ///         text: "Only people I follow or who follow me can reply.",
+    ///         replyControls: [.allowFollowers, .allowFollowing]
+    ///     )
+    ///
+    ///     print(postResult)
+    /// } catch {
+    ///     throw error
+    /// }
+    /// ```
+    ///
+    /// ## Disabling Embedding (Postgate)
+    /// Use the `embeddingRules` parameter to prevent others from quoting your post:
+    ///
+    /// ```swift
+    /// do {
+    ///     let postResult = try await atProtoBluesky.createPostRecord(
+    ///         text: "This post cannot be quoted by others.",
+    ///         embeddingRules: [.disable]
+    ///     )
+    ///
+    ///     print(postResult)
+    /// } catch {
+    ///     throw error
+    /// }
+    /// ```
+    ///
+    /// You can combine both audience controls:
+    ///
+    /// ```swift
+    /// do {
+    ///     let postResult = try await atProtoBluesky.createPostRecord(
+    ///         text: "Followers only replies, no quotes allowed.",
+    ///         replyControls: [.allowFollowers],
+    ///         embeddingRules: [.disable]
+    ///     )
+    ///
+    ///     print(postResult)
+    /// } catch {
+    ///     throw error
+    /// }
+    /// ```
+    ///
     /// - Parameters:
     ///   - text: The text that's directly displayed in the post record. Current limit is
     ///   300 characters.
@@ -258,6 +324,10 @@ extension ATProtoBluesky {
     ///   - shouldValidate: Indicates whether the record should be validated. Optional.
     ///   Defaults to `true`.
     ///   - swapCommit: Swaps out an operation based on the CID. Optional. Defaults to `nil`.
+    ///   - replyControls: An array of rules to control who can reply to the post. Optional.
+    ///   Defaults to `nil`. When provided, a threadgate record is created for the post.
+    ///   - embeddingRules: An array of rules to control embedding of the post. Optional.
+    ///   Defaults to `nil`. When provided, a postgate record is created for the post.
     /// - Returns: A strong reference, which contains the newly-created record's URI and CID hash.
     public func createPostRecord(
         text: String,
@@ -270,7 +340,9 @@ extension ATProtoBluesky {
         creationDate: Date = Date(),
         recordKey: String? = nil,
         shouldValidate: Bool? = true,
-        swapCommit: String? = nil
+        swapCommit: String? = nil,
+        replyControls: [ThreadgateAllowRule]? = nil,
+        embeddingRules: [PostgateEmbeddingRule]? = nil
     ) async throws -> ComAtprotoLexicon.Repository.StrongReference {
         guard let session = try await atProtoKitInstance.getUserSession() else {
             throw ATRequestPrepareError.missingActiveSession
@@ -431,6 +503,81 @@ extension ATProtoBluesky {
             )
 
             try await Task.sleep(nanoseconds: 500_000_000)
+
+            // Create threadgate record if reply controls are specified.
+            // nil = no threadgate (everyone can reply)
+            // [] = threadgate with empty allow (nobody can reply)
+            // [rules] = threadgate with those rules
+            if let replyControls = replyControls {
+                let postRecordKey = try ATProtoTools().parseURI(record.recordURI).recordKey
+
+                var threadgateAllowArray: [AppBskyLexicon.Feed.ThreadgateRecord.ThreadgateUnion] = []
+                let cappedReplyControls = Array(replyControls.prefix(5))
+
+                for replyControl in cappedReplyControls {
+                    switch replyControl {
+                        case .allowMentions:
+                            threadgateAllowArray.append(.mentionRule(AppBskyLexicon.Feed.ThreadgateRecord.MentionRule()))
+                        case .allowFollowers:
+                            threadgateAllowArray.append(.followerRule(AppBskyLexicon.Feed.ThreadgateRecord.FollowerRule()))
+                        case .allowFollowing:
+                            threadgateAllowArray.append(.followingRule(AppBskyLexicon.Feed.ThreadgateRecord.FollowingRule()))
+                        case .allowList(listURI: let listURI):
+                            threadgateAllowArray.append(.listRule(AppBskyLexicon.Feed.ThreadgateRecord.ListRule(listURI: listURI)))
+                    }
+                }
+
+                // Empty allow array means nobody can reply
+                let threadgateRecord = AppBskyLexicon.Feed.ThreadgateRecord(
+                    postURI: record.recordURI,
+                    allow: threadgateAllowArray,
+                    createdAt: creationDate,
+                    hiddenReplies: nil
+                )
+
+                _ = try await atProtoKitInstance.createRecord(
+                    repositoryDID: session.sessionDID,
+                    collection: "app.bsky.feed.threadgate",
+                    recordKey: postRecordKey,
+                    shouldValidate: shouldValidate,
+                    record: UnknownType.record(threadgateRecord),
+                    swapCommit: nil
+                )
+
+                try await Task.sleep(nanoseconds: 500_000_000)
+            }
+
+            // Create postgate record if embedding rules are specified.
+            if let embeddingRules = embeddingRules, embeddingRules.isEmpty == false {
+                let postRecordKey = try ATProtoTools().parseURI(record.recordURI).recordKey
+
+                var postgateEmbedRules: [AppBskyLexicon.Feed.PostgateRecord.EmbeddingRulesUnion] = []
+
+                for rule in embeddingRules {
+                    switch rule {
+                        case .disable:
+                            postgateEmbedRules.append(.disabledRule(AppBskyLexicon.Feed.PostgateRecord.DisableRule()))
+                    }
+                }
+
+                let postgateRecord = AppBskyLexicon.Feed.PostgateRecord(
+                    createdAt: creationDate,
+                    postURI: record.recordURI,
+                    detachedEmbeddingURIs: nil,
+                    embeddingRules: postgateEmbedRules.isEmpty ? nil : postgateEmbedRules
+                )
+
+                _ = try await atProtoKitInstance.createRecord(
+                    repositoryDID: session.sessionDID,
+                    collection: "app.bsky.feed.postgate",
+                    recordKey: postRecordKey,
+                    shouldValidate: shouldValidate,
+                    record: UnknownType.record(postgateRecord),
+                    swapCommit: nil
+                )
+
+                try await Task.sleep(nanoseconds: 500_000_000)
+            }
 
             return record
         } catch {
