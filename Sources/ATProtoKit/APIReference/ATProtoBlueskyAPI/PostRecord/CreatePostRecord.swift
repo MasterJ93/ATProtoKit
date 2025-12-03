@@ -320,14 +320,14 @@ extension ATProtoBluesky {
     ///   - labels: An array of labels made by the user. Optional. Defaults to `nil`.
     ///   - tags: An array of tags for the post record. Optional. Defaults to `nil`.
     ///   - creationDate: The date of the post record. Defaults to `Date.now`.
-    ///   - recordKey: The record key of the collection. Optional. Defaults to `nil`.
-    ///   - shouldValidate: Indicates whether the record should be validated. Optional.
-    ///   Defaults to `true`.
-    ///   - swapCommit: Swaps out an operation based on the CID. Optional. Defaults to `nil`.
     ///   - replyControls: An array of rules to control who can reply to the post. Optional.
     ///   Defaults to `nil`. When provided, a threadgate record is created for the post.
     ///   - embeddingRules: An array of rules to control embedding of the post. Optional.
     ///   Defaults to `nil`. When provided, a postgate record is created for the post.
+    ///   - recordKey: The record key of the collection. Optional. Defaults to `nil`.
+    ///   - shouldValidate: Indicates whether the record should be validated. Optional.
+    ///   Defaults to `true`.
+    ///   - swapCommit: Swaps out an operation based on the CID. Optional. Defaults to `nil`.
     /// - Returns: A strong reference, which contains the newly-created record's URI and CID hash.
     public func createPostRecord(
         text: String,
@@ -338,11 +338,11 @@ extension ATProtoBluesky {
         labels: ComAtprotoLexicon.Label.SelfLabelsDefinition? = nil,
         tags: [String]? = nil,
         creationDate: Date = Date(),
+        replyControls: [ThreadgateAllowRule]? = nil,
+        embeddingRules: [PostgateEmbeddingRule]? = nil,
         recordKey: String? = nil,
         shouldValidate: Bool? = true,
-        swapCommit: String? = nil,
-        replyControls: [ThreadgateAllowRule]? = nil,
-        embeddingRules: [PostgateEmbeddingRule]? = nil
+        swapCommit: String? = nil
     ) async throws -> ComAtprotoLexicon.Repository.StrongReference {
         guard let session = try await atProtoKitInstance.getUserSession() else {
             throw ATRequestPrepareError.missingActiveSession
