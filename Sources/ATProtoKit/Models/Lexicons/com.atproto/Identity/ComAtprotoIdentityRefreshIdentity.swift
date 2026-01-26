@@ -26,5 +26,18 @@ extension ComAtprotoLexicon.Identity {
 
         /// The AT-identifier of the user account.
         public let identifier: String
+        
+        public init(identifier: String) {
+            self.identifier = identifier
+        }
+        
+        public func encode(to encoder: any Encoder) throws {
+            var container = encoder.container(keyedBy: CodingKeys.self)
+            try container.encode(self.identifier, forKey: .identifier)
+        }
+        
+        public enum CodingKeys: CodingKey {
+            case identifier
+        }
     }
 }

@@ -85,12 +85,12 @@ extension ComAtprotoLexicon.Server {
         ///
         /// - Note: According to the AT Protocol specifications: "URLs of service
         /// policy documents."
-        public let servicePolicyURLs: DescribeServer.ServicePolicyURLs
+        public let servicePolicyURLs: DescribeServer.ServicePolicyURLs?
 
         /// The contact information for the server.
         ///
         /// - Note: According to the AT Protocol specifications: "Contact information."
-        public let contactInformation: DescribeServer.ContactInformation
+        public let contactInformation: DescribeServer.ContactInformation?
 
         /// The decentralized identifier (DID) of the server.
         public let serverDID: String
