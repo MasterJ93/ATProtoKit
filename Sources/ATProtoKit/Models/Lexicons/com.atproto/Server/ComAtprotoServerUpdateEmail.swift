@@ -33,7 +33,27 @@ extension ComAtprotoLexicon.Server {
         /// been confirmed."
         public let resetToken: String?
 
-        enum CodingKeys: String, CodingKey {
+        public init(email: String, isEmailAuthenticationFactorEnabled: Bool?, resetToken: String?) {
+            self.email = email
+            self.isEmailAuthenticationFactorEnabled = isEmailAuthenticationFactorEnabled
+            self.resetToken = resetToken
+        }
+        
+        public init(from decoder: any Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+            self.email = try container.decode(String.self, forKey: .email)
+            self.isEmailAuthenticationFactorEnabled = try container.decodeIfPresent(Bool.self, forKey: .isEmailAuthenticationFactorEnabled)
+            self.resetToken = try container.decodeIfPresent(String.self, forKey: .resetToken)
+        }
+        
+        public func encode(to encoder: any Encoder) throws {
+            var container = encoder.container(keyedBy: CodingKeys.self)
+            try container.encode(self.email, forKey: .email)
+            try container.encodeIfPresent(self.isEmailAuthenticationFactorEnabled, forKey: .isEmailAuthenticationFactorEnabled)
+            try container.encodeIfPresent(self.resetToken, forKey: .resetToken)
+        }
+        
+        public enum CodingKeys: String, CodingKey {
             case email
             case isEmailAuthenticationFactorEnabled = "emailAuthFactor"
             case resetToken = "token"
