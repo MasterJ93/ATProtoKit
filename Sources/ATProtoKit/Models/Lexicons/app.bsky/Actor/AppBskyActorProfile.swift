@@ -72,7 +72,7 @@ extension AppBskyLexicon.Actor {
         ///
         /// - Note: According to the AT Protocol specifications: "Self-label values, specific to
         /// the Bluesky application, on the overall account."
-        public let labels: [LabelsUnion]?
+        public let labels: LabelsUnion?
 
         /// The starter pack the user account used to join Bluesky. Optional.
         public let joinedViaStarterPack: ComAtprotoLexicon.Repository.StrongReference?
@@ -85,7 +85,7 @@ extension AppBskyLexicon.Actor {
 
         public init(displayName: String?, description: String?, pronouns: String?, websiteURL: URL?,
                     avatarBlob: ComAtprotoLexicon.Repository.UploadBlobOutput?,
-                    bannerBlob: ComAtprotoLexicon.Repository.UploadBlobOutput?, labels: [LabelsUnion]?,
+                    bannerBlob: ComAtprotoLexicon.Repository.UploadBlobOutput?, labels: LabelsUnion?,
                     joinedViaStarterPack: ComAtprotoLexicon.Repository.StrongReference?, pinnedPost: ComAtprotoLexicon.Repository.StrongReference?,
                     createdAt: Date?) {
             self.displayName = displayName
@@ -109,7 +109,7 @@ extension AppBskyLexicon.Actor {
             self.websiteURL = try container.decodeIfPresent(URL.self, forKey: .websiteURL)
             self.avatarBlob = try container.decodeIfPresent(ComAtprotoLexicon.Repository.UploadBlobOutput.self, forKey: .avatarBlob)
             self.bannerBlob = try container.decodeIfPresent(ComAtprotoLexicon.Repository.UploadBlobOutput.self, forKey: .bannerBlob)
-            self.labels = try container.decodeIfPresent([LabelsUnion].self, forKey: .labels)
+            self.labels = try container.decodeIfPresent(LabelsUnion.self, forKey: .labels)
             self.joinedViaStarterPack = try container.decodeIfPresent(ComAtprotoLexicon.Repository.StrongReference.self, forKey: .joinedViaStarterPack)
             self.pinnedPost = try container.decodeIfPresent(ComAtprotoLexicon.Repository.StrongReference.self, forKey: .pinnedPost)
             self.createdAt = try container.decodeDateIfPresent(forKey: .createdAt)
