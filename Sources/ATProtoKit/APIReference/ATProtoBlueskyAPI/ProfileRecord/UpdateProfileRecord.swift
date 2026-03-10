@@ -73,7 +73,7 @@ extension ATProtoBluesky {
         var newWebsiteURL: URL? = profile.websiteURL
         var newAvatarImage: ComAtprotoLexicon.Repository.UploadBlobOutput? = profile.avatarBlob
         var newBannerImage: ComAtprotoLexicon.Repository.UploadBlobOutput? = profile.bannerBlob
-        var newLabels: [AppBskyLexicon.Actor.ProfileRecord.LabelsUnion]? = profile.labels
+        var newLabels: AppBskyLexicon.Actor.ProfileRecord.LabelsUnion? = profile.labels
         var newJoinedViaStarterPack: ComAtprotoLexicon.Repository.StrongReference? = profile.joinedViaStarterPack
         var newPinnedPost: ComAtprotoLexicon.Repository.StrongReference? = profile.pinnedPost
 
@@ -161,17 +161,12 @@ extension ATProtoBluesky {
                     }
                 case .labels(let labelsField):
                     // Check if the field is nil. If so, set the labels variable to nil and break out of the case early.
-                    if labelsField == nil {
+                    if let labelsField {
+                        newLabels = .selfLabel(labelsField)
+                    } else {
                         newLabels = nil
-
-                        break
                     }
-
-                    if let labelsField = labelsField {
-                        for labelField in labelsField {
-                            newLabels?.append(.selfLabel(labelField))
-                        }
-                    }
+                    
                 case .joinedViaStarterPack(let joinedViaStarterPackField):
                     // Check if the field is nil. If so, set the joinedViaStarterPack variable to nil and break out of the case early.
                     if joinedViaStarterPackField == nil {
@@ -250,7 +245,7 @@ extension ATProtoBluesky {
         /// An array of user-defined labels.
         ///
         /// - Parameter with: The object to update the record with. Optional. Defaults to `nil`.
-        case labels(with: [ComAtprotoLexicon.Label.SelfLabelsDefinition]? = nil)
+        case labels(with: ComAtprotoLexicon.Label.SelfLabelsDefinition? = nil)
 
         /// A strong reference to the starter pack the user used to join Bluesky.
         ///
