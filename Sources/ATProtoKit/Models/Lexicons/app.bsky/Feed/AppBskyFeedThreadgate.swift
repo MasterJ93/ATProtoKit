@@ -95,6 +95,15 @@ extension AppBskyLexicon.Feed {
             /// The identifier of the object.
             public let type = "app.bsky.feed.threadgate#mentionRule"
 
+            public init() { }
+            
+            public init(from decoder: any Decoder) throws { }
+            
+            public func encode(to encoder: any Encoder) throws {
+                var container = encoder.container(keyedBy: CodingKeys.self)
+                try container.encode(self.type, forKey: .type)
+            }
+            
             enum CodingKeys: String, CodingKey {
                 case type = "$type"
             }
@@ -109,6 +118,15 @@ extension AppBskyLexicon.Feed {
             /// The identifier of the object.
             public let type = "app.bsky.feed.threadgate#followerRule"
 
+            public init() { }
+            
+            public init(from decoder: any Decoder) throws { }
+            
+            public func encode(to encoder: any Encoder) throws {
+                var container = encoder.container(keyedBy: CodingKeys.self)
+                try container.encode(self.type, forKey: .type)
+            }
+
             enum CodingKeys: String, CodingKey {
                 case type = "$type"
             }
@@ -121,6 +139,15 @@ extension AppBskyLexicon.Feed {
 
             /// The identifier of the object.
             public let type = "app.bsky.feed.threadgate#followingRule"
+
+            public init() { }
+            
+            public init(from decoder: any Decoder) throws { }
+            
+            public func encode(to encoder: any Encoder) throws {
+                var container = encoder.container(keyedBy: CodingKeys.self)
+                try container.encode(self.type, forKey: .type)
+            }
 
             enum CodingKeys: String, CodingKey {
                 case type = "$type"
@@ -138,6 +165,21 @@ extension AppBskyLexicon.Feed {
             /// The list itself.
             public let listURI: String
 
+            public init(listURI: String) {
+                self.listURI = listURI
+            }
+            
+            public init(from decoder: any Decoder) throws {
+                let container = try decoder.container(keyedBy: CodingKeys.self)
+                self.listURI = try container.decode(String.self, forKey: .listURI)
+            }
+            
+            public func encode(to encoder: any Encoder) throws {
+                var container = encoder.container(keyedBy: CodingKeys.self)
+                try container.encode(self.type, forKey: .type)
+                try container.encode(self.listURI, forKey: .listURI)
+            }
+            
             enum CodingKeys: String, CodingKey {
                 case type = "$type"
                 case listURI = "list"
