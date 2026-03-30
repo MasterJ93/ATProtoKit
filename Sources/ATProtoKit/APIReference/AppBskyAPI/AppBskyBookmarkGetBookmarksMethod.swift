@@ -43,7 +43,7 @@ extension ATProtoKit {
         let accessToken = try await keychain.retrieveAccessToken()
         let sessionURL = session.serviceEndpoint.absoluteString
 
-        guard let requestURL = URL(string: "\(sessionURL)/xrpc/app.bsky.bookmark.getBookmark") else {
+        guard let requestURL = URL(string: "\(sessionURL)/xrpc/app.bsky.bookmark.getBookmarks") else {
             throw ATRequestPrepareError.invalidRequestURL
         }
 
