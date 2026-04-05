@@ -30,7 +30,7 @@ Task {
 }
 ```
 
-> Important: Do not use the password you typically use for signing into Bluesky: only use a specific App Password that's in use for this instance of ATProtoKit only. To generate an App Password, go to the Bluesky website, then go to Settings > Advanced > App Passwords and follow the instructions.
+> Important: Do not use the password you typically use for signing into Bluesky: only use a specific App Password that's in use for this instance of ATProtoKit only. To generate an App Password, go to the Bluesky website, then go to Settings > Privacy & Security > App Passwords and follow the instructions.
 
 You can use a `do-catch` block to create the ``UserSession`` object (if the session was successfully created) or handle the error (if an error occured):
 
