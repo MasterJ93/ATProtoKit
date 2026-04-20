@@ -65,7 +65,7 @@ extension AppBskyLexicon.Feed {
         ///
         /// - Note: According to the AT Protocol specifications: "Debug information for internal development."
         public let debug: UnknownType?
-
+        
         public init(from decoder: any Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
 
@@ -226,6 +226,38 @@ extension AppBskyLexicon.Feed {
         /// Indicates whether the post record is pinned. Optional.
         public let isPinned: Bool?
 
+        public init(repostURI: String?, likeURI: String?, isBookmarked: Bool?, isThreadMuted: Bool?, areRepliesDisabled: Bool?, isEmbeddingDisabled: Bool?, isPinned: Bool?) {
+            self.repostURI = repostURI
+            self.likeURI = likeURI
+            self.isBookmarked = isBookmarked
+            self.isThreadMuted = isThreadMuted
+            self.areRepliesDisabled = areRepliesDisabled
+            self.isEmbeddingDisabled = isEmbeddingDisabled
+            self.isPinned = isPinned
+        }
+        
+        public init(from decoder: any Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+            self.repostURI = try container.decodeIfPresent(String.self, forKey: .repostURI)
+            self.likeURI = try container.decodeIfPresent(String.self, forKey: .likeURI)
+            self.isBookmarked = try container.decodeIfPresent(Bool.self, forKey: .isBookmarked)
+            self.isThreadMuted = try container.decodeIfPresent(Bool.self, forKey: .isThreadMuted)
+            self.areRepliesDisabled = try container.decodeIfPresent(Bool.self, forKey: .areRepliesDisabled)
+            self.isEmbeddingDisabled = try container.decodeIfPresent(Bool.self, forKey: .isEmbeddingDisabled)
+            self.isPinned = try container.decodeIfPresent(Bool.self, forKey: .isPinned)
+        }
+        
+        public func encode(to encoder: any Encoder) throws {
+            var container = encoder.container(keyedBy: CodingKeys.self)
+            try container.encodeIfPresent(self.repostURI, forKey: .repostURI)
+            try container.encodeIfPresent(self.likeURI, forKey: .likeURI)
+            try container.encodeIfPresent(self.isBookmarked, forKey: .isBookmarked)
+            try container.encodeIfPresent(self.isThreadMuted, forKey: .isThreadMuted)
+            try container.encodeIfPresent(self.areRepliesDisabled, forKey: .areRepliesDisabled)
+            try container.encodeIfPresent(self.isEmbeddingDisabled, forKey: .isEmbeddingDisabled)
+            try container.encodeIfPresent(self.isPinned, forKey: .isPinned)
+        }
+        
         enum CodingKeys: String, CodingKey {
             case repostURI = "repost"
             case likeURI = "like"
@@ -248,6 +280,24 @@ extension AppBskyLexicon.Feed {
 
         /// The URI of the root author's like record.
         public let rootAuthorLike: String?
+        
+        public init(rootAuthorLike: String?) {
+            self.rootAuthorLike = rootAuthorLike
+        }
+        
+        public init(from decoder: any Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+            self.rootAuthorLike = try container.decodeIfPresent(String.self, forKey: .rootAuthorLike)
+        }
+        
+        public func encode(to encoder: any Encoder) throws {
+            var container = encoder.container(keyedBy: CodingKeys.self)
+            try container.encodeIfPresent(self.rootAuthorLike, forKey: .rootAuthorLike)
+        }
+        
+        public enum CodingKeys: CodingKey {
+            case rootAuthorLike
+        }
     }
 
     /// A definition model for a feed's view.
@@ -280,6 +330,22 @@ extension AppBskyLexicon.Feed {
         /// passed back alongside interactions."
         public let requestID: String?
 
+        public init(post: PostViewDefinition, reply: ReplyReferenceDefinition? = nil, reason: ReasonUnion? = nil, feedContext: String? = nil, requestID: String? = nil) {
+            self.post = post
+            self.reply = reply
+            self.reason = reason
+            self.feedContext = feedContext
+            self.requestID = requestID
+        }
+        public init(from decoder: any Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+            self.post = try container.decode(AppBskyLexicon.Feed.PostViewDefinition.self, forKey: .post)
+            self.reply = try container.decodeIfPresent(AppBskyLexicon.Feed.ReplyReferenceDefinition.self, forKey: .reply)
+            self.reason = try container.decodeIfPresent(AppBskyLexicon.Feed.FeedViewPostDefinition.ReasonUnion.self, forKey: .reason)
+            self.feedContext = try container.decodeIfPresent(String.self, forKey: .feedContext)
+            self.requestID = try container.decodeIfPresent(String.self, forKey: .requestID)
+        }
+        
         public func encode(to encoder: any Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
 
@@ -369,6 +435,32 @@ extension AppBskyLexicon.Feed {
         /// post, this is the author of that post."
         public let grandparentAuthor: AppBskyLexicon.Actor.ProfileViewBasicDefinition?
 
+        public init(root: RootUnion, parent: ParentUnion, grandparentAuthor: AppBskyLexicon.Actor.ProfileViewBasicDefinition?) {
+            self.root = root
+            self.parent = parent
+            self.grandparentAuthor = grandparentAuthor
+        }
+        
+        public init(from decoder: any Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+            self.root = try container.decode(AppBskyLexicon.Feed.ReplyReferenceDefinition.RootUnion.self, forKey: .root)
+            self.parent = try container.decode(AppBskyLexicon.Feed.ReplyReferenceDefinition.ParentUnion.self, forKey: .parent)
+            self.grandparentAuthor = try container.decodeIfPresent(AppBskyLexicon.Actor.ProfileViewBasicDefinition.self, forKey: .grandparentAuthor)
+        }
+        
+        public func encode(to encoder: any Encoder) throws {
+            var container = encoder.container(keyedBy: CodingKeys.self)
+            try container.encode(self.root, forKey: .root)
+            try container.encode(self.parent, forKey: .parent)
+            try container.encodeIfPresent(self.grandparentAuthor, forKey: .grandparentAuthor)
+        }
+ 
+        enum CodingKeys: CodingKey {
+            case root
+            case parent
+            case grandparentAuthor
+        }
+        
         // Unions
         /// The original post of the thread.
         public enum RootUnion: ATUnionProtocol, Equatable, Hashable {
@@ -498,6 +590,13 @@ extension AppBskyLexicon.Feed {
         /// The date and time the repost was last indexed.
         public let indexedAt: Date
 
+        public init(by: AppBskyLexicon.Actor.ProfileViewBasicDefinition, uri: String? = nil, cid: String? = nil, indexedAt: Date) {
+            self.by = by
+            self.uri = uri
+            self.cid = cid
+            self.indexedAt = indexedAt
+        }
+        
         public init(from decoder: any Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
 
@@ -550,6 +649,36 @@ extension AppBskyLexicon.Feed {
         /// The context of the thread view. Optional.
         public let threadContext: ThreadContextDefinition?
 
+        public init(post: PostViewDefinition, parent: ParentUnion?, replies: [RepliesUnion]?, threadContext: ThreadContextDefinition?) {
+            self.post = post
+            self.parent = parent
+            self.replies = replies
+            self.threadContext = threadContext
+        }
+        
+        public init(from decoder: any Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+            self.post = try container.decode(AppBskyLexicon.Feed.PostViewDefinition.self, forKey: .post)
+            self.parent = try container.decodeIfPresent(AppBskyLexicon.Feed.ThreadViewPostDefinition.ParentUnion.self, forKey: .parent)
+            self.replies = try container.decodeIfPresent([AppBskyLexicon.Feed.ThreadViewPostDefinition.RepliesUnion].self, forKey: .replies)
+            self.threadContext = try container.decodeIfPresent(AppBskyLexicon.Feed.ThreadContextDefinition.self, forKey: .threadContext)
+        }
+        
+        public func encode(to encoder: any Encoder) throws {
+            var container = encoder.container(keyedBy: CodingKeys.self)
+            try container.encode(self.post, forKey: .post)
+            try container.encodeIfPresent(self.parent, forKey: .parent)
+            try container.encodeIfPresent(self.replies, forKey: .replies)
+            try container.encodeIfPresent(self.threadContext, forKey: .threadContext)
+        }
+ 
+        public enum CodingKeys: CodingKey {
+            case post
+            case parent
+            case replies
+            case threadContext
+        }
+        
         // Unions
         /// The direct post that the user's post is replying to.
         public indirect enum ParentUnion: ATUnionProtocol, Equatable, Hashable {
@@ -654,7 +783,7 @@ extension AppBskyLexicon.Feed {
                 }
             }
 
-            enum CodingKeys: String, CodingKey {
+            public enum CodingKeys: String, CodingKey {
                 case type = "$type"
             }
         }
@@ -673,7 +802,22 @@ extension AppBskyLexicon.Feed {
         /// Indicates whether the post wasn't found. Defaults to `true`.
         public let isNotFound: Bool = true
 
-        enum CodingKeys: String, CodingKey {
+        public init(feedURI: String) {
+            self.feedURI = feedURI
+        }
+        
+        public init(from decoder: any Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+            self.feedURI = try container.decode(String.self, forKey: .feedURI)
+        }
+        
+        public func encode(to encoder: any Encoder) throws {
+            var container = encoder.container(keyedBy: CodingKeys.self)
+            try container.encode(self.feedURI, forKey: .feedURI)
+            try container.encode(self.isNotFound, forKey: .isNotFound)
+        }
+        
+        public enum CodingKeys: String, CodingKey {
             case feedURI = "uri"
             case isNotFound = "notFound"
         }
@@ -709,7 +853,7 @@ extension AppBskyLexicon.Feed {
             self.author = try container.decode(BlockedAuthorDefinition.self, forKey: .author)
         }
 
-        enum CodingKeys: String, CodingKey {
+        public enum CodingKeys: String, CodingKey {
             case feedURI = "uri"
             case isBlocked = "blocked"
             case author
@@ -729,7 +873,24 @@ extension AppBskyLexicon.Feed {
         /// The viewer state of the user. Optional.
         public let viewer: AppBskyLexicon.Actor.ViewerStateDefinition?
 
-        enum CodingKeys: CodingKey {
+        public init(did: String, viewer: AppBskyLexicon.Actor.ViewerStateDefinition?) {
+            self.did = did
+            self.viewer = viewer
+        }
+        
+        public init(from decoder: any Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+            self.did = try container.decode(String.self, forKey: .did)
+            self.viewer = try container.decodeIfPresent(AppBskyLexicon.Actor.ViewerStateDefinition.self, forKey: .viewer)
+        }
+        
+        public func encode(to encoder: any Encoder) throws {
+            var container = encoder.container(keyedBy: CodingKeys.self)
+            try container.encode(self.did, forKey: .did)
+            try container.encodeIfPresent(self.viewer, forKey: .viewer)
+        }
+        
+        public enum CodingKeys: CodingKey {
             case did
             case viewer
         }
@@ -831,7 +992,7 @@ extension AppBskyLexicon.Feed {
             try container.encodeDateIfPresent(self.indexedAt, forKey: .indexedAt)
         }
 
-        enum CodingKeys: String, CodingKey {
+        public enum CodingKeys: String, CodingKey {
             case feedURI = "uri"
             case cid
             case feedDID = "did"
@@ -1032,6 +1193,21 @@ extension AppBskyLexicon.Feed {
         /// originally supplied by the feed generator on getFeedSkeleton."
         public let feedContext: String?
 
+        public init(itemURI: String?, event: Event?, requestID: String?, feedContext: String?) {
+            self.itemURI = itemURI
+            self.event = event
+            self.requestID = requestID
+            self.feedContext = feedContext
+        }
+        
+        public init(from decoder: any Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+            self.itemURI = try container.decodeIfPresent(String.self, forKey: .itemURI)
+            self.event = try container.decodeIfPresent(AppBskyLexicon.Feed.InteractionDefinition.Event.self, forKey: .event)
+            self.feedContext = try container.decodeIfPresent(String.self, forKey: .feedContext)
+            self.requestID = try container.decodeIfPresent(String.self, forKey: .requestID)
+        }
+        
         public func encode(to encoder: any Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
 
