@@ -24,19 +24,6 @@ extension ComAtprotoLexicon.Repository {
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/repo/uploadBlob.json
     public struct UploadBlobRequestBody: Sendable, Codable {}
 
-    // MARK: -
-    // TODO: Find a way to remove BlobContainer without breaking the JSON encoding.
-    // This will be here until a way to remove this without the issues of
-    // the JSON encoding are solved.
-    /// The container used for storing blobs within a record.
-    ///
-    /// - Note: This is a temporary measure and will be deleted once a better solution is made.
-    public struct BlobContainer: Sendable, Codable, Equatable, Hashable {
-
-        /// The blob itself.
-        public let blob: UploadBlobOutput
-    }
-
     /// A data model for a definition of an output of uploading a blob.
     public struct UploadBlobOutput: Sendable, Codable, Equatable, Hashable {
 

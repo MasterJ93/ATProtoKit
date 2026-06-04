@@ -50,7 +50,7 @@ extension AppBskyLexicon.Feed {
         /// - Note: Only JPEGs and PNGs are accepted.
         ///
         /// - Important: Current maximum file size 1,000,000 bytes (1 MB).
-        public let avatarImageBlob: ComAtprotoLexicon.Repository.BlobContainer??
+        public let avatarImageBlob: ComAtprotoLexicon.Repository.UploadBlobOutput?
 
         /// Indicates whether the feed generator can accept interactions.
         ///
@@ -74,7 +74,7 @@ extension AppBskyLexicon.Feed {
             self.displayName = try container.decode(String.self, forKey: .displayName)
             self.description = try container.decodeIfPresent(String.self, forKey: .description)
             self.descriptionFacets = try container.decodeIfPresent([AppBskyLexicon.RichText.Facet].self, forKey: .descriptionFacets)
-            self.avatarImageBlob = try container.decodeIfPresent(ComAtprotoLexicon.Repository.BlobContainer?.self, forKey: .avatarImageBlob)
+            self.avatarImageBlob = try container.decodeIfPresent(ComAtprotoLexicon.Repository.UploadBlobOutput.self, forKey: .avatarImageBlob)
             self.canAcceptInteractions = try container.decodeIfPresent(Bool.self, forKey: .canAcceptInteractions)
             self.labels = try container.decodeIfPresent(LabelsUnion.self, forKey: .labels)
             self.contentMode = try container.decodeIfPresent(ContentMode.self, forKey: .contentMode)

@@ -28,7 +28,7 @@ extension ATProtoKit {
     ///   - accessToken: The access token for authorization.
     ///   - filename: The filename of the blob to upload.
     ///   - imageData: The data of the blob to upload.
-    /// - Returns: A `BlobContainer` instance with the upload result.
+    /// - Returns: An `UploadBlobOutput` instance with the upload result.
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
@@ -37,7 +37,7 @@ extension ATProtoKit {
         accessToken: String,
         filename: String,
         imageData: Data
-    ) async throws -> ComAtprotoLexicon.Repository.BlobContainer {
+    ) async throws -> ComAtprotoLexicon.Repository.UploadBlobOutput {
         guard let requestURL = URL(string: "\(pdsURL)/xrpc/com.atproto.repo.uploadBlob") else {
             throw ATRequestPrepareError.invalidRequestURL
         }
@@ -53,7 +53,7 @@ extension ATProtoKit {
             request.httpBody = imageData
 
             let response = try await apiClientService.sendRequest(request,
-                                                      decodeTo: ComAtprotoLexicon.Repository.BlobContainer.self)
+                                                      decodeTo: ComAtprotoLexicon.Repository.UploadBlobOutput.self)
 
             return response
         } catch {
