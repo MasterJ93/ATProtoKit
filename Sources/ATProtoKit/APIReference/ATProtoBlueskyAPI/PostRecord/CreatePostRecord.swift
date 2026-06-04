@@ -615,7 +615,7 @@ extension ATProtoBluesky {
             )
 
             let embedImage = AppBskyLexicon.Embed.ImagesDefinition.Image(
-                imageBlob: blobReference.blob,
+                imageBlob: blobReference,
                 altText: image.altText ?? "",
                 aspectRatio: image.aspectRatio
             )
@@ -781,7 +781,7 @@ extension ATProtoBluesky {
                     imageData: caption.file
                 )
 
-                captionReferences.append(AppBskyLexicon.Embed.VideoDefinition.Caption(language: caption.language.identifier, fileBlob: blobReference.blob))
+                captionReferences.append(AppBskyLexicon.Embed.VideoDefinition.Caption(language: caption.language.identifier, fileBlob: blobReference))
             }
         }
 
@@ -835,7 +835,7 @@ extension ATProtoBluesky {
                         accessToken: accessToken,
                         filename: "\(ATProtoTools().generateRandomString())_thumbnail.jpg",
                         imageData: imageData
-                    ).blob
+                    )
                 } else {
                     thumbnailImage = nil
                 }
