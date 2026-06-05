@@ -355,15 +355,32 @@ public enum UnknownType: Sendable, Codable {
     /// This is a convience method that handles the case checks. By using this, you can reference
     /// a specific property within a record with just one line.
     ///
+    /// If the instance is a `.unknown` case (which happens when the JSON object was decoded
+    /// before the record type was added to ``ATRecordTypeRegistry``, such as when decoding
+    /// cached data at app launch), this method will attempt to decode the stored dictionary
+    /// directly into the specified record type, as long as the `$type` property matches.
+    ///
     /// - Parameter type: An ``ATRecordProtocol``-conforming type.
     /// - Returns: An instance of the specified record type if the `UnknownType` contains a record
     /// of that type.
     public func getRecord<Record: ATRecordProtocol>(ofType type: Record.Type) -> Record? {
-        guard case .record(let record as Record) = self else {
-            return nil
-        }
+        switch self {
+            case .record(let record):
+                return record as? Record
+            case .unknown(let dictionary):
+                guard case .string(let typeIdentifier)? = dictionary["$type"],
+                      typeIdentifier == Record.type,
+                      let data = try? JSONEncoder().encode(dictionary) else {
+                    return nil
+                }
 
-        return record
+                do {
+                    return try JSONDecoder().decode(Record.self, from: data)
+                } catch {
+                    print("Error decoding record of type '\(typeIdentifier)': \(error)")
+                    return nil
+                }
+        }
     }
 
     /// Converts the output into raw JSON data.
@@ -489,10 +506,7 @@ public enum UnknownType: Sendable, Codable {
             case .record(let record):
                 try container.encode(record)
             case .unknown(let unknownData):
-                let encoder = JSONEncoder()
-                encoder.outputFormatting = [.prettyPrinted]
-                let jsonData = try encoder.encode(unknownData)
-                try container.encode(jsonData)
+                try container.encode(unknownData)
         }
     }
 
