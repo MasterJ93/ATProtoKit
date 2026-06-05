@@ -374,7 +374,12 @@ public enum UnknownType: Sendable, Codable {
                     return nil
                 }
 
-                return try? JSONDecoder().decode(Record.self, from: data)
+                do {
+                    return try JSONDecoder().decode(Record.self, from: data)
+                } catch {
+                    print("Error decoding record of type '\(typeIdentifier)': \(error)")
+                    return nil
+                }
         }
     }
 
