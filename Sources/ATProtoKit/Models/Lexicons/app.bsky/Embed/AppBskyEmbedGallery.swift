@@ -107,7 +107,7 @@ extension AppBskyLexicon.Embed {
             /// The identifier of the lexicon.
             ///
             /// - Warning: The value must not change.
-            public let type: String = "app.bsky.embed.gallery#image"
+            public static let type: String = "app.bsky.embed.gallery#image"
 
             /// The image that needs to be uploaded.
             ///
@@ -139,12 +139,14 @@ extension AppBskyLexicon.Embed {
             
             public func encode(to encoder: any Encoder) throws {
                 var container = encoder.container(keyedBy: CodingKeys.self)
+                try container.encode(Self.type, forKey: CodingKeys.type)
                 try container.encode(self.imageBlob, forKey: CodingKeys.imageBlob)
                 try container.encode(self.altText, forKey: CodingKeys.altText)
                 try container.encodeIfPresent(self.aspectRatio, forKey: CodingKeys.aspectRatio)
             }
             
             enum CodingKeys: String, CodingKey {
+                case type = "$type"
                 case imageBlob = "image"
                 case altText = "alt"
                 case aspectRatio
