@@ -162,7 +162,7 @@ extension AppBskyLexicon.Embed {
             /// The identifier of the lexicon.
             ///
             /// - Warning: The value must not change.
-            public let type: String = "app.bsky.embed.gallery#view"
+            public static let type: String = "app.bsky.embed.gallery#view"
 
             /// An array of images.
             public let items: [ViewImage]
@@ -180,7 +180,7 @@ extension AppBskyLexicon.Embed {
             public func encode(to encoder: any Encoder) throws {
                 var container = encoder.container(keyedBy: CodingKeys.self)
 
-                try container.encode(self.type, forKey: .type)
+                try container.encode(Self.type, forKey: .type)
                 try container.encode(self.items, forKey: .items)
             }
 
@@ -200,7 +200,7 @@ extension AppBskyLexicon.Embed {
             /// The identifier of the lexicon.
             ///
             /// - Warning: The value must not change.
-            public let type: String = "app.bsky.embed.gallery#viewImage"
+            public static let type: String = "app.bsky.embed.gallery#viewImage"
 
             /// The URI of the image's thumbnail.
             ///
@@ -242,7 +242,7 @@ extension AppBskyLexicon.Embed {
             public func encode(to encoder: any Encoder) throws {
                 var container = encoder.container(keyedBy: CodingKeys.self)
 
-                try container.encode(self.type, forKey: .type)
+                try container.encode(Self.type, forKey: .type)
                 try container.encode(self.thumbnailImageURL, forKey: .thumbnailImageURL)
                 try container.encode(self.fullSizeImageURL, forKey: .fullSizeImageURL)
                 try container.encode(self.altText, forKey: .altText)
