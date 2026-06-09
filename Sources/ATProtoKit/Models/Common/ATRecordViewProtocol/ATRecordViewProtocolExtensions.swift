@@ -136,6 +136,8 @@ extension AppBskyLexicon.Embed.RecordDefinition.ViewRecord.EmbedsUnion: Identifi
                 return view.id
             case .embedVideoView(let view):
                 return view.id
+            case .embedGalleryView(let view):
+                return view.id
             case .unknown(_, let dictionary):
                 return String(dictionary.hashValue)
         }
@@ -155,6 +157,18 @@ extension AppBskyLexicon.Embed.ImagesDefinition.View: Identifiable {
 }
 
 extension AppBskyLexicon.Embed.ImagesDefinition.ViewImage: Identifiable {
+    public var id: String {
+        return "\(self.fullSizeImageURL)_\(self.thumbnailImageURL)"
+    }
+}
+
+extension AppBskyLexicon.Embed.GalleryDefinition.View: Identifiable {
+    public var id: String {
+        return items.map(\.id).joined(separator: "_")
+    }
+}
+
+extension AppBskyLexicon.Embed.GalleryDefinition.ViewImage: Identifiable {
     public var id: String {
         return "\(self.fullSizeImageURL)_\(self.thumbnailImageURL)"
     }
@@ -220,6 +234,8 @@ extension AppBskyLexicon.Embed.RecordWithMediaDefinition.View: Identifiable {
             case .embedImagesView(let mediaView):
                 return mediaView.id
             case .embedVideoView(let mediaView):
+                return mediaView.id
+            case .embedGalleryView(let mediaView):
                 return mediaView.id
             case .unknown(_, let dictionary):
                 return String(dictionary.hashValue)

@@ -168,6 +168,9 @@ extension AppBskyLexicon.Embed {
                 /// An external link that's been embedded.
                 case embedExternalView(AppBskyLexicon.Embed.ExternalDefinition.View)
 
+                /// A gallery that's been embedded.
+                case embedGalleryView(AppBskyLexicon.Embed.GalleryDefinition.View)
+
                 /// An unknown case.
                 case unknown(String, [String: CodableValue])
 
@@ -182,6 +185,8 @@ extension AppBskyLexicon.Embed {
                             self = .embedVideoView(try AppBskyLexicon.Embed.VideoDefinition.View(from: decoder))
                         case "app.bsky.embed.external#view":
                             self = .embedExternalView(try AppBskyLexicon.Embed.ExternalDefinition.View(from: decoder))
+                        case "app.bsky.embed.gallery#view":
+                            self = .embedGalleryView(try AppBskyLexicon.Embed.GalleryDefinition.View(from: decoder))
                         default:
                             let singleValueDecodingContainer = try decoder.singleValueContainer()
                             let dictionary = try Self.decodeDictionary(from: singleValueDecodingContainer, decoder: decoder)
@@ -199,6 +204,8 @@ extension AppBskyLexicon.Embed {
                         case .embedVideoView(let value):
                             try container.encode(value)
                         case .embedExternalView(let value):
+                            try container.encode(value)
+                        case .embedGalleryView(let value):
                             try container.encode(value)
                         default:
                             break

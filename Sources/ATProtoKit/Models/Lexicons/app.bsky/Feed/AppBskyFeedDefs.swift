@@ -143,6 +143,9 @@ extension AppBskyLexicon.Feed {
             /// The view of a record embed alongside an embed of some compatible media.
             case embedRecordWithMediaView(AppBskyLexicon.Embed.RecordWithMediaDefinition.View)
 
+            /// The view of a gallery embed.
+            case embedGalleryView(AppBskyLexicon.Embed.GalleryDefinition.View)
+
             /// An unknown case.
             case unknown(String, [String: CodableValue])
 
@@ -161,6 +164,8 @@ extension AppBskyLexicon.Feed {
                         self = .embedRecordView(try AppBskyLexicon.Embed.RecordDefinition.View(from: decoder))
                     case "app.bsky.embed.recordWithMedia#view":
                         self = .embedRecordWithMediaView(try AppBskyLexicon.Embed.RecordWithMediaDefinition.View(from: decoder))
+                    case "app.bsky.embed.gallery#view":
+                        self = .embedGalleryView(try AppBskyLexicon.Embed.GalleryDefinition.View(from: decoder))
                     default:
                         let singleValueDecodingContainer = try decoder.singleValueContainer()
                         let dictionary = try Self.decodeDictionary(from: singleValueDecodingContainer, decoder: decoder)
@@ -182,6 +187,8 @@ extension AppBskyLexicon.Feed {
                     case .embedRecordView(let value):
                         try container.encode(value)
                     case .embedRecordWithMediaView(let value):
+                        try container.encode(value)
+                    case .embedGalleryView(let value):
                         try container.encode(value)
                     default:
                         break
