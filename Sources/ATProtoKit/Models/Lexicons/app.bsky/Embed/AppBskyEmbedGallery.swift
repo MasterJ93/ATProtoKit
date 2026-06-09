@@ -28,17 +28,31 @@ extension AppBskyLexicon.Embed {
         /// - Warning: The value must not change.
         public let type: String = "app.bsky.embed.gallery"
 
-        public init() {}
+        /// The items in the gallery
+        ///
+        /// - Important: The schema-level maxLength of 20 is a future-proof ceiling. Clients should currently enforce a soft limit of 10 items in authoring UIs.
+        public let items: [ItemUnion]
+        
+        
+        public init(items: [ItemUnion]) {
+            self.items = items
+        }
 
-        public init(from decoder: any Decoder) throws {}
+        public init(from decoder: any Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+            
+            self.items = try container.decode([ItemUnion].self, forKey: .items)
+        }
 
         public func encode(to encoder: any Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
             try container.encode(self.type, forKey: CodingKeys.type)
+            try container.truncatedEncodeIfPresent(self.items, forKey: CodingKeys.items, upToArrayLength: 10)
         }
 
         enum CodingKeys: String, CodingKey {
             case type = "$type"
+            case items
         }
 
         // Unions
