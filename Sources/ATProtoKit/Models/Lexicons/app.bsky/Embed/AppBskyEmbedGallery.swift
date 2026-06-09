@@ -99,7 +99,7 @@ extension AppBskyLexicon.Embed {
         // Enums
         /// A data model for an external definition.
         ///
-        /// - SeeAlso: This is based on the [`app.bsky.embed.images`][github] lexicon.
+        /// - SeeAlso: This is based on the [`app.bsky.embed.gallery`][github] lexicon.
         ///
         /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/embed/gallery.json
         public struct Image: Sendable, Codable, Equatable, Hashable {
