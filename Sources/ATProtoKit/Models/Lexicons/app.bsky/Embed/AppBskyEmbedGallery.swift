@@ -42,6 +42,59 @@ extension AppBskyLexicon.Embed {
         }
 
         // Enums
+        /// A data model for an external definition.
+        ///
+        /// - SeeAlso: This is based on the [`app.bsky.embed.images`][github] lexicon.
+        ///
+        /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/embed/gallery.json
+        public struct Image: Sendable, Codable, Equatable, Hashable {
+
+            /// The identifier of the lexicon.
+            ///
+            /// - Warning: The value must not change.
+            public let type: String = "app.bsky.embed.gallery#image"
+
+            /// The image that needs to be uploaded.
+            ///
+            /// - Warning: The image size can't be higher than 2 MB. Failure to do so will result
+            /// in the image failing to upload.
+            public let imageBlob: ComAtprotoLexicon.Repository.UploadBlobOutput
+
+            /// The alternative text for the image.
+            ///
+            /// - Note: From the AT Protocol specification: "Alt text description of the image,
+            /// for accessibility."
+            public let altText: String
+
+            /// The aspect ratio of the image. Optional.
+            public let aspectRatio: AspectRatioDefinition?
+
+            public init(imageBlob: ComAtprotoLexicon.Repository.UploadBlobOutput, altText: String, aspectRatio: AspectRatioDefinition?) {
+                self.imageBlob = imageBlob
+                self.altText = altText
+                self.aspectRatio = aspectRatio
+            }
+
+            public init(from decoder: any Decoder) throws {
+                let container = try decoder.container(keyedBy: CodingKeys.self)
+                self.imageBlob = try container.decode(ComAtprotoLexicon.Repository.UploadBlobOutput.self, forKey: CodingKeys.imageBlob)
+                self.altText = try container.decode(String.self, forKey: CodingKeys.altText)
+                self.aspectRatio = try container.decodeIfPresent(AppBskyLexicon.Embed.AspectRatioDefinition.self, forKey: CodingKeys.aspectRatio)
+            }
+            
+            public func encode(to encoder: any Encoder) throws {
+                var container = encoder.container(keyedBy: CodingKeys.self)
+                try container.encode(self.imageBlob, forKey: CodingKeys.imageBlob)
+                try container.encode(self.altText, forKey: CodingKeys.altText)
+                try container.encodeIfPresent(self.aspectRatio, forKey: CodingKeys.aspectRatio)
+            }
+            
+            enum CodingKeys: String, CodingKey {
+                case imageBlob = "image"
+                case altText = "alt"
+                case aspectRatio
+            }
+        }
         /// A data model for the embed gallery view definition.
         ///
         /// - SeeAlso: This is based on the [`app.bsky.embed.gallery`][github] lexicon.
