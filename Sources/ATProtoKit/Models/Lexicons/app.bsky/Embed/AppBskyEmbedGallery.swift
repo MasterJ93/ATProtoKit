@@ -41,6 +41,47 @@ extension AppBskyLexicon.Embed {
             case type = "$type"
         }
 
+        // Unions
+        /// A specific gallery item
+        public enum ItemUnion: ATUnionProtocol, Equatable, Hashable {
+            
+            /// A gallery image.
+            case itemImage(AppBskyLexicon.Embed.GalleryDefinition.Image)
+            
+            // An unknown case.
+            case unknown(String, [String: CodableValue])
+            
+            public init(from decoder: Decoder) throws {
+                let container = try decoder.container(keyedBy: CodingKeys.self)
+                let type = try container.decodeIfPresent(String.self, forKey: .type)
+                
+                switch type {
+                    case "app.bsky.embed.gallery#image":
+                        self = .itemImage(try AppBskyLexicon.Embed.GalleryDefinition.Image(from: decoder))
+                    default:
+                        let singleValueDecodingContainer = try decoder.singleValueContainer()
+                        let dictionary = try Self.decodeDictionary(from: singleValueDecodingContainer, decoder: decoder)
+
+                        self = .unknown(type ?? "unknown", dictionary)
+                }
+            }
+            
+            public func encode(to encoder: Encoder) throws {
+                var container = encoder.singleValueContainer()
+                
+                switch self {
+                    case .itemImage(let value):
+                        try container.encode(value)
+                    default:
+                        break
+                }
+            }
+            
+            enum CodingKeys: String, CodingKey {
+                case type = "$type"
+            }
+        }
+        
         // Enums
         /// A data model for an external definition.
         ///
