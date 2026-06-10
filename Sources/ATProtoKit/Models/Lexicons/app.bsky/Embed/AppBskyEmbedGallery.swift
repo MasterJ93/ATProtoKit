@@ -26,7 +26,7 @@ extension AppBskyLexicon.Embed {
         /// The identifier of the lexicon.
         ///
         /// - Warning: The value must not change.
-        public let type: String = "app.bsky.embed.gallery"
+        public static let type: String = "app.bsky.embed.gallery"
 
         /// The items in the gallery
         ///
@@ -46,7 +46,7 @@ extension AppBskyLexicon.Embed {
 
         public func encode(to encoder: any Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
-            try container.encode(self.type, forKey: CodingKeys.type)
+            try container.encode(Self.type, forKey: CodingKeys.type)
             try container.truncatedEncodeIfPresent(self.items, forKey: CodingKeys.items, upToArrayLength: 10)
         }
 
