@@ -21,7 +21,7 @@ extension ATProtoAdmin {
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/tools/ozone/moderation/cancelScheduledActions.json
     ///
     /// - Parameters:
-    ///   - subjects: An array of decentralized identifiers (DIDs) for which the cancellations will
+    ///   - dids: An array of decentralized identifiers (DIDs) for which the cancellations will
     ///   occur on.
     ///   - comment: A comment to attach to the cancellation. Optional.
     /// - Returns: Results of the cancelled pending actions.

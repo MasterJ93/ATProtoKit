@@ -196,8 +196,8 @@ public struct APIClientService: Sendable {
     /// Sends a `URLRequest` in order to receive a data object.
     ///
     /// Typically, this will be used for getting a blob object as the output. However, this is
-    /// also useful for when the output is an unknown format, can be any format,
-    /// or is unreliable. If it can be any format or if the format is unreliable, it's your
+    /// also useful for when the output is an unknown format, can be an arbitrary format,
+    /// or is unreliable. If the format is arbitrary or unreliable, it's your
     /// responsibility to handle the information stored inside the `Data` object. If the output is
     /// known and it's not a blob, however, then the other `sendRequest` methods are
     /// more appropriate.
