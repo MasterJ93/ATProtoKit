@@ -181,6 +181,13 @@ public actor AppleSecureKeychain: SecureKeychainProtocol {
 
     /// Saves or updates a keychain item.
     ///
+    /// Items are stored with `kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly` so that
+    /// background tasks (e.g. push-driven refresh) can read session tokens while the device
+    /// is locked. Without this attribute, the keychain default is `kSecAttrAccessibleWhenUnlocked`,
+    /// which causes `SecItemCopyMatching` to return `errSecInteractionNotAllowed` for any
+    /// access attempted while the screen is locked — silently breaking background refresh.
+    /// `ThisDeviceOnly` prevents tokens from migrating via iCloud Keychain or encrypted backups.
+    ///
     /// - Parameters:
     ///   - value: The keychain value.
     ///   - key: The keychain key.
@@ -195,8 +202,13 @@ public actor AppleSecureKeychain: SecureKeychainProtocol {
             kSecAttrService: serviceName,
         ]
 
+        // Including `kSecAttrAccessible` in the update dictionary upgrades the accessibility
+        // of items previously written with the default attribute, so existing installs
+        // migrate to the background-readable policy on the next save without needing a
+        // delete+re-add cycle.
         let updateAttributes: [CFString: Any] = [
-            kSecValueData: data
+            kSecValueData: data,
+            kSecAttrAccessible: kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly
         ]
 
         let status = SecItemUpdate(query as CFDictionary, updateAttributes as CFDictionary)
@@ -207,6 +219,7 @@ public actor AppleSecureKeychain: SecureKeychainProtocol {
             case errSecItemNotFound:
                 var newItem = query
                 newItem[kSecValueData] = data
+                newItem[kSecAttrAccessible] = kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly
                 let addStatus = SecItemAdd(newItem as CFDictionary, nil)
                 guard addStatus == errSecSuccess else {
                     throw ApplSecureKeychainError.unhandledStatus(status: addStatus)

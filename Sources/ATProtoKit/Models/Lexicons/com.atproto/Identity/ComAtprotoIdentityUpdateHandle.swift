@@ -27,5 +27,18 @@ extension ComAtprotoLexicon.Identity {
         ///
         /// - Note: According to the AT Protocol specifications: "The new handle."
         public let handle: String
+        
+        public init(handle: String) {
+            self.handle = handle
+        }
+        
+        public func encode(to encoder: any Encoder) throws {
+            var container = encoder.container(keyedBy: CodingKeys.self)
+            try container.encode(self.handle, forKey: .handle)
+        }
+        
+        public enum CodingKeys: CodingKey {
+            case handle
+        }
     }
 }

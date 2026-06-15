@@ -217,7 +217,7 @@ extension ChatBskyLexicon.Conversation {
                 let type = try container.decodeIfPresent(String.self, forKey: .type)
 
                 switch type {
-                    case "app.bsky.embed.record":
+                    case "app.bsky.embed.record", "app.bsky.embed.record#view":
                         self = .recordView(try AppBskyLexicon.Embed.RecordDefinition.View(from: decoder))
                     default:
                         let singleValueDecodingContainer = try decoder.singleValueContainer()

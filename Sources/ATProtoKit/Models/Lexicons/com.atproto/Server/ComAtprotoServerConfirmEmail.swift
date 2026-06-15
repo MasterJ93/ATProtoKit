@@ -27,5 +27,27 @@ extension ComAtprotoLexicon.Server {
 
         /// The token given to the user via email.
         public let token: String
+        
+        public init(email: String, token: String) {
+            self.email = email
+            self.token = token
+        }
+        
+        public init(from decoder: any Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+            self.email = try container.decode(String.self, forKey: .email)
+            self.token = try container.decode(String.self, forKey: .token)
+        }
+        
+        public func encode(to encoder: any Encoder) throws {
+            var container = encoder.container(keyedBy: CodingKeys.self)
+            try container.encode(self.email, forKey: .email)
+            try container.encode(self.token, forKey: .token)
+        }
+       
+        enum CodingKeys: CodingKey {
+            case email
+            case token
+        }
     }
 }

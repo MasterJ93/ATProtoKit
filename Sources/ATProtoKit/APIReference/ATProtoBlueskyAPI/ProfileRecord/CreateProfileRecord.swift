@@ -136,7 +136,7 @@ extension ATProtoBluesky {
         websiteURL: URL? = nil,
         avatarImage: ATProtoTools.ImageQuery? = nil,
         bannerImage: ATProtoTools.ImageQuery? = nil,
-        labels: [ComAtprotoLexicon.Label.SelfLabelsDefinition]? = nil,
+        labels: ComAtprotoLexicon.Label.SelfLabelsDefinition? = nil,
         joinedViaStarterPack: ComAtprotoLexicon.Repository.StrongReference? = nil,
         pinnedPost: ComAtprotoLexicon.Repository.StrongReference? = nil,
         recordKey: String? = nil,
@@ -214,14 +214,6 @@ extension ATProtoBluesky {
             }
         }
 
-        // labels
-        var labelsArray: [AppBskyLexicon.Actor.ProfileRecord.LabelsUnion]? = nil
-        if let labels = labels {
-            for label in labels {
-                labelsArray?.append(.selfLabel(label))
-            }
-        }
-
         let profileRecord = AppBskyLexicon.Actor.ProfileRecord(
             displayName: displayNameText,
             description: descriptionText,
@@ -229,7 +221,7 @@ extension ATProtoBluesky {
             websiteURL: website,
             avatarBlob: profileAvatarImage,
             bannerBlob: profileBannerImage,
-            labels: labelsArray,
+            labels: (labels != nil) ? .selfLabel(labels!) : nil,
             joinedViaStarterPack: joinedViaStarterPack,
             pinnedPost: pinnedPost,
             createdAt: Date()

@@ -28,7 +28,7 @@ extension ATProtoKit {
     ///   - accessToken: The access token for authorization.
     ///   - filename: The filename of the blob to upload.
     ///   - imageData: The data of the blob to upload.
-    /// - Returns: A `BlobContainer` instance with the upload result.
+    /// - Returns: An `UploadBlobOutput` instance with the upload result.
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
@@ -37,7 +37,7 @@ extension ATProtoKit {
         accessToken: String,
         filename: String,
         imageData: Data
-    ) async throws -> ComAtprotoLexicon.Repository.BlobContainer {
+    ) async throws -> ComAtprotoLexicon.Repository.UploadBlobOutput {
         guard let requestURL = URL(string: "\(pdsURL)/xrpc/com.atproto.repo.uploadBlob") else {
             throw ATRequestPrepareError.invalidRequestURL
         }
@@ -52,12 +52,22 @@ extension ATProtoKit {
                 authorizationValue: "Bearer \(accessToken)")
             request.httpBody = imageData
 
+            // The `com.atproto.repo.uploadBlob` endpoint wraps its result in a
+            // `blob` key (`{"blob": {...}}`), unlike record fields where the blob
+            // appears inline. Decode the wrapper and return its blob so uploads
+            // don't fail looking for `ref` at the response root.
             let response = try await apiClientService.sendRequest(request,
-                                                      decodeTo: ComAtprotoLexicon.Repository.BlobContainer.self)
+                                                      decodeTo: UploadBlobResponse.self)
 
-            return response
+            return response.blob
         } catch {
             throw error
         }
     }
+}
+
+/// The response envelope for `com.atproto.repo.uploadBlob`, which returns the
+/// uploaded blob under a `blob` key.
+private struct UploadBlobResponse: Decodable {
+    let blob: ComAtprotoLexicon.Repository.UploadBlobOutput
 }
