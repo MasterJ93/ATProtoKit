@@ -427,6 +427,7 @@ public struct APIClientService: Sendable {
             case "webp": return "image/webp"
             case "mp4": return "video/mp4"
             case "mov": return "video/quicktime"
+            case "vtt": return "text/vtt"
             default: return "application/octet-stream"
         }
     }
