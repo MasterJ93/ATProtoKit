@@ -62,7 +62,7 @@ extension ATProtoBluesky {
                         listURI: listURI,
                         createdAt: Date()
                     )
-                    collection = "app.bsky.graph.listBlock"
+                    collection = "app.bsky.graph.listblock"
                 } catch {
                     throw error
                 }
