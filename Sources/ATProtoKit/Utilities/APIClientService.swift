@@ -170,6 +170,9 @@ public struct APIClientService: Sendable {
 
         // Map out each URLQueryItem with the key ($0.0) and value ($0.1) of the item.
         components?.queryItems = queryItems.map { URLQueryItem(name: $0.0, value: $0.1) }
+        if let percentEncodedQuery = components?.percentEncodedQuery {
+            components?.percentEncodedQuery = percentEncodedQuery.replacingOccurrences(of: "+", with: "%2B")
+        }
 
         guard let finalURL = components?.url else {
             throw ATHTTPRequestError.failedToConstructURLWithParameters
@@ -427,6 +430,7 @@ public struct APIClientService: Sendable {
             case "webp": return "image/webp"
             case "mp4": return "video/mp4"
             case "mov": return "video/quicktime"
+            case "vtt": return "text/vtt"
             default: return "application/octet-stream"
         }
     }
