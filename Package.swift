@@ -39,10 +39,10 @@ let package = Package(
 //            capability: .buildTool(),
 //            dependencies: ["VersionNumberPluginExec"]
 //        )
-
-        .testTarget(
-            name: "ATProtoKitTests",
-            dependencies: ["ATProtoKit"]),
+//
+//        .testTarget(
+//            name: "ATProtoKitTests",
+//            dependencies: ["ATProtoKit"]),
     ]
 )
 

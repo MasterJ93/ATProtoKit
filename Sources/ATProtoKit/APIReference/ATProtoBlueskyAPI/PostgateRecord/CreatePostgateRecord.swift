@@ -18,7 +18,7 @@ extension ATProtoBluesky {
     /// 
     /// You need to have a record first before you create a postgate record. If there isn't one
     /// yet, you can create one manually, or you can use the
-    /// ``ATProtoBluesky/createPostRecord(text:inlineFacets:locales:replyTo:embed:labels:tags:creationDate:recordKey:shouldValidate:swapCommit:)``
+    /// ``ATProtoBluesky/createPostRecord(text:inlineFacets:locales:replyTo:embed:labels:tags:creationDate:replyControls:embeddingRules:recordKey:shouldValidate:swapCommit:)``
     /// method.
     /// 
     /// After that, you can use the ``ComAtprotoLexicon/Repository/StrongReference/recordURI``

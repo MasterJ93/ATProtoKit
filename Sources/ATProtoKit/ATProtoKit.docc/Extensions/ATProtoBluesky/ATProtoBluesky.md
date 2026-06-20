@@ -13,7 +13,7 @@
 
 ### Creating Posts
 
-- ``createPostRecord(text:inlineFacets:locales:replyTo:embed:labels:tags:creationDate:recordKey:shouldValidate:swapCommit:)``
+- ``createPostRecord(text:inlineFacets:locales:replyTo:embed:labels:tags:creationDate:replyControls:embeddingRules:recordKey:shouldValidate:swapCommit:)``
 - <doc:ATLinkBuilderProtocol>
 - ``ATLinkBuilder``
 
