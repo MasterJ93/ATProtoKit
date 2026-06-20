@@ -19,7 +19,7 @@ extension AppBskyLexicon.Draft {
         /// The identifier of the lexicon.
         ///
         /// - Warning: The value must not change.
-        public static let type: String = "app.bsky.drafts.defs#draftWithId"
+        public static let type: String = "app.bsky.draft.defs#draftWithId"
         
         /// A TID to be used as a draft identifier.
         public let tid: String
@@ -64,7 +64,7 @@ extension AppBskyLexicon.Draft {
         /// The identifier of the lexicon.
         ///
         /// - Warning: The value must not change.
-        public static let type: String = "app.bsky.drafts.defs#draft"
+        public static let type: String = "app.bsky.draft.defs#draft"
         
         /// UUIDv4 identifier of the device that created this draft. Optional.
         ///
@@ -249,7 +249,7 @@ extension AppBskyLexicon.Draft {
         /// The identifier of the lexicon.
         ///
         /// - Warning: The value must not change.
-        public static let type: String = "app.bsky.drafts.defs#draftPost"
+        public static let type: String = "app.bsky.draft.defs#draftPost"
         
         /// The primary post content.
         ///
@@ -381,7 +381,7 @@ extension AppBskyLexicon.Draft {
         /// The identifier of the lexicon.
         ///
         /// - Warning: The value must not change.
-        public static let type: String = "app.bsky.drafts.defs#draftView"
+        public static let type: String = "app.bsky.draft.defs#draftView"
         
         /// A TID to be used as a draft identifier.
         public let tid: String
@@ -588,7 +588,7 @@ extension AppBskyLexicon.Draft {
         /// The identifier of the lexicon.
         ///
         /// - Warning: The value must not change.
-        public static let type: String = "app.bsky.drafts.defs#draftEmbedImage"
+        public static let type: String = "app.bsky.draft.defs#draftEmbedImage"
         
         /// A reference to the image, local to the drafting device
         public let localRef: DraftEmbedLocalReferenceDefinition
