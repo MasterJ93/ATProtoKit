@@ -193,3 +193,18 @@ extension URL {
 
 // MARK: - JobStatusDefinition Extension
 extension AppBskyLexicon.Video.JobStatusDefinition: Error {}
+
+// MARK: - JSONDecoder Extension
+extension JSONDecoder {
+
+    /// Adds a record registry snapshot to the decoder's user info dictionary.
+    ///
+    /// - Parameter recordRegistry: The record decoder snapshot to use while decoding.
+    public func useRecordRegistrySnapshot(_ recordRegistry: [String: ATRecordDecoder]) {
+        guard let key = CodingUserInfoKey(rawValue: ATRecordDecodingUserInfoKey.recordRegistry) else {
+            return
+        }
+
+        self.userInfo[key] = recordRegistry
+    }
+}
