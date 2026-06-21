@@ -129,13 +129,23 @@ public final class ATProtoKit: Sendable, ATProtoKitConfiguration, ATRecordConfig
     /// An array of record lexicon structs created by Bluesky.
     ///
     /// If `canUseBlueskyRecords` is set to `false`, these will not be used.
-    public let recordLexicons: [any ATRecordProtocol.Type] = [
-        AppBskyLexicon.Actor.ProfileRecord.self, AppBskyLexicon.Actor.StatusRecord.self, AppBskyLexicon.Feed.GeneratorRecord.self,
-        AppBskyLexicon.Feed.LikeRecord.self, AppBskyLexicon.Feed.PostRecord.self, AppBskyLexicon.Feed.PostgateRecord.self,
-        AppBskyLexicon.Feed.RepostRecord.self, AppBskyLexicon.Feed.ThreadgateRecord.self, AppBskyLexicon.Graph.BlockRecord.self,
-        AppBskyLexicon.Graph.FollowRecord.self, AppBskyLexicon.Graph.ListRecord.self, AppBskyLexicon.Graph.ListBlockRecord.self,
-        AppBskyLexicon.Graph.ListItemRecord.self, AppBskyLexicon.Graph.StarterpackRecord.self, AppBskyLexicon.Labeler.ServiceRecord.self,
-        ChatBskyLexicon.Actor.DeclarationRecord.self
+    public let recordLexicons: [ATRecordDecoder] = [
+        ATRecordDecoder(type: AppBskyLexicon.Actor.ProfileRecord.self),
+        ATRecordDecoder(type: AppBskyLexicon.Actor.StatusRecord.self),
+        ATRecordDecoder(type: AppBskyLexicon.Feed.GeneratorRecord.self),
+        ATRecordDecoder(type: AppBskyLexicon.Feed.LikeRecord.self),
+        ATRecordDecoder(type: AppBskyLexicon.Feed.PostRecord.self),
+        ATRecordDecoder(type: AppBskyLexicon.Feed.PostgateRecord.self),
+        ATRecordDecoder(type: AppBskyLexicon.Feed.RepostRecord.self),
+        ATRecordDecoder(type: AppBskyLexicon.Feed.ThreadgateRecord.self),
+        ATRecordDecoder(type: AppBskyLexicon.Graph.BlockRecord.self),
+        ATRecordDecoder(type: AppBskyLexicon.Graph.FollowRecord.self),
+        ATRecordDecoder(type: AppBskyLexicon.Graph.ListRecord.self),
+        ATRecordDecoder(type: AppBskyLexicon.Graph.ListBlockRecord.self),
+        ATRecordDecoder(type: AppBskyLexicon.Graph.ListItemRecord.self),
+        ATRecordDecoder(type: AppBskyLexicon.Graph.StarterpackRecord.self),
+        ATRecordDecoder(type: AppBskyLexicon.Labeler.ServiceRecord.self),
+        ATRecordDecoder(type: ChatBskyLexicon.Actor.DeclarationRecord.self)
     ]
 
     /// Represents an object used for managing sessions.
