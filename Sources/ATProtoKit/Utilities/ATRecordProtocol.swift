@@ -98,6 +98,13 @@ public struct ATRecordDecoder: Sendable, Equatable, Hashable {
         }
     }
 
+    public static func == (lhs: ATRecordDecoder, rhs: ATRecordDecoder) -> Bool {
+        lhs.typeIdentifier == rhs.typeIdentifier
+    }
+
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(typeIdentifier)
+    }
 }
 
 /// A registry for all decodable record types in the AT Protocol.
