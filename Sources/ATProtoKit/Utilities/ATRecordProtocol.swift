@@ -371,7 +371,7 @@ public enum UnknownType: Sendable, Codable {
 
     /// Represents an unknown type.
     ///
-    /// When this is used, the JSON object is converted to `[String: Any]` object. It's your
+    /// When this is used, the JSON object is converted to a `[String: CodableValue]` object. It's your
     /// responsibility to handle this properly.
     case unknown([String: CodableValue])
 
@@ -393,9 +393,8 @@ public enum UnknownType: Sendable, Codable {
 
         if let typeKey = DynamicCodingKeys(stringValue: "$type"),
            let typeIdentifier = try container.decodeIfPresent(String.self, forKey: typeKey),
-           let recordType = ATRecordTypeRegistry.recordRegistry[typeIdentifier] {
-            let record = try recordType.init(from: decoder)
-            self = .record(record)
+           let recordDecoder = Self.recordDecoder(for: typeIdentifier, decoder: decoder) {
+            self = try recordDecoder.decode(from: decoder)
         } else {
             do {
                 let dictionary = try UnknownType.decodeNestedDictionary(container: container)
@@ -507,6 +506,21 @@ public enum UnknownType: Sendable, Codable {
             }
         }
         return dictionary
+    }
+
+    /// Retrieves a registered record decoder from the decoder's user info snapshot.
+    ///
+    /// - Parameters:
+    ///   - type: The NSID string.
+    ///   - decoder: The decoder that may contain a registry snapshot.
+    /// - Returns: The registered record decoder, or `nil` if no matching decoder is available.
+    private static func recordDecoder(for type: String, decoder: Decoder) -> ATRecordDecoder? {
+        guard let key = CodingUserInfoKey(rawValue: ATRecordDecodingUserInfoKey.recordRegistry),
+              let registry = decoder.userInfo[key] as? [String: ATRecordDecoder] else {
+            return nil
+        }
+
+        return registry[type]
     }
 
     /// Decodes a nested array from an unknown JSON object.

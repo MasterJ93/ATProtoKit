@@ -192,7 +192,11 @@ public struct APIClientService: Sendable {
     public func sendRequest<T: Decodable>(_ request: URLRequest, withEncodingBody body: (Encodable & Sendable)? = nil, decodeTo: T.Type) async throws -> T {
         let data = try await self.performRequest(request, withEncodingBody: body)
 
-        let decodedData = try JSONDecoder().decode(T.self, from: data)
+        let recordRegistry = await ATRecordTypeRegistry.recordRegistry
+        let decoder = JSONDecoder()
+        decoder.useRecordRegistrySnapshot(recordRegistry)
+
+        let decodedData = try decoder.decode(T.self, from: data)
         return decodedData
     }
 
@@ -237,7 +241,11 @@ public struct APIClientService: Sendable {
             throw URLError(.badServerResponse)
         }
 
-        let decodedData = try JSONDecoder().decode(T.self, from: responseData)
+        let recordRegistry = await ATRecordTypeRegistry.recordRegistry
+        let decoder = JSONDecoder()
+        decoder.useRecordRegistrySnapshot(recordRegistry)
+
+        let decodedData = try decoder.decode(T.self, from: responseData)
         return decodedData
     }
 
