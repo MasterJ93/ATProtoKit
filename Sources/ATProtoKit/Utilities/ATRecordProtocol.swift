@@ -528,7 +528,7 @@ public enum UnknownType: Sendable, Codable {
     /// This is essential to decode truly unknown types.
     ///
     /// - Parameter container: The container that the JSON object resides in.
-    /// - An `[Any]` object.
+    /// - Returns: An array of ``CodableValue`` elements.
     /// 
     /// - Throws: A `DecodingError` if there's a type mismatch.
     private static func decodeArray(from container: KeyedDecodingContainer<DynamicCodingKeys>, forKey key: DynamicCodingKeys) throws -> [CodableValue] {
