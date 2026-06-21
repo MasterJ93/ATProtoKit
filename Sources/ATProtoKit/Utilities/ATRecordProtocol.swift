@@ -152,26 +152,24 @@ public actor ATRecordTypeRegistry {
     /// The shared instance of `ATRecordTypeRegistry`.
     public static let shared = ATRecordTypeRegistry()
 
-    /// A private dispatch queue for the registry.
-    private let registryQueue = DispatchQueue(label: "com.cjrriley.ATProtoKit.ATRecordTypeRegistryQueue")
+    /// The registered record decoders keyed by the Namespaced Identifier (NSID).
+    private var recordRegistryStorage: [String: ATRecordDecoder] = [:]
 
-    /// A private property of ``recordRegistry``.
-    private(set) static var _recordRegistry: [String: any ATRecordProtocol.Type] = [:]
+    /// Indicates whether Bluesky record decoders have already been registered.
+    private var areBlueskyRecordsRegisteredStorage = false
 
     /// The registry itself.
     ///
-    /// Stores a mapping from Namespaced Identifier (NSID) strings to corresponding record types.
+    /// Stores a mapping from Namespaced Identifier (NSID) strings to corresponding record decoders.
     ///
     /// This contains a `Dictionary`, which contains the value of the `$type` property in the
-    /// lexicon (which is used as the "key"), and the ``ATRecordProtocol``-conforming `struct`s
-    /// (which is used as the "value"). ``UnknownType`` will search for the key that matches with
-    /// the JSON object's `$type` property, and then decode or encode the JSON object using the
-    /// `struct` that was found if there's a match.
-    public static var recordRegistry: [String: any ATRecordProtocol.Type] {
-        get {
-            return self.shared.registryQueue.sync {
-                Self._recordRegistry
-            }
+    /// lexicon (which is used as the "key"), and the ``ATRecordDecoder`` values for
+    /// ``ATRecordProtocol``-conforming `struct`s. ``UnknownType`` will search for the key that
+    /// matches with the JSON object's `$type` property, and then decode the JSON object using the
+    /// decoder that was found if there's a match.
+    public static var recordRegistry: [String: ATRecordDecoder] {
+        get async {
+            await Self.shared.recordRegistrySnapshot()
         }
     }
 
@@ -179,7 +177,11 @@ public actor ATRecordTypeRegistry {
     /// added to ``recordRegistry``. Defaults to `false`.
     ///
     /// - Warning: Don't touch this property; this should only be used for ``ATProtoKit``.
-    public private(set) static var areBlueskyRecordsRegistered = false
+    public static var areBlueskyRecordsRegistered: Bool {
+        get async {
+            await Self.shared.areBlueskyRecordsRegisteredStorage
+        }
+    }
 
     /// Tracks whether the registry is currently being modified.
     public private(set) var isUpdating = false
@@ -192,19 +194,17 @@ public actor ATRecordTypeRegistry {
     /// Registers an array of record types.
     ///
     /// - Parameter types: An array of ``ATRecordProtocol``-conforming `struct`s.
-    public func register(types: [any ATRecordProtocol.Type]) async {
+    public func register(types: [ATRecordDecoder]) async {
         self.isUpdating = true
 
         for type in types {
-            let typeKey = type.type
+            let typeKey = type.typeIdentifier
             guard !self.isRegistered(typeKey) else {
                 print("Record type '\(typeKey)' is already registered. Skipping.")
                 continue
             }
 
-            self.registryQueue.sync {
-                Self._recordRegistry[typeKey] = type
-            }
+            self.recordRegistryStorage[typeKey] = type
         }
 
         await endUpdating()
@@ -216,31 +216,24 @@ public actor ATRecordTypeRegistry {
     /// Bluesky-specific record lexicon models.
     ///
     /// - Parameter blueskyLexiconTypes: An array of ``ATRecordProtocol``-conforming `struct`s.
-    public func register(blueskyLexiconTypes: [any ATRecordProtocol.Type]) async {
-        let alreadyRegistered = self.registryQueue.sync {
-            Self.areBlueskyRecordsRegistered
-        }
+    public func register(blueskyLexiconTypes: [ATRecordDecoder]) async {
+        let alreadyRegistered = self.areBlueskyRecordsRegisteredStorage
 
         guard !alreadyRegistered else { return }
 
         self.isUpdating = true
 
         for type in blueskyLexiconTypes {
-            let typeKey = type.type
+            let typeKey = type.typeIdentifier
             guard !isRegistered(typeKey) else {
                 print("Record type '\(typeKey)' is already registered. Skipping.")
                 continue
             }
 
-            self.registryQueue.sync {
-                Self._recordRegistry[typeKey] = type
-            }
+            self.recordRegistryStorage[typeKey] = type
         }
 
-        self.registryQueue.sync {
-            Self.areBlueskyRecordsRegistered = true
-        }
-
+        self.areBlueskyRecordsRegisteredStorage = true
         await endUpdating()
     }
 
@@ -251,16 +244,14 @@ public actor ATRecordTypeRegistry {
     /// - Returns: `true` if there is a `struct` that correspondences with the `typeKey` value, or
     /// `false` if not.
     public func isRegistered(_ typeKey: String) -> Bool {
-        return self.registryQueue.sync { Self._recordRegistry[typeKey] != nil }
+        self.recordRegistryStorage[typeKey] != nil
     }
 
     /// Sets ``areBlueskyRecordsRegistered`` to a `Bool` value.
     ///
     /// - Parameter value: The `Bool` value used to set the property.
-    public static func setBlueskyRecordsRegistered(_ value: Bool) {
-        self.shared.registryQueue.sync {
-            Self.areBlueskyRecordsRegistered = value
-        }
+    public static func setBlueskyRecordsRegistered(_ value: Bool) async {
+        await Self.shared.setBlueskyRecordsRegisteredStorage(value)
     }
 
     /// Halts the execution of code until ``recordRegistry`` is ready to be used.
@@ -289,24 +280,29 @@ public actor ATRecordTypeRegistry {
     ///     \- reading from the decoder fails\
     ///     \- the data read is corrupted or otherwise invalid
     ///     \- no object key in `recordRegistry` matches the `$type`'s value.
-    public static func createInstance(ofType type: String, from decoder: Decoder) throws -> (any ATRecordProtocol)? {
-        guard let typeClass = self.getRecordType(for: type) else {
+    public static func createInstance(ofType type: String, from decoder: Decoder) async throws -> UnknownType? {
+        guard let recordDecoder = await self.getRecordDecoder(for: type) else {
             return nil
         }
 
         // Instantiate the record from the decoder
-        return try typeClass.init(from: decoder)
+        return try recordDecoder.decode(from: decoder)
     }
 
-    /// Retrieves a specific record type based on the Namespaced Identifier (NSID) of the record.
+    /// Retrieves a specific record decoder based on the Namespaced Identifier (NSID) of the record.
     /// 
     /// - Parameter type: The NSID string.
-    /// - Returns: The ``ATRecordProtocol``-conforming type (if there's a match), or `nil`
+    /// - Returns: The ``ATRecordDecoder`` value (if there's a match), or `nil`
     /// (if there isn't).
-    public static func getRecordType(for type: String) -> (any ATRecordProtocol.Type)? {
-        self.shared.registryQueue.sync {
-            return ATRecordTypeRegistry.recordRegistry[type]
-        }
+    public static func getRecordDecoder(for type: String) async -> ATRecordDecoder? {
+        await Self.shared.recordDecoder(for: type)
+    }
+
+    /// Returns a snapshot of the current registry.
+    ///
+    /// - Returns: The registered record decoders keyed by NSID.
+    public func recordRegistrySnapshot() -> [String: ATRecordDecoder] {
+        self.recordRegistryStorage
     }
 
     /// Called when ``recordRegistry`` updates are completed.
@@ -319,9 +315,22 @@ public actor ATRecordTypeRegistry {
         // Clear the waiting list.
         continuations.removeAll()
     }
-Data
 
-Data
+    /// Retrieves a record decoder by NSID.
+    ///
+    /// - Parameter type: The NSID string.
+    /// - Returns: The registered record decoder, or `nil` if no decoder has been registered.
+    private func recordDecoder(for type: String) -> ATRecordDecoder? {
+        self.recordRegistryStorage[type]
+    }
+
+    /// Updates the Bluesky registration marker.
+    ///
+    /// - Parameter value: The new registration marker value.
+    private func setBlueskyRecordsRegisteredStorage(_ value: Bool) {
+        self.areBlueskyRecordsRegisteredStorage = value
+    }
+}
 
 /// A user info key used to pass record decoder snapshots into `Decoder` instances.
 internal enum ATRecordDecodingUserInfoKey {
