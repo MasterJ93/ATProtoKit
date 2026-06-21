@@ -74,6 +74,32 @@ public protocol ATRecordConfiguration {
     var recordLexicons: [any ATRecordProtocol.Type] { get }
 }
 
+/// A decoder for a concrete ``ATRecordProtocol`` type.
+///
+/// This value keeps the registry from storing protocol metatypes directly while still preserving
+/// the ability to decode records dynamically from their `$type` value.
+public struct ATRecordDecoder: Sendable, Equatable, Hashable {
+
+    /// The Namespaced Identifier (NSID) handled by this decoder.
+    public let typeIdentifier: String
+
+    /// The closure that decodes the concrete record and wraps it as an ``UnknownType``.
+    ///
+    /// - Returns: An `UnknownType` value that contains the decoded record.
+    private let decodeRecord: @Sendable (Decoder) throws -> UnknownType
+
+    /// Creates a decoder for a concrete record type.
+    ///
+    /// - Parameter type: The concrete ``ATRecordProtocol``-conforming type to decode.
+    public init<Record: ATRecordProtocol>(_ type: Record.Type) {
+        self.typeIdentifier = type.type
+        self.decodeRecord = { decoder in
+            try UnknownType.record(Record(from: decoder))
+        }
+    }
+
+}
+
 /// A registry for all decodable record types in the AT Protocol.
 ///
 /// All record lexicon `struct`s (whether from Bluesky or user created) will be included in
