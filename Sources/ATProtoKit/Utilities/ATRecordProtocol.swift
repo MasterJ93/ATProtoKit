@@ -91,7 +91,7 @@ public struct ATRecordDecoder: Sendable, Equatable, Hashable {
     /// Creates a decoder for a concrete record type.
     ///
     /// - Parameter type: The concrete ``ATRecordProtocol``-conforming type to decode.
-    public init<Record: ATRecordProtocol>(_ type: Record.Type) {
+    public init<Record: ATRecordProtocol>(type: Record.Type) {
         self.typeIdentifier = type.type
         self.decodeRecord = { decoder in
             try UnknownType.record(Record(from: decoder))
