@@ -192,7 +192,7 @@ public final class ATProtoKit: Sendable, ATProtoKitConfiguration, ATRecordConfig
         self.apiClientService = APIClientService(
             with: finalConfiguration
         )
-        
+
         let areBlueskyRecordsRegistered = await ATRecordTypeRegistry.areBlueskyRecordsRegistered
         if canUseBlueskyRecords && !areBlueskyRecordsRegistered {
             _ = await ATRecordTypeRegistry.shared.register(blueskyLexiconTypes: recordLexicons)

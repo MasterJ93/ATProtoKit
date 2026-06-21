@@ -120,34 +120,32 @@ public struct ATRecordDecoder: Sendable, Equatable, Hashable {
 
 /// A registry for all decodable record types in the AT Protocol.
 ///
-/// All record lexicon `struct`s (whether from Bluesky or user created) will be included in
-/// the registry. This is used as a map for ``UnknownType`` to find the most appropriate type
-/// that the JSON object will fit into.
+/// The registry maps record NSIDs to ``ATRecordDecoder`` values. ``UnknownType`` uses a snapshot
+/// of this mapping to decode registered records while preserving unregistered records as
+/// ``UnknownType/unknown(_:)`` values.
 ///
 /// This registry is managed by an `actor`, ensuring concurrency-safe access to its internal
 /// data. Because of this, most interactions with `ATRecordTypeRegistry` must be done
 /// asynchronously using `await`.
 ///
-/// When adding a record, you need to type `.self` at the end.
+/// To add a record, create an ``ATRecordDecoder`` from its concrete type.
 /// ```swift
 /// Task {
-///     _ = await ATRecordTypeRegistry.shared.register(types: [UserProfile.self])
+///     let decoder = ATRecordDecoder(type: UserProfile.self)
+///     await ATRecordTypeRegistry.shared.register(types: [decoder])
 /// }
 /// ```
 ///
-/// - Important: Make sure you don't add the same `struct` multiple times.
-///
-/// - Warning: All record types _must_ conform to ``ATRecordProtocol``. Failure to do so may
-/// result in an error.
+/// Registering a decoder whose NSID is already present leaves the existing decoder unchanged.
 ///
 /// # Waiting For the Registry To Be Ready
 ///
-/// If you need to ensure that the registry is ready to be read. In order to do this, you should
-/// use ``ATRecordTypeRegistry/waitUntilRegistryIsRead()`` in the function. This prevents the
-/// function from continuing until the registry is ready to be used.
+/// Use ``ATRecordTypeRegistry/waitUntilRegistryIsRead()`` before reading the registry when
+/// registration may be in progress. This suspends the caller until the current update completes.
 ///
 /// - Note: ``ATRecordTypeRegistry/waitUntilRegistryIsRead()`` only works in functions that
-/// are `async`.
+/// are `async`. This method is only needed when records are registered dynamically; awaiting
+/// ``ATRecordTypeRegistry/register(types:)`` already waits for that registration to finish.
 public actor ATRecordTypeRegistry {
 
     /// The shared instance of `ATRecordTypeRegistry`.
@@ -159,15 +157,13 @@ public actor ATRecordTypeRegistry {
     /// Indicates whether Bluesky record decoders have already been registered.
     private var areBlueskyRecordsRegisteredStorage = false
 
-    /// The registry itself.
+    /// A snapshot of the registry.
     ///
     /// Stores a mapping from Namespaced Identifier (NSID) strings to corresponding record decoders.
     ///
-    /// This contains a `Dictionary`, which contains the value of the `$type` property in the
-    /// lexicon (which is used as the "key"), and the ``ATRecordDecoder`` values for
-    /// ``ATRecordProtocol``-conforming `struct`s. ``UnknownType`` will search for the key that
-    /// matches with the JSON object's `$type` property, and then decode the JSON object using the
-    /// decoder that was found if there's a match.
+    /// The dictionary keys are the `$type` values from record lexicons. Each value is the
+    /// corresponding ``ATRecordDecoder``. The returned dictionary is an isolated copy and does
+    /// not reflect subsequent registrations.
     public static var recordRegistry: [String: ATRecordDecoder] {
         get async {
             await Self.shared.recordRegistrySnapshot()
@@ -192,9 +188,11 @@ public actor ATRecordTypeRegistry {
 
     private init() {}
 
-    /// Registers an array of record types.
+    /// Registers record decoders by their NSIDs.
     ///
-    /// - Parameter types: An array of ``ATRecordProtocol``-conforming `struct`s.
+    /// Decoders with NSIDs that are already registered are ignored.
+    ///
+    /// - Parameter types: The record decoders to register.
     public func register(types: [ATRecordDecoder]) async {
         self.isUpdating = true
 
@@ -211,12 +209,12 @@ public actor ATRecordTypeRegistry {
         await endUpdating()
     }
 
-    /// Registers an array of Bluesky record lexicon types.
+    /// Registers the built-in Bluesky record decoders once.
     ///
     /// - Note: This must only be used for the main `ATProtoKit` `class` and only for
     /// Bluesky-specific record lexicon models.
     ///
-    /// - Parameter blueskyLexiconTypes: An array of ``ATRecordProtocol``-conforming `struct`s.
+    /// - Parameter blueskyLexiconTypes: The Bluesky record decoders to register.
     public func register(blueskyLexiconTypes: [ATRecordDecoder]) async {
         let alreadyRegistered = self.areBlueskyRecordsRegisteredStorage
 
@@ -238,12 +236,10 @@ public actor ATRecordTypeRegistry {
         await endUpdating()
     }
 
-    /// Indicates whether the specified lexicon `struct` type is registered
-    /// inside ``recordRegistry``.
+    /// Indicates whether a decoder is registered for the specified NSID.
     ///
     /// - Parameter typeKey: The Namespaced Identifier (NSID) of the lexicon.
-    /// - Returns: `true` if there is a `struct` that correspondences with the `typeKey` value, or
-    /// `false` if not.
+    /// - Returns: `true` if a decoder is registered for `typeKey`; otherwise, `false`.
     public func isRegistered(_ typeKey: String) -> Bool {
         self.recordRegistryStorage[typeKey] != nil
     }
@@ -264,8 +260,7 @@ public actor ATRecordTypeRegistry {
         }
     }
 
-    /// Attempts to create an instance of a record type based on the provided NSID string
-    /// and decoder.
+    /// Attempts to decode a registered record identified by an NSID.
     ///
     /// While `Codable` allows for polymorphic handling via `enum`s, it has a limitation where it
     /// can't directly decode or encode `protocol`s. This method circumvents this limitation by
@@ -275,12 +270,10 @@ public actor ATRecordTypeRegistry {
     /// - Parameters:
     ///   - type: The Namespaced Identifier (NSID) of the record.
     ///   - decoder: The decoder to read data from.
-    /// - Returns: A `struct` or `class`, which conforms to ``ATRecordProtocol``.
+    /// - Returns: The decoded record wrapped in ``UnknownType/record(_:)``, or `nil` when no
+    /// decoder is registered for `type`.
     ///
-    /// - Throws: An error can occur if one if the following happens:\
-    ///     \- reading from the decoder fails\
-    ///     \- the data read is corrupted or otherwise invalid
-    ///     \- no object key in `recordRegistry` matches the `$type`'s value.
+    /// - Throws: An error if the registered decoder cannot decode the record.
     public static func createInstance(ofType type: String, from decoder: Decoder) async throws -> UnknownType? {
         guard let recordDecoder = await self.getRecordDecoder(for: type) else {
             return nil
@@ -317,7 +310,7 @@ public actor ATRecordTypeRegistry {
         continuations.removeAll()
     }
 
-    /// Retrieves a record decoder by NSID.
+    /// Retrieves a record decoder by Namespaced Identifier (NSID).
     ///
     /// - Parameter type: The NSID string.
     /// - Returns: The registered record decoder, or `nil` if no decoder has been registered.
