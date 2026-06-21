@@ -52,7 +52,7 @@ extension ChatBskyLexicon.Actor {
 
         // Enums
         /// A rule that states who can message the user account.
-        public enum AllIncoming: Sendable, Codable {
+        public enum AllIncoming: String, Sendable, Codable {
 
             /// Indicates that anyone can message the user account.
             case all
