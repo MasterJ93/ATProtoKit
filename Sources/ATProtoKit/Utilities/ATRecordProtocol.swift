@@ -71,7 +71,8 @@ public protocol ATRecordConfiguration {
     /// An array of record lexicon structs created by Bluesky.
     ///
     /// If `canUseBlueskyRecords` is set to `false`, these will not be used.
-    var recordLexicons: [any ATRecordProtocol.Type] { get }
+    var recordLexicons: [ATRecordDecoder] { get }
+
 }
 
 /// A decoder for a concrete ``ATRecordProtocol`` type.

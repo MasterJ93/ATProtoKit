@@ -193,7 +193,8 @@ public final class ATProtoKit: Sendable, ATProtoKitConfiguration, ATRecordConfig
             with: finalConfiguration
         )
         
-        if canUseBlueskyRecords && !(ATRecordTypeRegistry.areBlueskyRecordsRegistered) {
+        let areBlueskyRecordsRegistered = await ATRecordTypeRegistry.areBlueskyRecordsRegistered
+        if canUseBlueskyRecords && !areBlueskyRecordsRegistered {
             _ = await ATRecordTypeRegistry.shared.register(blueskyLexiconTypes: recordLexicons)
         }
     }
