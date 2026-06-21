@@ -319,6 +319,29 @@ public actor ATRecordTypeRegistry {
         // Clear the waiting list.
         continuations.removeAll()
     }
+Data
+
+Data
+
+/// A user info key used to pass record decoder snapshots into `Decoder` instances.
+internal enum ATRecordDecodingUserInfoKey {
+
+    /// The raw user info key value for record decoder snapshots.
+    static let recordRegistry = "dev.atprotokit.ATProtoKit.recordRegistry"
+}
+
+extension JSONDecoder {
+
+    /// Adds a record registry snapshot to the decoder's user info dictionary.
+    ///
+    /// - Parameter recordRegistry: The record decoder snapshot to use while decoding.
+    public func useRecordRegistrySnapshot(_ recordRegistry: [String: ATRecordDecoder]) {
+        guard let key = CodingUserInfoKey(rawValue: ATRecordDecodingUserInfoKey.recordRegistry) else {
+            return
+        }
+
+        self.userInfo[key] = recordRegistry
+    }
 }
 
 /// Handles decoding and encoding of records when their type is not known ahead of type.
