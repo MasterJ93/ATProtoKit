@@ -98,6 +98,16 @@ public struct ATRecordDecoder: Sendable, Equatable, Hashable {
         }
     }
 
+    /// Creates an ``UnknownType`` record from the provided decoder.
+    ///
+    /// - Parameter decoder: The decoder to read data from.
+    /// - Returns: The decoded record wrapped as an ``UnknownType``.
+    ///
+    /// - Throws: An error is thrown if the concrete record type cannot be decoded.
+    public func decode(from decoder: Decoder) throws -> UnknownType {
+        try decodeRecord(decoder)
+    }
+
     public static func == (lhs: ATRecordDecoder, rhs: ATRecordDecoder) -> Bool {
         lhs.typeIdentifier == rhs.typeIdentifier
     }
