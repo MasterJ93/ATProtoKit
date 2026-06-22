@@ -57,7 +57,7 @@ extension ATProtoKit {
                 forRequest: requestURL,
                 andMethod: .post,
                 acceptValue: nil,
-                contentTypeValue: nil,
+                contentTypeValue: "application/json",
                 authorizationValue: "Bearer \(accessToken)",
                 proxyValue: feedGeneratorDID.map { "\($0)#bsky_fg" }
             )
