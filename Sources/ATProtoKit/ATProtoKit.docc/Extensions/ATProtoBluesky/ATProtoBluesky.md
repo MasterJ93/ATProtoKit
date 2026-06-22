@@ -55,7 +55,13 @@
 
 - ``createStatusRecord(_:embed:durationMinutes:shouldValidate:)``
 
-<!--### Starter Packs-->
+### Starter Packs
+
+- ``createStarterPackRecord(named:description:listURI:feeds:creationDate:recordKey:shouldValidate:swapCommit:)``
+- ``updateStarterPackRecord(starterPackURI:name:description:descriptionFacets:listURI:feeds:)``
+
+- ``addFeedToStarterPackRecord(starterPackURI:feedURI:)``
+- ``removeFeedFromStarterPackRecord(starterPackURI:feedURI:)``
 
 <!--### Feed Generators-->
 
