@@ -76,7 +76,7 @@ extension AppBskyLexicon.Graph {
             var container = encoder.container(keyedBy: CodingKeys.self)
 
             try container.truncatedEncode(self.name, forKey: .name, upToCharacterLength: 50)
-            try container.truncatedEncodeIfPresent(self.name, forKey: .name, upToCharacterLength: 300)
+            try container.truncatedEncodeIfPresent(self.description, forKey: .description, upToCharacterLength: 300)
             try container.encodeIfPresent(self.descriptionFacets, forKey: .descriptionFacets)
             try container.encode(self.listURI, forKey: .listURI)
             try container.truncatedEncodeIfPresent(self.feeds, forKey: .feeds, upToArrayLength: 3)
@@ -84,7 +84,7 @@ extension AppBskyLexicon.Graph {
         }
 
         enum CodingKeys: String, CodingKey {
-            case type = "Stype"
+            case type = "$type"
             case name
             case description
             case descriptionFacets
