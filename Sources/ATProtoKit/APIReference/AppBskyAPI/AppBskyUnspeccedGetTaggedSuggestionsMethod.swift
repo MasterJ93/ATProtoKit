@@ -28,6 +28,7 @@ extension ATProtoKit {
     /// 
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
+    @available(*, deprecated, message: "Unmaintained upstream route. Use getSuggestedUsers(category:limit:) or getSuggestedFeeds(limit:cursor:) instead.")
     public func getTaggedSuggestions() async throws -> AppBskyLexicon.Unspecced.GetTaggedSuggestionsOutput {
         guard let requestURL = URL(string: "\(self.pdsURL)/xrpc/app.bsky.unspecced.getTaggedSuggestions") else {
             throw ATRequestPrepareError.invalidRequestURL
