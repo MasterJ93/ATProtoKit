@@ -108,6 +108,11 @@ extension ATProtoBluesky {
         ///
         /// - Parameter message: The message of the error.
         case emptyReplaceArray(message: String)
+
+        /// Too many feeds were provided for a starter pack.
+        ///
+        /// - Parameter message: The message of the error.
+        case tooManyFeeds(message: String)
     }
 
     /// An error type specifically related to Bluesky (either before or after interacting with
