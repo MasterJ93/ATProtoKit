@@ -24,13 +24,16 @@ extension ATProtoKit {
     /// 
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/feed/sendInteractions.json
     ///
-    /// - Parameter interactions: An array of interactions.
+    /// - Parameters:
+    ///   - interactions: An array of interactions.
+    ///   - feedGeneratorDID: The DID of the feed generator to route the request to. Optional.
     /// - Returns: An array of interactions.
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func sendInteractions(
-        _ interactions: [AppBskyLexicon.Feed.InteractionDefinition]
+        _ interactions: [AppBskyLexicon.Feed.InteractionDefinition],
+        feedGeneratorDID: String? = nil
     ) async throws -> AppBskyLexicon.Feed.SendInteractionsOutput {
         guard let session = try await self.getUserSession(),
               let keychain = sessionConfiguration?.keychainProtocol else {
@@ -54,8 +57,9 @@ extension ATProtoKit {
                 forRequest: requestURL,
                 andMethod: .post,
                 acceptValue: nil,
-                contentTypeValue: nil,
-                authorizationValue: "Bearer \(accessToken)"
+                contentTypeValue: "application/json",
+                authorizationValue: "Bearer \(accessToken)",
+                proxyValue: feedGeneratorDID.map { "\($0)#bsky_fg" }
             )
             let response = try await apiClientService.sendRequest(
                 request,
