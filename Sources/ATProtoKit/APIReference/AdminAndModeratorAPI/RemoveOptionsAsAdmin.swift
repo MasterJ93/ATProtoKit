@@ -45,7 +45,7 @@ extension ATProtoAdmin {
         do {
             let request = apiClientService.createRequest(
                 forRequest: requestURL,
-                andMethod: .get,
+                andMethod: .post,
                 acceptValue: "application/json",
                 contentTypeValue: nil,
                 authorizationValue: "Bearer \(accessToken)"

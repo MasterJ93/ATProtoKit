@@ -54,7 +54,7 @@ extension ATProtoBlueskyChat {
         do {
             let request = apiClientService.createRequest(
                 forRequest: requestURL,
-                andMethod: .get,
+                andMethod: .post,
                 acceptValue: nil,
                 contentTypeValue: "application/json",
                 authorizationValue: "Bearer \(accessToken)",
