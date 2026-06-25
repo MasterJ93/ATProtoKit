@@ -572,10 +572,17 @@ public enum CodableValue: Codable, Sendable, Equatable, Hashable {
             self = .double(value)
         } else if let value = try? container.decode(String.self) {
             self = .string(value)
-        } else if let value = try? container.decode([CodableValue].self) {
-            self = .array(value)
-        } else if let value = try? container.decode([String: CodableValue].self) {
-            self = .dictionary(value)
+        } else if let value = try? container.decode([CodableValue?].self) {
+            // Tolerate JSON `null` array elements by decoding through `Optional<CodableValue>`.
+            // `CodableValue` has no `null` representation, so null elements are intentionally
+            // dropped via `compactMap`. The `.array` payload stays `[CodableValue]` (non-Optional).
+            self = .array(value.compactMap { $0 })
+        } else if let value = try? container.decode([String: CodableValue?].self) {
+            // Tolerate JSON `null` field values inside a nested dictionary. `CodableValue` has no
+            // `null` representation, so null entries are intentionally dropped via
+            // `compactMapValues`. The `.dictionary` payload stays `[String: CodableValue]`
+            // (non-Optional).
+            self = .dictionary(value.compactMapValues { $0 })
         } else {
             throw DecodingError.typeMismatch(
                 CodableValue.self,
