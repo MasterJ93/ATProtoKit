@@ -34,7 +34,12 @@ extension ATProtoKit {
     public func importRepository(
         _ repositoryData: Data
     ) async throws {
-        guard let requestURL = URL(string: "\(self.pdsURL)/xrpc/com.atproto.repo.importRepo") else {
+        guard let session = try await self.getUserSession() else {
+            throw ATRequestPrepareError.missingActiveSession
+        }
+        let sessionURL = session.serviceEndpoint.absoluteString
+
+        guard let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.repo.importRepo") else {
             throw ATRequestPrepareError.invalidRequestURL
         }
 

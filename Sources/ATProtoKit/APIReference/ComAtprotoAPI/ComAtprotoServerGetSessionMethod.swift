@@ -34,7 +34,12 @@ extension ATProtoKit {
     public func getSession(
         by accessToken: String
     ) async throws -> ComAtprotoLexicon.Server.GetSessionOutput {
-        guard let requestURL = URL(string: "\(self.pdsURL)/xrpc/com.atproto.server.getSession") else {
+        guard let session = try await self.getUserSession() else {
+            throw ATRequestPrepareError.missingActiveSession
+        }
+        let sessionURL = session.serviceEndpoint.absoluteString
+
+        guard let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.server.getSession") else {
             throw ATRequestPrepareError.invalidRequestURL
         }
 
