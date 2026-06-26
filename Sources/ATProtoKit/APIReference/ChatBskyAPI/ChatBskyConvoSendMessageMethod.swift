@@ -31,15 +31,15 @@ extension ATProtoBlueskyChat {
         to conversationID: String,
         message: ChatBskyLexicon.Conversation.MessageInputDefinition
     ) async throws -> ChatBskyLexicon.Conversation.MessageViewDefinition {
-        guard let _ = try await self.getUserSession(),
+        guard let session = try await self.getUserSession(),
               let keychain = sessionConfiguration?.keychainProtocol else {
             throw ATRequestPrepareError.missingActiveSession
         }
 
         let accessToken = try await keychain.retrieveAccessToken()
-//        let sessionURL = session.serviceEndpoint.absoluteString
+        let sessionURL = session.serviceEndpoint.absoluteString
 
-        guard let requestURL = URL(string: "\(APIHostname.bskyChat)/xrpc/chat.bsky.convo.sendMessage") else {
+        guard let requestURL = URL(string: "\(sessionURL)/xrpc/chat.bsky.convo.sendMessage") else {
             throw ATRequestPrepareError.invalidRequestURL
         }
 

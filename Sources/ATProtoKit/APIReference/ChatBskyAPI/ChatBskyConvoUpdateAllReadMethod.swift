@@ -26,15 +26,15 @@ extension ATProtoBlueskyChat {
     public func updateAllRead(
         status: ChatBskyLexicon.Conversation.UpdateAllRead.Status? = nil
     ) async throws -> ChatBskyLexicon.Conversation.UpdateAllReadOutput {
-        guard let _ = try await self.getUserSession(),
+        guard let session = try await self.getUserSession(),
               let keychain = sessionConfiguration?.keychainProtocol else {
             throw ATRequestPrepareError.missingActiveSession
         }
 
         let accessToken = try await keychain.retrieveAccessToken()
-//        let sessionURL = session.serviceEndpoint.absoluteString
+        let sessionURL = session.serviceEndpoint.absoluteString
 
-        guard let requestURL = URL(string: "\(APIHostname.bskyChat)/xrpc/chat.bsky.convo.updateAllRead") else {
+        guard let requestURL = URL(string: "\(sessionURL)/xrpc/chat.bsky.convo.updateAllRead") else {
             throw ATRequestPrepareError.invalidRequestURL
         }
 

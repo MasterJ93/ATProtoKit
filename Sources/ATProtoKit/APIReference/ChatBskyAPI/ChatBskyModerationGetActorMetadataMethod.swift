@@ -30,15 +30,15 @@ extension ATProtoBlueskyChat {
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func getMessageContext(actorDID: String) async throws -> ChatBskyLexicon.Moderation.GetActorMetadataOutput {
-        guard let _ = try await self.getUserSession(),
+        guard let session = try await self.getUserSession(),
               let keychain = sessionConfiguration?.keychainProtocol else {
             throw ATRequestPrepareError.missingActiveSession
         }
 
         let accessToken = try await keychain.retrieveAccessToken()
-//        let sessionURL = session.serviceEndpoint.absoluteString
+        let sessionURL = session.serviceEndpoint.absoluteString
 
-        guard let requestURL = URL(string: "\(APIHostname.bskyChat)/xrpc/chat.bsky.moderation.getActorMetadata") else {
+        guard let requestURL = URL(string: "\(sessionURL)/xrpc/chat.bsky.moderation.getActorMetadata") else {
             throw ATRequestPrepareError.invalidRequestURL
         }
 

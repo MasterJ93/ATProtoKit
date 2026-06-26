@@ -33,15 +33,15 @@ extension ATProtoBlueskyChat {
         doesAllowAccess: Bool,
         reference: String? = nil
     ) async throws {
-        guard let _ = try await self.getUserSession(),
+        guard let session = try await self.getUserSession(),
               let keychain = sessionConfiguration?.keychainProtocol else {
             throw ATRequestPrepareError.missingActiveSession
         }
 
         let accessToken = try await keychain.retrieveAccessToken()
-//        let sessionURL = session.serviceEndpoint.absoluteString
+        let sessionURL = session.serviceEndpoint.absoluteString
 
-        guard let requestURL = URL(string: "\(APIHostname.bskyChat)/xrpc/chat.bsky.moderation.updateActorAccess") else {
+        guard let requestURL = URL(string: "\(sessionURL)/xrpc/chat.bsky.moderation.updateActorAccess") else {
             throw ATRequestPrepareError.invalidRequestURL
         }
 
