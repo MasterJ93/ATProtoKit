@@ -27,7 +27,12 @@ extension ATProtoKit {
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func getRecommendedDIDCredentials() async throws -> ComAtprotoLexicon.Identity.GetRecommendedDidCredentialsOutput {
-        guard let requestURL = URL(string: "\(self.pdsURL)/xrpc/com.atproto.identity.getRecommendedDidCredentials") else {
+        guard let session = try await self.getUserSession() else {
+            throw ATRequestPrepareError.missingActiveSession
+        }
+        let sessionURL = session.serviceEndpoint.absoluteString
+
+        guard let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.identity.getRecommendedDidCredentials") else {
             throw ATRequestPrepareError.invalidRequestURL
         }
 
