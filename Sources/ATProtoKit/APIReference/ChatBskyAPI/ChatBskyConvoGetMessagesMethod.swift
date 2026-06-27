@@ -21,6 +21,8 @@ extension ATProtoBlueskyChat {
     /// - Parameters:
     ///   - conversationID: The ID of the conversation.
     ///   - limit: The number of items that can be in the list. Optional. Defaults to `50`.
+    ///   - cursor: The mark used to indicate the starting point for the next set
+    ///   of results. Optional.
     /// - Returns: An array of messages, with an optional cursor for expanding the array. The array
     /// may contain deleted messages.
     ///
@@ -28,7 +30,8 @@ extension ATProtoBlueskyChat {
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func getMessages(
         from conversationID: String,
-        limit: Int? = 50
+        limit: Int? = 50,
+        cursor: String? = nil
     ) async throws -> ChatBskyLexicon.Conversation.GetMessagesOutput {
         guard let _ = try await self.getUserSession(),
               let keychain = sessionConfiguration?.keychainProtocol else {
@@ -49,6 +52,10 @@ extension ATProtoBlueskyChat {
         if let limit {
             let finalLimit = max(1, min(limit, 100))
             queryItems.append(("limit", "\(finalLimit)"))
+        }
+
+        if let cursor {
+            queryItems.append(("cursor", cursor))
         }
 
         let queryURL: URL
