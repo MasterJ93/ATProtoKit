@@ -127,7 +127,8 @@ extension ATProtoBluesky {
                         let postEmbed = try await uploadImages(
                             [avatarImageField],
                             pdsURL: sessionURL,
-                            accessToken: accessToken
+                            accessToken: accessToken,
+                            maxSize: AttachmentLexiconLimit.profileAvatar
                         )
 
                         switch postEmbed {
@@ -149,7 +150,8 @@ extension ATProtoBluesky {
                         let postEmbed = try await uploadImages(
                             [bannerImageField],
                             pdsURL: sessionURL,
-                            accessToken: accessToken
+                            accessToken: accessToken,
+                            maxSize: AttachmentLexiconLimit.profileBanner
                         )
 
                         switch postEmbed {

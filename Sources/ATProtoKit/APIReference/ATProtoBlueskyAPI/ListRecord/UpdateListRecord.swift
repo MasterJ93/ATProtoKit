@@ -118,7 +118,8 @@ extension ATProtoBluesky {
                         let postEmbed = try await uploadImages(
                             [listAvatarImageField],
                             pdsURL: sessionURL,
-                            accessToken: accessToken
+                            accessToken: accessToken,
+                            maxSize: AttachmentLexiconLimit.listAvatar
                         )
 
                         switch postEmbed {
