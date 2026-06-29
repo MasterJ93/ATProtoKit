@@ -592,17 +592,22 @@ extension ATProtoBluesky {
     ///   4 images.
     ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `https://bsky.social`.
     ///   - accessToken: The access token used to authenticate to the user.
+    ///   - maxSize: The maximum size (in bytes) each image is allowed to be. Defaults to
+    ///   ``AttachmentLexiconLimit/postImageEmbed`` (2 MB), the limit of the `app.bsky.embed.images`
+    ///   lexicon this method builds. Callers reusing this method for a different lexicon (e.g.,
+    ///   a profile avatar or list avatar) should pass that lexicon's limit instead.
     /// - Returns: An ``AppBskyLexicon/Feed/PostRecord/EmbedUnion``, which contains an array of
     /// ``AppBskyLexicon/Embed/ImagesDefinition``s for use in a record.
     ///
-    /// - Important: Each image can only be 1 MB in size.
+    /// - Important: Each image can only be `maxSize` bytes in size.
     public func uploadImages(_ images: [ATProtoTools.ImageQuery], pdsURL: String = "https://bsky.social",
-                             accessToken: String) async throws -> AppBskyLexicon.Feed.PostRecord.EmbedUnion {
+                             accessToken: String,
+                             maxSize: Int = AttachmentLexiconLimit.postImageEmbed) async throws -> AppBskyLexicon.Feed.PostRecord.EmbedUnion {
         var embedImages = [AppBskyLexicon.Embed.ImagesDefinition.Image]()
 
         for image in images {
             // Check if the image is too large.
-            guard image.imageData.count <= 1_000_000 else {
+            guard image.imageData.count <= maxSize else {
                 throw ATBlueskyError.imageTooLarge
             }
 
@@ -669,8 +674,7 @@ extension ATProtoBluesky {
                            aspectRatio: AppBskyLexicon.Embed.AspectRatioDefinition? = nil, pollingFrequency: Int = 3, pdsURL: String = "https://bsky.social",
                            accessToken: String) async throws -> AppBskyLexicon.Feed.PostRecord.EmbedUnion {
         // Check if the size of the video is small enough.
-        let sizeLimit = 100 * 1024 * 1024 // 100MB in bytes
-        if video.count >= sizeLimit {
+        if video.count >= AttachmentLexiconLimit.videoEmbed {
             throw ATJobStatusError.videoSizeTooLarge(message: "The video file is too large. The maximum file size is currently 100MB.")
         }
 
@@ -774,6 +778,11 @@ extension ATProtoBluesky {
         if let captions = captions {
             print("Beginning caption collection...")
             for caption in captions {
+                // Check if the caption file is too large.
+                guard caption.file.count <= AttachmentLexiconLimit.videoVTTCaption else {
+                    throw ATBlueskyError.captionTooLarge
+                }
+
                 let blobReference = try await atProtoKitInstance.uploadBlob(
                     pdsURL: pdsURL,
                     accessToken: accessToken,
@@ -818,7 +827,7 @@ extension ATProtoBluesky {
         let image: Data? = {
             guard let thumbnailImageURL,
                   let data = try? Data(contentsOf: thumbnailImageURL),
-                  data.count <= 1_000_000 else { return nil }
+                  data.count <= AttachmentLexiconLimit.externalEmbedThumbnail else { return nil }
             return data
         }()
 

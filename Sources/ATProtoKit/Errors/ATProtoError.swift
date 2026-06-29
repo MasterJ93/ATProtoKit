@@ -116,6 +116,9 @@ extension ATProtoBluesky {
 
         /// The image used is too large.
         case imageTooLarge
+
+        /// The video caption (.vtt) file is too large.
+        case captionTooLarge
     }
 }
 
