@@ -71,6 +71,9 @@ extension AppBskyLexicon.Embed {
             /// A video that will be embedded.
             case embedVideo(AppBskyLexicon.Embed.VideoDefinition)
 
+            /// A gallery that will be embedded.
+            case embedGallery(AppBskyLexicon.Embed.GalleryDefinition)
+
             /// An unknown case.
             case unknown(String, [String: CodableValue])
 
@@ -85,6 +88,8 @@ extension AppBskyLexicon.Embed {
                         self = .embedVideo(try AppBskyLexicon.Embed.VideoDefinition(from: decoder))
                     case "app.bsky.embed.external":
                         self = .embedExternal(try AppBskyLexicon.Embed.ExternalDefinition(from: decoder))
+                    case "app.bsky.embed.gallery":
+                        self = .embedGallery(try AppBskyLexicon.Embed.GalleryDefinition(from: decoder))
                     default:
                         let singleValueDecodingContainer = try decoder.singleValueContainer()
                         let dictionary = try Self.decodeDictionary(from: singleValueDecodingContainer, decoder: decoder)
@@ -102,6 +107,8 @@ extension AppBskyLexicon.Embed {
                     case .embedExternal(let media):
                         try container.encode(media)
                     case .embedVideo(let value):
+                        try container.encode(value)
+                    case .embedGallery(let value):
                         try container.encode(value)
                     default:
                         break

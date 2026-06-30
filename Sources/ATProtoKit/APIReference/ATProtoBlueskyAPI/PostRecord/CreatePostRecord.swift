@@ -429,6 +429,12 @@ extension ATProtoBluesky {
                                 pdsURL: sessionURL,
                                 accessToken: accessToken
                             )
+                        case .gallery(let images):
+                            resolvedEmbed = try await uploadGallery(
+                                images,
+                                pdsURL: sessionURL,
+                                accessToken: accessToken
+                            )
                         case .external(let url, let title, let description, let thumbnailImageURL):
                             resolvedEmbed = await buildExternalEmbed(
                                 from: url,
@@ -628,6 +634,49 @@ extension ATProtoBluesky {
         }
 
         return .images(AppBskyLexicon.Embed.ImagesDefinition(images: embedImages))
+    }
+
+    /// Uploads images to the AT Protocol as a gallery for attaching to a record at a later request.
+    ///
+    /// `app.bsky.embed.gallery` is the successor to `app.bsky.embed.images`, supporting a larger
+    /// number of images per post.
+    ///
+    /// - Parameters:
+    ///   - images: The ``ATProtoTools/ImageQuery`` that contains the image data. The schema-level
+    ///   maximum is 20 images; clients should enforce a soft limit of 10 items in authoring UIs.
+    ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `https://bsky.social`.
+    ///   - accessToken: The access token used to authenticate to the user.
+    /// - Returns: An ``AppBskyLexicon/Feed/PostRecord/EmbedUnion``, which contains an
+    /// ``AppBskyLexicon/Embed/GalleryDefinition`` for use in a record.
+    ///
+    /// - Important: Each image can only be 2 MB in size.
+    public func uploadGallery(_ images: [ATProtoTools.ImageQuery], pdsURL: String = "https://bsky.social",
+                              accessToken: String) async throws -> AppBskyLexicon.Feed.PostRecord.EmbedUnion {
+        var items = [AppBskyLexicon.Embed.GalleryDefinition.ItemUnion]()
+
+        for image in images {
+            // Check if the image is too large.
+            guard image.imageData.count <= AttachmentLexiconLimit.galleryImageEmbed else {
+                throw ATBlueskyError.imageTooLarge
+            }
+
+            // Upload the image, then get the server response.
+            let blobReference = try await ATProtoKit(canUseBlueskyRecords: false).uploadBlob(
+                pdsURL: pdsURL,
+                accessToken: accessToken,
+                filename: image.fileName,
+                imageData: image.imageData
+            )
+
+            let galleryImage = AppBskyLexicon.Embed.GalleryDefinition.Image(
+                imageBlob: blobReference,
+                altText: image.altText ?? "",
+                aspectRatio: image.aspectRatio
+            )
+            items.append(.itemImage(galleryImage))
+        }
+
+        return .gallery(AppBskyLexicon.Embed.GalleryDefinition(items: items))
     }
 
     /// A structure that contains closed captioning information.
@@ -909,6 +958,15 @@ extension ATProtoBluesky {
         ///   - altText: The alt text for the video. Optional.
         ///   - aspectRatio: The aspect ratio of the video. Optional.
         case video(video: Data, captions: [Caption]? = nil, altText: String? = nil, aspectoRatio: AppBskyLexicon.Embed.AspectRatioDefinition? = nil)
+
+        /// Represents a set of images to be embedded as a gallery in the post.
+        ///
+        /// `app.bsky.embed.gallery` is the successor to `images`, supporting a larger number of
+        /// images per post.
+        ///
+        /// - Parameter images: An array of ``ATProtoTools/ImageQuery`` objects, each containing
+        /// the image data, metadata, and filenames of the image.
+        case gallery(images: [ATProtoTools.ImageQuery])
 
         /// Represents an external link to be embedded in the post.
         ///
