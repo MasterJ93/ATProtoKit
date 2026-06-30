@@ -2,8 +2,8 @@ import Foundation
 import Testing
 @testable import ATProtoKit
 
-@Suite
-struct ATProtoKitTests {
+@Suite("ATFacetParser Tests")
+struct ATFacetParserTests {
 
     struct ByteRange: Equatable {
         let byteStart: Int
@@ -15,7 +15,7 @@ struct ATProtoKitTests {
         let uri: String
     }
 
-    @Test
+    @Test("Session service endpoint builds authenticated wrapper request URL")
     func sessionServiceEndpointBuildsAuthenticatedWrapperRequestURL() throws {
         let pdsURL = "https://bsky.social"
         let serviceEndpoint = try #require(URL(string: "https://pds.host.bsky.network"))
@@ -51,7 +51,7 @@ struct ATProtoKitTests {
         #expect(matchingRequestURL.absoluteString == "https://pds.host.bsky.network/xrpc/com.atproto.server.getSession")
     }
 
-    @Test
+    @Test("Query items percent encode plus signs")
     func setQueryItemsPercentEncodesPlusSigns() throws {
         let apiClientService = APIClientService(with: APIClientConfiguration())
         let requestURL = try #require(URL(string: "https://example.com/xrpc/app.bsky.feed.getFeed"))
@@ -76,7 +76,7 @@ struct ATProtoKitTests {
         #expect(urlWithMultipleItems.absoluteString.contains("+") == false)
     }
 
-    @Test
+    @Test("Mentions are detected with Bluesky rich text rules")
     func detectsMentionsInline() {
         let testCases: [(input: String, mentions: [String])] = [
             ("no mention", []),
@@ -99,7 +99,7 @@ struct ATProtoKitTests {
         }
     }
 
-    @Test
+    @Test("Links are detected with Bluesky rich text rules")
     func detectsLinksInline() {
         let testCases: [(input: String, links: [LinkExpectation])] = [
             ("start https://middle.com end", [.init(text: "https://middle.com", uri: "https://middle.com")]),
@@ -140,7 +140,7 @@ struct ATProtoKitTests {
         }
     }
 
-    @Test
+    @Test("Hashtags are detected with Bluesky rich text rules")
     func detectsHashtagsInline() {
         let testCases: [(input: String, tags: [String], byteRanges: [ByteRange])] = [
             ("#a", ["a"], [.init(byteStart: 0, byteEnd: 2)]),
@@ -191,7 +191,7 @@ struct ATProtoKitTests {
         }
     }
 
-    @Test
+    @Test("Cashtags are detected with Bluesky rich text rules")
     func detectsCashtagsInline() async {
         let testCases: [(input: String, tags: [String], byteRanges: [AppBskyLexicon.RichText.Facet.ByteSlice])] = [
             ("$AAPL", ["$AAPL"], [.init(byteStart: 0, byteEnd: 5)]),
@@ -252,7 +252,7 @@ struct ATProtoKitTests {
     }
 
     #if canImport(Darwin)
-    @Test
+    @Test("AttributedString facet index converts UTF-8 byte slices")
     @available(iOS 15, tvOS 15, macOS 12, watchOS 8, *)
     func attributedStringFacetIndexConvertsUTF8ByteSlices() throws {
         let text = "👨‍👩‍👧‍👧 https://middle.com tail"
@@ -267,7 +267,7 @@ struct ATProtoKitTests {
         #expect(String(attributedString[range].characters) == "https://middle.com")
     }
 
-    @Test
+    @Test("NSAttributedString facet range converts UTF-8 byte slices")
     func nsAttributedStringFacetRangeConvertsUTF8ByteSlices() throws {
         let text = "👨‍👩‍👧‍👧 https://middle.com tail"
         let attributedString = NSAttributedString(string: text)
