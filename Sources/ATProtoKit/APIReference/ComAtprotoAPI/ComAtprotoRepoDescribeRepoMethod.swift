@@ -32,8 +32,14 @@ extension ATProtoKit {
         _ repositoryDID: String,
         pdsURL: String? = nil
     ) async throws -> ComAtprotoLexicon.Repository.DescribeRepositoryOutput {
-        // TODO: Change this back to "\(self.pdsURL)" once ATIdentityProtocol has been implemented.
-        guard let requestURL = URL(string: "https://bsky.social/xrpc/com.atproto.repo.describeRepo") else {
+        let host: String
+        if let pdsURL, !pdsURL.isEmpty {
+            host = pdsURL
+        } else {
+            host = await resolvePDSHost(for: repositoryDID)
+        }
+
+        guard let requestURL = URL(string: "\(host)/xrpc/com.atproto.repo.describeRepo") else {
             throw ATRequestPrepareError.invalidRequestURL
         }
 
@@ -65,5 +71,28 @@ extension ATProtoKit {
         } catch {
             throw error
         }
+    }
+
+    /// Determines the base hostname for a repository-scoped request.
+    ///
+    /// Some `com.atproto.repo.*` methods are implemented by the Personal Data Server (PDS) that
+    /// hosts the target repository, which may differ from the instance's own PDS. This resolves
+    /// the PDS service endpoint from the target DID via ``ATBuiltInIdentityResolver``, falling back
+    /// to the instance's own ``pdsURL`` (the prior behaviour, served via entryway proxying) when
+    /// resolution isn't possible.
+    ///
+    /// Resolution is only attempted when `repository` is a DID; handles fall through to the
+    /// instance's own host to preserve existing behaviour. Callers that already know the PDS URL
+    /// should use it directly instead of calling this method.
+    ///
+    /// - Parameter repository: The decentralized identifier (DID) or handle of the target repository.
+    /// - Returns: The base hostname to use for the request.
+    func resolvePDSHost(for repository: String) async -> String {
+        if repository.hasPrefix("did:"),
+           let endpoint = try? await ATBuiltInIdentityResolver().resolvePDSEndpoint(from: repository) {
+            return endpoint
+        }
+
+        return pdsURL
     }
 }
