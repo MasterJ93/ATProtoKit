@@ -32,11 +32,12 @@ extension ATProtoKit {
     public func deleteSession(
         refreshToken: String
     ) async throws {
-        guard self.pdsURL != "" else {
-            throw ATRequestPrepareError.emptyPDSURL
+        guard let session = try await self.getUserSession() else {
+            throw ATRequestPrepareError.missingActiveSession
         }
+        let sessionURL = session.serviceEndpoint.absoluteString
 
-        guard let requestURL = URL(string: "\(self.pdsURL)/xrpc/com.atproto.server.deleteSession") else {
+        guard let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.server.deleteSession") else {
             throw ATRequestPrepareError.invalidRequestURL
         }
 

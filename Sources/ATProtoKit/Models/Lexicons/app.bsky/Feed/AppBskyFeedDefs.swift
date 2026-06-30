@@ -1237,85 +1237,85 @@ extension AppBskyLexicon.Feed {
         /// - SeeAlso: This is based on the [`app.bsky.feed.defs`][github] lexicon.
         ///
         /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/feed/defs.json
-        public enum Event: Sendable, Codable {
+        public enum Event: String, Sendable, Codable {
 
             /// Indicates the feed generator should request less content similar to the feed's item.
             ///
             /// - Note: According to the AT Protocol specifications: "Request that less content like the
             /// given feed item be shown in the feed."
-            case requestLess
+            case requestLess = "app.bsky.feed.defs#requestLess"
 
             /// Indicates the feed generator should request more content similar to the feed's item.
             ///
             /// - Note: According to the AT Protocol specifications: "Request that more content like the
             /// given feed item be shown in the feed."
-            case requestMore
+            case requestMore = "app.bsky.feed.defs#requestMore"
 
             /// Indicates the feed generator clicked on the feed's item.
             ///
             /// - Note: According to the AT Protocol specifications: "User clicked through to the
             /// feed item."
-            case clickthroughItem
+            case clickthroughItem = "app.bsky.feed.defs#clickthroughItem"
 
             /// Indicates the user clicked on the author of the feed's item.
             ///
             /// - Note: According to the AT Protocol specifications: "User clicked through to the author
             /// of the feed item."
-            case clickthroughAuthor
+            case clickthroughAuthor = "app.bsky.feed.defs#clickthroughAuthor"
 
             /// Indicates the user clicked on the reposter of the feed's item.
             ///
             /// - Note: According to the AT Protocol specifications: "User clicked through to the reposter
             /// of the feed item."
-            case clickthroughReposter
+            case clickthroughReposter = "app.bsky.feed.defs#clickthroughReposter"
 
             /// Indicates the user clicked on the embedded content of the feed's item.
             ///
             /// - Note: According to the AT Protocol specifications: "User clicked through to the embedded
             /// content of the feed item."
-            case clickthroughEmbed
+            case clickthroughEmbed = "app.bsky.feed.defs#clickthroughEmbed"
 
             /// Declares the feed generator supports any post type.
             ///
             /// - Note: According to the AT Protocol specifications: "Declares the feed generator
             /// returns any types of posts."
-            case contentModeUnspecified
+            case contentModeUnspecified = "app.bsky.feed.defs#contentModeUnspecified"
 
             /// Declares the feed generator returns posts with embeds from `app.bsky.embed.video`.
             ///
             /// - Note: According to the AT Protocol specifications: "Declares the feed generator
             /// returns posts containing app.bsky.embed.video embeds."
-            case contentModeVideo
+            case contentModeVideo = "app.bsky.feed.defs#contentModeVideo"
 
             /// Indicates the user has viewed the item in the feed.
             ///
             /// - Note: According to the AT Protocol specifications: "Feed item was seen by user."
-            case interactionSeen
+            case interactionSeen = "app.bsky.feed.defs#interactionSeen"
 
             /// Indicates the user has liked the item of the feed.
             ///
             /// - Note: According to the AT Protocol specifications: "User liked the feed item."
-            case interactionLike
+            case interactionLike = "app.bsky.feed.defs#interactionLike"
 
             /// Indicates the user has reposted the item of the feed.
             ///
             /// - Note: According to the AT Protocol specifications: "User reposted the feed item."
-            case interactionRepost
+            case interactionRepost = "app.bsky.feed.defs#interactionRepost"
 
             /// Indicates the user has replied to the item of the feed.
             ///
             /// - Note: According to the AT Protocol specifications: "User replied to the feed item."
-            case interactionReply
+            case interactionReply = "app.bsky.feed.defs#interactionReply"
 
             /// Indicates the user has quote posted the feed's item.
             ///
             /// - Note: According to the AT Protocol specifications: "User quoted the feed item."
-            case interactionQuote
+            case interactionQuote = "app.bsky.feed.defs#interactionQuote"
 
             /// Indicates the user has shared the feed's item.
             ///
             /// - Note: According to the AT Protocol specifications: "User shared the feed item."
-            case interactionShare
+            case interactionShare = "app.bsky.feed.defs#interactionShare"
         }
     }
 }

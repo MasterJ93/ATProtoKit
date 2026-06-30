@@ -36,8 +36,10 @@ extension ATProtoKit {
             throw ATRequestPrepareError.missingActiveSession
         }
 
-        guard let serviceEndpoint = session.didDocument?.service[0].serviceEndpoint,
-              let serviceEndpointHost = serviceEndpoint.hostname() else {
+        // Use the session's resolved service endpoint rather than `didDocument.service[0]`,
+        // which assumes the PDS is the first service entry and is nil on third-party PDS
+        // hosts whose DID document orders services differently or fails to decode.
+        guard let serviceEndpointHost = session.serviceEndpoint.hostname() else {
             throw ATRequestPrepareError.invalidRequestURL
         }
 
