@@ -181,6 +181,9 @@ extension AppBskyLexicon.Feed {
             /// A video embed.
             case video(AppBskyLexicon.Embed.VideoDefinition)
 
+            /// A gallery embed.
+            case gallery(AppBskyLexicon.Embed.GalleryDefinition)
+
             /// An external embed.
             case external(AppBskyLexicon.Embed.ExternalDefinition)
 
@@ -202,6 +205,8 @@ extension AppBskyLexicon.Feed {
                         self = .images(try AppBskyLexicon.Embed.ImagesDefinition(from: decoder))
                     case "app.bsky.embed.video":
                         self = .video(try AppBskyLexicon.Embed.VideoDefinition(from: decoder))
+                    case "app.bsky.embed.gallery":
+                        self = .gallery(try AppBskyLexicon.Embed.GalleryDefinition(from: decoder))
                     case "app.bsky.embed.external":
                         self = .external(try AppBskyLexicon.Embed.ExternalDefinition(from: decoder))
                     case "app.bsky.embed.record":
@@ -226,6 +231,9 @@ extension AppBskyLexicon.Feed {
                     case .video(let value):
                         try container.encode("app.bsky.embed.video", forKey: .type)
                         try value.encode(to: encoder)
+                    case .gallery(let galleryValue):
+                        try container.encode("app.bsky.embed.gallery", forKey: .type)
+                        try galleryValue.encode(to: encoder)
                     case .external(let externalValue):
                         try container.encode("app.bsky.embed.external", forKey: .type)
                         try externalValue.encode(to: encoder)

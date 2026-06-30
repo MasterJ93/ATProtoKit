@@ -24,6 +24,15 @@ public enum AttachmentLexiconLimit {
     /// [images]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/embed/images.json
     public static let postImageEmbed = 2_000_000
 
+    /// The maximum size of a gallery image embed: 2,000,000 bytes.
+    ///
+    /// Declared by `app.bsky.embed.gallery` at `defs.image.properties.image.maxSize`.
+    ///
+    /// - SeeAlso: [`app.bsky.embed.gallery`][gallery] lexicon.
+    ///
+    /// [gallery]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/embed/gallery.json
+    public static let galleryImageEmbed = 2_000_000
+
     /// The maximum size of an external link thumbnail: 1,000,000 bytes.
     ///
     /// Declared by `app.bsky.embed.external` at `defs.external.properties.thumb.maxSize`.
