@@ -815,11 +815,11 @@ extension AppBskyLexicon.Actor {
 
         /// An unknown case.
         ///
-        /// The payload uses `[String: CodableValue?]` so JSON `null` field values inside
-        /// third-party preference types (e.g. `skyfeedBuilderFeedsPref`) don't fail the decode.
-        /// `CodableValue` itself has no `null` representation, so null fields surface as `nil`
-        /// values in this dictionary.
-        case unknown(String, [String: CodableValue?])
+        /// JSON `null` field values inside third-party preference types (e.g.
+        /// `skyfeedBuilderFeedsPref`) are tolerated during decode: nested `null`s are handled by
+        /// `CodableValue` itself, and any top-level `null` field is dropped. `CodableValue` has no
+        /// `null` representation, so the payload type stays `[String: CodableValue]`.
+        case unknown(String, [String: CodableValue])
 
         // Implement custom decoding
         public init(from decoder: Decoder) throws {
@@ -861,9 +861,12 @@ extension AppBskyLexicon.Actor {
                     self = .liveEventPreferences(try AppBskyLexicon.Actor.LiveEventPreferencesDefinition(from: decoder))
                 default:
                     let singleValueDecodingContainer = try decoder.singleValueContainer()
+                    // Decode through `[String: CodableValue?]` to tolerate a top-level JSON `null`
+                    // field, then drop those entries so the public payload stays
+                    // `[String: CodableValue]`. Nested `null`s are handled within `CodableValue`.
                     let dictionary = try singleValueDecodingContainer.decode([String: CodableValue?].self)
 
-                    self = .unknown(type ?? "unknown", dictionary)
+                    self = .unknown(type ?? "unknown", dictionary.compactMapValues { $0 })
             }
         }
 
