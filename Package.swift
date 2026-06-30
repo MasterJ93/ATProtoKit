@@ -40,9 +40,9 @@ let package = Package(
 //            dependencies: ["VersionNumberPluginExec"]
 //        )
 //
-//        .testTarget(
-//            name: "ATProtoKitTests",
-//            dependencies: ["ATProtoKit"]),
+        .testTarget(
+            name: "ATProtoKitTests",
+            dependencies: ["ATProtoKit"]),
     ]
 )
 
