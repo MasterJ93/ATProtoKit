@@ -199,6 +199,22 @@ public enum ATDIDError: ATProtoError {
     case failedToValidateViaRegex
 }
 
+/// An error type related to resolving an identity with ``ATBuiltInIdentityResolver``.
+public enum ATIdentityResolverError: ATProtoError {
+
+    /// The DID uses a method that the built-in resolver does not support.
+    case unsupportedDIDMethod(String)
+
+    /// The DID could not be turned into a valid DID-document URL.
+    case invalidDID(String)
+
+    /// The DID document could not be retrieved.
+    case didDocumentUnavailable(did: String)
+
+    /// The DID document did not declare an AT Protocol PDS service.
+    case pdsServiceNotFound(did: String)
+}
+
 /// An error type related to issues with handles.
 public enum ATHandleError: ATProtoError {
 
