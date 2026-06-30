@@ -24,4 +24,7 @@ public enum APIHostname {
 
     /// The hostname for the Ozone moderation API ("https://mod.bsky.app").
     public static let moderation: String = "https://mod.bsky.app"
+
+    /// The hostname for the PLC directory ("https://plc.directory").
+    public static let plcDirectory: String = "https://plc.directory"
 }
