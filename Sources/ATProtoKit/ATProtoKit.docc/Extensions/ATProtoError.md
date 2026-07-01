@@ -16,3 +16,5 @@
 - ``ApplSecureKeychainError``
 - ``ATKeychainError``
 - ``GetOriginalPostsFromQuotePostsError``
+- ``ATIdentityResolverError``
+- ``FeedViewPostDefinitionError``

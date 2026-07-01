@@ -92,6 +92,7 @@
 - ``buildVideo(_:with:altText:aspectRatio:pollingFrequency:pdsURL:accessToken:)``
 - ``grabURL(from:linkbuilder:)``
 - ``uploadImages(_:pdsURL:accessToken:maxSize:)``
+- ``uploadGallery(_:pdsURL:accessToken:)``
 - ``pdsURL``
 - ``Caption``
 - ``EmbedIdentifier``

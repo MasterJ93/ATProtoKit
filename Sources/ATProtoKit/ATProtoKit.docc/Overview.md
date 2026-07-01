@@ -101,6 +101,7 @@ ATProtoKit is fully open source under the [MIT license](https://github.com/Maste
 }
 
 ### UnknownType
+
 - ``UnknownType``
 - ``CodableValue``
 - <doc:getRecordTutorial>
@@ -146,9 +147,15 @@ ATProtoKit is fully open source under the [MIT license](https://github.com/Maste
 
 
 ### Utilities
+
+- ``ATIdentityProtocol``
 - ``ATProtoTools``
 - <doc:DateFormatting-PropertyWrapper>
 - ``ATFacetParser``
+- ``SessionToken``
+- ``ATRecordDecoder``
+- ``ATBuiltInIdentityResolver``
+- ``AttachmentLexiconLimit``
 - ``Truncatable``
 - ``APIHostname``
 
