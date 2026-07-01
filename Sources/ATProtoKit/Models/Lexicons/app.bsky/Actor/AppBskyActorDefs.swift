@@ -814,11 +814,6 @@ extension AppBskyLexicon.Actor {
         case liveEventPreferences(AppBskyLexicon.Actor.LiveEventPreferencesDefinition)
 
         /// An unknown case.
-        ///
-        /// JSON `null` field values inside third-party preference types (e.g.
-        /// `skyfeedBuilderFeedsPref`) are tolerated during decode: nested `null`s are handled by
-        /// `CodableValue` itself, and any top-level `null` field is dropped. `CodableValue` has no
-        /// `null` representation, so the payload type stays `[String: CodableValue]`.
         case unknown(String, [String: CodableValue])
 
         // Implement custom decoding
@@ -861,12 +856,9 @@ extension AppBskyLexicon.Actor {
                     self = .liveEventPreferences(try AppBskyLexicon.Actor.LiveEventPreferencesDefinition(from: decoder))
                 default:
                     let singleValueDecodingContainer = try decoder.singleValueContainer()
-                    // Decode through `[String: CodableValue?]` to tolerate a top-level JSON `null`
-                    // field, then drop those entries so the public payload stays
-                    // `[String: CodableValue]`. Nested `null`s are handled within `CodableValue`.
-                    let dictionary = try singleValueDecodingContainer.decode([String: CodableValue?].self)
+                    let dictionary = try singleValueDecodingContainer.decode([String: CodableValue].self)
 
-                    self = .unknown(type ?? "unknown", dictionary.compactMapValues { $0 })
+                    self = .unknown(type ?? "unknown", dictionary)
             }
         }
 
