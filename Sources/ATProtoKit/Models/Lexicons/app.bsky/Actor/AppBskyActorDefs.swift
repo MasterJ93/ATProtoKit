@@ -804,6 +804,15 @@ extension AppBskyLexicon.Actor {
         /// The "Verification Visibility" preference.
         case verificationPreference(AppBskyLexicon.Actor.VerificationPreferenceDefinition)
 
+        /// The "Declared Age" preference.
+        ///
+        /// Read-only preference exposing age flags inferred by the server from the user's
+        /// declared birth date.
+        case declaredAge(AppBskyLexicon.Actor.DeclaredAgePreferenceDefinition)
+
+        /// The "Live Event" preferences.
+        case liveEventPreferences(AppBskyLexicon.Actor.LiveEventPreferencesDefinition)
+
         /// An unknown case.
         case unknown(String, [String: CodableValue])
 
@@ -841,9 +850,13 @@ extension AppBskyLexicon.Actor {
                     self = .postInteractionSettingsPreference(try AppBskyLexicon.Actor.PostInteractionSettingsPreferenceDefinition(from: decoder))
                 case "app.bsky.actor.defs#verificationPrefs":
                     self = .verificationPreference(try AppBskyLexicon.Actor.VerificationPreferenceDefinition(from: decoder))
+                case "app.bsky.actor.defs#declaredAgePref":
+                    self = .declaredAge(try AppBskyLexicon.Actor.DeclaredAgePreferenceDefinition(from: decoder))
+                case "app.bsky.actor.defs#liveEventPreferences":
+                    self = .liveEventPreferences(try AppBskyLexicon.Actor.LiveEventPreferencesDefinition(from: decoder))
                 default:
                     let singleValueDecodingContainer = try decoder.singleValueContainer()
-                    let dictionary = try Self.decodeDictionary(from: singleValueDecodingContainer, decoder: decoder)
+                    let dictionary = try singleValueDecodingContainer.decode([String: CodableValue].self)
 
                     self = .unknown(type ?? "unknown", dictionary)
             }
@@ -895,6 +908,12 @@ extension AppBskyLexicon.Actor {
                     try value.encode(to: encoder)
                 case .verificationPreference(let value):
                     try container.encode("app.bsky.actor.defs#verificationPrefs", forKey: .type)
+                    try value.encode(to: encoder)
+                case .declaredAge(let value):
+                    try container.encode("app.bsky.actor.defs#declaredAgePref", forKey: .type)
+                    try value.encode(to: encoder)
+                case .liveEventPreferences(let value):
+                    try container.encode("app.bsky.actor.defs#liveEventPreferences", forKey: .type)
                     try value.encode(to: encoder)
                 default:
                     break
@@ -2260,6 +2279,122 @@ extension AppBskyLexicon.Actor {
             enum CodingKeys: String, CodingKey {
                 case type = "$type"
             }
+        }
+    }
+
+    /// A definition model for a "Declared Age" preference.
+    ///
+    /// - Note: According to the AT Protocol specifications: "Read-only preference containing
+    /// value(s) inferred from the user's declared birthdate. Absence of this preference object in
+    /// the response indicates that the user has not made a declaration."
+    ///
+    /// - SeeAlso: This is based on the [`app.bsky.actor.defs`][github] lexicon.
+    ///
+    /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/actor/defs.json
+    public struct DeclaredAgePreferenceDefinition: Sendable, Codable {
+
+        /// The identifier of the lexicon.
+        ///
+        /// - Warning: The value must not change.
+        public let type: String = "app.bsky.actor.defs#declaredAgePref"
+
+        /// Indicates whether the user has declared that they are over 13 years of age. Optional.
+        ///
+        /// - Note: According to the AT Protocol specifications: "Indicates if the user has declared
+        /// that they are over 13 years of age."
+        public let isOverAge13: Bool?
+
+        /// Indicates whether the user has declared that they are over 16 years of age. Optional.
+        ///
+        /// - Note: According to the AT Protocol specifications: "Indicates if the user has declared
+        /// that they are over 16 years of age."
+        public let isOverAge16: Bool?
+
+        /// Indicates whether the user has declared that they are over 18 years of age. Optional.
+        ///
+        /// - Note: According to the AT Protocol specifications: "Indicates if the user has declared
+        /// that they are over 18 years of age."
+        public let isOverAge18: Bool?
+
+        public init(isOverAge13: Bool? = nil, isOverAge16: Bool? = nil, isOverAge18: Bool? = nil) {
+            self.isOverAge13 = isOverAge13
+            self.isOverAge16 = isOverAge16
+            self.isOverAge18 = isOverAge18
+        }
+
+        public init(from decoder: any Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+
+            self.isOverAge13 = try container.decodeIfPresent(Bool.self, forKey: .isOverAge13)
+            self.isOverAge16 = try container.decodeIfPresent(Bool.self, forKey: .isOverAge16)
+            self.isOverAge18 = try container.decodeIfPresent(Bool.self, forKey: .isOverAge18)
+        }
+
+        public func encode(to encoder: any Encoder) throws {
+            var container = encoder.container(keyedBy: CodingKeys.self)
+
+            try container.encodeIfPresent(self.isOverAge13, forKey: .isOverAge13)
+            try container.encodeIfPresent(self.isOverAge16, forKey: .isOverAge16)
+            try container.encodeIfPresent(self.isOverAge18, forKey: .isOverAge18)
+        }
+
+        enum CodingKeys: String, CodingKey {
+            case type = "$type"
+            case isOverAge13
+            case isOverAge16
+            case isOverAge18
+        }
+    }
+
+    /// A definition model for a "Live Event" preferences.
+    ///
+    /// - Note: According to the AT Protocol specifications: "Preferences for live events."
+    ///
+    /// - SeeAlso: This is based on the [`app.bsky.actor.defs`][github] lexicon.
+    ///
+    /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/actor/defs.json
+    public struct LiveEventPreferencesDefinition: Sendable, Codable {
+
+        /// The identifier of the lexicon.
+        ///
+        /// - Warning: The value must not change.
+        public let type: String = "app.bsky.actor.defs#liveEventPreferences"
+
+        /// An array of feed identifiers that the user has hidden from live events. Optional.
+        ///
+        /// - Note: According to the AT Protocol specifications: "A list of feed IDs that the user
+        /// has hidden from live events."
+        public let hiddenFeedIDs: [String]?
+
+        /// Indicates whether all feeds should be hidden from live events. Optional. Defaults to `false`.
+        ///
+        /// - Note: According to the AT Protocol specifications: "Whether to hide all feeds from
+        /// live events."
+        public let hideAllFeeds: Bool?
+
+        public init(hiddenFeedIDs: [String]? = nil, hideAllFeeds: Bool? = nil) {
+            self.hiddenFeedIDs = hiddenFeedIDs
+            self.hideAllFeeds = hideAllFeeds
+        }
+
+        public init(from decoder: any Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+
+            self.hiddenFeedIDs = try container.decodeIfPresent([String].self, forKey: .hiddenFeedIDs)
+            self.hideAllFeeds = try container.decodeIfPresent(Bool.self, forKey: .hideAllFeeds)
+        }
+
+        public func encode(to encoder: any Encoder) throws {
+            var container = encoder.container(keyedBy: CodingKeys.self)
+
+            try container.encodeIfPresent(self.hiddenFeedIDs, forKey: .hiddenFeedIDs)
+            try container.encodeIfPresent(self.hideAllFeeds, forKey: .hideAllFeeds)
+        }
+
+        enum CodingKeys: String, CodingKey {
+            case type = "$type"
+            case hiddenFeedIDs = "hiddenFeedIds"
+            case hideAllFeeds
         }
     }
 

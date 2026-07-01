@@ -630,10 +630,15 @@ public enum CodableValue: Codable, Sendable, Equatable, Hashable {
     /// Stores a `Dictionary` with `String` keys and `CodableValue` values.
     case dictionary([String: CodableValue])
 
+    /// Stores a JSON `null` value.
+    case null
+
     public init(from decoder: Decoder) throws {
         let container = try decoder.singleValueContainer()
 
-        if let value = try? container.decode(Bool.self) {
+        if container.decodeNil() {
+            self = .null
+        } else if let value = try? container.decode(Bool.self) {
             self = .bool(value)
         } else if let value = try? container.decode(Int.self) {
             self = .int(value)
@@ -670,6 +675,8 @@ public enum CodableValue: Codable, Sendable, Equatable, Hashable {
                 try container.encode(value)
             case .dictionary(let value):
                 try container.encode(value)
+            case .null:
+                try container.encodeNil()
         }
     }
 }
