@@ -70,22 +70,19 @@ public struct ExternalLinkBuilder: ATLinkBuilder {
 Once you’ve completed creating the `ATLinkBuilder`-conforming object, you can put this as an argument in ``ATProtoBluesky``. The `class` contains an argument named `linkBuilder`:
 
 ```swift
-let config = ATProtocolConfiguration(
-    handle: "example.bsky.social",
-    appPassword: "hunter2"
-)
+let config = ATProtocolConfiguration()
 
 Task {
     do {
         // Create an instance of the conforming object...
         let externalEmbedBuilder = ExternalLinkBuilder()
 
-        let session = try await config.authenticate()
+        try await config.authenticate(with: "example.bsky.social", password: "hunter2")
 
         guard let link = URL(string: "https://bsky.social/about/blog/04-01-2024-bluesky-shorts") else { return }
         let metadata = try await externalEmbedBuilder.grabMetadata(from: link)
 
-        let atProto = ATProtoKit(session: session)
+        let atProto = await ATProtoKit(sessionConfiguration: config)
 
         let atProtoBluesky = ATProtoBluesky(
             atProtoKitInstance: atProto,
@@ -110,14 +107,14 @@ Optionally, you can also use the `embed` argument of `createPostRecord()`. When 
 ```swift
 Task {
     do {
-        let session = try await config.authenticate()
+        try await config.authenticate(with: "example.bsky.social", password: "hunter2")
 
         let externalLinkBuilder = ExternalLinkBuilder()
 
         guard let link = URL(string: "https://www.nintendo.com/") else { return }
         let metadata = try await externalLinkBuilder.grabMetadata(from: link)
 
-        let atProto = ATProtoKit(session: session)
+        let atProto = await ATProtoKit(sessionConfiguration: config)
         let atProtoBluesky = ATProtoBluesky(atProtoKitInstance: atProto)
 
         let postResult = try await atProtoBluesky.createPostRecord(

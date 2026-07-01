@@ -63,7 +63,7 @@ This is the only external change. However, more has been made internally:
 
 As mentioned previously, ``SessionConfiguration`` now has default configurations for each of the required methods. It is also `Sendable` and requires a `class` to conform to it. The default implementation assumes you're using an App Password to authenticate by default, but you're able to create new implementations for your own conforming `class`.
 
-Furthermore, the ``SessionConfiguration/authenticate(with:password:)`` method handles Two-Factor Authentication, but the `protocol` can also handle OAuth. This is thanks to a `AsyncStream`-related properties, named ``SessionConfiguration/codeContinuation`` and ``SessionConfiguration/codeStream``.
+Furthermore, the ``SessionConfiguration/authenticate(with:password:)`` method handles Two-Factor Authentication by waiting on ``SessionConfiguration/codeStream`` after the server requests a code. Pass the code back through ``SessionConfiguration/receiveCodeFromUser(_:)``. The same `AsyncStream`-related properties, named ``SessionConfiguration/codeContinuation`` and ``SessionConfiguration/codeStream``, can also support custom OAuth flows.
 
 ## Auto-managing the Keychain
 
@@ -72,4 +72,3 @@ As mentioned earlier, a new `protocol` and `actor` have been made: ``SecureKeych
 
 ``AppleSecureKeychain`` conforms to ``SecureKeychainProtocol`` and is the default object used for Apple platforms. It's also the default object used when initializing with ``ATProtocolConfiguration``. However, you're free to create your own implementation if it doesn't suit your needs.
 - Note: At this time, Linux and Windows developers will need to implement their own `actor` or `class` to achieve the same effect. However, default `actor`s for those platforms will be created at a later date.
-

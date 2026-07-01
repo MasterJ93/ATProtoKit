@@ -48,7 +48,7 @@ Task {
 }
 ```
 
-> Note: If you've enabled Two-Factor Authentication (via email), you may see an `AuthFactorTokenRequired` error. In that case, check your inbox for a code, then call ``ATProtocolConfiguration/authenticate(with:password:)`` again, but put in the code for the `authenticationFactorToken` parameter.
+> Note: If you've enabled Two-Factor Authentication (via email), ``ATProtocolConfiguration/authenticate(with:password:)`` waits for the code after the server returns `AuthFactorTokenRequired`. Check your inbox for the code, then pass it to ``SessionConfiguration/receiveCodeFromUser(_:)`` from your UI or command-line input handler.
 
 ``UserSession`` will contain, among other things, the access and refresh tokens. ATProtoKit abstracts this away for you so you don't need to add it every time you use a method that requires an active session.
 
@@ -81,7 +81,7 @@ To view your own posts, you can use ``ATProtoKit/ATProtoKit/getAuthorFeed(by:lim
 
 ```swift
 do {
-    guard let session = atProto.session else { return }
+    guard let session = try await atProto.getUserSession() else { return }
     let myFeed = try await atProto.getAuthorFeed(by: session.handle)
     print("Feed: \(myFeed)")
 } catch {

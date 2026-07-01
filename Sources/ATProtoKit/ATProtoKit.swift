@@ -112,11 +112,10 @@ extension ATProtoKitConfiguration {
 /// Task {
 ///     do {
 ///         let config = ATProtocolConfiguration()
-///         try await config.authenticate(with: "example.bsky.social", appPassword: "hunter2")
+///         try await config.authenticate(with: "example.bsky.social", password: "hunter2")
 ///
-///        if let keychain = try await atProtoKit.keychainProtocol() {
-///            print("Access Token: \(keychain.retrieveAccessToken())")
-///        }
+///         let accessToken = try await config.keychainProtocol.retrieveAccessToken()
+///         print("Access Token: \(accessToken)")
 ///
 ///         let atProtoKit = await ATProtoKit(sessionConfiguration: config)
 ///     } catch {
@@ -283,16 +282,17 @@ public final class ATProtoBlueskyChat: Sendable, ATProtoKitConfiguration {
 /// instance of ``ATProtocolConfiguration`` is required:
 ///
 /// ```swift
-/// let config = ATProtocolConfiguration(handle: "example.bsky.social", appPassword: "hunter2")
+/// let config = ATProtocolConfiguration()
 /// ```
 /// ``ATProtocolConfiguration/authenticate(with:password:)`` should then be used to get information
 /// about the session. The result is handed over to the `ATProtoAdmin`'s instance:
 ///```swift
 /// Task {
 ///     do {
-///         try await config.authenticate()
+///         try await config.authenticate(with: "example.bsky.social", password: "hunter2")
 ///
-///         print("Access token: \(session.accessToken)")
+///         let accessToken = try await config.keychainProtocol.retrieveAccessToken()
+///         print("Access token: \(accessToken)")
 ///     } catch {
 ///         print("Error: \(error)")
 ///     }

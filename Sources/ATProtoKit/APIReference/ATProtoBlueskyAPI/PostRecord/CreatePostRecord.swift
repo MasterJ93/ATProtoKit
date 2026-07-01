@@ -136,14 +136,14 @@ extension ATProtoBluesky {
     ///     print("Starting application...")
     ///
     ///     do {
-    ///         let session = try await config.authenticate()
+    ///         try await config.authenticate(with: "example.bsky.social", password: "hunter2")
     ///
     ///         let externalLinkBuilder = ExternalLinkBuilder()
     ///
     ///         guard let link = URL(string: "https://www.youtube.com/watch?v=dQw4w9WgXcQ") else { return }
     ///         let metadata = try await linkBuilder.grabMetadata(from: link)
     ///
-    ///         let atProto = ATProtoKit(session: session)
+    ///         let atProto = await ATProtoKit(sessionConfiguration: config)
     ///         let atProtoBluesky = ATProtoBluesky(atProtoKitInstance: atProto)
     ///
     ///         let postResult = try await atProtoBluesky.createPostRecord(

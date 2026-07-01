@@ -91,7 +91,7 @@
 - ``buildExternalEmbed(from:title:description:thumbnailImageURL:session:)``
 - ``buildVideo(_:with:altText:aspectRatio:pollingFrequency:pdsURL:accessToken:)``
 - ``grabURL(from:linkbuilder:)``
-- ``uploadImages(_:pdsURL:accessToken:)``
+- ``uploadImages(_:pdsURL:accessToken:maxSize:)``
 - ``pdsURL``
 - ``Caption``
 - ``EmbedIdentifier``

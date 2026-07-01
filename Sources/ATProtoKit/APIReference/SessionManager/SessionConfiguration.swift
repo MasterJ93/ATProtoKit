@@ -135,9 +135,8 @@ public protocol SessionConfiguration: AnyObject, Sendable {
     ///
     /// If the refresh token is invalid, the method will re-authenticate and try again.
     ///
-    /// - Note: If the method throws an error saying that an authentication token is required,
-    /// re-trying the method with the `authenticationFactorToken` argument filled should
-    /// solve the issue.
+    /// - Note: If the method receives an authentication-factor challenge while re-authenticating,
+    /// the default authentication flow waits for a code from ``receiveCodeFromUser(_:)``.
     ///
     /// When the method completes, the linked ``UserSession`` inside ``UserSessionRegistry`` will
     /// be replaced with a new instance.

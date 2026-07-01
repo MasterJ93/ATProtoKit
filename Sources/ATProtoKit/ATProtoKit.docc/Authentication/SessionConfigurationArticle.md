@@ -34,7 +34,7 @@ Specifically with `SecureKeychainProtocol`, Apple platforms has a default `actor
 
 With these implementations, you don't have to start from scratch: if there's a method that already works for your needs, but some others requires a custom implementation, then you're free to ignore it.
 
-Finally, there are properties that provide pausing opportunities so that the user can perform actions outside of the app, such as getting a Two-Factor Authentication code, or waiting for the server to state that the user has completed the OAuth requirements. These are `AsyncStream` properties, named ``SessionConfiguration/codeStream`` and ``SessionConfiguration/codeContinuation``.
+Finally, there are properties that provide pausing opportunities so that the user can perform actions outside of the app, such as getting a Two-Factor Authentication code, or waiting for the server to state that the user has completed the OAuth requirements. These are `AsyncStream` properties, named ``SessionConfiguration/codeStream`` and ``SessionConfiguration/codeContinuation``. The default ``SessionConfiguration/receiveCodeFromUser(_:)`` implementation yields the code into that stream while ``SessionConfiguration/authenticate(with:password:)`` is waiting.
 
 ## Use Cases
 
@@ -46,9 +46,9 @@ ATProtoKit typically retrieves the service endpoint from the Personal Data Serve
 
 - Note: In this example, we'll be using [ATResolve](https://github.com/mattmassicotte/ATResolve), which is perfect for what we need.
 
-Once you add the package as a dependency and you create a new `class`, Override the ``SessionConfiguration/authenticate(with:password:)`` method to implement the following:
+Once you add the package as a dependency and you create a new `class`, override the ``SessionConfiguration/authenticate(with:password:)`` method to implement the following:
 ```swift
-public func MySessionConfigurationClass: SessionConfiguration {
+public final class MySessionConfiguration: SessionConfiguration {
 
     // Properties and initializer implemented above...
 
@@ -75,4 +75,4 @@ public func MySessionConfigurationClass: SessionConfiguration {
 
 In the above example, we create an instance of `ATResolve`. After that, we use `resolveHandle()` and pass in the `handle` property as the argument. `ATResolve` will find the DID document associated with the handle, which will contain the service endpoint. Once you're done, all that's left to do is extract the URL.
 
-You can now use this to pass the `serviceEndpoint` variable into the `pdsURL` parameter of ``ATProtoKit/ATProtocolConfiguration/init(pdsURL:keychainProtocol:configuration:canResolve:)``, and then call the ``ATProtoKit/ATProtoKit/createSession(with:and:authenticationFactorToken:)`` method.
+You can now use this to send the session creation request to the resolved `serviceEndpoint`, matching the default ``SessionConfiguration/authenticate(with:password:)`` flow while replacing its PDS-selection logic.
