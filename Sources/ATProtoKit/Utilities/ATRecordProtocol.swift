@@ -479,7 +479,9 @@ public enum UnknownType: Sendable, Codable {
     private static func decodeNestedDictionary(container: KeyedDecodingContainer<DynamicCodingKeys>) throws -> [String: CodableValue] {
         var dictionary = [String: CodableValue]()
         for key in container.allKeys {
-            if let value = try? container.decode(Bool.self, forKey: key) {
+            if try container.decodeNil(forKey: key) {
+                dictionary[key.stringValue] = .null
+            } else if let value = try? container.decode(Bool.self, forKey: key) {
                 dictionary[key.stringValue] = .bool(value)
             } else if let value = try? container.decode(Int.self, forKey: key) {
                 dictionary[key.stringValue] = .int(value)
@@ -530,7 +532,9 @@ public enum UnknownType: Sendable, Codable {
         var array = [CodableValue]()
 
         while !unkeyedContainer.isAtEnd {
-            if let value = try? unkeyedContainer.decode(Bool.self) {
+            if try unkeyedContainer.decodeNil() {
+                array.append(.null)
+            } else if let value = try? unkeyedContainer.decode(Bool.self) {
                 array.append(.bool(value))
             } else if let value = try? unkeyedContainer.decode(Int.self) {
                 array.append(.int(value))
