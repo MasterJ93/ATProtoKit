@@ -5,8 +5,6 @@
 //  Created by Christopher Jr Riley on 2024-05-16.
 //
 
-import Foundation
-
 /// A group of lexicons within the `app.bsky` namespace.
 public enum AppBskyLexicon {}
 

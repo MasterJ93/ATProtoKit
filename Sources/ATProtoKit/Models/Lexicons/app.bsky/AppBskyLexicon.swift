@@ -5,12 +5,6 @@
 //  Created by Christopher Jr Riley on 2024-05-16.
 //
 
-import Foundation
-#if canImport(FoundationNetworking)
-import FoundationNetworking
-#endif
-
-
 extension AppBskyLexicon {
 
     /// A group of lexicons within the `app.bsky.actor` namespace.

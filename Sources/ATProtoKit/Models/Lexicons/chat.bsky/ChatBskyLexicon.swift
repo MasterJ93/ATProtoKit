@@ -5,11 +5,6 @@
 //  Created by Christopher Jr Riley on 2024-05-16.
 //
 
-import Foundation
-#if canImport(FoundationNetworking)
-import FoundationNetworking
-#endif
-
 extension ChatBskyLexicon {
 
     /// A group of lexicons within the `chat.bsky.actor` namespace.
