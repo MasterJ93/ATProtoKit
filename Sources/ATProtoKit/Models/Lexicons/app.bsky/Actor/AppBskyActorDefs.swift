@@ -2066,7 +2066,7 @@ extension AppBskyLexicon.Actor {
             try container.truncatedEncode(self.id, forKey: .id, upToCharacterLength: 100)
             try container.encode(self.isCompleted, forKey: .isCompleted)
             try container.truncatedEncodeIfPresent(self.data, forKey: .data, upToCharacterLength: 300)
-            try container.encodeIfPresent(self.expiresAt, forKey: .expiresAt)
+            try container.encodeDateIfPresent(self.expiresAt, forKey: .expiresAt)
         }
 
         enum CodingKeys: String, CodingKey {
