@@ -1011,7 +1011,7 @@ extension AppBskyLexicon.Actor {
         
         enum CodingKeys: String, CodingKey {
             case type = "$type"
-            case did = "Did"
+            case did = "labelerDid"
             case label
             case visibility
         }
