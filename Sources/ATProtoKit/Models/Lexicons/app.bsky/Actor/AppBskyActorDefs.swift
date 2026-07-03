@@ -915,8 +915,9 @@ extension AppBskyLexicon.Actor {
                 case .liveEventPreferences(let value):
                     try container.encode("app.bsky.actor.defs#liveEventPreferences", forKey: .type)
                     try value.encode(to: encoder)
-                default:
-                    break
+                case .unknown(_, let dictionary):
+                    var singleValueContainer = encoder.singleValueContainer()
+                    try singleValueContainer.encode(dictionary)
             }
         }
 
