@@ -64,7 +64,7 @@ extension AppBskyLexicon.Embed {
             public let type: String = "app.bsky.embed.external#external"
 
             /// The URI of the external content.
-            public let uri: URL
+            public let uri: String
 
             /// The title of the external content.
             public let title: String
@@ -85,7 +85,7 @@ extension AppBskyLexicon.Embed {
             public let associatedRefs: [ComAtprotoLexicon.Repository.StrongReference]?
 
             public init(
-                uri: URL,
+                uri: String,
                 title: String,
                 description: String,
                 thumbnailImage: ComAtprotoLexicon.Repository.UploadBlobOutput?,
@@ -100,7 +100,7 @@ extension AppBskyLexicon.Embed {
 
             public init(from decoder: any Decoder) throws {
                 let container = try decoder.container(keyedBy: CodingKeys.self)
-                self.uri = try container.decode(URL.self, forKey: CodingKeys.uri)
+                self.uri = try container.decode(String.self, forKey: CodingKeys.uri)
                 self.title = try container.decode(String.self, forKey: CodingKeys.title)
                 self.description = try container.decode(String.self, forKey: CodingKeys.description)
                 self.thumbnailImage = try container.decodeIfPresent(ComAtprotoLexicon.Repository.UploadBlobOutput.self, forKey: CodingKeys.thumbnailImage)

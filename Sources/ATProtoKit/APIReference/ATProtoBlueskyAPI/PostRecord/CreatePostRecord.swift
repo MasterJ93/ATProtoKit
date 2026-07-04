@@ -905,7 +905,7 @@ extension ATProtoBluesky {
 
         let embedExternal = AppBskyLexicon.Embed.ExternalDefinition(
             external: AppBskyLexicon.Embed.ExternalDefinition.External(
-                uri: url,
+                uri: url.absoluteString,
                 title: title,
                 description: description ?? "",
                 thumbnailImage: thumbnailImage ?? nil
