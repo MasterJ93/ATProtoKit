@@ -32,7 +32,7 @@ let package = Package(
                 .product(name: "Logging", package: "swift-log")
             ],
             resources: [
-                .copy("PrivacyInfo.xcprivacy")
+                .process("PrivacyInfo.xcprivacy")
             ]
 //            plugins: ["VersionNumberPlugin"]
         ),
