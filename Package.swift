@@ -30,6 +30,9 @@ let package = Package(
             name: "ATProtoKit",
             dependencies: [
                 .product(name: "Logging", package: "swift-log")
+            ],
+            resources: [
+                .copy("PrivacyInfo.xcprivacy")
             ]
 //            plugins: ["VersionNumberPlugin"]
         ),
