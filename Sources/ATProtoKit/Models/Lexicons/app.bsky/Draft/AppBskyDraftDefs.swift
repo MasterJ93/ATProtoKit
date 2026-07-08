@@ -164,9 +164,12 @@ extension AppBskyLexicon.Draft {
                 
                 switch self {
                     case .postgateDisableRule(let value):
-                        try container.encode(value)
-                    default:
-                        break
+                        var container = encoder.container(keyedBy: CodingKeys.self)
+                        try container.encode("app.bsky.feed.postgate#disableRule", forKey: .type)
+                        try value.encode(to: encoder)
+                    case .unknown(_, let dictionary):
+                        var singleValueContainer = encoder.singleValueContainer()
+                        try singleValueContainer.encode(dictionary)
                 }
             }
             
@@ -220,15 +223,24 @@ extension AppBskyLexicon.Draft {
                 
                 switch self {
                     case .threadgateMentionRule(let value):
-                        try container.encode(value)
+                        var container = encoder.container(keyedBy: CodingKeys.self)
+                        try container.encode("app.bsky.feed.threadgate#mentionRule", forKey: .type)
+                        try value.encode(to: encoder)
                     case .threadgateFollowerRule(let value):
-                        try container.encode(value)
+                        var container = encoder.container(keyedBy: CodingKeys.self)
+                        try container.encode("app.bsky.feed.threadgate#followerRule", forKey: .type)
+                        try value.encode(to: encoder)
                     case .threadgateFollowingRule(let value):
-                        try container.encode(value)
+                        var container = encoder.container(keyedBy: CodingKeys.self)
+                        try container.encode("app.bsky.feed.threadgate#followingRule", forKey: .type)
+                        try value.encode(to: encoder)
                     case .threadgateListRule(let value):
-                        try container.encode(value)
-                    default:
-                        break
+                        var container = encoder.container(keyedBy: CodingKeys.self)
+                        try container.encode("app.bsky.feed.threadgate#listRule", forKey: .type)
+                        try value.encode(to: encoder)
+                    case .unknown(_, let dictionary):
+                        var singleValueContainer = encoder.singleValueContainer()
+                        try singleValueContainer.encode(dictionary)
                 }
             }
             
@@ -358,9 +370,12 @@ extension AppBskyLexicon.Draft {
                 
                 switch self {
                     case .labelSelfLabels(let value):
-                        try container.encode(value)
-                    default:
-                        break
+                        var container = encoder.container(keyedBy: CodingKeys.self)
+                        try container.encode("com.atproto.label.defs#selfLabels", forKey: .type)
+                        try value.encode(to: encoder)
+                    case .unknown(_, let dictionary):
+                        var singleValueContainer = encoder.singleValueContainer()
+                        try singleValueContainer.encode(dictionary)
                 }
             }
             
@@ -566,9 +581,12 @@ extension AppBskyLexicon.Draft {
                 
                 switch self {
                     case .draftEmbedImage(let value):
-                        try container.encode(value)
-                    default:
-                        break
+                        var container = encoder.container(keyedBy: CodingKeys.self)
+                        try container.encode("app.bsky.draft.defs#draftEmbedImage", forKey: .type)
+                        try value.encode(to: encoder)
+                    case .unknown(_, let dictionary):
+                        var singleValueContainer = encoder.singleValueContainer()
+                        try singleValueContainer.encode(dictionary)
                 }
             }
             

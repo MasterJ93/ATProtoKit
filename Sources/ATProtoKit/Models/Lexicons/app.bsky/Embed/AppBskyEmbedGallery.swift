@@ -85,9 +85,12 @@ extension AppBskyLexicon.Embed {
                 
                 switch self {
                     case .itemImage(let value):
-                        try container.encode(value)
-                    default:
-                        break
+                        var container = encoder.container(keyedBy: CodingKeys.self)
+                        try container.encode("app.bsky.embed.gallery#image", forKey: .type)
+                        try value.encode(to: encoder)
+                    case .unknown(_, let dictionary):
+                        var singleValueContainer = encoder.singleValueContainer()
+                        try singleValueContainer.encode(dictionary)
                 }
             }
             
