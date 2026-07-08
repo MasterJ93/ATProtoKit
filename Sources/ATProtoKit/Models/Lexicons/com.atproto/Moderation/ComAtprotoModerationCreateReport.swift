@@ -44,6 +44,40 @@ extension ComAtprotoLexicon.Moderation {
         ///   Clarifications from Bluesky are needed in order to fully understand this item.
         public let subject: SubjectUnion
 
+        /// Moderation tool information for tracing the source of the action
+        ///
+        public let moderationTool: ModerationTool?
+        
+        public init(reasonType: ComAtprotoLexicon.Moderation.ReasonTypeDefinition, reason: String? = nil, subject: SubjectUnion, moderationTool: ModerationTool? = nil) {
+            self.reasonType = reasonType
+            self.reason = reason
+            self.subject = subject
+            self.moderationTool = moderationTool
+        }
+        
+        public init(from decoder: any Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+            self.reasonType = try container.decode(ComAtprotoLexicon.Moderation.ReasonTypeDefinition.self, forKey: .reasonType)
+            self.reason = try container.decodeIfPresent(String.self, forKey: .reason)
+            self.subject = try container.decode(ComAtprotoLexicon.Moderation.CreateReportRequestBody.SubjectUnion.self, forKey: .subject)
+            self.moderationTool = try container.decodeIfPresent(ModerationTool.self, forKey: .moderationTool)
+        }
+        
+        public func encode(to encoder: any Encoder) throws {
+            var container = encoder.container(keyedBy: CodingKeys.self)
+            try container.encode(self.reasonType, forKey: .reasonType)
+            try container.truncatedEncodeIfPresent(self.reason, forKey: .reason, upToCharacterLength: 20000)
+            try container.encode(self.subject, forKey: .subject)
+            try container.encodeIfPresent(self.moderationTool, forKey: .moderationTool)
+        }
+        
+        public enum CodingKeys: String, CodingKey {
+            case reasonType
+            case reason
+            case subject
+            case moderationTool = "modTool"
+        }
+        
         // Unions
         /// The subject reference.
         public enum SubjectUnion: ATUnionProtocol {
@@ -89,6 +123,35 @@ extension ComAtprotoLexicon.Moderation {
 
             enum CodingKeys: String, CodingKey {
                 case type = "$type"
+            }
+        }
+        
+        public struct ModerationTool: Sendable, Codable {
+            
+            public let name: String
+            
+            public let meta: UnknownType?
+            
+            public init(name: String, meta: UnknownType? = nil) {
+                self.name = name
+                self.meta = meta
+            }
+            
+            public init(from decoder: any Decoder) throws {
+                let container = try decoder.container(keyedBy: CodingKeys.self)
+                self.name = try container.decode(String.self, forKey: .name)
+                self.meta = try container.decodeIfPresent(UnknownType.self, forKey: .meta)
+            }
+            
+            public func encode(to encoder: any Encoder) throws {
+                var container = encoder.container(keyedBy: CodingKeys.self)
+                try container.encode(self.name, forKey: .name)
+                try container.encodeIfPresent(self.meta, forKey: .meta)
+            }
+            
+            public enum CodingKeys: CodingKey {
+                case name
+                case meta
             }
         }
     }
