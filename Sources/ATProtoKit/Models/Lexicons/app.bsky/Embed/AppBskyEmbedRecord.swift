@@ -148,27 +148,42 @@ extension AppBskyLexicon.Embed {
                 }
 
                 public func encode(to encoder: Encoder) throws {
-                    var container = encoder.singleValueContainer()
-
                     switch self {
                         case .viewRecord(let value):
-                            try container.encode(value)
+                            var container = encoder.container(keyedBy: CodingKeys.self)
+                            try container.encode("app.bsky.embed.record#viewRecord", forKey: .type)
+                            try value.encode(to: encoder)
                         case .viewNotFound(let value):
-                            try container.encode(value)
+                            var container = encoder.container(keyedBy: CodingKeys.self)
+                            try container.encode("app.bsky.embed.record#viewNotFound", forKey: .type)
+                            try value.encode(to: encoder)
                         case .viewBlocked(let value):
-                            try container.encode(value)
+                            var container = encoder.container(keyedBy: CodingKeys.self)
+                            try container.encode("app.bsky.embed.record#viewBlocked", forKey: .type)
+                            try value.encode(to: encoder)
                         case .viewDetached(let value):
-                            try container.encode(value)
+                            var container = encoder.container(keyedBy: CodingKeys.self)
+                            try container.encode("app.bsky.embed.record#viewDetached", forKey: .type)
+                            try value.encode(to: encoder)
                         case .generatorView(let value):
-                            try container.encode(value)
+                            var container = encoder.container(keyedBy: CodingKeys.self)
+                            try container.encode("app.bsky.feed.defs#generatorView", forKey: .type)
+                            try value.encode(to: encoder)
                         case .listView(let value):
-                            try container.encode(value)
+                            var container = encoder.container(keyedBy: CodingKeys.self)
+                            try container.encode("app.bsky.graph.defs#listView", forKey: .type)
+                            try value.encode(to: encoder)
                         case .labelerView(let value):
-                            try container.encode(value)
+                            var container = encoder.container(keyedBy: CodingKeys.self)
+                            try container.encode("app.bsky.labeler.defs#labelerView", forKey: .type)
+                            try value.encode(to: encoder)
                         case .starterPackViewBasic(let value):
-                            try container.encode(value)
-                        default:
-                            break
+                            var container = encoder.container(keyedBy: CodingKeys.self)
+                            try container.encode("app.bsky.graph.defs#starterPackViewBasic", forKey: .type)
+                            try value.encode(to: encoder)
+                        case .unknown(_, let dictionary):
+                            var singleValueContainer = encoder.singleValueContainer()
+                            try singleValueContainer.encode(dictionary)
                     }
                 }
 
@@ -324,23 +339,34 @@ extension AppBskyLexicon.Embed {
                 }
 
                 public func encode(to encoder: Encoder) throws {
-                    var container = encoder.singleValueContainer()
-
                     switch self {
                         case .embedExternalView(let value):
-                            try container.encode(value)
+                            var container = encoder.container(keyedBy: CodingKeys.self)
+                            try container.encode("app.bsky.embed.external#view", forKey: .type)
+                            try value.encode(to: encoder)
                         case .embedImagesView(let value):
-                            try container.encode(value)
+                            var container = encoder.container(keyedBy: CodingKeys.self)
+                            try container.encode("app.bsky.embed.images#view", forKey: .type)
+                            try value.encode(to: encoder)
                         case .embedRecordView(let value):
-                            try container.encode(value)
+                            var container = encoder.container(keyedBy: CodingKeys.self)
+                            try container.encode("app.bsky.embed.gallery#view", forKey: .type)
+                            try value.encode(to: encoder)
                         case .embedRecordWithMediaView(let value):
-                            try container.encode(value)
+                            var container = encoder.container(keyedBy: CodingKeys.self)
+                            try container.encode("app.bsky.embed.video#view", forKey: .type)
+                            try value.encode(to: encoder)
                         case .embedVideoView(let value):
-                            try container.encode(value)
+                            var container = encoder.container(keyedBy: CodingKeys.self)
+                            try container.encode("app.bsky.embed.record#view", forKey: .type)
+                            try value.encode(to: encoder)
                         case .embedGalleryView(let value):
-                            try container.encode(value)
-                        default:
-                            break
+                            var container = encoder.container(keyedBy: CodingKeys.self)
+                            try container.encode("app.bsky.embed.recordWithMedia#view", forKey: .type)
+                            try value.encode(to: encoder)
+                        case .unknown(_, let dictionary):
+                            var singleValueContainer = encoder.singleValueContainer()
+                            try singleValueContainer.encode(dictionary)
                     }
                 }
 
