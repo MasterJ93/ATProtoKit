@@ -223,9 +223,11 @@ extension ComAtprotoLexicon.Label {
 
         /// The default setting for the label.
         ///
+        /// Defaults to `.warn` when the labeler omits the field, per the lexicon.
+        ///
         /// - Note: According to the AT Protocol specifications: "The default setting for
         /// this label."
-        public let defaultSetting: DefaultSetting = .warn
+        public let defaultSetting: DefaultSetting
 
         /// Indicates whether the "Adult Content" preference needs to be enabled in order to use
         /// this label. Optional.
@@ -236,6 +238,19 @@ extension ComAtprotoLexicon.Label {
 
         /// An array of localized strings for the label. Optional.
         public let locales: [LabelValueDefinitionStringsDefinition]
+
+        public init(from decoder: any Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+
+            self.identifier = try container.decode(String.self, forKey: .identifier)
+            self.severity = try container.decode(Severity.self, forKey: .severity)
+            self.blurs = try container.decode(Blurs.self, forKey: .blurs)
+            // Fall back to the lexicon default when the field is absent or carries an
+            // unrecognized value, so one odd label can't fail the whole response.
+            self.defaultSetting = (try? container.decodeIfPresent(DefaultSetting.self, forKey: .defaultSetting)) ?? .warn
+            self.isAdultOnly = try container.decodeIfPresent(Bool.self, forKey: .isAdultOnly)
+            self.locales = try container.decode([LabelValueDefinitionStringsDefinition].self, forKey: .locales)
+        }
 
         public func encode(to encoder: any Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)

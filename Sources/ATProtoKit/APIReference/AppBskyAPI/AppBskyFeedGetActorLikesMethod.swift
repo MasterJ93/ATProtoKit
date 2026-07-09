@@ -31,6 +31,8 @@ extension ATProtoKit {
     ///   - limit: The number of items the list will hold. Optional. Defaults to `50`.
     ///   - cursor: The mark used to indicate the starting point for the next set
     ///   of results. Optional.
+    ///   - labelersValue: The `atproto-accept-labelers` header value, containing the labeler
+    ///   services whose labels should be applied to the response. Optional.
     /// - Returns: An array of like records from the user account, with an optional cursor
     /// for extending the array.
     ///
@@ -39,7 +41,8 @@ extension ATProtoKit {
     public func getActorLikes(
         by actorDID: String,
         limit: Int? = 50,
-        cursor: String? = nil
+        cursor: String? = nil,
+        labelersValue: String? = nil
     ) async throws -> AppBskyLexicon.Feed.GetActorLikesOutput {
         guard let session = try await self.getUserSession(),
               let keychain = sessionConfiguration?.keychainProtocol else {
@@ -80,7 +83,8 @@ extension ATProtoKit {
                 andMethod: .get,
                 acceptValue: "application/json",
                 contentTypeValue: nil,
-                authorizationValue: "Bearer \(accessToken)"
+                authorizationValue: "Bearer \(accessToken)",
+                labelersValue: labelersValue
             )
             let response = try await apiClientService.sendRequest(
                 request,

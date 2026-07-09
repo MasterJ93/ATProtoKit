@@ -27,6 +27,8 @@ extension ATProtoKit {
     ///   Defaults to `6`. Can be between `0` and `1000`.
     ///   - parentHeight: The number of parent layers that can be included in the result.
     ///   Optional. Defaults to `80`. Can be between `0` and `1000`.
+    ///   - labelersValue: The `atproto-accept-labelers` header value, containing the labeler
+    ///   services whose labels should be applied to the response. Optional.
     /// - Returns: A post thread that matches the `postURI`.
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
@@ -34,7 +36,8 @@ extension ATProtoKit {
     public func getPostThread(
         from postURI: String,
         depth: Int? = 6,
-        parentHeight: Int? = 80
+        parentHeight: Int? = 80,
+        labelersValue: String? = nil
     ) async throws -> AppBskyLexicon.Feed.GetPostThreadOutput {
         let authorizationValue = await prepareAuthorizationValue()
 
@@ -70,7 +73,8 @@ extension ATProtoKit {
                 andMethod: .get,
                 acceptValue: "application/json",
                 contentTypeValue: nil,
-                authorizationValue: authorizationValue
+                authorizationValue: authorizationValue,
+                labelersValue: labelersValue
             )
             let response = try await apiClientService.sendRequest(
                 request,
