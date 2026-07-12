@@ -208,3 +208,25 @@ extension JSONDecoder {
         self.userInfo[key] = recordRegistry
     }
 }
+
+// MARK: - URLRequest Extension
+extension URLRequest {
+
+    /// The internal header used to mark requests that need session authorization.
+    public static let atProtoKitAuthorizationRequirementHeader = "X-ATProtoKit-Requires-Authorization"
+
+    /// Indicates whether this request has been marked as requiring session authorization.
+    public var requiresATProtoKitAuthorization: Bool {
+        value(forHTTPHeaderField: Self.atProtoKitAuthorizationRequirementHeader) == "true"
+    }
+
+    /// Marks this request as requiring session authorization.
+    public mutating func requireATProtoKitAuthorization() {
+        setValue("true", forHTTPHeaderField: Self.atProtoKitAuthorizationRequirementHeader)
+    }
+
+    /// Removes ATProtoKit's internal authorization marker.
+    public mutating func removeATProtoKitAuthorizationRequirement() {
+        setValue(nil, forHTTPHeaderField: Self.atProtoKitAuthorizationRequirementHeader)
+    }
+}
