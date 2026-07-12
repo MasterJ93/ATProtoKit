@@ -23,8 +23,8 @@ public protocol ATProtoKitConfiguration {
     /// - Note: Don't use this method if authorization is required or unneeded. This is only for
     /// methods where authorization is optional.
     ///
-    /// - Returns: A `String`, containing either `"Bearer \(accessToken)"` (where `accessToken` is the
-    /// session's access token), or `nil` (if no session exists).
+    /// - Returns: A `String`, containing the configured session's authorization value, or `nil`
+    /// if no session exists or authorization cannot be prepared.
     func prepareAuthorizationValue() async -> String?
 
     /// Retrieves the applicable ``UserSession`` instance.
@@ -54,24 +54,20 @@ extension ATProtoKitConfiguration {
     /// methods where authorization is optional.
     ///
     /// - Returns: A `String`, containing either `nil` if it's determined that there should be no
-    /// authorization header in the request, or  `"Bearer \(accessToken)"`
-    /// (where `accessToken` is the session's access token) if it's determined there should be an
-    /// authorization header.
+    /// authorization header in the request, or the configured session's authorization value if
+    /// authorization is available.
     public func prepareAuthorizationValue() async -> String? {
-        // Check if the session exists and has a valid access token.
-        if let sessionConfiguration = sessionConfiguration {
-            do {
-                // Ensure token is valid before retrieving it
-                try await sessionConfiguration.ensureValidToken()
-                let accessToken = try await sessionConfiguration.keychainProtocol.retrieveAccessToken()
-                return "Bearer \(accessToken)"
-            } catch {
-                return nil
-            }
+        guard let sessionConfiguration else {
+            return nil
         }
 
-        // Return nil if no valid session or access token is found.
-        return nil
+        do {
+            var request = URLRequest(url: URL(string: "https://atprotokit.invalid/") ?? URL(fileURLWithPath: "/"))
+            request.setValue("", forHTTPHeaderField: "Authorization")
+            return try await sessionConfiguration.authorization(for: request)?.authorizationValue
+        } catch {
+            return nil
+        }
     }
 
     /// Retrieves the applicable ``UserSession`` instance.
@@ -101,12 +97,12 @@ extension ATProtoKitConfiguration {
 
 /// The base class that handles the main functionality of the `ATProtoKit` API library.
 ///
-/// For methods which require authentication using an access token, instantiating `ATProtoKit` is
-/// required.
+/// For methods which require authentication, instantiate `ATProtoKit` with a session
+/// configuration.
 ///
-/// To get the access token, an instance of ``ATProtocolConfiguration`` is required.
-/// ``ATProtocolConfiguration/authenticate(with:password:)`` should then be used to get information
-/// about the session. The result is handed over to the `ATProtoKit`'s instance:
+/// For App Password authentication, create an instance of ``ATProtocolConfiguration`` and call
+/// ``ATProtocolConfiguration/authenticate(with:password:)``. The configuration stores the tokens
+/// and authorizes authenticated requests for you:
 ///
 /// ```swift
 /// Task {
@@ -114,10 +110,8 @@ extension ATProtoKitConfiguration {
 ///         let config = ATProtocolConfiguration()
 ///         try await config.authenticate(with: "example.bsky.social", password: "hunter2")
 ///
-///         let accessToken = try await config.keychainProtocol.retrieveAccessToken()
-///         print("Access Token: \(accessToken)")
-///
 ///         let atProtoKit = await ATProtoKit(sessionConfiguration: config)
+///         let profile = try await atProtoKit.getProfile(for: "example.bsky.social")
 ///     } catch {
 ///         print("Error: \(error)")
 ///     }
@@ -187,6 +181,8 @@ public final class ATProtoKit: Sendable, ATProtoKitConfiguration, ATRecordConfig
 
         var finalConfiguration = apiClientConfiguration ?? APIClientConfiguration()
         finalConfiguration.urlSessionConfiguration = apiClientConfiguration?.urlSessionConfiguration ?? sessionConfiguration?.configuration ?? .default
+        finalConfiguration.responseProvider = apiClientConfiguration?.responseProvider ?? sessionConfiguration?.requestExecutor
+        finalConfiguration.requestAuthenticator = apiClientConfiguration?.requestAuthenticator ?? sessionConfiguration
 
         self.apiClientService = APIClientService(
             with: finalConfiguration
@@ -278,21 +274,23 @@ public final class ATProtoBlueskyChat: Sendable, ATProtoKitConfiguration {
 /// API calls related for administrators and moderators. More specifically,
 /// API calls that work with the `com.atproto.admin.*` and `com.atproto.ozone.*` lexicons.
 ///
-/// Instantiating `ATProtoAdmin` is required to use any of the methods. To get the access token, an
-/// instance of ``ATProtocolConfiguration`` is required:
+/// Instantiating `ATProtoAdmin` is required to use any of the methods. For App Password
+/// authentication, an instance of ``ATProtocolConfiguration`` is required:
 ///
 /// ```swift
 /// let config = ATProtocolConfiguration()
 /// ```
 /// ``ATProtocolConfiguration/authenticate(with:password:)`` should then be used to get information
-/// about the session. The result is handed over to the `ATProtoAdmin`'s instance:
+/// about the session. Pass the configuration to `ATProtoAdmin`; it will authorize requests through
+/// the session configuration:
 ///```swift
 /// Task {
 ///     do {
 ///         try await config.authenticate(with: "example.bsky.social", password: "hunter2")
 ///
-///         let accessToken = try await config.keychainProtocol.retrieveAccessToken()
-///         print("Access token: \(accessToken)")
+///         let admin = await ATProtoAdmin(sessionConfiguration: config)
+///         let subject = try await admin.getAccountInfo(for: "did:plc:example")
+///         print(subject)
 ///     } catch {
 ///         print("Error: \(error)")
 ///     }
@@ -321,6 +319,8 @@ public final class ATProtoAdmin: Sendable, ATProtoKitConfiguration {
 
         var finalConfiguration = apiClientConfiguration ?? APIClientConfiguration()
         finalConfiguration.urlSessionConfiguration = apiClientConfiguration?.urlSessionConfiguration ?? sessionConfiguration?.configuration ?? .default
+        finalConfiguration.responseProvider = apiClientConfiguration?.responseProvider ?? sessionConfiguration?.requestExecutor
+        finalConfiguration.requestAuthenticator = apiClientConfiguration?.requestAuthenticator ?? sessionConfiguration
 
         self.apiClientService = APIClientService(
             with: finalConfiguration

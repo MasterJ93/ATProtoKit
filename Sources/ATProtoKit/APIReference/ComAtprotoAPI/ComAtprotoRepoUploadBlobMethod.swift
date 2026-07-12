@@ -25,7 +25,6 @@ extension ATProtoKit {
     ///
     /// - Parameters:
     ///   - pdsURL: The base URL for the blob upload.
-    ///   - accessToken: The access token for authorization.
     ///   - filename: The filename of the blob to upload.
     ///   - imageData: The data of the blob to upload.
     /// - Returns: An `UploadBlobOutput` instance with the upload result.
@@ -34,7 +33,6 @@ extension ATProtoKit {
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func uploadBlob(
         pdsURL: String = "https://bsky.social",
-        accessToken: String,
         filename: String,
         imageData: Data
     ) async throws -> ComAtprotoLexicon.Repository.UploadBlobOutput {
@@ -49,7 +47,7 @@ extension ATProtoKit {
                 forRequest: requestURL,
                 andMethod: .post,
                 contentTypeValue: mimeType,
-                authorizationValue: "Bearer \(accessToken)")
+                requiresAuthorization: true)
             request.httpBody = imageData
 
             // The `com.atproto.repo.uploadBlob` endpoint wraps its result in a

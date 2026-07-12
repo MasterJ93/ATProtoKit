@@ -42,10 +42,11 @@ extension ATProtoKit {
         limit: Int? = 50,
         cursor: String? = nil
     ) async throws -> ComAtprotoLexicon.Label.QueryLabelsOutput {
-        let authorizationValue = await prepareAuthorizationValue()
+        let session = try await self.getUserSession()
+        let requiresAuthorization = session != nil
 
-        guard let sessionURL = authorizationValue != nil ? try await self.getUserSession()?.serviceEndpoint.absoluteString : self.pdsURL,
-              let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.label.queryLabels") else {
+        let sessionURL = session?.serviceEndpoint.absoluteString ?? self.pdsURL
+        guard let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.label.queryLabels") else {
             throw ATRequestPrepareError.missingActiveSession
         }
 
@@ -79,7 +80,7 @@ extension ATProtoKit {
                 andMethod: .get,
                 acceptValue: "application/json",
                 contentTypeValue: nil,
-                authorizationValue: authorizationValue
+                requiresAuthorization: requiresAuthorization
             )
             let response = try await apiClientService.sendRequest(
                 request,

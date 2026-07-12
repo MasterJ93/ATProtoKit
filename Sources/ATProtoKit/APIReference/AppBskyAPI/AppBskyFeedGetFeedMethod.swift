@@ -38,13 +38,10 @@ extension ATProtoKit {
         cursor: String? = nil,
         labelersValue: String? = nil
     ) async throws -> AppBskyLexicon.Feed.GetFeedOutput {
-        guard let session = try await self.getUserSession(),
-              let keychain = sessionConfiguration?.keychainProtocol else {
+        guard let session = try await self.getUserSession() else {
             throw ATRequestPrepareError.missingActiveSession
         }
 
-        try await sessionConfiguration?.ensureValidToken()
-        let accessToken = try await keychain.retrieveAccessToken()
         let sessionURL = session.serviceEndpoint.absoluteString
 
         guard let requestURL = URL(string: "\(sessionURL)/xrpc/app.bsky.feed.getFeed") else {
@@ -77,7 +74,7 @@ extension ATProtoKit {
                 andMethod: .get,
                 acceptValue: "application/json",
                 contentTypeValue: nil,
-                authorizationValue: "Bearer \(accessToken)",
+                requiresAuthorization: true,
                 labelersValue: labelersValue
             )
             let response = try await apiClientService.sendRequest(

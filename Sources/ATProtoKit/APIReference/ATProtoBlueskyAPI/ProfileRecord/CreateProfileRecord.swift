@@ -143,8 +143,7 @@ extension ATProtoBluesky {
         shouldValidate: Bool? = true,
         swapCommit: String? = nil
     ) async throws -> ComAtprotoLexicon.Repository.StrongReference {
-        guard let session = try await atProtoKitInstance.getUserSession(),
-              let keychain = sessionConfiguration?.keychainProtocol else {
+        guard let session = try await atProtoKitInstance.getUserSession() else {
             throw ATRequestPrepareError.missingActiveSession
         }
 
@@ -178,13 +177,11 @@ extension ATProtoBluesky {
 
         // avatarImage
         var profileAvatarImage: ComAtprotoLexicon.Repository.UploadBlobOutput? = nil
-        let accessToken = try await keychain.retrieveAccessToken()
-
+        
         if let avatarImage = avatarImage {
             let postEmbed = try await uploadImages(
                 [avatarImage],
                 pdsURL: sessionURL,
-                accessToken: accessToken,
                 maxSize: AttachmentLexiconLimit.profileAvatar
             )
 
@@ -203,7 +200,6 @@ extension ATProtoBluesky {
             let postEmbed = try await uploadImages(
                 [bannerImage],
                 pdsURL: sessionURL,
-                accessToken: accessToken,
                 maxSize: AttachmentLexiconLimit.profileBanner
             )
 
@@ -223,7 +219,7 @@ extension ATProtoBluesky {
             websiteURL: website,
             avatarBlob: profileAvatarImage,
             bannerBlob: profileBannerImage,
-            labels: (labels != nil) ? .selfLabel(labels!) : nil,
+            labels: labels.map { .selfLabel($0) },
             joinedViaStarterPack: joinedViaStarterPack,
             pinnedPost: pinnedPost,
             createdAt: Date()

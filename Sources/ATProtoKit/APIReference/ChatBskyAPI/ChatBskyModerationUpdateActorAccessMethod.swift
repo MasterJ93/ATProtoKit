@@ -33,12 +33,10 @@ extension ATProtoBlueskyChat {
         doesAllowAccess: Bool,
         reference: String? = nil
     ) async throws {
-        guard let session = try await self.getUserSession(),
-              let keychain = sessionConfiguration?.keychainProtocol else {
+        guard let session = try await self.getUserSession() else {
             throw ATRequestPrepareError.missingActiveSession
         }
 
-        let accessToken = try await keychain.retrieveAccessToken()
         let sessionURL = session.serviceEndpoint.absoluteString
 
         guard let requestURL = URL(string: "\(sessionURL)/xrpc/chat.bsky.moderation.updateActorAccess") else {
@@ -57,7 +55,7 @@ extension ATProtoBlueskyChat {
                 andMethod: .post,
                 acceptValue: nil,
                 contentTypeValue: "application/json",
-                authorizationValue: "Bearer \(accessToken)",
+                requiresAuthorization: true,
                 isRelatedToBskyChat: true
             )
 

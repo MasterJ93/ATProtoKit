@@ -22,6 +22,9 @@ public struct APIClientService: Sendable {
     /// An instance of ``ATRequestExecutor``.
     private var executor: ATRequestExecutor?
 
+    /// An authenticator that can apply session-specific authorization headers.
+    private var requestAuthenticator: ATRequestAuthenticator?
+
     /// A logger for logging HTTP requests and responses.
     private var logger: SessionDebuggable? = nil
 
@@ -98,6 +101,7 @@ public struct APIClientService: Sendable {
         config.httpAdditionalHeaders = ["User-Agent": APIClientService.userAgent]
         self.urlSession = URLSession(configuration: config, delegate: configuration.delegate, delegateQueue: configuration.delegateQueue)
         self.executor = configuration.responseProvider
+        self.requestAuthenticator = configuration.requestAuthenticator
         self.logger = configuration.logger
     }
 
@@ -110,14 +114,24 @@ public struct APIClientService: Sendable {
     ///   - acceptValue: The Accept header value. Defaults to "application/json".
     ///   - contentTypeValue: The Content-Type header value. Defaults to "application/json".
     ///   - authorizationValue: The Authorization header value. Optional.
+    ///   - requiresAuthorization: Indicates whether ATProtoKit should ask the configured request
+    ///   authenticator to authorize this request. Defaults to `false`.
     ///   - proxyValue: The `atproto-proxy` header value. Optional.
     ///   - labelersValue: The `atproto-accept-labelers` value. Optional.
     ///   - isRelatedToBskyChat: Indicates whether to use the "atproto-proxy" header for
     ///   the value specific to Bluesky DMs. Optional. Defaults to `false`.
     /// - Returns: A configured `URLRequest` instance.
-    public func createRequest(forRequest requestURL: URL, andMethod httpMethod: HTTPMethod, acceptValue: String? = "application/json",
-                                     contentTypeValue: String? = "application/json", authorizationValue: String? = nil,
-                                     labelersValue: String? = nil, proxyValue: String? = nil, isRelatedToBskyChat: Bool = false) -> URLRequest {
+    public func createRequest(
+        forRequest requestURL: URL,
+        andMethod httpMethod: HTTPMethod,
+        acceptValue: String? = "application/json",
+        contentTypeValue: String? = "application/json",
+        authorizationValue: String? = nil,
+        requiresAuthorization: Bool = false,
+        labelersValue: String? = nil,
+        proxyValue: String? = nil,
+        isRelatedToBskyChat: Bool = false
+    ) -> URLRequest {
         var request = URLRequest(url: requestURL)
         request.httpMethod = httpMethod.rawValue
 
@@ -127,6 +141,10 @@ public struct APIClientService: Sendable {
 
         if let authorizationValue {
             request.addValue(authorizationValue, forHTTPHeaderField: "Authorization")
+        }
+
+        if requiresAuthorization {
+            request.requireATProtoKitAuthorization()
         }
 
         // Send the data if it matches a POST or PUT request.
@@ -226,17 +244,27 @@ public struct APIClientService: Sendable {
     ///   - decodeTo: The type to decode the response into.
     /// - Returns: An instance of the specified `Decodable` type.
     public func sendRequest<T: Decodable>(_ request: URLRequest, withDataBody data: Data, decodeTo: T.Type) async throws -> T {
-        let urlRequest = request
+        var urlRequest = request
+        urlRequest.httpBody = data
+        if let requestAuthenticator {
+            urlRequest = try await requestAuthenticator.authenticatedRequest(for: urlRequest)
+        } else {
+            urlRequest.removeATProtoKitAuthorizationRequirement()
+        }
 
-        // let (data, response) = try await
-        let (responseData, response) = try await urlSession.upload(for: urlRequest, from: data)
+        let (responseData, response): (Data, URLResponse)
+        if let executor {
+            (responseData, response) = try await executor.execute(urlRequest)
+        } else {
+            (responseData, response) = try await urlSession.upload(for: urlRequest, from: data)
+        }
 
         guard let httpResponse = response as? HTTPURLResponse else {
             throw ATHTTPRequestError.errorGettingResponse
         }
 
         guard httpResponse.statusCode == 200 else {
-            let responseBody = String(data: data, encoding: .utf8) ?? "No response body"
+            let responseBody = String(data: responseData, encoding: .utf8) ?? "No response body"
             print("HTTP Status Code: \(httpResponse.statusCode) - Response Body: \(responseBody)")
             throw URLError(.badServerResponse)
         }
@@ -269,6 +297,12 @@ public struct APIClientService: Sendable {
             } catch {
                 throw ATHTTPRequestError.unableToEncodeRequestBody
             }
+        }
+
+        if let requestAuthenticator {
+            urlRequest = try await requestAuthenticator.authenticatedRequest(for: urlRequest)
+        } else {
+            urlRequest.removeATProtoKitAuthorizationRequirement()
         }
 
         #if DEBUG

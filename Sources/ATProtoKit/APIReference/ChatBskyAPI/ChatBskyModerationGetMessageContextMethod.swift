@@ -38,12 +38,10 @@ extension ATProtoBlueskyChat {
         messagesBefore: Int? = 5,
         messagesAfter: Int? = 5
     ) async throws -> ChatBskyLexicon.Moderation.GetMessageContextOutput {
-        guard let session = try await self.getUserSession(),
-              let keychain = sessionConfiguration?.keychainProtocol else {
+        guard let session = try await self.getUserSession() else {
             throw ATRequestPrepareError.missingActiveSession
         }
 
-        let accessToken = try await keychain.retrieveAccessToken()
         let sessionURL = session.serviceEndpoint.absoluteString
 
         guard let requestURL = URL(string: "\(sessionURL)/xrpc/chat.bsky.moderation.getMessageContext") else {
@@ -79,7 +77,7 @@ extension ATProtoBlueskyChat {
                 andMethod: .get,
                 acceptValue: "application/json",
                 contentTypeValue: "application/json",
-                authorizationValue: "Bearer \(accessToken)",
+                requiresAuthorization: true,
                 isRelatedToBskyChat: true
             )
             let response = try await apiClientService.sendRequest(

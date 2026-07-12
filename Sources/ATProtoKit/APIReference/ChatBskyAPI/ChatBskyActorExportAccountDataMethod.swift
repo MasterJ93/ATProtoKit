@@ -23,12 +23,10 @@ extension ATProtoBlueskyChat {
     ///- Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func exportAccountData() async throws -> Data {
-        guard let session = try await self.getUserSession(),
-              let keychain = sessionConfiguration?.keychainProtocol else {
+        guard let session = try await self.getUserSession() else {
             throw ATRequestPrepareError.missingActiveSession
         }
 
-        let accessToken = try await keychain.retrieveAccessToken()
         let sessionURL = session.serviceEndpoint.absoluteString
 
         guard let requestURL = URL(string: "\(sessionURL)/xrpc/chat.bsky.actor.exportAccountData") else {
@@ -42,7 +40,7 @@ extension ATProtoBlueskyChat {
                 andMethod: .get,
                 acceptValue: "application/jsonl",
                 contentTypeValue: nil,
-                authorizationValue: "Bearer \(accessToken)",
+                requiresAuthorization: true,
                 isRelatedToBskyChat: true
             )
 
