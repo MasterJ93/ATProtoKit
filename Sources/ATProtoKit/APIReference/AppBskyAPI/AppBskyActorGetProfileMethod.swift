@@ -30,13 +30,17 @@ extension ATProtoKit {
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/actor/getProfile.json
     ///
-    /// - Parameter actor: The handle or decentralized identifier (DID) of the user's account.
+    /// - Parameters:
+    ///   - actor: The handle or decentralized identifier (DID) of the user's account.
+    ///   - labelersValue: The `atproto-accept-labelers` header value, containing the labeler
+    ///   services whose labels should be applied to the response. Optional.
     /// - Returns: A detailed profile view of the specified user account.
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func getProfile(
-        for actor: String
+        for actor: String,
+        labelersValue: String? = nil
     ) async throws -> AppBskyLexicon.Actor.ProfileViewDetailedDefinition {
         let session = try await self.getUserSession()
         let requiresAuthorization = session != nil
@@ -62,7 +66,8 @@ extension ATProtoKit {
                 forRequest: queryURL,
                 andMethod: .get,
                 contentTypeValue: nil,
-                requiresAuthorization: requiresAuthorization
+                requiresAuthorization: requiresAuthorization,
+                labelersValue: labelersValue
             )
             let result = try await apiClientService.sendRequest(
                 request,

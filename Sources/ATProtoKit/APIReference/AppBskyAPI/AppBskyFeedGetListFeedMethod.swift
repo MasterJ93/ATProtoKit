@@ -28,6 +28,8 @@ extension ATProtoKit {
     ///   - cursor: The mark used to indicate the starting point for the next set
     ///   of results. Optional.
     ///   - accessToken: The access token of the user. Optional.
+    ///   - labelersValue: The `atproto-accept-labelers` header value, containing the labeler
+    ///   services whose labels should be applied to the response. Optional.
     /// - Returns: An array of posts in a feed, with an optional cursor to extend the array.
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
@@ -36,7 +38,8 @@ extension ATProtoKit {
         from uri: String,
         limit: Int? = 50,
         cursor: String? = nil,
-        accessToken: String? = nil
+        accessToken: String? = nil,
+        labelersValue: String? = nil
     ) async throws -> AppBskyLexicon.Feed.GetListFeedOutput {
         guard let requestURL = URL(string: "\(self.pdsURL)/xrpc/app.bsky.feed.getListFeed") else {
             throw ATRequestPrepareError.invalidRequestURL
@@ -68,7 +71,8 @@ extension ATProtoKit {
                 andMethod: .get,
                 acceptValue: "application/json",
                 contentTypeValue: nil,
-                authorizationValue: nil
+                authorizationValue: nil,
+                labelersValue: labelersValue
             )
             let response = try await apiClientService.sendRequest(
                 request,
