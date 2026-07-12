@@ -25,7 +25,7 @@ extension AppBskyLexicon.Feed {
         /// An array of feed generators.
         public let feeds: [GeneratorViewDefinition]
         
-        init(feeds: [GeneratorViewDefinition]) {
+        public init(feeds: [GeneratorViewDefinition]) {
             self.feeds = feeds
         }
         
