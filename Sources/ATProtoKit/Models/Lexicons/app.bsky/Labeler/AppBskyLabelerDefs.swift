@@ -22,7 +22,7 @@ extension AppBskyLexicon.Labeler {
         /// The identifier of the lexicon.
         ///
         /// - Warning: The value must not change.
-        public let type: String = "app.bsky.labeler.defs#labelerView"
+        public static let type: String = "app.bsky.labeler.defs#labelerView"
         
         /// The URI of the labeler.
         public let uri: String
@@ -86,8 +86,8 @@ extension AppBskyLexicon.Labeler {
             let container = try decoder.container(keyedBy: CodingKeys.self)
             
             let decodedType = try container.decode(String.self, forKey: .type)
-            if decodedType != type {
-                throw DecodingError.typeMismatch(LabelerViewDefinition.self, .init(codingPath: [CodingKeys.type], debugDescription: "type did not match expected type \(type)"))
+            if decodedType != Self.type {
+                throw DecodingError.typeMismatch(LabelerViewDefinition.self, .init(codingPath: [CodingKeys.type], debugDescription: "type did not match expected type \(Self.type)"))
             }
 
             self.uri = try container.decode(String.self, forKey: .uri)
@@ -103,7 +103,8 @@ extension AppBskyLexicon.Labeler {
         }
         public func encode(to encoder: any Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
-
+            
+            try container.encode(Self.type, forKey: .type)
             try container.encode(self.uri, forKey: .uri)
             try container.encode(self.cid, forKey: .cid)
             try container.encode(self.creator, forKey: .creator)
@@ -145,7 +146,7 @@ extension AppBskyLexicon.Labeler {
         /// The identifier of the lexicon.
         ///
         /// - Warning: The value must not change.
-        public let type: String = "app.bsky.labeler.defs#labelerViewDetailed"
+        public static let type: String = "app.bsky.labeler.defs#labelerViewDetailed"
 
         /// The URI of the labeler.
         public let uri: String
@@ -199,7 +200,8 @@ extension AppBskyLexicon.Labeler {
 
         public func encode(to encoder: any Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
-
+            
+            try container.encode(Self.type, forKey: .type)
             try container.encode(self.uri, forKey: .uri)
             try container.encode(self.cid, forKey: .cid)
             try container.encode(self.creator, forKey: .creator)
@@ -240,10 +242,23 @@ extension AppBskyLexicon.Labeler {
         public let type: String = "app.bsky.labeler.defs#labelerViewerState"
 
         /// The URI of the like record, if the user liked the labeler.
-        public let likeURI: String
-
+        public let likeURI: String?
+        
+        public init(likeURI: String?) {
+            self.likeURI = likeURI
+        }
+        
+        public init(from decoder: any Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+            self.likeURI = try container.decodeIfPresent(String.self, forKey: .likeURI)
+        }
+        
+        public func encode(to encoder: any Encoder) throws {
+            var container = encoder.container(keyedBy: CodingKeys.self)
+            try container.encodeIfPresent(self.likeURI, forKey: .likeURI)
+        }
+        
         enum CodingKeys: String, CodingKey {
-            case type = "$type"
             case likeURI = "like"
         }
     }
@@ -275,8 +290,24 @@ extension AppBskyLexicon.Labeler {
         /// for this labeler."
         public let labelValueDefinitions: [ComAtprotoLexicon.Label.LabelValueDefinition]?
 
-        enum CodingKeys: String, CodingKey {
-            case type = "$type"
+        public init(labelValues: [String], labelValueDefinitions: [ComAtprotoLexicon.Label.LabelValueDefinition]?) {
+            self.labelValues = labelValues
+            self.labelValueDefinitions = labelValueDefinitions
+        }
+        
+        public init(from decoder: any Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+            self.labelValues = try container.decode([String].self, forKey:.labelValues)
+            self.labelValueDefinitions = try container.decodeIfPresent([ComAtprotoLexicon.Label.LabelValueDefinition].self, forKey: .labelValueDefinitions)
+        }
+        
+        public func encode(to encoder: any Encoder) throws {
+            var container = encoder.container(keyedBy: CodingKeys.self)
+            try container.encode(self.labelValues, forKey: .labelValues)
+            try container.encodeIfPresent(self.labelValueDefinitions, forKey: .labelValueDefinitions)
+        }
+        
+        enum CodingKeys: CodingKey {
             case labelValues
             case labelValueDefinitions
         }
