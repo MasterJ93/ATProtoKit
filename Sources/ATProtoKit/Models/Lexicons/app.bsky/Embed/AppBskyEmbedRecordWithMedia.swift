@@ -99,19 +99,26 @@ extension AppBskyLexicon.Embed {
             }
 
             public func encode(to encoder: Encoder) throws {
-                var container = encoder.singleValueContainer()
-
                 switch self {
-                    case .embedImages(let media):
-                        try container.encode(media)
-                    case .embedExternal(let media):
-                        try container.encode(media)
+                    case .embedImages(let value):
+                        var container = encoder.container(keyedBy: CodingKeys.self)
+                        try container.encode("app.bsky.embed.images", forKey: .type)
+                        try value.encode(to: encoder)
+                    case .embedExternal(let value):
+                        var container = encoder.container(keyedBy: CodingKeys.self)
+                        try container.encode("app.bsky.embed.video", forKey: .type)
+                        try value.encode(to: encoder)
                     case .embedVideo(let value):
-                        try container.encode(value)
+                        var container = encoder.container(keyedBy: CodingKeys.self)
+                        try container.encode("app.bsky.embed.external", forKey: .type)
+                        try value.encode(to: encoder)
                     case .embedGallery(let value):
-                        try container.encode(value)
-                    default:
-                        break
+                        var container = encoder.container(keyedBy: CodingKeys.self)
+                        try container.encode("app.bsky.embed.gallery", forKey: .type)
+                        try value.encode(to: encoder)
+                    case .unknown(_, let dictionary):
+                        var singleValueContainer = encoder.singleValueContainer()
+                        try singleValueContainer.encode(dictionary)
                 }
             }
 
@@ -203,19 +210,26 @@ extension AppBskyLexicon.Embed {
                 }
 
                 public func encode(to encoder: Encoder) throws {
-                    var container = encoder.singleValueContainer()
-
                     switch self {
                         case .embedImagesView(let value):
-                            try container.encode(value)
+                            var container = encoder.container(keyedBy: CodingKeys.self)
+                            try container.encode("app.bsky.embed.images#view", forKey: .type)
+                            try value.encode(to: encoder)
                         case .embedVideoView(let value):
-                            try container.encode(value)
+                            var container = encoder.container(keyedBy: CodingKeys.self)
+                            try container.encode("app.bsky.embed.video#view", forKey: .type)
+                            try value.encode(to: encoder)
                         case .embedExternalView(let value):
-                            try container.encode(value)
+                            var container = encoder.container(keyedBy: CodingKeys.self)
+                            try container.encode("app.bsky.embed.external#view", forKey: .type)
+                            try value.encode(to: encoder)
                         case .embedGalleryView(let value):
-                            try container.encode(value)
-                        default:
-                            break
+                            var container = encoder.container(keyedBy: CodingKeys.self)
+                            try container.encode("app.bsky.embed.gallery#view", forKey: .type)
+                            try value.encode(to: encoder)
+                        case .unknown(_, let dictionary):
+                            var singleValueContainer = encoder.singleValueContainer()
+                            try singleValueContainer.encode(dictionary)
                     }
                 }
 

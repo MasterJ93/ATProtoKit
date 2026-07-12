@@ -145,13 +145,14 @@ extension AppBskyLexicon.Actor {
             }
 
             public func encode(to encoder: any Encoder) throws {
-                var container = encoder.singleValueContainer()
-
                 switch self {
                     case .externalView(let value):
-                        try container.encode(value)
-                    default:
-                        break
+                        var container = encoder.container(keyedBy: CodingKeys.self)
+                        try container.encode("app.bsky.embed.external#view", forKey: .type)
+                        try value.encode(to: encoder)
+                    case .unknown(_, let dictionary):
+                        var singleValueContainer = encoder.singleValueContainer()
+                        try singleValueContainer.encode(dictionary)
                 }
             }
 
