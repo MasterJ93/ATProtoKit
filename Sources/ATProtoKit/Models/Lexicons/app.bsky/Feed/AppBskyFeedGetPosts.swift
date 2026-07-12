@@ -25,5 +25,23 @@ extension AppBskyLexicon.Feed {
 
         /// An array of hydrated posts.
         public let posts: [PostViewDefinition]
+        
+        public init(posts: [PostViewDefinition]) {
+            self.posts = posts
+        }
+        
+        public init(from decoder: any Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+            self.posts = try container.decode([AppBskyLexicon.Feed.PostViewDefinition].self, forKey: .posts)
+        }
+        
+        public func encode(to encoder: any Encoder) throws {
+            var container = encoder.container(keyedBy: CodingKeys.self)
+            try container.encode(self.posts, forKey: .posts)
+        }
+        
+        public enum CodingKeys: CodingKey {
+            case posts
+        }
     }
 }

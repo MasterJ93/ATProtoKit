@@ -27,5 +27,27 @@ extension AppBskyLexicon.Feed {
 
         /// An array of posts in a feed.
         public let feed: [FeedViewPostDefinition]
+        
+        public init(cursor: String?, feed: [FeedViewPostDefinition]) {
+            self.cursor = cursor
+            self.feed = feed
+        }
+        
+        public init(from decoder: any Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+            self.cursor = try container.decodeIfPresent(String.self, forKey: .cursor)
+            self.feed = try container.decode([AppBskyLexicon.Feed.FeedViewPostDefinition].self, forKey: .feed)
+        }
+        
+        public func encode(to encoder: any Encoder) throws {
+            var container = encoder.container(keyedBy: CodingKeys.self)
+            try container.encodeIfPresent(self.cursor, forKey: .cursor)
+            try container.encode(self.feed, forKey: .feed)
+        }
+        
+        enum CodingKeys: CodingKey {
+            case cursor
+            case feed
+        }
     }
 }

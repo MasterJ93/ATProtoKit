@@ -30,5 +30,31 @@ extension AppBskyLexicon.Graph {
 
         /// An array of user accounts that follow the user account.
         public let followers: [AppBskyLexicon.Actor.ProfileViewDefinition]
+        
+        public init(subject: AppBskyLexicon.Actor.ProfileViewDefinition, cursor: String?, followers: [AppBskyLexicon.Actor.ProfileViewDefinition]) {
+            self.subject = subject
+            self.cursor = cursor
+            self.followers = followers
+        }
+        
+        public init(from decoder: any Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+            self.subject = try container.decode(AppBskyLexicon.Actor.ProfileViewDefinition.self, forKey: .subject)
+            self.cursor = try container.decodeIfPresent(String.self, forKey: .cursor)
+            self.followers = try container.decode([AppBskyLexicon.Actor.ProfileViewDefinition].self, forKey: .followers)
+        }
+        
+        public func encode(to encoder: any Encoder) throws {
+            var container = encoder.container(keyedBy: CodingKeys.self)
+            try container.encode(self.subject, forKey: .subject)
+            try container.encodeIfPresent(self.cursor, forKey: .cursor)
+            try container.encode(self.followers, forKey: .followers)
+        }
+        
+        enum CodingKeys: CodingKey {
+            case subject
+            case cursor
+            case followers
+        }
     }
 }

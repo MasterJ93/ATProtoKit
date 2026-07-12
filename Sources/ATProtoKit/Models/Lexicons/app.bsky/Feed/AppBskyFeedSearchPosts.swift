@@ -58,5 +58,31 @@ extension AppBskyLexicon.Feed {
 
         /// An array of post records in the results.
         public let posts: [PostViewDefinition]
+        
+        public init(cursor: String?, hitsTotal: Int?, posts: [PostViewDefinition]) {
+            self.cursor = cursor
+            self.hitsTotal = hitsTotal
+            self.posts = posts
+        }
+        
+        public init(from decoder: any Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+            self.cursor = try container.decodeIfPresent(String.self, forKey: .cursor)
+            self.hitsTotal = try container.decodeIfPresent(Int.self, forKey: .hitsTotal)
+            self.posts = try container.decode([AppBskyLexicon.Feed.PostViewDefinition].self, forKey: .posts)
+        }
+        
+        public func encode(to encoder: any Encoder) throws {
+            var container = encoder.container(keyedBy: CodingKeys.self)
+            try container.encodeIfPresent(self.cursor, forKey: .cursor)
+            try container.encodeIfPresent(self.hitsTotal, forKey: .hitsTotal)
+            try container.encode(self.posts, forKey: .posts)
+        }
+        
+        enum CodingKeys: CodingKey {
+            case cursor
+            case hitsTotal
+            case posts
+        }
     }
 }

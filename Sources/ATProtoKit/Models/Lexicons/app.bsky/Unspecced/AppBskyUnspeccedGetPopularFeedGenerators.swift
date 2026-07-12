@@ -30,5 +30,27 @@ extension AppBskyLexicon.Unspecced {
 
         /// An array of feed generators.
         public let feeds: [AppBskyLexicon.Feed.GeneratorViewDefinition]
+        
+        public init(cursor: String?, feeds: [AppBskyLexicon.Feed.GeneratorViewDefinition]) {
+            self.cursor = cursor
+            self.feeds = feeds
+        }
+        
+        public init(from decoder: any Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+            self.cursor = try container.decodeIfPresent(String.self, forKey: .cursor)
+            self.feeds = try container.decode([AppBskyLexicon.Feed.GeneratorViewDefinition].self, forKey: .feeds)
+        }
+        
+        public func encode(to encoder: any Encoder) throws {
+            var container = encoder.container(keyedBy: CodingKeys.self)
+            try container.encodeIfPresent(self.cursor, forKey: .cursor)
+            try container.encode(self.feeds, forKey: .feeds)
+        }
+        
+        enum CodingKeys: CodingKey {
+            case cursor
+            case feeds
+        }
     }
 }

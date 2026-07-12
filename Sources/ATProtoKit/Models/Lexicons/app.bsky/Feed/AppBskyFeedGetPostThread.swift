@@ -28,6 +28,28 @@ extension AppBskyLexicon.Feed {
         /// A feed's threadgate view. Optional.
         public let threadgate: AppBskyLexicon.Feed.ThreadgateViewDefinition?
 
+        public init(thread: ThreadUnion, threadgate: AppBskyLexicon.Feed.ThreadgateViewDefinition?) {
+            self.thread = thread
+            self.threadgate = threadgate
+        }
+        
+        public init(from decoder: any Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+            self.thread = try container.decode(AppBskyLexicon.Feed.GetPostThreadOutput.ThreadUnion.self, forKey: .thread)
+            self.threadgate = try container.decodeIfPresent(AppBskyLexicon.Feed.ThreadgateViewDefinition.self, forKey: .threadgate)
+        }
+        
+        public func encode(to encoder: any Encoder) throws {
+            var container = encoder.container(keyedBy: CodingKeys.self)
+            try container.encode(self.thread, forKey: .thread)
+            try container.encodeIfPresent(self.threadgate, forKey: .threadgate)
+        }
+        
+        public enum CodingKeys: CodingKey {
+            case thread
+            case threadgate
+        }
+
         // Unions
         /// The post thread itself.
         public enum ThreadUnion: ATUnionProtocol {

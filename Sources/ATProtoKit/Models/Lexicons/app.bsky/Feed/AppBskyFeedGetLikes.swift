@@ -34,6 +34,29 @@ extension AppBskyLexicon.Feed {
         /// An array of like records.
         public let likes: [Like]
 
+        public init(recordURI: String, recordCID: String?, cursor: String?, likes: [Like]) {
+            self.recordURI = recordURI
+            self.recordCID = recordCID
+            self.cursor = cursor
+            self.likes = likes
+        }
+        
+        public init(from decoder: any Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+            self.recordURI = try container.decode(String.self, forKey: .recordURI)
+            self.recordCID = try container.decodeIfPresent(String.self, forKey: .recordCID)
+            self.cursor = try container.decodeIfPresent(String.self, forKey: .cursor)
+            self.likes = try container.decode([AppBskyLexicon.Feed.GetLikesOutput.Like].self, forKey: .likes)
+        }
+        
+        public func encode(to encoder: any Encoder) throws {
+            var container = encoder.container(keyedBy: CodingKeys.self)
+            try container.encode(self.recordURI, forKey: .recordURI)
+            try container.encodeIfPresent(self.recordCID, forKey: .recordCID)
+            try container.encodeIfPresent(self.cursor, forKey: .cursor)
+            try container.encode(self.likes, forKey: .likes)
+        }
+        
         enum CodingKeys: String, CodingKey {
             case recordURI = "uri"
             case recordCID = "cid"
