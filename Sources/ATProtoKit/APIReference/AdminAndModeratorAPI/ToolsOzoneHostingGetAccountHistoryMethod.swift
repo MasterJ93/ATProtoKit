@@ -38,13 +38,9 @@ extension ATProtoAdmin {
         cursor: String? = nil,
         limit: Int? = 50
     ) async throws -> ToolsOzoneLexicon.Hosting.GetAccountHistoryOutput {
-        guard let session = try await self.getUserSession(),
-              let keychain = sessionConfiguration?.keychainProtocol else {
+        guard let session = try await self.getUserSession() else {
             throw ATRequestPrepareError.missingActiveSession
         }
-
-        try await sessionConfiguration?.ensureValidToken()
-        let accessToken = try await keychain.retrieveAccessToken()
 
         guard let sessionURL = session.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/tools.ozone.hosting.getAccountHistory") else {
@@ -81,7 +77,7 @@ extension ATProtoAdmin {
                 andMethod: .get,
                 acceptValue: "application/json",
                 contentTypeValue: nil,
-                authorizationValue: "Bearer \(accessToken)"
+                requiresAuthorization: true
             )
             let response = try await apiClientService.sendRequest(
                 request,

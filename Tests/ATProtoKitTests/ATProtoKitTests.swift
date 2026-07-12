@@ -300,3 +300,98 @@ struct ATFacetParserTests {
         return ranges
     }
 }
+
+//@Suite("PreferenceUnion Tests")
+//struct PreferenceUnionTests {
+//
+//    @Test("Unknown preferences survive get modify put with nested null")
+//    func unknownPreferencesSurviveGetModifyPutWithNestedNull() throws {
+//        let json = """
+//        {
+//          "preferences": [
+//            {
+//              "$type": "com.example.client.defs#displayPref",
+//              "viewer": {
+//                "compact": true,
+//                "theme": null
+//              },
+//              "rules": [
+//                {
+//                  "name": "quiet",
+//                  "details": {
+//                    "until": null
+//                  }
+//                },
+//                null
+//              ],
+//              "label": null
+//            },
+//            {
+//              "$type": "app.bsky.actor.defs#adultContentPref",
+//              "enabled": false
+//            }
+//          ]
+//        }
+//        """
+//
+//        let data = try #require(json.data(using: .utf8))
+//        let output = try JSONDecoder().decode(AppBskyLexicon.Actor.GetPreferencesOutput.self, from: data)
+//        let modifiedPreferences = output.preferences.map { preference in
+//            switch preference {
+//                case .adultContent:
+//                    return AppBskyLexicon.Actor.PreferenceUnion.adultContent(
+//                        AppBskyLexicon.Actor.AdultContentPreferencesDefinition(isAdultContentEnabled: true)
+//                    )
+//                default:
+//                    return preference
+//            }
+//        }
+//        let requestBody = AppBskyLexicon.Actor.PutPreferencesRequestBody(preferences: modifiedPreferences)
+//        let encodedData = try JSONEncoder().encode(requestBody)
+//        let encodedDictionary = try JSONDecoder().decode([String: CodableValue].self, from: encodedData)
+//
+//        #expect(encodedDictionary["$type"] == .string("app.bsky.actor.putPreferences"))
+//
+//        guard case .array(let preferences) = encodedDictionary["preferences"] else {
+//            Issue.record("Expected encoded preferences to be an array.")
+//            return
+//        }
+//
+//        let unknownValue = try #require(preferences.first { value in
+//            guard case .dictionary(let dictionary) = value else {
+//                return false
+//            }
+//
+//            return dictionary["$type"] == .string("com.example.client.defs#displayPref")
+//        })
+//
+//        guard case .dictionary(let unknownPreference) = unknownValue,
+//              case .dictionary(let viewer) = unknownPreference["viewer"],
+//              case .array(let rules) = unknownPreference["rules"],
+//              case .dictionary(let firstRule) = rules.first,
+//              case .dictionary(let details) = firstRule["details"] else {
+//            Issue.record("Expected unknown preference to preserve nested dictionaries.")
+//            return
+//        }
+//
+//        #expect(unknownPreference["label"] == .null)
+//        #expect(viewer["theme"] == .null)
+//        #expect(details["until"] == .null)
+//        #expect(rules.dropFirst().first == .null)
+//
+//        let adultContentValue = try #require(preferences.first { value in
+//            guard case .dictionary(let dictionary) = value else {
+//                return false
+//            }
+//
+//            return dictionary["$type"] == .string("app.bsky.actor.defs#adultContentPref")
+//        })
+//
+//        guard case .dictionary(let adultContentPreference) = adultContentValue else {
+//            Issue.record("Expected adult content preference to encode as a dictionary.")
+//            return
+//        }
+//
+//        #expect(adultContentPreference["enabled"] == .bool(true))
+//    }
+//}

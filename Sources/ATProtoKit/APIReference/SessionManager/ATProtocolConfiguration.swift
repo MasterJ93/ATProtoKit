@@ -13,8 +13,9 @@ import FoundationNetworking
 /// Manages authentication and session operations for the a user account in the AT Protocol.
 ///
 /// This is for handling App Passwords. At this time, an implementation of a
-/// ``SessionConfiguration`` instance is required if you need OAuth support.
-final public class ATProtocolConfiguration: SessionConfiguration {
+/// Use ``ATOAuthSessionConfiguration`` or another ``SessionConfiguration`` implementation
+/// when an OAuth package owns authentication.
+final public class ATProtocolConfiguration: KeychainBackedSessionConfiguration {
 
     public let instanceUUID: UUID
 

@@ -48,13 +48,9 @@ extension ATProtoAdmin {
         sortDirection: ToolsOzoneLexicon.Verification.ListVerifications.SortDirection? = .descending,
         isRevoked: Bool? = nil
     ) async throws -> ToolsOzoneLexicon.Verification.ListVerificationsOutput {
-        guard let session = try await self.getUserSession(),
-              let keychain = sessionConfiguration?.keychainProtocol else {
+        guard let session = try await self.getUserSession() else {
             throw ATRequestPrepareError.missingActiveSession
         }
-
-        try await sessionConfiguration?.ensureValidToken()
-        let accessToken = try await keychain.retrieveAccessToken()
 
         guard let sessionURL = session.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/tools.ozone.verification.listVerifications") else {
@@ -111,7 +107,7 @@ extension ATProtoAdmin {
                 andMethod: .get,
                 acceptValue: "application/json",
                 contentTypeValue: nil,
-                authorizationValue: "Bearer \(accessToken)"
+                requiresAuthorization: true
             )
             let response = try await apiClientService.sendRequest(
                 request,

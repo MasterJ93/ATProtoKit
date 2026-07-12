@@ -31,13 +31,9 @@ extension ATProtoAdmin {
         named name: String,
         description: String
     ) async throws -> ToolsOzoneLexicon.Set.SetViewDefinition {
-        guard let session = try await self.getUserSession(),
-              let keychain = sessionConfiguration?.keychainProtocol else {
+        guard let session = try await self.getUserSession() else {
             throw ATRequestPrepareError.missingActiveSession
         }
-
-        try await sessionConfiguration?.ensureValidToken()
-        let accessToken = try await keychain.retrieveAccessToken()
 
         guard let sessionURL = session.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/tools.ozone.set.upsertSet") else {
@@ -55,7 +51,7 @@ extension ATProtoAdmin {
                 andMethod: .post,
                 acceptValue: "application/json",
                 contentTypeValue: nil,
-                authorizationValue: "Bearer \(accessToken)"
+                requiresAuthorization: true
             )
 
             let response = try await apiClientService.sendRequest(

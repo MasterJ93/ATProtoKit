@@ -47,10 +47,11 @@ extension ATProtoKit {
         matching query: String,
         limit: Int? = 10
     ) async throws -> AppBskyLexicon.Actor.SearchActorsTypeaheadOutput {
-        let authorizationValue = await prepareAuthorizationValue()
+        let session = try await self.getUserSession()
+        let requiresAuthorization = session != nil
 
-        guard let sessionURL = authorizationValue != nil ? try await self.getUserSession()?.serviceEndpoint.absoluteString : self.pdsURL,
-              let requestURL = URL(string: "\(sessionURL)/xrpc/app.bsky.actor.searchActorsTypeahead") else {
+        let sessionURL = session?.serviceEndpoint.absoluteString ?? self.pdsURL
+        guard let requestURL = URL(string: "\(sessionURL)/xrpc/app.bsky.actor.searchActorsTypeahead") else {
             throw ATRequestPrepareError.invalidRequestURL
         }
 
@@ -75,7 +76,7 @@ extension ATProtoKit {
                 forRequest: queryURL,
                 andMethod: .get,
                 acceptValue: "application/json",
-                authorizationValue: authorizationValue
+                requiresAuthorization: requiresAuthorization
             )
             let response = try await apiClientService.sendRequest(
                 request,

@@ -34,13 +34,10 @@ extension ATProtoKit {
     public func importRepository(
         _ repositoryData: Data
     ) async throws {
-        guard let session = try await self.getUserSession(),
-              let keychain = sessionConfiguration?.keychainProtocol else {
+        guard let session = try await self.getUserSession() else {
             throw ATRequestPrepareError.missingActiveSession
         }
 
-        try await sessionConfiguration?.ensureValidToken()
-        let accessToken = try await keychain.retrieveAccessToken()
         let sessionURL = session.serviceEndpoint.absoluteString
 
         guard let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.repo.importRepo") else {
@@ -57,7 +54,7 @@ extension ATProtoKit {
                 andMethod: .post,
                 acceptValue: nil,
                 contentTypeValue: "application/vnd.ipld.car",
-                authorizationValue: "Bearer \(accessToken)"
+                requiresAuthorization: true
             )
 
             _ = try await apiClientService.sendRequest(

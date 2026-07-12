@@ -33,13 +33,9 @@ extension ATProtoAdmin {
         recordURIs: [String],
         revokeReason: String
     ) async throws -> ToolsOzoneLexicon.Verification.RevokeVerificationsOutput {
-        guard let session = try await self.getUserSession(),
-              let keychain = sessionConfiguration?.keychainProtocol else {
+        guard let session = try await self.getUserSession() else {
             throw ATRequestPrepareError.missingActiveSession
         }
-
-        try await sessionConfiguration?.ensureValidToken()
-        let accessToken = try await keychain.retrieveAccessToken()
 
         guard let sessionURL = session.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/tools.ozone.verification.revokeVerifications") else {
@@ -57,7 +53,7 @@ extension ATProtoAdmin {
                 andMethod: .post,
                 acceptValue: "application/json",
                 contentTypeValue: "application/json",
-                authorizationValue: "Bearer \(accessToken)"
+                requiresAuthorization: true
             )
 
             let response = try await apiClientService.sendRequest(
