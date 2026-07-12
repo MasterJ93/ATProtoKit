@@ -419,49 +419,42 @@ extension ATProtoBluesky {
 
         if let embedUnion = embed {
             do {
-                if let keychain = sessionConfiguration?.keychainProtocol {
-                    let accessToken = try await keychain.retrieveAccessToken()
+                switch embedUnion {
+                    case .images(let images):
+                        resolvedEmbed = try await uploadImages(
+                            images,
+                            pdsURL: sessionURL
+                        )
+                    case .gallery(let images):
+                        resolvedEmbed = try await uploadGallery(
+                            images,
+                            pdsURL: sessionURL
+                        )
+                    case .external(let url, let title, let description, let thumbnailImageURL):
+                        resolvedEmbed = await buildExternalEmbed(
+                            from: url,
+                            title: title,
+                            description: description,
+                            thumbnailImageURL: thumbnailImageURL,
+                            session: session
+                        )
+                    case .record(let record):
+                        resolvedEmbed = try await addQuotePostToEmbed(record)
+                    case .recordWithMedia(let record, let media):
+                        let recordWithMediaDefinition = AppBskyLexicon.Embed.RecordWithMediaDefinition(
+                            record: record,
+                            media: media
+                        )
 
-                    switch embedUnion {
-                        case .images(let images):
-                            resolvedEmbed = try await uploadImages(
-                                images,
-                                pdsURL: sessionURL,
-                                accessToken: accessToken
-                            )
-                        case .gallery(let images):
-                            resolvedEmbed = try await uploadGallery(
-                                images,
-                                pdsURL: sessionURL,
-                                accessToken: accessToken
-                            )
-                        case .external(let url, let title, let description, let thumbnailImageURL):
-                            resolvedEmbed = await buildExternalEmbed(
-                                from: url,
-                                title: title,
-                                description: description,
-                                thumbnailImageURL: thumbnailImageURL,
-                                session: session
-                            )
-                        case .record(let record):
-                            resolvedEmbed = try await addQuotePostToEmbed(record)
-                        case .recordWithMedia(let record, let media):
-                            let recordWithMediaDefinition = AppBskyLexicon.Embed.RecordWithMediaDefinition(
-                                record: record,
-                                media: media
-                            )
-
-                            resolvedEmbed = .recordWithMedia(recordWithMediaDefinition)
-                        case .video(let video, let captions, let altText, let aspectRatio):
-                            resolvedEmbed = try await buildVideo(
-                                video,
-                                with: captions,
-                                altText: altText,
-                                aspectRatio: aspectRatio,
-                                pdsURL: sessionURL,
-                                accessToken: accessToken
-                            )
-                    }
+                        resolvedEmbed = .recordWithMedia(recordWithMediaDefinition)
+                    case .video(let video, let captions, let altText, let aspectRatio):
+                        resolvedEmbed = try await buildVideo(
+                            video,
+                            with: captions,
+                            altText: altText,
+                            aspectRatio: aspectRatio,
+                            pdsURL: sessionURL
+                        )
                 }
             } catch {
                 throw error
@@ -597,7 +590,6 @@ extension ATProtoBluesky {
     ///   - images: The ``ATProtoTools/ImageQuery`` that contains the image data. Current limit is
     ///   4 images.
     ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `https://bsky.social`.
-    ///   - accessToken: The access token used to authenticate to the user.
     ///   - maxSize: The maximum size (in bytes) each image is allowed to be. Defaults to
     ///   ``AttachmentLexiconLimit/postImageEmbed`` (2 MB), the limit of the `app.bsky.embed.images`
     ///   lexicon this method builds. Callers reusing this method for a different lexicon (e.g.,
@@ -607,7 +599,6 @@ extension ATProtoBluesky {
     ///
     /// - Important: Each image can only be `maxSize` bytes in size.
     public func uploadImages(_ images: [ATProtoTools.ImageQuery], pdsURL: String = "https://bsky.social",
-                             accessToken: String,
                              maxSize: Int = AttachmentLexiconLimit.postImageEmbed) async throws -> AppBskyLexicon.Feed.PostRecord.EmbedUnion {
         var embedImages = [AppBskyLexicon.Embed.ImagesDefinition.Image]()
 
@@ -618,9 +609,8 @@ extension ATProtoBluesky {
             }
 
             // Upload the image, then get the server response.
-            let blobReference = try await ATProtoKit(canUseBlueskyRecords: false).uploadBlob(
+            let blobReference = try await atProtoKitInstance.uploadBlob(
                 pdsURL: pdsURL,
-                accessToken: accessToken,
                 filename: image.fileName,
                 imageData: image.imageData
             )
@@ -645,13 +635,14 @@ extension ATProtoBluesky {
     ///   - images: The ``ATProtoTools/ImageQuery`` that contains the image data. The schema-level
     ///   maximum is 20 images; clients should enforce a soft limit of 10 items in authoring UIs.
     ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `https://bsky.social`.
-    ///   - accessToken: The access token used to authenticate to the user.
     /// - Returns: An ``AppBskyLexicon/Feed/PostRecord/EmbedUnion``, which contains an
     /// ``AppBskyLexicon/Embed/GalleryDefinition`` for use in a record.
     ///
     /// - Important: Each image can only be 2 MB in size.
-    public func uploadGallery(_ images: [ATProtoTools.ImageQuery], pdsURL: String = "https://bsky.social",
-                              accessToken: String) async throws -> AppBskyLexicon.Feed.PostRecord.EmbedUnion {
+    public func uploadGallery(
+        _ images: [ATProtoTools.ImageQuery],
+        pdsURL: String = "https://bsky.social"
+    ) async throws -> AppBskyLexicon.Feed.PostRecord.EmbedUnion {
         var items = [AppBskyLexicon.Embed.GalleryDefinition.ItemUnion]()
 
         for image in images {
@@ -661,9 +652,8 @@ extension ATProtoBluesky {
             }
 
             // Upload the image, then get the server response.
-            let blobReference = try await ATProtoKit(canUseBlueskyRecords: false).uploadBlob(
+            let blobReference = try await atProtoKitInstance.uploadBlob(
                 pdsURL: pdsURL,
-                accessToken: accessToken,
                 filename: image.fileName,
                 imageData: image.imageData
             )
@@ -713,15 +703,19 @@ extension ATProtoBluesky {
     ///   - pollingFrequency: The amount of time (in seconds) to poll for a job state update.
     ///   Defaults to 5 seconds.
     ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `https://bsky.social`.
-    ///   - accessToken: The access token used to authenticate to the user.
     /// - Returns: An ``AppBskyLexicon/Feed/PostRecord/EmbedUnion``, which contains an instance of
     /// ``AppBskyLexicon/Embed/VideoDefinition`` for use in a record.
     /// - Throws: Errors related to whether the video or caption file doesn't match the video file
     /// requirements, whether the files failed to upload, or whether anything related to the
     /// AT Protocol.
-    public func buildVideo(_ video: Data, with captions: [Caption]? = nil, altText: String? = nil,
-                           aspectRatio: AppBskyLexicon.Embed.AspectRatioDefinition? = nil, pollingFrequency: Int = 3, pdsURL: String = "https://bsky.social",
-                           accessToken: String) async throws -> AppBskyLexicon.Feed.PostRecord.EmbedUnion {
+    public func buildVideo(
+        _ video: Data,
+        with captions: [Caption]? = nil,
+        altText: String? = nil,
+        aspectRatio: AppBskyLexicon.Embed.AspectRatioDefinition? = nil,
+        pollingFrequency: Int = 3,
+        pdsURL: String = "https://bsky.social"
+    ) async throws -> AppBskyLexicon.Feed.PostRecord.EmbedUnion {
         // Check if the size of the video is small enough.
         if video.count >= AttachmentLexiconLimit.videoEmbed {
             throw ATJobStatusError.videoSizeTooLarge(message: "The video file is too large. The maximum file size is currently 100MB.")
@@ -834,7 +828,6 @@ extension ATProtoBluesky {
 
                 let blobReference = try await atProtoKitInstance.uploadBlob(
                     pdsURL: pdsURL,
-                    accessToken: accessToken,
                     filename: "\(ATProtoTools().generateRandomString())_caption.vtt",
                     imageData: caption.file
                 )
@@ -883,20 +876,15 @@ extension ATProtoBluesky {
         // Optional upload of the thumbnail image if it exists.
         var thumbnailImage: ComAtprotoLexicon.Repository.UploadBlobOutput? = nil
 
-        // Grab the access token.
         do {
-            let keychain = sessionConfiguration?.keychainProtocol
-            if let accessToken = try? await keychain?.retrieveAccessToken() {
-                if let pdsURL = session.pdsURL, let imageData = image {
-                    thumbnailImage = try await ATProtoKit(canUseBlueskyRecords: false).uploadBlob(
-                        pdsURL: pdsURL,
-                        accessToken: accessToken,
-                        filename: "\(ATProtoTools().generateRandomString())_thumbnail.jpg",
-                        imageData: imageData
-                    )
-                } else {
-                    thumbnailImage = nil
-                }
+            if let pdsURL = session.pdsURL, let imageData = image {
+                thumbnailImage = try await atProtoKitInstance.uploadBlob(
+                    pdsURL: pdsURL,
+                    filename: "\(ATProtoTools().generateRandomString())_thumbnail.jpg",
+                    imageData: imageData
+                )
+            } else {
+                thumbnailImage = nil
             }
         } catch {
             thumbnailImage = nil

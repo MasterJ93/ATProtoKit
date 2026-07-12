@@ -21,9 +21,9 @@ import FoundationNetworking
 /// - You should use `UserSessionRegistry` to manage ``UserSession`` instances.
 /// - When deleting a session, make sure that `deleteSession` removes the instance
 /// from `UserSessionRegistry`.
-/// - Accessing the access token, refresh token, or password requires
-/// using `KeychainProtocol`.
-public protocol SessionConfiguration: AnyObject, Sendable {
+/// - App Password session implementations can conform to ``KeychainBackedSessionConfiguration`` to store
+/// credentials with ``SecureKeychainProtocol``.
+public protocol SessionConfiguration: AnyObject, ATRequestAuthenticator, Sendable {
 
     /// The base URL of the Personal Data Server (PDS) with which the AT Protocol interacts.
     ///
@@ -51,8 +51,15 @@ public protocol SessionConfiguration: AnyObject, Sendable {
     /// provide new authentication codes from the user.
     var codeContinuation: AsyncStream<String>.Continuation { get }
 
-    /// An instance of `SecureKeychainProtocol`.
-    var keychainProtocol: SecureKeychainProtocol { get }
+    /// A presenter that can drive OAuth browser authorization and return callback URLs.
+    var oauthAuthorizationPresenter: OAuthAuthorizationPresenting? { get }
+
+    /// An executor that lets an OAuth implementation send the complete authenticated request. Optional.
+    ///
+    /// Use this integration point when the OAuth implementation must own token refresh, DPoP proof
+    /// generation, nonce retries, and transport. Header-based implementations can leave this property
+    /// as `nil` and implement ``authorization(for:)`` instead.
+    var requestExecutor: ATRequestExecutor? { get }
 
     /// A type alias for defining a closure that takes a `URLRequest` and returns a tuple of `Data`
     /// and `URLResponse`.
@@ -122,6 +129,36 @@ public protocol SessionConfiguration: AnyObject, Sendable {
     /// - Throws: An error if there are issues creating the request or communicating with the PDS.
     func authenticate(with handle: String, password: String) async throws
 
+    /// Attempts to authenticate by using an OAuth authorization URL and callback scheme.
+    ///
+    /// If OAuth will be used in a project, create the implementation of this method. If this doesn't
+    /// happen, it will throw an error when called.
+    ///
+    /// The default implementation uses ``oauthAuthorizationPresenter`` to present the URL and then
+    /// passes the callback URL to ``authenticate(withOAuthCallback:)``. Override this method if your
+    /// OAuth implementation needs to create pushed authorization requests, PKCE values, DPoP keys,
+    /// or token archives before the browser is opened.
+    ///
+    /// - Parameters:
+    ///   - authorizationURL: The authorization URL created by the OAuth client.
+    ///   - callbackURLScheme: The callback URL scheme registered by the app.
+    ///
+    /// - Throws: An error if authorization presentation or callback handling fails.
+    func authenticate(
+        withOAuthAuthorizationURL authorizationURL: URL,
+        callbackURLScheme: String
+    ) async throws
+
+    /// Completes OAuth authentication from a callback URL.
+    ///
+    /// Override this method to exchange the authorization code, persist OAuth token archives,
+    /// register the resulting ``UserSession``, and save tokens or archive data in secure storage.
+    ///
+    /// - Parameter callbackURL: The callback URL returned by the authorization server.
+    ///
+    /// - Throws: An error if the callback cannot be exchanged for a session.
+    func authenticate(withOAuthCallback callbackURL: URL) async throws
+
     /// Fetches an existing session using an access token.
     ///
     /// If the access token is invalid, then a new one will be created, either by refeshing a
@@ -186,9 +223,104 @@ public protocol SessionConfiguration: AnyObject, Sendable {
     ///
     /// - Throws: An ``ATProtoError``-conforming error type if refresh fails.
     func ensureValidToken() async throws
+
+    /// Creates an authorization value for a request.
+    ///
+    /// - Parameter request: The request that needs authorization.
+    /// - Returns: The authorization value to apply, or `nil` when the request should remain unchanged.
+    ///
+    /// - Throws: An error if authorization cannot be prepared.
+    func authorization(for request: URLRequest) async throws -> SessionAuthorization?
+
+    /// Returns the identity and PDS endpoint currently visible to ATProtoKit.
+    ///
+    /// - Returns: The active authorization context if the session is available, or `nil` if not.
+    ///
+    /// - Throws: An error if the context cannot be loaded.
+    func authorizationContext() async throws -> SessionAuthorizationContext?
+}
+
+/// Defines a session configuration that stores App Password credentials through a secure keychain.
+public protocol KeychainBackedSessionConfiguration: SessionConfiguration {
+
+    /// An instance of `SecureKeychainProtocol`.
+    var keychainProtocol: SecureKeychainProtocol { get }
 }
 
 extension SessionConfiguration {
+
+    public var oauthAuthorizationPresenter: OAuthAuthorizationPresenting? {
+        return nil
+    }
+
+    public var requestExecutor: ATRequestExecutor? {
+        return nil
+    }
+
+    public func authenticate(
+        withOAuthAuthorizationURL authorizationURL: URL,
+        callbackURLScheme: String
+    ) async throws {
+        guard let oauthAuthorizationPresenter else {
+            throw ATProtocolConfiguration.ATProtocolConfigurationError.noSessionToken(
+                message: "An OAuth authorization presenter is required."
+            )
+        }
+
+        let callbackURL = try await oauthAuthorizationPresenter.callbackURL(
+            for: authorizationURL,
+            callbackURLScheme: callbackURLScheme
+        )
+
+        try await authenticate(withOAuthCallback: callbackURL)
+    }
+
+    public func authenticate(withOAuthCallback callbackURL: URL) async throws {
+        throw ATProtocolConfiguration.ATProtocolConfigurationError.noSessionToken(
+            message: "OAuth callback handling must be implemented by the session configuration."
+        )
+    }
+
+    public func waitForUserCode() async -> String {
+        var iterator = codeStream.makeAsyncIterator()
+        return await iterator.next() ?? ""
+    }
+
+    public func receiveCodeFromUser(_ input: String) {
+        codeContinuation.yield(input)
+    }
+
+    public func authenticatedRequest(for request: URLRequest) async throws -> URLRequest {
+        var authenticatedRequest = request
+        authenticatedRequest.removeATProtoKitAuthorizationRequirement()
+
+        guard let authorization = try await authorization(for: request) else {
+            return authenticatedRequest
+        }
+
+        authenticatedRequest.setValue(authorization.authorizationValue, forHTTPHeaderField: "Authorization")
+
+        for (field, value) in authorization.additionalHeaders {
+            authenticatedRequest.setValue(value, forHTTPHeaderField: field)
+        }
+
+        return authenticatedRequest
+    }
+
+    public func authorizationContext() async throws -> SessionAuthorizationContext? {
+        guard let session = await UserSessionRegistry.shared.getSession(for: instanceUUID) else {
+            return nil
+        }
+
+        return SessionAuthorizationContext(
+            sessionDID: session.sessionDID,
+            handle: session.handle,
+            serviceEndpoint: session.serviceEndpoint
+        )
+    }
+}
+
+extension KeychainBackedSessionConfiguration {
 
     public func createAccount(
         email: String?,
@@ -580,5 +712,46 @@ extension SessionConfiguration {
             // If we can't parse the token, continue with the original token
             // The API call will fail with proper error if token is invalid
         }
+    }
+
+    /// Creates bearer-token authorization for requests that already ask for authentication.
+    ///
+    /// OAuth configurations can override this method to return DPoP authorization, refresh token
+    /// archives, or add additional authorization headers.
+    ///
+    /// - Parameter request: The request that needs authorization.
+    /// - Returns: Bearer-token authorization, or `nil` when the request has no `Authorization` header.
+    ///
+    /// - Throws: An error if the token cannot be refreshed or retrieved.
+    public func authorization(for request: URLRequest) async throws -> SessionAuthorization? {
+        guard request.value(forHTTPHeaderField: "Authorization") != nil else {
+            return nil
+        }
+
+        try await ensureValidToken()
+        let accessToken = try await keychainProtocol.retrieveAccessToken()
+        return .bearer(accessToken)
+    }
+
+    /// Applies session authorization to a request.
+    ///
+    /// - Parameter request: The request to authenticate.
+    /// - Returns: A copy of the request with authorization headers applied, or the original request
+    /// if no authorization is needed.
+    ///
+    /// - Throws: An error if authorization cannot be prepared.
+    public func authenticatedRequest(for request: URLRequest) async throws -> URLRequest {
+        guard let authorization = try await authorization(for: request) else {
+            return request
+        }
+
+        var authenticatedRequest = request
+        authenticatedRequest.setValue(authorization.authorizationValue, forHTTPHeaderField: "Authorization")
+
+        for (field, value) in authorization.additionalHeaders {
+            authenticatedRequest.setValue(value, forHTTPHeaderField: field)
+        }
+
+        return authenticatedRequest
     }
 }

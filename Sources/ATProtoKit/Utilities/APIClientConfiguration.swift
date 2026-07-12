@@ -14,7 +14,7 @@ import FoundationNetworking
 ///
 /// `APIClientConfiguration` enables fine-grained control over the underlying networking stack
 /// used by an API client, including session configuration, delegate handling, response execution,
-/// and logging.
+/// request authorization, and logging.
 ///
 /// - SeeAlso: [URLSessionConfiguration](https://developer.apple.com/documentation/foundation/urlsessionconfiguration), \
 /// [URLSessionDelegate](https://developer.apple.com/documentation/foundation/urlsessiondelegate)
@@ -34,6 +34,9 @@ public struct APIClientConfiguration: Sendable {
     /// A provider used for the response of the `URLRequest`. Optional. Defaults to `nil`.
     var responseProvider: ATRequestExecutor? = nil
 
+    /// A request authenticator used to apply session-specific authorization headers.
+    var requestAuthenticator: ATRequestAuthenticator? = nil
+
     /// An instance of ``SessionDebuggable`` to attach to `APIClientService`. Optional. Defaults to `nil`.
     var logger: SessionDebuggable? = nil
 
@@ -47,6 +50,8 @@ public struct APIClientConfiguration: Sendable {
     ///   Optional. Defaults to `nil`.
     ///   - responseProvider: A provider used for the response of the `URLRequest`. Optional.
     ///   Defaults to `nil`.
+    ///   - requestAuthenticator: A request authenticator used to apply session-specific authorization
+    ///   headers. Optional. Defaults to `nil`.
     ///   - logger: An instance of ``SessionDebuggable`` to attach to `APIClientService`. Optional.
     ///   Defaults to `nil`.
     public init(
@@ -54,12 +59,14 @@ public struct APIClientConfiguration: Sendable {
         delegate: (any URLSessionDelegate)? = nil,
         delegateQueue: OperationQueue? = nil,
         responseProvider: ATRequestExecutor? = nil,
+        requestAuthenticator: ATRequestAuthenticator? = nil,
         logger: SessionDebuggable? = nil
     ) {
         self.urlSessionConfiguration = urlSessionConfiguration
         self.delegate = delegate
         self.delegateQueue = delegateQueue
         self.responseProvider = responseProvider
+        self.requestAuthenticator = requestAuthenticator
         self.logger = logger
     }
 }

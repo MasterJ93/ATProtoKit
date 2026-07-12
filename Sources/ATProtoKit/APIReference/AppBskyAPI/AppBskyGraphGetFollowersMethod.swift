@@ -37,10 +37,11 @@ extension ATProtoKit {
         limit: Int? = 50,
         cursor: String? = nil
     ) async throws -> AppBskyLexicon.Graph.GetFollowersOutput {
-        let authorizationValue = await prepareAuthorizationValue()
+        let session = try await self.getUserSession()
+        let requiresAuthorization = session != nil
 
-        guard let sessionURL = authorizationValue != nil ? try await self.getUserSession()?.serviceEndpoint.absoluteString : self.pdsURL,
-              let requestURL = URL(string: "\(sessionURL)/xrpc/app.bsky.graph.getFollowers") else {
+        let sessionURL = session?.serviceEndpoint.absoluteString ?? self.pdsURL
+        guard let requestURL = URL(string: "\(sessionURL)/xrpc/app.bsky.graph.getFollowers") else {
             throw ATRequestPrepareError.invalidRequestURL
         }
 
@@ -70,7 +71,7 @@ extension ATProtoKit {
                 andMethod: .get,
                 acceptValue: "application/json",
                 contentTypeValue: nil,
-                authorizationValue: authorizationValue
+                requiresAuthorization: requiresAuthorization
             )
             let response = try await apiClientService.sendRequest(
                 request,

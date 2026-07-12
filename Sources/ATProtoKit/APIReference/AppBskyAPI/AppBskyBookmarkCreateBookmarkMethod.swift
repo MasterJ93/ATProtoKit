@@ -34,13 +34,10 @@ extension ATProtoKit {
         uri: String,
         cid: String
     ) async throws {
-        guard let session = try await self.getUserSession(),
-              let keychain = sessionConfiguration?.keychainProtocol else {
+        guard let session = try await self.getUserSession() else {
             throw ATRequestPrepareError.missingActiveSession
         }
 
-        try await sessionConfiguration?.ensureValidToken()
-        let accessToken = try await keychain.retrieveAccessToken()
         let sessionURL = session.serviceEndpoint.absoluteString
 
         guard let requestURL = URL(string: "\(sessionURL)/xrpc/app.bsky.bookmark.createBookmark") else {
@@ -58,7 +55,7 @@ extension ATProtoKit {
                 andMethod: .post,
                 acceptValue: "application/json",
                 contentTypeValue: "application/json",
-                authorizationValue: "Bearer \(accessToken)"
+                requiresAuthorization: true
             )
 
             _ = try await apiClientService.sendRequest(
