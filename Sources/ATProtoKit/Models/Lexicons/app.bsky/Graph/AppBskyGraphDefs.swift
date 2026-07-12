@@ -42,11 +42,14 @@ extension AppBskyLexicon.Graph {
         /// The viewer's state of the user list. Optional.
         public var viewer: ListViewerStateDefinition?
 
+        /// An array of labels attached to the post. Optional.
+        public let labels: [ComAtprotoLexicon.Label.LabelDefinition]?
+
         /// The late time the user list was indexed. Optional.
         public let indexedAt: Date?
 
         public init(actorURI: String, cid: String, name: String, purpose: ListPurpose, avatarImageURL: URL?, listItemCount: Int?,
-                    viewer: ListViewerStateDefinition? = nil, indexedAt: Date?) {
+                    viewer: ListViewerStateDefinition? = nil, labels: [ComAtprotoLexicon.Label.LabelDefinition]? = nil, indexedAt: Date?) {
             self.actorURI = actorURI
             self.cid = cid
             self.name = name
@@ -54,6 +57,7 @@ extension AppBskyLexicon.Graph {
             self.avatarImageURL = avatarImageURL
             self.listItemCount = listItemCount
             self.viewer = viewer
+            self.labels = labels
             self.indexedAt = indexedAt
         }
 
@@ -67,6 +71,7 @@ extension AppBskyLexicon.Graph {
             self.avatarImageURL = try container.decodeIfPresent(URL.self, forKey: .avatarImageURL)
             self.listItemCount = try container.decodeIfPresent(Int.self, forKey: .listItemCount)
             self.viewer = try container.decodeIfPresent(AppBskyLexicon.Graph.ListViewerStateDefinition.self, forKey: .viewer)
+            self.labels = try container.decodeIfPresent([ComAtprotoLexicon.Label.LabelDefinition].self, forKey: .labels)
             self.indexedAt = try container.decodeDateIfPresent(forKey: .indexedAt)
         }
 
@@ -81,6 +86,7 @@ extension AppBskyLexicon.Graph {
             try container.encodeIfPresent(self.avatarImageURL, forKey: .avatarImageURL)
             try container.encodeIfPresent(self.listItemCount, forKey: .listItemCount)
             try container.encodeIfPresent(self.viewer, forKey: .viewer)
+            try container.encodeIfPresent(self.labels, forKey: .labels)
             try container.encodeDateIfPresent(self.indexedAt, forKey: .indexedAt)
         }
 
@@ -92,6 +98,7 @@ extension AppBskyLexicon.Graph {
             case avatarImageURL = "avatar"
             case listItemCount
             case viewer
+            case labels
             case indexedAt
         }
     }
@@ -142,12 +149,15 @@ extension AppBskyLexicon.Graph {
         /// The viewer's state of the user list. Optional.
         public var viewer: ListViewerStateDefinition?
 
+        /// An array of labels attached to the post. Optional.
+        public let labels: [ComAtprotoLexicon.Label.LabelDefinition]?
+
         /// The late time the user list was indexed.
         public let indexedAt: Date
 
         public init(uri: String, cid: String, creator: AppBskyLexicon.Actor.ProfileViewDefinition, name: String, purpose: ListPurpose,
             description: String? = nil, descriptionFacets: [AppBskyLexicon.RichText.Facet]? = nil, avatarImageURL: URL? = nil, listItemCount: Int?,
-            viewer: ListViewerStateDefinition? = nil, indexedAt: Date) {
+            viewer: ListViewerStateDefinition? = nil, labels: [ComAtprotoLexicon.Label.LabelDefinition]? = nil, indexedAt: Date) {
             self.uri = uri
             self.cid = cid
             self.creator = creator
@@ -158,6 +168,7 @@ extension AppBskyLexicon.Graph {
             self.avatarImageURL = avatarImageURL
             self.listItemCount = listItemCount
             self.viewer = viewer
+            self.labels = labels
             self.indexedAt = indexedAt
         }
 
@@ -174,6 +185,7 @@ extension AppBskyLexicon.Graph {
             self.avatarImageURL = try container.decodeIfPresent(URL.self, forKey: .avatarImageURL)
             self.listItemCount = try container.decodeIfPresent(Int.self, forKey: .listItemCount)
             self.viewer = try container.decodeIfPresent(AppBskyLexicon.Graph.ListViewerStateDefinition.self, forKey: .viewer)
+            self.labels = try container.decodeIfPresent([ComAtprotoLexicon.Label.LabelDefinition].self, forKey: .labels)
             self.indexedAt = try container.decodeDate(forKey: .indexedAt)
         }
 
@@ -190,6 +202,7 @@ extension AppBskyLexicon.Graph {
             try container.encodeIfPresent(self.avatarImageURL, forKey: .avatarImageURL)
             try container.encodeIfPresent(self.listItemCount, forKey: .listItemCount)
             try container.encodeIfPresent(self.viewer, forKey: .viewer)
+            try container.encodeIfPresent(self.labels, forKey: .labels)
             try container.encodeDate(self.indexedAt, forKey: .indexedAt)
         }
 
@@ -205,6 +218,7 @@ extension AppBskyLexicon.Graph {
             case avatarImageURL = "avatar"
             case listItemCount
             case viewer
+            case labels
             case indexedAt
         }
     }
