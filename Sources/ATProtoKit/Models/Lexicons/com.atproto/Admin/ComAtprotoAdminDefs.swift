@@ -173,6 +173,21 @@ extension ComAtprotoLexicon.Admin {
         /// The decentralized identifier (DID) of the repository.
         public let repositoryDID: String
 
+        public init(repositoryDID: String) {
+            self.repositoryDID = repositoryDID
+        }
+        
+        public init(from decoder: any Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+            self.repositoryDID = try container.decode(String.self, forKey: .repositoryDID)
+        }
+        
+        public func encode(to encoder: any Encoder) throws {
+            var container = encoder.container(keyedBy:CodingKeys.self)
+            try container.encode(self.type, forKey: .type)
+            try container.encode(self.repositoryDID, forKey: .repositoryDID)
+        }
+        
         enum CodingKeys: String, CodingKey {
             case type = "$type"
             case repositoryDID = "did"

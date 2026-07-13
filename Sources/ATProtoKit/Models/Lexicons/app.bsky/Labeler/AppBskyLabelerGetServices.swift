@@ -42,9 +42,9 @@ extension AppBskyLexicon.Labeler {
                 let type = try container.decode(String.self, forKey: .type)
 
                 switch type {
-                    case "app.bsky.labeler.defs#labelerView":
+                    case AppBskyLexicon.Labeler.LabelerViewDefinition.type: //"app.bsky.labeler.defs#labelerView":
                         self = .labelerView(try AppBskyLexicon.Labeler.LabelerViewDefinition(from: decoder))
-                    case "app.bsky.labeler.defs#labelerViewDetailed":
+                    case AppBskyLexicon.Labeler.LabelerViewDetailedDefinition.type: //"app.bsky.labeler.defs#labelerViewDetailed":
                         self = .labelerViewDetailed(try AppBskyLexicon.Labeler.LabelerViewDetailedDefinition(from: decoder))
                     default:
                         let singleValueDecodingContainer = try decoder.singleValueContainer()

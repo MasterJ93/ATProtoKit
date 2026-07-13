@@ -24,5 +24,23 @@ extension AppBskyLexicon.Feed {
 
         /// An array of feed generators.
         public let feeds: [GeneratorViewDefinition]
+        
+        public init(feeds: [GeneratorViewDefinition]) {
+            self.feeds = feeds
+        }
+        
+        public init(from decoder: any Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+            self.feeds = try container.decode([AppBskyLexicon.Feed.GeneratorViewDefinition].self, forKey: .feeds)
+        }
+        
+        public func encode(to encoder: any Encoder) throws {
+            var container = encoder.container(keyedBy: CodingKeys.self)
+            try container.encode(self.feeds, forKey: .feeds)
+        }
+        
+        enum CodingKeys: CodingKey {
+            case feeds
+        }
     }
 }

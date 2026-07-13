@@ -758,7 +758,7 @@ extension AppBskyLexicon.Actor {
     public typealias PreferencesDefinition = [PreferenceUnion]
 
     /// A union type for preferences.
-    public enum PreferenceUnion: ATUnionProtocol {
+    public enum PreferenceUnion: ATUnionProtocol, Equatable {
 
         /// The "Adult Content" preference.
         case adultContent(AppBskyLexicon.Actor.AdultContentPreferencesDefinition)
@@ -945,7 +945,7 @@ extension AppBskyLexicon.Actor {
     /// - SeeAlso: This is based on the [`app.bsky.actor.defs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/actor/defs.json
-    public struct AdultContentPreferencesDefinition: Sendable, Codable {
+    public struct AdultContentPreferencesDefinition: Sendable, Codable, Equatable {
 
         /// The identifier of the lexicon.
         ///
@@ -982,7 +982,7 @@ extension AppBskyLexicon.Actor {
     /// - SeeAlso: This is based on the [`app.bsky.actor.defs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/actor/defs.json
-    public struct ContentLabelPreferencesDefinition: Sendable, Codable {
+    public struct ContentLabelPreferencesDefinition: Sendable, Codable, Equatable {
 
         /// The identifier of the lexicon.
         ///
@@ -1101,7 +1101,7 @@ extension AppBskyLexicon.Actor {
     /// - SeeAlso: This is based on the [`app.bsky.actor.defs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/actor/defs.json
-    public struct SavedFeed: Sendable, Codable {
+    public struct SavedFeed: Sendable, Codable, Equatable {
 
         /// The identifier of the lexicon.
         ///
@@ -1229,7 +1229,7 @@ extension AppBskyLexicon.Actor {
     /// - SeeAlso: This is based on the [`app.bsky.actor.defs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/actor/defs.json
-    public struct SavedFeedPreferencesVersion2Definition: Sendable, Codable {
+    public struct SavedFeedPreferencesVersion2Definition: Sendable, Codable, Equatable {
 
         /// The identifier of the lexicon.
         ///
@@ -1268,7 +1268,7 @@ extension AppBskyLexicon.Actor {
     /// - SeeAlso: This is based on the [`app.bsky.actor.defs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/actor/defs.json
-    public struct SavedFeedsPreferencesDefinition: Sendable, Codable {
+    public struct SavedFeedsPreferencesDefinition: Sendable, Codable, Equatable {
 
         /// The identifier of the lexicon.
         ///
@@ -1318,7 +1318,7 @@ extension AppBskyLexicon.Actor {
     /// - SeeAlso: This is based on the [`app.bsky.actor.defs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/actor/defs.json
-    public struct PersonalDetailsPreferencesDefinition: Sendable, Codable {
+    public struct PersonalDetailsPreferencesDefinition: Sendable, Codable, Equatable {
 
         /// The identifier of the lexicon.
         ///
@@ -1357,7 +1357,7 @@ extension AppBskyLexicon.Actor {
     /// - SeeAlso: This is based on the [`app.bsky.actor.defs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/actor/defs.json
-    public struct FeedViewPreferencesDefinition: Sendable, Codable {
+    public struct FeedViewPreferencesDefinition: Sendable, Codable, Equatable {
 
         /// The identifier of the lexicon.
         ///
@@ -1445,7 +1445,7 @@ extension AppBskyLexicon.Actor {
     /// - SeeAlso: This is based on the [`app.bsky.actor.defs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/actor/defs.json
-    public struct ThreadViewPreferencesDefinition: Sendable, Codable {
+    public struct ThreadViewPreferencesDefinition: Sendable, Codable, Equatable {
 
         /// The identifier of the lexicon.
         ///
@@ -1577,7 +1577,7 @@ extension AppBskyLexicon.Actor {
     /// - SeeAlso: This is based on the [`app.bsky.actor.defs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/actor/defs.json
-    public struct InterestViewPreferencesDefinition: Sendable, Codable {
+    public struct InterestViewPreferencesDefinition: Sendable, Codable, Equatable {
 
         /// The identifier of the lexicon.
         ///
@@ -1620,7 +1620,7 @@ extension AppBskyLexicon.Actor {
     /// - SeeAlso: This is based on the [`app.bsky.actor.defs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/actor/defs.json
-    public enum MutedWordTarget: Sendable, Codable {
+    public enum MutedWordTarget: Sendable, Codable, Equatable {
 
         /// Indicates the muted word is within the content itself.
         case content
@@ -1673,7 +1673,7 @@ extension AppBskyLexicon.Actor {
     /// - SeeAlso: This is based on the [`app.bsky.actor.defs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/actor/defs.json
-    public struct MutedWord: Sendable, Codable {
+    public struct MutedWord: Sendable, Codable, Equatable {
 
         /// The identifier of the lexicon.
         ///
@@ -1795,7 +1795,7 @@ extension AppBskyLexicon.Actor {
     /// - SeeAlso: This is based on the [`app.bsky.actor.defs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/actor/defs.json
-    public struct MutedWordsPreferencesDefinition: Sendable, Codable {
+    public struct MutedWordsPreferencesDefinition: Sendable, Codable, Equatable {
 
         /// The identifier of the lexicon.
         ///
@@ -1834,7 +1834,7 @@ extension AppBskyLexicon.Actor {
     /// - SeeAlso: This is based on the [`app.bsky.actor.defs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/actor/defs.json
-    public struct HiddenPostsPreferencesDefinition: Sendable, Codable {
+    public struct HiddenPostsPreferencesDefinition: Sendable, Codable, Equatable {
 
         /// The identifier of the lexicon.
         ///
@@ -1873,7 +1873,7 @@ extension AppBskyLexicon.Actor {
     /// - SeeAlso: This is based on the [`app.bsky.actor.defs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/actor/defs.json
-    public struct LabelersPreferencesDefinition: Sendable, Codable {
+    public struct LabelersPreferencesDefinition: Sendable, Codable, Equatable {
 
         /// The identifier of the lexicon.
         ///
@@ -1909,7 +1909,7 @@ extension AppBskyLexicon.Actor {
     /// - SeeAlso: This is based on the [`app.bsky.actor.defs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/actor/defs.json
-    public struct LabelersPreferenceItem: Sendable, Codable {
+    public struct LabelersPreferenceItem: Sendable, Codable, Equatable {
 
         /// The decentralized identifier (DID) of the labeler.
         public let did: String
@@ -1943,7 +1943,7 @@ extension AppBskyLexicon.Actor {
     /// - SeeAlso: This is based on the [`app.bsky.actor.defs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/actor/defs.json
-    public struct BskyAppStatePreferencesDefinition: Sendable, Codable {
+    public struct BskyAppStatePreferencesDefinition: Sendable, Codable, Equatable {
 
         /// The identifier of the lexicon.
         ///
@@ -2002,7 +2002,7 @@ extension AppBskyLexicon.Actor {
     /// - SeeAlso: This is based on the [`app.bsky.actor.defs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/actor/defs.json
-    public struct BskyAppProgressGuideDefinition: Sendable, Codable {
+    public struct BskyAppProgressGuideDefinition: Sendable, Codable, Equatable {
 
         /// The progress guide itself.
         ///
@@ -2037,7 +2037,7 @@ extension AppBskyLexicon.Actor {
     /// - SeeAlso: This is based on the [`app.bsky.actor.defs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/actor/defs.json
-    public struct NUXDefinition: Sendable, Codable {
+    public struct NUXDefinition: Sendable, Codable, Equatable {
 
         /// The ID of the NUX.
         public let id: String
@@ -2101,7 +2101,7 @@ extension AppBskyLexicon.Actor {
     /// - SeeAlso: This is based on the [`app.bsky.actor.defs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/actor/defs.json
-    public struct VerificationPreferenceDefinition: Sendable, Codable {
+    public struct VerificationPreferenceDefinition: Sendable, Codable, Equatable {
 
         /// The identifier of the lexicon.
         ///
@@ -2145,7 +2145,7 @@ extension AppBskyLexicon.Actor {
     /// - SeeAlso: This is based on the [`app.bsky.actor.defs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/actor/defs.json
-    public struct PostInteractionSettingsPreferenceDefinition: Sendable, Codable {
+    public struct PostInteractionSettingsPreferenceDefinition: Sendable, Codable, Equatable {
 
         /// The identifier of the lexicon.
         ///
@@ -2264,7 +2264,7 @@ extension AppBskyLexicon.Actor {
         }
 
         /// A reference containing rules for embedding posts.
-        public enum PostgateEmbeddingRulesUnion: ATUnionProtocol {
+        public enum PostgateEmbeddingRulesUnion: ATUnionProtocol, Equatable {
 
             /// A rule saying that embedding posts is not allowed at all.
             case disabledRule(AppBskyLexicon.Feed.PostgateRecord.DisableRule)
@@ -2314,7 +2314,7 @@ extension AppBskyLexicon.Actor {
     /// - SeeAlso: This is based on the [`app.bsky.actor.defs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/actor/defs.json
-    public struct DeclaredAgePreferenceDefinition: Sendable, Codable {
+    public struct DeclaredAgePreferenceDefinition: Sendable, Codable, Equatable {
 
         /// The identifier of the lexicon.
         ///
@@ -2376,7 +2376,7 @@ extension AppBskyLexicon.Actor {
     /// - SeeAlso: This is based on the [`app.bsky.actor.defs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/actor/defs.json
-    public struct LiveEventPreferencesDefinition: Sendable, Codable {
+    public struct LiveEventPreferencesDefinition: Sendable, Codable, Equatable {
 
         /// The identifier of the lexicon.
         ///

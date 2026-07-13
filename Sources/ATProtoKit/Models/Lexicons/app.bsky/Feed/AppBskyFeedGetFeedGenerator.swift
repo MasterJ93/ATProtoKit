@@ -36,5 +36,31 @@ extension AppBskyLexicon.Feed {
         /// - Note: According to the AT Protocol specifications: "Indicates whether the
         /// feed generator service is compatible with the record declaration."
         public let isValid: Bool
+        
+        public init(view: GeneratorViewDefinition, isOnline: Bool, isValid: Bool) {
+            self.view = view
+            self.isOnline = isOnline
+            self.isValid = isValid
+        }
+        
+        public init(from decoder: any Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+            self.view = try container.decode(AppBskyLexicon.Feed.GeneratorViewDefinition.self, forKey: .view)
+            self.isOnline = try container.decode(Bool.self, forKey: .isOnline)
+            self.isValid = try container.decode(Bool.self, forKey: .isValid)
+        }
+        
+        public func encode(to encoder: any Encoder) throws {
+            var container = encoder.container(keyedBy: CodingKeys.self)
+            try container.encode(self.view, forKey: .view)
+            try container.encode(self.isOnline, forKey: .isOnline)
+            try container.encode(self.isValid, forKey: .isValid)
+        }
+        
+        enum CodingKeys: CodingKey {
+            case view
+            case isOnline
+            case isValid
+        }
     }
 }
