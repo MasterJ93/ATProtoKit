@@ -32,5 +32,11 @@ extension ComAtprotoLexicon.Server {
 
         /// The deletion token used to finalize the process of deleting the account.
         public let token: String
+
+        enum CodingKeys: String, CodingKey {
+            case accountDID = "did"
+            case accountPassword = "password"
+            case token
+        }
     }
 }
