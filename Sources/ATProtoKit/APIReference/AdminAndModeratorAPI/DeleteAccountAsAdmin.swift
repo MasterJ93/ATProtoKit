@@ -43,7 +43,7 @@ extension ATProtoAdmin {
         }
 
         let requestBody = ComAtprotoLexicon.Admin.DeleteAccountRequestBody(
-            accountDID: accountDID
+            did: accountDID
         )
 
         do {

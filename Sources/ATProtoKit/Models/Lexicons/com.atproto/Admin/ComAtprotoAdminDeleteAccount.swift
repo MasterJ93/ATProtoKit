@@ -23,10 +23,6 @@ extension ComAtprotoLexicon.Admin {
     public struct DeleteAccountRequestBody: Sendable, Codable {
 
         /// The decentralized identifier (DID) of the account to be deleted.
-        public let accountDID: String
-
-        enum CodingKeys: String, CodingKey {
-            case accountDID = "did"
-        }
+        public let did: String
     }
 }

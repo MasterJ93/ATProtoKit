@@ -49,8 +49,8 @@ extension ATProtoKit {
         }
 
         let requestBody = ComAtprotoLexicon.Server.DeleteAccountRequestBody(
-            accountDID: did,
-            accountPassword: password,
+            did: did,
+            password: password,
             token: deletionToken
         )
 

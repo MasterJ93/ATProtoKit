@@ -23,20 +23,14 @@ extension ComAtprotoLexicon.Server {
     public struct DeleteAccountRequestBody: Sendable, Codable {
 
         /// The decentralized identifier (DID) of the account.
-        public let accountDID: String
+        public let did: String
 
         /// The main password of the account.
         ///
         /// - Note: This is not the App Password.
-        public let accountPassword: String
+        public let password: String
 
         /// The deletion token used to finalize the process of deleting the account.
         public let token: String
-
-        enum CodingKeys: String, CodingKey {
-            case accountDID = "did"
-            case accountPassword = "password"
-            case token
-        }
     }
 }
