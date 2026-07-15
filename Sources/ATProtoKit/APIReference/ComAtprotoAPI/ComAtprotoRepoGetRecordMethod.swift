@@ -26,6 +26,7 @@ extension ATProtoKit {
     ///   - collection: The Namespaced Identifier (NSID) of the record.
     ///   - recordKey: The record key of the record.
     ///   - recordCID: The CID hash of the record. Optional.
+    ///   - pdsURL: The URL of the Personal Data Server (PDS). Optional. Defaults to `nil`.
     /// - Returns: The record itself, as well as its URI and CID.
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
@@ -34,9 +35,17 @@ extension ATProtoKit {
         from repository: String,
         collection: String,
         recordKey: String,
-        recordCID: String? = nil
+        recordCID: String? = nil,
+        pdsURL: String? = nil
     ) async throws -> ComAtprotoLexicon.Repository.GetRecordOutput {
-        guard let requestURL = URL(string: "\(self.pdsURL)/xrpc/com.atproto.repo.getRecord") else {
+        let host: String
+        if let pdsURL, !pdsURL.isEmpty {
+            host = pdsURL
+        } else {
+            host = await resolvePDSHost(for: repository)
+        }
+
+        guard let requestURL = URL(string: "\(host)/xrpc/com.atproto.repo.getRecord") else {
             throw ATRequestPrepareError.invalidRequestURL
         }
 
