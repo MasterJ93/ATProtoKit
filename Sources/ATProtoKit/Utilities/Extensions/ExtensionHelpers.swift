@@ -212,21 +212,23 @@ extension JSONDecoder {
 // MARK: - URLRequest Extension
 extension URLRequest {
 
-    /// The internal header used to mark requests that need session authorization.
-    public static let atProtoKitAuthorizationRequirementHeader = "X-ATProtoKit-Requires-Authorization"
+    private static let atProtoKitAuthorizationRequirementKey = "com.cjrriley.ATProtoKit.authorizationRequirement"
 
     /// Indicates whether this request has been marked as requiring session authorization.
-    public var requiresATProtoKitAuthorization: Bool {
-        value(forHTTPHeaderField: Self.atProtoKitAuthorizationRequirementHeader) == "true"
+    public var atProtoKitAuthorizationRequirement: ATRequestAuthorizationRequirement {
+        guard let value = URLProtocol.property(forKey: Self.atProtoKitAuthorizationRequirementKey, in: self) as? Bool,
+              value else {
+            return .none
+        }
+        return .session
     }
 
     /// Marks this request as requiring session authorization.
     public mutating func requireATProtoKitAuthorization() {
-        setValue("true", forHTTPHeaderField: Self.atProtoKitAuthorizationRequirementHeader)
-    }
-
-    /// Removes ATProtoKit's internal authorization marker.
-    public mutating func removeATProtoKitAuthorizationRequirement() {
-        setValue(nil, forHTTPHeaderField: Self.atProtoKitAuthorizationRequirementHeader)
+        guard let mutableRequest = (self as NSURLRequest).mutableCopy() as? NSMutableURLRequest else {
+            return
+        }
+        URLProtocol.setProperty(true, forKey: Self.atProtoKitAuthorizationRequirementKey, in: mutableRequest)
+        self = mutableRequest as URLRequest
     }
 }
