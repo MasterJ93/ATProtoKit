@@ -35,6 +35,8 @@ extension ATProtoKit {
     ///   - postFilter: The supported post and/or repost combinations in responses.  Optional.
     ///   Defaults to `.postsWithReplies`.
     ///   - shouldIncludePins: Indicates whether the output includes pinned posts. Optional.
+    ///   - labelersValue: The `atproto-accept-labelers` header value, containing the labeler
+    ///   services whose labels should be applied to the response. Optional.
     /// - Returns: An array of feeds created by the specified user account, with an optional cursor
     /// to extend the array.
     ///
@@ -45,7 +47,8 @@ extension ATProtoKit {
         limit: Int? = 50,
         cursor: String? = nil,
         postFilter: AppBskyLexicon.Feed.GetAuthorFeed.Filter? = .postsWithReplies,
-        shouldIncludePins: Bool? = false
+        shouldIncludePins: Bool? = false,
+        labelersValue: String? = nil
     ) async throws -> AppBskyLexicon.Feed.GetAuthorFeedOutput {
         guard let requestURL = URL(string: "\(self.pdsURL)/xrpc/app.bsky.feed.getAuthorFeed") else {
             throw ATRequestPrepareError.invalidRequestURL
@@ -84,7 +87,8 @@ extension ATProtoKit {
                 forRequest: queryURL,
                 andMethod: .get,
                 acceptValue: "application/json",
-                contentTypeValue: nil
+                contentTypeValue: nil,
+                labelersValue: labelersValue
             )
             let response = try await apiClientService.sendRequest(
                 request,
