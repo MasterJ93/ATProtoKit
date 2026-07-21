@@ -246,15 +246,20 @@ public struct APIClientService: Sendable {
     public func sendRequest<T: Decodable>(_ request: URLRequest, withDataBody data: Data, decodeTo: T.Type) async throws -> T {
         var urlRequest = request
         urlRequest.httpBody = data
+        let authorizationRequirement = urlRequest.atProtoKitAuthorizationRequirement
         if let requestAuthenticator {
-            urlRequest = try await requestAuthenticator.authenticatedRequest(for: urlRequest)
-        } else {
-            urlRequest.removeATProtoKitAuthorizationRequirement()
+            urlRequest = try await requestAuthenticator.authenticatedRequest(
+                for: urlRequest,
+                authorizationRequirement: authorizationRequirement
+            )
         }
 
         let (responseData, response): (Data, URLResponse)
         if let executor {
-            (responseData, response) = try await executor.execute(urlRequest)
+            (responseData, response) = try await executor.execute(
+                urlRequest,
+                authorizationRequirement: authorizationRequirement
+            )
         } else {
             (responseData, response) = try await urlSession.upload(for: urlRequest, from: data)
         }
@@ -299,10 +304,12 @@ public struct APIClientService: Sendable {
             }
         }
 
+        let authorizationRequirement = urlRequest.atProtoKitAuthorizationRequirement
         if let requestAuthenticator {
-            urlRequest = try await requestAuthenticator.authenticatedRequest(for: urlRequest)
-        } else {
-            urlRequest.removeATProtoKitAuthorizationRequirement()
+            urlRequest = try await requestAuthenticator.authenticatedRequest(
+                for: urlRequest,
+                authorizationRequirement: authorizationRequirement
+            )
         }
 
         #if DEBUG
@@ -312,7 +319,10 @@ public struct APIClientService: Sendable {
         do {
             let (data, response): (Data, URLResponse)
             if let executor = self.executor {
-                (data, response) = try await executor.execute(urlRequest)
+                (data, response) = try await executor.execute(
+                    urlRequest,
+                    authorizationRequirement: authorizationRequirement
+                )
             } else {
                 (data, response) = try await urlSession.data(for: urlRequest)
             }

@@ -43,11 +43,31 @@ public struct ConsoleDebugger: SessionDebuggable {
         print("\n--- API REQUEST ---")
         print("URL: \(request.url?.absoluteString ?? "(nil)")")
         print("Method: \(request.httpMethod ?? "(nil)")")
-        print("Headers: \(request.allHTTPHeaderFields ?? [:])")
+
+        print("Headers: \(Self.redactedHeaders(request.allHTTPHeaderFields ?? [:]))")
         if let body = body, let bodyString = String(data: body, encoding: .utf8) {
             print("Body: \(bodyString)")
         }
         print("-------------------\n")
+    }
+
+    /// Returns headers with security-sensitive values replaced for diagnostic output.
+    ///
+    /// - Parameter headers: The original HTTP headers.
+    /// - Returns: A copy of the HTTP headers safe to print in diagnostic logs.
+    package static func redactedHeaders(_ headers: [String: String]) -> [String: String] {
+        let sensitiveNames: Set<String> = [
+            "authorization",
+            "dpop",
+            "cookie",
+            "set-cookie",
+            "proxy-authorization"
+        ]
+        return headers.mapValues { value in
+            return value
+        }.reduce(into: [:]) { result, entry in
+            result[entry.key] = sensitiveNames.contains(entry.key.lowercased()) ? "<redacted>" : entry.value
+        }
     }
 
     /// Logs an incoming HTTP response to the console.
@@ -61,16 +81,31 @@ public struct ConsoleDebugger: SessionDebuggable {
     ///   - error: An `Error` if the request failed. Optional.
     public func logResponse(_ response: URLResponse?, data: Data?, error: Error?) {
         print("\n--- API RESPONSE ---")
+
         if let httpResponse = response as? HTTPURLResponse {
             print("Status: \(httpResponse.statusCode)")
-            print("Headers: \(httpResponse.allHeaderFields)")
+
+            let headers: [String: String] = Dictionary(
+                uniqueKeysWithValues: httpResponse.allHeaderFields.compactMap { entry in
+                    guard let name = entry.key as? String, let value = entry.value as? String else {
+                        return nil
+                    }
+
+                    return (name, value)
+                }
+            )
+
+            print("Headers: \(Self.redactedHeaders(headers))")
         }
+
         if let data = data, let jsonString = String(data: data, encoding: .utf8) {
             print("Body: \(jsonString)")
         }
+
         if let error = error {
             print("Error: \(error)")
         }
+
         print("--------------------\n")
     }
 }

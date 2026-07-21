@@ -493,3 +493,28 @@ public enum FeedViewPostDefinitionError: ATProtoError {
     /// - Parameter index: The index number.
     case indexTooHigh(index: Int)
 }
+
+/// An error type related to ``ATOAuthSessionConfiguration``
+public enum ATOAuthSessionConfigurationError: ATProtoError, Equatable {
+
+    /// No external refresh operation was configured.
+    case missingRefreshHandler
+
+    /// The OAuth token response did not grant the mandatory `atproto` scope.
+    case missingATProtoScope
+
+    /// The OAuth session contains an invalid account decentralized identifier.
+    ///
+    /// - Parameter did: The invalid decentralized identifier.
+    case invalidSessionDID(did: String)
+
+    /// The OAuth session contains an invalid Personal Data Server endpoint.
+    ///
+    /// - Parameter endpoint: The invalid endpoint.
+    case invalidServiceEndpoint(endpoint: URL)
+
+    /// The OAuth session does not grant all scopes required by an operation.
+    ///
+    /// - Parameter scopes: The required scopes that were not granted.
+    case insufficientScopes(scopes: Set<String>)
+}

@@ -15,7 +15,7 @@ import FoundationNetworking
 /// This is for handling App Passwords. At this time, an implementation of a
 /// Use ``ATOAuthSessionConfiguration`` or another ``SessionConfiguration`` implementation
 /// when an OAuth package owns authentication.
-final public class ATProtocolConfiguration: KeychainBackedSessionConfiguration {
+final public class ATProtocolConfiguration: AppPasswordSessionManaging {
 
     public let instanceUUID: UUID
 

@@ -25,6 +25,7 @@ public protocol ATProtoKitConfiguration {
     ///
     /// - Returns: A `String`, containing the configured session's authorization value, or `nil`
     /// if no session exists or authorization cannot be prepared.
+    @available(*, deprecated, message: "Authenticate the completed URLRequest with the request authentication or execution API; authorization values can be request-bound.")
     func prepareAuthorizationValue() async -> String?
 
     /// Retrieves the applicable ``UserSession`` instance.
@@ -56,6 +57,7 @@ extension ATProtoKitConfiguration {
     /// - Returns: A `String`, containing either `nil` if it's determined that there should be no
     /// authorization header in the request, or the configured session's authorization value if
     /// authorization is available.
+    @available(*, deprecated, message: "Authenticate the completed URLRequest with the request authentication or execution API; authorization values can be request-bound.")
     public func prepareAuthorizationValue() async -> String? {
         guard let sessionConfiguration else {
             return nil
@@ -166,7 +168,8 @@ public final class ATProtoKit: Sendable, ATProtoKitConfiguration, ATRecordConfig
     /// - Parameters:
     ///   - sessionConfiguration: The authenticated user session within the AT Protocol. Optional.
     ///   - apiClientConfiguration: An ``APIClientConfiguration`` object. Optional.
-    ///   Defaults to `nil`.
+    ///   Defaults to `nil`. When `sessionConfiguration` supplies an executor that owns OAuth
+    ///   authorization, that executor takes precedence over this configuration's response provider.
     ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to ``APIHostname/bskyAppView``.
     ///   - canUseBlueskyRecords: Indicates whether Bluesky's lexicons should be used.
     ///   Defaults to `true`.
@@ -181,8 +184,13 @@ public final class ATProtoKit: Sendable, ATProtoKitConfiguration, ATRecordConfig
 
         var finalConfiguration = apiClientConfiguration ?? APIClientConfiguration()
         finalConfiguration.urlSessionConfiguration = apiClientConfiguration?.urlSessionConfiguration ?? sessionConfiguration?.configuration ?? .default
-        finalConfiguration.responseProvider = apiClientConfiguration?.responseProvider ?? sessionConfiguration?.requestExecutor
-        finalConfiguration.requestAuthenticator = apiClientConfiguration?.requestAuthenticator ?? sessionConfiguration
+        if sessionConfiguration?.requestExecutorOwnsAuthorization == true {
+            finalConfiguration.responseProvider = sessionConfiguration?.requestExecutor
+            finalConfiguration.requestAuthenticator = nil
+        } else {
+            finalConfiguration.responseProvider = apiClientConfiguration?.responseProvider ?? sessionConfiguration?.requestExecutor
+            finalConfiguration.requestAuthenticator = apiClientConfiguration?.requestAuthenticator ?? sessionConfiguration
+        }
 
         self.apiClientService = APIClientService(
             with: finalConfiguration
@@ -308,6 +316,9 @@ public final class ATProtoAdmin: Sendable, ATProtoKitConfiguration {
 
     /// Initializes a new instance of `ATProtoAdmin`.
     ///
+    /// When `sessionConfiguration` supplies an executor that owns OAuth authorization, that executor takes
+    /// precedence over this configuration's response provider.
+    ///
     /// - Parameters:
     ///   - sessionConfiguration: The authenticated user session within the AT Protocol. Optional.
     ///   Defaults to the project's `CFBundleIdentifier`.
@@ -319,8 +330,13 @@ public final class ATProtoAdmin: Sendable, ATProtoKitConfiguration {
 
         var finalConfiguration = apiClientConfiguration ?? APIClientConfiguration()
         finalConfiguration.urlSessionConfiguration = apiClientConfiguration?.urlSessionConfiguration ?? sessionConfiguration?.configuration ?? .default
-        finalConfiguration.responseProvider = apiClientConfiguration?.responseProvider ?? sessionConfiguration?.requestExecutor
-        finalConfiguration.requestAuthenticator = apiClientConfiguration?.requestAuthenticator ?? sessionConfiguration
+        if sessionConfiguration?.requestExecutorOwnsAuthorization == true {
+            finalConfiguration.responseProvider = sessionConfiguration?.requestExecutor
+            finalConfiguration.requestAuthenticator = nil
+        } else {
+            finalConfiguration.responseProvider = apiClientConfiguration?.responseProvider ?? sessionConfiguration?.requestExecutor
+            finalConfiguration.requestAuthenticator = apiClientConfiguration?.requestAuthenticator ?? sessionConfiguration
+        }
 
         self.apiClientService = APIClientService(
             with: finalConfiguration

@@ -12,9 +12,10 @@ import FoundationNetworking
 
 /// A bridge between ATProtoKit and an app-owned OAuth implementation.
 ///
-/// Use this configuration when your app depends on an OAuth package and ATProtoKit should only receive
-/// the authenticated identity, Personal Data Server (PDS) endpoint, and per-request authorization headers.
-final public class ATOAuthSessionConfiguration: SessionConfiguration {
+/// Use this configuration when your app depends on an OAuth package that owns authentication,
+/// authorization, refresh, DPoP nonce handling, retries, and transport. ATProtoKit receives the
+/// authenticated identity, Personal Data Server (PDS) endpoint, and completed network responses.
+final public class ATOAuthSessionConfiguration: SessionConfiguration, OAuthSessionSynchronizing {
 
     /// The base URL of the Personal Data Server (PDS) used before a session context is loaded.
     public let pdsURL: String
@@ -25,26 +26,27 @@ final public class ATOAuthSessionConfiguration: SessionConfiguration {
     /// The unique identifier used to register the visible user session.
     public let instanceUUID: UUID
 
-    /// The stream used by compatibility authentication flows.
-    public let codeStream: AsyncStream<String>
-
-    /// The continuation used by compatibility authentication flows.
-    public let codeContinuation: AsyncStream<String>.Continuation
-
-    /// A presenter that can drive OAuth browser authorization and get back callback URLs. Optional.
-    public let oauthAuthorizationPresenter: OAuthAuthorizationPresenting?
-
-    /// The executor that lets the OAuth package send complete authenticated requests. Optional.
+    /// The executor that lets the OAuth package authorize and send complete requests.
     public let requestExecutor: ATRequestExecutor?
 
-    /// The closure that creates request authorization from the OAuth package.
-    private let authorizationProvider: @Sendable (URLRequest) async throws -> SessionAuthorization?
+    /// Indicates whether the configured executor owns authorization.
+    public var requestExecutorOwnsAuthorization: Bool {
+        return true
+    }
 
     /// The closure that loads the externally managed session context.
+    ///
+    /// - Returns: A instance that loads the externally managed session context.
     private let contextProvider: @Sendable () async throws -> SessionAuthorizationContext?
+
+    /// The closure that explicitly refreshes the externally managed session.
+    private let refreshHandler: (@Sendable () async throws -> SessionAuthorizationContext?)?
 
     /// The closure that deletes the externally managed OAuth session.
     private let deletionHandler: @Sendable () async throws -> Void
+
+    /// The complete authorization context most recently loaded from the OAuth provider.
+    private let authorizationContextStore = ATOAuthAuthorizationContextStore()
 
     /// Creates an instance of `ATOAuthSessionConfiguration`, as an external OAuth
     /// session configuration.
@@ -54,144 +56,146 @@ final public class ATOAuthSessionConfiguration: SessionConfiguration {
     ///   - configuration: The URL session configuration used by ATProtoKit. Defaults to `.default`.
     ///   - instanceUUID: The unique identifier used to register the visible user session. Defaults to
     ///   a newly generated identifier.
-    ///   - oauthAuthorizationPresenter: A presenter that can drive OAuth browser authorization and get
-    ///   back callback URLs. Optional. Defaults to `nil`.
-    ///   - requestExecutor: The executor that lets the OAuth package send complete authenticated
-    ///   requests. Optional. Defaults to `nil`.
-    ///   - authorizationProvider: The closure that creates request authorization from the OAuth package.
-    ///   Defaults to a closure that returns `nil`.
+    ///   - requestExecutor: The OAuth-aware executor responsible for authorization, refresh, DPoP
+    ///   nonce handling, retries, and transport.
     ///   - contextProvider: The closure that loads the externally managed session context.
+    ///   - refreshHandler: The closure that performs an explicit OAuth refresh. Optional.
     ///   - deletionHandler: The closure that deletes the externally managed OAuth session. Defaults
     ///   to a closure that performs no work.
     public init(
         pdsURL: String,
         configuration: URLSessionConfiguration = .default,
         instanceUUID: UUID = UUID(),
-        oauthAuthorizationPresenter: OAuthAuthorizationPresenting? = nil,
-        requestExecutor: ATRequestExecutor? = nil,
-        authorizationProvider: @escaping @Sendable (URLRequest) async throws -> SessionAuthorization? = { _ in nil },
+        requestExecutor: ATRequestExecutor,
         contextProvider: @escaping @Sendable () async throws -> SessionAuthorizationContext?,
+        refreshHandler: (@Sendable () async throws -> SessionAuthorizationContext?)? = nil,
         deletionHandler: @escaping @Sendable () async throws -> Void = {}
     ) {
         self.pdsURL = pdsURL
         self.configuration = configuration
         self.instanceUUID = instanceUUID
-        self.oauthAuthorizationPresenter = oauthAuthorizationPresenter
         self.requestExecutor = requestExecutor
-        self.authorizationProvider = authorizationProvider
         self.contextProvider = contextProvider
+        self.refreshHandler = refreshHandler
         self.deletionHandler = deletionHandler
 
-        let (stream, continuation) = AsyncStream<String>.makeStream(bufferingPolicy: .bufferingNewest(1))
-        self.codeStream = stream
-        self.codeContinuation = continuation
-    }
-
-    /// Attempts to authenticate with a handle and password.
-    ///
-    /// - Parameters:
-    ///   - handle: The handle used for the account.
-    ///   - password: The password used for the account.
-    ///
-    /// - Throws: Always throws because OAuth authentication is owned by the external package.
-    public func authenticate(with handle: String, password: String) async throws {
-        throw ATProtocolConfiguration.ATProtocolConfigurationError.noSessionToken(
-            message: "External OAuth session configurations authenticate through their OAuth package."
-        )
-    }
-
-    /// Creates an account through this external OAuth session configuration.
-    ///
-    /// - Parameters:
-    ///   - email: The email of the user. Optional.
-    ///   - handle: The requested handle.
-    ///   - existingDID: An existing decentralized identifier to import. Optional.
-    ///   - inviteCode: The invite code for the user. Optional.
-    ///   - verificationCode: A verification code. Optional.
-    ///   - verificationPhone: A phone verification code. Optional.
-    ///   - password: The account password. Optional.
-    ///   - recoveryKey: The DID PLC recovery key. Optional.
-    ///   - plcOperation: A signed DID PLC operation. Optional.
-    ///
-    /// - Throws: Always throws because account creation is not handled by the OAuth bridge.
-    public func createAccount(
-        email: String?,
-        handle: String,
-        existingDID: String?,
-        inviteCode: String?,
-        verificationCode: String?,
-        verificationPhone: String?,
-        password: String?,
-        recoveryKey: String?,
-        plcOperation: UnknownType?
-    ) async throws {
-        throw ATProtocolConfiguration.ATProtocolConfigurationError.noSessionToken(
-            message: "External OAuth session configurations don't create accounts."
-        )
     }
 
     /// Registers the current externally managed OAuth session with ATProtoKit.
     ///
     /// - Throws: An error if the external provider cannot load a session context.
-    public func getSession() async throws {
+    public func registerSession() async throws {
         guard let context = try await contextProvider() else {
             throw ATProtocolConfiguration.ATProtocolConfigurationError.noSessionToken(
                 message: "The external OAuth provider did not return a session context."
             )
         }
 
+        try context.validate()
+        await authorizationContextStore.set(context)
         await UserSessionRegistry.shared.register(instanceUUID, session: context.userSession())
     }
 
-    /// Refreshes the externally managed session.
+    /// Reloads and registers the externally managed session.
     ///
     /// - Throws: An error if the external provider cannot load a refreshed session context.
-    public func refreshSession() async throws {
-        try await getSession()
+    public func synchronizeSession() async throws {
+        let context: SessionAuthorizationContext?
+        if let refreshHandler {
+            context = try await refreshHandler()
+        } else {
+            context = try await contextProvider()
+        }
+        guard let context else {
+            throw ATProtocolConfiguration.ATProtocolConfigurationError.noSessionToken(
+                message: "The external OAuth synchronization operation did not return a session context."
+            )
+        }
+        try context.validate()
+        await authorizationContextStore.set(context)
+        await UserSessionRegistry.shared.register(instanceUUID, session: context.userSession())
     }
 
     /// Deletes the externally managed session and removes it from ATProtoKit's registry.
     ///
     /// - Throws: An error if the external deletion handler fails.
-    public func deleteSession() async throws {
+    public func removeSession() async throws {
         try await deletionHandler()
+        await authorizationContextStore.set(nil)
         await UserSessionRegistry.shared.removeSession(for: instanceUUID)
     }
 
-    /// Ensures the externally managed token is valid.
-    ///
-    /// OAuth packages usually refresh while authorizing the outgoing request, so this method keeps
-    /// ATProtoKit from imposing App Password token parsing on external OAuth sessions.
-    public func ensureValidToken() async throws {
-    }
-
-    /// Waits for the next user-provided code.
-    ///
-    /// - Returns: The next code, or an empty string if the stream ends.
-    public func waitForUserCode() async -> String {
-        var iterator = codeStream.makeAsyncIterator()
-        return await iterator.next() ?? ""
-    }
-
-    /// Receives a user-provided code.
-    ///
-    /// - Parameter input: The code received from the user.
-    public func receiveCodeFromUser(_ input: String) {
-        codeContinuation.yield(input)
-    }
-
-    /// Creates authorization for a request by delegating to the app-owned OAuth package.
+    /// Returns no header-only authorization because the OAuth-aware executor owns authorization.
     ///
     /// - Parameter request: The request that needs authorization.
-    /// - Returns: Authorization for the outgoing request, or `nil` if none should be applied.
-    ///
-    /// - Throws: An error if the OAuth package cannot authorize the request.
+    /// - Returns: Always `nil`; authorization is applied by ``requestExecutor``.
     public func authorization(for request: URLRequest) async throws -> SessionAuthorization? {
-        guard request.requiresATProtoKitAuthorization ||
-              request.value(forHTTPHeaderField: "Authorization") != nil else {
-            return nil
+        return nil
+    }
+
+    /// Returns the complete externally managed authorization context.
+    ///
+    /// - Returns: The most recently loaded authorization context, including its exact granted scopes.
+    ///
+    /// - Throws: An error if the external provider cannot load the context.
+    public func authorizationContext() async throws -> SessionAuthorizationContext? {
+        if let context = await authorizationContextStore.get() {
+            return context
         }
 
-        return try await authorizationProvider(request)
+        return try await contextProvider()
+    }
+}
+
+extension ATOAuthSessionConfiguration {
+
+    /// Registers the externally managed OAuth session with ATProtoKit.
+    ///
+    /// - Throws: An error if the external context cannot be loaded or registered.
+    @available(*, deprecated, renamed: "registerSession()")
+    public func getSession() async throws {
+        return try await registerSession()
+    }
+
+    /// Explicitly refreshes the external OAuth session and synchronizes its context.
+    ///
+    /// Normal request-time refresh remains the responsibility of the OAuth executor.
+    ///
+    /// - Throws: An error if no explicit refresh handler exists or refresh fails.
+    @available(*, deprecated, renamed: "synchronizeSession()")
+    public func refreshSession() async throws {
+        guard refreshHandler != nil else {
+            throw ATOAuthSessionConfigurationError.missingRefreshHandler
+        }
+        return try await synchronizeSession()
+    }
+
+    /// Removes the externally managed OAuth session from ATProtoKit.
+    ///
+    /// - Throws: An error if the external session cannot be removed.
+    @available(*, deprecated, renamed: "removeSession()")
+    public func deleteSession() async throws {
+        return try await removeSession()
+    }
+}
+
+/// Stores the latest externally managed OAuth authorization context safely across tasks.
+private actor ATOAuthAuthorizationContextStore {
+
+    /// The latest authorization context supplied by the external OAuth provider. Optional.
+    private var context: SessionAuthorizationContext?
+
+    /// Returns the stored authorization context.
+    ///
+    /// - Returns: The latest authorization context, or `nil` when none has been stored.
+    internal func get() -> SessionAuthorizationContext? {
+        return context
+    }
+
+    /// Replaces the stored authorization context.
+    ///
+    /// - Parameter context: The authorization context to store. Optional.
+    internal func set(_ context: SessionAuthorizationContext?) {
+        self.context = context
     }
 }
