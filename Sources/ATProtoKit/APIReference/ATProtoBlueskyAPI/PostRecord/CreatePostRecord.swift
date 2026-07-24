@@ -11,7 +11,7 @@ import FoundationNetworking
 #endif
 
 extension ATProtoBluesky {
-
+    // TODO: Consider com.atproto.repo.applyWrites for atomic post and gate creation.
     /// A convenience method to create a post record to the user account in Bluesky.
     ///
     /// This can be used instead of creating your own method if you wish not to do so.
