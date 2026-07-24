@@ -148,12 +148,7 @@ public struct SessionAuthorizationContext: Sendable, Equatable {
             throw ATOAuthSessionConfigurationError.invalidSessionDID(did: self.sessionDID)
         }
 
-        guard serviceEndpoint.scheme?.lowercased() == "https",
-              serviceEndpoint.host != nil,
-              serviceEndpoint.user == nil,
-              serviceEndpoint.password == nil,
-              serviceEndpoint.query == nil,
-              serviceEndpoint.fragment == nil else {
+        guard serviceEndpoint.isValidPDSServiceEndpoint else {
             throw ATOAuthSessionConfigurationError.invalidServiceEndpoint(endpoint: serviceEndpoint)
         }
 
