@@ -16,6 +16,10 @@ extension ATProtoBluesky {
     ///
     /// This can be used instead of creating your own method if you wish not to do so.
     ///
+    /// - Important: Postgate and threadgate records are currently created after the post. If postgate or
+    /// threadgate creation fails, the post may already exist; the thrown error does not indicate that the post
+    /// was rolled back.
+    ///
     /// # Creating a Post
     /// After you authenticate into Bluesky, you can create a post by using the `text` argument:
     /// ```swift
@@ -610,9 +614,8 @@ extension ATProtoBluesky {
 
             // Upload the image, then get the server response.
             let blobReference = try await atProtoKitInstance.uploadBlob(
-                pdsURL: pdsURL,
-                filename: image.fileName,
-                imageData: image.imageData
+                image.imageData,
+                contentType: APIClientService.mimeType(for: image.fileName)
             )
 
             let embedImage = AppBskyLexicon.Embed.ImagesDefinition.Image(
@@ -653,9 +656,8 @@ extension ATProtoBluesky {
 
             // Upload the image, then get the server response.
             let blobReference = try await atProtoKitInstance.uploadBlob(
-                pdsURL: pdsURL,
-                filename: image.fileName,
-                imageData: image.imageData
+                image.imageData,
+                contentType: APIClientService.mimeType(for: image.fileName)
             )
 
             let galleryImage = AppBskyLexicon.Embed.GalleryDefinition.Image(
@@ -827,9 +829,8 @@ extension ATProtoBluesky {
                 }
 
                 let blobReference = try await atProtoKitInstance.uploadBlob(
-                    pdsURL: pdsURL,
-                    filename: "\(ATProtoTools().generateRandomString())_caption.vtt",
-                    imageData: caption.file
+                    caption.file,
+                    contentType: "text/vtt"
                 )
 
                 captionReferences.append(AppBskyLexicon.Embed.VideoDefinition.Caption(language: caption.language.identifier, fileBlob: blobReference))
@@ -877,11 +878,10 @@ extension ATProtoBluesky {
         var thumbnailImage: ComAtprotoLexicon.Repository.UploadBlobOutput? = nil
 
         do {
-            if let pdsURL = session.pdsURL, let imageData = image {
+            if let imageData = image {
                 thumbnailImage = try await atProtoKitInstance.uploadBlob(
-                    pdsURL: pdsURL,
-                    filename: "\(ATProtoTools().generateRandomString())_thumbnail.jpg",
-                    imageData: imageData
+                    imageData,
+                    contentType: "image/jpeg"
                 )
             } else {
                 thumbnailImage = nil
