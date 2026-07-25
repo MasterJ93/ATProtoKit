@@ -31,6 +31,13 @@ public struct ATProtoTools {
 
     /// Determines whether the reply reference is valid.
     ///
+    /// Both the root and parent records are resolved through Bluesky's AppView
+    /// (``APIHostname/bskyAppView``) rather than through a specific Personal Data Server (PDS).
+    /// A reply reference can point to records authored on any PDS, and
+    /// `com.atproto.repo.getRecord` served by a single PDS only returns records for the
+    /// repositories that PDS hosts. Resolving through the AppView allows references to records
+    /// on other PDSes to validate correctly.
+    ///
     /// - Parameters:
     ///   - reference: The reply reference object to check for validity.
     ///   - session: The ``UserSession`` instance in relation to the reply. Optional.
@@ -51,7 +58,7 @@ public struct ATProtoTools {
                 return false
             }
 
-            _ = try await ATProtoKit(pdsURL: session?.pdsURL ?? "https://https://public.api.bsky.app", canUseBlueskyRecords: false).getRepositoryRecord(
+            _ = try await ATProtoKit(pdsURL: APIHostname.bskyAppView, canUseBlueskyRecords: false).getRepositoryRecord(
                 from: repository,
                 collection: collection,
                 recordKey: recordKey
@@ -70,7 +77,7 @@ public struct ATProtoTools {
                 return false
             }
 
-            _ = try await ATProtoKit(pdsURL: session?.pdsURL ?? "https://public.api.bsky.app", canUseBlueskyRecords: false).getRepositoryRecord(
+            _ = try await ATProtoKit(pdsURL: APIHostname.bskyAppView, canUseBlueskyRecords: false).getRepositoryRecord(
                 from: repository,
                 collection: collection,
                 recordKey: recordKey
