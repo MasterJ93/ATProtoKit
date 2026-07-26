@@ -24,6 +24,15 @@ extension ComAtprotoLexicon.Repository {
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/repo/uploadBlob.json
     public struct UploadBlobRequestBody: Sendable, Codable {}
 
+    /// The response returned after uploading a blob.
+    ///
+    /// The `com.atproto.repo.uploadBlob` lexicon wraps the uploaded blob in a `blob` property.
+    public struct UploadBlobResponse: Sendable, Codable, Equatable, Hashable {
+
+        /// The uploaded blob.
+        public let blob: ComAtprotoLexicon.Repository.UploadBlobOutput
+    }
+
     /// A data model for a definition of an output of uploading a blob.
     public struct UploadBlobOutput: Sendable, Codable, Equatable, Hashable {
 

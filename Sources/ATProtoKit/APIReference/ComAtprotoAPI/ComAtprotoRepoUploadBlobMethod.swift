@@ -54,18 +54,15 @@ extension ATProtoKit {
             // `blob` key (`{"blob": {...}}`), unlike record fields where the blob
             // appears inline. Decode the wrapper and return its blob so uploads
             // don't fail looking for `ref` at the response root.
-            let response = try await apiClientService.sendRequest(request,
-                                                      decodeTo: UploadBlobResponse.self)
+            let response = try await apiClientService.sendRequest(
+                request,
+                withDataBody: data,
+                decodeTo: ComAtprotoLexicon.Repository.UploadBlobResponse.self
+            )
 
             return response.blob
         } catch {
             throw error
         }
     }
-}
-
-/// The response envelope for `com.atproto.repo.uploadBlob`, which returns the
-/// uploaded blob under a `blob` key.
-private struct UploadBlobResponse: Decodable {
-    let blob: ComAtprotoLexicon.Repository.UploadBlobOutput
 }
