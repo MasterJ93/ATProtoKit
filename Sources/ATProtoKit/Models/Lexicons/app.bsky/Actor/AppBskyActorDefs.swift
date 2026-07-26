@@ -60,6 +60,21 @@ extension AppBskyLexicon.Actor {
         /// - Note: According to the AT Protocol specifications: "Debug information for internal development."
         public let debug: UnknownType?
 
+        public init(actorDID: String, actorHandle: String, displayName: String? = nil, pronouns: String? = nil, avatarImageURL: URL? = nil, associated: ProfileAssociatedDefinition? = nil, viewer: ViewerStateDefinition? = nil, labels: [ComAtprotoLexicon.Label.LabelDefinition]? = nil, createdAt: Date? = nil, verificationState: VerificationStateDefinition? = nil, status: StatusViewDefinition? = nil, debug: UnknownType? = nil) {
+            self.actorDID = actorDID
+            self.actorHandle = actorHandle
+            self.displayName = displayName
+            self.pronouns = pronouns
+            self.avatarImageURL = avatarImageURL
+            self.associated = associated
+            self.viewer = viewer
+            self.labels = labels
+            self.createdAt = createdAt
+            self.verificationState = verificationState
+            self.status = status
+            self.debug = debug
+        }
+
         public init(from decoder: any Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
 
@@ -169,6 +184,23 @@ extension AppBskyLexicon.Actor {
         /// - Note: According to the AT Protocol specifications: "Debug information for internal development."
         public let debug: UnknownType?
 
+        public init(actorDID: String, actorHandle: String, displayName: String? = nil, description: String? = nil, pronouns: String? = nil, websiteURL: URL? = nil, avatarImageURL: URL? = nil, associated: ProfileAssociatedDefinition? = nil, indexedAt: Date? = nil, createdAt: Date? = nil, viewer: ViewerStateDefinition? = nil, labels: [ComAtprotoLexicon.Label.LabelDefinition]? = nil, verificationState: VerificationStateDefinition? = nil, status: StatusViewDefinition? = nil, debug: UnknownType? = nil) {
+            self.actorDID = actorDID
+            self.actorHandle = actorHandle
+            self.displayName = displayName
+            self.description = description
+            self.pronouns = pronouns
+            self.websiteURL = websiteURL
+            self.avatarImageURL = avatarImageURL
+            self.associated = associated
+            self.indexedAt = indexedAt
+            self.createdAt = createdAt
+            self.viewer = viewer
+            self.labels = labels
+            self.verificationState = verificationState
+            self.status = status
+            self.debug = nil
+        }
         public init(from decoder: any Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
 
