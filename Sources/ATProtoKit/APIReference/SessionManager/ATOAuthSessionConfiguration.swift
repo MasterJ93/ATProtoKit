@@ -78,7 +78,38 @@ final public class ATOAuthSessionConfiguration: SessionConfiguration, OAuthSessi
         self.contextProvider = contextProvider
         self.refreshHandler = refreshHandler
         self.deletionHandler = deletionHandler
+    }
 
+    /// Creates an instance of `ATOAuthSessionConfiguration`, making an external OAuth session configuration
+    /// from a fixed authorization context.
+    ///
+    /// Use this initializer when the authenticated identity, service endpoint, and granted
+    /// scopes remain unchanged for the lifetime of the configuration.
+    ///
+    /// - Parameters:
+    ///   - context: The fixed external OAuth authorization context.
+    ///   - configuration: The URL session configuration used by ATProtoKit. Defaults to `.default`.
+    ///   - instanceUUID: The unique session-registration identifier. Defaults to a newly generated identifier.
+    ///   - requestExecutor: The external OAuth request executor.
+    ///   - deletionHandler: The operation that deletes the external OAuth session. Defaults to an operation
+    ///     that performs no work.
+    public convenience init(
+        context: SessionAuthorizationContext,
+        configuration: URLSessionConfiguration = .default,
+        instanceUUID: UUID = UUID(),
+        requestExecutor: ATRequestExecutor,
+        deletionHandler: @escaping @Sendable () async throws -> Void = {}
+    ) {
+        self.init(
+            pdsURL: context.serviceEndpoint.absoluteString,
+            configuration: configuration,
+            instanceUUID: instanceUUID,
+            requestExecutor: requestExecutor,
+            contextProvider: {
+                return context
+            },
+            deletionHandler: deletionHandler
+        )
     }
 
     /// Registers the current externally managed OAuth session with ATProtoKit.
