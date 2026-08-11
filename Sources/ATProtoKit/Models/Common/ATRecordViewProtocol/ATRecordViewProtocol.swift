@@ -43,7 +43,7 @@ public protocol ATRecordViewProtocol: Identifiable {
     /// You need to pass in the instance of ``SessionConfiguration`` in order to establish
     /// a connection. Once that happens, use the appropriate method to get the record view.
     /// For example, for ``AppBskyLexicon/Feed/PostViewDefinition``, you can use
-    /// ``ATProtoKit/ATProtoKit/getPosts(_:)``, which returns that object.
+    /// ``/ATProtoKit/ATProtoKit/getPosts(_:labelersValue:)``, which returns that object.
     ///
     /// - Parameter atProtoKitInstance: An instance of ``ATProtoKit/ATProtoKit``.
     /// - Returns: An updated version of the record view.
