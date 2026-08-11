@@ -189,6 +189,50 @@ extension URL {
             return String(remainder)
         }
     }
+
+    /// Returns this URL as a canonical HTTPS origin.
+    ///
+    /// A valid origin:
+    /// - Uses HTTPS.
+    /// - Contains a host.
+    /// - Contains no credentials.
+    /// - Contains no path other than `/`.
+    /// - Contains no query or fragment.
+    ///
+    /// - Returns: The canonical HTTPS origin.
+    ///
+    /// - Throws: `OAuthError.invalidAuthorizationServer` if the URL cannot represent a valid HTTPS origin.
+    public func canonicalHTTPSOrigin() throws -> String {
+        // Make sure the URL represents a secure origin rather than
+        // an arbitrary URL containing paths, credentials, or other data.
+        guard scheme == "https",
+              let host,
+              user == nil,
+              password == nil,
+              path.isEmpty || path == "/",
+              query == nil,
+              fragment == nil else {
+            throw OAuthError.invalidAuthorizationServer
+        }
+
+        // Build a normalized URL containing only the origin components.
+        var components = URLComponents()
+        components.scheme = "https"
+        components.host = host
+
+        // Port 443 is HTTPS's default port, so it does not need
+        // to appear explicitly in the canonical representation.
+        if port != 443 {
+            components.port = port
+        }
+
+        // URLComponents should now be able to produce the canonical origin.
+        guard let origin = components.string else {
+            throw OAuthError.invalidAuthorizationServer
+        }
+
+        return origin
+    }
 }
 
 // MARK: - JobStatusDefinition Extension
