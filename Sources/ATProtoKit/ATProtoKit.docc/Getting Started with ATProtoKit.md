@@ -48,7 +48,7 @@ Task {
 }
 ```
 
-> Note: If you've enabled Two-Factor Authentication (via email), ``ATProtocolConfiguration/authenticate(with:password:)`` waits for the code after the server returns `AuthFactorTokenRequired`. Check your inbox for the code, then pass it to ``SessionConfiguration/receiveCodeFromUser(_:)`` from your UI or command-line input handler.
+> Note: If you've enabled Two-Factor Authentication (via email), ``ATProtocolConfiguration/authenticate(with:password:)`` waits for the code after the server returns `AuthFactorTokenRequired`. Check your inbox for the code, then pass it to ``AppPasswordAuthenticating/receiveCodeFromUser(_:)`` from your UI or command-line input handler.
 
 ``UserSession`` will contain, among other things, the access and refresh tokens. ATProtoKit abstracts this away for you so you don't need to add it every time you use a method that requires an active session.
 
@@ -77,7 +77,9 @@ You should see the post in your Bluesky account once you run this code. When the
 
 ### View Your Own Posts
 
-To view your own posts, you can use ``ATProtoKit/ATProtoKit/getAuthorFeed(by:limit:cursor:postFilter:shouldIncludePins:)`` and use ``UserSession/handle`` in the first argument:
+To view your own posts, use
+``/ATProtoKit/ATProtoKit/getAuthorFeed(by:limit:cursor:postFilter:shouldIncludePins:labelersValue:)``
+and pass ``UserSession/handle`` as the first argument:
 
 ```swift
 do {
