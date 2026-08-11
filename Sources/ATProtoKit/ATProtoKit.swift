@@ -201,6 +201,41 @@ public final class ATProtoKit: Sendable, ATProtoKitConfiguration, ATRecordConfig
             _ = await ATRecordTypeRegistry.shared.register(blueskyLexiconTypes: recordLexicons)
         }
     }
+
+    /// Creates an authenticated ATProtoKit client after registering an external OAuth session.
+    ///
+    /// This factory validates and registers the context supplied by `sessionConfiguration` before
+    /// constructing the client. The registered context's service endpoint becomes the client's
+    /// Personal Data Server (PDS) URL. The OAuth-owned request executor remains responsible for
+    /// authenticated transport.
+    ///
+    /// - Parameters:
+    ///   - sessionConfiguration: The external OAuth session configuration to register and use.
+    ///   - apiClientConfiguration: Additional API client configuration. Optional. Defaults to `nil`.
+    ///   - canUseBlueskyRecords: Indicates whether Bluesky lexicon record types should be registered.
+    ///     Defaults to `true`.
+    /// - Returns: An authenticated ATProtoKit client using the registered OAuth session.
+    ///
+    /// - Throws: An error when the external context cannot be loaded, validated, or registered.
+    public static func createOAuthSession(
+        sessionConfiguration: ATOAuthSessionConfiguration,
+        apiClientConfiguration: APIClientConfiguration? = nil,
+        canUseBlueskyRecords: Bool = true
+    ) async throws -> ATProtoKit {
+        try await sessionConfiguration.registerSession()
+        guard let context = try await sessionConfiguration.authorizationContext() else {
+            throw ATProtocolConfiguration.ATProtocolConfigurationError.noSessionToken(
+                message: "The registered external OAuth session did not provide a context."
+            )
+        }
+
+        return await ATProtoKit(
+            sessionConfiguration: sessionConfiguration,
+            apiClientConfiguration: apiClientConfiguration,
+            pdsURL: context.serviceEndpoint.absoluteString,
+            canUseBlueskyRecords: canUseBlueskyRecords
+        )
+    }
 }
 
 /// The base class that handles all direct Bluesky-related functionality of the ATProtoKit
