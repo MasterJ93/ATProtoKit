@@ -8,34 +8,18 @@
 
 import Foundation
 
-/// A protocol for managing the keychain in an AT Protcol account.
+/// Stores the credentials used by an AT Protocol App Password session.
 ///
-/// ATProtoKit contains a `struct` that can be used for managing tokens on iOS, iPadOS,
-/// tvOS, visionOS, and watchOS. You can choose to use that, or use your own implementation.
-/// Linux and Windows users will need to implement their own `class` or `struct` to manage
-/// the tokens.
-///
-/// This, coupled with `UserSessionRegistry`, is the best way to manage authentication in the
-/// AT Protocol.
+/// This compatibility protocol preserves existing custom credential implementations. New code
+/// should conform to ``ATCredentialStore`` and pass that store to ``ATProtocolConfiguration``.
+/// The newer protocol supports both App Password and OAuth persistence through opaque values.
+@available(*, deprecated, message: "Conform to ATCredentialStore and use ATProtocolConfiguration.init(pdsURL:credentialStore:sessionIdentifier:configuration:canResolve:) instead.")
 public protocol SecureKeychainProtocol: Sendable {
 
     /// A unique identifier for linking the instance of `UserSession` to the credentials.
     var identifier: UUID { get }
 
     /// Retrieves the access token of the account.
-    ///
-    /// When implementing this method, please be sure to save the access token in-memory.
-    /// This is because the access token expires much more often than the refresh token. You can
-    /// achieve this by simply creating a `private` property for the access token, then connecting
-    /// the property to the method.
-    ///
-    /// ```swift
-    /// var accessToken: String?
-    ///
-    /// func retrieveAccessToken() -> String? {
-    ///     return self.accessToken
-    /// }
-    /// ```
     ///
     /// - Returns: The access token of the account.
     ///
@@ -44,36 +28,10 @@ public protocol SecureKeychainProtocol: Sendable {
 
     /// Saves the access token of the account.
     ///
-    /// When implementing this method, please be sure to save the access token in-memory.
-    /// This is because the access token expires much more often than the refresh token. You can
-    /// achieve this by simply creating a `private` property for the access token, then connecting
-    /// the property to the method.
-    ///
-    /// ```swift
-    /// var accessToken: String?
-    ///
-    /// func saveAccessToken(_ accessToken: String) throws {
-    ///     self.accessToken = accessToken
-    /// }
-    ///```
-    ///
     /// - Parameter accessToken: The token used to authenticate to the service.
     func saveAccessToken(_ accessToken: String) async throws
 
     /// Deletes the access token of the account.
-    ///
-    /// When implementing this method, please be sure to save the access token in-memory.
-    /// This is because the access token expires much more often than the refresh token. You can
-    /// achieve this by simply creating a `private` property for the access token, then connecting
-    /// the property to the method.
-    ///
-    /// ```swift
-    /// var accessToken: String?
-    ///
-    /// func deleteAccessToken() throws {
-    ///     self.accessToken = nil
-    /// }
-    ///```
     func deleteAccessToken() async throws
 
     /// Saves the password of the account to the keychain.
@@ -115,4 +73,157 @@ public protocol SecureKeychainProtocol: Sendable {
 
     /// Deletes the refresh token of the account to the keychain.
     func deleteRefreshToken() async throws
+}
+
+/// Supplies legacy App Password operations to stores that also support opaque values.
+@available(*, deprecated, message: "Use ATCredentialStore through ATProtocolConfiguration instead.")
+extension SecureKeychainProtocol where Self: ATCredentialStore {
+
+    /// Retrieves the persisted App Password access token.
+    ///
+    /// - Returns: The access token of the account.
+    ///
+    /// - Throws: ``ATCredentialStoreError`` or a secure-backend error.
+    public func retrieveAccessToken() async throws -> String {
+        guard let value = try await loadString(forKey: accessTokenStorageKey) else {
+            throw ATCredentialStoreError.accessTokenNotFound
+        }
+
+        return value
+    }
+
+    /// Saves the App Password access token.
+    ///
+    /// - Parameter accessToken: The access token to persist.
+    ///
+    /// - Throws: An error from the secure-value backend.
+    public func saveAccessToken(_ accessToken: String) async throws {
+        try await saveString(accessToken, forKey: accessTokenStorageKey)
+    }
+
+    /// Deletes the App Password access token.
+    ///
+    /// - Throws: An error from the secure-value backend.
+    public func deleteAccessToken() async throws {
+        try await deleteValue(forKey: accessTokenStorageKey)
+    }
+
+    /// Saves the App Password credential.
+    ///
+    /// - Parameter password: The App Password credential to persist.
+    ///
+    /// - Throws: An error from the secure-value backend.
+    public func savePassword(_ password: String) async throws {
+        try await saveString(password, forKey: passwordStorageKey)
+    }
+
+    /// Retrieves the persisted App Password credential.
+    ///
+    /// - Returns: The App Password credential.
+    ///
+    /// - Throws: ``ATCredentialStoreError`` or a secure-backend error.
+    public func retrievePassword() async throws -> String {
+        guard let value = try await loadString(forKey: passwordStorageKey) else {
+            throw ATCredentialStoreError.valueNotFound(key: passwordStorageKey)
+        }
+
+        return value
+    }
+
+    /// Replaces the persisted App Password credential.
+    ///
+    /// - Parameter newPassword: The new App Password credential.
+    ///
+    /// - Throws: An error from the secure-value backend.
+    public func updatePassword(_ newPassword: String) async throws {
+        try await saveString(newPassword, forKey: passwordStorageKey)
+    }
+
+    /// Deletes the persisted App Password credential.
+    ///
+    /// - Throws: An error from the secure-value backend.
+    public func deletePassword() async throws {
+        try await deleteValue(forKey: passwordStorageKey)
+    }
+
+    /// Saves the App Password refresh token.
+    ///
+    /// - Parameter refreshToken: The refresh token to persist.
+    ///
+    /// - Throws: An error from the secure-value backend.
+    public func saveRefreshToken(_ refreshToken: String) async throws {
+        try await saveString(refreshToken, forKey: refreshTokenStorageKey)
+    }
+
+    /// Retrieves the persisted App Password refresh token.
+    ///
+    /// - Returns: The refresh token.
+    ///
+    /// - Throws: ``ATCredentialStoreError`` or a secure-backend error.
+    public func retrieveRefreshToken() async throws -> String {
+        guard let value = try await loadString(forKey: refreshTokenStorageKey) else {
+            throw ATCredentialStoreError.valueNotFound(key: refreshTokenStorageKey)
+        }
+
+        return value
+    }
+
+    /// Replaces the persisted App Password refresh token.
+    ///
+    /// - Parameter newRefreshToken: The new refresh token.
+    ///
+    /// - Throws: An error from the secure-value backend.
+    public func updateRefreshToken(_ newRefreshToken: String) async throws {
+        try await saveString(newRefreshToken, forKey: refreshTokenStorageKey)
+    }
+
+    /// Deletes the persisted App Password refresh token.
+    ///
+    /// - Throws: An error from the secure-value backend.
+    public func deleteRefreshToken() async throws {
+        try await deleteValue(forKey: refreshTokenStorageKey)
+    }
+
+    /// The storage key for the access token.
+    private var accessTokenStorageKey: String {
+        return "\(identifier.uuidString).accessToken"
+    }
+
+    /// The storage key for the App Password credential.
+    private var passwordStorageKey: String {
+        return "\(identifier.uuidString).password"
+    }
+
+    /// The storage key for the refresh token.
+    private var refreshTokenStorageKey: String {
+        return "\(identifier.uuidString).refreshToken"
+    }
+
+    /// Loads a UTF-8 string from the credential store. Optional.
+    ///
+    /// - Parameter key: The key identifying the stored string.
+    /// - Returns: The decoded string, or `nil` when no value exists. Optional.
+    ///
+    /// - Throws: ``ATCredentialStoreError/invalidStringData`` or a secure-backend error.
+    private func loadString(forKey key: String) async throws -> String? {
+        guard let data = try await loadValue(forKey: key) else {
+            return nil
+        }
+        guard let value = String(data: data, encoding: .utf8) else {
+            throw ATCredentialStoreError.invalidStringData
+        }
+
+        return value
+    }
+
+    /// Saves a UTF-8 string to the credential store.
+    ///
+    /// - Parameters:
+    ///   - value: The string to save.
+    ///   - key: The key identifying the stored string.
+    ///
+    /// - Throws: An error from the credential store.
+    private func saveString(_ value: String, forKey key: String) async throws {
+        try await saveValue(Data(value.utf8), forKey: key)
+    }
 }
