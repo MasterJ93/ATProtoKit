@@ -24,8 +24,120 @@ public protocol UserSessionRegistryManaging: SessionConfiguration {
 /// Stores the credentials used by an App Password session.
 public protocol AppPasswordCredentialStoring: SessionConfiguration {
 
-    /// The secure store containing the App Password and legacy session tokens.
-    var keychainProtocol: SecureKeychainProtocol { get }
+    /// The secure store containing the App Password and session tokens.
+    var credentialStore: ATCredentialStore { get }
+}
+
+extension AppPasswordCredentialStoring {
+
+    /// Saves an App Password access token.
+    ///
+    /// - Parameter accessToken: The access token to save.
+    ///
+    /// - Throws: An error from the credential store.
+    internal func saveAccessTokenCredential(_ accessToken: String) async throws {
+        try await saveCredential(accessToken, suffix: "accessToken")
+    }
+
+    /// Retrieves an App Password access token.
+    ///
+    /// - Returns: The stored access token.
+    ///
+    /// - Throws: ``ATCredentialStoreError`` or an error from the credential store.
+    internal func retrieveAccessTokenCredential() async throws -> String {
+        let key = credentialKey(suffix: "accessToken")
+        guard let value = try await loadCredential(forKey: key) else {
+            throw ATCredentialStoreError.accessTokenNotFound
+        }
+
+        return value
+    }
+
+    /// Saves an App Password credential.
+    ///
+    /// - Parameter password: The App Password to save.
+    ///
+    /// - Throws: An error from the credential store.
+    internal func savePasswordCredential(_ password: String) async throws {
+        try await saveCredential(password, suffix: "password")
+    }
+
+    /// Retrieves an App Password credential.
+    ///
+    /// - Returns: The stored App Password.
+    ///
+    /// - Throws: ``ATCredentialStoreError`` or an error from the credential store.
+    internal func retrievePasswordCredential() async throws -> String {
+        let key = credentialKey(suffix: "password")
+        guard let value = try await loadCredential(forKey: key) else {
+            throw ATCredentialStoreError.valueNotFound(key: key)
+        }
+
+        return value
+    }
+
+    /// Saves an App Password refresh token.
+    ///
+    /// - Parameter refreshToken: The refresh token to save.
+    ///
+    /// - Throws: An error from the credential store.
+    internal func saveRefreshTokenCredential(_ refreshToken: String) async throws {
+        try await saveCredential(refreshToken, suffix: "refreshToken")
+    }
+
+    /// Retrieves an App Password refresh token.
+    ///
+    /// - Returns: The stored refresh token.
+    ///
+    /// - Throws: ``ATCredentialStoreError`` or an error from the credential store.
+    internal func retrieveRefreshTokenCredential() async throws -> String {
+        let key = credentialKey(suffix: "refreshToken")
+        guard let value = try await loadCredential(forKey: key) else {
+            throw ATCredentialStoreError.valueNotFound(key: key)
+        }
+
+        return value
+    }
+
+    /// Creates an account-specific storage key.
+    ///
+    /// - Parameter suffix: The credential kind suffix.
+    /// - Returns: A storage key namespaced to this session.
+    private func credentialKey(suffix: String) -> String {
+        return "\(instanceUUID.uuidString).\(suffix)"
+    }
+
+    /// Loads and decodes a stored credential. Optional.
+    ///
+    /// - Parameter key: The credential's storage key.
+    /// - Returns: The decoded credential, or `nil` when it does not exist. Optional.
+    ///
+    /// - Throws: ``ATCredentialStoreError/invalidStringData`` or an error from the credential
+    ///   store.
+    private func loadCredential(forKey key: String) async throws -> String? {
+        guard let data = try await credentialStore.loadValue(forKey: key) else {
+            return nil
+        }
+        guard let value = String(data: data, encoding: .utf8) else {
+            throw ATCredentialStoreError.invalidStringData
+        }
+
+        return value
+    }
+
+    /// Encodes and saves a credential.
+    ///
+    /// - Parameters:
+    ///   - value: The credential to save.
+    ///   - suffix: The credential kind suffix.
+    ///
+    /// - Throws: An error from the credential store.
+    private func saveCredential(_ value: String, suffix: String) async throws {
+        try await credentialStore.saveValue(
+            Data(value.utf8),
+            forKey: credentialKey(suffix: suffix)
+        )
+    }
 }
 
 /// Authenticates and maintains a legacy App Password session.
@@ -173,11 +285,11 @@ extension AppPasswordSessionManaging {
                 pdsURL: self.pdsURL
             )
 
-            try await keychainProtocol.saveAccessToken(response.accessToken)
-            try await keychainProtocol.saveRefreshToken(response.refreshToken)
+            try await saveAccessTokenCredential(response.accessToken)
+            try await saveRefreshTokenCredential(response.refreshToken)
 
             if let password {
-                try await keychainProtocol.savePassword(password)
+                try await savePasswordCredential(password)
             }
 
             await UserSessionRegistry.shared.register(instanceUUID, session: userSession)
@@ -286,9 +398,9 @@ extension AppPasswordSessionManaging {
                 pdsURL: self.pdsURL
             )
 
-            try await keychainProtocol.saveAccessToken(response.accessToken)
-            try await keychainProtocol.saveRefreshToken(response.refreshToken)
-            try await keychainProtocol.savePassword(password)
+            try await saveAccessTokenCredential(response.accessToken)
+            try await saveRefreshTokenCredential(response.refreshToken)
+            try await savePasswordCredential(password)
 
             await UserSessionRegistry.shared.register(instanceUUID, session: userSession)
         } catch {
@@ -304,7 +416,7 @@ extension AppPasswordSessionManaging {
         }
 
         do {
-            accessToken = try await keychainProtocol.retrieveAccessToken()
+            accessToken = try await retrieveAccessTokenCredential()
         } catch {
             throw ATProtocolConfiguration.ATProtocolConfigurationError.noSessionToken(message: "The access token doesn't exist.")
         }
@@ -370,7 +482,7 @@ extension AppPasswordSessionManaging {
         }
 
         do {
-            refreshToken = try await keychainProtocol.retrieveRefreshToken()
+            refreshToken = try await retrieveRefreshTokenCredential()
         } catch {
             throw ATProtocolConfiguration.ATProtocolConfigurationError.noSessionToken(message: "The access token doesn't exist.")
         }
@@ -384,7 +496,7 @@ extension AppPasswordSessionManaging {
 
                 try await self.authenticate(
                     with: handle,
-                    password: try keychainProtocol.retrievePassword()
+                    password: try await retrievePasswordCredential()
                 )
             }
         } catch {
@@ -432,8 +544,8 @@ extension AppPasswordSessionManaging {
                 pdsURL: self.pdsURL
             )
 
-            try await keychainProtocol.saveAccessToken(response.accessToken)
-            try await keychainProtocol.saveRefreshToken(response.refreshToken)
+            try await saveAccessTokenCredential(response.accessToken)
+            try await saveRefreshTokenCredential(response.refreshToken)
 
             _ = await UserSessionRegistry.shared.register(instanceUUID, session: updatedUserSession)
         } catch {
@@ -445,7 +557,7 @@ extension AppPasswordSessionManaging {
         let refreshToken: String
 
         do {
-            refreshToken = try await keychainProtocol.retrieveRefreshToken()
+            refreshToken = try await retrieveRefreshTokenCredential()
         } catch {
             throw ATProtocolConfiguration.ATProtocolConfigurationError.noSessionToken(message: "The access token doesn't exist.")
         }
@@ -459,7 +571,7 @@ extension AppPasswordSessionManaging {
 
                 try await self.authenticate(
                     with: handle,
-                    password: try keychainProtocol.retrievePassword()
+                    password: try await retrievePasswordCredential()
                 )
             }
         } catch {
@@ -500,7 +612,7 @@ extension AppPasswordSessionManaging {
     }
 
     public func ensureValidToken() async throws {
-        let accessToken = try await keychainProtocol.retrieveAccessToken()
+        let accessToken = try await retrieveAccessTokenCredential()
 
         do {
             if try SessionToken(sessionToken: accessToken).payload.expiresAt.addingTimeInterval(10) <= Date() {
@@ -524,7 +636,7 @@ extension AppPasswordSessionManaging {
         }
 
         try await ensureValidToken()
-        let accessToken = try await keychainProtocol.retrieveAccessToken()
+        let accessToken = try await retrieveAccessTokenCredential()
         return .bearer(accessToken)
     }
 
@@ -546,7 +658,7 @@ extension AppPasswordSessionManaging {
         }
 
         try await ensureValidToken()
-        let accessToken = try await keychainProtocol.retrieveAccessToken()
+        let accessToken = try await retrieveAccessTokenCredential()
         let authorization = SessionAuthorization.bearer(accessToken)
 
         var authenticatedRequest = request
