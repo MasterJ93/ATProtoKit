@@ -18,3 +18,5 @@
 - ``ATIdentityResolverError``
 - ``FeedViewPostDefinitionError``
 - ``OAuthError``
+- ``ATCredentialStoreError``
+- ``ATOAuthSessionConfigurationError``
