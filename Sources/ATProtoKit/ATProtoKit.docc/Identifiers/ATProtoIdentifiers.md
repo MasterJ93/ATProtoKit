@@ -38,11 +38,13 @@ print(normalizedHandle) // Prints as "atproto.com".
 - Important: Normalization should only be used if you're writing them out manually or if you're getting the identifier through a means other than directly from an API through the AT Protocol.
 
 ## Identifier Requirements
+
 Each identifier has various requirements in order to be valid. A short list for each will be available below, but it's highly encouraged to read the [AT Protocol Specifications](https://atproto.com) for more information.
 
 ### AT URI
 
 AT URIs have the following structure:
+
   1. The `at://` prefix.
   2. An authority segment.
   3. A Namespaced Identifier (NSID) segment.
@@ -52,6 +54,7 @@ AT URIs have the following structure:
 - Note: Only the `at://` prefix and authority segments are required.
 
 This scheme also needs to conform to the following requirements:
+
 - The total length must not exceed 8 KB.
 - Must contain only ASCII characters; non-ASCII characters should be URL-encoded.
 - Whitespace characters are not allowed.
@@ -65,7 +68,6 @@ Further reading: [AT URI Syntax](https://atproto.com/specs/at-uri-scheme)
 
 ### Content Identifier (CID)
 
-
 Further reading: [IPFS Docs: Content Identifiers](https://docs.ipfs.tech/concepts/content-addressing/#identifier-formats)
 
 ### Decentralized Identifier (DID)
@@ -73,6 +75,7 @@ Further reading: [IPFS Docs: Content Identifiers](https://docs.ipfs.tech/concept
 Decentralized Identifiers (DIDs) have two sets of requirements: the ones defined by the [W3C](https://www.w3.org/TR/did-core/#did-syntax) and the ones defined in the AT Protocol.
 
 For the W3C:
+
 - The entire URI must be ASCII. This includes:
   - Letters and digits (both uppercase and lowercase).
   - Periods (.).
@@ -91,6 +94,7 @@ For the W3C:
 - Note: ``DIDManager`` can normalize the the DID to ensure the first segment is lowercased.
 
 In addition, the AT Protocol makes the following requirements:
+
 - `did:plc` and `did:web` are currently the only two types that are valid. This is not enforced at the lexicon layer.
 - A hard limit of 8 KB is put in place.
 
@@ -101,6 +105,7 @@ Further reading: [DID Syntax](https://atproto.com/specs/did)
 ### Handle
 
 Handles in the AT Protocol must conform to the following rules to be valid:
+
 - The handle should be a valid domain name as per the RFC standards (e.g.: RFC-3696 (Section 2), RFC-3986 (Section 3)).
 - Each segment of a handle can only include letters and digits from the ASCII standard, as well as hypens (-).
   - They can't begin or end with a hypen.
@@ -123,14 +128,14 @@ Futher reading: [Handle Syntax](https://atproto.com/specs/handle)
 ### Namespaced Identifier (NSID)
 
 Namespaced Identifiers (NSIDs) have specific requirements: rules for the overall identifier, and rules for each segment.
-
 **Overall**
+
 - All characters must be in ASCII.
 - All segments should be separated by an ASCII period (.).
 - There's a minimum of three segments: the TLD, the domain name (which, combined, are referred as the "Domain Authority"), and the name (otherwise called the "subdomain").
 - The NSID can't be over 317 characters.
-
 **Domain Authority**
+
 - Consists of the TLD and domain name, separated by a period (.).
 - Can't be longer than 253 characters.
 - Each segment can be between 1 and 63 characters long (excluding periods).
@@ -138,8 +143,8 @@ Namespaced Identifiers (NSIDs) have specific requirements: rules for the overall
 - Segments can't start or end with a hyphen (-).
 - The first segment (the TLD) cannot start with a numeric digit.
 - The domain authority is _not_ case-sensitive. Be sure to normalize all letters to lowercase.
-
 **Name**
+
 - Must be between 1 and 63 characters long.
 - Can be in ASCII letters (both uppercase and lowercase).
 - The name _is_ case-sensitive. Do not normalize them.
@@ -151,6 +156,7 @@ Further reading: [NSID Syntax](https://atproto.com/specs/nsid)
 ### Record Key
 
 Record Keys have various types: `tid`, `any`, and `literal:<value>`. All Record Keys need to conform to the following:
+
 - All characters include letters (both uppercase and lowercase), digits, periods (.), hypens (-), underscores (\_), colons (:), and tildes (~).
 - Must be at least 1 character and at most 512 characters long.
 - Record Keys can _not_ be _just_ `.` or `..`.
@@ -177,20 +183,13 @@ In addition to this, each type has additional requirements.
 
 Record Key type is used when there should be only a single record in the collection, with a fixed, well-known Record Key.
 
-
-
 Further reading: [Record Key Syntax](https://atproto.com/specs/record-key)
-
 
 ## Topics
 
 ### AT URIs
 
 - ``ATURIManager``
-
-### Content Identifiers (CIDs)
-
-
 
 ### Decentralized Identifiers (DIDs)
 

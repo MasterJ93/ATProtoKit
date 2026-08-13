@@ -1,4 +1,5 @@
 # Inspecting JSON with SessionDebuggable
+
 Learn how to inspect JSON objects in your requests and responses.
 
 ## Overview
