@@ -107,6 +107,57 @@ let configuration = ATOAuthSessionConfiguration(
 
 Use the provider-based initializer instead when the visible identity, endpoint, or exact scope set can change while the configuration remains alive. Neither initializer depends on a particular OAuth package.
 
+## Request additional scopes
+
+Scopes are requested by the external OAuth package before it creates the session, not by ``ATOAuthSessionConfiguration``. The `scope` field in the app's published client metadata must declare every scope the client might request. Each authorization flow can request that complete set or a subset, but its request must always include `atproto`.
+
+For example, an OAuthenticator integration can pass additional permission strings when it creates
+`AppCredentials`:
+
+```swift
+let requestedScopes = [
+    "atproto",
+    "repo:app.bsky.feed.post",
+    "blob:image/*"
+]
+
+let credentials = AppCredentials(
+    clientId: clientMetadataURL.absoluteString,
+    clientPassword: "",
+    scopes: requestedScopes,
+    callbackURL: callbackURL
+)
+```
+
+The corresponding client metadata must contain at least those values as one space-separated string:
+
+```json
+{
+  "scope": "atproto repo:app.bsky.feed.post blob:image/*"
+}
+```
+
+The exact OAuth package API in this example is not part of ATProtoKit. Use the selected package's authorization configuration to supply the requested scopes. Prefer granular permissions and request only those needed by the enabled features.
+
+Changing the requested set does not expand an already-authorized session. Start a new OAuth authorization flow with the expanded set and replace the stored session after the user approves it. A sample that automatically restores a saved login must bypass or replace that login during the upgrade; otherwise it can continue returning the old grants without presenting authorization.
+
+After the token exchange, build `grantedScopes` from the token response's complete returned `scope` value. Do not copy `requestedScopes` into the context because a user or server may grant a smaller set:
+
+```swift
+let grantedScopes = Set(
+    authorizedSession.scope
+        .split(separator: " ")
+        .map(String.init)
+)
+
+let context = SessionAuthorizationContext(
+    sessionDID: authorizedSession.accountDID,
+    handle: authorizedSession.handle,
+    serviceEndpoint: authorizedSession.pdsURL,
+    grantedScopes: grantedScopes
+)
+```
+
 ## Register a restored or newly authorized session
 
 Call ``ATOAuthSessionConfiguration/registerSession()`` after authorization or restoration and before using authenticated ATProtoKit methods. Registration validates and publishes the account decentralized identifier (DID) and provider-supplied PDS endpoint. ``ATProtoKit/createOAuthSession(sessionConfiguration:apiClientConfiguration:canUseBlueskyRecords:)`` performs registration and client construction as one checked operation:

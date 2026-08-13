@@ -22,6 +22,8 @@ Use ``ATProtocolConfiguration`` for App Password authentication. It provides the
 
 Use ``ATOAuthSessionConfiguration`` when an external OAuth package owns authorization. ATProtoKit does not implement identity verification, authorization-server discovery, PAR, PKCE, DPoP, OAuth token persistence, refresh, or nonce retries. The OAuth package supplies the visible account context and executes complete requests through an ``ATRequestExecutor``. See <doc:OAuthIntegration> for that integration pattern.
 
+OAuth permission scopes are also selected in the external OAuth package's authorization request, not on `SessionConfiguration` or `ATOAuthSessionConfiguration`. The resulting ``SessionAuthorizationContext`` records the exact scopes returned by the authorization server; it does not request or expand them. See <doc:OAuthIntegration> for requesting additional scopes and upgrading an existing session.
+
 ## Understand the core contract
 
 ``SessionConfiguration`` inherits from `Sendable`, ``ATRequestAuthenticator``, and `AnyObject`. Consequently, a conformer must be a concurrency-safe reference type, but the protocol does not specifically require a `final` `class`. A `final` `class` with immutable sendable state or an actor are common implementation choices.
