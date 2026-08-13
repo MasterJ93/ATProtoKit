@@ -16,6 +16,9 @@ extension AppBskyLexicon {
     /// A group of lexicons within the `app.bsky.bookmark` namespace.
     public enum Bookmark {}
 
+    /// A group of lexicons within the `app.bsky.contact` namespace.
+    public enum Contact {}
+
     /// A group of lexicons within the `app.bsky.draft` namespace.
     public enum Draft {}
   
