@@ -47,9 +47,9 @@ ATProtoKit is fully open source under the [MIT license](https://github.com/Maste
 
 @Links(visualStyle: detailedGrid) {
     - <doc:OAuthIntegration>
+    - <doc:CredentialStorageMigration>
     - <doc:SessionDebuggableArticle>
     - <doc:SessionConfigurationArticle>
-    - <doc:getRecordTutorial>
 }
 
 ## Topics
@@ -69,11 +69,11 @@ ATProtoKit is fully open source under the [MIT license](https://github.com/Maste
 
 ### Authentication and Session Management
 
+- <doc:CredentialStorageMigration>
 - ``ATProtocolConfiguration``
 - ``ATProtoKit/ATProtoKitConfiguration``
 - ``SessionConfiguration``
 - <doc:SessionConfigurationArticle>
-- <doc:CredentialStorageMigration>
 - <doc:OAuthIntegration>
 - ``ATOAuthSessionConfiguration``
 - ``SessionAuthorizationContext``

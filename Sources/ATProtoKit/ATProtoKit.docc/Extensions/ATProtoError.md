@@ -14,7 +14,7 @@
 - ``WebSocketFrameMessageError``
 - ``CBORProcessingError``
 - ``ApplSecureKeychainError``
-- ``ATKeychainError``
 - ``GetOriginalPostsFromQuotePostsError``
 - ``ATIdentityResolverError``
 - ``FeedViewPostDefinitionError``
+- ``OAuthError``
