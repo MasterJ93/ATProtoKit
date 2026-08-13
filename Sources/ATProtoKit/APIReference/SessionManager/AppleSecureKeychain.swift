@@ -15,25 +15,13 @@ import Security
 /// Use this type as the default ``ATCredentialStore`` on Apple platforms.
 public actor AppleSecureKeychain: ATCredentialStore {
 
-    /// The identifier used by the deprecated App Password storage interface.
-    ///
-    /// New code supplies its account identifier to ``ATProtocolConfiguration`` instead.
-    public nonisolated let identifier: UUID
-
     /// The Keychain service name used to namespace stored values.
     public nonisolated let serviceName: String
 
     /// Creates an Apple Keychain-backed secure store.
     ///
-    /// - Parameters:
-    ///   - identifier: The identifier used by the deprecated App Password storage interface.
-    ///     Defaults to a newly generated identifier.
-    ///   - serviceName: The Keychain service name. Defaults to `ATProtoKit`.
-    public init(
-        identifier: UUID = UUID(),
-        serviceName: String = "ATProtoKit"
-    ) {
-        self.identifier = identifier
+    /// - Parameter serviceName: The Keychain service name. Defaults to `ATProtoKit`.
+    public init(serviceName: String = "ATProtoKit") {
         self.serviceName = serviceName
     }
 
@@ -163,9 +151,6 @@ public actor AppleSecureKeychain: ATCredentialStore {
     }
 }
 
-@available(*, deprecated, message: "Use AppleSecureKeychain through ATCredentialStore instead.")
-extension AppleSecureKeychain: SecureKeychainProtocol {}
-
 /// Errors related to Apple Keychain storage.
 public enum ApplSecureKeychainError: Error, LocalizedError {
 
@@ -173,9 +158,6 @@ public enum ApplSecureKeychainError: Error, LocalizedError {
     ///
     /// - Parameter key: The key for the item.
     case itemNotFound(key: String)
-
-    /// The access token could not be found.
-    case accessTokenNotFound
 
     /// The retrieved value was invalid.
     case invalidData
@@ -189,8 +171,6 @@ public enum ApplSecureKeychainError: Error, LocalizedError {
         switch self {
         case .itemNotFound(let key):
             return "No item was found for key: \(key)"
-        case .accessTokenNotFound:
-            return "No access token was found."
         case .invalidData:
             return "The data retrieved from Keychain was invalid."
         case .unhandledStatus(let status):

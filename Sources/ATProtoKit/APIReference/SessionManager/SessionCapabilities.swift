@@ -21,37 +21,14 @@ public protocol UserSessionRegistryManaging: SessionConfiguration {
     func removeSession() async throws
 }
 
-/// Stores the credentials used by an App Password session.
+/// Persists the App Password and refresh token used by an App Password session.
 public protocol AppPasswordCredentialStoring: SessionConfiguration {
 
-    /// The secure store containing the App Password and session tokens.
+    /// The secure store containing the App Password and refresh token.
     var credentialStore: ATCredentialStore { get }
 }
 
 extension AppPasswordCredentialStoring {
-
-    /// Saves an App Password access token.
-    ///
-    /// - Parameter accessToken: The access token to save.
-    ///
-    /// - Throws: An error from the credential store.
-    internal func saveAccessTokenCredential(_ accessToken: String) async throws {
-        try await saveCredential(accessToken, suffix: "accessToken")
-    }
-
-    /// Retrieves an App Password access token.
-    ///
-    /// - Returns: The stored access token.
-    ///
-    /// - Throws: ``ATCredentialStoreError`` or an error from the credential store.
-    internal func retrieveAccessTokenCredential() async throws -> String {
-        let key = credentialKey(suffix: "accessToken")
-        guard let value = try await loadCredential(forKey: key) else {
-            throw ATCredentialStoreError.accessTokenNotFound
-        }
-
-        return value
-    }
 
     /// Saves an App Password credential.
     ///
@@ -97,6 +74,20 @@ extension AppPasswordCredentialStoring {
         }
 
         return value
+    }
+
+    /// Deletes the persisted App Password credential.
+    ///
+    /// - Throws: An error from the credential store.
+    internal func deletePasswordCredential() async throws {
+        try await credentialStore.deleteValue(forKey: credentialKey(suffix: "password"))
+    }
+
+    /// Deletes the persisted App Password refresh token.
+    ///
+    /// - Throws: An error from the credential store.
+    internal func deleteRefreshTokenCredential() async throws {
+        try await credentialStore.deleteValue(forKey: credentialKey(suffix: "refreshToken"))
     }
 
     /// Creates an account-specific storage key.
@@ -148,6 +139,19 @@ public protocol AppPasswordAuthenticating: AppPasswordCredentialStoring {
 
     /// The continuation that supplies authentication-factor codes to ``codeStream``.
     var codeContinuation: AsyncStream<String>.Continuation { get }
+
+    /// Replaces the short-lived App Password access token held in memory.
+    ///
+    /// - Parameter accessToken: The access token to cache.
+    func cacheAccessToken(_ accessToken: String) async
+
+    /// Retrieves the short-lived App Password access token held in memory. Optional.
+    ///
+    /// - Returns: The cached access token. Optional.
+    func cachedAccessToken() async -> String?
+
+    /// Removes the short-lived App Password access token held in memory.
+    func clearCachedAccessToken() async
 
     /// Authenticates an account with its handle and App Password.
     ///
@@ -223,6 +227,22 @@ public protocol OAuthSessionSynchronizing: UserSessionRegistryManaging {
 
 extension AppPasswordAuthenticating {
 
+    /// Retrieves the cached access token or reports that the session must be refreshed.
+    ///
+    /// - Returns: The cached access token.
+    ///
+    /// - Throws: ``ATProtocolConfiguration/ATProtocolConfigurationError/noSessionToken(message:)``
+    ///   when no access token is cached.
+    internal func requireCachedAccessToken() async throws -> String {
+        guard let accessToken = await cachedAccessToken() else {
+            throw ATProtocolConfiguration.ATProtocolConfigurationError.noSessionToken(
+                message: "The access token is not available in memory."
+            )
+        }
+
+        return accessToken
+    }
+
     /// Waits for the next authentication-factor code.
     ///
     /// - Returns: The next code, or an empty string when the stream ends.
@@ -285,7 +305,7 @@ extension AppPasswordSessionManaging {
                 pdsURL: self.pdsURL
             )
 
-            try await saveAccessTokenCredential(response.accessToken)
+            await cacheAccessToken(response.accessToken)
             try await saveRefreshTokenCredential(response.refreshToken)
 
             if let password {
@@ -398,7 +418,7 @@ extension AppPasswordSessionManaging {
                 pdsURL: self.pdsURL
             )
 
-            try await saveAccessTokenCredential(response.accessToken)
+            await cacheAccessToken(response.accessToken)
             try await saveRefreshTokenCredential(response.refreshToken)
             try await savePasswordCredential(password)
 
@@ -409,25 +429,12 @@ extension AppPasswordSessionManaging {
     }
 
     public func registerSession() async throws {
-        let accessToken: String
-
         guard let _pdsURL = URL(string: pdsURL) else {
             throw ATRequestPrepareError.emptyPDSURL
         }
 
-        do {
-            accessToken = try await retrieveAccessTokenCredential()
-        } catch {
-            throw ATProtocolConfiguration.ATProtocolConfigurationError.noSessionToken(message: "The access token doesn't exist.")
-        }
-
-        do {
-            if try SessionToken(sessionToken: accessToken).payload.expiresAt.addingTimeInterval(10) <= Date() {
-                try await self.refreshSession()
-            }
-        } catch {
-            throw error
-        }
+        try await ensureValidToken()
+        let accessToken = try await requireCachedAccessToken()
 
         do {
             let response = try await ATProtoKit(apiClientConfiguration: .init(urlSessionConfiguration: configuration), pdsURL: self.pdsURL, canUseBlueskyRecords: false)
@@ -484,7 +491,7 @@ extension AppPasswordSessionManaging {
         do {
             refreshToken = try await retrieveRefreshTokenCredential()
         } catch {
-            throw ATProtocolConfiguration.ATProtocolConfigurationError.noSessionToken(message: "The access token doesn't exist.")
+            throw ATProtocolConfiguration.ATProtocolConfigurationError.noSessionToken(message: "The refresh token doesn't exist.")
         }
 
         do {
@@ -498,6 +505,7 @@ extension AppPasswordSessionManaging {
                     with: handle,
                     password: try await retrievePasswordCredential()
                 )
+                return
             }
         } catch {
             throw error
@@ -544,7 +552,7 @@ extension AppPasswordSessionManaging {
                 pdsURL: self.pdsURL
             )
 
-            try await saveAccessTokenCredential(response.accessToken)
+            await cacheAccessToken(response.accessToken)
             try await saveRefreshTokenCredential(response.refreshToken)
 
             _ = await UserSessionRegistry.shared.register(instanceUUID, session: updatedUserSession)
@@ -554,12 +562,12 @@ extension AppPasswordSessionManaging {
     }
 
     public func removeSession() async throws {
-        let refreshToken: String
+        var refreshToken: String
 
         do {
             refreshToken = try await retrieveRefreshTokenCredential()
         } catch {
-            throw ATProtocolConfiguration.ATProtocolConfigurationError.noSessionToken(message: "The access token doesn't exist.")
+            throw ATProtocolConfiguration.ATProtocolConfigurationError.noSessionToken(message: "The refresh token doesn't exist.")
         }
 
         do {
@@ -573,6 +581,7 @@ extension AppPasswordSessionManaging {
                     with: handle,
                     password: try await retrievePasswordCredential()
                 )
+                refreshToken = try await retrieveRefreshTokenCredential()
             }
         } catch {
             throw error
@@ -584,6 +593,9 @@ extension AppPasswordSessionManaging {
                     refreshToken: refreshToken
                 )
 
+            await clearCachedAccessToken()
+            try await deleteRefreshTokenCredential()
+            try await deletePasswordCredential()
             await UserSessionRegistry.shared.removeSession(for: instanceUUID)
         } catch {
             throw error
@@ -612,15 +624,21 @@ extension AppPasswordSessionManaging {
     }
 
     public func ensureValidToken() async throws {
-        let accessToken = try await retrieveAccessTokenCredential()
+        guard let accessToken = await cachedAccessToken() else {
+            try await refreshSession()
+            _ = try await requireCachedAccessToken()
+            return
+        }
 
+        let expirationDate: Date
         do {
-            if try SessionToken(sessionToken: accessToken).payload.expiresAt.addingTimeInterval(10) <= Date() {
-                try await self.refreshSession()
-            }
-        } catch {
-            // If we can't parse the token, continue with the original token
-            // The API call will fail with proper error if token is invalid
+            expirationDate = try SessionToken(sessionToken: accessToken).payload.expiresAt
+        } catch is SessionToken.SessionTokenError {
+            return
+        }
+
+        if expirationDate.addingTimeInterval(10) <= Date() {
+            try await self.refreshSession()
         }
     }
 
@@ -636,7 +654,7 @@ extension AppPasswordSessionManaging {
         }
 
         try await ensureValidToken()
-        let accessToken = try await retrieveAccessTokenCredential()
+        let accessToken = try await requireCachedAccessToken()
         return .bearer(accessToken)
     }
 
@@ -658,7 +676,7 @@ extension AppPasswordSessionManaging {
         }
 
         try await ensureValidToken()
-        let accessToken = try await retrieveAccessTokenCredential()
+        let accessToken = try await requireCachedAccessToken()
         let authorization = SessionAuthorization.bearer(accessToken)
 
         var authenticatedRequest = request
@@ -669,24 +687,5 @@ extension AppPasswordSessionManaging {
         }
 
         return authenticatedRequest
-    }
-}
-
-extension AppPasswordSessionManaging {
-
-    /// Loads and registers the current App Password session.
-    ///
-    /// - Throws: An error if the session cannot be loaded or registered.
-    @available(*, deprecated, renamed: "registerSession()")
-    public func getSession() async throws {
-        return try await registerSession()
-    }
-
-    /// Removes the current App Password session.
-    ///
-    /// - Throws: An error if the remote or local session cannot be removed.
-    @available(*, deprecated, renamed: "removeSession()")
-    public func deleteSession() async throws {
-        return try await removeSession()
     }
 }

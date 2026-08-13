@@ -10,22 +10,29 @@ import Foundation
 import FoundationNetworking
 #endif
 
-/// Manages authentication and session operations for the a user account in the AT Protocol.
+/// Manages App Password authentication and session operations for an AT Protocol account.
 ///
-/// This is for handling App Passwords. At this time, an implementation of a
-/// Use ``ATOAuthSessionConfiguration`` or another ``SessionConfiguration`` implementation
-/// when an OAuth package owns authentication.
-final public class ATProtocolConfiguration: AppPasswordSessionManaging {
+/// Use ``ATOAuthSessionConfiguration`` or another ``SessionConfiguration`` implementation when an
+/// OAuth package owns authentication.
+public final class ATProtocolConfiguration: AppPasswordSessionManaging {
 
+    /// The identifier linking this configuration to its visible user session and stored values.
     public let instanceUUID: UUID
 
+    /// The base URL of the Personal Data Server (PDS).
     public let pdsURL: String
 
+    /// The stream that receives authentication-factor codes.
     public let codeStream: AsyncStream<String>
 
+    /// The continuation used to supply authentication-factor codes.
     public let codeContinuation: AsyncStream<String>.Continuation
 
-    public let keychainProtocol: SecureKeychainProtocol
+    /// The secure backend containing this session's credentials.
+    public let credentialStore: ATCredentialStore
+
+    /// The in-memory cache containing the short-lived App Password access token.
+    private let accessTokenCache = AppPasswordAccessTokenCache()
 
     /// An instance of `URLSessionConfiguration`.
     public let configuration: URLSessionConfiguration
@@ -38,133 +45,26 @@ final public class ATProtocolConfiguration: AppPasswordSessionManaging {
     ///
     /// - Parameters:
     ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `https://bsky.social`.
-    ///   - keychainProtocol: An instance of ``SecureKeychainProtocol``. Optional. Defaults to the
-    ///   default implementation of ``SecureKeychainProtocol``.
-    ///   - configuration: An instance of `URLSessionConfiguration`. Optional.
+    ///   - credentialStore: The backend used to persist credentials. Defaults to a new
+    ///     ``AppleSecureKeychain`` instance.
+    ///   - sessionIdentifier: The stable identifier used to namespace this account's credentials.
+    ///     Defaults to a newly generated identifier.
+    ///   - configuration: The URL session configuration. Defaults to `.default`.
     ///   - canResolve: Indicates whether `ATProtocolConfiguration` will automatically resolve
     ///   the handle. Defaults to `true`.
-    public init<Keychain: SecureKeychainProtocol>(
+    public init<Store: ATCredentialStore>(
         pdsURL: String = "https://bsky.social",
-        keychainProtocol: Keychain = AppleSecureKeychain(),
+        credentialStore: Store = AppleSecureKeychain(),
+        sessionIdentifier: UUID = UUID(),
         configuration: URLSessionConfiguration = .default,
         canResolve: Bool = true
     ) {
-        self.keychainProtocol = keychainProtocol
-        self.instanceUUID = keychainProtocol.identifier
+        self.credentialStore = credentialStore
+        self.instanceUUID = sessionIdentifier
         self.pdsURL = pdsURL
-
         let (stream, continuation) = AsyncStream<String>.makeStream()
         self.codeStream = stream
         self.codeContinuation = continuation
-
-        self.configuration = configuration
-        self.canResolve = canResolve
-    }
-#elseif os(Linux)
-    /// Initializes a new instance of `ATProtocolConfiguration`.
-    ///
-    /// - Parameters:
-    ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `https://bsky.social`.
-    ///   - keychainProtocol: An instance of ``SecureKeychainProtocol``. Optional. Defaults to the
-    ///   default implementation of ``SecureKeychainProtocol``.
-    ///   - configuration: An instance of `URLSessionConfiguration`. Optional.
-    ///   - canResolve: Indicates whether `ATProtocolConfiguration` will automatically resolve
-    ///   the handle. Defaults to `true`.
-    public init<Keychain: SecureKeychainProtocol>(
-        pdsURL: String = "https://bsky.social",
-        keychainProtocol: Keychain,
-        configuration: URLSessionConfiguration = .default,
-        canResolve: Bool = true
-    ) {
-        self.keychainProtocol = keychainProtocol
-        self.instanceUUID = keychainProtocol.identifier
-        self.pdsURL = pdsURL
-
-        let (stream, continuation) = AsyncStream<String>.makeStream()
-        self.codeStream = stream
-        self.codeContinuation = continuation
-
-        self.configuration = configuration
-        self.canResolve = canResolve
-    }
-#elseif os(Windows)
-    /// Initializes a new instance of `ATProtocolConfiguration`.
-    ///
-    /// - Parameters:
-    ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `https://bsky.social`.
-    ///   - keychainProtocol: An instance of ``SecureKeychainProtocol``. Optional. Defaults to the
-    ///   default implementation of ``SecureKeychainProtocol``.
-    ///   - configuration: An instance of `URLSessionConfiguration`. Optional.
-    ///   - canResolve: Indicates whether `ATProtocolConfiguration` will automatically resolve
-    ///   the handle. Defaults to `true`.
-    public init<Keychain: SecureKeychainProtocol>(
-        pdsURL: String = "https://bsky.social",
-        keychainProtocol: Keychain,
-        configuration: URLSessionConfiguration = .default,
-        canResolve: Bool = true
-    ) {
-        self.keychainProtocol = keychainProtocol
-        self.instanceUUID = keychainProtocol.identifier
-        self.pdsURL = pdsURL
-
-        let (stream, continuation) = AsyncStream<String>.makeStream()
-        self.codeStream = stream
-        self.codeContinuation = continuation
-
-        self.configuration = configuration
-        self.canResolve = canResolve
-    }
-#elseif os(Android)
-    /// Initializes a new instance of `ATProtocolConfiguration`.
-    ///
-    /// - Parameters:
-    ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `https://bsky.social`.
-    ///   - keychainProtocol: An instance of ``SecureKeychainProtocol``. Optional. Defaults to the
-    ///   default implementation of ``SecureKeychainProtocol``.
-    ///   - configuration: An instance of `URLSessionConfiguration`. Optional.
-    ///   - canResolve: Indicates whether `ATProtocolConfiguration` will automatically resolve
-    ///   the handle. Defaults to `true`.
-    public init<Keychain: SecureKeychainProtocol>(
-        pdsURL: String = "https://bsky.social",
-        keychainProtocol: Keychain,
-        configuration: URLSessionConfiguration = .default,
-        canResolve: Bool = true
-    ) {
-        self.keychainProtocol = keychainProtocol
-        self.instanceUUID = keychainProtocol.identifier
-        self.pdsURL = pdsURL
-
-        let (stream, continuation) = AsyncStream<String>.makeStream()
-        self.codeStream = stream
-        self.codeContinuation = continuation
-
-        self.configuration = configuration
-        self.canResolve = canResolve
-    }
-#elseif os(Wasm)
-    /// Initializes a new instance of `ATProtocolConfiguration`.
-    ///
-    /// - Parameters:
-    ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `https://bsky.social`.
-    ///   - keychainProtocol: An instance of ``SecureKeychainProtocol``. Optional. Defaults to the
-    ///   default implementation of ``SecureKeychainProtocol``.
-    ///   - configuration: An instance of `URLSessionConfiguration`. Optional.
-    ///   - canResolve: Indicates whether `ATProtocolConfiguration` will automatically resolve
-    ///   the handle. Defaults to `true`.
-    public init<Keychain: SecureKeychainProtocol>(
-        pdsURL: String = "https://bsky.social",
-        keychainProtocol: Keychain,
-        configuration: URLSessionConfiguration = .default,
-        canResolve: Bool = true
-    ) {
-        self.keychainProtocol = keychainProtocol
-        self.instanceUUID = keychainProtocol.identifier
-        self.pdsURL = pdsURL
-
-        let (stream, continuation) = AsyncStream<String>.makeStream()
-        self.codeStream = stream
-        self.codeContinuation = continuation
-
         self.configuration = configuration
         self.canResolve = canResolve
     }
@@ -173,29 +73,49 @@ final public class ATProtocolConfiguration: AppPasswordSessionManaging {
     ///
     /// - Parameters:
     ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to `https://bsky.social`.
-    ///   - keychainProtocol: An instance of ``SecureKeychainProtocol``. Optional. Defaults to the
-    ///   default implementation of ``SecureKeychainProtocol``.
-    ///   - configuration: An instance of `URLSessionConfiguration`. Optional.
+    ///   - credentialStore: The backend used to persist credentials.
+    ///   - sessionIdentifier: The stable identifier used to namespace this account's credentials.
+    ///     Defaults to a newly generated identifier.
+    ///   - configuration: The URL session configuration. Defaults to `.default`.
     ///   - canResolve: Indicates whether `ATProtocolConfiguration` will automatically resolve
     ///   the handle. Defaults to `true`.
-    public init<Keychain: SecureKeychainProtocol>(
+    public init<Store: ATCredentialStore>(
         pdsURL: String = "https://bsky.social",
-        keychainProtocol: Keychain,
+        credentialStore: Store,
+        sessionIdentifier: UUID = UUID(),
         configuration: URLSessionConfiguration = .default,
         canResolve: Bool = true
     ) {
-        self.keychainProtocol = keychainProtocol
-        self.instanceUUID = keychainProtocol.identifier
+        self.credentialStore = credentialStore
+        self.instanceUUID = sessionIdentifier
         self.pdsURL = pdsURL
-
         let (stream, continuation) = AsyncStream<String>.makeStream()
         self.codeStream = stream
         self.codeContinuation = continuation
-
         self.configuration = configuration
         self.canResolve = canResolve
     }
 #endif
+
+    /// Replaces the App Password access token held in memory.
+    ///
+    /// - Parameter accessToken: The short-lived access token to cache.
+    public func cacheAccessToken(_ accessToken: String) async {
+        await accessTokenCache.save(accessToken)
+    }
+
+    /// Retrieves the App Password access token held in memory. Optional.
+    ///
+    /// - Returns: The cached access token, or `nil` when this configuration has not authenticated
+    ///   or refreshed during its current lifetime. Optional.
+    public func cachedAccessToken() async -> String? {
+        return await accessTokenCache.load()
+    }
+
+    /// Removes the App Password access token held in memory.
+    public func clearCachedAccessToken() async {
+        await accessTokenCache.clear()
+    }
 
 //    /// Resumes a session.
 //    ///  
@@ -244,4 +164,33 @@ final public class ATProtocolConfiguration: AppPasswordSessionManaging {
 //            }
 //        }
 //    }
+}
+
+/// Stores a short-lived App Password access token for one configuration lifetime.
+private actor AppPasswordAccessTokenCache {
+
+    /// The cached access token. Optional.
+    private var accessToken: String?
+
+    /// Creates an empty access-token cache.
+    fileprivate init() {}
+
+    /// Replaces the cached access token.
+    ///
+    /// - Parameter accessToken: The access token to cache.
+    fileprivate func save(_ accessToken: String) {
+        self.accessToken = accessToken
+    }
+
+    /// Retrieves the cached access token. Optional.
+    ///
+    /// - Returns: The cached access token. Optional.
+    fileprivate func load() -> String? {
+        return accessToken
+    }
+
+    /// Removes the cached access token.
+    fileprivate func clear() {
+        accessToken = nil
+    }
 }

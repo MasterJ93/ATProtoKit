@@ -73,9 +73,12 @@ ATProtoKit is fully open source under the [MIT license](https://github.com/Maste
 - ``ATProtoKit/ATProtoKitConfiguration``
 - ``SessionConfiguration``
 - <doc:SessionConfigurationArticle>
+- <doc:OAuthIntegration>
+- ``ATOAuthSessionConfiguration``
+- ``SessionAuthorizationContext``
 - ``UserSessionRegistry``
 - ``UserSession``
-- ``SecureKeychainProtocol``
+- ``ATCredentialStore``
 - ``AppleSecureKeychain``
 
  @Comment {

@@ -412,22 +412,6 @@ extension APIClientService {
     }
 }
 
-/// An error type related to keychain operations.
-public enum ATKeychainError: ATProtoError {
-
-    /// Indicates a failure while storing an item.
-    case storeError(message: String)
-
-    /// Indicates a failure while retrieving an item.
-    case retrievalError(message: String)
-
-    /// Indicates a failure while updating an item.
-    case updateError(message: String)
-
-    /// Indicates a failure while removing an item.
-    case removalError(message: String)
-}
-
 /// An error type related to issues surrounding
 public enum ATEventStreamError: ATProtoError {
 
@@ -522,9 +506,6 @@ public enum ATOAuthSessionConfigurationError: ATProtoError, Equatable {
 /// Errors produced while reading values from an ``ATCredentialStore``.
 public enum ATCredentialStoreError: ATProtoError, LocalizedError, Equatable {
 
-    /// No persisted access token exists.
-    case accessTokenNotFound
-
     /// No persisted value exists for a storage key.
     ///
     /// - Parameter key: The storage key that was not found.
@@ -535,8 +516,6 @@ public enum ATCredentialStoreError: ATProtoError, LocalizedError, Equatable {
 
     public var errorDescription: String? {
         switch self {
-        case .accessTokenNotFound:
-            return "No access token was found."
         case .valueNotFound(let key):
             return "No secure value was found for key: \(key)"
         case .invalidStringData:
@@ -598,6 +577,3 @@ public enum OAuthError: ATProtoError, LocalizedError {
         }
     }
 }
-
-@available(*, deprecated, renamed: "ATCredentialStoreError")
-public typealias SecureCredentialStoreError = ATCredentialStoreError

@@ -8,9 +8,9 @@ import Foundation
 /// A low-level protocol for storing opaque credential data in a secure, persistent backend.
 ///
 /// This is the common storage boundary for both App Password and OAuth sessions. ATProtoKit uses
-/// it to store App Password credentials. An application can use the same store for an OAuth
-/// session by encoding the OAuth library's complete restorable session and assigning it a
-/// separate key.
+/// it to persist the App Password and refresh token, while keeping the short-lived access token in
+/// memory (via ``ATProtocolConfiguration``). An application can use the same store for an OAuth session
+/// by encoding the OAuth library's complete restorable session and assigning it a separate key.
 ///
 /// The protocol deliberately does not define token types, lifecycle behaviors, or a session
 /// identifier. Callers own their value format and key namespace, while the conforming store owns
@@ -27,7 +27,7 @@ import Foundation
 /// choose the protected credential service appropriate to its deployment environment.
 ///
 /// A custom backend implements only the three opaque-data operations. It does not need separate
-/// App Password methods or OAuth token knowledge:
+/// App Password methods, access token caching, or OAuth token knowledge:
 ///
 /// ```swift
 /// public actor ApplicationCredentialStore: ATCredentialStore {
