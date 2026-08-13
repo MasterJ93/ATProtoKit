@@ -8,9 +8,10 @@ import Foundation
 /// A low-level protocol for storing opaque credential data in a secure, persistent backend.
 ///
 /// This is the common storage boundary for both App Password and OAuth sessions. ATProtoKit uses
-/// it to persist the App Password and refresh token, while keeping the short-lived access token in
-/// memory (via ``ATProtocolConfiguration``). An application can use the same store for an OAuth session
-/// by encoding the OAuth library's complete restorable session and assigning it a separate key.
+/// it to persist the App Password and refresh token, while keeping the short-lived access token
+/// in-memory (via ``ATProtocolConfiguration``). An application can use the same store for an OAuth
+/// sessionby encoding the OAuth library's complete restorable session and assigning it a
+/// separate key.
 ///
 /// The protocol deliberately does not define token types, lifecycle behaviors, or a session
 /// identifier. Callers own their value format and key namespace, while the conforming store owns
