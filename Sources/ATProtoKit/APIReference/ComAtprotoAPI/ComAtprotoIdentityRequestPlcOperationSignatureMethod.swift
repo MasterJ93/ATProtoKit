@@ -30,7 +30,7 @@ extension ATProtoKit {
 
         let sessionURL = session.serviceEndpoint.absoluteString
 
-        guard let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.identity.requestPLCOperationSignature") else {
+        guard let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.identity.requestPlcOperationSignature") else {
             throw ATRequestPrepareError.invalidRequestURL
         }
 

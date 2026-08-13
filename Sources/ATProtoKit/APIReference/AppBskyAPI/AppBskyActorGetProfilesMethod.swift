@@ -21,7 +21,8 @@ extension ATProtoKit {
     /// `https://bsky.social` and you're not using authentication, be sure to change it if the
     /// normal URL isn't used for unauthenticated API calls.\
     /// \
-    /// If you need a profile of just one user, it's best to use ``getProfile(for:)``.
+    /// If you need a profile of just one user, use
+    /// ``/ATProtoKit/ATProtoKit/getProfile(for:labelersValue:)``.
     ///
     /// - Note: According to the AT Protocol specifications: "Get detailed profile views of
     /// multiple actors."

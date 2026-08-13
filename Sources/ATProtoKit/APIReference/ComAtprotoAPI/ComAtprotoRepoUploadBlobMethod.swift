@@ -12,7 +12,7 @@ import FoundationNetworking
 
 extension ATProtoKit {
 
-    /// Uploads a blob to a specified URL with multipart/form-data encoding.
+    /// Uploads raw blob data to the authenticated account's Personal Data Server (PDS).
     ///
     /// - Note: According to the AT Protocol specifications: "Upload a new blob, to be referenced
     /// from a repository record. The blob will be deleted if it is not referenced within a time
@@ -24,31 +24,29 @@ extension ATProtoKit {
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/repo/uploadBlob.json
     ///
     /// - Parameters:
-    ///   - pdsURL: The base URL for the blob upload.
-    ///   - filename: The filename of the blob to upload.
-    ///   - imageData: The data of the blob to upload.
+    ///   - data: The raw blob data. This value becomes the complete request body.
+    ///   - contentType: The media type to use for the request's `Content-Type` header.
     /// - Returns: An `UploadBlobOutput` instance with the upload result.
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func uploadBlob(
-        pdsURL: String = "https://bsky.social",
-        filename: String,
-        imageData: Data
+        _ data: Data,
+        contentType: String
     ) async throws -> ComAtprotoLexicon.Repository.UploadBlobOutput {
-        guard let requestURL = URL(string: "\(pdsURL)/xrpc/com.atproto.repo.uploadBlob") else {
-            throw ATRequestPrepareError.invalidRequestURL
+        guard let session = try await self.getUserSession() else {
+            throw ATRequestPrepareError.missingActiveSession
         }
 
-        let mimeType = APIClientService.mimeType(for: filename)
+        let requestURL = session.serviceEndpoint.appending(path: "xrpc/com.atproto.repo.uploadBlob")
 
         do {
-            var request = apiClientService.createRequest(
+            let request = apiClientService.createRequest(
                 forRequest: requestURL,
                 andMethod: .post,
-                contentTypeValue: mimeType,
-                requiresAuthorization: true)
-            request.httpBody = imageData
+                contentTypeValue: contentType,
+                requiresAuthorization: true
+            )
 
             // The `com.atproto.repo.uploadBlob` endpoint wraps its result in a
             // `blob` key (`{"blob": {...}}`), unlike record fields where the blob

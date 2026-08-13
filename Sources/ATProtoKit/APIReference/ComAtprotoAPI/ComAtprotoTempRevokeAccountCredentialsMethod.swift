@@ -33,7 +33,7 @@ extension ATProtoKit {
 
         let sessionURL = session.serviceEndpoint.absoluteString
 
-        guard let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.server.deleteAccount") else {
+        guard let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.temp.revokeAccountCredentials") else {
             throw ATRequestPrepareError.invalidRequestURL
         }
 

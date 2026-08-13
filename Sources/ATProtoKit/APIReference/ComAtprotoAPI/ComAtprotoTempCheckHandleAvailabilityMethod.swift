@@ -21,7 +21,7 @@ extension ATProtoKit {
     /// is available. If the handle is not available, available suggestions will be returned.
     /// Optional inputs will be used to generate suggestions."
     ///
-    /// - SeeAlso: This is based on the [`app.bsky.unspecced.checkHandleAvailability`][github] lexicon.
+    /// - SeeAlso: This is based on the [`com.atproto.temp.checkHandleAvailability`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/temp/checkHandleAvailability.json
     ///
@@ -45,7 +45,7 @@ extension ATProtoKit {
 
         let sessionURL = session.serviceEndpoint.absoluteString
 
-        guard let requestURL = URL(string: "\(sessionURL)/xrpc/app.bsky.unspecced.checkHandleAvailability") else {
+        guard let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.temp.checkHandleAvailability") else {
             throw ATRequestPrepareError.invalidRequestURL
         }
 
