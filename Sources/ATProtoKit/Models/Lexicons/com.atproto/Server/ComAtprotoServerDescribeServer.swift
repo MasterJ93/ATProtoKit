@@ -95,6 +95,9 @@ extension ComAtprotoLexicon.Server {
         /// The decentralized identifier (DID) of the server.
         public let serverDID: String
 
+        /// Maximum size of a blob that can be uploaded via com.atproto.repo.uploadBlob, in bytes.
+        public let blobUploadLimit: Int?
+        
         enum CodingKeys: String, CodingKey {
             case isInviteCodeRequired = "inviteCodeRequired"
             case isPhoneVerificationRequired = "phoneVerificationRequired"
@@ -102,6 +105,7 @@ extension ComAtprotoLexicon.Server {
             case servicePolicyURLs = "links"
             case contactInformation = "contact"
             case serverDID = "did"
+            case blobUploadLimit
         }
     }
 }
