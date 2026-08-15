@@ -16,6 +16,12 @@ extension ToolsOzoneLexicon {
     /// A group of lexicons within the `tools.ozone.moderation` namespace.
     public enum Moderation {}
 
+    /// A group of lexicons within the `tools.ozone.queue` namespace.
+    public enum Queue {}
+
+    /// A group of lexicons within the `tools.ozone.report` namespace.
+    public enum Report {}
+
     /// A group of lexicons within the `tools.ozone.safelink` namespace.
     public enum Safelink {}
 
