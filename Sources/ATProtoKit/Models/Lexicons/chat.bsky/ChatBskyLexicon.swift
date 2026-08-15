@@ -15,4 +15,7 @@ extension ChatBskyLexicon {
 
     /// A group of lexicons within the `chat.bsky.moderation` namespace.
     public enum Moderation {}
+
+    /// A group of lexicons within the `chat.bsky.notification` namespace.
+    public enum Notification {}
 }
