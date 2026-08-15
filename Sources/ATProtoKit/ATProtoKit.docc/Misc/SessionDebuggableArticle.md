@@ -42,7 +42,7 @@ To enable it, add this line before making network requests:
 
 ```swift
 let apiClientConfiguration = APIClientConfiguration(logger: ConsoleDebugger())
-let atProtoKit = ATProtoKit(
+let atProtoKit = await ATProtoKit(
     sessionConfiguration: config,
     apiClientConfiguration: apiClientConfiguration
 )
@@ -51,6 +51,12 @@ let atProtoKit = ATProtoKit(
 - Tip: If you do nothing, debugging is disabled by default (`nil`), so there’s no runtime overhead in production.
 
 - Note: All debugging via `SessionDebuggable` and `ConsoleDebugger` runs only in debug mode.
+
+`SessionDebuggable` observes network traffic rather than credential storage. `ConsoleDebugger`
+redacts authorization headers and does not provide a credential-inspection mode. For an App
+Password session, explicitly call ``ATProtocolConfiguration/cachedAccessToken()`` and
+``AppPasswordCredentialStoring/storedRefreshToken()`` when local debugging requires the current
+tokens. Avoid placing either value in persistent or shared logs.
 
 ---
 
@@ -74,7 +80,7 @@ Then, enable your custom debugger:
 
 ```swift
 let apiClientConfiguration = APIClientConfiguration(logger: FileDebugger())
-let atProtoKit = ATProtoKit(
+let atProtoKit = await ATProtoKit(
     sessionConfiguration: config,
     apiClientConfiguration: apiClientConfiguration
 )

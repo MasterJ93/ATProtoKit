@@ -26,9 +26,28 @@ public protocol AppPasswordCredentialStoring: SessionConfiguration {
 
     /// The secure store containing the App Password and refresh token.
     var credentialStore: ATCredentialStore { get }
+
+    /// Retrieves the persisted refresh token for the App Password session. Optional.
+    ///
+    /// - Returns: The stored refresh token, or `nil` when no refresh token exists. Optional.
+    ///
+    /// - Throws: ``ATCredentialStoreError/invalidStringData`` or an error from the credential
+    ///   store.
+    func storedRefreshToken() async throws -> String?
 }
 
 extension AppPasswordCredentialStoring {
+
+    /// Retrieves the persisted refresh token for the App Password session. Optional.
+    ///
+    /// - Returns: The stored refresh token, or `nil` when no refresh token exists. Optional.
+    ///
+    /// - Throws: ``ATCredentialStoreError/invalidStringData`` or an error from the credential
+    ///   store.
+    public func storedRefreshToken() async throws -> String? {
+        let key = credentialKey(suffix: "refreshToken")
+        return try await loadCredential(forKey: key)
+    }
 
     /// Saves an App Password credential.
     ///
@@ -69,7 +88,7 @@ extension AppPasswordCredentialStoring {
     /// - Throws: ``ATCredentialStoreError`` or an error from the credential store.
     internal func retrieveRefreshTokenCredential() async throws -> String {
         let key = credentialKey(suffix: "refreshToken")
-        guard let value = try await loadCredential(forKey: key) else {
+        guard let value = try await storedRefreshToken() else {
             throw ATCredentialStoreError.valueNotFound(key: key)
         }
 

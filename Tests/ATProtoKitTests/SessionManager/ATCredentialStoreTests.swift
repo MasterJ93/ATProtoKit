@@ -69,6 +69,7 @@ internal struct ATCredentialStoreTests {
         try await configuration.savePasswordCredential("password")
 
         #expect(await configuration.cachedAccessToken() == "access")
+        #expect(try await configuration.storedRefreshToken() == "refresh")
         #expect(try await configuration.retrieveRefreshTokenCredential() == "refresh")
         #expect(try await configuration.retrievePasswordCredential() == "password")
         #expect(try await store.loadValue(forKey: "\(identifier.uuidString).accessToken") == nil)
@@ -78,11 +79,21 @@ internal struct ATCredentialStoreTests {
             sessionIdentifier: identifier
         )
         #expect(await restoredConfiguration.cachedAccessToken() == nil)
+        #expect(try await restoredConfiguration.storedRefreshToken() == "refresh")
         #expect(try await restoredConfiguration.retrieveRefreshTokenCredential() == "refresh")
         #expect(try await restoredConfiguration.retrievePasswordCredential() == "password")
 
         await configuration.clearCachedAccessToken()
         #expect(await configuration.cachedAccessToken() == nil)
+    }
+
+    @Test("Missing refresh token is exposed as nil")
+    internal func missingRefreshTokenIsExposedAsNil() async throws {
+        let configuration = ATProtocolConfiguration(
+            credentialStore: InMemoryCredentialStore()
+        )
+
+        #expect(try await configuration.storedRefreshToken() == nil)
     }
 
     #if os(iOS) || os(macOS) || os(tvOS) || os(visionOS) || os(watchOS)

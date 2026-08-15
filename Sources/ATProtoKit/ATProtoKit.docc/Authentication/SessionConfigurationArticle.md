@@ -52,7 +52,7 @@ Conform to focused capability protocols only when the custom type owns their beh
 
 - ``UserSessionRegistryManaging`` adds session registration and removal;
 - ``AppPasswordCredentialStoring`` adds an ``ATCredentialStore`` for the App Password and refresh
-  token;
+  token, including explicit refresh-token inspection;
 - ``AppPasswordAuthenticating`` adds App Password authentication, in-memory access-token caching,
   refresh, request-time validation, and authentication-factor input;
 - ``ATAccountCreating`` adds account creation;

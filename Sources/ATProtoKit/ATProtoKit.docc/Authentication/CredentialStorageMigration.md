@@ -32,9 +32,9 @@ Update code written against 0.33.3 as follows:
 | `init(pdsURL:keychainProtocol:configuration:canResolve:)` | ``ATProtocolConfiguration/init(pdsURL:credentialStore:sessionIdentifier:configuration:canResolve:)`` |
 | `SecureKeychainProtocol.identifier` | the `sessionIdentifier` initializer argument and ``ATProtocolConfiguration/instanceUUID`` |
 
-The former token-specific methods do not have one-to-one public replacements. For ordinary App Password sessions, ``ATProtocolConfiguration`` automatically caches the access token and reads or writes the App Password and refresh token through its store. Applications access ``ATCredentialStore/loadValue(forKey:)``, ``ATCredentialStore/saveValue(_:forKey:)``, and ``ATCredentialStore/deleteValue(forKey:)`` directly only when they own the stored value and its key.
+The former token-specific storage interface is no longer the primary lifecycle API. For ordinary App Password sessions, ``ATProtocolConfiguration`` automatically caches the access token and reads or writes the App Password and refresh token through its store. Applications access ``ATCredentialStore/loadValue(forKey:)``, ``ATCredentialStore/saveValue(_:forKey:)``, and ``ATCredentialStore/deleteValue(forKey:)`` directly only when they own the stored value and its key.
 
-The access token-related cache operations (``ATProtocolConfiguration/cacheAccessToken(_:)``, ``ATProtocolConfiguration/cachedAccessToken()``, and ``ATProtocolConfiguration/clearCachedAccessToken()``) primarily support custom ``AppPasswordAuthenticating`` implementations. Applications using the built-in lifecycle generally do not call them.
+The access token-related cache operations (``ATProtocolConfiguration/cacheAccessToken(_:)``, ``ATProtocolConfiguration/cachedAccessToken()``, and ``ATProtocolConfiguration/clearCachedAccessToken()``) primarily support custom ``AppPasswordAuthenticating`` implementations. Applications using the built-in lifecycle generally do not call them. ``AppPasswordCredentialStoring/storedRefreshToken()`` provides explicit access to the persisted refresh token when an application needs to inspect or export its App Password session.
 
 ## Migrate ATProtocolConfiguration
 

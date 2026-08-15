@@ -21,10 +21,17 @@ import FoundationNetworking
 /// - Any error encountered during the request
 ///
 /// This implementation is designed for debugging only and should not be used in production for
-/// persistent logging. To use it, set the logger into ``APIClientService``.
+/// persistent logging. Authorization headers are redacted. Use
+/// ``ATProtocolConfiguration/cachedAccessToken()`` and
+/// ``AppPasswordCredentialStoring/storedRefreshToken()`` when explicit App Password token
+/// inspection is required. To use the debugger, set the logger into ``APIClientService``.
 ///
 /// ```swift
-/// await APIClientService.shared.setLogger(ConsoleDebugger())
+/// let apiClientConfiguration = APIClientConfiguration(logger: ConsoleDebugger())
+/// let atProtoKit = await ATProtoKit(
+///     sessionConfiguration: config,
+///     apiClientConfiguration: apiClientConfiguration
+/// )
 /// ```
 public struct ConsoleDebugger: SessionDebuggable {
 
