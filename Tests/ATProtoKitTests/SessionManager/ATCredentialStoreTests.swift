@@ -1,3 +1,10 @@
+//
+//  ATCredentialStoreTests.swift
+//  ATProtoKitTests
+//
+//  Created by Christopher Jr Riley on 2026-08-17.
+//
+
 import Foundation
 #if canImport(FoundationNetworking)
 import FoundationNetworking
@@ -105,21 +112,4 @@ internal struct ATCredentialStoreTests {
         #expect(store.serviceName == serviceName)
     }
     #endif
-}
-
-private actor InMemoryCredentialStore: ATCredentialStore {
-
-    private var values: [String: Data] = [:]
-
-    fileprivate func loadValue(forKey key: String) async throws -> Data? {
-        return values[key]
-    }
-
-    fileprivate func saveValue(_ value: Data, forKey key: String) async throws {
-        values[key] = value
-    }
-
-    fileprivate func deleteValue(forKey key: String) async throws {
-        values[key] = nil
-    }
 }
