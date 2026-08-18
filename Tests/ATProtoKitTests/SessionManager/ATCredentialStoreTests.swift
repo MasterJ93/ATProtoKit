@@ -1,3 +1,10 @@
+//
+//  ATCredentialStoreTests.swift
+//  ATProtoKitTests
+//
+//  Created by Christopher Jr Riley on 2026-08-17.
+//
+
 import Foundation
 #if canImport(FoundationNetworking)
 import FoundationNetworking
@@ -26,19 +33,19 @@ internal struct ATCredentialStoreTests {
 
         try await store.saveValue(
             Data("first".utf8),
-            forKey: "\(firstIdentifier.uuidString).accessToken"
+            forKey: "\(firstIdentifier.uuidString).refreshToken"
         )
         try await store.saveValue(
             Data("second".utf8),
-            forKey: "\(secondIdentifier.uuidString).accessToken"
+            forKey: "\(secondIdentifier.uuidString).refreshToken"
         )
 
         #expect(
-            try await store.loadValue(forKey: "\(firstIdentifier.uuidString).accessToken")
+            try await store.loadValue(forKey: "\(firstIdentifier.uuidString).refreshToken")
                 == Data("first".utf8)
         )
         #expect(
-            try await store.loadValue(forKey: "\(secondIdentifier.uuidString).accessToken")
+            try await store.loadValue(forKey: "\(secondIdentifier.uuidString).refreshToken")
                 == Data("second".utf8)
         )
     }
@@ -55,26 +62,45 @@ internal struct ATCredentialStoreTests {
         #expect(configuration.instanceUUID == identifier)
     }
 
-    @Test("App Password credentials use the canonical store")
-    internal func appPasswordCredentialsUseCanonicalStore() async throws {
+    @Test("App Password access tokens remain in configuration memory")
+    internal func appPasswordAccessTokensRemainInConfigurationMemory() async throws {
         let identifier = UUID()
         let store = InMemoryCredentialStore()
-        let configuration = CredentialConfiguration(
+        let configuration = ATProtocolConfiguration(
             credentialStore: store,
-            instanceUUID: identifier
+            sessionIdentifier: identifier
         )
 
-        try await configuration.saveAccessTokenCredential("access")
+        await configuration.cacheAccessToken("access")
         try await configuration.saveRefreshTokenCredential("refresh")
         try await configuration.savePasswordCredential("password")
 
-        #expect(try await configuration.retrieveAccessTokenCredential() == "access")
+        #expect(await configuration.cachedAccessToken() == "access")
+        #expect(try await configuration.storedRefreshToken() == "refresh")
         #expect(try await configuration.retrieveRefreshTokenCredential() == "refresh")
         #expect(try await configuration.retrievePasswordCredential() == "password")
-        #expect(
-            try await store.loadValue(forKey: "\(identifier.uuidString).accessToken")
-                == Data("access".utf8)
+        #expect(try await store.loadValue(forKey: "\(identifier.uuidString).accessToken") == nil)
+
+        let restoredConfiguration = ATProtocolConfiguration(
+            credentialStore: store,
+            sessionIdentifier: identifier
         )
+        #expect(await restoredConfiguration.cachedAccessToken() == nil)
+        #expect(try await restoredConfiguration.storedRefreshToken() == "refresh")
+        #expect(try await restoredConfiguration.retrieveRefreshTokenCredential() == "refresh")
+        #expect(try await restoredConfiguration.retrievePasswordCredential() == "password")
+
+        await configuration.clearCachedAccessToken()
+        #expect(await configuration.cachedAccessToken() == nil)
+    }
+
+    @Test("Missing refresh token is exposed as nil")
+    internal func missingRefreshTokenIsExposedAsNil() async throws {
+        let configuration = ATProtocolConfiguration(
+            credentialStore: InMemoryCredentialStore()
+        )
+
+        #expect(try await configuration.storedRefreshToken() == nil)
     }
 
     #if os(iOS) || os(macOS) || os(tvOS) || os(visionOS) || os(watchOS)
@@ -86,37 +112,4 @@ internal struct ATCredentialStoreTests {
         #expect(store.serviceName == serviceName)
     }
     #endif
-}
-
-private actor InMemoryCredentialStore: ATCredentialStore {
-
-    private var values: [String: Data] = [:]
-
-    fileprivate func loadValue(forKey key: String) async throws -> Data? {
-        return values[key]
-    }
-
-    fileprivate func saveValue(_ value: Data, forKey key: String) async throws {
-        values[key] = value
-    }
-
-    fileprivate func deleteValue(forKey key: String) async throws {
-        values[key] = nil
-    }
-}
-
-private final class CredentialConfiguration: AppPasswordCredentialStoring {
-    fileprivate let credentialStore: ATCredentialStore
-    fileprivate let pdsURL = "https://bsky.social"
-    fileprivate let configuration = URLSessionConfiguration.ephemeral
-    fileprivate let instanceUUID: UUID
-
-    fileprivate init(credentialStore: ATCredentialStore, instanceUUID: UUID) {
-        self.credentialStore = credentialStore
-        self.instanceUUID = instanceUUID
-    }
-
-    fileprivate func authorization(for request: URLRequest) async throws -> SessionAuthorization? {
-        return nil
-    }
 }

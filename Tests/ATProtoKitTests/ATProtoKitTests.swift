@@ -1,19 +1,16 @@
+//
+//  ATProtoKitTests.swift
+//  ATProtoKitTests
+//
+//  Created by Christopher Jr Riley on 2026-08-17.
+//
+
 import Foundation
 import Testing
 @testable import ATProtoKit
 
 @Suite("ATFacetParser Tests")
 struct ATFacetParserTests {
-
-    struct ByteRange: Equatable {
-        let byteStart: Int
-        let byteEnd: Int
-    }
-
-    struct LinkExpectation: Equatable {
-        let text: String
-        let uri: String
-    }
 
     @Test("Session service endpoint builds authenticated wrapper request URL")
     func sessionServiceEndpointBuildsAuthenticatedWrapperRequestURL() throws {
@@ -282,23 +279,6 @@ struct ATFacetParserTests {
     }
     #endif
 
-    private func expectedByteRanges(for matches: [String], in text: String) -> [ByteRange] {
-        var ranges = [ByteRange]()
-        var searchStart = text.startIndex
-
-        for match in matches {
-            guard let range = text.range(of: match, range: searchStart..<text.endIndex) else {
-                continue
-            }
-
-            let byteStart = text.utf8.distance(from: text.utf8.startIndex, to: range.lowerBound.samePosition(in: text.utf8) ?? text.utf8.startIndex)
-            let byteEnd = text.utf8.distance(from: text.utf8.startIndex, to: range.upperBound.samePosition(in: text.utf8) ?? text.utf8.startIndex)
-            ranges.append(ByteRange(byteStart: byteStart, byteEnd: byteEnd))
-            searchStart = range.upperBound
-        }
-
-        return ranges
-    }
 }
 
 //@Suite("PreferenceUnion Tests")
