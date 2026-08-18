@@ -38,9 +38,18 @@ let package = Package(
         //            dependencies: ["VersionNumberPluginExec"]
         //        )
 
-        //        .testTarget(
-        //            name: "ATProtoKitTests",
-        //            dependencies: ["ATProtoKit"]),
+        .testTarget(
+            name: "ATProtoKitTests",
+            dependencies: ["ATProtoKit"],
+            path: "Tests",
+            exclude: [
+                "Helpers/park.jpg",
+                "Helpers/reading_with_coffee.jpg"
+            ],
+            sources: [
+                "ATProtoKitTests",
+                "Helpers"
+            ]),
     ]
 )
 
