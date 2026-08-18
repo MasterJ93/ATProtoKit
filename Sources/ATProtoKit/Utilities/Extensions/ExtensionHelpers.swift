@@ -233,6 +233,21 @@ extension URL {
 
         return origin
     }
+
+    /// Determines whether the URL is a valid Personal Data Server (PDS) service endpoint.
+    ///
+    /// PDS service endpoints are HTTPS origins. A trailing root slash is accepted because URL
+    /// producers commonly serialize an origin with one, but path prefixes and other URL components
+    /// are not valid.
+    internal var isValidPDSServiceEndpoint: Bool {
+        return self.scheme?.lowercased() == "https"
+        && self.host != nil
+        && self.user == nil
+        && self.password == nil
+        && (self.path.isEmpty || self.path == "/")
+        && self.query == nil
+        && self.fragment == nil
+    }
 }
 
 // MARK: - JobStatusDefinition Extension
@@ -250,26 +265,6 @@ extension JSONDecoder {
         }
 
         self.userInfo[key] = recordRegistry
-    }
-}
-
-// MARK: - URL Extension
-
-extension URL {
-
-    /// Determines whether the URL is a valid Personal Data Server (PDS) service endpoint.
-    ///
-    /// PDS service endpoints are HTTPS origins. A trailing root slash is accepted because URL
-    /// producers commonly serialize an origin with one, but path prefixes and other URL components
-    /// are not valid.
-    internal var isValidPDSServiceEndpoint: Bool {
-        return self.scheme?.lowercased() == "https"
-        && self.host != nil
-        && self.user == nil
-        && self.password == nil
-        && (self.path.isEmpty || self.path == "/")
-        && self.query == nil
-        && self.fragment == nil
     }
 }
 
