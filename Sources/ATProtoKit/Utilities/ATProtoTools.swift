@@ -291,7 +291,7 @@ public struct ATProtoTools {
     /// should be able to parse
     /// them and return a proper ``RecordQuery``. However, it's still important to validate the
     /// record by using
-    /// ``ATProtoKit/ATProtoKit/getRepositoryRecord(from:collection:recordKey:recordCID:)``.
+    /// ``ATProtoKit/getRepositoryRecord(from:collection:recordKey:recordCID:pdsURL:)``.
     ///
     /// - Parameters:
     ///   - uri: The URI to parse.
