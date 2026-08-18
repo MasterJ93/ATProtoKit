@@ -93,11 +93,6 @@ ATProtoKit is fully open source under the [MIT license](https://github.com/Maste
 - ``ATCredentialStore``
 - ``AppleSecureKeychain``
 
- @Comment {
-     The following should be added:
-        Creating and Managing a Session (Article)
- }
-
 ### Lexicons and Records
 
 - ``AppBskyLexicon``
