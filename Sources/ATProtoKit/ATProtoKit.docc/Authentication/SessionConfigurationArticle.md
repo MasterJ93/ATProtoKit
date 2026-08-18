@@ -2,6 +2,10 @@
 
 Choose a built-in authentication configuration or implement ATProtoKit's request-time session contract.
 
+@Metadata {
+    @PageColor(blue)
+}
+
 ## Overview
 
 ``SessionConfiguration`` is the common request-time contract used by ATProtoKit. It identifies a session, configures networking, exposes the current account context, and authorizes requests. It does not require every conforming type to implement account creation, token refresh, credential storage, or session deletion.
