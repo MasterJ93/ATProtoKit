@@ -359,6 +359,78 @@ struct OAuthIntegrationHookTests {
         await UserSessionRegistry.shared.removeSession(for: configuration.instanceUUID)
     }
 
+    @Test("Get session uses the OAuth executor")
+    private func getSessionUsesOAuthExecutor() async throws {
+        let recorder = RequestRecorder()
+        let endpoint = try #require(URL(string: "https://oauth-pds.example"))
+        let executor = ClosureATRequestExecutor { request, requirement in
+            await recorder.record(request, requirement: requirement)
+            let response = try #require(HTTPURLResponse(
+                url: request.url ?? URL(fileURLWithPath: "/"),
+                statusCode: 200,
+                httpVersion: nil,
+                headerFields: nil
+            ))
+            return (sessionResponseData(), response)
+        }
+        let context = SessionAuthorizationContext(
+            sessionDID: "did:plc:oauth",
+            handle: "oauth.example",
+            serviceEndpoint: endpoint,
+            grantedScopes: ["atproto"]
+        )
+        let configuration = ATOAuthSessionConfiguration(
+            context: context,
+            requestExecutor: executor
+        )
+        let client = try await ATProtoKit.createOAuthSession(
+            sessionConfiguration: configuration,
+            canUseBlueskyRecords: false
+        )
+
+        let session = try await client.getSession()
+
+        let value = try #require(await recorder.values.first)
+        #expect(session.handle == "session.example")
+        #expect(value.requirement == .session)
+        #expect(value.request.url?.absoluteString == "https://oauth-pds.example/xrpc/com.atproto.server.getSession")
+        await UserSessionRegistry.shared.removeSession(for: configuration.instanceUUID)
+    }
+
+    @Test("Get session uses App Password-style header authorization")
+    private func getSessionUsesHeaderAuthorization() async throws {
+        let recorder = RequestRecorder()
+        let endpoint = try #require(URL(string: "https://app-password-pds.example"))
+        let configuration = HeaderSessionConfiguration(
+            pdsURL: endpoint.absoluteString,
+            instanceUUID: UUID()
+        )
+        let executor = ClosureATRequestExecutor { request, requirement in
+            await recorder.record(request, requirement: requirement)
+            let response = try #require(HTTPURLResponse(
+                url: request.url ?? URL(fileURLWithPath: "/"),
+                statusCode: 200,
+                httpVersion: nil,
+                headerFields: nil
+            ))
+            return (sessionResponseData(), response)
+        }
+        let client = await ATProtoKit(
+            sessionConfiguration: configuration,
+            apiClientConfiguration: APIClientConfiguration(responseProvider: executor),
+            pdsURL: endpoint.absoluteString,
+            canUseBlueskyRecords: false
+        )
+
+        let session = try await client.getSession()
+
+        let value = try #require(await recorder.values.first)
+        #expect(session.did == "did:plc:session")
+        #expect(value.requirement == .session)
+        #expect(value.request.url?.absoluteString == "https://app-password-pds.example/xrpc/com.atproto.server.getSession")
+        #expect(value.request.value(forHTTPHeaderField: "Authorization") == "Bearer app-password-access-token")
+    }
+
     @Test("Protected methods preserve their lexicon NSIDs")
     func protectedMethodsPreserveLexiconNSIDs() async throws {
         let recorder = RequestRecorder()
@@ -516,6 +588,10 @@ private struct TestBody: Encodable, Sendable {
 
 private enum TestExecutorError: Error {
     case requestRecorded
+}
+
+private func sessionResponseData() -> Data {
+    return Data(#"{"handle":"session.example","did":"did:plc:session","active":true}"#.utf8)
 }
 
 private final class HeaderSessionConfiguration: SessionConfiguration {

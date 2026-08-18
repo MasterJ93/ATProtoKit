@@ -155,7 +155,11 @@ public final class ATProtocolConfiguration: AppPasswordSessionManaging {
 //                }
 //            }
 //
-//            _ = try await self.getSession(by: accessToken)
+//            _ = try await ATProtoKit(
+//                sessionConfiguration: self,
+//                pdsURL: pdsURL,
+//                canUseBlueskyRecords: false
+//            ).getSession()
 //        } else {
 //            do {
 //                try await self.checkRefreshToken(refreshToken: refreshToken)

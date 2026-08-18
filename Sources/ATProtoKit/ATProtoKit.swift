@@ -160,7 +160,7 @@ public final class ATProtoKit: Sendable, ATProtoKitConfiguration, ATRecordConfig
     ///
     /// If you're using methods such as
     /// ``ATProtoKit/ATProtoKit/createAccount(email:handle:existingDID:inviteCode:verificationCode:verificationPhone:password:recoveryKey:plcOperation:)``
-    /// or ``ATProtoKit/ATProtoKit/getSession(by:)``, be sure to set
+    /// or ``ATProtoKit/ATProtoKit/getSession()``, be sure to set
     /// `canUseBlueskyRecords` to `false`. While the initializer does check to see if the records
     /// have been added, it's best not to invoke it, esepcially if you're using ATProtoKit for a
     /// generic AT Protocol service that doesn't use Bluesky records.

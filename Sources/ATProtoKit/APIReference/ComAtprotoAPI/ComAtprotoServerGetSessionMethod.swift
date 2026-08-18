@@ -14,9 +14,10 @@ extension ATProtoKit {
 
     /// Gets the session information for the user account.
     /// 
-    /// It's best to use ``ATProtocolConfiguration`` or another ``SessionConfiguration``-conforming
-    /// `class` instead of using this method directly. If you're making a `class` that conforms to
-    /// ``SessionConfiguration``, be sure to use this with the method used for getting a session.
+    /// Call this method on an `ATProtoKit` client created with ``ATProtocolConfiguration``,
+    /// ``ATOAuthSessionConfiguration``, or another ``SessionConfiguration`` implementation. The
+    /// configured session supplies the appropriate authorization without exposing its token to
+    /// this lexicon method.
     /// 
     /// - Note: According to the AT Protocol specifications: "Get information about the current
     /// auth session. Requires auth."
@@ -25,39 +26,49 @@ extension ATProtoKit {
     /// 
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/server/getSession.json
     ///
-    /// - Parameter accessToken: The access token used for API requests that requests authentication.
-    ///
     /// - Returns: An instance of the session-related information for the user account.
     /// 
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
-    public func getSession(
-        by accessToken: String
-    ) async throws -> ComAtprotoLexicon.Server.GetSessionOutput {
-        guard let session = try await self.getUserSession() else {
+    public func getSession() async throws -> ComAtprotoLexicon.Server.GetSessionOutput {
+        let serviceEndpoint: URL
+        if let session = try await self.getUserSession() {
+            serviceEndpoint = session.serviceEndpoint
+        } else if let sessionConfiguration,
+                  let configuredServiceEndpoint = URL(string: sessionConfiguration.pdsURL) {
+            serviceEndpoint = configuredServiceEndpoint
+        } else {
             throw ATRequestPrepareError.missingActiveSession
         }
 
-        let sessionURL = session.serviceEndpoint.absoluteString
+        let requestURL = serviceEndpoint
+            .appending(path: "xrpc")
+            .appending(path: "com.atproto.server.getSession")
+        let request = apiClientService.createRequest(
+            forRequest: requestURL,
+            andMethod: .get,
+            requiresAuthorization: true
+        )
 
-        guard let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.server.getSession") else {
-            throw ATRequestPrepareError.invalidRequestURL
-        }
+        return try await apiClientService.sendRequest(
+            request,
+            decodeTo: ComAtprotoLexicon.Server.GetSessionOutput.self
+        )
+    }
 
-        do {
-            let request = apiClientService.createRequest(
-                forRequest: requestURL,
-                andMethod: .get,
-                requiresAuthorization: true
-            )
-            let response = try await apiClientService.sendRequest(
-                request,
-                decodeTo: ComAtprotoLexicon.Server.GetSessionOutput.self
-            )
-
-            return response
-        } catch {
-            throw error
-        }
+    /// Gets the session information for the user account.
+    ///
+    /// - Parameter accessToken: The legacy access-token argument. This value is ignored because
+    /// authorization is supplied by the configured session.
+    ///
+    /// - Returns: An instance of the session-related information for the user account.
+    ///
+    /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
+    /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
+    @available(*, deprecated, renamed: "getSession()")
+    public func getSession(
+        by accessToken: String
+    ) async throws -> ComAtprotoLexicon.Server.GetSessionOutput {
+        return try await self.getSession()
     }
 }

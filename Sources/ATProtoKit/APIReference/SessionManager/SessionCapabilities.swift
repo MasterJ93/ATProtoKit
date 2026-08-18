@@ -453,13 +453,15 @@ extension AppPasswordSessionManaging {
         }
 
         try await ensureValidToken()
-        let accessToken = try await requireCachedAccessToken()
 
         do {
-            let response = try await ATProtoKit(apiClientConfiguration: .init(urlSessionConfiguration: configuration), pdsURL: self.pdsURL, canUseBlueskyRecords: false)
-                .getSession(
-                    by: accessToken
-                )
+            let client = await ATProtoKit(
+                sessionConfiguration: self,
+                apiClientConfiguration: .init(urlSessionConfiguration: configuration),
+                pdsURL: self.pdsURL,
+                canUseBlueskyRecords: false
+            )
+            let response = try await client.getSession()
 
             let convertedDIDDocument = self.convertDIDDocument(response.didDocument)
 
