@@ -38,7 +38,9 @@ extension ATProtoKit {
             throw ATRequestPrepareError.missingActiveSession
         }
 
-        let requestURL = session.serviceEndpoint.appending(path: "xrpc/com.atproto.repo.uploadBlob")
+        let requestURL = session.serviceEndpoint
+            .appendingPathComponent("xrpc")
+            .appendingPathComponent("com.atproto.repo.uploadBlob")
 
         do {
             let request = apiClientService.createRequest(

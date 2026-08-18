@@ -42,8 +42,8 @@ extension ATProtoKit {
         }
 
         let requestURL = serviceEndpoint
-            .appending(path: "xrpc")
-            .appending(path: "com.atproto.server.getSession")
+            .appendingPathComponent("xrpc")
+            .appendingPathComponent("com.atproto.server.getSession")
         let request = apiClientService.createRequest(
             forRequest: requestURL,
             andMethod: .get,
