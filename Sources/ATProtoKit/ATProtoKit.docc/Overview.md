@@ -48,7 +48,7 @@ ATProtoKit is fully open source under the [MIT license](https://github.com/Maste
 @Links(visualStyle: detailedGrid) {
     - <doc:OAuthIntegration>
     - <doc:CredentialStorageMigration>
-    - <doc:SessionDebuggableArticle>
+    - <doc:OAuthWalkthrough>
     - <doc:SessionConfigurationArticle>
 }
 
@@ -81,6 +81,7 @@ ATProtoKit is fully open source under the [MIT license](https://github.com/Maste
 - ``AppPasswordCredentialStoring``
 - ``AppPasswordSessionManaging``
 - <doc:OAuthIntegration>
+- <doc:OAuthWalkthrough>
 - ``ATOAuthSessionConfiguration``
 - ``OAuthSessionSynchronizing``
 - ``ClosureATRequestExecutor``
