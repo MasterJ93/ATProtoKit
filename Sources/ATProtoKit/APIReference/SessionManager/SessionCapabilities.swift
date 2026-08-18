@@ -6,6 +6,9 @@
 //
 
 import Foundation
+#if canImport(FoundationNetworking)
+import FoundationNetworking
+#endif
 
 /// Manages the relationship between a session configuration and ``UserSessionRegistry``.
 public protocol UserSessionRegistryManaging: SessionConfiguration {
