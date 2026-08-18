@@ -81,7 +81,7 @@ You can use the Swift Package Manager to download and import the library into yo
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/MasterJ93/ATProtoKit.git", from: "0.33.0")
+    .package(url: "https://github.com/MasterJ93/ATProtoKit.git", from: "0.34.0")
 ]
 ```
 
