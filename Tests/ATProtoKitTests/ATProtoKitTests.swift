@@ -17,8 +17,8 @@ struct ATFacetParserTests {
         let pdsURL = "https://bsky.social"
         let serviceEndpoint = try #require(URL(string: "https://pds.host.bsky.network"))
         let session = UserSession(
-            handle: "alice.example.com",
-            sessionDID: "did:plc:alice",
+            handle: "lucy.example.com",
+            sessionDID: "did:plc:lucy",
             isEmailAuthenticationFactorEnabled: false,
             isActive: true,
             status: nil,
@@ -34,8 +34,8 @@ struct ATFacetParserTests {
         let matchingPDSURL = "https://pds.host.bsky.network"
         let matchingServiceEndpoint = try #require(URL(string: matchingPDSURL))
         let matchingSession = UserSession(
-            handle: "alice.example.com",
-            sessionDID: "did:plc:alice",
+            handle: "lucy.example.com",
+            sessionDID: "did:plc:lucy",
             isEmailAuthenticationFactorEnabled: false,
             isActive: true,
             status: nil,

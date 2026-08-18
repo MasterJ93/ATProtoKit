@@ -45,7 +45,16 @@ let package = Package(
 //
         .testTarget(
             name: "ATProtoKitTests",
-            dependencies: ["ATProtoKit"]),
+            dependencies: ["ATProtoKit"],
+            path: "Tests",
+            exclude: [
+                "Helpers/park.jpg",
+                "Helpers/reading_with_coffee.jpg"
+            ],
+            sources: [
+                "ATProtoKitTests",
+                "Helpers"
+            ]),
     ]
 )
 
