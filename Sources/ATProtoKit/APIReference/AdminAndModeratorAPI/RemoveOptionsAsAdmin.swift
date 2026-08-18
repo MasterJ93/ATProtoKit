@@ -24,13 +24,9 @@ extension ATProtoAdmin {
         by keys: [String],
         scope: ToolsOzoneLexicon.Setting.RemoveOptions.Scope
     ) async throws {
-        guard let session = try await self.getUserSession(),
-              let keychain = sessionConfiguration?.keychainProtocol else {
+        guard let session = try await self.getUserSession() else {
             throw ATRequestPrepareError.missingActiveSession
         }
-
-        try await sessionConfiguration?.ensureValidToken()
-        let accessToken = try await keychain.retrieveAccessToken()
 
         guard let sessionURL = session.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/tools.ozone.setting.removeOptions") else {
@@ -48,7 +44,7 @@ extension ATProtoAdmin {
                 andMethod: .post,
                 acceptValue: "application/json",
                 contentTypeValue: nil,
-                authorizationValue: "Bearer \(accessToken)"
+                requiresAuthorization: true
             )
 
             _ = try await apiClientService.sendRequest(

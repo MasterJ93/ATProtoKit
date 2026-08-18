@@ -89,10 +89,10 @@
 
 - ``addQuotePostToEmbed(_:)``
 - ``buildExternalEmbed(from:title:description:thumbnailImageURL:session:)``
-- ``buildVideo(_:with:altText:aspectRatio:pollingFrequency:pdsURL:accessToken:)``
+- ``buildVideo(_:with:altText:aspectRatio:pollingFrequency:pdsURL:)``
 - ``grabURL(from:linkbuilder:)``
-- ``uploadImages(_:pdsURL:accessToken:maxSize:)``
-- ``uploadGallery(_:pdsURL:accessToken:)``
+- ``uploadImages(_:pdsURL:maxSize:)``
+- ``uploadGallery(_:pdsURL:)``
 - ``pdsURL``
 - ``Caption``
 - ``EmbedIdentifier``

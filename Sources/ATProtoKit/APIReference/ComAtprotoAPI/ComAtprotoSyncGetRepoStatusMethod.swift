@@ -28,12 +28,10 @@ extension ATProtoKit {
     ///  - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func getRepositoryStatus(from actorDID: String) async throws -> ComAtprotoLexicon.Sync.GetRepositoryStatusOutput {
-        guard let _ = try await self.getUserSession(),
-              let keychain = sessionConfiguration?.keychainProtocol else {
+        guard let _ = try await self.getUserSession() else {
             throw ATRequestPrepareError.missingActiveSession
         }
 
-        let accessToken = try await keychain.retrieveAccessToken()
 //        let sessionURL = session.serviceEndpoint.absoluteString
 
         guard let requestURL = URL(string: "https://bsky.network/xrpc/com.atproto.sync.getRepoStatus") else {
@@ -57,7 +55,7 @@ extension ATProtoKit {
                 andMethod: .get,
                 acceptValue: "application/json",
                 contentTypeValue: nil,
-                authorizationValue: "Bearer \(accessToken)"
+                requiresAuthorization: true
             )
             let response = try await apiClientService.sendRequest(
                 request,

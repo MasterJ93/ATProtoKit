@@ -13,6 +13,7 @@ The AT Protocol requires that dates must be formatted in the ISO8601 format. ATP
 ## Usage
 
 If you rather write the custom initializers and methods manually, you can do so as well. When creating the custom initializers and methods, you'll want to replace the following methods with the custom ones:
+
 Replace|With...
 ---:|:---
 `decode(_:forKey:)`|``Swift/KeyedDecodingContainer/decodeDate(forKey:)``
@@ -80,15 +81,18 @@ public struct UserProfile: ATRecordProtocol {
 }
 ```
 
-
 ## Topics
+
 ### CustomDateFormatter
+
 - ``CustomDateFormatter``
 
 ### Decodable Methods
+
 - ``Swift/KeyedDecodingContainer/decodeDate(forKey:)``
 - ``Swift/KeyedDecodingContainer/decodeDateIfPresent(forKey:)``
 
 ### Encodable Methods
+
 - ``Swift/KeyedEncodingContainer/encodeDate(_:forKey:)``
 - ``Swift/KeyedEncodingContainer/encodeDateIfPresent(_:forKey:)``

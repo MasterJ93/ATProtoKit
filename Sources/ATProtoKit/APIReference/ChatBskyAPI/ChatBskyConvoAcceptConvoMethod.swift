@@ -24,12 +24,10 @@ extension ATProtoBlueskyChat {
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func acceptConversation(by id: String) async throws -> ChatBskyLexicon.Conversation.AcceptConversationOutput {
-        guard let session = try await self.getUserSession(),
-              let keychain = sessionConfiguration?.keychainProtocol else {
+        guard let session = try await self.getUserSession() else {
             throw ATRequestPrepareError.missingActiveSession
         }
 
-        let accessToken = try await keychain.retrieveAccessToken()
         let sessionURL = session.serviceEndpoint.absoluteString
 
         guard let requestURL = URL(string: "\(sessionURL)/xrpc/chat.bsky.convo.acceptConvo") else {
@@ -46,7 +44,7 @@ extension ATProtoBlueskyChat {
                 andMethod: .post,
                 acceptValue: "application/json",
                 contentTypeValue: "application/json",
-                authorizationValue: "Bearer \(accessToken)",
+                requiresAuthorization: true,
                 isRelatedToBskyChat: true
             )
 

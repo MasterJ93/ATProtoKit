@@ -4,8 +4,8 @@ Develop and manage client and server-side applications for the AT Protocol and B
 
 @Metadata {
     @PageImage(
-        purpose: icon, 
-        source: "atprotokit_icon", 
+        purpose: icon,
+        source: "atprotokit_icon",
         alt: "A technology icon representing the ATProtoKit framework.")
     @PageColor(blue)
 }
@@ -17,6 +17,7 @@ ATProtoKit is a Swift package designed for building applications and interacting
 ATProtoKit aims to be easy enough to use for novice developers, while also being extendable and advanced enough for more experienced developers.
 
 Below is a very quick example to run the project:
+
 ```swift
 import ATProtoKit
 
@@ -43,11 +44,12 @@ Task {
 ATProtoKit is fully open source under the [MIT license](https://github.com/MasterJ93/ATProtoKit/blob/main/LICENSE.md). You can take a look at it and make contributions to it [on GitHub](https://github.com/MasterJ93/ATProtoKit). Some of the documentation has been copied or adapted from [Bluesky's atproto repo](https://github.com/bluesky-social/atproto). ATProtoKit adopts the [MIT license](https://github.com/MasterJ93/ATProtoKit/blob/main/ATProtoLicense/ATPROTO-LICENSE.txt) from their repo.
 
 ## What's New in ATProtoKit
+
 @Links(visualStyle: detailedGrid) {
+    - <doc:OAuthIntegration>
+    - <doc:CredentialStorageMigration>
     - <doc:SessionDebuggableArticle>
     - <doc:SessionConfigurationArticle>
-    - <doc:0210AuthFlowChange>
-    - <doc:getRecordTutorial>
 }
 
 ## Topics
@@ -67,20 +69,34 @@ ATProtoKit is fully open source under the [MIT license](https://github.com/Maste
 
 ### Authentication and Session Management
 
+- <doc:CredentialStorageMigration>
 - ``ATProtocolConfiguration``
 - ``ATProtoKit/ATProtoKitConfiguration``
-- ``SessionConfiguration``
 - <doc:SessionConfigurationArticle>
+- ``SessionConfiguration``
+- ``SessionAuthorization``
+- ``SessionAuthorizationContext``
+- ``AppPasswordAuthenticating``
+- ``ATAccountCreating``
+- ``AppPasswordCredentialStoring``
+- ``AppPasswordSessionManaging``
+- <doc:OAuthIntegration>
+- ``ATOAuthSessionConfiguration``
+- ``OAuthSessionSynchronizing``
+- ``ClosureATRequestExecutor``
+- ``ATRequestAuthorizationRequirement``
+- ``ATRequestAuthenticator``
+- ``UserSessionRegistryManaging``
 - ``UserSessionRegistry``
 - ``UserSession``
-- ``SecureKeychainProtocol``
+- ``ATCredentialStore``
 - ``AppleSecureKeychain``
- 
+
  @Comment {
      The following should be added:
         Creating and Managing a Session (Article)
  }
- 
+
 ### Lexicons and Records
 
 - ``AppBskyLexicon``
@@ -109,7 +125,7 @@ ATProtoKit is fully open source under the [MIT license](https://github.com/Maste
 ### Interacting With Users
 
 @Comment {
-    
+
 }
 
 ### Identifiers and Schemes
@@ -145,7 +161,6 @@ ATProtoKit is fully open source under the [MIT license](https://github.com/Maste
 - ``ConsoleDebugger``
 - <doc:SessionDebuggableArticle>
 
-
 ### Utilities
 
 - ``ATIdentityProtocol``
@@ -167,3 +182,7 @@ ATProtoKit is fully open source under the [MIT license](https://github.com/Maste
 ### Error Handling
 
 - ``ATProtoError``
+
+### Archived Articles
+
+- <doc:0210AuthFlowChange>

@@ -36,13 +36,10 @@ extension ATProtoKit {
         expirationTime: Int? = 60,
         lexiconMethod: String? = nil
     ) async throws -> ComAtprotoLexicon.Server.GetServiceAuthOutput {
-        guard let session = try await self.getUserSession(),
-              let keychain = sessionConfiguration?.keychainProtocol else {
+        guard let session = try await self.getUserSession() else {
             throw ATRequestPrepareError.missingActiveSession
         }
 
-        try await sessionConfiguration?.ensureValidToken()
-        let accessToken = try await keychain.retrieveAccessToken()
         let sessionURL = session.serviceEndpoint.absoluteString
 
         guard let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.server.getServiceAuth") else {
@@ -74,7 +71,7 @@ extension ATProtoKit {
                 andMethod: .get,
                 acceptValue: "application/json",
                 contentTypeValue: nil,
-                authorizationValue: "Bearer \(accessToken)"
+                requiresAuthorization: true
             )
             let response = try await apiClientService.sendRequest(
                 request,

@@ -1,0 +1,85 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "type": "swift",
+            "label": "swift: Build ATProtoKit (Debug)",
+            "detail": "Build the ATProtoKit target with debug configuration.",
+            "args": [
+                "build",
+                "--target",
+                "ATProtoKit",
+                "--configuration",
+                "debug"
+            ],
+            "cwd": "${workspaceFolder}",
+            "env": {},
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        },
+        {
+            "type": "swift",
+            "label": "swift: Build ATProtoKit (Release)",
+            "detail": "Build the ATProtoKit target with release configuration.",
+            "args": [
+                "build",
+                "--target",
+                "ATProtoKit",
+                "--configuration",
+                "release"
+            ],
+            "cwd": "${workspaceFolder}",
+            "env": {},
+            "group": "build"
+        },
+        {
+            "type": "swift",
+            "label": "swift: Test ATProtoKit",
+            "detail": "Build and run all ATProtoKit Swift Testing tests.",
+            "args": [
+                "test",
+                "--enable-swift-testing"
+            ],
+            "cwd": "${workspaceFolder}",
+            "env": {},
+            "group": {
+                "kind": "test",
+                "isDefault": true
+            }
+        },
+        {
+            "type": "swift",
+            "label": "swift: Test ATProtoKit with Coverage",
+            "detail": "Build and run all ATProtoKit Swift Testing tests with code coverage enabled.",
+            "args": [
+                "test",
+                "--enable-swift-testing",
+                "--enable-code-coverage"
+            ],
+            "cwd": "${workspaceFolder}",
+            "env": {},
+            "group": "test"
+        },
+        {
+            "type": "swift",
+            "label": "swift: Build ATProtoKit DocC Archive",
+            "detail": "Build the ATProtoKit DocC archive with warnings treated as errors.",
+            "args": [
+                "package",
+                "--allow-writing-to-directory",
+                ".build/ATProtoKit.doccarchive",
+                "generate-documentation",
+                "--target",
+                "ATProtoKit",
+                "--output-path",
+                ".build/ATProtoKit.doccarchive",
+                "--warnings-as-errors"
+            ],
+            "cwd": "${workspaceFolder}",
+            "env": {},
+            "group": "build"
+        }
+    ]
+}

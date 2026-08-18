@@ -27,6 +27,8 @@ extension ATProtoKit {
     ///   Defaults to `6`. Can be between `0` and `1000`.
     ///   - parentHeight: The number of parent layers that can be included in the result.
     ///   Optional. Defaults to `80`. Can be between `0` and `1000`.
+    ///   - labelersValue: The `atproto-accept-labelers` header value, containing the labeler
+    ///   services whose labels should be applied to the response. Optional.
     /// - Returns: A post thread that matches the `postURI`.
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
@@ -34,12 +36,14 @@ extension ATProtoKit {
     public func getPostThread(
         from postURI: String,
         depth: Int? = 6,
-        parentHeight: Int? = 80
+        parentHeight: Int? = 80,
+        labelersValue: String? = nil
     ) async throws -> AppBskyLexicon.Feed.GetPostThreadOutput {
-        let authorizationValue = await prepareAuthorizationValue()
+        let session = try await self.getUserSession()
+        let requiresAuthorization = session != nil
 
-        guard let sessionURL = authorizationValue != nil ? try await self.getUserSession()?.serviceEndpoint.absoluteString : self.pdsURL,
-              let requestURL = URL(string: "\(sessionURL)/xrpc/app.bsky.feed.getPostThread") else {
+        let sessionURL = session?.serviceEndpoint.absoluteString ?? self.pdsURL
+        guard let requestURL = URL(string: "\(sessionURL)/xrpc/app.bsky.feed.getPostThread") else {
             throw ATRequestPrepareError.invalidRequestURL
         }
 
@@ -70,7 +74,8 @@ extension ATProtoKit {
                 andMethod: .get,
                 acceptValue: "application/json",
                 contentTypeValue: nil,
-                authorizationValue: authorizationValue
+                requiresAuthorization: requiresAuthorization,
+                labelersValue: labelersValue
             )
             let response = try await apiClientService.sendRequest(
                 request,

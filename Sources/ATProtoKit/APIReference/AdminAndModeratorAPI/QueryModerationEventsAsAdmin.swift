@@ -95,13 +95,9 @@ extension ATProtoAdmin {
         ageAssuranceState: ToolsOzoneLexicon.Moderation.QueryEvents.AgeAssuranceState? = nil,
         cursor: String? = nil
     ) async throws -> ToolsOzoneLexicon.Moderation.QueryEventsOutput {
-        guard let session = try await self.getUserSession(),
-              let keychain = sessionConfiguration?.keychainProtocol else {
+        guard let session = try await self.getUserSession() else {
             throw ATRequestPrepareError.missingActiveSession
         }
-
-        try await sessionConfiguration?.ensureValidToken()
-        let accessToken = try await keychain.retrieveAccessToken()
 
         guard let sessionURL = session.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/tools.ozone.moderation.queryEvents") else {
@@ -232,7 +228,7 @@ extension ATProtoAdmin {
                 andMethod: .get,
                 acceptValue: "application/json",
                 contentTypeValue: nil,
-                authorizationValue: "Bearer \(accessToken)"
+                requiresAuthorization: true
             )
             let response = try await apiClientService.sendRequest(
                 request,

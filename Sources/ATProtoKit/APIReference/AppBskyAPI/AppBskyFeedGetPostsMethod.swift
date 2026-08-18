@@ -27,19 +27,22 @@ extension ATProtoKit {
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/feed/getPosts.json
     ///
-    /// - Parameter uris: An array of URIs of post records.
+    /// - Parameters:
+    ///   - uris: An array of URIs of post records.
+    ///   - labelersValue: The `atproto-accept-labelers` header value, containing the labeler
+    ///   services whose labels should be applied to the response. Optional.
     /// - Returns: An array of hydrated posts.
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
-    public func getPosts(_ uris: [String]) async throws -> AppBskyLexicon.Feed.GetPostsOutput {
-        guard let session = try await self.getUserSession(),
-              let keychain = sessionConfiguration?.keychainProtocol else {
+    public func getPosts(
+        _ uris: [String],
+        labelersValue: String? = nil
+    ) async throws -> AppBskyLexicon.Feed.GetPostsOutput {
+        guard let session = try await self.getUserSession() else {
             throw ATRequestPrepareError.missingActiveSession
         }
 
-        try await sessionConfiguration?.ensureValidToken()
-        let accessToken = try await keychain.retrieveAccessToken()
         let sessionURL = session.serviceEndpoint.absoluteString
 
         guard let requestURL = URL(string: "\(sessionURL)/xrpc/app.bsky.feed.getPosts") else {
@@ -65,7 +68,8 @@ extension ATProtoKit {
                 andMethod: .get,
                 acceptValue: "application/json",
                 contentTypeValue: nil,
-                authorizationValue: "Bearer \(accessToken)"
+                requiresAuthorization: true,
+                labelersValue: labelersValue
             )
             let response = try await apiClientService.sendRequest(
                 request,

@@ -27,13 +27,9 @@ extension ATProtoAdmin {
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func grantVerifications(_ verifications: [ToolsOzoneLexicon.Verification.GrantVerifications.VerificationInput]) async throws -> ToolsOzoneLexicon.Verification.GrantVerificationsOutput {
-        guard let session = try await self.getUserSession(),
-              let keychain = sessionConfiguration?.keychainProtocol else {
+        guard let session = try await self.getUserSession() else {
             throw ATRequestPrepareError.missingActiveSession
         }
-
-        try await sessionConfiguration?.ensureValidToken()
-        let accessToken = try await keychain.retrieveAccessToken()
 
         guard let sessionURL = session.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/tools.ozone.verification.grantVerifications") else {
@@ -50,7 +46,7 @@ extension ATProtoAdmin {
                 andMethod: .post,
                 acceptValue: "application/json",
                 contentTypeValue: "application/json",
-                authorizationValue: "Bearer \(accessToken)"
+                requiresAuthorization: true
             )
             let response = try await apiClientService.sendRequest(
                 request,

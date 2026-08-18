@@ -412,22 +412,6 @@ extension APIClientService {
     }
 }
 
-/// An error type related to keychain operations.
-public enum ATKeychainError: ATProtoError {
-
-    /// Indicates a failure while storing an item.
-    case storeError(message: String)
-
-    /// Indicates a failure while retrieving an item.
-    case retrievalError(message: String)
-
-    /// Indicates a failure while updating an item.
-    case updateError(message: String)
-
-    /// Indicates a failure while removing an item.
-    case removalError(message: String)
-}
-
 /// An error type related to issues surrounding
 public enum ATEventStreamError: ATProtoError {
 
@@ -492,4 +476,104 @@ public enum FeedViewPostDefinitionError: ATProtoError {
     ///
     /// - Parameter index: The index number.
     case indexTooHigh(index: Int)
+}
+
+/// An error type related to ``ATOAuthSessionConfiguration``
+public enum ATOAuthSessionConfigurationError: ATProtoError, Equatable {
+
+    /// No external refresh operation was configured.
+    case missingRefreshHandler
+
+    /// The OAuth token response did not grant the mandatory `atproto` scope.
+    case missingATProtoScope
+
+    /// The OAuth session contains an invalid account decentralized identifier.
+    ///
+    /// - Parameter did: The invalid decentralized identifier.
+    case invalidSessionDID(did: String)
+
+    /// The OAuth session contains an invalid Personal Data Server endpoint.
+    ///
+    /// - Parameter endpoint: The invalid endpoint.
+    case invalidServiceEndpoint(endpoint: URL)
+
+    /// The OAuth session does not grant all scopes required by an operation.
+    ///
+    /// - Parameter scopes: The required scopes that were not granted.
+    case insufficientScopes(scopes: Set<String>)
+}
+
+/// Errors produced while reading values from an ``ATCredentialStore``.
+public enum ATCredentialStoreError: ATProtoError, LocalizedError, Equatable {
+
+    /// No persisted value exists for a storage key.
+    ///
+    /// - Parameter key: The storage key that was not found.
+    case valueNotFound(key: String)
+
+    /// Persisted bytes could not be decoded as a UTF-8 string.
+    case invalidStringData
+
+    public var errorDescription: String? {
+        switch self {
+        case .valueNotFound(let key):
+            return "No secure value was found for key: \(key)"
+        case .invalidStringData:
+            return "The persisted credential was not valid UTF-8 data."
+        }
+    }
+}
+
+/// Errors produced by the sample OAuth coordinator.
+public enum OAuthError: ATProtoError, LocalizedError {
+
+    /// The PDS URL does not contain a host.
+    case missingPDSHost
+
+    /// The PDS did not advertise exactly one authorization server.
+    case invalidAuthorizationServers
+
+    /// The protected-resource metadata does not describe the resolved PDS.
+    case resourceMismatch
+
+    /// The advertised authorization-server value is not a secure origin URL.
+    case invalidAuthorizationServer
+
+    /// The authorization-server metadata does not identify the advertised issuer.
+    case issuerMismatch
+
+    /// The OAuth package did not return the expected account DID.
+    case subjectMismatch
+
+    /// The token response omitted the mandatory AT Protocol scope.
+    case missingATProtoScope
+
+    /// The system authentication session could not be started.
+    case authenticationSessionFailedToStart
+
+    /// The system authentication session returned neither a callback nor an error.
+    case invalidAuthenticationCallback
+
+    public var errorDescription: String? {
+        switch self {
+            case .missingPDSHost:
+                return "The resolved PDS URL does not contain a host."
+            case .invalidAuthorizationServers:
+                return "The PDS must advertise exactly one OAuth authorization server."
+            case .resourceMismatch:
+                return "The OAuth protected-resource metadata does not describe the resolved PDS."
+            case .invalidAuthorizationServer:
+                return "The OAuth authorization server must be a secure origin URL."
+            case .issuerMismatch:
+                return "The OAuth metadata issuer does not match its advertised origin."
+            case .subjectMismatch:
+                return "The OAuth server returned a different account DID."
+            case .missingATProtoScope:
+                return "The OAuth server did not grant the mandatory atproto scope."
+            case .authenticationSessionFailedToStart:
+                return "The system authentication session could not be started."
+            case .invalidAuthenticationCallback:
+                return "The system authentication session returned an invalid result."
+        }
+    }
 }

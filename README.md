@@ -33,9 +33,11 @@ ATProtoKit is an easy-to-understand API library that leverages the AT Protocol w
 
 This Swift package mainly focuses on the client side of the AT Protocol. This is essentially a combination of the [`api`](https://github.com/bluesky-social/atproto/tree/main/packages/api) and [`xrpc`](https://github.com/bluesky-social/atproto/tree/main/packages/xrpc) packages from the official [`atproto`](https://github.com/bluesky-social/atproto) TypeScript repository.
 
-
 ## Example Usage
+
 ```swift
+import ATProtoKit
+
 let config = ATProtocolConfiguration()
 
 Task {
@@ -57,10 +59,11 @@ Task {
 ```
 
 ## Motivation
+
 I believe Bluesky and its accompanying AT Protocol gives the perfect balance between embracing decentralization and simplifying the user experience. Because of this, I wanted a way for Swift developers to use the AT Protocol in a way that feels right at home, both client-side with Apple's platforms, and server-side with Linux. For this reason, I decided to open source this project.
 
-
 ## Features
+
 - [x] Full compatibility with Apple’s APIs for each of the platforms.
 - [x] Written with adherence to the Swift API Design Guidelines.
 - [ ] Well-written documentation for all of the AT Protocol and Bluesky APIs.
@@ -72,9 +75,10 @@ I believe Bluesky and its accompanying AT Protocol gives the perfect balance bet
 > [!NOTE]
 > Not all features above have been implemented; however, they will be, soon.
 
-
 ## Installation
+
 You can use the Swift Package Manager to download and import the library into your project:
+
 ```swift
 dependencies: [
     .package(url: "https://github.com/MasterJ93/ATProtoKit.git", from: "0.33.0")
@@ -82,6 +86,7 @@ dependencies: [
 ```
 
 Then under `targets`:
+
 ```swift
 targets: [
     .target(
@@ -93,11 +98,10 @@ targets: [
 ]
 ```
 
-## Roadmap
-The Projects page isn't completed, but you can still view it through its [Projects](https://github.com/users/MasterJ93/projects/2) page.
-
 ## Quick Start
+
 As shown in the Example Usage, it all starts with `ATProtocolConfiguration`:
+
 ```swift
 import ATProtoKit
 
@@ -105,24 +109,29 @@ let config = ATProtocolConfiguration()
 ```
 
 By default, `ATProtocolConfiguration` conforms to `https://bsky.social`. However, if you’re using a different distributed service, you can specify the URL:
+
 ```swift
-let result = ATProtocolConfiguration(pdsURL: "https://example.social")
+let config = ATProtocolConfiguration(pdsURL: "https://example.social")
 ```
 
-After that, use the `authenticate()` method, and pass in the handle and password of the user account. Once you've passed in the `ATProtocolConfiguration` object to the `ATProtoKit` `class`, use the `getUserSession()` method, as well as the `ATProtocolConfiguration.sessionConfiguration.keychainProtocol` property. These two contains all of the elements you need, such as the session tokens, decentralized identifier (DID), and service endpoint:
+After that, use the `authenticate()` method and pass in the handle and App Password of the user account. Once you've passed the `ATProtocolConfiguration` object to the `ATProtoKit` class, use `getUserSession()` to inspect the visible session. ATProtoKit persists the App Password and refresh token through the configuration's `ATCredentialStore`; its short-lived access token remains in configuration memory:
+
 ```swift
 Task {
     do {
-        try await config.authenticate(with: "lucy.bsky.social", appPassword: "hunter2")
+        try await config.authenticate(with: "lucy.bsky.social", password: "hunter2")
 
-        // The session object is contains in the `ATProtoKit` object:
-        let atProtoKit = ATProtoKit(sessionConfiguration: config)
+        // The session object is contained in the `ATProtoKit` object:
+        let atProtoKit = await ATProtoKit(sessionConfiguration: config)
 
-        if let keychain = try await atProtoKit.keychainProtocol() {
-            print("Result (Access Token): \(keychain.retrieveAccessToken())")
-            print("Result (Refresh Token): \(keychain.retrieveRefreshToken())")
+        if let accessToken = await config.cachedAccessToken() {
+            print("Result (Access Token): \(accessToken)")
         }
-        
+
+        if let refreshToken = try await config.storedRefreshToken() {
+            print("Result (Refresh Token): \(refreshToken)")
+        }
+
         if let session = try await atProtoKit.getUserSession() {
             print("Result (Service Endpoint): \(session.serviceEndpoint)")
             print("Result (DID): \(session.sessionDID)")
@@ -133,8 +142,17 @@ Task {
 }
 ```
 
+### OAuth
+
+OAuth is the recommended authentication method for applications that act on behalf of users. ATProtoKit does not implement the authorization flow itself; instead, connect an OAuth package appropriate for the target platform through `ATOAuthSessionConfiguration`.
+
+The OAuth package you choose to use or develop owns
+authorization presentation, token and DPoP-key storage, refresh rotation, and authenticated request execution, while ATProtoKit provides the XRPC client APIs.
+
 ## Requirements
+
 To use ATProtoKit in your apps, your app should target the specific version numbers:
+
 - **iOS** and **iPadOS** 14 or later.
 - **macOS** 13 or later.
 - **tvOS** 14 or later.
@@ -142,6 +160,7 @@ To use ATProtoKit in your apps, your app should target the specific version numb
 - **watchOS** 9 or later.
 
 For Linux, you need to use Swift 6.0 or later. On Linux, the minimum requirements include:
+
 - **Amazon Linux** 2
 - **Debian** 12
 - **Fedora** 39
@@ -149,6 +168,7 @@ For Linux, you need to use Swift 6.0 or later. On Linux, the minimum requirement
 - **Ubuntu** 20.04
 
 For Windows, you'll need Swift 6.1 or later. On Windows, the minimum requirements include:
+
 - **Windows 10** or later
 - **Windows Server** 2022 or later.
 
@@ -156,6 +176,7 @@ For Windows, you'll need Swift 6.1 or later. On Windows, the minimum requirement
 > Direct support for Windows 11 on ARM is not supported. x86 builds may not fully work on Windows on ARM, either.
 
 For Android, you'll need Swift 6.1 or later. On Android, the minimum requirements include:
+
 - **Android** 10 or later.
 - **Android SDK** version 29 or later.
 
@@ -166,13 +187,14 @@ You can also use this project for any programs you make using Swift and running 
 > [!WARNING]
 > Support for WebAssembly is currently not supported. Plans are underway to make this package a supported platform.
 
-
 ## Submitting Contributions and Feedback
+
 While this project will change significantly, feedback, issues, and contributions are highly welcomed and encouraged. If you'd like to contribute to this project, please be sure to read both the [API Guidelines](https://github.com/MasterJ93/ATProtoKit/blob/main/API_GUIDELINES.md) as well as the [Contributor Guidelines](https://github.com/MasterJ93/ATProtoKit/blob/main/CONTRIBUTING.md) before submitting a pull request. Any issues (such as bug reports or feedback) can be submitted in the [Issues](https://github.com/MasterJ93/ATProtoKit/issues) tab. Finally, if there are any security vulnerabilities, please read [SECURITY.md](https://github.com/MasterJ93/ATProtoKit/blob/main/SECURITY.md) for how to report it.
 
 If you have any questions, you can ask me on Bluesky ([@cjrriley.ca](https://bsky.app/profile/cjrriley.ca)). And while you're at it, give me a follow! I'm also active on the [ATProto Touchers](https://discord.gg/3srmDsHSZJ) Discord server.
 
 ## License and Acknowledgments
+
 This Swift package is using the MIT License. Please view [LICENSE.md](https://github.com/MasterJ93/ATProtoKit/blob/main/LICENSE.md) for more details.
 
 ATProtoKit contains a number of third-party Swift packages in order to run effectively. Please see [NOTICE.txt](NOTICE.txt) for more information.

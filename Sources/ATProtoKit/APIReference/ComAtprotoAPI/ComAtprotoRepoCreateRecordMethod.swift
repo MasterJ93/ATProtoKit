@@ -46,13 +46,10 @@ extension ATProtoKit {
         record: UnknownType,
         swapCommit: String? = nil
     ) async throws -> ComAtprotoLexicon.Repository.StrongReference {
-        guard let session = try await self.getUserSession(),
-              let keychain = sessionConfiguration?.keychainProtocol else {
+        guard let session = try await self.getUserSession() else {
             throw ATRequestPrepareError.missingActiveSession
         }
 
-        try await sessionConfiguration?.ensureValidToken()
-        let accessToken = try await keychain.retrieveAccessToken()
         let sessionURL = session.serviceEndpoint.absoluteString
 
         guard let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.repo.createRecord") else {
@@ -74,7 +71,7 @@ extension ATProtoKit {
                 andMethod: .post,
                 acceptValue: "application/json",
                 contentTypeValue: "application/json",
-                authorizationValue: "Bearer \(accessToken)"
+                requiresAuthorization: true
             )
             let response = try await apiClientService.sendRequest(
                 request,

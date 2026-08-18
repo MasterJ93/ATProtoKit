@@ -25,7 +25,7 @@ import FoundationNetworking
 ///
 /// ```swift
 /// let apiClientConfiguration = APIClientConfiguration(logger: ConsoleDebugger())
-/// let atProtoKit = ATProtoKit(
+/// let atProtoKit = await ATProtoKit(
 ///     sessionConfiguration: config,
 ///     apiClientConfiguration: apiClientConfiguration
 /// )

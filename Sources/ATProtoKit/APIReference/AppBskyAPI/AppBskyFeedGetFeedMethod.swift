@@ -26,6 +26,8 @@ extension ATProtoKit {
     ///   - limit: The number of items the list will hold. Optional. Defaults to `50`.
     ///   - cursor: The mark used to indicate the starting point for the next set
     ///   of results. Optional.
+    ///   - labelersValue: The `atproto-accept-labelers` header value, containing the labeler
+    ///   services whose labels should be applied to the response. Optional.
     /// - Returns: A view of the feed generator, with an optional cursor to extend the array.
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
@@ -33,15 +35,13 @@ extension ATProtoKit {
     public func getFeed(
         by uri: String,
         limit: Int? = 50,
-        cursor: String? = nil
+        cursor: String? = nil,
+        labelersValue: String? = nil
     ) async throws -> AppBskyLexicon.Feed.GetFeedOutput {
-        guard let session = try await self.getUserSession(),
-              let keychain = sessionConfiguration?.keychainProtocol else {
+        guard let session = try await self.getUserSession() else {
             throw ATRequestPrepareError.missingActiveSession
         }
 
-        try await sessionConfiguration?.ensureValidToken()
-        let accessToken = try await keychain.retrieveAccessToken()
         let sessionURL = session.serviceEndpoint.absoluteString
 
         guard let requestURL = URL(string: "\(sessionURL)/xrpc/app.bsky.feed.getFeed") else {
@@ -74,7 +74,8 @@ extension ATProtoKit {
                 andMethod: .get,
                 acceptValue: "application/json",
                 contentTypeValue: nil,
-                authorizationValue: "Bearer \(accessToken)"
+                requiresAuthorization: true,
+                labelersValue: labelersValue
             )
             let response = try await apiClientService.sendRequest(
                 request,

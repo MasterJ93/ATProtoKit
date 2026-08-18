@@ -34,13 +34,9 @@ extension ATProtoAdmin {
         _ codes: [String],
         for accountDIDs: [String]
     ) async throws {
-        guard let session = try await self.getUserSession(),
-              let keychain = sessionConfiguration?.keychainProtocol else {
+        guard let session = try await self.getUserSession() else {
             throw ATRequestPrepareError.missingActiveSession
         }
-
-        try await sessionConfiguration?.ensureValidToken()
-        let accessToken = try await keychain.retrieveAccessToken()
 
         guard let sessionURL = session.pdsURL,
               let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.admin.disableInviteCodes") else {
@@ -57,7 +53,7 @@ extension ATProtoAdmin {
                                                          andMethod: .post,
                                                          acceptValue: nil,
                                                          contentTypeValue: "'application/json",
-                                                         authorizationValue: "Bearer \(accessToken)")
+                                                         requiresAuthorization: true)
 
             _ = try await apiClientService.sendRequest(
                 request,

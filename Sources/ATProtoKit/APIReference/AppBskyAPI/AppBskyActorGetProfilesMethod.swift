@@ -21,7 +21,8 @@ extension ATProtoKit {
     /// `https://bsky.social` and you're not using authentication, be sure to change it if the
     /// normal URL isn't used for unauthenticated API calls.\
     /// \
-    /// If you need a profile of just one user, it's best to use ``getProfile(for:)``.
+    /// If you need a profile of just one user, use
+    /// ``/ATProtoKit/ATProtoKit/getProfile(for:labelersValue:)``.
     ///
     /// - Note: According to the AT Protocol specifications: "Get detailed profile views of
     /// multiple actors."
@@ -39,10 +40,11 @@ extension ATProtoKit {
     public func getProfiles(
         for actors: [String]
     ) async throws -> AppBskyLexicon.Actor.GetProfilesOutput {
-        let authorizationValue = await prepareAuthorizationValue()
+        let session = try await self.getUserSession()
+        let requiresAuthorization = session != nil
 
-        guard let sessionURL = authorizationValue != nil ? try await self.getUserSession()?.serviceEndpoint.absoluteString : self.pdsURL,
-              let requestURL = URL(string: "\(sessionURL)/xrpc/app.bsky.actor.getProfiles") else {
+        let sessionURL = session?.serviceEndpoint.absoluteString ?? self.pdsURL
+        guard let requestURL = URL(string: "\(sessionURL)/xrpc/app.bsky.actor.getProfiles") else {
             throw ATRequestPrepareError.invalidRequestURL
         }
 
@@ -63,7 +65,7 @@ extension ATProtoKit {
                 forRequest: queryURL,
                 andMethod: .get,
                 contentTypeValue: nil,
-                authorizationValue: authorizationValue
+                requiresAuthorization: requiresAuthorization
             )
             let result = try await apiClientService.sendRequest(
                 request,

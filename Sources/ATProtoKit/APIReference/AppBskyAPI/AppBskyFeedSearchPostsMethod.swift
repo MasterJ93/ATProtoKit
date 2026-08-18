@@ -44,9 +44,11 @@ extension ATProtoKit {
     ///   Can only choose between `1` and `100`.
     ///   - cursor: The mark used to indicate the starting point for the next set
     ///   of results. Optional.
+    ///   - labelersValue: The `atproto-accept-labelers` header value, containing the labeler
+    ///   services whose labels should be applied to the response. Optional.
     /// - Returns: An array of post records in the results, with an optional cursor to expand
     /// the array. The output may also display the total number of search results.
-    /// 
+    ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
     public func searchPosts(
@@ -61,15 +63,13 @@ extension ATProtoKit {
         url: String? = nil,
         tags: [String]? = nil,
         limit: Int? = 25,
-        cursor: String? = nil
+        cursor: String? = nil,
+        labelersValue: String? = nil
     ) async throws -> AppBskyLexicon.Feed.SearchPostsOutput {
-        guard let session = try await self.getUserSession(),
-              let keychain = sessionConfiguration?.keychainProtocol else {
+        guard let session = try await self.getUserSession() else {
             throw ATRequestPrepareError.missingActiveSession
         }
 
-        try await sessionConfiguration?.ensureValidToken()
-        let accessToken = try await keychain.retrieveAccessToken()
         let sessionURL = session.serviceEndpoint.absoluteString
 
         guard let requestURL = URL(string: "\(sessionURL)/xrpc/app.bsky.feed.searchPosts") else {
@@ -139,7 +139,8 @@ extension ATProtoKit {
                 andMethod: .get,
                 acceptValue: "application/json",
                 contentTypeValue: nil,
-                authorizationValue: "Bearer \(accessToken)"
+                requiresAuthorization: true,
+                labelersValue: labelersValue
             )
             let response = try await apiClientService.sendRequest(
                 request,

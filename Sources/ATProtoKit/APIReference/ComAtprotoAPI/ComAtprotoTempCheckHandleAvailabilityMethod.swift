@@ -21,7 +21,7 @@ extension ATProtoKit {
     /// is available. If the handle is not available, available suggestions will be returned.
     /// Optional inputs will be used to generate suggestions."
     ///
-    /// - SeeAlso: This is based on the [`app.bsky.unspecced.checkHandleAvailability`][github] lexicon.
+    /// - SeeAlso: This is based on the [`com.atproto.temp.checkHandleAvailability`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/temp/checkHandleAvailability.json
     ///
@@ -39,16 +39,13 @@ extension ATProtoKit {
         email: String? = nil,
         birthDate: Date? = nil
     ) async throws -> ComAtprotoLexicon.Temp.CheckHandleAvailabilityOutput {
-        guard let session = try await self.getUserSession(),
-              let keychain = sessionConfiguration?.keychainProtocol else {
+        guard let session = try await self.getUserSession() else {
             throw ATRequestPrepareError.missingActiveSession
         }
 
-        try await sessionConfiguration?.ensureValidToken()
-        let accessToken = try await keychain.retrieveAccessToken()
         let sessionURL = session.serviceEndpoint.absoluteString
 
-        guard let requestURL = URL(string: "\(sessionURL)/xrpc/app.bsky.unspecced.checkHandleAvailability") else {
+        guard let requestURL = URL(string: "\(sessionURL)/xrpc/com.atproto.temp.checkHandleAvailability") else {
             throw ATRequestPrepareError.invalidRequestURL
         }
 
@@ -77,7 +74,7 @@ extension ATProtoKit {
                 andMethod: .get,
                 acceptValue: "application/json",
                 contentTypeValue: nil,
-                authorizationValue: "Bearer \(accessToken)"
+                requiresAuthorization: true
             )
             let response = try await apiClientService.sendRequest(
                 request,

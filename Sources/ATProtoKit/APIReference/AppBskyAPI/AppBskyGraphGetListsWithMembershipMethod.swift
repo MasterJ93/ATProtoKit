@@ -41,12 +41,10 @@ extension ATProtoKit {
         cursor: String? = nil,
         purposes: [AppBskyLexicon.Graph.GetListsWithMembership.Purpose]? = nil
     ) async throws -> AppBskyLexicon.Graph.GetListsWithMembershipOutput {
-        guard let session = try await self.getUserSession(),
-              let keychain = sessionConfiguration?.keychainProtocol else {
+        guard let session = try await self.getUserSession() else {
             throw ATRequestPrepareError.missingActiveSession
         }
 
-        let accessToken = try await keychain.retrieveAccessToken()
         let sessionURL = session.serviceEndpoint.absoluteString
 
         guard let requestURL = URL(string: "\(sessionURL)/xrpc/app.bsky.graph.getListsWithMembership") else {
@@ -79,7 +77,7 @@ extension ATProtoKit {
                 andMethod: .get,
                 acceptValue: "application/json",
                 contentTypeValue: nil,
-                authorizationValue: "Bearer \(accessToken)"
+                requiresAuthorization: true
             )
             let response = try await apiClientService.sendRequest(
                 request,

@@ -36,7 +36,7 @@ extension ATProtoKit {
         limit: Int? = 25,
         cursor: String? = nil
     ) async throws -> AppBskyLexicon.Graph.SearchStarterPacksOutput {
-        guard let requestURL = URL(string: "\(self.pdsURL)/xrpc/app.bsky.feed.searchStarterPacks") else {
+        guard let requestURL = URL(string: "\(self.pdsURL)/xrpc/app.bsky.graph.searchStarterPacks") else {
             throw ATRequestPrepareError.invalidRequestURL
         }
 

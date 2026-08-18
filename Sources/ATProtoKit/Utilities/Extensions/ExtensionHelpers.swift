@@ -189,6 +189,65 @@ extension URL {
             return String(remainder)
         }
     }
+
+    /// Returns this URL as a canonical HTTPS origin.
+    ///
+    /// A valid origin:
+    /// - Uses HTTPS.
+    /// - Contains a host.
+    /// - Contains no credentials.
+    /// - Contains no path other than `/`.
+    /// - Contains no query or fragment.
+    ///
+    /// - Returns: The canonical HTTPS origin.
+    ///
+    /// - Throws: `OAuthError.invalidAuthorizationServer` if the URL cannot represent a valid HTTPS origin.
+    public func canonicalHTTPSOrigin() throws -> String {
+        // Make sure the URL represents a secure origin rather than
+        // an arbitrary URL containing paths, credentials, or other data.
+        guard scheme == "https",
+              let host,
+              user == nil,
+              password == nil,
+              path.isEmpty || path == "/",
+              query == nil,
+              fragment == nil else {
+            throw OAuthError.invalidAuthorizationServer
+        }
+
+        // Build a normalized URL containing only the origin components.
+        var components = URLComponents()
+        components.scheme = "https"
+        components.host = host
+
+        // Port 443 is HTTPS's default port, so it does not need
+        // to appear explicitly in the canonical representation.
+        if port != 443 {
+            components.port = port
+        }
+
+        // URLComponents should now be able to produce the canonical origin.
+        guard let origin = components.string else {
+            throw OAuthError.invalidAuthorizationServer
+        }
+
+        return origin
+    }
+
+    /// Determines whether the URL is a valid Personal Data Server (PDS) service endpoint.
+    ///
+    /// PDS service endpoints are HTTPS origins. A trailing root slash is accepted because URL
+    /// producers commonly serialize an origin with one, but path prefixes and other URL components
+    /// are not valid.
+    internal var isValidPDSServiceEndpoint: Bool {
+        return self.scheme?.lowercased() == "https"
+        && self.host != nil
+        && self.user == nil
+        && self.password == nil
+        && (self.path.isEmpty || self.path == "/")
+        && self.query == nil
+        && self.fragment == nil
+    }
 }
 
 // MARK: - JobStatusDefinition Extension
@@ -206,5 +265,29 @@ extension JSONDecoder {
         }
 
         self.userInfo[key] = recordRegistry
+    }
+}
+
+// MARK: - URLRequest Extension
+extension URLRequest {
+
+    private static let atProtoKitAuthorizationRequirementKey = "com.cjrriley.ATProtoKit.authorizationRequirement"
+
+    /// Indicates whether this request has been marked as requiring session authorization.
+    public var atProtoKitAuthorizationRequirement: ATRequestAuthorizationRequirement {
+        guard let value = URLProtocol.property(forKey: Self.atProtoKitAuthorizationRequirementKey, in: self) as? Bool,
+              value else {
+            return .none
+        }
+        return .session
+    }
+
+    /// Marks this request as requiring session authorization.
+    public mutating func requireATProtoKitAuthorization() {
+        guard let mutableRequest = (self as NSURLRequest).mutableCopy() as? NSMutableURLRequest else {
+            return
+        }
+        URLProtocol.setProperty(true, forKey: Self.atProtoKitAuthorizationRequirementKey, in: mutableRequest)
+        self = mutableRequest as URLRequest
     }
 }
