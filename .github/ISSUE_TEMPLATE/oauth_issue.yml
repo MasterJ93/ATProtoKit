@@ -1,0 +1,151 @@
+name: OAuth Issue
+description: Report an OAuth problem, ask for integration help, or suggest an OAuth improvement.
+title: "[OAuth]: "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to explain what you are running into. You do not need to know the OAuth terminology; describe what you saw in your own words and use **I'm not sure** where needed.
+
+        > Note: **Keep credentials private.** Do not include access or refresh tokens, authorization codes, client secrets, private keys, DPoP proofs, cookies, or complete `Authorization` headers. Replace them with `<redacted>` in code, URLs, screenshots, and logs.
+
+  - type: dropdown
+    id: issue-type
+    attributes:
+      label: What do you need help with?
+      description: Choose the option that comes closest. It does not need to be exact.
+      options:
+        - Something is not working
+        - I need help integrating OAuth
+        - The documentation is unclear or incomplete
+        - I would like an OAuth improvement
+        - I'm not sure
+    validations:
+      required: true
+
+  - type: input
+    id: summary
+    attributes:
+      label: Summary
+      description: In one or two sentences, what are you trying to do and what is getting in the way?
+      placeholder: "After signing in, my app returns from the browser but ATProtoKit does not have an active session."
+    validations:
+      required: true
+
+  - type: textarea
+    id: flow
+    attributes:
+      label: What happened?
+      description: Walk through what you did and what you saw. A short numbered list is ideal.
+      placeholder: |
+        1. I started sign-in for `alice.example`.
+        2. The browser opened and I approved access.
+        3. My app received the callback URL.
+        4. When I created the ATProtoKit session, I received the error below.
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected-result
+    attributes:
+      label: What did you expect to happen?
+      description: Describe the result that would have let you continue.
+      placeholder: "I expected the callback to create a session and an authenticated request to succeed."
+    validations:
+      required: true
+
+  - type: dropdown
+    id: failure-stage
+    attributes:
+      label: Where did the OAuth flow stop?
+      description: Choose the closest point, even if you are not certain.
+      options:
+        - Before the sign-in page opened
+        - On the sign-in or consent page
+        - When returning to the app or callback URL
+        - While exchanging the authorization code
+        - While creating or restoring the ATProtoKit session
+        - During an authenticated request
+        - While refreshing or resuming a session
+        - While signing out or deleting a session
+        - It did not stop, but behaved unexpectedly
+        - I'm not certain
+    validations:
+      required: true
+
+  - type: input
+    id: atprotokit-version
+    attributes:
+      label: ATProtoKit Version
+      description: State the version or commit you are using.
+      placeholder: "0.18.0 or commit abc1234"
+    validations:
+      required: true
+
+  - type: input
+    id: oauth-implementation
+    attributes:
+      label: OAuth Package or Implementation
+      description: Name the OAuth package and version you use. If you built it yourself or do not know, say so.
+      placeholder: "PackageName 1.2.0, custom implementation, or I'm not sure"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: operating-system
+    attributes:
+      label: Where does this happen?
+      multiple: true
+      options:
+        - macOS
+        - iOS/iPadOS
+        - tvOS
+        - visionOS
+        - watchOS
+        - Linux
+        - Windows
+        - Other
+    validations:
+      required: true
+
+  - type: input
+    id: environment-version
+    attributes:
+      label: Environment Version
+      description: Include the operating system version and, when relevant, the Xcode or Swift version.
+      placeholder: "iOS 19.0, Xcode 17.0"
+    validations:
+      required: true
+
+  - type: textarea
+    id: minimal-code
+    attributes:
+      label: Relevant Code
+      description: If possible, share the smallest code sample that shows how OAuth connects to ATProtoKit. Please remove credentials and private information.
+      render: swift
+
+  - type: textarea
+    id: diagnostics
+    attributes:
+      label: Error and Sanitized Diagnostics
+      description: Paste the complete error and any useful sanitized logs, HTTP status codes, or endpoint hostnames. Attach screenshots or files below if that is easier.
+      placeholder: |
+        Error: ATOAuthSessionConfigurationError...
+        HTTP status: 401
+        Endpoint hostname: example.com
+
+        Replace credentials and private values with <redacted>.
+
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: Additional Context
+      description: Share anything else that may help, such as whether this is consistent or intermittent, a link to a small reproduction, or a workaround you tried.
+
+  - type: checkboxes
+    id: sensitive-information
+    attributes:
+      label: Sensitive Information
+      options:
+        - label: I have removed tokens, authorization codes, secrets, private keys, DPoP proofs, cookies, and complete authorization headers from this report.
+          required: true
