@@ -102,6 +102,12 @@ extension AppBskyLexicon.Notification {
         /// Determines whether push notifications for chat messages.
         public let willPush: Bool
 
+        public init(include: Include, willAppearInNotificationList: Bool, willPush: Bool) {
+            self.include = include
+            self.willAppearInNotificationList = willAppearInNotificationList
+            self.willPush = willPush
+        }
+
         enum CodingKeys: String, CodingKey {
             case include
             case willAppearInNotificationList = "list"
@@ -169,6 +175,11 @@ extension AppBskyLexicon.Notification {
 
         /// Determines whether push notifications for chat messages.
         public let willPush: Bool
+
+        public init(willAppearInNotificationList: Bool, willPush: Bool) {
+            self.willAppearInNotificationList = willAppearInNotificationList
+            self.willPush = willPush
+        }
 
         enum CodingKeys: String, CodingKey {
             case willAppearInNotificationList = "list"
