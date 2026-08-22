@@ -174,6 +174,10 @@ extension ComAtprotoLexicon.Label {
         /// - Important: Current maximum length is 128 characters.
         public let value: String
 
+        public init(value: String) {
+            self.value = value
+        }
+
         public func encode(to encoder: Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
 

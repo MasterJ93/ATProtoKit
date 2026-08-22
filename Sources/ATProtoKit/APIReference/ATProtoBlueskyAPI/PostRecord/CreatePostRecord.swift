@@ -682,6 +682,11 @@ extension ATProtoBluesky {
         /// The language of the captions.
         public let language: Locale
 
+        public init(file: Data, language: Locale) {
+            self.file = file
+            self.language = language
+        }
+
         enum CodingKeys: String, CodingKey {
             case file
             case language = "lang"
