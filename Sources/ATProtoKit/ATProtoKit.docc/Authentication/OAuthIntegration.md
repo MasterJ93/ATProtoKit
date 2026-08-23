@@ -160,7 +160,7 @@ let context = SessionAuthorizationContext(
 
 ## Register a restored or newly authorized session
 
-Call ``ATOAuthSessionConfiguration/registerSession()`` after authorization or restoration and before using authenticated ATProtoKit methods. Registration validates and publishes the account decentralized identifier (DID) and provider-supplied PDS endpoint. ``ATProtoKit/createOAuthSession(sessionConfiguration:apiClientConfiguration:canUseBlueskyRecords:)`` performs registration and client construction as one checked operation:
+Call ``ATOAuthSessionConfiguration/registerSession()`` after authorization or restoration and before using authenticated ATProtoKit methods. Registration validates and publishes the account decentralized identifier (DID) and provider-supplied PDS endpoint. ``ATProtoKit/createOAuthSession(sessionConfiguration:apiClientConfiguration:atidentityResolver:canUseBlueskyRecords:)`` performs registration and client construction as one checked operation:
 
 ```swift
 let client = try await ATProtoKit.createOAuthSession(

@@ -22,7 +22,7 @@ extension ATLexiconKnownValue {
 
     /// Creates the value from a `String` literal.
     ///
-    /// - Parameter stringLiteral: The string value used to initialize the type from a string literal.
+    /// - Parameter value: The string value used to initialize the type from a string literal.
     public init(stringLiteral value: String) {
         self.init(rawValue: value)
     }

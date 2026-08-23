@@ -172,7 +172,7 @@ public final class ATProtoKit: Sendable, ATProtoKitConfiguration, ATRecordConfig
     ///   - sessionConfiguration: The authenticated user session within the AT Protocol. Optional.
     ///   - apiClientConfiguration: An ``APIClientConfiguration`` object. Optional.
     ///   - atidentityResolver: An instance of ``ATIdentityProtocol`` to perform
-    ///   Personal Data Server (PDS) resolutions. Defaults to ``ATBuiltInIdentityResolver()``.
+    ///   Personal Data Server (PDS) resolutions. Defaults to ``ATBuiltInIdentityResolver``.
     ///   Defaults to `nil`. When `sessionConfiguration` supplies an executor that owns OAuth
     ///   authorization, that executor takes precedence over this configuration's response provider.
     ///   - pdsURL: The URL of the Personal Data Server (PDS). Defaults to ``APIHostname/bskyAppView``.
@@ -221,7 +221,7 @@ public final class ATProtoKit: Sendable, ATProtoKitConfiguration, ATRecordConfig
     ///   - sessionConfiguration: The external OAuth session configuration to register and use.
     ///   - apiClientConfiguration: Additional API client configuration. Optional. Defaults to `nil`.
     ///   - atidentityResolver: An instance of ``ATIdentityProtocol`` to perform
-    ///   Personal Data Server (PDS) resolutions. Defaults to ``ATBuiltInIdentityResolver()``.
+    ///   Personal Data Server (PDS) resolutions. Defaults to ``ATBuiltInIdentityResolver``.
     ///   - canUseBlueskyRecords: Indicates whether Bluesky lexicon record types should be registered.
     ///     Defaults to `true`.
     /// - Returns: An authenticated ATProtoKit client using the registered OAuth session.

@@ -48,7 +48,7 @@ It also offers these request-time extension points:
 - ``SessionConfiguration/authorizationContext()`` defaults to deriving a context from the
   ``UserSession`` registered under `instanceUUID`.
 
-The `pdsURL` property is a bootstrap value and does not change when a session is registered. Code that constructs an ATProtoKit client manually after loading a dynamic context must pass the registered context's `serviceEndpoint`. ``ATProtoKit/createOAuthSession(sessionConfiguration:apiClientConfiguration:canUseBlueskyRecords:)`` does this automatically for ``ATOAuthSessionConfiguration``.
+The `pdsURL` property is a bootstrap value and does not change when a session is registered. Code that constructs an ATProtoKit client manually after loading a dynamic context must pass the registered context's `serviceEndpoint`. ``ATProtoKit/createOAuthSession(sessionConfiguration:apiClientConfiguration:atidentityResolver:canUseBlueskyRecords:)`` does this automatically for ``ATOAuthSessionConfiguration``.
 
 ## Add lifecycle capabilities deliberately
 

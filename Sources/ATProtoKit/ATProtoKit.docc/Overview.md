@@ -156,6 +156,7 @@ ATProtoKit is fully open source under the [MIT license](https://github.com/Maste
 - ``ATFacetParser``
 - ``SessionToken``
 - ``ATRecordDecoder``
+- ``ATLexiconKnownValue``
 - ``ATBuiltInIdentityResolver``
 - ``AttachmentLexiconLimit``
 - ``Truncatable``
