@@ -38,12 +38,7 @@ extension ATProtoKit {
         recordCID: String? = nil,
         pdsURL: String? = nil
     ) async throws -> ComAtprotoLexicon.Repository.GetRecordOutput {
-        let host: String
-        if let pdsURL, !pdsURL.isEmpty {
-            host = pdsURL
-        } else {
-            host = await resolvePDSHost(for: repository)
-        }
+        let host = try await self.atidentityResolver.resolvePDSEndpoint(from: repository)
 
         guard let requestURL = URL(string: "\(host)/xrpc/com.atproto.repo.getRecord") else {
             throw ATRequestPrepareError.invalidRequestURL
