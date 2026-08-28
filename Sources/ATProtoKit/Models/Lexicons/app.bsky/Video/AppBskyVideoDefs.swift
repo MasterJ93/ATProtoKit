@@ -66,17 +66,41 @@ extension AppBskyLexicon.Video {
             /// The job is currently encoding.
             case jobStateEncoding = "JOB_STATE_ENCODING"
 
+            /// The job is encoded.
+            case jobStateEncoded = "JOB_STATE_ENCODED"
+
             /// The job is currently scanning.
             case jobStateScanning = "JOB_STATE_SCANNING"
             
             /// The job is scanned.
             case jobStateScanned = "JOB_STATE_SCANNED"
 
+            /// The job is currently uploading.
+            case jobStateUploading = "JOB_STATE_UPLOADING"
+
+            /// The job is uploaded.
+            case jobStateUploaded = "JOB_STATE_UPLOADED"
+
             /// The job is completed processing.
             case jobStateCompleted = "JOB_STATE_COMPLETED"
 
             /// The job failed to complete the processing.
             case jobStateFailed = "JOB_STATE_FAILED"
+
+            /// A state this version of the lexicon does not name.
+            ///
+            /// `app.bsky.video.defs` declares `state` as an open set: "All values
+            /// not listed as a known value indicate that the job is in process."
+            /// Decoding an unrecognised value as an error fails the whole upload
+            /// the moment the service reports a state added after this type was
+            /// written, so anything unknown lands here and callers treat it the
+            /// same as any other in-progress state.
+            case jobStateInProcess = "JOB_STATE_IN_PROCESS"
+
+            public init(from decoder: any Decoder) throws {
+                let rawValue = try decoder.singleValueContainer().decode(String.self)
+                self = State(rawValue: rawValue) ?? .jobStateInProcess
+            }
         }
     }
 }
