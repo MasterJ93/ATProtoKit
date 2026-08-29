@@ -25,7 +25,7 @@ public struct APIClientConfiguration: Sendable {
 
     /// A session delegate object that handles requests for authentication and other session-related events.
     /// Optional. Defaults to `nil`.
-    var delegate: (any URLSessionDelegate)? = nil
+    var delegate: URLSessionDelegate? = nil
 
     /// An operation queue for scheduling the delegate calls and completion handlers. Optional.
     /// Defaults to `nil`.
@@ -56,7 +56,7 @@ public struct APIClientConfiguration: Sendable {
     ///   Defaults to `nil`.
     public init(
         urlSessionConfiguration: URLSessionConfiguration? = nil,
-        delegate: (any URLSessionDelegate)? = nil,
+        delegate: URLSessionDelegate? = nil,
         delegateQueue: OperationQueue? = nil,
         responseProvider: ATRequestExecutor? = nil,
         requestAuthenticator: ATRequestAuthenticator? = nil,
