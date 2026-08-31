@@ -725,7 +725,7 @@ extension ATProtoBluesky {
     ) async throws -> AppBskyLexicon.Feed.PostRecord.EmbedUnion {
         // Check if the size of the video is small enough.
         if video.count >= AttachmentLexiconLimit.videoEmbed {
-            throw ATJobStatusError.videoSizeTooLarge(message: "The video file is too large. The maximum file size is currently 100MB.")
+            throw ATJobStatusError.videoSizeTooLarge(message: "The video file is too large. The maximum file size is currently 300MB.")
         }
 
 

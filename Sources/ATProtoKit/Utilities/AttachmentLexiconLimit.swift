@@ -69,14 +69,14 @@ public enum AttachmentLexiconLimit {
     /// [list]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/graph/list.json
     public static let listAvatar = 1_000_000
 
-    /// The maximum size of a video embed: 100,000,000 bytes.
+    /// The maximum size of a video embed: 300,000,000 bytes.
     ///
     /// Declared by `app.bsky.embed.video` at `defs.main.properties.video.maxSize`.
     ///
     /// - SeeAlso: [`app.bsky.embed.video`][video] lexicon.
     ///
     /// [video]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/embed/video.json
-    public static let videoEmbed = 100_000_000
+    public static let videoEmbed = 300_000_000
 
     /// The maximum size of a video VTT caption file: 20,000 bytes.
     ///
