@@ -71,6 +71,7 @@ extension AppBskyLexicon.Feed {
         public func encode(to encoder: Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
 
+            try container.encode(Self.type, forKey: .type)
             try container.encode(self.postURI, forKey: .postURI)
             try container.truncatedEncodeIfPresent(self.allow, forKey: .allow, upToArrayLength: 5)
             try container.encodeDate(self.createdAt, forKey: .createdAt)

@@ -47,11 +47,13 @@ extension AppBskyLexicon.Notification {
 
         public func encode(to encoder: any Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
-            
+
+            try container.encode(Self.type, forKey: .type)
             try container.encode(allowSubscriptions, forKey: .allowSubscriptions)
         }
 
-        enum CodingKeys: CodingKey {
+        enum CodingKeys: String, CodingKey {
+            case type = "$type"
             case allowSubscriptions
         }
 

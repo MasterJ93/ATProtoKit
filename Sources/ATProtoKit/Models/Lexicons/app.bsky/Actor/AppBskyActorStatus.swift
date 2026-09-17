@@ -63,6 +63,7 @@ extension AppBskyLexicon.Actor {
         public func encode(to encoder: any Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
 
+            try container.encode(Self.type, forKey: .type)
             try container.encode(self.status, forKey: .status)
             try container.encodeIfPresent(self.embed, forKey: .embed)
             try container.encodeIfPresent(self.durationMinutes, forKey: .durationMinutes)

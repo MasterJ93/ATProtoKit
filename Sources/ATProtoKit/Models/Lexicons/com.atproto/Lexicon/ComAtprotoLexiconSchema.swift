@@ -49,10 +49,12 @@ extension ComAtprotoLexicon.Lexicon {
         public func encode(to encoder: any Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
 
+            try container.encode(Self.type, forKey: .type)
             try container.encode(self.lexicon, forKey: .lexicon)
         }
 
-        enum CodingKeys: CodingKey {
+        enum CodingKeys: String, CodingKey {
+            case type = "$type"
             case lexicon
         }
     }

@@ -75,6 +75,7 @@ extension AppBskyLexicon.Graph {
         public func encode(to encoder: any Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
 
+            try container.encode(Self.type, forKey: .type)
             try container.truncatedEncode(self.name, forKey: .name, upToCharacterLength: 50)
             try container.truncatedEncodeIfPresent(self.description, forKey: .description, upToCharacterLength: 300)
             try container.encodeIfPresent(self.descriptionFacets, forKey: .descriptionFacets)
