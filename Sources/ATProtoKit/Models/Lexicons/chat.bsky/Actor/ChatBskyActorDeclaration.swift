@@ -42,6 +42,8 @@ extension ChatBskyLexicon.Actor {
 
         public func encode(to encoder: any Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
+
+            try container.encode(Self.type, forKey: .type)
             try container.encode(self.allowIncoming, forKey: .allowIncoming)
         }
 

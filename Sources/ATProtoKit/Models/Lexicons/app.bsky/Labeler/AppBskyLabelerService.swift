@@ -84,6 +84,7 @@ extension AppBskyLexicon.Labeler {
         public func encode(to encoder: any Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
 
+            try container.encode(Self.type, forKey: .type)
             try container.encode(self.policies, forKey: .policies)
             try container.encode(self.labels, forKey: .labels)
             try container.encodeDate(self.createdAt, forKey: .createdAt)

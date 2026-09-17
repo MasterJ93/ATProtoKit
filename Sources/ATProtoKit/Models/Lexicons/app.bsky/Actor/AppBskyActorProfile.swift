@@ -118,6 +118,7 @@ extension AppBskyLexicon.Actor {
         public func encode(to encoder: any Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
 
+            try container.encode(Self.type, forKey: .type)
             try container.truncatedEncodeIfPresent(self.displayName, forKey: .displayName, upToCharacterLength: 64)
             try container.truncatedEncodeIfPresent(self.description, forKey: .description, upToCharacterLength: 256)
             try container.truncatedEncodeIfPresent(self.pronouns, forKey: .pronouns, upToCharacterLength: 20)

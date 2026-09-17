@@ -59,6 +59,7 @@ extension AppBskyLexicon.Graph {
         public func encode(to encoder: any Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
 
+            try container.encode(Self.type, forKey: .type)
             try container.encode(self.subjectDID, forKey: .subjectDID)
             try container.encode(self.list, forKey: .list)
             try container.encodeDate(self.createdAt, forKey: .createdAt)
