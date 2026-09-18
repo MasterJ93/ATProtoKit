@@ -1,0 +1,28 @@
+name: Build ATProtoKit on Android
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+      - develop
+  workflow_dispatch:
+
+jobs:
+  android-build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Build Swift Package for Android
+        uses: swift-android-sdk/swift-android-action@v2
+        with:
+          swift-version: "6.1"
+          run-tests: false
+          # run-tests: true # When ATProtoKit has tests available, this will be used instead of the above line.
+          swift-configuration: debug
+          # swift-build-flags: "--target aarch64-unknown-linux-android24"
