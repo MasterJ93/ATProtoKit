@@ -29,6 +29,7 @@ extension AppBskyLexicon.Notification {
         public let notifications: [Notification]
 
         /// Indicates whether the priority preference is enabled. Optional.
+        @available(*, deprecated, message: "This parameter is ignored.")
         public let isPriority: Bool?
 
         /// The date and time the notification was last seen. Optional.

@@ -27,6 +27,10 @@ extension ATProtoKit {
     ///   Can only choose between `1` and `100`.
     ///   - cursor: The mark used to indicate the starting point for the next set
     ///   of results. Optional.
+    ///   - since: Return only items newer than the position identified by this cursor value,
+    ///   newest first. Use the startCursor from a previous response. The item at that position
+    ///   is not returned because the caller already holds it. When the bounded range is exhausted,
+    ///   the returned cursor equals this value so that pagination continues below the boundary.
     ///   - accessToken: The access token of the user. Optional.
     ///   - labelersValue: The `atproto-accept-labelers` header value, containing the labeler
     ///   services whose labels should be applied to the response. Optional.
@@ -38,6 +42,7 @@ extension ATProtoKit {
         from uri: String,
         limit: Int? = 50,
         cursor: String? = nil,
+        since: String? = nil,
         accessToken: String? = nil,
         labelersValue: String? = nil
     ) async throws -> AppBskyLexicon.Feed.GetListFeedOutput {
@@ -56,6 +61,10 @@ extension ATProtoKit {
 
         if let cursor {
             queryItems.append(("cursor", cursor))
+        }
+        
+        if let since {
+            queryItems.append(("since", since))
         }
 
         let queryURL: URL

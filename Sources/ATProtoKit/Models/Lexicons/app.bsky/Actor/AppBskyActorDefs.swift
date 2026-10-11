@@ -322,7 +322,11 @@ extension AppBskyLexicon.Actor {
 
         /// A post record that's pinned to the profile. Optional.
         public let pinnedPost: ComAtprotoLexicon.Repository.StrongReference?
-
+        
+        /// The profile's links, in display order. Links that were taken down or don't
+        /// resolve are left out. Optional.
+        public let links: [ProfileLinkViewDefinition]?
+        
         /// The state of verification for the user account. Optional.
         public let verificationState: VerificationStateDefinition?
 
@@ -338,7 +342,7 @@ extension AppBskyLexicon.Actor {
                     avatarImageURL: URL? = nil, bannerImageURL: URL? = nil, followerCount: Int? = nil, followCount: Int? = nil, postCount: Int? = nil,
                     associated: ProfileAssociatedDefinition?, joinedViaStarterPack: AppBskyLexicon.Graph.StarterPackViewBasicDefinition?, indexedAt: Date?,
                     createdAt: Date?, viewer: ViewerStateDefinition? = nil, labels: [ComAtprotoLexicon.Label.LabelDefinition]? = nil,
-                    pinnedPost: ComAtprotoLexicon.Repository.StrongReference?, verificationState: VerificationStateDefinition? = nil,
+                    pinnedPost: ComAtprotoLexicon.Repository.StrongReference?, verificationState: VerificationStateDefinition? = nil, links: [ProfileLinkViewDefinition]? = nil,
                     status: StatusViewDefinition? = nil, debug: UnknownType? = nil) {
             self.actorDID = actorDID
             self.actorHandle = actorHandle
@@ -357,6 +361,7 @@ extension AppBskyLexicon.Actor {
             self.viewer = viewer
             self.labels = labels
             self.pinnedPost = pinnedPost
+            self.links = links
             self.verificationState = verificationState
             self.status = status
             self.debug = debug
@@ -382,6 +387,7 @@ extension AppBskyLexicon.Actor {
             self.viewer = try container.decodeIfPresent(AppBskyLexicon.Actor.ViewerStateDefinition.self, forKey: .viewer)
             self.labels = try container.decodeIfPresent([ComAtprotoLexicon.Label.LabelDefinition].self, forKey: .labels)
             self.pinnedPost = try container.decodeIfPresent(ComAtprotoLexicon.Repository.StrongReference.self, forKey: .pinnedPost)
+            self.links = try container.decodeIfPresent([ProfileLinkViewDefinition].self, forKey: .links)
             self.verificationState = try container.decodeIfPresent(VerificationStateDefinition.self, forKey: .verificationState)
             self.status = try container.decodeIfPresent(StatusViewDefinition.self, forKey: .status)
             self.debug = try container.decodeIfPresent(UnknownType.self, forKey: .debug)
@@ -407,6 +413,7 @@ extension AppBskyLexicon.Actor {
             try container.encodeIfPresent(self.viewer, forKey: .viewer)
             try container.encodeIfPresent(self.labels, forKey: .labels)
             try container.encodeIfPresent(self.pinnedPost, forKey: .pinnedPost)
+            try container.encodeIfPresent(self.links, forKey: .links)
             try container.encodeIfPresent(self.verificationState, forKey: .verificationState)
             try container.encodeIfPresent(self.status, forKey: .status)
             try container.encodeIfPresent(self.debug, forKey: .debug)
@@ -430,12 +437,70 @@ extension AppBskyLexicon.Actor {
             case viewer
             case labels
             case pinnedPost
+            case links
             case verificationState = "verification"
             case status
             case debug
         }
     }
 
+    /// A definition model for the links in an actor's profile.
+    ///
+    /// - SeeAlso: This is based on the [`app.bsky.actor.defs`][github] lexicon.
+    ///
+    /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/actor/defs.json
+    public struct ProfileLinkViewDefinition: Sendable, Codable, Equatable, Hashable {
+        
+        /// The app.bsky.actor.link record AT-URI, e.g. for reporting the link.
+        public let recordURI: String
+        
+        /// The app.bsky.actor.link record's CID, e.g. for reporting the link.
+        public let recordCID: String
+        
+        /// The link destination.
+        public let url: String
+        
+        /// The link destination's label. Clients can fall back to the destination's domain. Optional.
+        public let title: String?
+        
+        /// Image URL for the destination site's icon. Optional.
+        public let iconURL: String?
+        
+        public init(recordURI: String, recordCID: String, url: String, title: String? = nil, iconURL: String? = nil) {
+            self.recordURI = recordURI
+            self.recordCID = recordCID
+            self.url = url
+            self.title = title
+            self.iconURL = iconURL
+        }
+        
+        public init(from decoder: any Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+            self.recordURI = try container.decode(String.self, forKey: .recordURI)
+            self.recordCID = try container.decode(String.self, forKey: .recordCID)
+            self.url = try container.decode(String.self, forKey: .url)
+            self.title = try container.decodeIfPresent(String.self, forKey: .title)
+            self.iconURL = try container.decodeIfPresent(String.self, forKey: .iconURL)
+        }
+        
+        public func encode(to encoder: any Encoder) throws {
+            var container = encoder.container(keyedBy: CodingKeys.self)
+            try container.encode(self.recordURI, forKey: .recordURI)
+            try container.encode(self.recordCID, forKey: .recordCID)
+            try container.encode(self.url, forKey: .url)
+            try container.truncatedEncodeIfPresent(self.title, forKey: .title, upToCharacterLength: 320)
+            try container.encodeIfPresent(self.iconURL, forKey: .iconURL)
+        }
+        
+        enum CodingKeys: String, CodingKey {
+            case recordURI = "uri"
+            case recordCID = "cid"
+            case url
+            case title
+            case iconURL = "icon"
+        }
+    }
+    
     /// A definition model for an actor's associated profile.
     ///
     /// - SeeAlso: This is based on the [`app.bsky.actor.defs`][github] lexicon.
