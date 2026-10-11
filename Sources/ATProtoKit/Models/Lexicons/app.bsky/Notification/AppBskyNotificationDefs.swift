@@ -24,6 +24,8 @@ extension AppBskyLexicon.Notification {
     /// - SeeAlso: This is based on the [`app.bsky.notification.defs`][github] lexicon.
     ///
     /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/notification/defs.json
+    ///
+    @available(*, deprecated, message: "Use `chat.bsky.notification` preferences instead. This will only return a default value.")
     public struct ChatPreferenceDefinition: Sendable, Codable {
 
         /// A filter of what conversations to get push notifications for.
@@ -207,6 +209,7 @@ extension AppBskyLexicon.Notification {
     public struct PreferencesDefinition: Sendable, Codable {
 
         /// A list of preferences for notifications related to chat conversations.
+        @available(*, deprecated, message: "Use `chat.bsky.notification` preferences instead. This will only return a default value.")
         public let chat: ChatPreferenceDefinition
 
         /// A list of preferences for notifications related to follows.

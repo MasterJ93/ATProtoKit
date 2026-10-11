@@ -80,13 +80,17 @@ extension AppBskyLexicon.Actor {
         /// A post record that's pinned to the profile. Optional.
         public let pinnedPost: ComAtprotoLexicon.Repository.StrongReference?
 
+        /// Links shown on the profile, in display order. Each ref points to an app.bsky.actor.link
+        /// record in this repo. Optional.
+        public let links: [ComAtprotoLexicon.Repository.StrongReference]?
+        
         /// The date and time the profile was created. Optional.
         public let createdAt: Date?
 
         public init(displayName: String?, description: String?, pronouns: String?, websiteURL: URL?,
                     avatarBlob: ComAtprotoLexicon.Repository.UploadBlobOutput?,
                     bannerBlob: ComAtprotoLexicon.Repository.UploadBlobOutput?, labels: LabelsUnion?,
-                    joinedViaStarterPack: ComAtprotoLexicon.Repository.StrongReference?, pinnedPost: ComAtprotoLexicon.Repository.StrongReference?,
+                    joinedViaStarterPack: ComAtprotoLexicon.Repository.StrongReference?, pinnedPost: ComAtprotoLexicon.Repository.StrongReference?, links: [ComAtprotoLexicon.Repository.StrongReference]? = nil,
                     createdAt: Date?) {
             self.displayName = displayName
             self.description = description
@@ -97,6 +101,7 @@ extension AppBskyLexicon.Actor {
             self.labels = labels
             self.joinedViaStarterPack = joinedViaStarterPack
             self.pinnedPost = pinnedPost
+            self.links = links
             self.createdAt = createdAt
         }
 
@@ -112,6 +117,7 @@ extension AppBskyLexicon.Actor {
             self.labels = try container.decodeIfPresent(LabelsUnion.self, forKey: .labels)
             self.joinedViaStarterPack = try container.decodeIfPresent(ComAtprotoLexicon.Repository.StrongReference.self, forKey: .joinedViaStarterPack)
             self.pinnedPost = try container.decodeIfPresent(ComAtprotoLexicon.Repository.StrongReference.self, forKey: .pinnedPost)
+            self.links = try container.decodeIfPresent([ComAtprotoLexicon.Repository.StrongReference].self, forKey: .links)
             self.createdAt = try container.decodeDateIfPresent(forKey: .createdAt)
         }
 
@@ -128,6 +134,7 @@ extension AppBskyLexicon.Actor {
             try container.encodeIfPresent(self.labels, forKey: .labels)
             try container.encodeIfPresent(self.joinedViaStarterPack, forKey: .joinedViaStarterPack)
             try container.encodeIfPresent(self.pinnedPost, forKey: .pinnedPost)
+            try container.truncatedEncodeIfPresent(self.links, forKey: .links, upToArrayLength: 10)
             try container.encodeDateIfPresent(self.createdAt, forKey: .createdAt)
         }
 
@@ -142,6 +149,7 @@ extension AppBskyLexicon.Actor {
             case labels
             case joinedViaStarterPack
             case pinnedPost
+            case links
             case createdAt
         }
 

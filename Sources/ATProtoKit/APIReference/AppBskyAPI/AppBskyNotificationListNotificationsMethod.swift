@@ -30,7 +30,7 @@ extension ATProtoKit {
     ///   ``AppBskyLexicon/Notification/Notification/reason-swift.property``. Optional.
     ///   - limit: The number of invite codes in the list. Optional. Defaults to `50`.
     ///   - isPriority: Indicates whether the notification is a priority. Optional.
-    ///   Defaults to `nil`.
+    ///   Defaults to `nil`. DEPRECATED. This parameter is ignored.
     ///   - cursor: The mark used to indicate the starting point for the next set
     ///   of results. Optional.
     ///   - seenAt: The date and time the notification was seen. Defaults to the date and time the
@@ -44,7 +44,7 @@ extension ATProtoKit {
     public func listNotifications(
         with reasons: [AppBskyLexicon.Notification.Notification.Reason]? = nil,
         limit: Int? = 50,
-        isPriority: Bool? = nil,
+        isPriority: Bool? = nil, /// DEPRECATED. This parameter is ignored.
         cursor: String? = nil,
         seenAt: Date? = nil,
         labelersValue: String? = nil
@@ -72,6 +72,7 @@ extension ATProtoKit {
             queryItems.append(("limit", "\(finalLimit)"))
         }
 
+        /// DEPRECATED. This parameter is ignored if included in the request.
         if let isPriority {
             queryItems.append(("priority", "\(isPriority)"))
         }
