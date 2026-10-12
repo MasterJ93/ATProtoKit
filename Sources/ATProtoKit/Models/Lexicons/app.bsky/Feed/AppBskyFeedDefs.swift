@@ -232,8 +232,11 @@ extension AppBskyLexicon.Feed {
 
         /// Indicates whether the post record is pinned. Optional.
         public let isPinned: Bool?
+        
+        /// This property is present only in selected cases, as an optimization.
+        public let knownLikers: KnownLikers?
 
-        public init(repostURI: String?, likeURI: String?, isBookmarked: Bool?, isThreadMuted: Bool?, areRepliesDisabled: Bool?, isEmbeddingDisabled: Bool?, isPinned: Bool?) {
+        public init(repostURI: String?, likeURI: String?, isBookmarked: Bool?, isThreadMuted: Bool?, areRepliesDisabled: Bool?, isEmbeddingDisabled: Bool?, isPinned: Bool?, knownLikers: KnownLikers? = nil) {
             self.repostURI = repostURI
             self.likeURI = likeURI
             self.isBookmarked = isBookmarked
@@ -241,6 +244,7 @@ extension AppBskyLexicon.Feed {
             self.areRepliesDisabled = areRepliesDisabled
             self.isEmbeddingDisabled = isEmbeddingDisabled
             self.isPinned = isPinned
+            self.knownLikers = knownLikers
         }
         
         public init(from decoder: any Decoder) throws {
@@ -252,6 +256,7 @@ extension AppBskyLexicon.Feed {
             self.areRepliesDisabled = try container.decodeIfPresent(Bool.self, forKey: .areRepliesDisabled)
             self.isEmbeddingDisabled = try container.decodeIfPresent(Bool.self, forKey: .isEmbeddingDisabled)
             self.isPinned = try container.decodeIfPresent(Bool.self, forKey: .isPinned)
+            self.knownLikers = try container.decodeIfPresent(KnownLikers.self, forKey: .knownLikers)
         }
         
         public func encode(to encoder: any Encoder) throws {
@@ -263,6 +268,7 @@ extension AppBskyLexicon.Feed {
             try container.encodeIfPresent(self.areRepliesDisabled, forKey: .areRepliesDisabled)
             try container.encodeIfPresent(self.isEmbeddingDisabled, forKey: .isEmbeddingDisabled)
             try container.encodeIfPresent(self.isPinned, forKey: .isPinned)
+            try container.encodeIfPresent(self.knownLikers, forKey: .knownLikers)
         }
         
         enum CodingKeys: String, CodingKey {
@@ -273,9 +279,46 @@ extension AppBskyLexicon.Feed {
             case areRepliesDisabled = "replyDisabled"
             case isEmbeddingDisabled = "embeddingDisabled"
             case isPinned = "pinned"
+            case knownLikers
         }
     }
 
+    /// A definition model for metadata about this post's likers whom you also follow.
+    ///
+    /// - Note: According to the AT Protocol specifications: "The post's likers whom you also follow."
+    ///
+    /// - SeeAlso: This is based on the [`app.bsky.feed.defs`][github] lexicon.
+    ///
+    /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/feed/defs.json
+    public struct KnownLikers: Sendable, Codable, Equatable, Hashable {
+        
+        public let count: Int
+        
+        public let actors: [AppBskyLexicon.Actor.ProfileViewBasicDefinition]
+        
+        public init(count: Int, actors: [AppBskyLexicon.Actor.ProfileViewBasicDefinition]) {
+            self.count = count
+            self.actors = actors
+        }
+        
+        public init(from decoder: any Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+            self.count = try container.decode(Int.self, forKey: .count)
+            self.actors = try container.decode([AppBskyLexicon.Actor.ProfileViewBasicDefinition].self, forKey: .actors)
+        }
+        
+        public func encode(to encoder: any Encoder) throws {
+            var container = encoder.container(keyedBy: CodingKeys.self)
+            try container.encode(self.count, forKey: .count)
+            try container.encode(self.actors, forKey: .actors)
+        }
+        
+        enum CodingKeys: CodingKey {
+            case count
+            case actors
+        }
+    }
+    
     /// A definition model for metadata about this post in the thread context.
     ///
     /// - Note: According to the AT Protocol specifications: "Metadata about this post within the context of the thread it is in."
@@ -320,6 +363,14 @@ extension AppBskyLexicon.Feed {
         /// The reply reference for the post, if it's a reply. Optional.
         public let reply: ReplyReferenceDefinition?
 
+        /// The 1-indexed position of this post within the contiguous original post (OP) thread.
+        /// Only present when this post is part of the original post (OP) thread.
+        public let opThreadPostIndex: Int?
+        
+        /// The total number of posts in the contiguous original post thread that this post belongs to.
+        /// Only present when this post is part of the original post (OP) thread.
+        public let opThreadPostCount: Int?
+        
         /// Determines whether the repost is a normal repost or pinned. Optional.
         public let reason: ReasonUnion?
 
@@ -337,9 +388,11 @@ extension AppBskyLexicon.Feed {
         /// passed back alongside interactions."
         public let requestID: String?
 
-        public init(post: PostViewDefinition, reply: ReplyReferenceDefinition? = nil, reason: ReasonUnion? = nil, feedContext: String? = nil, requestID: String? = nil) {
+        public init(post: PostViewDefinition, reply: ReplyReferenceDefinition? = nil, opThreadPostIndex: Int? = nil, opThreadPostCount: Int? = nil, reason: ReasonUnion? = nil, feedContext: String? = nil, requestID: String? = nil) {
             self.post = post
             self.reply = reply
+            self.opThreadPostIndex = opThreadPostIndex
+            self.opThreadPostCount = opThreadPostCount
             self.reason = reason
             self.feedContext = feedContext
             self.requestID = requestID
@@ -347,7 +400,9 @@ extension AppBskyLexicon.Feed {
         public init(from decoder: any Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
             self.post = try container.decode(AppBskyLexicon.Feed.PostViewDefinition.self, forKey: .post)
-            self.reply = try container.decodeIfPresent(AppBskyLexicon.Feed.ReplyReferenceDefinition.self, forKey: .reply)
+            self.reply = try container.decodeIfPresent(ReplyReferenceDefinition.self, forKey: .reply)
+            self.opThreadPostIndex = try container.decodeIfPresent(Int.self, forKey: .opThreadPostIndex)
+            self.opThreadPostCount = try container.decodeIfPresent(Int.self, forKey: .opThreadPostCount)
             self.reason = try container.decodeIfPresent(AppBskyLexicon.Feed.FeedViewPostDefinition.ReasonUnion.self, forKey: .reason)
             self.feedContext = try container.decodeIfPresent(String.self, forKey: .feedContext)
             self.requestID = try container.decodeIfPresent(String.self, forKey: .requestID)
@@ -358,6 +413,8 @@ extension AppBskyLexicon.Feed {
 
             try container.encode(self.post, forKey: .post)
             try container.encodeIfPresent(self.reply, forKey: .reply)
+            try container.encodeIfPresent(self.opThreadPostIndex, forKey: .opThreadPostIndex)
+            try container.encodeIfPresent(self.opThreadPostCount, forKey: .opThreadPostCount)
             try container.encodeIfPresent(self.reason, forKey: .reason)
             try container.truncatedEncodeIfPresent(self.feedContext, forKey: .feedContext, upToCharacterLength: 300)
             try container.truncatedEncodeIfPresent(self.requestID, forKey: .requestID, upToCharacterLength: 100)
@@ -366,6 +423,8 @@ extension AppBskyLexicon.Feed {
         public enum CodingKeys: String, CodingKey {
             case post
             case reply
+            case opThreadPostIndex
+            case opThreadPostCount
             case reason
             case feedContext
             case requestID = "reqId"

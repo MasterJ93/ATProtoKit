@@ -23,6 +23,7 @@ extension AppBskyLexicon.Notification {
     public struct PutPreferencesV2RequestBody: Sendable, Codable {
 
         /// A list of preferences for notifications related to chat conversations. Optional.
+        @available(*, deprecated, message: "Use `chat.bsky.notification` preferences instead. This will only return a default value.")
         public let chat: ChatPreferenceDefinition?
 
         /// A list of preferences for notifications related to follows. Optional.
