@@ -1,5 +1,5 @@
 //
-//  AppBskyActorProfile.swift
+//  AppBskyActorLink.swift
 //
 //
 //  Created by Scott Handley on 2026-10-11.
@@ -51,7 +51,7 @@ extension AppBskyLexicon.Actor {
             self.url = try container.decode(String.self, forKey: .url)
             self.title = try container.decodeIfPresent(String.self, forKey: .title)
             self.iconBlob = try container.decodeIfPresent(ComAtprotoLexicon.Repository.UploadBlobOutput.self, forKey: .iconBlob)
-            self.createdAt = try container.decode(Date.self, forKey: .createdAt)
+            self.createdAt = try container.decodeDate(forKey: .createdAt)
         }
         
         public func encode(to encoder: any Encoder) throws {
@@ -62,7 +62,7 @@ extension AppBskyLexicon.Actor {
             try container.encode(self.url, forKey: .url)
             try container.truncatedEncodeIfPresent(self.title, forKey: .title, upToCharacterLength: 320)
             try container.encodeIfPresent(self.iconBlob, forKey: .iconBlob)
-            try container.encode(self.createdAt, forKey: .createdAt)
+            try container.encodeDate(self.createdAt, forKey: .createdAt)
         }
         
         enum CodingKeys: String, CodingKey {
