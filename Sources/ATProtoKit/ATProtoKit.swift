@@ -125,6 +125,7 @@ public final class ATProtoKit: Sendable, ATProtoKitConfiguration, ATRecordConfig
     ///
     /// If `canUseBlueskyRecords` is set to `false`, these will not be used.
     public let recordLexicons: [ATRecordDecoder] = [
+        ATRecordDecoder(type: AppBskyLexicon.Actor.LinkRecord.self),
         ATRecordDecoder(type: AppBskyLexicon.Actor.ProfileRecord.self),
         ATRecordDecoder(type: AppBskyLexicon.Actor.StatusRecord.self),
         ATRecordDecoder(type: AppBskyLexicon.Feed.GeneratorRecord.self),
