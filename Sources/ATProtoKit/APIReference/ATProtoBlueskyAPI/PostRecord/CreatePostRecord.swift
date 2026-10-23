@@ -434,12 +434,13 @@ extension ATProtoBluesky {
                             images,
                             pdsURL: sessionURL
                         )
-                    case .external(let url, let title, let description, let thumbnailImageURL):
+                    case .external(let url, let title, let description, let thumbnailImageURL, let associatedRefs):
                         resolvedEmbed = await buildExternalEmbed(
                             from: url,
                             title: title,
                             description: description,
                             thumbnailImageURL: thumbnailImageURL,
+                            associatedRefs: associatedRefs,
                             session: session
                         )
                     case .record(let record):
@@ -861,6 +862,8 @@ extension ATProtoBluesky {
     ///   - title: The title of the website.
     ///   - description: The description of the website.
     ///   - thumbnailImageURL: The URL of the thumbnail image. Optional.
+    ///   - associatedRefs: Strong references to the Atmosphere records that back the link,
+    ///   as returned by ``ATProtoKit/getEmbedExternalView(url:uris:)``. Optional.
     ///   - session: The ``UserSession`` object.
     /// - Returns: An ``AppBskyLexicon/Feed/PostRecord/EmbedUnion`` which contains an
     /// ``AppBskyLexicon/Embed/ExternalDefinition`` for use in a record.
@@ -869,6 +872,7 @@ extension ATProtoBluesky {
         title: String,
         description: String?,
         thumbnailImageURL: URL? = nil,
+        associatedRefs: [ComAtprotoLexicon.Repository.StrongReference]? = nil,
         session: UserSession
     ) async -> AppBskyLexicon.Feed.PostRecord.EmbedUnion? {
         // Attempt to load the thumbnail image, if provided.
@@ -901,7 +905,8 @@ extension ATProtoBluesky {
                 uri: url.absoluteString,
                 title: title,
                 description: description ?? "",
-                thumbnailImage: thumbnailImage ?? nil
+                thumbnailImage: thumbnailImage ?? nil,
+                associatedRefs: associatedRefs.flatMap { $0.isEmpty ? nil : $0 }
             )
         )
         return .external(embedExternal)
@@ -968,7 +973,10 @@ extension ATProtoBluesky {
         ///   - title: The title of the external content.
         ///   - description: The description of the external content.
         ///   - thumbnailURL: The URL of the thumbnail image. Optional. Defaults to `nil`.
-        case external(url: URL, title: String, description: String, thumbnailURL: URL? = nil)
+        ///   - associatedRefs: Strong references to the Atmosphere records (such as a
+        ///   `site.standard.document`) that back the link, as returned by
+        ///   ``ATProtoKit/getEmbedExternalView(url:uris:)``. Optional. Defaults to `nil`.
+        case external(url: URL, title: String, description: String, thumbnailURL: URL? = nil, associatedRefs: [ComAtprotoLexicon.Repository.StrongReference]? = nil)
 
         /// Represents another post record that is to be embedded within the current post.
         ///
