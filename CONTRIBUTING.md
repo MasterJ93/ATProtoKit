@@ -3,6 +3,9 @@
 
 Thanks for your interest in contributing to `ATProtoKit`. This project aims to be a leading Swift API library for the AT Protocol and Bluesky and as a go-to choice for Swift developers to build projects for Apple platforms, Linux, Windows, and Android.
 
+> [!WARNING]
+> Please note that we do not currently accept Pull Requests where LLMs (such as Claude) are co-authored. We do not credit LLMs at this time. Please make sure that all of your code is manually audited and reviewed correctly. Please note that Pull Requests using LLM-generated code for all security-related projects (such as ATCryptography) are strictly prohibited as well.
+
 ## How to Contribute
 Contributions to ATProtoKit are welcomed and appreciated. Here are the areas where you can help:
 - Code contributions, such as bug fixes, tweaking the models and methods to fit the latest lexicon changes, and improvements in the efficiency of the library itself.
