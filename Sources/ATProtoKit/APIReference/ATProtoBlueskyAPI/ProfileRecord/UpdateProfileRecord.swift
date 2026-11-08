@@ -75,6 +75,7 @@ extension ATProtoBluesky {
         var newLabels: AppBskyLexicon.Actor.ProfileRecord.LabelsUnion? = profile.labels
         var newJoinedViaStarterPack: ComAtprotoLexicon.Repository.StrongReference? = profile.joinedViaStarterPack
         var newPinnedPost: ComAtprotoLexicon.Repository.StrongReference? = profile.pinnedPost
+        let existingLinks: [ComAtprotoLexicon.Repository.StrongReference]? = profile.links
 
         for uniqueField in uniqueFields {
             
@@ -196,6 +197,7 @@ extension ATProtoBluesky {
             labels: newLabels,
             joinedViaStarterPack: newJoinedViaStarterPack,
             pinnedPost: newPinnedPost,
+            links: existingLinks,
             createdAt: Date()
         )
 
