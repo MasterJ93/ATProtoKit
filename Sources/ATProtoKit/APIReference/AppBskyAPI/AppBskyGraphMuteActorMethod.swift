@@ -15,17 +15,28 @@ extension ATProtoKit {
     /// Mutes a user account.
     /// 
     /// - Note: According to the AT Protocol specifications: "Creates a mute relationship for the
-    /// specified account. Mutes are private in Bluesky. Requires auth."
+    /// specified account. If a mute already exists for the account, it is updated in place: the
+    /// stored scope is replaced with the scope in this request. Mutes are private in Bluesky.
+    /// Requires auth."
     ///
     /// - SeeAlso: This is based on the [`app.bsky.graph.muteActor`][github] lexicon.
     ///
-    /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/graph/muteActor.json
+    /// [github]: https://github.com/bluesky-social/bsky/blob/main/lexicons/app/bsky/graph/muteActor.json
     ///
-    /// - Parameter actor: The decentralized identifier (DID) or handle of a user account.
+    /// - Parameters:
+    ///   - actor: The decentralized identifier (DID) or handle of a user account.
+    ///   - isOnlyReposts: Determines whether only the user account's reposts are muted. If neither
+    ///   this nor `isOnlyQuotePosts` is `true`, the user account is fully muted. Optional.
+    ///   - isOnlyQuotePosts: Determines whether only the user account's quote posts are
+    ///   muted. Optional.
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
     /// ``ATAPIError`` and ``ATRequestPrepareError`` for more details.
-    public func muteActor(_ actor: String) async throws {
+    public func muteActor(
+        _ actor: String,
+        isOnlyReposts: Bool? = nil,
+        isOnlyQuotePosts: Bool? = nil
+    ) async throws {
         guard let session = try await self.getUserSession() else {
             throw ATRequestPrepareError.missingActiveSession
         }
@@ -37,7 +48,9 @@ extension ATProtoKit {
         }
 
         let requestBody = AppBskyLexicon.Graph.MuteActorRequestBody(
-            actor: actor
+            actor: actor,
+            isOnlyReposts: isOnlyReposts,
+            isOnlyQuotePosts: isOnlyQuotePosts
         )
 
         do {
