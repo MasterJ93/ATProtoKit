@@ -546,7 +546,7 @@ extension AppBskyLexicon.Actor {
     ///
     /// - SeeAlso: This is based on the [`app.bsky.actor.defs`][github] lexicon.
     ///
-    /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/actor/defs.json
+    /// [github]: https://github.com/bluesky-social/bsky/blob/main/lexicons/app/bsky/actor/defs.json
     public struct ViewerStateDefinition: Sendable, Codable, Equatable, Hashable {
 
         /// Indicates whether the requesting account has been muted by the subject
@@ -555,6 +555,20 @@ extension AppBskyLexicon.Actor {
 
         /// An array of lists that the subject account is muted by.
         public let mutedByArray: AppBskyLexicon.Graph.ListViewBasicDefinition?
+
+        /// Indicates whether the subject account's reposts are muted. Optional.
+        ///
+        /// - Note: According to the AT Protocol specifications: "Whether the account's reposts are
+        /// muted. Scoped mutes are exclusive with muted: this can be true while muted is false. If
+        /// muted is true, this will be false."
+        public let areRepostsMuted: Bool?
+
+        /// Indicates whether the subject account's quote posts are muted. Optional.
+        ///
+        /// - Note: According to the AT Protocol specifications: "Whether the account's quote posts are
+        /// muted. Scoped mutes are exclusive with muted: this can be true while muted is false. If
+        /// muted is true, this will be false."
+        public let areQuotePostsMuted: Bool?
 
         /// Indicates whether the requesting account has been blocked by the subject
         /// account. Optional.
@@ -587,6 +601,8 @@ extension AppBskyLexicon.Actor {
         enum CodingKeys: String, CodingKey {
             case isMuted = "muted"
             case mutedByArray = "mutedByList"
+            case areRepostsMuted = "mutedOnlyReposts"
+            case areQuotePostsMuted = "mutedOnlyQuoteposts"
             case isBlocked = "blockedBy"
             case blockingURI = "blocking"
             case blockingByArray = "blockingByList"
