@@ -74,6 +74,7 @@
 
 ### app.bsky.feed.getQuotes
 
+- ``GetQuotes``
 - ``GetQuotesOutput``
 
 ### app.bsky.feed.getPostThread
