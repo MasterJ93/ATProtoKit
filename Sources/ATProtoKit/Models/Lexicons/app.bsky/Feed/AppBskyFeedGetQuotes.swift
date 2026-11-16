@@ -12,6 +12,27 @@ import FoundationNetworking
 
 extension AppBskyLexicon.Feed {
 
+    /// The main data model definition for getting the quote posts of a given post.
+    public struct GetQuotes: Sendable, Codable {
+
+        /// Determines the ordering of the quote posts.
+        ///
+        /// - Note: According to the AT Protocol specifications: "Ordering of results. 'latest'
+        /// (default when unset) is newest first; 'top' orders quotes by their like count."
+        ///
+        /// - SeeAlso: This is based on the [`app.bsky.feed.getQuotes`][github] lexicon.
+        ///
+        /// [github]: https://github.com/bluesky-social/atproto/blob/main/packages/api/lexicons/app/bsky/feed/getQuotes.json
+        public enum Sort: String, Sendable, Codable {
+
+            /// Indicates the results will be sorted by the latest quote posts.
+            case latest
+
+            /// Indicates the results will be sorted by the quote posts' like count.
+            case top
+        }
+    }
+
     /// An output model for getting the quote posts of a given post.
     ///
     /// - Note: According to the AT Protocol specifications: "Get posts in a thread. Does not require

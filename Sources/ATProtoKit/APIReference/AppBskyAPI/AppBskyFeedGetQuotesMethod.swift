@@ -24,6 +24,7 @@ extension ATProtoKit {
     /// - Parameters:
     ///   - postURI: The URI of the post.
     ///   - postCID: The CID hash of the post. Optional.
+    ///   - sort: The ordering of the quote posts. Optional. Defaults to `nil`.
     ///   - limit: The number quote posts to display. Optional. Defaults to `50`.
     ///   - cursor: The mark used to indicate the starting point for the next set
     ///   of results. Optional.
@@ -35,6 +36,7 @@ extension ATProtoKit {
     public func getQuotes(
         from postURI: String,
         postCID: String?,
+        sort: AppBskyLexicon.Feed.GetQuotes.Sort? = nil,
         limit: Int? = 50,
         cursor: String? = nil
     ) async throws -> AppBskyLexicon.Feed.GetQuotesOutput {
@@ -54,6 +56,10 @@ extension ATProtoKit {
 
         if let postCID {
             queryItems.append(("cid", postCID))
+        }
+
+        if let sort {
+            queryItems.append(("sort", sort.rawValue))
         }
 
         if let limit {
