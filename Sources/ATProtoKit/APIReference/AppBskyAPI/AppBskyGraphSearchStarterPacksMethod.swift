@@ -36,7 +36,11 @@ extension ATProtoKit {
         limit: Int? = 25,
         cursor: String? = nil
     ) async throws -> AppBskyLexicon.Graph.SearchStarterPacksOutput {
-        guard let requestURL = URL(string: "\(self.pdsURL)/xrpc/app.bsky.graph.searchStarterPacks") else {
+        let session = try await self.getUserSession()
+        let requiresAuthorization = session != nil
+
+        let sessionURL = session?.serviceEndpoint.absoluteString ?? self.pdsURL
+        guard let requestURL = URL(string: "\(sessionURL)/xrpc/app.bsky.graph.searchStarterPacks") else {
             throw ATRequestPrepareError.invalidRequestURL
         }
 
@@ -65,7 +69,8 @@ extension ATProtoKit {
                 forRequest: queryURL,
                 andMethod: .get,
                 acceptValue: "application/json",
-                contentTypeValue: nil
+                contentTypeValue: nil,
+                requiresAuthorization: requiresAuthorization
             )
             let response = try await apiClientService.sendRequest(
                 request,

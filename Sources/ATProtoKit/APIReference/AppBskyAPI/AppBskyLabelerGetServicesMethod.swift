@@ -32,7 +32,11 @@ extension ATProtoKit {
         labelerDIDs: [String],
         isDetailed: Bool? = nil
     ) async throws -> AppBskyLexicon.Labeler.GetServicesOutput {
-        guard let requestURL = URL(string: "\(self.pdsURL)/xrpc/app.bsky.labeler.getServices") else {
+        let session = try await self.getUserSession()
+        let requiresAuthorization = session != nil
+
+        let sessionURL = session?.serviceEndpoint.absoluteString ?? self.pdsURL
+        guard let requestURL = URL(string: "\(sessionURL)/xrpc/app.bsky.labeler.getServices") else {
             throw ATRequestPrepareError.invalidFormat
         }
 
@@ -56,7 +60,7 @@ extension ATProtoKit {
                 andMethod: .get,
                 acceptValue: "application/json",
                 contentTypeValue: nil,
-                authorizationValue: nil
+                requiresAuthorization: requiresAuthorization
             )
             let response = try await apiClientService.sendRequest(
                 request, decodeTo:
