@@ -2,6 +2,9 @@
 
 ## Topics
 
+### app.bsky.actor.contentVisibilityDeclaration
+- ``ContentVisibilityDeclarationRecord``
+
 ### app.bsky.actor.defs
 
 - ``ProfileViewBasicDefinition``
