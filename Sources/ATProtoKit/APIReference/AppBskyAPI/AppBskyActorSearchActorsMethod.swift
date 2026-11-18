@@ -41,7 +41,11 @@ extension ATProtoKit {
         limit: Int? = 25,
         cursor: String? = nil
     ) async throws -> AppBskyLexicon.Actor.SearchActorsOutput {
-        guard let requestURL = URL(string: "\(self.pdsURL)/xrpc/app.bsky.actor.searchActors") else {
+        let session = try await self.getUserSession()
+        let requiresAuthorization = session != nil
+
+        let sessionURL = session?.serviceEndpoint.absoluteString ?? self.pdsURL
+        guard let requestURL = URL(string: "\(sessionURL)/xrpc/app.bsky.actor.searchActors") else {
             throw ATRequestPrepareError.invalidRequestURL
         }
 
@@ -68,7 +72,8 @@ extension ATProtoKit {
             let request = apiClientService.createRequest(
                 forRequest: queryURL,
                 andMethod: .get,
-                acceptValue: "application/json"
+                acceptValue: "application/json",
+                requiresAuthorization: requiresAuthorization
             )
             let response = try await apiClientService.sendRequest(
                 request,
