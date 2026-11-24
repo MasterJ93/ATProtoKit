@@ -356,7 +356,20 @@ extension ATProtoBluesky {
             throw ATRequestPrepareError.invalidPDS
         }
 
-        var facets = await ATFacetParser.parseFacets(from: text, pdsURL: session.pdsURL ?? "https://bsky.social")
+        // Replace hyperlinks in text with their shortened display form.
+        let (resolvedText, updatedLinkFacets) = ATFacetParser.truncateAndReplaceLinks(in: text)
+
+        // Mentions, hashtags, and cashtags are parsed from the shortened text so their byte ranges
+        // match the text that is actually posted. Link facets come from `updatedLinkFacets` instead,
+        // since the shortened display text no longer contains the full URL.
+        var facets = await ATFacetParser.parseFacets(from: resolvedText, pdsURL: session.pdsURL ?? "https://bsky.social")
+        facets.removeAll {
+            $0.features.contains(where: {
+                if case .link = $0 { return true }
+                return false
+            })
+        }
+
         if let inlineFacets {
             for (url, start, end) in inlineFacets {
                 do {
@@ -368,10 +381,7 @@ extension ATProtoBluesky {
             }
         }
         
-        // Replace hyperlinks in text and update their facet ranges
-        let (resolvedText, updatedLinkFacets) = ATFacetParser.truncateAndReplaceLinks(in: text)
-        
-        // If we have any new URLs that have been updated, modify their facets to their new size
+        // Add a link facet for each shortened URL, at its position in the shortened text.
         for (url, start, end) in updatedLinkFacets {
             do {
                 let updatedFacet = try await ATFacetParser.createInlineLink(url: url, start: start, end: end)
