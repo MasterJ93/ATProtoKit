@@ -26,6 +26,7 @@ extension ATProtoKit {
     ///   - reasonType: The reason for the report.
     ///   - reason: Any additional context accompanying the report. Optional.
     ///   - subject: The offending subject in question.
+    ///   - labelerDID: The DID of the moderation service (labeler) to route the report to. Optional.
     /// - Returns: A view of the newly-created report that will be sent to the moderators.
     ///
     /// - Throws: An ``ATProtoError``-conforming error type, depending on the issue. Go to
@@ -33,7 +34,8 @@ extension ATProtoKit {
     public func createReport(
         with reasonType: ComAtprotoLexicon.Moderation.ReasonTypeDefinition,
         andContextof reason: String? = nil,
-        subject: ComAtprotoLexicon.Moderation.CreateReportRequestBody.SubjectUnion
+        subject: ComAtprotoLexicon.Moderation.CreateReportRequestBody.SubjectUnion,
+        labelerDID: String? = nil
     ) async throws -> ComAtprotoLexicon.Moderation.CreateReportOutput {
         guard let session = try await self.getUserSession() else {
             throw ATRequestPrepareError.missingActiveSession
@@ -57,7 +59,8 @@ extension ATProtoKit {
                 andMethod: .post,
                 acceptValue: "application/json",
                 contentTypeValue: "application/json",
-                requiresAuthorization: true
+                requiresAuthorization: true,
+                proxyValue: labelerDID.map { "\($0)#atproto_labeler" }
             )
             let response = try await apiClientService.sendRequest(
                 request,
