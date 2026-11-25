@@ -448,7 +448,7 @@ extension AppBskyLexicon.Actor {
     ///
     /// - SeeAlso: This is based on the [`app.bsky.actor.defs`][github] lexicon.
     ///
-    /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/actor/defs.json
+    /// [github]: https://github.com/bluesky-social/bsky/blob/main/lexicons/app/bsky/actor/defs.json
     public struct ProfileLinkViewDefinition: Sendable, Codable, Equatable, Hashable {
         
         /// The app.bsky.actor.link record AT-URI, e.g. for reporting the link.
@@ -466,12 +466,16 @@ extension AppBskyLexicon.Actor {
         /// Image URL for the destination site's icon. Optional.
         public let iconURL: String?
         
-        public init(recordURI: String, recordCID: String, url: String, title: String? = nil, iconURL: String? = nil) {
+        /// An array of labels applied to the link. Optional.
+        public let labels: [ComAtprotoLexicon.Label.LabelDefinition]?
+        
+        public init(recordURI: String, recordCID: String, url: String, title: String? = nil, iconURL: String? = nil, labels: [ComAtprotoLexicon.Label.LabelDefinition]? = nil) {
             self.recordURI = recordURI
             self.recordCID = recordCID
             self.url = url
             self.title = title
             self.iconURL = iconURL
+            self.labels = labels
         }
         
         public init(from decoder: any Decoder) throws {
@@ -481,6 +485,7 @@ extension AppBskyLexicon.Actor {
             self.url = try container.decode(String.self, forKey: .url)
             self.title = try container.decodeIfPresent(String.self, forKey: .title)
             self.iconURL = try container.decodeIfPresent(String.self, forKey: .iconURL)
+            self.labels = try container.decodeIfPresent([ComAtprotoLexicon.Label.LabelDefinition].self, forKey: .labels)
         }
         
         public func encode(to encoder: any Encoder) throws {
@@ -490,6 +495,7 @@ extension AppBskyLexicon.Actor {
             try container.encode(self.url, forKey: .url)
             try container.truncatedEncodeIfPresent(self.title, forKey: .title, upToCharacterLength: 320)
             try container.encodeIfPresent(self.iconURL, forKey: .iconURL)
+            try container.encodeIfPresent(self.labels, forKey: .labels)
         }
         
         enum CodingKeys: String, CodingKey {
@@ -498,6 +504,7 @@ extension AppBskyLexicon.Actor {
             case url
             case title
             case iconURL = "icon"
+            case labels
         }
     }
     
