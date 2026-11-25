@@ -50,7 +50,11 @@ extension ATProtoKit {
         shouldIncludePins: Bool? = false,
         labelersValue: String? = nil
     ) async throws -> AppBskyLexicon.Feed.GetAuthorFeedOutput {
-        guard let requestURL = URL(string: "\(self.pdsURL)/xrpc/app.bsky.feed.getAuthorFeed") else {
+        let session = try await self.getUserSession()
+        let requiresAuthorization = session != nil
+
+        let sessionURL = session?.serviceEndpoint.absoluteString ?? self.pdsURL
+        guard let requestURL = URL(string: "\(sessionURL)/xrpc/app.bsky.feed.getAuthorFeed") else {
             throw ATRequestPrepareError.invalidRequestURL
         }
 
@@ -88,6 +92,7 @@ extension ATProtoKit {
                 andMethod: .get,
                 acceptValue: "application/json",
                 contentTypeValue: nil,
+                requiresAuthorization: requiresAuthorization,
                 labelersValue: labelersValue
             )
             let response = try await apiClientService.sendRequest(
