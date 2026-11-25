@@ -14,15 +14,20 @@
 
 ### chat.bsky.convo.defs
 
+- ``ChatBskyLexicon/Conversation/ConversationLockStatusDefinition``
 - ``ChatBskyLexicon/Conversation/MessageReferenceDefinition``
 - ``ChatBskyLexicon/Conversation/MessageInputDefinition``
+- ``ChatBskyLexicon/Conversation/ReplyReferenceDefinition``
 - ``ChatBskyLexicon/Conversation/MessageViewDefinition``
 - ``DeletedMessageViewDefinition``
+- ``MessageBeforeUserJoinedGroupViewDefinition``
 - ``MessageViewSenderDefinition``
 - ``ReactionViewDefinition``
 - ``ReactionViewSenderDefinition``
 - ``MessageAndReactionViewDefinition``
 - ``ConversationViewDefinition``
+- ``DirectConversationDefinition``
+- ``GroupConversationDefinition``
 - ``LogBeginConversationDefinition``
 - ``LogAcceptConversationDefinition``
 - ``LogLeaveConversationDefinition``
@@ -50,6 +55,10 @@
 
 - ``ChatBskyLexicon/Conversation/GetConversationForMembersOutput``
 
+### chat.bsky.convo.getConvoMembers
+
+- ``ChatBskyLexicon/Conversation/GetConversationMembersOutput``
+
 ### chat.bsky.convo.getLog
 
 - ``ChatBskyLexicon/Conversation/GetLogOutput``
@@ -63,10 +72,19 @@
 - ``ChatBskyLexicon/Conversation/LeaveConversationRequestBody``
 - ``ChatBskyLexicon/Conversation/LeaveConversationOutput``
 
+### chat.bsky.convo.listConvoRequests
+
+- ``ChatBskyLexicon/Conversation/ListConversationRequestsOutput``
+
 ### chat.bsky.convo.listConvos
 
 - ``ChatBskyLexicon/Conversation/ListConversations``
 - ``ChatBskyLexicon/Conversation/ListConversationsOutput``
+
+### chat.bsky.convo.lockConvo
+
+- ``ChatBskyLexicon/Conversation/LockConversationRequestBody``
+- ``ChatBskyLexicon/Conversation/LockConversationOutput``
 
 ### chat.bsky.convo.muteConvo
 
@@ -87,6 +105,11 @@
 - ``ChatBskyLexicon/Conversation/SendMessageBatch``
 - ``ChatBskyLexicon/Conversation/SendMessageBatchRequestBody``
 - ``ChatBskyLexicon/Conversation/SendMessageBatchOutput``
+
+### chat.bsky.convo.unlockConvo
+
+- ``ChatBskyLexicon/Conversation/UnlockConversationRequestBody``
+- ``ChatBskyLexicon/Conversation/UnlockConversationOutput``
 
 ### chat.bsky.convo.unmuteConvo
 
