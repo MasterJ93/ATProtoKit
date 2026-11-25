@@ -55,6 +55,11 @@
 
 - ``createStatusRecord(_:embed:durationMinutes:shouldValidate:)``
 
+### Content Visibility Declarations
+
+- ``createContentVisibilityDeclarationRecord(isHiddenFromAlgorithmicRecommendations:shouldValidate:swapCommit:)``
+- ``updateContentVisibilityDeclarationRecord(isHiddenFromAlgorithmicRecommendations:)``
+
 ### Starter Packs
 
 - ``createStarterPackRecord(named:description:listURI:feeds:creationDate:recordKey:shouldValidate:swapCommit:)``
