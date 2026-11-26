@@ -23,5 +23,16 @@ extension AppBskyLexicon.Unspecced {
 
         /// An array of trend views.
         public let trends: [AppBskyLexicon.Unspecced.TrendViewDefinition]
+
+        /// A Snowflake ID for recommendation events. Optional.
+        ///
+        /// - Note: According to the AT Protocol specifications: "Snowflake for this
+        /// recommendation, use when submitting recommendation events."
+        public let recommendationIDString: String?
+
+        enum CodingKeys: String, CodingKey {
+            case trends
+            case recommendationIDString = "recIdStr"
+        }
     }
 }

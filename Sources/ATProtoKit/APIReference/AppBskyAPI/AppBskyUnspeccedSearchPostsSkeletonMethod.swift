@@ -41,6 +41,7 @@ extension ATProtoKit {
     ///   - url: Filters result to posts containing facet and embed links that point to this
     ///   URL. Optional.
     ///   - tags: An array of tags to be used against the results. Optional.
+    ///   - viewerDID: The decentralized identifier (DID) of the requesting account. Optional.
     ///   - limit: The number of items that can be in the list. Optional. Defaults
     ///   to `25`.
     ///   - cursor: The mark used to indicate the starting point for the next set
@@ -61,6 +62,7 @@ extension ATProtoKit {
         domain: String? = nil,
         url: String? = nil,
         tags: [String]? = nil,
+        viewerDID: String? = nil,
         limit: Int? = 25,
         cursor: String? = nil
     ) async throws -> AppBskyLexicon.Unspecced.SearchPostsSkeletonOutput {
@@ -106,6 +108,10 @@ extension ATProtoKit {
 
         if let tags {
             queryItems += tags.map { ("tag", $0) }
+        }
+
+        if let viewerDID {
+            queryItems.append(("viewer", viewerDID))
         }
 
         if let limit {
