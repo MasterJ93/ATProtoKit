@@ -177,6 +177,92 @@ extension ChatBskyLexicon.Group {
         }
     }
 
+    /// A definition model for a join link preview view.
+    ///
+    /// - Note: According to the AT Protocol specifications: "Preview that can be shown in feeds,
+    /// including to unauthenticated viewers."
+    ///
+    /// - SeeAlso: This is based on the [`chat.bsky.group.defs`][github] lexicon.
+    ///
+    /// [github]: https://github.com/bluesky-social/bsky/blob/main/lexicons/chat/bsky/group/defs.json
+    public struct JoinLinkPreviewViewDefinition: Sendable, Codable {
+
+        /// The ID of the conversation.
+        public let conversationID: String
+
+        /// The code of the join link.
+        public let code: String
+
+        /// The name of the group conversation.
+        public let name: String
+
+        /// The owner of the group conversation.
+        public let owner: ChatBskyLexicon.Actor.ProfileViewBasicDefinition
+
+        /// The number of members in the group conversation.
+        public let memberCount: Int
+
+        /// The maximum number of members in the group conversation.
+        public let memberLimit: Int
+
+        /// Indicates whether joining through the join link requires approval.
+        public let isApprovalRequired: Bool
+
+        /// The rule for joining the group conversation.
+        public let joinRule: JoinRuleDefinition
+
+        /// The group conversation. Optional.
+        ///
+        /// - Note: According to the AT Protocol specifications: "Present only if the request is
+        /// authenticated and the user is a member of the group."
+        public let conversation: ChatBskyLexicon.Conversation.ConversationViewDefinition?
+
+        /// The viewer state of the join link. Optional.
+        public let viewer: JoinLinkViewerStateDefinition?
+
+        enum CodingKeys: String, CodingKey {
+            case conversationID = "convoId"
+            case code
+            case name
+            case owner
+            case memberCount
+            case memberLimit
+            case isApprovalRequired = "requireApproval"
+            case joinRule
+            case conversation = "convo"
+            case viewer
+        }
+    }
+
+    /// A definition model for a disabled join link preview view.
+    ///
+    /// - Note: According to the AT Protocol specifications: "Preview for a disabled join link.
+    /// Carries only the code so clients can correlate with the input and render a disabled state."
+    ///
+    /// - SeeAlso: This is based on the [`chat.bsky.group.defs`][github] lexicon.
+    ///
+    /// [github]: https://github.com/bluesky-social/bsky/blob/main/lexicons/chat/bsky/group/defs.json
+    public struct DisabledJoinLinkPreviewViewDefinition: Sendable, Codable {
+
+        /// The code of the join link.
+        public let code: String
+    }
+
+    /// A definition model for an invalid join link preview view.
+    ///
+    /// - Note: According to the AT Protocol specifications: "Preview for a join link code that
+    /// does not map to an existing link. Carries only the code so clients can correlate with the
+    /// input and render an invalid state."
+    ///
+    /// - SeeAlso: This is based on the [`chat.bsky.group.defs`][github] lexicon.
+    ///
+    /// [github]: https://github.com/bluesky-social/bsky/blob/main/lexicons/chat/bsky/group/defs.json
+    public struct InvalidJoinLinkPreviewViewDefinition: Sendable, Codable {
+
+        /// The code of the join link.
+        public let code: String
+    }
+
     /// A definition model for the viewer state of a join link.
     ///
     /// - SeeAlso: This is based on the [`chat.bsky.group.defs`][github] lexicon.
@@ -204,6 +290,54 @@ extension ChatBskyLexicon.Group {
         }
 
         enum CodingKeys: CodingKey {
+            case requestedAt
+        }
+    }
+
+    /// A definition model for a join request view.
+    ///
+    /// - Note: According to the AT Protocol specifications: "A join request from the perspective
+    /// of the group owner."
+    ///
+    /// - SeeAlso: This is based on the [`chat.bsky.group.defs`][github] lexicon.
+    ///
+    /// [github]: https://github.com/bluesky-social/bsky/blob/main/lexicons/chat/bsky/group/defs.json
+    public struct JoinRequestViewDefinition: Sendable, Codable {
+
+        /// The ID of the conversation.
+        public let conversationID: String
+
+        /// The user account that requested to join the group conversation.
+        public let requestedBy: ChatBskyLexicon.Actor.ProfileViewBasicDefinition
+
+        /// The date and time the user account requested to join the group conversation.
+        public let requestedAt: Date
+
+        public init(conversationID: String, requestedBy: ChatBskyLexicon.Actor.ProfileViewBasicDefinition, requestedAt: Date) {
+            self.conversationID = conversationID
+            self.requestedBy = requestedBy
+            self.requestedAt = requestedAt
+        }
+
+        public init(from decoder: any Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+
+            self.conversationID = try container.decode(String.self, forKey: .conversationID)
+            self.requestedBy = try container.decode(ChatBskyLexicon.Actor.ProfileViewBasicDefinition.self, forKey: .requestedBy)
+            self.requestedAt = try container.decodeDate(forKey: .requestedAt)
+        }
+
+        public func encode(to encoder: any Encoder) throws {
+            var container = encoder.container(keyedBy: CodingKeys.self)
+
+            try container.encode(self.conversationID, forKey: .conversationID)
+            try container.encode(self.requestedBy, forKey: .requestedBy)
+            try container.encodeDate(self.requestedAt, forKey: .requestedAt)
+        }
+
+        enum CodingKeys: String, CodingKey {
+            case conversationID = "convoId"
+            case requestedBy
             case requestedAt
         }
     }

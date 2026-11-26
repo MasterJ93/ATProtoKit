@@ -13,6 +13,9 @@ extension ChatBskyLexicon {
     /// A group of lexicons within the `chat.bsky.convo` namespace.
     public enum Conversation {}
 
+    /// A group of lexicons within the `chat.bsky.embed` namespace.
+    public enum Embed {}
+
     /// A group of lexicons within the `chat.bsky.group` namespace.
     public enum Group {}
 

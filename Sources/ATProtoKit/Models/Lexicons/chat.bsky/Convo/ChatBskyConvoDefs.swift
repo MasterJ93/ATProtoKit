@@ -150,6 +150,9 @@ extension ChatBskyLexicon.Conversation {
             /// A record within the embed.
             case record(AppBskyLexicon.Embed.RecordDefinition)
 
+            /// A join link within the embed.
+            case joinLink(ChatBskyLexicon.Embed.JoinLinkDefinition)
+
             /// An unknown case.
             case unknown(String, [String: CodableValue])
 
@@ -160,6 +163,8 @@ extension ChatBskyLexicon.Conversation {
                 switch type {
                     case "app.bsky.embed.record":
                         self = .record(try AppBskyLexicon.Embed.RecordDefinition(from: decoder))
+                    case "chat.bsky.embed.joinLink":
+                        self = .joinLink(try ChatBskyLexicon.Embed.JoinLinkDefinition(from: decoder))
                     default:
                         let singleValueDecodingContainer = try decoder.singleValueContainer()
                         let dictionary = try Self.decodeDictionary(from: singleValueDecodingContainer, decoder: decoder)
@@ -174,6 +179,8 @@ extension ChatBskyLexicon.Conversation {
                 switch self {
                     case .record(let record):
                         try container.encode(record)
+                    case .joinLink(let joinLink):
+                        try container.encode(joinLink)
                     default:
                         break
                 }
@@ -211,7 +218,7 @@ extension ChatBskyLexicon.Conversation {
     ///
     /// - SeeAlso: This is based on the [`chat.bsky.convo.defs`][github] lexicon.
     ///
-    /// [github]: https://github.com/bluesky-social/atproto/blob/main/lexicons/chat/bsky/convo/defs.json
+    /// [github]: https://github.com/bluesky-social/bsky/blob/main/lexicons/chat/bsky/convo/defs.json
     public struct MessageViewDefinition: Sendable, Codable {
 
         /// The ID of the message.
@@ -312,6 +319,9 @@ extension ChatBskyLexicon.Conversation {
             /// A record within the embed.
             case recordView(AppBskyLexicon.Embed.RecordDefinition.View)
 
+            /// A join link within the embed.
+            case joinLinkView(ChatBskyLexicon.Embed.JoinLinkDefinition.View)
+
             /// An unknown case.
             case unknown(String, [String: CodableValue])
 
@@ -322,6 +332,8 @@ extension ChatBskyLexicon.Conversation {
                 switch type {
                     case "app.bsky.embed.record", "app.bsky.embed.record#view":
                         self = .recordView(try AppBskyLexicon.Embed.RecordDefinition.View(from: decoder))
+                    case "chat.bsky.embed.joinLink#view":
+                        self = .joinLinkView(try ChatBskyLexicon.Embed.JoinLinkDefinition.View(from: decoder))
                     default:
                         let singleValueDecodingContainer = try decoder.singleValueContainer()
                         let dictionary = try Self.decodeDictionary(from: singleValueDecodingContainer, decoder: decoder)
@@ -335,6 +347,8 @@ extension ChatBskyLexicon.Conversation {
 
                 switch self {
                     case .recordView(let value):
+                        try container.encode(value)
+                    case .joinLinkView(let value):
                         try container.encode(value)
                     default:
                         break
