@@ -403,6 +403,69 @@ public enum ATFacetParser {
         return allFacets
     }
 
+    /// Shortens the links in a post's text and builds the facets for the shortened text.
+    ///
+    /// Mentions, hashtags, and cashtags are parsed from the shortened text so their byte ranges
+    /// match the text that is actually posted. Link facets come from the shortened links instead,
+    /// since the shortened display text no longer contains the full URL.
+    ///
+    /// - Parameters:
+    ///   - text: The post's original text.
+    ///   - inlineFacets: An array of URLs and byte ranges representing inline link facets.
+    ///   Optional. Defaults to `nil`.
+    ///   - pdsURL: The URL of the Personal Data Server, defaulting to "https://bsky.social".
+    /// - Returns: A tuple containing the shortened text and the facets that index into it.
+    internal static func buildPostFacets(
+        from text: String,
+        inlineFacets: [(url: URL, startPosition: Int, endPosition: Int)]? = nil,
+        pdsURL: String = "https://bsky.social"
+    ) async -> (text: String, facets: [AppBskyLexicon.RichText.Facet]) {
+        // Replace hyperlinks in text with their shortened display form.
+        let (resolvedText, updatedLinkFacets) = truncateAndReplaceLinks(in: text)
+
+        var facets = await parseFacets(from: resolvedText, pdsURL: pdsURL)
+        facets.removeAll {
+            $0.features.contains(where: {
+                if case .link = $0 { return true }
+                return false
+            })
+        }
+
+        if let inlineFacets {
+            for (url, start, end) in inlineFacets {
+                do {
+                    let facet = try await createInlineLink(url: url, start: start, end: end)
+                    facets.append(facet)
+                } catch {
+                    print("Failed to create inline link: \(error.localizedDescription)")
+                }
+            }
+        }
+
+        // Add a link facet for each shortened URL, at its position in the shortened text.
+        for (url, start, end) in updatedLinkFacets {
+            do {
+                let updatedFacet = try await createInlineLink(url: url, start: start, end: end)
+
+                // Remove any existing link facet with the same URL
+                facets.removeAll {
+                    $0.features.contains(where: {
+                        if case .link(let linkFeature) = $0 {
+                            return linkFeature.uri == url.absoluteString
+                        }
+                        return false
+                    })
+                }
+
+                facets.append(updatedFacet)
+            } catch {
+                print("Failed to create updated inline link facet: \(error)")
+            }
+        }
+
+        return (resolvedText, facets)
+    }
+
     /// Processes detected mentions into mention facets.
     ///
     /// - Parameters:
