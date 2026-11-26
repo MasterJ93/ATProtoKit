@@ -101,6 +101,9 @@ extension AppBskyLexicon.Unspecced {
         /// The display name of the topic.
         public let displayName: String
 
+        /// A description about the topic. Optional.
+        public let description: String?
+
         /// The URL of the topic.
         public let link: String
 
@@ -119,9 +122,10 @@ extension AppBskyLexicon.Unspecced {
         /// An array of decentralized identifiers (DIDs) related to the topic.
         public let dids: [String]
 
-        public init(topic: String, displayName: String, link: String, startedAt: Date, postCount: Int, status: Status?, category: String?, dids: [String]) {
+        public init(topic: String, displayName: String, description: String? = nil, link: String, startedAt: Date, postCount: Int, status: Status?, category: String?, dids: [String]) {
             self.topic = topic
             self.displayName = displayName
+            self.description = description
             self.link = link
             self.startedAt = startedAt
             self.postCount = postCount
@@ -135,6 +139,7 @@ extension AppBskyLexicon.Unspecced {
 
             self.topic = try container.decode(String.self, forKey: .topic)
             self.displayName = try container.decode(String.self, forKey: .displayName)
+            self.description = try container.decodeIfPresent(String.self, forKey: .description)
             self.link = try container.decode(String.self, forKey: .link)
             self.startedAt = try container.decodeDate(forKey: .startedAt)
             self.postCount = try container.decode(Int.self, forKey: .postCount)
@@ -148,6 +153,7 @@ extension AppBskyLexicon.Unspecced {
 
             try container.encode(self.topic, forKey: .topic)
             try container.encode(self.displayName, forKey: .displayName)
+            try container.encodeIfPresent(self.description, forKey: .description)
             try container.encode(self.link, forKey: .link)
             try container.encodeDate(self.startedAt, forKey: .startedAt)
             try container.encode(self.postCount, forKey: .postCount)
@@ -159,6 +165,7 @@ extension AppBskyLexicon.Unspecced {
         enum CodingKeys: CodingKey {
             case topic
             case displayName
+            case description
             case link
             case startedAt
             case postCount
@@ -192,6 +199,9 @@ extension AppBskyLexicon.Unspecced {
         /// The display name of the topic.
         public let displayName: String
 
+        /// A description about the topic. Optional.
+        public let description: String?
+
         /// The URL of the topic.
         public let link: String
 
@@ -210,10 +220,11 @@ extension AppBskyLexicon.Unspecced {
         /// An array of profiles related to the topic.
         public let actors: [AppBskyLexicon.Actor.ProfileViewBasicDefinition]
 
-        public init(topic: String, displayName: String, link: String, startedAt: Date, postCount: Int, status: Status?, category: String?,
+        public init(topic: String, displayName: String, description: String? = nil, link: String, startedAt: Date, postCount: Int, status: Status?, category: String?,
             actors: [AppBskyLexicon.Actor.ProfileViewBasicDefinition]) {
             self.topic = topic
             self.displayName = displayName
+            self.description = description
             self.link = link
             self.startedAt = startedAt
             self.postCount = postCount
@@ -227,6 +238,7 @@ extension AppBskyLexicon.Unspecced {
 
             self.topic = try container.decode(String.self, forKey: .topic)
             self.displayName = try container.decode(String.self, forKey: .displayName)
+            self.description = try container.decodeIfPresent(String.self, forKey: .description)
             self.link = try container.decode(String.self, forKey: .link)
             self.startedAt = try container.decodeDate(forKey: .startedAt)
             self.postCount = try container.decode(Int.self, forKey: .postCount)
@@ -240,6 +252,7 @@ extension AppBskyLexicon.Unspecced {
 
             try container.encode(self.topic, forKey: .topic)
             try container.encode(self.displayName, forKey: .displayName)
+            try container.encodeIfPresent(self.description, forKey: .description)
             try container.encode(self.link, forKey: .link)
             try container.encodeDate(self.startedAt, forKey: .startedAt)
             try container.encode(self.postCount, forKey: .postCount)
@@ -251,6 +264,7 @@ extension AppBskyLexicon.Unspecced {
         enum CodingKeys: CodingKey {
             case topic
             case displayName
+            case description
             case link
             case startedAt
             case postCount
@@ -266,6 +280,113 @@ extension AppBskyLexicon.Unspecced {
             /// The topic is hot.
             case hot
         }
+    }
+
+    /// A definition model for a post item in a thread.
+    ///
+    /// - Important: This is an unspecced model, and as such, this is highly volatile and may
+    /// change or be removed at any time. Use at your own risk.
+    ///
+    /// - SeeAlso: This is based on the [`app.bsky.unspecced.defs`][github] lexicon.
+    ///
+    /// [github]: https://github.com/bluesky-social/bsky/blob/main/lexicons/app/bsky/unspecced/defs.json
+    public struct ThreadItemPostDefinition: Sendable, Codable {
+
+        /// The post itself.
+        public let post: AppBskyLexicon.Feed.PostViewDefinition
+
+        /// Indicates whether the post has more parents that weren't present in the response.
+        ///
+        /// - Note: According to the AT Protocol specifications: "This post has more parents that
+        /// were not present in the response. This is just a boolean, without the number of parents."
+        public let hasMoreParents: Bool
+
+        /// The number of replies to the post that weren't present in the response.
+        ///
+        /// - Note: According to the AT Protocol specifications: "This post has more replies that
+        /// were not present in the response. This is a numeric value, which is best-effort and might
+        /// not be accurate."
+        public let moreReplies: Int
+
+        /// Indicates whether the post is part of a contiguous thread by the original poster from the
+        /// thread root.
+        ///
+        /// - Note: According to the AT Protocol specifications: "This post is part of a contiguous
+        /// thread by the OP from the thread root. Sub-threads by OP deeper in the tree are not
+        /// considered an OP thread."
+        public let isOPThread: Bool
+
+        /// The 1-indexed position of the post within the contiguous thread by the original poster.
+        /// Optional.
+        ///
+        /// - Note: According to the AT Protocol specifications: "The 1-indexed position of this post
+        /// within the contiguous OP thread. Only present when this post is part of the OP thread
+        /// (see `opThread`)."
+        public let opThreadPostIndex: Int?
+
+        /// The total number of posts in the contiguous thread by the original poster. Optional.
+        ///
+        /// - Note: According to the AT Protocol specifications: "The total number of posts in the
+        /// contiguous OP thread that this post belongs to. Only present when this post is part of
+        /// the OP thread (see `opThread`)."
+        public let opThreadPostCount: Int?
+
+        /// Indicates whether the post is hidden by the threadgate.
+        ///
+        /// - Note: According to the AT Protocol specifications: "The threadgate created by the author
+        /// indicates this post as a reply to be hidden for everyone consuming the thread."
+        public let isHiddenByThreadgate: Bool
+
+        /// Indicates whether the post is by a user account muted by the viewer.
+        ///
+        /// - Note: According to the AT Protocol specifications: "This is by an account muted by the
+        /// viewer requesting it."
+        public let isMutedByViewer: Bool
+
+        enum CodingKeys: String, CodingKey {
+            case post
+            case hasMoreParents = "moreParents"
+            case moreReplies
+            case isOPThread = "opThread"
+            case opThreadPostIndex
+            case opThreadPostCount
+            case isHiddenByThreadgate = "hiddenByThreadgate"
+            case isMutedByViewer = "mutedByViewer"
+        }
+    }
+
+    /// A definition model for a thread item that can't be viewed without authentication.
+    ///
+    /// - Important: This is an unspecced model, and as such, this is highly volatile and may
+    /// change or be removed at any time. Use at your own risk.
+    ///
+    /// - SeeAlso: This is based on the [`app.bsky.unspecced.defs`][github] lexicon.
+    ///
+    /// [github]: https://github.com/bluesky-social/bsky/blob/main/lexicons/app/bsky/unspecced/defs.json
+    public struct ThreadItemNoUnauthenticatedDefinition: Sendable, Codable {}
+
+    /// A definition model for a thread item that wasn't found.
+    ///
+    /// - Important: This is an unspecced model, and as such, this is highly volatile and may
+    /// change or be removed at any time. Use at your own risk.
+    ///
+    /// - SeeAlso: This is based on the [`app.bsky.unspecced.defs`][github] lexicon.
+    ///
+    /// [github]: https://github.com/bluesky-social/bsky/blob/main/lexicons/app/bsky/unspecced/defs.json
+    public struct ThreadItemNotFoundDefinition: Sendable, Codable {}
+
+    /// A definition model for a thread item that's been blocked.
+    ///
+    /// - Important: This is an unspecced model, and as such, this is highly volatile and may
+    /// change or be removed at any time. Use at your own risk.
+    ///
+    /// - SeeAlso: This is based on the [`app.bsky.unspecced.defs`][github] lexicon.
+    ///
+    /// [github]: https://github.com/bluesky-social/bsky/blob/main/lexicons/app/bsky/unspecced/defs.json
+    public struct ThreadItemBlockedDefinition: Sendable, Codable {
+
+        /// The author of the blocked post.
+        public let author: AppBskyLexicon.Feed.BlockedAuthorDefinition
     }
 
     /// A definition model for an age assurance state.

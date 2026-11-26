@@ -25,8 +25,23 @@ extension AppBskyLexicon.Unspecced {
         /// An array of decentralized identifiers (DIDs) representing user accounts.
         public let userDIDs: [String]
 
+        /// A Snowflake ID for recommendation events. Optional.
+        ///
+        /// - Important: This property is deprecated. Use ``recommendationIDString`` instead.
+        ///
+        /// - Note: According to the AT Protocol specifications: "DEPRECATED: use recIdStr instead."
+        public let recommendationID: String?
+
+        /// A Snowflake ID for recommendation events. Optional.
+        ///
+        /// - Note: According to the AT Protocol specifications: "Snowflake for this
+        /// recommendation, use when submitting recommendation events."
+        public let recommendationIDString: String?
+
         enum CodingKeys: String, CodingKey {
             case userDIDs = "dids"
+            case recommendationID = "recId"
+            case recommendationIDString = "recIdStr"
         }
     }
 }
