@@ -356,52 +356,12 @@ extension ATProtoBluesky {
             throw ATRequestPrepareError.invalidPDS
         }
 
-        // Replace hyperlinks in text with their shortened display form.
-        let (resolvedText, updatedLinkFacets) = ATFacetParser.truncateAndReplaceLinks(in: text)
+        let (resolvedText, facets) = await ATFacetParser.buildPostFacets(
+            from: text,
+            inlineFacets: inlineFacets,
+            pdsURL: session.pdsURL ?? "https://bsky.social"
+        )
 
-        // Mentions, hashtags, and cashtags are parsed from the shortened text so their byte ranges
-        // match the text that is actually posted. Link facets come from `updatedLinkFacets` instead,
-        // since the shortened display text no longer contains the full URL.
-        var facets = await ATFacetParser.parseFacets(from: resolvedText, pdsURL: session.pdsURL ?? "https://bsky.social")
-        facets.removeAll {
-            $0.features.contains(where: {
-                if case .link = $0 { return true }
-                return false
-            })
-        }
-
-        if let inlineFacets {
-            for (url, start, end) in inlineFacets {
-                do {
-                    let facet = try await ATFacetParser.createInlineLink(url: url, start: start, end: end)
-                    facets.append(facet)
-                } catch {
-                    print("Failed to create inline link: \(error.localizedDescription)")
-                }
-            }
-        }
-        
-        // Add a link facet for each shortened URL, at its position in the shortened text.
-        for (url, start, end) in updatedLinkFacets {
-            do {
-                let updatedFacet = try await ATFacetParser.createInlineLink(url: url, start: start, end: end)
-
-                // Remove any existing link facet with the same URL
-                facets.removeAll {
-                    $0.features.contains(where: {
-                        if case .link(let linkFeature) = $0 {
-                            return linkFeature.uri == url.absoluteString
-                        }
-                        return false
-                    })
-                }
-
-                facets.append(updatedFacet)
-            } catch {
-                print("Failed to create updated inline link facet: \(error)")
-            }
-        }
-        
         // Truncate the number of characters to 300.
         let postText = resolvedText.truncated(toLength: 300)
 
