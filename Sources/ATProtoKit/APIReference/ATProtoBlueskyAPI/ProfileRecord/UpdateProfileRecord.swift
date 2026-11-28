@@ -47,7 +47,7 @@ extension ATProtoBluesky {
 
         for field in replace {
             // If it reaches the limit, the loop will end early.
-            if uniqueFields.count >= 7 { break }
+            if uniqueFields.count >= 10 { break }
 
             if !seenIdentifiers.contains(field.identifier) {
                 seenIdentifiers.insert(field.identifier)
@@ -75,6 +75,7 @@ extension ATProtoBluesky {
         var newLabels: AppBskyLexicon.Actor.ProfileRecord.LabelsUnion? = profile.labels
         var newJoinedViaStarterPack: ComAtprotoLexicon.Repository.StrongReference? = profile.joinedViaStarterPack
         var newPinnedPost: ComAtprotoLexicon.Repository.StrongReference? = profile.pinnedPost
+        var newLinks: [ComAtprotoLexicon.Repository.StrongReference]? = profile.links
 
         for uniqueField in uniqueFields {
             
@@ -183,6 +184,15 @@ extension ATProtoBluesky {
                     }
 
                     newPinnedPost = pinnedPostField
+                case .links(let linksField):
+                    // Check if the field is nil. If so, set the links variable to nil and break out of the case early.
+                    if linksField == nil {
+                        newLinks = nil
+
+                        break
+                    }
+
+                    newLinks = linksField
             }
         }
 
@@ -196,6 +206,7 @@ extension ATProtoBluesky {
             labels: newLabels,
             joinedViaStarterPack: newJoinedViaStarterPack,
             pinnedPost: newPinnedPost,
+            links: newLinks,
             createdAt: Date()
         )
 
@@ -255,6 +266,11 @@ extension ATProtoBluesky {
         /// - Parameter with: The object to update the record with. Optional. Defaults to `nil`.
         case pinnedPost(with: ComAtprotoLexicon.Repository.StrongReference? = nil)
 
+        /// An array of strong references to the link records shown on the profile.
+        ///
+        /// - Parameter with: The object to update the record with. Optional. Defaults to `nil`.
+        case links(with: [ComAtprotoLexicon.Repository.StrongReference]? = nil)
+
         var identifier: String {
             switch self {
                 case .displayName: return "displayName"
@@ -266,6 +282,7 @@ extension ATProtoBluesky {
                 case .labels: return "labels"
                 case .joinedViaStarterPack: return "joinedViaStarterPack"
                 case .pinnedPost: return "pinnedPost"
+                case .links: return "links"
             }
         }
     }

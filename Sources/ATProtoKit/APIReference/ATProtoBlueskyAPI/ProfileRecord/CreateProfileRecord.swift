@@ -112,6 +112,33 @@ extension ATProtoBluesky {
     /// If you want to unpin the post, simply update the profile record and set
     /// `pinnedPost` to `nil`.
     ///
+    /// # Adding Links
+    ///
+    /// If you want to show links on the profile, create the link records with
+    /// ``createLinkRecord(url:title:iconImage:creationDate:recordKey:shouldValidate:swapCommit:)``,
+    /// then attach the strong references to the `links` argument. The links are shown in the
+    /// order of the array:
+    ///
+    /// ```swift
+    /// do {
+    ///     let linkStrongReference = try await atProtoBluesky.createLinkRecord(
+    ///         url: "https://example.com",
+    ///         title: "My Website"
+    ///     )
+    ///     let profileResult = try await atProtoBluesky.createProfileRecord(
+    ///         displayName: "Alexy Carter",
+    ///         description: "Big fan of music, movies, and weekend road trips. Just trying to enjoy life one day at a time.",
+    ///         links: [linkStrongReference]
+    ///     )
+    ///
+    ///     print(profileResult)
+    /// } catch {
+    ///     throw error
+    /// }
+    /// ```
+    ///
+    /// - Note: You can have up to 10 links.
+    ///
     /// - Parameters:
     ///   - displayName: A display name for the profile. Optional. Defaults to `nil`.
     ///   - description: A description for the profile. Optional. Defaults to `nil`.
@@ -124,6 +151,8 @@ extension ATProtoBluesky {
     ///   join Bluesky.
     ///   - pinnedPost: A strong reference to a post the user account has. Optional.
     ///   Defaults to `nil`.
+    ///   - links: An array of strong references to the link records shown on the profile.
+    ///   Optional. Defaults to `nil`.
     ///   - recordKey: The record key of the collection. Optional. Defaults to `nil`.
     ///   - shouldValidate: Indicates whether the record should be validated. Optional.
     ///   Defaults to `true`.
@@ -139,6 +168,7 @@ extension ATProtoBluesky {
         labels: ComAtprotoLexicon.Label.SelfLabelsDefinition? = nil,
         joinedViaStarterPack: ComAtprotoLexicon.Repository.StrongReference? = nil,
         pinnedPost: ComAtprotoLexicon.Repository.StrongReference? = nil,
+        links: [ComAtprotoLexicon.Repository.StrongReference]? = nil,
         recordKey: String? = nil,
         shouldValidate: Bool? = true,
         swapCommit: String? = nil
@@ -222,6 +252,7 @@ extension ATProtoBluesky {
             labels: labels.map { .selfLabel($0) },
             joinedViaStarterPack: joinedViaStarterPack,
             pinnedPost: pinnedPost,
+            links: links,
             createdAt: Date()
         )
 
