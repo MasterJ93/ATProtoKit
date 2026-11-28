@@ -21,7 +21,7 @@ public enum AttachmentLexiconLimit {
     ///
     /// - SeeAlso: [`app.bsky.embed.images`][images] lexicon.
     ///
-    /// [images]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/embed/images.json
+    /// [images]: https://github.com/bluesky-social/bsky/blob/main/lexicons/app/bsky/embed/images.json
     public static let postImageEmbed = 2_000_000
 
     /// The maximum size of a gallery image embed: 2,000,000 bytes.
@@ -30,7 +30,7 @@ public enum AttachmentLexiconLimit {
     ///
     /// - SeeAlso: [`app.bsky.embed.gallery`][gallery] lexicon.
     ///
-    /// [gallery]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/embed/gallery.json
+    /// [gallery]: https://github.com/bluesky-social/bsky/blob/main/lexicons/app/bsky/embed/gallery.json
     public static let galleryImageEmbed = 2_000_000
 
     /// The maximum size of an external link thumbnail: 1,000,000 bytes.
@@ -39,7 +39,7 @@ public enum AttachmentLexiconLimit {
     ///
     /// - SeeAlso: [`app.bsky.embed.external`][external] lexicon.
     ///
-    /// [external]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/embed/external.json
+    /// [external]: https://github.com/bluesky-social/bsky/blob/main/lexicons/app/bsky/embed/external.json
     public static let externalEmbedThumbnail = 1_000_000
 
     /// The maximum size of a profile avatar: 1,000,000 bytes.
@@ -48,7 +48,7 @@ public enum AttachmentLexiconLimit {
     ///
     /// - SeeAlso: [`app.bsky.actor.profile`][profile] lexicon.
     ///
-    /// [profile]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/actor/profile.json
+    /// [profile]: https://github.com/bluesky-social/bsky/blob/main/lexicons/app/bsky/actor/profile.json
     public static let profileAvatar = 1_000_000
 
     /// The maximum size of a profile banner: 1,000,000 bytes.
@@ -57,8 +57,17 @@ public enum AttachmentLexiconLimit {
     ///
     /// - SeeAlso: [`app.bsky.actor.profile`][profile] lexicon.
     ///
-    /// [profile]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/actor/profile.json
+    /// [profile]: https://github.com/bluesky-social/bsky/blob/main/lexicons/app/bsky/actor/profile.json
     public static let profileBanner = 1_000_000
+
+    /// The maximum size of a link icon: 100,000 bytes.
+    ///
+    /// Declared by `app.bsky.actor.link` at `defs.main.record.properties.icon.maxSize`.
+    ///
+    /// - SeeAlso: [`app.bsky.actor.link`][link] lexicon.
+    ///
+    /// [link]: https://github.com/bluesky-social/bsky/blob/main/lexicons/app/bsky/actor/link.json
+    public static let linkIcon = 100_000
 
     /// The maximum size of a list avatar: 1,000,000 bytes.
     ///
@@ -66,7 +75,7 @@ public enum AttachmentLexiconLimit {
     ///
     /// - SeeAlso: [`app.bsky.graph.list`][list] lexicon.
     ///
-    /// [list]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/graph/list.json
+    /// [list]: https://github.com/bluesky-social/bsky/blob/main/lexicons/app/bsky/graph/list.json
     public static let listAvatar = 1_000_000
 
     /// The maximum size of a video embed: 100,000,000 bytes.
@@ -75,7 +84,7 @@ public enum AttachmentLexiconLimit {
     ///
     /// - SeeAlso: [`app.bsky.embed.video`][video] lexicon.
     ///
-    /// [video]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/embed/video.json
+    /// [video]: https://github.com/bluesky-social/bsky/blob/main/lexicons/app/bsky/embed/video.json
     public static let videoEmbed = 100_000_000
 
     /// The maximum size of a video VTT caption file: 20,000 bytes.
@@ -84,7 +93,7 @@ public enum AttachmentLexiconLimit {
     ///
     /// - SeeAlso: [`app.bsky.embed.video`][video] lexicon.
     ///
-    /// [video]: https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/embed/video.json
+    /// [video]: https://github.com/bluesky-social/bsky/blob/main/lexicons/app/bsky/embed/video.json
     public static let videoVTTCaption = 20_000
 
     // The daily video upload quota is server-driven via `app.bsky.video.getUploadLimits`

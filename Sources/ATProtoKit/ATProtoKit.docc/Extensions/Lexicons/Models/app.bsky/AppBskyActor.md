@@ -53,6 +53,9 @@
 ### app.bsky.actor.getSuggestions
 - ``GetSuggestionsOutput``
 
+### app.bsky.actor.link
+- ``LinkRecord``
+
 ### app.bsky.actor.profile
 - ``ProfileRecord``
 
